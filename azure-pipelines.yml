@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 trigger:
-- add-readme
+- main
 
 pool:
   vmImage: ubuntu-latest
