@@ -1,9 +1,21 @@
+import path from 'path';
+
 import express, { Application, Request, Response } from 'express';
+
+import { apiRoute } from './route/api';
 
 const app: Application = express();
 
+app.use('/api', apiRoute);
+app.use('/public', express.static(`${__dirname}/public`));
+app.use('/css', express.static(`${__dirname}/css`));
+app.use('/assets', express.static(`${__dirname}/assets`));
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
 app.get('/', (req: Request, res: Response) => {
-    res.json({ message: 'Express server is running' });
+    res.render('index');
 });
 
 export default app;
