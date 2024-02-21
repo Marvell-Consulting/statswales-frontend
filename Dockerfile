@@ -7,4 +7,4 @@ COPY package.json package-lock.json .
 RUN npm install
 COPY dist/ .
 EXPOSE 3000
-CMD [ "npm", "start"]
+CMD [ "npm", "run", "start:container"]
