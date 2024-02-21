@@ -16,7 +16,7 @@
     "dev:start": "npm-run-all build start",
     "dev": "nodemon --watch src -e ts,ejs --exec npm run dev:start",
     "start": "npm run build && node dist/server.js",
-    "start:container": "node server.js"
+    "start:container": "node dist/server.js"
   },
   "keywords": [],
   "author": "",
