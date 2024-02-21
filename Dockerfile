@@ -1,10 +1,16 @@
 # Dockerfile
 
 FROM node:20
-RUN mkdir -p /opt/app
-WORKDIR /opt/app
-COPY package.json package-lock.json .
+
+WORKDIR /app
+
+COPY . /app
+
 RUN npm install
-COPY dist/ .
+
+HEALTHCHECK --interval=5m --timeout=3s \
+    CMD curl --fail http://localhost:3000 || exit 1
+
 EXPOSE 3000
+
 CMD [ "npm", "run", "start:container"]
