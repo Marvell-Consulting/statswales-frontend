@@ -1,11 +1,15 @@
 import path from 'path';
 
 import express, { Application, Request, Response } from 'express';
+import multer from 'multer';
 
+import { processCSV } from './controllers/csv-processor';
 import { apiRoute } from './route/api';
 import { healthcheck } from './route/healthcheck';
 
 const app: Application = express();
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 app.use('/api', apiRoute);
 app.use('/healthcheck', healthcheck);
@@ -18,6 +22,16 @@ app.set('view engine', 'ejs');
 
 app.get('/', (req: Request, res: Response) => {
     res.render('index');
+});
+
+app.get('/upload', (req: Request, res: Response) => {
+    res.render('upload');
+});
+
+app.post('/upload', upload.single('csv'), async (req: Request, res: Response) => {
+    const processedCSV = await processCSV(req.file?.buffer);
+    if (!processedCSV.success) res.status(400);
+    res.render('upload', processedCSV);
 });
 
 export default app;

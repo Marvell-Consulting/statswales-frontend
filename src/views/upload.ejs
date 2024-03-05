@@ -1,0 +1,79 @@
+<%- include("partials/top"); %>
+    <div class="govuk-width-container app-width-container">
+        <div class="govuk-phase-banner">
+            <p class="govuk-phase-banner__content">
+                <strong class="govuk-tag govuk-phase-banner__content__tag">
+                    Alpha
+                </strong>
+                <span class="govuk-phase-banner__text">
+                    This is a new service – your <a class="govuk-link" href="https://forms.gle/rn5KL2rZPLSjMTda9">feedback</a> will help us to improve it.
+                </span>
+            </p>
+        </div>
+
+        <!-- <a href="#" class="govuk-back-link">Back</a> -->
+        <main class="govuk-main-wrapper" id="main-content" role="main">
+            <h1 class="govuk-heading-xl">Upload a CSV</h1>
+            <% if (locals?.status == 'success') { %>
+            <div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
+                aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                        Success
+                    </h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <h3 class="govuk-notification-banner__heading">
+                        <%= locals?.message %>
+                    </h3>
+                </div>
+            </div>
+            <% } %>
+            <% if (locals?.errors) { %>
+                <div class="govuk-error-summary" data-module="govuk-error-summary">
+                    <div role="alert">
+                        <h2 class="govuk-error-summary__title">
+                            There is a problem
+                        </h2>
+                        <div class="govuk-error-summary__body">
+                            <ul class="govuk-list govuk-error-summary__list">
+                                <% errors.forEach(function(error) { %>
+                                    <li>
+                                        <a href="#<%= error.field %>"><%= error.message %></a>
+                                    </li>
+                                <% }); %>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+            
+            <% if (locals?.data) { %>
+                <h2 class="govuk-heading-m">CSV Data</h2>
+                <table class="govuk-table">
+                    <% locals.data.forEach(function(row) { %>
+                        <tr>
+                            <% row.forEach(function(cell) { %>
+                                <td class="govuk-table__cell"><%= cell %></td>
+                            <% }); %>
+                        </tr>
+                    <% }); %>
+                </table>
+
+                <h2 class="govuk-heading-m">Upload another CSV</h2>
+            <% } %>
+            
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <div class="govuk-form-group">
+                    <label class="govuk-label" for="csv">
+                        Select a CSV file
+                    </label>
+                    <input class="govuk-file-upload" id="csv" name="csv" type="file">
+                </div>
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    Upload CSV
+                </button>
+            </form>
+        </main>
+    </div>
+<%- include("partials/bottom"); %>

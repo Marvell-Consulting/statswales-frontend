@@ -2,15 +2,7 @@ import type { Config } from 'jest';
 
 const config: Config = {
   verbose: true,
-  reporters: [
-    [
-      'jest-junit',
-      {
-        outputDirectory: './coverage/test-report',
-        outputName: 'test-report.xml'
-      }
-    ]
-  ],
+  reporters: ['default', ['jest-junit', { outputDirectory: 'reports', outputName: 'report.xml' }]],
   preset: 'ts-jest',
   testEnvironment: 'node',
   coverageDirectory: './coverage',
