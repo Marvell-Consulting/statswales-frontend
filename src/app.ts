@@ -1,5 +1,6 @@
 import path from 'path';
 
+import pino from 'pino';
 import express, { Application, Request, Response } from 'express';
 import multer from 'multer';
 
@@ -10,6 +11,11 @@ import { healthcheck } from './route/healthcheck';
 const app: Application = express();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
+
+export const logger = pino({
+    name: 'StatsWales-Alpha-App',
+    level: 'debug'
+});
 
 app.use('/api', apiRoute);
 app.use('/healthcheck', healthcheck);

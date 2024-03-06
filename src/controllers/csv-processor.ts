@@ -1,9 +1,15 @@
 import { parse } from 'csv';
+import pino from 'pino';
 
 import { ProcessedCSV } from '../models/processedcsv';
 
+export const logger = pino({
+    name: 'StatsWales-Alpha-App',
+    level: 'debug'
+});
+
 export const processCSV = async (buff: Buffer | undefined): Promise<ProcessedCSV> => {
-    console.log('Processing upload');
+    logger.debug('Processing upload');
     if (buff) {
         const csvdata: Array<Array<string>> = (await parse(buff, {
             delimiter: ','

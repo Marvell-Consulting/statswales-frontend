@@ -50,6 +50,7 @@
             
             <% if (locals?.data) { %>
                 <h2 class="govuk-heading-m">CSV Data</h2>
+                <div class="table-display">
                 <table class="govuk-table">
                     <% locals.data.forEach(function(row) { %>
                         <tr>
@@ -59,7 +60,7 @@
                         </tr>
                     <% }); %>
                 </table>
-
+                </div>
                 <h2 class="govuk-heading-m">Upload another CSV</h2>
             <% } %>
             
