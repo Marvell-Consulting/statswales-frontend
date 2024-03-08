@@ -24,7 +24,7 @@
                 </div>
                 <div class="govuk-notification-banner__content">
                     <h3 class="govuk-notification-banner__heading">
-                        <%= locals?.message %>
+                        Your CSV has been uploaded successfully
                     </h3>
                 </div>
             </div>
@@ -49,9 +49,18 @@
             <% } %>
             
             <% if (locals?.data) { %>
-                <h2 class="govuk-heading-m">CSV Data</h2>
                 <div class="table-display">
                 <table class="govuk-table">
+                    <caption class="govuk-table__caption">CSV Data</caption>
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
+                        <tr>
+                            <% locals.headers.forEach(function(cell) { %>
+                                <th scope="col" class="govuk-table__header"><%= cell %></th>
+                            <% }); %>
+                        </tr>
+                    </thead>
+                    <tbody>
                     <% locals.data.forEach(function(row) { %>
                         <tr>
                             <% row.forEach(function(cell) { %>
@@ -59,6 +68,7 @@
                             <% }); %>
                         </tr>
                     <% }); %>
+                    </tbody>
                 </table>
                 </div>
                 <h2 class="govuk-heading-m">Upload another CSV</h2>
@@ -71,6 +81,8 @@
                     </label>
                     <input class="govuk-file-upload" id="csv" name="csv" type="file">
                 </div>
+                <input type="hidden" name="page_number" value="1">
+                <input type="hidden" name="page_size" value="100">
                 <button type="submit" class="govuk-button" data-module="govuk-button">
                     Upload CSV
                 </button>

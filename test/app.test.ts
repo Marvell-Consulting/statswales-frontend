@@ -18,7 +18,7 @@ describe('Test app.ts', () => {
     });
 
     test('Upload returns 200 if a file is attached', async () => {
-        const csvfile = path.resolve(__dirname, `./test.csv`);
+        const csvfile = path.resolve(__dirname, `./test-1.csv`);
 
         const res = await request(app).post('/upload').attach('csv', csvfile);
         expect(res.status).toBe(200);
