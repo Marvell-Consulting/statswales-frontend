@@ -35,7 +35,9 @@ app.get('/upload', (req: Request, res: Response) => {
 });
 
 app.post('/upload', upload.single('csv'), async (req: Request, res: Response) => {
-    const processedCSV = await processCSV(req.file?.buffer);
+    const page_number: number = Number.parseInt(req.body?.page_number, 10) || 1;
+    const page_size: number = Number.parseInt(req.body?.page_size, 10) || 100;
+    const processedCSV = await processCSV(req.file?.buffer, page_number, page_size);
     if (!processedCSV.success) res.status(400);
     res.render('upload', processedCSV);
 });

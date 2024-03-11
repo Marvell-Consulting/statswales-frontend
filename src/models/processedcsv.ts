@@ -2,7 +2,10 @@ import { Error } from './error';
 
 export interface ProcessedCSV {
     success: boolean;
-    message: string;
-    data: Array<Array<string>> | null;
-    errors: Array<Error> | null;
+    current_page: number | undefined;
+    page_size: number | undefined;
+    total_pages: number | undefined;
+    headers: Array<string> | undefined;
+    data: Array<Array<string>> | undefined;
+    errors: Array<Error> | undefined;
 }
