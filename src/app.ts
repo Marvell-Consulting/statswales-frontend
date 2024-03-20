@@ -4,9 +4,10 @@ import pino from 'pino';
 import express, { Application, Request, Response } from 'express';
 import multer from 'multer';
 
-import { processCSV } from './controllers/csv-processor';
+import { processCSV, uploadCSV } from './controllers/csv-processor';
 import { apiRoute } from './route/api';
 import { healthcheck } from './route/healthcheck';
+import { listFilesInDirectory } from './controllers/datalake';
 
 const app: Application = express();
 const storage = multer.memoryStorage();
@@ -35,11 +36,41 @@ app.get('/upload', (req: Request, res: Response) => {
 });
 
 app.post('/upload', upload.single('csv'), async (req: Request, res: Response) => {
-    const page_number: number = Number.parseInt(req.body?.page_number, 10) || 1;
-    const page_size: number = Number.parseInt(req.body?.page_size, 10) || 100;
-    const processedCSV = await processCSV(req.file?.buffer, page_number, page_size);
-    if (!processedCSV.success) res.status(400);
-    res.render('upload', processedCSV);
+    logger.debug(`Filename is ${req.body?.filename}`);
+    const processedCSV = await uploadCSV(req.file?.buffer, req.body?.filename);
+    if (processedCSV.success) {
+        res.redirect(`/data/?file=${req.body?.filename}`);
+    } else {
+        res.status(400);
+        res.render('upload', processedCSV);
+    }
+});
+
+app.get('/list', async (req: Request, res: Response) => {
+    const fileList = await listFilesInDirectory();
+    res.render('list', { filelist: fileList });
+});
+
+app.get('/data', async (req: Request, res: Response) => {
+    const page_number: number = Number.parseInt(req.query.page_number as string, 10) || 1;
+    const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 100;
+    if (!req.query.file) {
+        res.status(400);
+        res.render('data', {
+            success: false,
+            headers: undefined,
+            data: undefined,
+            errors: [
+                {
+                    field: 'file',
+                    message: 'No file name provided'
+                }
+            ]
+        });
+        return;
+    }
+    const processedCSV = await processCSV(req.query.file.toString(), page_number, page_size);
+    res.render('data', processedCSV);
 });
 
 export default app;

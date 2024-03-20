@@ -14,7 +14,7 @@
         <!-- <a href="#" class="govuk-back-link">Back</a> -->
         <main class="govuk-main-wrapper" id="main-content" role="main">
             <h1 class="govuk-heading-xl">Upload a CSV</h1>
-            <% if (locals?.status == 'success') { %>
+            <% if (locals?.success) { %>
             <div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
                 aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
                 <div class="govuk-notification-banner__header">
@@ -47,34 +47,16 @@
                     </div>
                 </div>
             <% } %>
-            
-            <% if (locals?.data) { %>
-                <div class="table-display">
-                <table class="govuk-table">
-                    <caption class="govuk-table__caption">CSV Data</caption>
-                <thead class="govuk-table__head">
-                    <tr class="govuk-table__row">
-                        <tr>
-                            <% locals.headers.forEach(function(cell) { %>
-                                <th scope="col" class="govuk-table__header"><%= cell %></th>
-                            <% }); %>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <% locals.data.forEach(function(row) { %>
-                        <tr>
-                            <% row.forEach(function(cell) { %>
-                                <td class="govuk-table__cell"><%= cell %></td>
-                            <% }); %>
-                        </tr>
-                    <% }); %>
-                    </tbody>
-                </table>
-                </div>
-                <h2 class="govuk-heading-m">Upload another CSV</h2>
-            <% } %>
-            
+             
             <form action="/upload" method="post" enctype="multipart/form-data">
+                <div class="govuk-form-group">
+                    <h1 class="govuk-label-wrapper">
+                        <label class="govuk-label govuk-label--l" for="filename">
+                            Dataset Name:
+                        </label>
+                    </h1>
+                    <input class="govuk-input" id="filename" name="filename" type="text">
+                </div>
                 <div class="govuk-form-group">
                     <label class="govuk-label" for="csv">
                         Select a CSV file

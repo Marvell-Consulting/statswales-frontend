@@ -4,6 +4,8 @@ import pino from 'pino';
 import { ProcessedCSV } from '../models/processedcsv';
 import { Error } from '../models/error';
 
+import { downloadFileFromDataLake, uploadFileToDataLake } from './datalake';
+
 const MAX_PAGE_SIZE = 500;
 const MIN_PAGE_SIZE = 5;
 
@@ -52,9 +54,68 @@ function validateParams(page_number: number, max_page_number: number, page_size:
     return errors;
 }
 
-export const processCSV = async (buff: Buffer | undefined, page: number, size: number): Promise<ProcessedCSV> => {
-    logger.debug('Processing upload');
+export const uploadCSV = async (buff: Buffer | undefined, datafile: string | undefined): Promise<ProcessedCSV> => {
     if (buff) {
+        try {
+            logger.debug(`Uploading file ${datafile} to datalake`);
+            await uploadFileToDataLake(datafile, buff);
+            return {
+                success: true,
+                datafile,
+                page_size: undefined,
+                page_info: undefined,
+                pages: undefined,
+                current_page: undefined,
+                total_pages: undefined,
+                headers: undefined,
+                data: undefined,
+                errors: undefined
+            };
+        } catch (err) {
+            logger.error(err);
+            return {
+                success: false,
+                datafile,
+                page_size: undefined,
+                page_info: undefined,
+                pages: undefined,
+                current_page: undefined,
+                total_pages: undefined,
+                headers: undefined,
+                data: undefined,
+                errors: [{ field: 'csv', message: 'Error uploading file to datalake' }]
+            };
+        }
+    } else {
+        logger.debug('No buffer to upload to datalake');
+        return {
+            success: false,
+            datafile,
+            page_size: undefined,
+            page_info: undefined,
+            pages: undefined,
+            current_page: undefined,
+            total_pages: undefined,
+            headers: undefined,
+            data: undefined,
+            errors: [{ field: 'csv', message: 'No CSV data available' }]
+        };
+    }
+};
+
+function setupPagination(page: number, total_pages: number): Array<string | number> {
+    const pages = [];
+    if (page !== 1) pages.push('previous');
+    if (page - 1 > 0) pages.push(page - 1);
+    pages.push(page);
+    if (page + 1 <= total_pages) pages.push(page + 1);
+    if (page < total_pages) pages.push('next');
+    return pages;
+}
+
+export const processCSV = async (filename: string, page: number, size: number): Promise<ProcessedCSV> => {
+    try {
+        const buff = await downloadFileFromDataLake(filename);
         const dataArray: Array<Array<string>> = (await parse(buff, {
             delimiter: ','
         }).toArray()) as string[][];
@@ -64,7 +125,10 @@ export const processCSV = async (buff: Buffer | undefined, page: number, size: n
         if (errors.length > 0) {
             return {
                 success: false,
+                datafile: filename,
                 page_size: undefined,
+                page_info: undefined,
+                pages: undefined,
                 current_page: undefined,
                 total_pages: undefined,
                 headers: undefined,
@@ -74,24 +138,45 @@ export const processCSV = async (buff: Buffer | undefined, page: number, size: n
         }
 
         const csvdata = paginate(dataArray, page, size);
+        const pages = setupPagination(page, total_pages);
+        const end_record = () => {
+            if (size > dataArray.length) {
+                return dataArray.length;
+            } else if (page === total_pages) {
+                return dataArray.length;
+            } else {
+                return page * size;
+            }
+        };
         return {
             success: true,
+            datafile: filename,
             current_page: page,
+            page_info: {
+                total_records: dataArray.length,
+                start_record: (page - 1) * size + 1,
+                end_record: end_record()
+            },
+            pages,
             page_size: size,
             total_pages,
             headers: csvheaders,
             data: csvdata,
             errors: undefined
         };
-    } else {
+    } catch (err) {
+        logger.error(err);
         return {
             success: false,
+            datafile: filename,
             page_size: undefined,
+            page_info: undefined,
+            pages: undefined,
             current_page: undefined,
             total_pages: undefined,
             headers: undefined,
             data: undefined,
-            errors: [{ field: 'csv', message: 'No file uploaded' }]
+            errors: [{ field: 'csv', message: 'Error downloading file from datalake' }]
         };
     }
 };
