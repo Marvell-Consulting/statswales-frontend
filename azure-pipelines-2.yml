@@ -41,7 +41,7 @@ stages:
         azureSubscription: 'Marvell Consulting(3f7a282e-96dc-4706-9b9e-65609c29b2c8)'
         acrName: 'statswalesregistry.azurecr.io/marvellconsultingstatswales'
         acrUsername: 'StatsWalesRegistry'
-        acrPassword: '$(ACR_PASSWORD)'
+        acrPassword: '$(acr_password)'
         dockerfilePath: 'Dockerfile'
         containerAppName: 'statswales-container-app'
         resourceGroup: 'statswales-container-app-rg'
