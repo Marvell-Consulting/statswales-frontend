@@ -48,4 +48,4 @@ stages:
         containerAppEnvironment: 'statswales-container-app-environment'
         targetPort: '3000'
         ingress: 'external'
-        imageToDeploy: 'statswalesregistry.azurecr.io/marvellconsultingstatswales:<tag>'
+        imageToDeploy: 'statswalesregistry.azurecr.io/marvellconsultingstatswales:$(tag)'
