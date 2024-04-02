@@ -13,7 +13,27 @@
         </div>
         <!-- <a href="#" class="govuk-back-link">Back</a> -->
         <main class="govuk-main-wrapper" id="main-content" role="main">
-            <h1 class="govuk-heading-xl">Displaying Data for <%= locals.datafile %></h1>
+            <h1 class="govuk-heading-xl">Displaying Data for <%= locals.datafile || "<Filename Missing>" %></h1>
+            <% if (locals?.errors) { %>
+                <div class="govuk-error-summary" data-module="govuk-error-summary">
+                    <div role="alert">
+                        <h2 class="govuk-error-summary__title">
+                            There is a problem
+                        </h2>
+                        <div class="govuk-error-summary__body">
+                            <ul class="govuk-list govuk-error-summary__list">
+                                <% errors.forEach(function(error) { %>
+                                    <li>
+                                        <a href="#<%= error.field %>">
+                                            <%= error.message %>
+                                        </a>
+                                    </li>
+                                    <% }); %>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
             <% if (locals?.data) { %>
                 <div class="table-display" style="border: 1px solid #000000; padding: 1em; margin-bottom: 1em;">
                     <table class="govuk-table">
@@ -47,7 +67,7 @@
                 <p>&nbsp;</p>
 
                 <div class="govuk-grid-row">
-                    <div class="govuk-grid-column-two-thirds">
+                    <div class="govuk-grid-column-one-half">
                         <nav class="govuk-pagination" role="navigation" aria-label="Pagination">
                             <ul class="govuk-pagination__list"></ul>
                             <% locals.pages.forEach(function(page) { %>
@@ -106,12 +126,12 @@
                                                         <% }); %>
                         </nav>
                     </div>
-                    <div class="govuk-grid-column-one-third">
+                    <div class="govuk-grid-column-one-half">
                         <form action="/data" method="get" role="page-size" class="govuk-!-margin-bottom-0">
                             <label class="govuk-label govuk-!-display-inline" for="page_size">
                                 Page Size
                             </label>
-                            <select class="govuk-selec govuk-!-display-inline" id="page_size" name="page_size">
+                            <select class="govuk-select govuk-!-display-inline" id="page_size" name="page_size">
                                 <option value="5" <% if (locals.page_size===5) { %>selected <% }; %>>5</option>
                                 <option value="10" <% if (locals.page_size===10) { %>selected <% }; %>>10</option>
                                 <option value="25" <% if (locals.page_size===25) { %>selected <% }; %>>25</option>

@@ -7,7 +7,8 @@ const config: Config = {
   testEnvironment: 'node',
   coverageDirectory: './coverage',
   collectCoverage: true,
-  coverageReporters: ['cobertura', 'lcov', 'html', 'text']
+  coverageReporters: ['cobertura', 'lcov', 'html', 'text'],
+  coveragePathIgnorePatterns: ['/node_modules/', '/test/', '/src/controllers/datalake.ts']
 };
 
 export default config;

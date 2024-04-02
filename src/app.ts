@@ -4,10 +4,10 @@ import pino from 'pino';
 import express, { Application, Request, Response } from 'express';
 import multer from 'multer';
 
-import { processCSV, uploadCSV } from './controllers/csv-processor';
+import { processCSV, uploadCSV, DEFAULT_PAGE_SIZE } from './controllers/csv-processor';
 import { apiRoute } from './route/api';
 import { healthcheck } from './route/healthcheck';
-import { listFilesInDirectory } from './controllers/datalake';
+import { DataLakeService } from './controllers/datalake';
 
 const app: Application = express();
 const storage = multer.memoryStorage();
@@ -47,13 +47,14 @@ app.post('/upload', upload.single('csv'), async (req: Request, res: Response) =>
 });
 
 app.get('/list', async (req: Request, res: Response) => {
-    const fileList = await listFilesInDirectory();
+    const dataLakeService = new DataLakeService();
+    const fileList = await dataLakeService.listFiles();
     res.render('list', { filelist: fileList });
 });
 
 app.get('/data', async (req: Request, res: Response) => {
     const page_number: number = Number.parseInt(req.query.page_number as string, 10) || 1;
-    const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 100;
+    const page_size: number = Number.parseInt(req.query.page_size as string, 10) || DEFAULT_PAGE_SIZE;
     if (!req.query.file) {
         res.status(400);
         res.render('data', {
@@ -63,7 +64,7 @@ app.get('/data', async (req: Request, res: Response) => {
             errors: [
                 {
                     field: 'file',
-                    message: 'No file name provided'
+                    message: 'No filename provided'
                 }
             ]
         });

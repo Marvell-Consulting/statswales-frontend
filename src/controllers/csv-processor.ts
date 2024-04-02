@@ -4,10 +4,11 @@ import pino from 'pino';
 import { ProcessedCSV } from '../models/processedcsv';
 import { Error } from '../models/error';
 
-import { downloadFileFromDataLake, uploadFileToDataLake } from './datalake';
+import { DataLakeService } from './datalake';
 
 const MAX_PAGE_SIZE = 500;
 const MIN_PAGE_SIZE = 5;
+export const DEFAULT_PAGE_SIZE = 100;
 
 export const logger = pino({
     name: 'StatsWales-Alpha-App',
@@ -55,10 +56,11 @@ function validateParams(page_number: number, max_page_number: number, page_size:
 }
 
 export const uploadCSV = async (buff: Buffer | undefined, datafile: string | undefined): Promise<ProcessedCSV> => {
+    const dataLateService = new DataLakeService();
     if (buff) {
         try {
             logger.debug(`Uploading file ${datafile} to datalake`);
-            await uploadFileToDataLake(datafile, buff);
+            await dataLateService.uploadFile(datafile, buff);
             return {
                 success: true,
                 datafile,
@@ -114,8 +116,9 @@ function setupPagination(page: number, total_pages: number): Array<string | numb
 }
 
 export const processCSV = async (filename: string, page: number, size: number): Promise<ProcessedCSV> => {
+    const dataLateService = new DataLakeService();
     try {
-        const buff = await downloadFileFromDataLake(filename);
+        const buff = await dataLateService.downloadFile(filename);
         const dataArray: Array<Array<string>> = (await parse(buff, {
             delimiter: ','
         }).toArray()) as string[][];

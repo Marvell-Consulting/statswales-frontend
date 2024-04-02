@@ -2,8 +2,8 @@ import { Request, Response, Router } from 'express';
 import multer from 'multer';
 import pino from 'pino';
 
-import { processCSV, uploadCSV } from '../controllers/csv-processor';
-import { listFilesInDirectory, downloadFileFromDataLake } from '../controllers/datalake';
+import { processCSV, uploadCSV, DEFAULT_PAGE_SIZE } from '../controllers/csv-processor';
+import { DataLakeService } from '../controllers/datalake';
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -50,13 +50,15 @@ apiRoute.post('/csv', upload.single('csv'), async (req: Request, res: Response) 
 });
 
 apiRoute.get('/csv/', async (req, res) => {
-    const fileList = await listFilesInDirectory();
+    const dataLakeService = new DataLakeService();
+    const fileList = await dataLakeService.listFiles();
     res.json({ filelist: fileList });
 });
 
 apiRoute.get('/csv/:file', async (req, res) => {
+    const dataLakeService = new DataLakeService();
     const filename = req.params.file;
-    const file = await downloadFileFromDataLake(filename);
+    const file = await dataLakeService.downloadFile(filename);
     if (file === undefined || file === null) {
         res.status(404);
         res.json({ message: 'File not found... file is null or undefined' });
@@ -70,8 +72,9 @@ apiRoute.get('/csv/:file', async (req, res) => {
 });
 
 apiRoute.get('/csv/:file/view', async (req, res) => {
+    const dataLakeService = new DataLakeService();
     const filename = req.params.file;
-    const file = await downloadFileFromDataLake(filename);
+    const file = await dataLakeService.downloadFile(filename);
     if (file === undefined || file === null) {
         res.status(404);
         res.json({ message: 'File not found... file is null or undefined' });
@@ -80,7 +83,7 @@ apiRoute.get('/csv/:file/view', async (req, res) => {
     const page_number_str: string = req.query.page_number || req.body?.page_number;
     const page_size_str: string = req.query.page_size || req.body?.page_size;
     const page_number: number = Number.parseInt(page_number_str, 10) || 1;
-    const page_size: number = Number.parseInt(page_size_str, 10) || 100;
+    const page_size: number = Number.parseInt(page_size_str, 10) || DEFAULT_PAGE_SIZE;
     const processedCSV = await processCSV(filename, page_number, page_size);
     if (!processedCSV.success) {
         res.status(400);
