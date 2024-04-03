@@ -4,3 +4,4 @@ import * as shell from 'shelljs';
 shell.cp('-R', 'src/views', 'dist/');
 shell.cp('-R', 'src/public/assets', 'dist/');
 shell.cp('-R', 'src/public/css', 'dist/');
+shell.cp('-R', 'src/resources', 'dist/');

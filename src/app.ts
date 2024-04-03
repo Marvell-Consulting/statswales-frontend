@@ -2,12 +2,26 @@ import path from 'path';
 
 import pino from 'pino';
 import express, { Application, Request, Response } from 'express';
+import i18next from 'i18next';
+import FsBackend from 'i18next-fs-backend';
+import i18nextMiddleware from 'i18next-http-middleware';
 import multer from 'multer';
 
 import { processCSV, uploadCSV, DEFAULT_PAGE_SIZE } from './controllers/csv-processor';
 import { apiRoute } from './route/api';
 import { healthcheck } from './route/healthcheck';
 import { DataLakeService } from './controllers/datalake';
+
+i18next
+    .use(FsBackend)
+    .use(i18nextMiddleware.LanguageDetector)
+    .init({
+        backend: {
+            loadPath: `${__dirname}/resources/locales/{{lng}}.json`
+        },
+        fallbackLng: 'en',
+        preload: ['en', 'cy']
+    });
 
 const app: Application = express();
 const storage = multer.memoryStorage();
@@ -18,6 +32,7 @@ export const logger = pino({
     level: 'debug'
 });
 
+app.use(i18nextMiddleware.handle(i18next));
 app.use('/api', apiRoute);
 app.use('/healthcheck', healthcheck);
 app.use('/public', express.static(`${__dirname}/public`));
