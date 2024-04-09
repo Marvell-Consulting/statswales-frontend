@@ -73,7 +73,6 @@ export class DataLakeService {
             if (file.name === undefined) {
                 continue;
             }
-            logger.debug(`File: ${file.name}, isDirectory: ${file.isDirectory}`);
             fileList.push({ name: basename(file.name), path: file.name, isDirectory: file.isDirectory });
         }
         return fileList;

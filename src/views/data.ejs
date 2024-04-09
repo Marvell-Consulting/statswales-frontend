@@ -4,21 +4,21 @@
         <div class="govuk-phase-banner">
             <p class="govuk-phase-banner__content">
                 <strong class="govuk-tag govuk-phase-banner__content__tag">
-                    Alpha
+                    <%= t('alpha') %>
                 </strong>
                 <span class="govuk-phase-banner__text">
-                    This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.
+                    <%= t('feedback') %>
                 </span>
             </p>
         </div>
         <!-- <a href="#" class="govuk-back-link">Back</a> -->
         <main class="govuk-main-wrapper" id="main-content" role="main">
-            <h1 class="govuk-heading-xl">Displaying Data for <%= locals.datafile || "<Filename Missing>" %></h1>
+            <h1 class="govuk-heading-xl"><%- t('display.title') %> <%= locals.datafile || `<${t('errors.missing')}>` %></h1>
             <% if (locals?.errors) { %>
                 <div class="govuk-error-summary" data-module="govuk-error-summary">
                     <div role="alert">
                         <h2 class="govuk-error-summary__title">
-                            There is a problem
+                            <%= t('errors.problem') %>
                         </h2>
                         <div class="govuk-error-summary__body">
                             <ul class="govuk-list govuk-error-summary__list">
@@ -74,7 +74,7 @@
                                 <% if (page==='previous' ) { %>
                                     <div class="govuk-pagination__prev">
                                         <a class="govuk-link govuk-pagination__link"
-                                            href="/data?file=<%= locals.datafile %>&page_number=<%= locals.current_page-1 %>&page_size=<%= locals.page_size %>"
+                                            href="/<%= i18n.language %>/data?file=<%= locals.datafile %>&page_number=<%= locals.current_page-1 %>&page_size=<%= locals.page_size %>"
                                             rel="prev">
                                             <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg"
                                                 height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
@@ -83,17 +83,17 @@
                                                 </path>
                                             </svg>
                                             <span class="govuk-pagination__link-title">
-                                                Previous<span class="govuk-visually-hidden"> page</span>
+                                                <%= t('pagination.previous') %>
                                             </span>
                                         </a>
                                     </div>
                                     <% } else if (page==='next' ) { %>
                                         <div class="govuk-pagination__next">
                                             <a class="govuk-link govuk-pagination__link"
-                                                href="/data?file=<%= locals.datafile %>&page_number=<%= locals.current_page+1 %>&page_size=<%= locals.page_size %>"
+                                                href="/<%= i18n.language %>/data?file=<%= locals.datafile %>&page_number=<%= locals.current_page+1 %>&page_size=<%= locals.page_size %>"
                                                 rel="next">
                                                 <span class="govuk-pagination__link-title">
-                                                    Next<span class="govuk-visually-hidden"> page</span>
+                                                    <%= t('pagination.next') %>
                                                 </span>
                                                 <svg class="govuk-pagination__icon govuk-pagination__icon--next"
                                                     xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true"
@@ -117,7 +117,7 @@
                                                 <% } else { %>
                                                     <li class="govuk-pagination__item">
                                                         <a class="govuk-link govuk-pagination__link"
-                                                            href="/data?file=<%= locals.datafile %>&page_number=<%= page %>&page_size=<%= locals.page_size %>"
+                                                            href="/<%= i18n.language %>/data?file=<%= locals.datafile %>&page_number=<%= page %>&page_size=<%= locals.page_size %>"
                                                             aria-label="Page <%= page %>">
                                                             <%= page %>
                                                         </a>
@@ -127,7 +127,7 @@
                         </nav>
                     </div>
                     <div class="govuk-grid-column-one-half">
-                        <form action="/data" method="get" role="page-size" class="govuk-!-margin-bottom-0">
+                        <form action="/<%= i18n.language %>/data" method="get" role="page-size" class="govuk-!-margin-bottom-0">
                             <label class="govuk-label govuk-!-display-inline" for="page_size">
                                 Page Size
                             </label>
@@ -143,7 +143,7 @@
                             <input type="hidden" name="file" value="<%= locals.datafile %>">
                             <input type="hidden" name="page_number" value="1">
                             <button type="submit" class="govuk-button govuk-!-display-inline" data-module="govuk-button">
-                                Update
+                                <%= t('pagination.update') %>
                             </button>
                         </form>
                     </div>

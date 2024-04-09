@@ -3,17 +3,17 @@
         <div class="govuk-phase-banner">
             <p class="govuk-phase-banner__content">
                 <strong class="govuk-tag govuk-phase-banner__content__tag">
-                    Alpha
+                    <%= t('alpha') %>
                 </strong>
                 <span class="govuk-phase-banner__text">
-                    This is a new service – your <a class="govuk-link" href="https://forms.gle/rn5KL2rZPLSjMTda9">feedback</a> will help us to improve it.
+                    <%= t('feedback') %>
                 </span>
             </p>
         </div>
 
         <!-- <a href="#" class="govuk-back-link">Back</a> -->
         <main class="govuk-main-wrapper" id="main-content" role="main">
-            <h1 class="govuk-heading-xl">Upload a CSV</h1>
+            <h1 class="govuk-heading-xl"><%= t('upload.title') %></h1>
             <% if (locals?.success) { %>
             <div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
                 aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
@@ -48,25 +48,25 @@
                 </div>
             <% } %>
              
-            <form action="/upload" method="post" enctype="multipart/form-data">
+            <form action="/<%= i18n.language %>/upload" method="post" enctype="multipart/form-data">
                 <div class="govuk-form-group">
                     <h1 class="govuk-label-wrapper">
                         <label class="govuk-label govuk-label--l" for="filename">
-                            Dataset Name:
+                            <%= t('upload.datasetName') %>:
                         </label>
                     </h1>
                     <input class="govuk-input" id="filename" name="filename" type="text">
                 </div>
                 <div class="govuk-form-group">
                     <label class="govuk-label" for="csv">
-                        Select a CSV file
+                        <%= t('upload.selectCSV') %>
                     </label>
-                    <input class="govuk-file-upload" id="csv" name="csv" type="file">
+                    <input class="govuk-file-upload" id="csv" name="csv" type="file" accept=".csv">
                 </div>
                 <input type="hidden" name="page_number" value="1">
                 <input type="hidden" name="page_size" value="100">
                 <button type="submit" class="govuk-button" data-module="govuk-button">
-                    Upload CSV
+                    <%= t('upload.uploadBtn') %>
                 </button>
             </form>
         </main>

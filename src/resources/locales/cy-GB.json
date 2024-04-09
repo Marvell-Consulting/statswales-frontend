@@ -1,0 +1,45 @@
+{
+    "greeting": "Helo",
+    "menu": "Bwydlen",
+    "alpha": "Alffa",
+    "upload-csv": "Llwythwch CSV i fyny",
+    "list-data-files": "Rhestr Ffeiliau Data",
+    "api": "API",
+    "feedback": "Mae hwn yn wasanaeth newydd - bydd eich adborth yn ein helpu i'w wella.",
+    "share-page": "Rhannu'r dudalen hon",
+    "top-of-page": "Nôl i dop y dudalen",
+    "status-field": "statws",
+    "app-running": "Mae'r ap yn rhedeg",
+    "notes-field": "nodiadau",
+    "health-notes": "Ehangu diweddbwynt i wirio am gysylltiad cronfa ddata a gwasanaethau eraill.",
+    "datalake-error": "Gwall wrth gysylltu â'r gronfa ddata",
+    "pagination": {
+        "previous": "Flaenorol",
+        "next": "Nesaf",
+        "update": "Diweddariad"
+    },
+    "routes": {
+        "healthcheck": "gwiriadiechyd",
+        "upload": "uwchlwytho",
+        "list": "rhestr",
+        "data": "data"
+    },
+    "homepage": {
+        "title": "Croeso i StatsCymru Alffa",
+        "welcome": "Rydyn ni'n mynd i ddefnyddio system Dylunio GovUK nes ein bod ni'n gallu cael gafael ar GEL Llywodraeth Cymru",
+        "apitext": "Gallwch ddod o hyd i'n ap yn "
+    },
+    "upload": {
+        "title": "Llwythwch ffeil CSV i fyny",
+        "description": "Llwythwch ffeil CSV i'r llyn data",
+        "datasetName": "Enw Set Ddata",
+        "selectCSV": "Dewiswch ffeil CSV",
+        "uploadBtn": "Uwchlwytho CSV"
+    },
+    "list": {
+        "title": "Data Arddangos"
+    },
+    "display": {
+        "title": "Arddangos Data ar gyfer"
+    }
+}

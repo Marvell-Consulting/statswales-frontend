@@ -4,20 +4,20 @@
         <div class="govuk-phase-banner">
             <p class="govuk-phase-banner__content">
                 <strong class="govuk-tag govuk-phase-banner__content__tag">
-                    Alpha
+                    <%= t('alpha') %>
                 </strong>
                 <span class="govuk-phase-banner__text">
-                    This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.
+                    <%= t('feedback') %>
                 </span>
             </p>
         </div>
         <!-- <a href="#" class="govuk-back-link">Back</a> -->
         <main class="govuk-main-wrapper" id="main-content" role="main">
-            <h1 class="govuk-heading-xl">Welcome to StatsWales Alpha</h1>
+            <h1 class="govuk-heading-xl"><%= t('homepage.title') %></h1>
         
-            <p class="govuk-body">We're going to use the GovUK Design system until we're able to get hold of the Welsh Government GEL</p>
-        
-            <p class="govuk-body">You can find our api at <a href="/api"><code>/api/</code></a></p>
+            <p class="govuk-body"><%= t('homepage.welcome') %></p>
+            
+            <p class="govuk-body"><%= t('homepage.apitext') %> <a href="/api"><code>/api</code></a></p>
         </main>
     </div>
 

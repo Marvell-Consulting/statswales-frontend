@@ -1,7 +1,0 @@
-{
-    "greeting": "Hello",
-    "status-field": "status",
-    "app-running": "App is running",
-    "notes-field": "notes",
-    "health-notes": "Expand endpoint to check for database connection and other services."
-}

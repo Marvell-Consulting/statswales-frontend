@@ -15,10 +15,8 @@ export const logger = pino({
 
 export const apiRoute = Router();
 
-logger.debug('API is runnuing...');
-
 apiRoute.get('/', (req, res) => {
-    res.json({ message: 'API is available' });
+    res.json({ message: req.t('api.available') });
 });
 
 apiRoute.post('/csv', upload.single('csv'), async (req: Request, res: Response) => {
