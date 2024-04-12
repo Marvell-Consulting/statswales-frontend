@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>StatsWales Alpha</title>
+    <title>StatsWales <%= t('alpha') %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="blue">
     <link rel="icon" sizes="48x48" href="/assets/images/favicon.ico">
@@ -28,7 +28,7 @@
                 <a href="/" class="govuk-header__link govuk-header__link--homepage">
                     <svg focusable="false" role="img"  xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 148 30" height="34" width="148" aria-label="GOV.UK" class="govuk-header__logotype">
-                        <title>Welsh Government</title>
+                        <title><%= t('footer.welsh-gov') %></title>
                             <path
                                 d='M0 13a1.49 1.49 0 0 1 .6-.7 3.9 3.9 0 0 1 1.6-.2 9.2 9.2 0 0 1 3.4 2 29.84 29.84 0 0 1 3.2 3.1c.2-.5.7-1.4.7-1.4a42.46 42.46 0 0 0-6.1-4C2 11.3.2 11.1 0 13zM1.4 10.7c1.6-.5 1.8.6 2.1.9l1.2.7c-1.6-3.7-3.3-1.6-3.3-1.6z' />
                             <path
@@ -58,24 +58,35 @@
                 <nav aria-label="Menu" class="govuk-header__navigation">
                     <button type="button" class="govuk-header__menu-button govuk-js-header-toggle"
                         aria-controls="navigation" hidden>
-                        Menu
+                        <%= t('menu') %>
                     </button>
                     <ul id="navigation" class="govuk-header__navigation-list">
                         <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
-                            <a class="govuk-header__link" href="/upload/">
-                                Upload a CSV
+                            <a class="govuk-header__link" href="/<%= i18n.language %>/upload/">
+                                <%= t('upload-csv') %>
                             </a>
                         </li>
                         <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
                             <a class="govuk-header__link"
-                                href="/list">
-                                List Data Files
+                                href="/<%= i18n.language %>/list">
+                                <%= t('list-data-files') %>
                             </a>
                         </li>
                         <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
                             <a class="govuk-header__link" href="/api/">
                                 API
                             </a>
+                        </li>
+                        <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
+                            <% if (i18n.language === 'en-GB') { %>
+                                <a class="govuk-header__link" href="/cy-GB/">
+                                    Cymraeg
+                                </a>
+                            <% } else { %>
+                                <a class="govuk-header__link" href="/en-GB/">
+                                    English
+                                </a>
+                            <% } %>
                         </li>
                     </ul>
                 </nav>

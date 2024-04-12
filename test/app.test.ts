@@ -13,14 +13,32 @@ DataLakeService.prototype.listFiles = jest
 DataLakeService.prototype.uploadFile = jest.fn();
 
 describe('Test app.ts', () => {
-    test('App Homepage has correct title', async () => {
+    test('Redirects to language when going to /', async () => {
         const res = await request(app).get('/');
+        expect(res.status).toBe(302);
+        expect(res.header.location).toBe('/en-GB');
+    });
+
+    test('Redirects to welsh when accept-header is present when going to /', async () => {
+        const res = await request(app).get('/').set('Accept-Language', 'cy-GB');
+        expect(res.status).toBe(302);
+        expect(res.header.location).toBe('/cy-GB');
+    });
+
+    test('App Homepage has correct title', async () => {
+        const res = await request(app).get('/en-GB');
         expect(res.status).toBe(200);
         expect(res.text).toContain('Welcome to StatsWales Alpha');
     });
 
+    test('App Homepage has correct title in welsh', async () => {
+        const res = await request(app).get('/cy-GB');
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Croeso i StatsCymru Alffa');
+    });
+
     test('Upload page returns OK', async () => {
-        const res = await request(app).get('/upload');
+        const res = await request(app).get('/en-GB/upload');
         expect(res.status).toBe(200);
         expect(res.text).toContain('Upload a CSV');
     });
@@ -28,13 +46,16 @@ describe('Test app.ts', () => {
     test('Upload returns 302 if a file is attached', async () => {
         const csvfile = path.resolve(__dirname, `./test-data-1.csv`);
 
-        const res = await request(app).post('/upload').attach('csv', csvfile).field('filename', 'test-data-1.csv');
+        const res = await request(app)
+            .post('/en-GB/upload')
+            .attach('csv', csvfile)
+            .field('filename', 'test-data-1.csv');
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe('/data/?file=test-data-1.csv');
+        expect(res.header.location).toBe('/en-GB/data/?file=test-data-1.csv');
     });
 
     test('Upload returns 400 and an error if no file attached', async () => {
-        const res = await request(app).post('/upload');
+        const res = await request(app).post('/en-GB/upload');
         expect(res.status).toBe(400);
         expect(res.text).toContain('No CSV data available');
     });
@@ -49,7 +70,7 @@ describe('Test app.ts', () => {
     });
 
     test('Check list endpoint returns a list of files', async () => {
-        const res = await request(app).get('/list');
+        const res = await request(app).get('/en-GB/list');
         expect(res.status).toBe(200);
         expect(res.text).toContain('test-data-1.csv');
     });
@@ -59,7 +80,7 @@ describe('Test app.ts', () => {
         const testFile2Buffer = fs.readFileSync(testFile2);
         DataLakeService.prototype.downloadFile = jest.fn().mockReturnValue(testFile2Buffer);
 
-        const res = await request(app).get('/data?file=test-data-2.csv');
+        const res = await request(app).get('/en-GB/data?file=test-data-2.csv');
         expect(res.status).toBe(200);
         // Header
         expect(res.text).toContain(`<th scope="col" class="govuk-table__header">
@@ -104,7 +125,7 @@ describe('Test app.ts', () => {
     });
 
     test('Data display returns 404 if no file available', async () => {
-        const res = await request(app).get('/data');
+        const res = await request(app).get('/en-GB/data');
         expect(res.status).toBe(400);
         expect(res.text).toContain('There is a problem');
         expect(res.text).toContain('No filename provided');

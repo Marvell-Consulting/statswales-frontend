@@ -1,0 +1,65 @@
+{
+    "greeting": "Hello",
+    "alpha": "Alpha",
+    "menu": "Menu",
+    "upload-csv": "Upload CSV",
+    "list-data-files": "List Data Files",
+    "feedback": "This is a new service – your feedback will help us to improve it.",
+    "share-page": "Share this page",
+    "top-of-page": "Back to top",
+    "status-field": "statws",
+    "app-running": "App is running",
+    "health-notes": "Expand endpoint to check for database connection and other services.",
+    "datalake-error": "Unable to connect to get Datalake",
+    "pagination": {
+        "previous": "Previous",
+        "next": "Next",
+        "update": "Update"
+    },
+    "homepage": {
+        "title": "Welcome to StatsWales Alpha",
+        "welcome": "We're going to use the GovUK Design system until we're able to get hold of the Welsh Government GEL",
+        "apitext": "You can find our api at "
+    },
+    "upload": {
+        "title": "Upload a CSV file",
+        "description": "Upload a CSV file to the data lake",
+        "datasetName": "Dataset Name",
+        "selectCSV": "Select a CSV file",
+        "uploadBtn": "Upload CSV"
+    },
+	"errors": {
+		"missing": "Filename Missing",
+		"problem": "There is a problem"
+	},
+    "list": {
+        "title": "Display Data"
+    },
+    "display": {
+        "title": "Displaying Data for"
+    },
+    "api": {
+        "available": "API is available"
+    },
+	"header": {
+		
+	},
+	"footer": {
+		"support-link": "Support Links",
+		"project-reports": "Project Reports",
+		"github-repo": "GitHub Repository",
+		"help": "Help",
+		"cookies": "Cookies",
+		"contact": "Contact",
+		"terms": "Terms and conditions",
+		"copyright-notice": "All content is available under the <a class=\"govuk-footer__link\" href=\"https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" rel=\"license\">Open Government Licence v3.0</a>, except where otherwise stated",
+		"crown-copyright": "© Crown copyright",
+		"welsh-gov": "Welsh Government"
+	},
+    "routes": {
+        "healthcheck": "healthcheck",
+        "upload": "upload",
+        "list": "list",
+        "data": "data"
+    }
+}
