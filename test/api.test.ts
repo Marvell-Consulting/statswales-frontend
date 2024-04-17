@@ -3,14 +3,32 @@ import * as fs from 'fs';
 
 import request from 'supertest';
 
-import app from '../src/app';
 import { DataLakeService } from '../src/controllers/datalake';
+import app, { connectToDb } from '../src/app';
+import { Datafile } from '../src/entity/Datafile';
+
+import { datasourceOptions } from './test-data-source';
 
 DataLakeService.prototype.listFiles = jest
     .fn()
     .mockReturnValue([{ name: 'test-data-1.csv', path: 'test/test-data-1.csv', isDirectory: false }]);
 
 DataLakeService.prototype.uploadFile = jest.fn();
+
+beforeAll(async () => {
+    await connectToDb(datasourceOptions);
+    const datafile1 = new Datafile();
+    datafile1.name = 'test-data-1.csv';
+    datafile1.description = 'Test Data File 1';
+    datafile1.id = 'bdc40218-af89-424b-b86e-d21710bc92f1';
+    await datafile1.save();
+    const datafile2 = new Datafile();
+    datafile2.name = 'test-data-2.csv';
+    datafile2.description = 'Test Data File 2';
+    datafile2.id = 'fa07be9d-3495-432d-8c1f-d0fc6daae359';
+    await datafile2.save();
+    console.log(`Datafile created: ${Datafile.find()}`);
+});
 
 describe('API Endpoints', () => {
     test('Inital API endpoint works', async () => {
@@ -24,7 +42,7 @@ describe('API Endpoints', () => {
         expect(res.status).toBe(400);
         expect(res.body).toEqual({
             success: false,
-            datafile: 'test-data-1.csv',
+            datafile_id: 'test-data-1.csv',
             headers: undefined,
             data: undefined,
             errors: [
@@ -58,11 +76,11 @@ describe('API Endpoints', () => {
         const res = await request(app)
             .post('/en-GB/api/csv')
             .attach('csv', csvfile)
-            .query({ filename: 'test-data-1.csv' });
+            .query({ filename: 'bdc40218-af89-424b-b86e-d21710bc92f1' });
         expect(res.status).toBe(200);
         expect(res.body).toEqual({
             success: true,
-            datafile: 'test-data-1.csv'
+            datafile_id: 'bdc40218-af89-424b-b86e-d21710bc92f1'
         });
     });
 
@@ -70,7 +88,18 @@ describe('API Endpoints', () => {
         const res = await request(app).get('/en-GB/api/csv');
         expect(res.status).toBe(200);
         expect(res.body).toEqual({
-            filelist: [{ name: 'test-data-1.csv', path: 'test/test-data-1.csv', isDirectory: false }]
+            filelist: [
+                {
+                    name: 'test-data-1.csv',
+                    id: 'bdc40218-af89-424b-b86e-d21710bc92f1',
+                    description: 'Test Data File 1'
+                },
+                {
+                    name: 'test-data-2.csv',
+                    id: 'fa07be9d-3495-432d-8c1f-d0fc6daae359',
+                    description: 'Test Data File 2'
+                }
+            ]
         });
     });
 
@@ -82,7 +111,9 @@ describe('API Endpoints', () => {
         expect(res.status).toBe(400);
         expect(res.body).toEqual({
             success: false,
-            datafile: 'test-data-2.csv',
+            datafile_id: 'test-data-2.csv',
+            datafile_name: undefined,
+            datafile_description: undefined,
             page_size: undefined,
             current_page: undefined,
             total_pages: undefined,
@@ -106,7 +137,9 @@ describe('API Endpoints', () => {
         expect(res.status).toBe(400);
         expect(res.body).toEqual({
             success: false,
-            datafile: 'test-data-2.csv',
+            datafile_id: 'test-data-2.csv',
+            datafile_name: undefined,
+            datafile_description: undefined,
             page_size: undefined,
             current_page: undefined,
             total_pages: undefined,
@@ -130,7 +163,9 @@ describe('API Endpoints', () => {
         expect(res.status).toBe(400);
         expect(res.body).toEqual({
             success: false,
-            datafile: 'test-data-2.csv',
+            datafile_id: 'test-data-2.csv',
+            datafile_name: undefined,
+            datafile_description: undefined,
             page_size: undefined,
             current_page: undefined,
             total_pages: undefined,
@@ -161,7 +196,7 @@ describe('API Endpoints', () => {
         DataLakeService.prototype.downloadFile = jest.fn().mockReturnValue(testFile1Buffer.toString());
 
         const res = await request(app)
-            .get('/en-GB/api/csv/test-data-2.csv/view')
+            .get('/en-GB/api/csv/fa07be9d-3495-432d-8c1f-d0fc6daae359/view')
             .query({ page_number: 2, page_size: 100 });
         expect(res.status).toBe(200);
         expect(res.body.current_page).toBe(2);

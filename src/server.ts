@@ -1,9 +1,15 @@
 import dotenv from 'dotenv';
+import 'reflect-metadata';
 
-import app from './app';
+import app, { connectToDb } from './app';
+import { datasourceOptions } from './data-source';
 
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, (): void => console.log(`running on port ${PORT}`));
+connectToDb(datasourceOptions);
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});

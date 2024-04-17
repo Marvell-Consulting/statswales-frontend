@@ -4,6 +4,8 @@ import pino from 'pino';
 
 import { processCSV, uploadCSV, DEFAULT_PAGE_SIZE } from '../controllers/csv-processor';
 import { DataLakeService } from '../controllers/datalake';
+import { Datafile } from '../entity/Datafile';
+import { FileDescription } from '../models/filelist';
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -48,15 +50,22 @@ apiRoute.post('/csv', upload.single('csv'), async (req: Request, res: Response) 
 });
 
 apiRoute.get('/csv/', async (req, res) => {
-    const dataLakeService = new DataLakeService();
-    const fileList = await dataLakeService.listFiles();
+    const datafiles = await Datafile.find();
+    const fileList: FileDescription[] = [];
+    for (const datafile of datafiles) {
+        fileList.push({
+            name: datafile.name,
+            id: datafile.id,
+            description: datafile.description
+        });
+    }
     res.json({ filelist: fileList });
 });
 
 apiRoute.get('/csv/:file', async (req, res) => {
     const dataLakeService = new DataLakeService();
     const filename = req.params.file;
-    const file = await dataLakeService.downloadFile(filename);
+    const file = await dataLakeService.downloadFile(`${filename}.csv`);
     if (file === undefined || file === null) {
         res.status(404);
         res.json({ message: 'File not found... file is null or undefined' });
@@ -72,7 +81,7 @@ apiRoute.get('/csv/:file', async (req, res) => {
 apiRoute.get('/csv/:file/view', async (req, res) => {
     const dataLakeService = new DataLakeService();
     const filename = req.params.file;
-    const file = await dataLakeService.downloadFile(filename);
+    const file = await dataLakeService.downloadFile(`${filename}.csv`);
     if (file === undefined || file === null) {
         res.status(404);
         res.json({ message: 'File not found... file is null or undefined' });

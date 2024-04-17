@@ -3,14 +3,32 @@ import * as fs from 'fs';
 
 import request from 'supertest';
 
-import app from '../src/app';
 import { DataLakeService } from '../src/controllers/datalake';
+import app, { connectToDb } from '../src/app';
+import { Datafile } from '../src/entity/Datafile';
+
+import { datasourceOptions } from './test-data-source';
 
 DataLakeService.prototype.listFiles = jest
     .fn()
     .mockReturnValue([{ name: 'test-data-1.csv', path: 'test/test-data-1.csv', isDirectory: false }]);
 
 DataLakeService.prototype.uploadFile = jest.fn();
+
+beforeAll(async () => {
+    await connectToDb(datasourceOptions);
+    const datafile1 = new Datafile();
+    datafile1.name = 'test-data-1.csv';
+    datafile1.description = 'Test Data File 1';
+    datafile1.id = 'bdc40218-af89-424b-b86e-d21710bc92f1';
+    await datafile1.save();
+    const datafile2 = new Datafile();
+    datafile2.name = 'test-data-2.csv';
+    datafile2.description = 'Test Data File 2';
+    datafile2.id = 'fa07be9d-3495-432d-8c1f-d0fc6daae359';
+    await datafile2.save();
+    console.log(`Datafile created: ${Datafile.find()}`);
+});
 
 describe('Test app.ts', () => {
     test('Redirects to language when going to /', async () => {
@@ -34,7 +52,7 @@ describe('Test app.ts', () => {
     test('App Homepage has correct title in welsh', async () => {
         const res = await request(app).get('/cy-GB');
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Croeso i StatsCymru Alffa');
+        expect(res.text).toContain('Croeso i Alffa StatsCymru');
     });
 
     test('Upload page returns OK', async () => {
@@ -49,9 +67,11 @@ describe('Test app.ts', () => {
         const res = await request(app)
             .post('/en-GB/upload')
             .attach('csv', csvfile)
-            .field('filename', 'test-data-1.csv');
+            .field('filename', 'test-data-3.csv')
+            .field('description', 'Test Data File 3');
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe('/en-GB/data/?file=test-data-1.csv');
+        const datafile = (await Datafile.findOneBy({ name: 'test-data-3.csv' })) || new Datafile();
+        expect(res.header.location).toBe(`/en-GB/data/?file=${datafile.id}`);
     });
 
     test('Upload returns 400 and an error if no file attached', async () => {
@@ -80,7 +100,7 @@ describe('Test app.ts', () => {
         const testFile2Buffer = fs.readFileSync(testFile2);
         DataLakeService.prototype.downloadFile = jest.fn().mockReturnValue(testFile2Buffer);
 
-        const res = await request(app).get('/en-GB/data?file=test-data-2.csv');
+        const res = await request(app).get('/en-GB/data?file=fa07be9d-3495-432d-8c1f-d0fc6daae359');
         expect(res.status).toBe(200);
         // Header
         expect(res.text).toContain(`<th scope="col" class="govuk-table__header">
