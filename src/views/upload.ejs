@@ -58,6 +58,14 @@
                     <input class="govuk-input" id="filename" name="filename" type="text">
                 </div>
                 <div class="govuk-form-group">
+                    <h1 class="govuk-label-wrapper">
+                        <label class="govuk-label govuk-label--l" for="description">
+                            <%= t('upload.datasetDescription') %>:
+                        </label>
+                    </h1>
+                    <input class="govuk-input" id="description" name="description" type="text">
+                </div>
+                <div class="govuk-form-group">
                     <label class="govuk-label" for="csv">
                         <%= t('upload.selectCSV') %>
                     </label>

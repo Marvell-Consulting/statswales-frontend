@@ -8,7 +8,9 @@ export interface PageInfo {
 
 export interface ProcessedCSV {
     success: boolean;
-    datafile: string | undefined;
+    datafile_id: string | undefined;
+    datafile_name: string | undefined;
+    datafile_description: string | undefined;
     current_page: number | undefined;
     page_info: PageInfo | undefined;
     pages: Array<string | number> | undefined;

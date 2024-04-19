@@ -1,9 +1,9 @@
-export interface File {
-    path: string;
-    filename: string;
-    isDirectory: boolean;
+export interface FileDescription {
+    id: string;
+    name: string;
+    description: string;
 }
 
 export interface FileList {
-    files: File[];
+    files: FileDescription[];
 }

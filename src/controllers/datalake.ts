@@ -1,7 +1,10 @@
 import { basename } from 'path';
 
+import * as dotenv from 'dotenv';
 import { DataLakeServiceClient, StorageSharedKeyCredential } from '@azure/storage-file-datalake';
 import pino from 'pino';
+
+dotenv.config();
 
 export const logger = pino({
     name: 'StatsWales-Alpha-App: DataLakeService',
@@ -25,7 +28,6 @@ export class DataLakeService {
             `https://${accountName}.dfs.core.windows.net`,
             sharedKeyCredential
         );
-        logger.debug('DataLakeService constructor');
     }
 
     public getServiceClient() {

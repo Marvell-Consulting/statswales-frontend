@@ -3,6 +3,7 @@ import pino from 'pino';
 
 import { ProcessedCSV } from '../models/processedcsv';
 import { Error } from '../models/error';
+import { Datafile } from '../entity/Datafile';
 
 import { DataLakeService } from './datalake';
 
@@ -63,7 +64,9 @@ export const uploadCSV = async (buff: Buffer | undefined, datafile: string | und
             await dataLateService.uploadFile(datafile, buff);
             return {
                 success: true,
-                datafile,
+                datafile_id: datafile,
+                datafile_name: undefined,
+                datafile_description: undefined,
                 page_size: undefined,
                 page_info: undefined,
                 pages: undefined,
@@ -77,7 +80,9 @@ export const uploadCSV = async (buff: Buffer | undefined, datafile: string | und
             logger.error(err);
             return {
                 success: false,
-                datafile,
+                datafile_id: datafile,
+                datafile_name: undefined,
+                datafile_description: undefined,
                 page_size: undefined,
                 page_info: undefined,
                 pages: undefined,
@@ -92,7 +97,9 @@ export const uploadCSV = async (buff: Buffer | undefined, datafile: string | und
         logger.debug('No buffer to upload to datalake');
         return {
             success: false,
-            datafile,
+            datafile_id: datafile,
+            datafile_name: undefined,
+            datafile_description: undefined,
             page_size: undefined,
             page_info: undefined,
             pages: undefined,
@@ -118,7 +125,7 @@ function setupPagination(page: number, total_pages: number): Array<string | numb
 export const processCSV = async (filename: string, page: number, size: number): Promise<ProcessedCSV> => {
     const dataLateService = new DataLakeService();
     try {
-        const buff = await dataLateService.downloadFile(filename);
+        const buff = await dataLateService.downloadFile(`${filename}.csv`);
         const dataArray: Array<Array<string>> = (await parse(buff, {
             delimiter: ','
         }).toArray()) as string[][];
@@ -128,7 +135,9 @@ export const processCSV = async (filename: string, page: number, size: number): 
         if (errors.length > 0) {
             return {
                 success: false,
-                datafile: filename,
+                datafile_id: filename,
+                datafile_name: undefined,
+                datafile_description: undefined,
                 page_size: undefined,
                 page_info: undefined,
                 pages: undefined,
@@ -137,6 +146,23 @@ export const processCSV = async (filename: string, page: number, size: number): 
                 headers: undefined,
                 data: undefined,
                 errors
+            };
+        }
+        const datafile = await Datafile.findOneBy({ id: filename });
+        if (datafile === null) {
+            return {
+                success: false,
+                datafile_id: filename,
+                datafile_name: undefined,
+                datafile_description: undefined,
+                page_size: undefined,
+                page_info: undefined,
+                pages: undefined,
+                current_page: undefined,
+                total_pages: undefined,
+                headers: undefined,
+                data: undefined,
+                errors: [{ field: 'csv', message: 'unable to find datafile in database' }]
             };
         }
 
@@ -153,7 +179,9 @@ export const processCSV = async (filename: string, page: number, size: number): 
         };
         return {
             success: true,
-            datafile: filename,
+            datafile_id: filename,
+            datafile_name: datafile.name,
+            datafile_description: datafile.description,
             current_page: page,
             page_info: {
                 total_records: dataArray.length,
@@ -171,7 +199,9 @@ export const processCSV = async (filename: string, page: number, size: number): 
         logger.error(err);
         return {
             success: false,
-            datafile: filename,
+            datafile_id: filename,
+            datafile_name: undefined,
+            datafile_description: undefined,
             page_size: undefined,
             page_info: undefined,
             pages: undefined,

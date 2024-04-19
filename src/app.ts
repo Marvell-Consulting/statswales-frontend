@@ -1,19 +1,31 @@
 import path from 'path';
+import 'reflect-metadata';
 
 import pino from 'pino';
 import express, { Application, Request, Response } from 'express';
 import i18next from 'i18next';
-import FsBackend from 'i18next-fs-backend';
+import Backend from 'i18next-fs-backend';
 import i18nextMiddleware from 'i18next-http-middleware';
 import multer from 'multer';
+import { DataSourceOptions } from 'typeorm';
 
+import { Datafile } from './entity/Datafile';
 import { processCSV, uploadCSV, DEFAULT_PAGE_SIZE } from './controllers/csv-processor';
 import { apiRoute } from './route/api';
 import { healthcheck } from './route/healthcheck';
-import { DataLakeService } from './controllers/datalake';
+import { FileDescription } from './models/filelist';
+import DatabaseManager from './database-manager';
+
+// eslint-disable-next-line import/no-mutable-exports
+export let dbManager: DatabaseManager;
+
+export const connectToDb = async (datasourceOptions: DataSourceOptions) => {
+    dbManager = new DatabaseManager(datasourceOptions);
+    await dbManager.initializeDataSource();
+};
 
 i18next
-    .use(FsBackend)
+    .use(Backend)
     .use(i18nextMiddleware.LanguageDetector)
     .init({
         detection: {
@@ -26,7 +38,8 @@ i18next
             loadPath: `${__dirname}/resources/locales/{{lng}}.json`
         },
         fallbackLng: 'en-GB',
-        preload: ['en-GB', 'cy-GB']
+        preload: ['en-GB', 'cy-GB'],
+        debug: false
     });
 
 const app: Application = express();
@@ -50,8 +63,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.get('/', (req: Request, res: Response) => {
-    const lang = req.i18n.language || 'en-GB';
-    if (lang === 'cy-GB') {
+    const lang = req.headers['accept-language'] || req.headers['Accept-Language'] || req.i18n.language || 'en-GB';
+    if (lang.includes('cy')) {
         res.redirect('/cy-GB');
     } else {
         res.redirect('/en-GB');
@@ -68,9 +81,58 @@ app.get('/:lang/upload', (req: Request, res: Response) => {
 
 app.post('/:lang/upload', upload.single('csv'), async (req: Request, res: Response) => {
     logger.debug(`Filename is ${req.body?.filename}`);
-    const processedCSV = await uploadCSV(req.file?.buffer, req.body?.filename);
+    if (!req.file) {
+        res.status(400);
+        res.render('upload', {
+            success: false,
+            headers: undefined,
+            data: undefined,
+            errors: [
+                {
+                    field: 'csv',
+                    message: 'No CSV data available'
+                }
+            ]
+        });
+        return;
+    }
+    if (!req.body?.filename) {
+        res.status(400);
+        res.render('upload', {
+            success: false,
+            headers: undefined,
+            data: undefined,
+            errors: [
+                {
+                    field: 'filename',
+                    message: 'No datasetname provided'
+                }
+            ]
+        });
+        return;
+    }
+    if (!req.body?.description) {
+        res.status(400);
+        res.render('upload', {
+            success: false,
+            headers: undefined,
+            data: undefined,
+            errors: [
+                {
+                    field: 'description',
+                    message: 'No datasetname provided'
+                }
+            ]
+        });
+        return;
+    }
+    let datafile = new Datafile();
+    datafile.name = req.body?.filename;
+    datafile.description = req.body?.description;
+    datafile = await datafile.save();
+    const processedCSV = await uploadCSV(req.file?.buffer, `${datafile.id}.csv`);
     if (processedCSV.success) {
-        res.redirect(`/${req.i18n.language}/data/?file=${req.body?.filename}`);
+        res.redirect(`/${req.i18n.language}/data/?file=${datafile.id}`);
     } else {
         res.status(400);
         res.render('upload', processedCSV);
@@ -78,8 +140,16 @@ app.post('/:lang/upload', upload.single('csv'), async (req: Request, res: Respon
 });
 
 app.get('/:lang/list', async (req: Request, res: Response) => {
-    const dataLakeService = new DataLakeService();
-    const fileList = await dataLakeService.listFiles();
+    const datafiles = await Datafile.find();
+    const fileList: FileDescription[] = [];
+    for (const datafile of datafiles) {
+        fileList.push({
+            name: datafile.name,
+            id: datafile.id,
+            description: datafile.description
+        });
+    }
+    console.log(datafiles);
     res.render('list', { filelist: fileList });
 });
 

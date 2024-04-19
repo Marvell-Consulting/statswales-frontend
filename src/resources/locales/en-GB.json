@@ -25,24 +25,28 @@
         "title": "Upload a CSV file",
         "description": "Upload a CSV file to the data lake",
         "datasetName": "Dataset Name",
+        "datasetDescription": "Dataset Description",
         "selectCSV": "Select a CSV file",
         "uploadBtn": "Upload CSV"
     },
 	"errors": {
 		"missing": "Filename Missing",
+        "description_missing": "Dataset Description Missing",
+        "name_missing": "Dataset Name Missing",
 		"problem": "There is a problem"
 	},
     "list": {
         "title": "Display Data"
     },
     "display": {
-        "title": "Displaying Data for"
+        "title": "Displaying Data for",
+        "description": "Description:"
     },
     "api": {
         "available": "API is available"
     },
 	"header": {
-		
+
 	},
 	"footer": {
 		"support-link": "Support Links",
