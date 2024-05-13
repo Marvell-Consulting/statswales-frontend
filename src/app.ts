@@ -1,5 +1,4 @@
 import path from 'path';
-import { env } from 'process';
 import { Blob } from 'buffer';
 
 import pino from 'pino';
@@ -37,8 +36,7 @@ export const logger = pino({
 });
 
 const app: Application = express();
-const BACKEND_API_URL = env.BACKEND_API_URL || 'http://localhost:3001';
-const APIInstance = new API(BACKEND_API_URL, logger);
+const APIInstance = new API(logger);
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 

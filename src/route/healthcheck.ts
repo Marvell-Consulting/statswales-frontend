@@ -1,5 +1,3 @@
-import { env } from 'process';
-
 import { Router } from 'express';
 import pino from 'pino';
 
@@ -10,8 +8,7 @@ export const logger = pino({
     level: 'debug'
 });
 
-const BACKEND_API_URL = env.BACKEND_API_URL || 'http://localhost:3001';
-const APIInstance = new API(BACKEND_API_URL, logger);
+const APIInstance = new API(logger);
 
 export const healthcheck = Router();
 

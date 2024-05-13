@@ -13,7 +13,9 @@
 You'll need to define the following environment variables either in to the environment or in to a `.env` file:
 
 ```env
-API_BACKEND
+BACKEND_SERVER
+BACKEND_PROTOCOL
+BACKEND_PORT
 ```
 
 To run the app should be as simple as:
