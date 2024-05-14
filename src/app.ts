@@ -1,5 +1,5 @@
 import path from 'path';
-import 'reflect-metadata';
+import { Blob } from 'buffer';
 
 import pino from 'pino';
 import express, { Application, Request, Response } from 'express';
@@ -7,22 +7,10 @@ import i18next from 'i18next';
 import Backend from 'i18next-fs-backend';
 import i18nextMiddleware from 'i18next-http-middleware';
 import multer from 'multer';
-import { DataSourceOptions } from 'typeorm';
 
-import { Datafile } from './entity/Datafile';
-import { processCSV, uploadCSV, DEFAULT_PAGE_SIZE } from './controllers/csv-processor';
-import { apiRoute } from './route/api';
+import { API } from './controllers/api';
 import { healthcheck } from './route/healthcheck';
-import { FileDescription } from './models/filelist';
-import DatabaseManager from './database-manager';
-
-// eslint-disable-next-line import/no-mutable-exports
-export let dbManager: DatabaseManager;
-
-export const connectToDb = async (datasourceOptions: DataSourceOptions) => {
-    dbManager = new DatabaseManager(datasourceOptions);
-    await dbManager.initializeDataSource();
-};
+import { FileList } from './models/filelist';
 
 i18next
     .use(Backend)
@@ -42,17 +30,17 @@ i18next
         debug: false
     });
 
-const app: Application = express();
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
-
 export const logger = pino({
     name: 'StatsWales-Alpha-App',
     level: 'debug'
 });
 
+const app: Application = express();
+const APIInstance = new API(logger);
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
 app.use(i18nextMiddleware.handle(i18next));
-app.use('/:lang/api', apiRoute);
 app.use('/:lang/healthcheck', healthcheck);
 app.use('/healthcheck', healthcheck);
 app.use('/public', express.static(`${__dirname}/public`));
@@ -80,6 +68,7 @@ app.get('/:lang/upload', (req: Request, res: Response) => {
 });
 
 app.post('/:lang/upload', upload.single('csv'), async (req: Request, res: Response) => {
+    const lang = req.params.lang;
     logger.debug(`Filename is ${req.body?.filename}`);
     if (!req.file) {
         res.status(400);
@@ -126,13 +115,14 @@ app.post('/:lang/upload', upload.single('csv'), async (req: Request, res: Respon
         });
         return;
     }
-    let datafile = new Datafile();
-    datafile.name = req.body?.filename;
-    datafile.description = req.body?.description;
-    datafile = await datafile.save();
-    const processedCSV = await uploadCSV(req.file?.buffer, `${datafile.id}.csv`);
+
+    const name: string = req.body?.filename;
+    const description: string = req.body?.description;
+    const fileData = new Blob([req.file?.buffer]);
+
+    const processedCSV = await APIInstance.uploadCSV(lang, fileData, name, description);
     if (processedCSV.success) {
-        res.redirect(`/${req.i18n.language}/data/?file=${datafile.id}`);
+        res.redirect(`/${req.i18n.language}/data/?file=${processedCSV.datafile_id}`);
     } else {
         res.status(400);
         res.render('upload', processedCSV);
@@ -140,22 +130,16 @@ app.post('/:lang/upload', upload.single('csv'), async (req: Request, res: Respon
 });
 
 app.get('/:lang/list', async (req: Request, res: Response) => {
-    const datafiles = await Datafile.find();
-    const fileList: FileDescription[] = [];
-    for (const datafile of datafiles) {
-        fileList.push({
-            name: datafile.name,
-            id: datafile.id,
-            description: datafile.description
-        });
-    }
-    console.log(datafiles);
-    res.render('list', { filelist: fileList });
+    const lang = req.params.lang;
+    const fileList: FileList = await APIInstance.getFileList(lang);
+    res.render('list', fileList);
 });
 
 app.get('/:lang/data', async (req: Request, res: Response) => {
+    const lang = req.params.lang;
     const page_number: number = Number.parseInt(req.query.page_number as string, 10) || 1;
-    const page_size: number = Number.parseInt(req.query.page_size as string, 10) || DEFAULT_PAGE_SIZE;
+    const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 100;
+
     if (!req.query.file) {
         res.status(400);
         res.render('data', {
@@ -171,8 +155,10 @@ app.get('/:lang/data', async (req: Request, res: Response) => {
         });
         return;
     }
-    const processedCSV = await processCSV(req.query.file.toString(), page_number, page_size);
-    res.render('data', processedCSV);
+
+    const file_id = req.query.file.toString();
+    const file = await APIInstance.getFileData(lang, file_id, page_number, page_size);
+    res.render('data', file);
 });
 
 export default app;
