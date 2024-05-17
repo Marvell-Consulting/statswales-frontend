@@ -2,6 +2,7 @@
     "greeting": "Hello",
     "beta": "Beta",
     "menu": "Menu",
+    "publish-dataset": "Publish a Dataset",
     "upload-csv": "Upload CSV",
     "list-data-files": "List Data Files",
     "feedback": "This is a new service – your feedback will help us to improve it.",
@@ -11,6 +12,11 @@
     "app-running": "App is running",
     "health-notes": "Expand endpoint to check for database connection and other services.",
     "datalake-error": "Unable to connect to get Datalake",
+    "buttons": {
+        "continue": "Continue",
+        "back": "Back",
+        "cancel": "Cancel"
+    },
     "pagination": {
         "previous": "Previous",
         "next": "Next",
@@ -20,6 +26,15 @@
         "title": "Welcome to StatsWales Beta",
         "welcome": "We're going to use the GovUK Design system until we're able to get hold of the Welsh Government GEL",
         "apitext": "You can find our api at "
+    },
+    "publish": {
+        "start": {
+            "title": "Create a new dataset",
+            "p1": "To create a new dataset, you'll need:",
+            "data-table": "a data table containing data and references to all relevant dimensions",
+            "lookup-table": "lookup tables for all relevant dimensions - using either common tables within this service or uploading them yourself",
+            "metadata": "details about the dataset including description, quality and how the data was collected"
+        }
     },
     "upload": {
         "title": "Upload a CSV file",
@@ -64,6 +79,10 @@
         "healthcheck": "healthcheck",
         "upload": "upload",
         "list": "list",
-        "data": "data"
+        "data": "data",
+        "publish": {
+            "start": "publish",
+            "upload": "upload"
+        }
     }
 }

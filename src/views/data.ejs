@@ -1,16 +1,6 @@
 <%- include("partials/top"); %>
 
     <div class="govuk-width-container app-width-container">
-        <div class="govuk-phase-banner">
-            <p class="govuk-phase-banner__content">
-                <strong class="govuk-tag govuk-phase-banner__content__tag">
-                    <%= t('beta') %>
-                </strong>
-                <span class="govuk-phase-banner__text">
-                    <%= t('feedback') %>
-                </span>
-            </p>
-        </div>
         <!-- <a href="#" class="govuk-back-link">Back</a> -->
         <main class="govuk-main-wrapper" id="main-content" role="main">
             <h1 class="govuk-heading-xl"><%- t('display.title') %> <%= locals.datafile_name || `<${t('errors.name_missing')}>` %></h1>

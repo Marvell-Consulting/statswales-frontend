@@ -63,16 +63,20 @@ app.get('/:lang/', (req: Request, res: Response) => {
     res.render('index');
 });
 
-app.get('/:lang/upload', (req: Request, res: Response) => {
-    res.render('upload');
+app.get('/:lang/publish', (req: Request, res: Response) => {
+    res.render('publish/start');
 });
 
-app.post('/:lang/upload', upload.single('csv'), async (req: Request, res: Response) => {
+app.get('/:lang/publish/upload', (req: Request, res: Response) => {
+    res.render('publish/upload');
+});
+
+app.post('/:lang/publish/upload', upload.single('csv'), async (req: Request, res: Response) => {
     const lang = req.params.lang;
     logger.debug(`Filename is ${req.body?.filename}`);
     if (!req.file) {
         res.status(400);
-        res.render('upload', {
+        res.render('publish/upload', {
             success: false,
             headers: undefined,
             data: undefined,
@@ -87,7 +91,7 @@ app.post('/:lang/upload', upload.single('csv'), async (req: Request, res: Respon
     }
     if (!req.body?.filename) {
         res.status(400);
-        res.render('upload', {
+        res.render('publish/upload', {
             success: false,
             headers: undefined,
             data: undefined,
@@ -102,7 +106,7 @@ app.post('/:lang/upload', upload.single('csv'), async (req: Request, res: Respon
     }
     if (!req.body?.description) {
         res.status(400);
-        res.render('upload', {
+        res.render('publish/upload', {
             success: false,
             headers: undefined,
             data: undefined,
@@ -125,7 +129,7 @@ app.post('/:lang/upload', upload.single('csv'), async (req: Request, res: Respon
         res.redirect(`/${req.i18n.language}/data/?file=${processedCSV.datafile_id}`);
     } else {
         res.status(400);
-        res.render('upload', processedCSV);
+        res.render('publish/upload', processedCSV);
     }
 });
 
