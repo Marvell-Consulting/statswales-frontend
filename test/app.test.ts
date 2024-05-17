@@ -69,7 +69,7 @@ describe('Test app.ts', () => {
     test('App Homepage has correct title', async () => {
         const res = await request(app).get('/en-GB');
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Welcome to StatsWales Alpha');
+        expect(res.text).toContain('Welcome to StatsWales Beta');
     });
 
     test('App Homepage has correct title in welsh', async () => {

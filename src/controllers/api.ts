@@ -25,7 +25,7 @@ export class API {
 
     public async getFileList(lang: string) {
         const filelist: FileList = await fetch(
-            `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/api/csv`
+            `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset`
         )
             .then((api_res) => api_res.json())
             .then((api_res) => {
@@ -36,7 +36,7 @@ export class API {
 
     public async getFileData(lang: string, file_id: string, page_number: number, page_size: number) {
         const file = await fetch(
-            `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/api/csv/${file_id}/view?page_number=${page_number}&page_size=${page_size}`
+            `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset/${file_id}/view?page_number=${page_number}&page_size=${page_size}`
         )
             .then((api_res) => api_res.json())
             .then((api_res) => {
@@ -52,7 +52,7 @@ export class API {
         formData.append('description', description);
 
         const processedCSV: ProcessedCSV = await fetch(
-            `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/api/csv`,
+            `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset/`,
             {
                 method: 'POST',
                 body: formData
