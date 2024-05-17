@@ -1,0 +1,20 @@
+<%- include("../partials/top"); %>
+
+<div class="govuk-width-container app-width-container">
+	<!-- <a href="#" class="govuk-back-link">Back</a> -->
+	<main class="govuk-main-wrapper" id="main-content" role="main">
+		<h1 class="govuk-heading-xl"><%= t('publish.start.title') %></h1>
+		<p class="govuk-body"><%= t('publish.start.p1') %></p>
+		<ul class="govuk-list govuk-list--bullet govuk-list--spaced">
+			<li><%= t('publish.start.data-table') %></li>
+			<li><%= t('publish.start.lookup-table') %></li>
+			<li><%= t('publish.start.metadata') %></li>
+		</ul>
+		<div class="govuk-button-group">
+			<a href="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.upload') %>/" class="govuk-button"><%= t('buttons.continue') %></a>
+			<a href="/<%= i18n.language %>/" class="govuk-link"><%= t('buttons.cancel') %></a>
+		</div>
+	</main>
+</div>
+
+<%- include("../partials/bottom"); %>

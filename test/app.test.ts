@@ -78,8 +78,14 @@ describe('Test app.ts', () => {
         expect(res.text).toContain('Croeso i Alffa StatsCymru');
     });
 
-    test('Upload page returns OK', async () => {
-        const res = await request(app).get('/en-GB/upload');
+    test('Publish start page returns OK', async () => {
+        const res = await request(app).get('/en-GB/publish');
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Create a new dataset');
+    });
+
+    test('Publish upload page returns OK', async () => {
+        const res = await request(app).get('/en-GB/publish/upload');
         expect(res.status).toBe(200);
         expect(res.text).toContain('Upload a CSV');
     });
@@ -88,7 +94,7 @@ describe('Test app.ts', () => {
         const csvfile = path.resolve(__dirname, `./test-data-1.csv`);
 
         const res = await request(app)
-            .post('/en-GB/upload')
+            .post('/en-GB/publish/upload')
             .attach('csv', csvfile)
             .field('filename', 'test-data-3.csv')
             .field('description', 'Test Data File 3');
@@ -97,7 +103,7 @@ describe('Test app.ts', () => {
     });
 
     test('Upload returns 400 and an error if no file attached', async () => {
-        const res = await request(app).post('/en-GB/upload');
+        const res = await request(app).post('/en-GB/publish/upload');
         expect(res.status).toBe(400);
         expect(res.text).toContain('No CSV data available');
     });

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>StatsWales <%= t('alpha') %></title>
+    <title>StatsWales <%= t('beta') %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="blue">
     <link rel="icon" sizes="48x48" href="/assets/images/favicon.ico">
@@ -62,8 +62,8 @@
                     </button>
                     <ul id="navigation" class="govuk-header__navigation-list">
                         <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
-                            <a class="govuk-header__link" href="/<%= i18n.language %>/upload/">
-                                <%= t('upload-csv') %>
+                            <a class="govuk-header__link" href="/<%= i18n.language %>/publish/">
+                                <%= t('publish-dataset') %>
                             </a>
                         </li>
                         <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
@@ -93,3 +93,16 @@
             </div>
         </div>
     </header>
+    
+    <div class="govuk-width-container app-width-container">
+        <div class="govuk-phase-banner">
+            <p class="govuk-phase-banner__content">
+                <strong class="govuk-tag govuk-phase-banner__content__tag">
+                    <%= t('beta') %>
+                </strong>
+                <span class="govuk-phase-banner__text">
+                    <%= t('feedback') %>
+                </span>
+            </p>
+        </div>
+    </div>
