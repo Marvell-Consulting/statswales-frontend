@@ -3,7 +3,8 @@
     <div class="govuk-width-container app-width-container">
         <!-- <a href="#" class="govuk-back-link">Back</a> -->
         <main class="govuk-main-wrapper" id="main-content" role="main">
-            <h1 class="govuk-heading-xl"><%= t('publish.upload.title') %></h1>
+            <h1 class="govuk-heading-xl"><%= t('publish.name.title') %></h1>
+
             <% if (locals?.errors) { %>
                 <div class="govuk-error-summary" data-module="govuk-error-summary">
                     <div role="alert">
@@ -14,27 +15,29 @@
                             <ul class="govuk-list govuk-error-summary__list">
                                 <% errors.forEach(function(error) { %>
                                     <li>
-                                        <a href="#<%= error.field %>"><%= error.message %></a>
+                                        <a href="#<%= error.field %>">
+                                            <%= error.message %>
+                                        </a>
                                     </li>
-                                <% }); %>
+                                    <% }); %>
                             </ul>
                         </div>
                     </div>
                 </div>
             <% } %>
-             
-            <form action="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.upload') %>/" method="post" enctype="multipart/form-data">
+
+            <p class="govuk-body"><%= t('publish.name.description') %></p>
+            <form action="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.name') %>/" enctype="multipart/form-data" method="post">
                 <div class="govuk-form-group">
-                    <label class="govuk-label govuk-label--m" for="csv">
-                        <%= t('publish.upload.note') %>
-                    </label>
-                    <input class="govuk-file-upload" id="csv" name="csv" type="file" accept=".csv">
+                    <h1 class="govuk-label-wrapper">
+                        <label class="govuk-label" for="internal_name">
+                            <%= t('publish.name.internal_name') %>:
+                        </label>
+                    </h1>
+                    <input class="govuk-input" id="internal_name" name="internal_name" type="text">
                 </div>
-                <input type="hidden" name="internal_name" value="<%= locals?.internal_name %>">
-                <input type="hidden" name="page_number" value="1">
-                <input type="hidden" name="page_size" value="100">
                 <button type="submit" class="govuk-button" data-module="govuk-button">
-                    <%= t('upload.uploadBtn') %>
+                    <%= t('buttons.continue') %>
                 </button>
             </form>
         </main>

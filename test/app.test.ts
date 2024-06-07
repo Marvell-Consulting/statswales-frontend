@@ -1,93 +1,157 @@
 import path from 'path';
 
 import request from 'supertest';
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
 
-import { API } from '../src/controllers/api';
 import app from '../src/app';
 
-API.prototype.getFileList = jest.fn().mockReturnValue({
-    filelist: [{ name: 'test-data-1.csv', id: 'bdc40218-af89-424b-b86e-d21710bc92f1', description: 'Test Data File 1' }]
-});
+const server = setupServer(
+    http.get('http://somehost.com:3001/en-GB/dataset', () => {
+        return HttpResponse.json({
+            filelist: [{ internal_name: 'test-data-1.csv', id: 'bdc40218-af89-424b-b86e-d21710bc92f1' }]
+        });
+    }),
+    http.get('http://somehost.com:3001/en-GB/dataset/fa07be9d-3495-432d-8c1f-d0fc6daae359/view', () => {
+        return HttpResponse.json({
+            success: true,
+            dataset: {
+                id: 'bdc40218-af89-424b-b86e-d21710bc92f1',
+                code: null,
+                internal_name: 'Test 1',
+                title: [],
+                description: [],
+                creation_date: 'Thu May 30 2024 09:20:29 GMT+0100 (British Summer Time)',
+                created_by: 'BetaUser',
+                modification_date: 'Thu May 30 2024 09:20:29 GMT+0100 (British Summer Time)',
+                modified_by: 'BetaUser',
+                live: false,
+                datafiles: [],
+                csv_link: '/dataset/6218a8ea-03ce-4e81-9fa3-5c6a04af43ab/csv',
+                xslx_link: '/dataset/6218a8ea-03ce-4e81-9fa3-5c6a04af43ab/xlsx',
+                view_link: '/dataset/6218a8ea-03ce-4e81-9fa3-5c6a04af43ab/view'
+            },
+            current_page: 1,
+            page_info: {
+                total_records: 2,
+                start_record: 1,
+                end_record: 2
+            },
+            pages: [1],
+            page_size: 100,
+            total_pages: 6,
+            headers: ['id', 'text', 'number'],
+            data: [
+                ['1', 'test 1', '4532'],
+                ['2', 'test 2', '4348']
+            ]
+        });
+    }),
+    http.post('http://somehost.com:3001/en-GB/dataset/', async (req) => {
+        const data = await req.request.formData();
+        const internalName = data.get('internal_name') as string;
+        if (internalName === 'test-data-3.csv fail test') {
+            return HttpResponse.json({
+                success: false,
+                errors: [
+                    {
+                        field: 'csv',
+                        message: 'There was a problem with the upload'
+                    }
+                ]
+            });
+        }
 
-API.prototype.getFileData = jest.fn().mockReturnValue({
-    success: true,
-    datafile_id: 'bdc40218-af89-424b-b86e-d21710bc92f1',
-    datafile_name: 'Test 1',
-    datafile_description: 'The first database test!',
-    current_page: 1,
-    page_info: {
-        total_records: 2,
-        start_record: 1,
-        end_record: 2
-    },
-    pages: [1],
-    page_size: 100,
-    total_pages: 1,
-    headers: ['id', 'text', 'number'],
-    data: [
-        ['1', 'test 1', '4532'],
-        ['2', 'test 2', '4348']
-    ]
-});
+        return HttpResponse.json({
+            success: true,
+            dataset: {
+                id: 'bdc40218-af89-424b-b86e-d21710bc92f1',
+                code: null,
+                internal_name: 'Test 1',
+                title: [],
+                description: [],
+                creation_date: 'Thu May 30 2024 09:20:29 GMT+0100 (British Summer Time)',
+                created_by: 'BetaUser',
+                modification_date: 'Thu May 30 2024 09:20:29 GMT+0100 (British Summer Time)',
+                modified_by: 'BetaUser',
+                live: false,
+                datafiles: [],
+                csv_link: '/dataset/6218a8ea-03ce-4e81-9fa3-5c6a04af43ab/csv',
+                xslx_link: '/dataset/6218a8ea-03ce-4e81-9fa3-5c6a04af43ab/xlsx',
+                view_link: '/dataset/6218a8ea-03ce-4e81-9fa3-5c6a04af43ab/view'
+            }
+        });
+    }),
+    http.get('http://somehost.com:3001/healthcheck', () => {
+        return HttpResponse.json({
+            status: 'App is running',
+            notes: 'Expand endpoint to check for database connection and other services.'
+        });
+    })
+);
 
-API.prototype.uploadCSV = jest.fn().mockReturnValue({
-    success: true,
-    datafile_id: 'bdc40218-af89-424b-b86e-d21710bc92f1',
-    datafile_name: 'Test 1',
-    datafile_description: 'The first database test!',
-    current_page: 1,
-    page_info: {
-        total_records: 2,
-        start_record: 1,
-        end_record: 2
-    },
-    pages: [1],
-    page_size: 100,
-    total_pages: 1,
-    headers: ['id', 'text', 'number'],
-    data: [
-        ['1', 'test 1', '4532'],
-        ['2', 'test 2', '4348']
-    ]
-});
-
-API.prototype.ping = jest.fn().mockReturnValue(true);
+beforeAll(() =>
+    server.listen({
+        onUnhandledRequest: ({ headers, method, url }) => {
+            if (headers.get('User-Agent') !== 'supertest') {
+                throw new Error(`Unhandled ${method} request to ${url}`);
+            }
+        }
+    })
+);
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 describe('Test app.ts', () => {
     test('Redirects to language when going to /', async () => {
-        const res = await request(app).get('/');
+        const res = await request(app).get('/').set('User-Agent', 'supertest');
         expect(res.status).toBe(302);
         expect(res.header.location).toBe('/en-GB');
     });
 
     test('Redirects to welsh when accept-header is present when going to /', async () => {
-        const res = await request(app).get('/').set('Accept-Language', 'cy-GB');
+        const res = await request(app).get('/').set('Accept-Language', 'cy-GB').set('User-Agent', 'supertest');
         expect(res.status).toBe(302);
         expect(res.header.location).toBe('/cy-GB');
     });
 
     test('App Homepage has correct title', async () => {
-        const res = await request(app).get('/en-GB');
+        const res = await request(app).get('/en-GB').set('User-Agent', 'supertest');
         expect(res.status).toBe(200);
         expect(res.text).toContain('Welcome to StatsWales Beta');
     });
 
     test('App Homepage has correct title in welsh', async () => {
-        const res = await request(app).get('/cy-GB');
+        const res = await request(app).get('/cy-GB').set('User-Agent', 'supertest');
         expect(res.status).toBe(200);
         expect(res.text).toContain('Croeso i Alffa StatsCymru');
     });
 
     test('Publish start page returns OK', async () => {
-        const res = await request(app).get('/en-GB/publish');
+        const res = await request(app).get('/en-GB/publish').set('User-Agent', 'supertest');
         expect(res.status).toBe(200);
         expect(res.text).toContain('Create a new dataset');
     });
 
     test('Publish upload page returns OK', async () => {
-        const res = await request(app).get('/en-GB/publish/upload');
+        const res = await request(app).get('/en-GB/publish/name').set('User-Agent', 'supertest');
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Upload a CSV');
+        expect(res.text).toContain('Name the dataset');
+    });
+
+    test('Publish upload page returns 400 if no internal name provided', async () => {
+        const res = await request(app).post('/en-GB/publish/name').set('User-Agent', 'supertest');
+        expect(res.status).toBe(400);
+        expect(res.text).toContain('No dataset name provided');
+    });
+
+    test('Set name returns 200 with internal name', async () => {
+        const res = await request(app)
+            .post('/en-GB/publish/name')
+            .set('User-Agent', 'supertest')
+            .field('internal_name', 'test-data-3.csv');
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('test-data-3.csv');
     });
 
     test('Upload returns 302 if a file is attached', async () => {
@@ -95,21 +159,47 @@ describe('Test app.ts', () => {
 
         const res = await request(app)
             .post('/en-GB/publish/upload')
+            .set('User-Agent', 'supertest')
             .attach('csv', csvfile)
-            .field('filename', 'test-data-3.csv')
-            .field('description', 'Test Data File 3');
+            .field('internal_name', 'test-data-3.csv on test');
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(`/en-GB/data/?file=bdc40218-af89-424b-b86e-d21710bc92f1`);
     });
 
+    test('Upload returns 400 and an error if no internal name provided', async () => {
+        const csvfile = path.resolve(__dirname, `./test-data-1.csv`);
+
+        const res = await request(app)
+            .post('/en-GB/publish/upload')
+            .set('User-Agent', 'supertest')
+            .attach('csv', csvfile);
+        expect(res.status).toBe(400);
+        expect(res.text).toContain('No dataset name provided');
+    });
+
     test('Upload returns 400 and an error if no file attached', async () => {
-        const res = await request(app).post('/en-GB/publish/upload');
+        const res = await request(app)
+            .post('/en-GB/publish/upload')
+            .set('User-Agent', 'supertest')
+            .field('internal_name', 'test-data-3.csv');
         expect(res.status).toBe(400);
         expect(res.text).toContain('No CSV data available');
     });
 
+    test('Uload returns 400 if API says upload was not a success', async () => {
+        const csvfile = path.resolve(__dirname, `./test-data-1.csv`);
+
+        const res = await request(app)
+            .post('/en-GB/publish/upload')
+            .set('User-Agent', 'supertest')
+            .attach('csv', csvfile)
+            .field('internal_name', 'test-data-3.csv fail test');
+        expect(res.status).toBe(400);
+        expect(res.text).toContain('There was a problem with the upload');
+    });
+
     test('Check inital healthcheck endpoint works', async () => {
-        const res = await request(app).get('/healthcheck');
+        const res = await request(app).get('/healthcheck').set('User-Agent', 'supertest');
         expect(res.status).toBe(200);
         expect(res.body).toEqual({
             status: 'App is running',
@@ -121,13 +211,15 @@ describe('Test app.ts', () => {
     });
 
     test('Check list endpoint returns a list of files', async () => {
-        const res = await request(app).get('/en-GB/list');
+        const res = await request(app).get('/en-GB/list').set('User-Agent', 'supertest');
         expect(res.status).toBe(200);
         expect(res.text).toContain('test-data-1.csv');
     });
 
     test('Data is rendered in the frontend', async () => {
-        const res = await request(app).get('/en-GB/data?file=fa07be9d-3495-432d-8c1f-d0fc6daae359');
+        const res = await request(app)
+            .get('/en-GB/data?file=fa07be9d-3495-432d-8c1f-d0fc6daae359')
+            .set('User-Agent', 'supertest');
         expect(res.status).toBe(200);
         // Header
         expect(res.text).toContain(`<th scope="col" class="govuk-table__header">
@@ -163,7 +255,7 @@ describe('Test app.ts', () => {
     });
 
     test('Data display returns 404 if no file available', async () => {
-        const res = await request(app).get('/en-GB/data');
+        const res = await request(app).get('/en-GB/data').set('User-Agent', 'supertest');
         expect(res.status).toBe(400);
         expect(res.text).toContain('There is a problem');
         expect(res.text).toContain('No filename provided');

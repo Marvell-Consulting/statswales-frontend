@@ -2,9 +2,9 @@ import { env } from 'process';
 
 import { Logger } from 'pino';
 
-import { FileList } from '../models/filelist';
-import { ProcessedCSV } from '../models/processedcsv';
-import { Healthcheck } from '../models/healthcehck';
+import { FileList } from '../dtos/filelist';
+import { ProcessedCSV } from '../dtos/processedcsv-dto';
+import { Healthcheck } from '../dtos/healthcehck';
 
 export class API {
     private readonly backend_server: string;
@@ -45,11 +45,10 @@ export class API {
         return file;
     }
 
-    public async uploadCSV(lang: string, file: Blob, filename: string, description: string) {
+    public async uploadCSV(lang: string, file: Blob, filename: string) {
         const formData = new FormData();
         formData.append('csv', file, filename);
-        formData.append('filename', filename);
-        formData.append('description', description);
+        formData.append('internal_name', filename);
 
         const processedCSV: ProcessedCSV = await fetch(
             `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset/`,
@@ -58,10 +57,6 @@ export class API {
                 body: formData
             }
         )
-            .then((api_res) => {
-                this.logger.debug(api_res);
-                return api_res;
-            })
             .then((api_res) => api_res.json())
             .then((api_res) => {
                 return api_res as ProcessedCSV;
