@@ -10,7 +10,7 @@ import multer from 'multer';
 
 import { API } from './controllers/api';
 import { healthcheck } from './route/healthcheck';
-import { FileList } from './models/filelist';
+import { FileList } from './dtos/filelist';
 
 i18next
     .use(Backend)
@@ -67,19 +67,59 @@ app.get('/:lang/publish', (req: Request, res: Response) => {
     res.render('publish/start');
 });
 
-app.get('/:lang/publish/upload', (req: Request, res: Response) => {
-    res.render('publish/upload');
+app.get('/:lang/publish/name', (req: Request, res: Response) => {
+    res.render('publish/name');
+});
+
+app.post('/:lang/publish/name', upload.none(), (req: Request, res: Response) => {
+    if (!req.body?.internal_name) {
+        logger.debug('Internal name was missing on request');
+        res.status(400);
+        res.render('publish/name', {
+            success: false,
+            headers: undefined,
+            data: undefined,
+            errors: [
+                {
+                    field: 'internal_name',
+                    message: 'No dataset name provided'
+                }
+            ]
+        });
+        return;
+    }
+    const internalName: string = req.body.internal_name;
+    res.render('publish/upload', { internal_name: internalName });
 });
 
 app.post('/:lang/publish/upload', upload.single('csv'), async (req: Request, res: Response) => {
     const lang = req.params.lang;
-    logger.debug(`Filename is ${req.body?.filename}`);
+    if (!req.body?.internal_name) {
+        logger.debug('Internal name was missing on request');
+        res.status(400);
+        res.render('publish/name', {
+            success: false,
+            headers: undefined,
+            data: undefined,
+            errors: [
+                {
+                    field: 'internal_name',
+                    message: 'No dataset name provided'
+                }
+            ]
+        });
+        return;
+    }
+    logger.debug(`Internal name: ${req.body.internal_name}`);
+    const internalName: string = req.body.internal_name;
     if (!req.file) {
+        logger.debug('Attached file was missing on this request');
         res.status(400);
         res.render('publish/upload', {
             success: false,
             headers: undefined,
             data: undefined,
+            internal_name: internalName,
             errors: [
                 {
                     field: 'csv',
@@ -89,44 +129,12 @@ app.post('/:lang/publish/upload', upload.single('csv'), async (req: Request, res
         });
         return;
     }
-    if (!req.body?.filename) {
-        res.status(400);
-        res.render('publish/upload', {
-            success: false,
-            headers: undefined,
-            data: undefined,
-            errors: [
-                {
-                    field: 'filename',
-                    message: 'No datasetname provided'
-                }
-            ]
-        });
-        return;
-    }
-    if (!req.body?.description) {
-        res.status(400);
-        res.render('publish/upload', {
-            success: false,
-            headers: undefined,
-            data: undefined,
-            errors: [
-                {
-                    field: 'description',
-                    message: 'No datasetname provided'
-                }
-            ]
-        });
-        return;
-    }
 
-    const name: string = req.body?.filename;
-    const description: string = req.body?.description;
     const fileData = new Blob([req.file?.buffer]);
 
-    const processedCSV = await APIInstance.uploadCSV(lang, fileData, name, description);
+    const processedCSV = await APIInstance.uploadCSV(lang, fileData, internalName);
     if (processedCSV.success) {
-        res.redirect(`/${req.i18n.language}/data/?file=${processedCSV.datafile_id}`);
+        res.redirect(`/${req.i18n.language}/data/?file=${processedCSV.dataset?.id}`);
     } else {
         res.status(400);
         res.render('publish/upload', processedCSV);

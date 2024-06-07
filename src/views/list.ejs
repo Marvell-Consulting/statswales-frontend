@@ -6,7 +6,7 @@
             <h1 class="govuk-heading-xl"><%= t('list.title') %></h1>
             <ul class="govuk-list">
             <% locals?.filelist.forEach(function(file) { %>
-                <li><a href="/<%= i18n.language %>/data?file=<%= file.id %>" class="govuk-link"><i class="fa-solid fa-file-csv"></i> <%= file.name %></a></li>
+                <li><a href="/<%= i18n.language %>/data?file=<%= file.id %>" class="govuk-link"><i class="fa-solid fa-file-csv"></i> <%= file.internal_name %></a></li>
             <% }); %>
             </ul>
         </main>

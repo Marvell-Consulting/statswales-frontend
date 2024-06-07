@@ -34,6 +34,15 @@
             "data-table": "a data table containing data and references to all relevant dimensions",
             "lookup-table": "lookup tables for all relevant dimensions - using either common tables within this service or uploading them yourself",
             "metadata": "details about the dataset including description, quality and how the data was collected"
+        },
+        "name": {
+            "title": "Name the dataset",
+            "description": "This name is for internal use only to identify this dataset.  You'll be asked to add the title that will appear on the StatsWales website with the other mettadata later.",
+            "internal_name": "Internal name"
+        },
+        "upload": {
+            "title": "Upload the data table",
+            "note": "The file must be in CSV format"
         }
     },
     "upload": {
@@ -82,6 +91,7 @@
         "data": "data",
         "publish": {
             "start": "publish",
+            "name": "name",
             "upload": "upload"
         }
     }
