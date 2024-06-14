@@ -8,6 +8,7 @@ export interface UploadDTO {
 
 export interface UploadErrDTO {
     success: boolean;
-    dataset: DatasetDTO;
+    status: number;
+    dataset: DatasetDTO | undefined;
     errors: Error[];
 }
