@@ -15,7 +15,7 @@
                                 <% errors.forEach(function(error) { %>
                                     <li>
                                         <a href="#<%= error.field %>">
-                                            <%= error.message %>
+                                            <%= t(error.tag.name) %>
                                         </a>
                                     </li>
                                     <% }); %>

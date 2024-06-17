@@ -1,6 +1,7 @@
 {
     "greeting": "Helo",
     "alpha": "Alffa",
+    "beta": "Beta",
     "menu": "Dewislen",
     "upload-csv": "Lanlwythwch ffeil CSV",
     "list-data-files": "Rhestrwch y Ffeiliau Data",
@@ -11,6 +12,10 @@
     "app-running": "Mae'r ap yn rhedeg",
     "health-notes": "Ehangu'r pwynt terfyn i wirio am gysylltiad â chronfa ddata a gwasanaethau eraill.",
     "datalake-error": "Gwall wrth gysylltu â'r Llyn Data",
+    "buttons": {
+        "cancel": "Canslo",
+        "continue": "Parhau"
+    },
     "pagination": {
         "previous": "Blaenorol",
         "next": "Nesaf",
@@ -21,6 +26,24 @@
         "welcome": "Rydym yn mynd i ddefnyddio system Ddylunio GovUK nes y gallwn gael gafael ar GEL Llywodraeth Cymru",
         "apitext": "Gallwch weld ein api trwy droi at "
     },
+    "publish": {
+        "start": {
+            "title": "Creu set ddata newydd",
+            "p1": "Er mwyn creu set ddata newydd, bydd angen y canlynol arnoch:",
+            "data-table": "tabl data sy'n cynnwys data a chyfeiriadau at yr holl ddimensiynau perthnasol",
+            "lookup-table": "tablau am-edrych ar gyfer yr holl ddimensiynau perthnasol – gan ddefnyddio tablau cyffredin yn y gwasanaeth hwn neu eu lanlwytho eich hun",
+            "metadata": "manylion am y set ddata, gan gynnwys disgrifiad, ansawdd a sut y casglwyd y data"
+        },
+        "name": {
+            "title": "Enwi'r set ddata",
+            "description": "Bydd yr enw hwn at ddefnydd mewnol yn unig, er mwyn nodi'r set ddata hon.  Gofynnir i chi ychwanegu'r teitl a fydd yn ymddangos ar wefan StatsCymru gyda'r metadata yn nes ymlaen.",
+            "internal_name": "Enw mewnol"
+        },
+        "upload": {
+            "title": "Lanlwytho ffeil CSV",
+            "note": "Rhaid bod y ffeil mewn ffurf CSV"
+        }
+    },
     "upload": {
         "title": "Lanlwythwch ffeil CSV",
         "description": "Lanlwythwch ffeil CSV i'r llyn data",
@@ -30,7 +53,12 @@
     },
 	"errors": {
 		"missing": "Enw ffeil ar Goll",
-		"problem": "Mae problem wedi codi"
+		"problem": "Mae problem wedi codi",
+        "name_missing": "Ni ddarparwyd enw set ddata",
+        "upload": {
+            "no-csv": "Ni ddarparwyd data CSV",
+            "no-csv-data": "Nid oes data CSV ar gael"
+        }
 	},
     "list": {
         "title": "Dangos y Data"

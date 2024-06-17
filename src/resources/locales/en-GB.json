@@ -55,9 +55,13 @@
     },
 	"errors": {
 		"missing": "Filename Missing",
-        "description_missing": "Dataset Description Missing",
+		"problem": "There is a problem",
         "name_missing": "Dataset Name Missing",
-		"problem": "There is a problem"
+        "dataset_missing": "No dataset found with this ID",
+        "upload": {
+            "no-csv": "No CSV data provided",
+            "no-csv-data": "No CSV data available"
+        }
 	},
     "list": {
         "title": "Display Data"

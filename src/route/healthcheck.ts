@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import pino from 'pino';
 
+// eslint-disable-next-line import/no-cycle
 import { API } from '../controllers/api';
 
 export const logger = pino({
@@ -8,7 +9,7 @@ export const logger = pino({
     level: 'debug'
 });
 
-const APIInstance = new API(logger);
+const APIInstance = new API();
 
 export const healthcheck = Router();
 

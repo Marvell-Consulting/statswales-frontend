@@ -9,8 +9,9 @@ export interface PageInfo {
 
 export interface ViewErrDTO {
     success: boolean;
+    status: number;
     errors: Error[];
-    dataset_id: string;
+    dataset_id: string | undefined;
 }
 
 export interface ViewDTO {

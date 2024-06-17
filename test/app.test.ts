@@ -4,12 +4,18 @@ import request from 'supertest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
-import app from '../src/app';
+import app, { ENGLISH, WELSH, t } from '../src/app';
 
 const server = setupServer(
     http.get('http://somehost.com:3001/en-GB/dataset', () => {
         return HttpResponse.json({
             filelist: [{ internal_name: 'test-data-1.csv', id: 'bdc40218-af89-424b-b86e-d21710bc92f1' }]
+        });
+    }),
+    http.get('http://somehost.com:3001/en-GB/dataset/missing-id/view', () => {
+        return new HttpResponse(null, {
+            status: 404,
+            statusText: '{}'
         });
     }),
     http.get('http://somehost.com:3001/en-GB/dataset/fa07be9d-3495-432d-8c1f-d0fc6daae359/view', () => {
@@ -56,7 +62,11 @@ const server = setupServer(
                 errors: [
                     {
                         field: 'csv',
-                        message: 'There was a problem with the upload'
+                        message: [
+                            { lang: ENGLISH, message: t('errors.upload.no-csv-data', { lng: ENGLISH }) },
+                            { lang: WELSH, message: t('errors.upload.no-csv-data', { lng: WELSH }) }
+                        ],
+                        tag: { name: 'errors.upload.no-csv-data', params: {} }
                     }
                 ]
             });
@@ -142,7 +152,7 @@ describe('Test app.ts', () => {
     test('Publish upload page returns 400 if no internal name provided', async () => {
         const res = await request(app).post('/en-GB/publish/name').set('User-Agent', 'supertest');
         expect(res.status).toBe(400);
-        expect(res.text).toContain('No dataset name provided');
+        expect(res.text).toContain(t('errors.name_missing'));
     });
 
     test('Set name returns 200 with internal name', async () => {
@@ -174,7 +184,7 @@ describe('Test app.ts', () => {
             .set('User-Agent', 'supertest')
             .attach('csv', csvfile);
         expect(res.status).toBe(400);
-        expect(res.text).toContain('No dataset name provided');
+        expect(res.text).toContain(t('errors.name_missing'));
     });
 
     test('Upload returns 400 and an error if no file attached', async () => {
@@ -195,7 +205,7 @@ describe('Test app.ts', () => {
             .attach('csv', csvfile)
             .field('internal_name', 'test-data-3.csv fail test');
         expect(res.status).toBe(400);
-        expect(res.text).toContain('There was a problem with the upload');
+        expect(res.text).toContain(t('errors.upload.no-csv-data'));
     });
 
     test('Check inital healthcheck endpoint works', async () => {
@@ -218,7 +228,7 @@ describe('Test app.ts', () => {
 
     test('Data is rendered in the frontend', async () => {
         const res = await request(app)
-            .get('/en-GB/data?file=fa07be9d-3495-432d-8c1f-d0fc6daae359')
+            .get('/en-GB/data/fa07be9d-3495-432d-8c1f-d0fc6daae359')
             .set('User-Agent', 'supertest');
         expect(res.status).toBe(200);
         // Header
@@ -255,9 +265,9 @@ describe('Test app.ts', () => {
     });
 
     test('Data display returns 404 if no file available', async () => {
-        const res = await request(app).get('/en-GB/data').set('User-Agent', 'supertest');
-        expect(res.status).toBe(400);
-        expect(res.text).toContain('There is a problem');
-        expect(res.text).toContain('No filename provided');
+        const res = await request(app).get('/en-GB/data/missing-id').set('User-Agent', 'supertest');
+        expect(res.status).toBe(404);
+        expect(res.text).toContain(t('errors.problem'));
+        expect(res.text).toContain(t('errors.dataset_missing'));
     });
 });

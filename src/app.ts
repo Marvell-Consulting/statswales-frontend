@@ -8,9 +8,11 @@ import Backend from 'i18next-fs-backend';
 import i18nextMiddleware from 'i18next-http-middleware';
 import multer from 'multer';
 
+// eslint-disable-next-line import/no-cycle
 import { API } from './controllers/api';
 import { healthcheck } from './route/healthcheck';
 import { FileList } from './dtos/filelist';
+import { ViewErrDTO } from './dtos/view-dto';
 
 i18next
     .use(Backend)
@@ -30,13 +32,18 @@ i18next
         debug: false
     });
 
+export const i18n = i18next;
+export const t = i18next.t;
+export const ENGLISH = 'en-GB';
+export const WELSH = 'cy-GB';
+
 export const logger = pino({
     name: 'StatsWales-Alpha-App',
     level: 'debug'
 });
 
 const app: Application = express();
-const APIInstance = new API(logger);
+const APIInstance = new API();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
@@ -74,18 +81,28 @@ app.get('/:lang/publish/name', (req: Request, res: Response) => {
 app.post('/:lang/publish/name', upload.none(), (req: Request, res: Response) => {
     if (!req.body?.internal_name) {
         logger.debug('Internal name was missing on request');
-        res.status(400);
-        res.render('publish/name', {
+        const err: ViewErrDTO = {
             success: false,
-            headers: undefined,
-            data: undefined,
+            status: 400,
+            dataset_id: undefined,
             errors: [
                 {
                     field: 'internal_name',
-                    message: 'No dataset name provided'
+                    message: [
+                        {
+                            lang: req.i18n.language,
+                            message: t('errors.name_missing')
+                        }
+                    ],
+                    tag: {
+                        name: 'errors.name_missing',
+                        params: {}
+                    }
                 }
             ]
-        });
+        };
+        res.status(400);
+        res.render('publish/name', err);
         return;
     }
     const internalName: string = req.body.internal_name;
@@ -96,37 +113,56 @@ app.post('/:lang/publish/upload', upload.single('csv'), async (req: Request, res
     const lang = req.params.lang;
     if (!req.body?.internal_name) {
         logger.debug('Internal name was missing on request');
-        res.status(400);
-        res.render('publish/name', {
+        const err: ViewErrDTO = {
             success: false,
-            headers: undefined,
-            data: undefined,
+            status: 400,
+            dataset_id: undefined,
             errors: [
                 {
                     field: 'internal_name',
-                    message: 'No dataset name provided'
+                    message: [
+                        {
+                            lang: req.i18n.language,
+                            message: t('errors.name_missing')
+                        }
+                    ],
+                    tag: {
+                        name: 'errors.name_missing',
+                        params: {}
+                    }
                 }
             ]
-        });
+        };
+        res.status(400);
+        res.render('publish/name', err);
         return;
     }
     logger.debug(`Internal name: ${req.body.internal_name}`);
     const internalName: string = req.body.internal_name;
     if (!req.file) {
         logger.debug('Attached file was missing on this request');
-        res.status(400);
-        res.render('publish/upload', {
+        const err: ViewErrDTO = {
             success: false,
-            headers: undefined,
-            data: undefined,
-            internal_name: internalName,
+            status: 400,
+            dataset_id: undefined,
             errors: [
                 {
                     field: 'csv',
-                    message: 'No CSV data available'
+                    message: [
+                        {
+                            lang: req.i18n.language,
+                            message: t('errors.upload.no-csv-data')
+                        }
+                    ],
+                    tag: {
+                        name: 'errors.upload.no-csv-data',
+                        params: {}
+                    }
                 }
             ]
-        });
+        };
+        res.status(400);
+        res.render('publish/upload', err);
         return;
     }
 
@@ -147,29 +183,42 @@ app.get('/:lang/list', async (req: Request, res: Response) => {
     res.render('list', fileList);
 });
 
-app.get('/:lang/data', async (req: Request, res: Response) => {
+app.get('/:lang/data/:file', async (req: Request, res: Response) => {
     const lang = req.params.lang;
     const page_number: number = Number.parseInt(req.query.page_number as string, 10) || 1;
     const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 100;
 
-    if (!req.query.file) {
-        res.status(400);
-        res.render('data', {
+    if (!req.params.file) {
+        const err: ViewErrDTO = {
             success: false,
-            headers: undefined,
-            data: undefined,
+            status: 404,
+            dataset_id: undefined,
             errors: [
                 {
                     field: 'file',
-                    message: 'No filename provided'
+                    message: [
+                        {
+                            lang: req.i18n.language,
+                            message: t('errors.dataset_missing')
+                        }
+                    ],
+                    tag: {
+                        name: 'errors.dataset_missing',
+                        params: {}
+                    }
                 }
             ]
-        });
+        };
+        res.status(404);
+        res.render('data', err);
         return;
     }
 
-    const file_id = req.query.file.toString();
+    const file_id = req.params.file;
     const file = await APIInstance.getFileData(lang, file_id, page_number, page_size);
+    if (!file.success) {
+        res.status((file as ViewErrDTO).status);
+    }
     res.render('data', file);
 });
 
