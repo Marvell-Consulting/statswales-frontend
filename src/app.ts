@@ -3,6 +3,7 @@ import { Blob } from 'buffer';
 
 import pino from 'pino';
 import express, { Application, Request, Response } from 'express';
+import session from 'express-session';
 import i18next from 'i18next';
 import Backend from 'i18next-fs-backend';
 import i18nextMiddleware from 'i18next-http-middleware';
@@ -13,6 +14,8 @@ import { API } from './controllers/api';
 import { healthcheck } from './route/healthcheck';
 import { FileList } from './dtos/filelist';
 import { ViewErrDTO } from './dtos/view-dto';
+import passport, { auth } from './config/auth_config';
+import { ensureAuthenticated } from './config/authenticate';
 
 i18next
     .use(Backend)
@@ -47,7 +50,13 @@ const APIInstance = new API();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
+app.use(express.urlencoded({ extended: true }));
+app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(i18nextMiddleware.handle(i18next));
+app.use('/auth', auth);
 app.use('/:lang/healthcheck', healthcheck);
 app.use('/healthcheck', healthcheck);
 app.use('/public', express.static(`${__dirname}/public`));
@@ -66,19 +75,19 @@ app.get('/', (req: Request, res: Response) => {
     }
 });
 
-app.get('/:lang/', (req: Request, res: Response) => {
+app.get('/:lang/', ensureAuthenticated, (req: Request, res: Response) => {
     res.render('index');
 });
 
-app.get('/:lang/publish', (req: Request, res: Response) => {
+app.get('/:lang/publish', ensureAuthenticated, (req: Request, res: Response) => {
     res.render('publish/start');
 });
 
-app.get('/:lang/publish/name', (req: Request, res: Response) => {
+app.get('/:lang/publish/name', ensureAuthenticated, (req: Request, res: Response) => {
     res.render('publish/name');
 });
 
-app.post('/:lang/publish/name', upload.none(), (req: Request, res: Response) => {
+app.post('/:lang/publish/name', ensureAuthenticated, upload.none(), (req: Request, res: Response) => {
     if (!req.body?.internal_name) {
         logger.debug('Internal name was missing on request');
         const err: ViewErrDTO = {
@@ -109,7 +118,7 @@ app.post('/:lang/publish/name', upload.none(), (req: Request, res: Response) => 
     res.render('publish/upload', { internal_name: internalName });
 });
 
-app.post('/:lang/publish/upload', upload.single('csv'), async (req: Request, res: Response) => {
+app.post('/:lang/publish/upload', ensureAuthenticated, upload.single('csv'), async (req: Request, res: Response) => {
     const lang = req.params.lang;
     if (!req.body?.internal_name) {
         logger.debug('Internal name was missing on request');
@@ -177,13 +186,13 @@ app.post('/:lang/publish/upload', upload.single('csv'), async (req: Request, res
     }
 });
 
-app.get('/:lang/list', async (req: Request, res: Response) => {
+app.get('/:lang/list', ensureAuthenticated, async (req: Request, res: Response) => {
     const lang = req.params.lang;
     const fileList: FileList = await APIInstance.getFileList(lang);
     res.render('list', fileList);
 });
 
-app.get('/:lang/data/:file', async (req: Request, res: Response) => {
+app.get('/:lang/data/:file', ensureAuthenticated, async (req: Request, res: Response) => {
     const lang = req.params.lang;
     const page_number: number = Number.parseInt(req.query.page_number as string, 10) || 1;
     const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 100;

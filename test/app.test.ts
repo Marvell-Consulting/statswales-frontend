@@ -1,10 +1,15 @@
 import path from 'path';
 
 import request from 'supertest';
+import { Request, Response, NextFunction } from 'express';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
 import app, { ENGLISH, WELSH, t } from '../src/app';
+
+jest.mock('../src/config/authenticate', () => ({
+    ensureAuthenticated: (req: Request, res: Response, next: NextFunction) => next()
+}));
 
 const server = setupServer(
     http.get('http://somehost.com:3001/en-GB/dataset', () => {
@@ -139,6 +144,7 @@ describe('Test app.ts', () => {
 
     test('Publish start page returns OK', async () => {
         const res = await request(app).get('/en-GB/publish').set('User-Agent', 'supertest');
+        console.log(res.text);
         expect(res.status).toBe(200);
         expect(res.text).toContain('Create a new dataset');
     });
