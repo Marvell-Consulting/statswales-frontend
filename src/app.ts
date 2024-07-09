@@ -14,6 +14,23 @@ import { healthcheck } from './route/healthcheck';
 import { publish } from './route/publish';
 import { view } from './route/view';
 
+if (process.env.NODE_ENV !== 'test') {
+    const variables = [
+        'BACKEND_SERVER',
+        'BACKEND_PORT',
+        'BACKEND_PROTOCOL',
+        'SESSION_SECRET',
+        'GOOGLE_CLIENT_ID',
+        'GOOGLE_CLIENT_SECRET'
+    ];
+
+    variables.forEach((variable) => {
+        if (!process.env[variable]) {
+            throw new Error(`Environment variable ${variable} is missing`);
+        }
+    });
+}
+
 const app: Application = express();
 
 i18next
@@ -47,11 +64,11 @@ const apiLimiter = rateLimit({
 });
 
 const sessionConfig = {
-    secret: process.env.SESSION_SECRET || 'peekaboo',
+    secret: process.env.SESSION_SECRET === undefined ? 'default' : process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: false
+        secure: true
     }
 };
 

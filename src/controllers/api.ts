@@ -27,13 +27,13 @@ class HttpError extends Error {
 }
 
 export class API {
-    private readonly backend_server: string;
-    private readonly backend_port: string;
+    private readonly backend_server: string | undefined;
+    private readonly backend_port: string | undefined;
     private readonly backend_protocol: string;
 
     constructor() {
-        this.backend_server = env.BACKEND_SERVER || 'localhost';
-        this.backend_port = env.BACKEND_PORT || '3001';
+        this.backend_server = env.BACKEND_SERVER;
+        this.backend_port = env.BACKEND_PORT;
         if (env.BACKEND_PROTOCOL === 'https') {
             this.backend_protocol = 'https';
         } else {
