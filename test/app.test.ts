@@ -5,7 +5,8 @@ import { Request, Response, NextFunction } from 'express';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
-import app, { ENGLISH, WELSH, t } from '../src/app';
+import { ENGLISH, WELSH, t } from '../src/config/i18next';
+import app from '../src/app';
 
 jest.mock('../src/config/authenticate', () => ({
     ensureAuthenticated: (req: Request, res: Response, next: NextFunction) => next()
@@ -144,7 +145,6 @@ describe('Test app.ts', () => {
 
     test('Publish start page returns OK', async () => {
         const res = await request(app).get('/en-GB/publish').set('User-Agent', 'supertest');
-        console.log(res.text);
         expect(res.status).toBe(200);
         expect(res.text).toContain('Create a new dataset');
     });
@@ -179,7 +179,7 @@ describe('Test app.ts', () => {
             .attach('csv', csvfile)
             .field('internal_name', 'test-data-3.csv on test');
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(`/en-GB/data/?file=bdc40218-af89-424b-b86e-d21710bc92f1`);
+        expect(res.header.location).toBe(`/en-GB/dataset/bdc40218-af89-424b-b86e-d21710bc92f1`);
     });
 
     test('Upload returns 400 and an error if no internal name provided', async () => {
@@ -227,14 +227,14 @@ describe('Test app.ts', () => {
     });
 
     test('Check list endpoint returns a list of files', async () => {
-        const res = await request(app).get('/en-GB/list').set('User-Agent', 'supertest');
+        const res = await request(app).get('/en-GB/dataset').set('User-Agent', 'supertest');
         expect(res.status).toBe(200);
         expect(res.text).toContain('test-data-1.csv');
     });
 
     test('Data is rendered in the frontend', async () => {
         const res = await request(app)
-            .get('/en-GB/data/fa07be9d-3495-432d-8c1f-d0fc6daae359')
+            .get('/en-GB/dataset/fa07be9d-3495-432d-8c1f-d0fc6daae359')
             .set('User-Agent', 'supertest');
         expect(res.status).toBe(200);
         // Header
@@ -271,7 +271,7 @@ describe('Test app.ts', () => {
     });
 
     test('Data display returns 404 if no file available', async () => {
-        const res = await request(app).get('/en-GB/data/missing-id').set('User-Agent', 'supertest');
+        const res = await request(app).get('/en-GB/dataset/missing-id').set('User-Agent', 'supertest');
         expect(res.status).toBe(404);
         expect(res.text).toContain(t('errors.problem'));
         expect(res.text).toContain(t('errors.dataset_missing'));

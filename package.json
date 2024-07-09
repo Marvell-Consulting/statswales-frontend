@@ -62,6 +62,7 @@
     "dotenv": "^16.4.4",
     "ejs": "^3.1.9",
     "express": "^4.19.2",
+    "express-rate-limit": "^7.3.1",
     "express-session": "^1.18.0",
     "express-user": "^1.2.0",
     "govuk-frontend": "^5.1.0",
