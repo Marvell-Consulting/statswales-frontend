@@ -1,11 +1,16 @@
 import { env } from 'process';
 
-// eslint-disable-next-line import/no-cycle
-import { logger } from '../app';
+import pino from 'pino';
+
 import { FileListError, FileList } from '../dtos/filelist';
 import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
 import { Healthcheck } from '../dtos/healthcehck';
 import { UploadDTO, UploadErrDTO } from '../dtos/upload-dto';
+
+const logger = pino({
+    name: 'StatsWales-Alpha-App: API',
+    level: 'debug'
+});
 
 class HttpError extends Error {
     public status: number;
@@ -22,13 +27,13 @@ class HttpError extends Error {
 }
 
 export class API {
-    private readonly backend_server: string;
-    private readonly backend_port: string;
+    private readonly backend_server: string | undefined;
+    private readonly backend_port: string | undefined;
     private readonly backend_protocol: string;
 
     constructor() {
-        this.backend_server = env.BACKEND_SERVER || 'localhost';
-        this.backend_port = env.BACKEND_PORT || '3001';
+        this.backend_server = env.BACKEND_SERVER;
+        this.backend_port = env.BACKEND_PORT;
         if (env.BACKEND_PROTOCOL === 'https') {
             this.backend_protocol = 'https';
         } else {
@@ -37,6 +42,9 @@ export class API {
     }
 
     public async getFileList(lang: string) {
+        console.log(
+            `Fetching file list from ${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset`
+        );
         const filelist: FileList = await fetch(
             `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset`
         )

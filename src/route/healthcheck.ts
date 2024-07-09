@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import pino from 'pino';
 
-// eslint-disable-next-line import/no-cycle
 import { API } from '../controllers/api';
 
 export const logger = pino({

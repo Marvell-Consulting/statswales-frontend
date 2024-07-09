@@ -1,0 +1,78 @@
+<%- include("../partials/top"); %>
+
+    <div class="govuk-width-container app-width-container">
+        <!-- <a href="#" class="govuk-back-link">Back</a> -->
+        <main class="govuk-main-wrapper" id="main-content" role="main">
+            <h1 class="govuk-heading-xl">Title of the Dataset</h1>
+
+            <ul class="govuk-list govuk-list--bullet">
+                <li>To create a dataset, you need to provide a title in at least one languague</li>
+                <li>This ist he title that will appear with the dataset on the StatsWales web site and in the metadata</li>
+                <li>If you currently only have the title in one language, you'll need to add the translation later</li>
+            </ul>
+
+            <% if (locals?.errors) { %>
+                <div class="govuk-error-summary" data-module="govuk-error-summary">
+                    <div role="alert">
+                        <h2 class="govuk-error-summary__title">
+                            <%= t('errors.problem') %>
+                        </h2>
+                        <div class="govuk-error-summary__body">
+                            <ul class="govuk-list govuk-error-summary__list">
+                                <% errors.forEach(function(error) { %>
+                                    <li>
+                                        <a href="#<%= error.field %>"><%= t(error.tag.name) %></a>
+                                    </li>
+                                    <% }); %>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+
+            <form action="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.name') %>/" enctype="multipart/form-data" method="post">
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+                      <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                        <h1 class="govuk-fieldset__heading">
+                          Please select the language of the title
+                        </h1>
+                      </legend>
+                      <div id="contact-hint" class="govuk-hint">
+                        Select one option.
+                      </div>
+                      <div class="govuk-radios" data-module="govuk-radios">
+                        <div class="govuk-radios__item">
+                          <input class="govuk-radios__input" id="contact" name="contact" type="radio" value="email" checked data-aria-controls="conditional-contact">
+                          <label class="govuk-label govuk-radios__label" for="contact">
+                            English
+                          </label>
+                        </div>
+                        <div class="govuk-radios__conditional" id="conditional-contact">
+                          <div class="govuk-form-group">
+                            <input class="govuk-input govuk-!-width-one-half" id="contact-by-email" name="contactByEmail" type="email" spellcheck="false" aria-describedby="contact-by-email-error" autocomplete="email">
+                          </div>
+                        </div>
+                        <div class="govuk-radios__item">
+                          <input class="govuk-radios__input" id="contact-2" name="contact" type="radio" value="phone" data-aria-controls="conditional-contact-2">
+                          <label class="govuk-label govuk-radios__label" for="contact-2">
+                            Welsh
+                          </label>
+                        </div>
+                        <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-contact-2">
+                          <div class="govuk-form-group">
+                            <input class="govuk-input govuk-!-width-one-third" id="contact-by-phone" name="contactByPhone" type="tel" autocomplete="tel">
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    <%= t('buttons.continue') %>
+                </button>
+            </form>
+        </main>
+    </div>
+    
+<%- include("../partials/bottom"); %>
