@@ -61,39 +61,39 @@
                         <%= t('menu') %>
                     </button>
                     <ul id="navigation" class="govuk-header__navigation-list">
-                        <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
+                        <li class="govuk-header__navigation-item">
                             <a class="govuk-header__link" href="/<%= i18n.language %>/publish/">
                                 <%= t('publish-dataset') %>
                             </a>
                         </li>
-                        <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
+                        <li class="govuk-header__navigation-item">
                             <a class="govuk-header__link"
-                                href="/<%= i18n.language %>/list">
+                                href="/<%= i18n.language %>/dataset">
                                 <%= t('list-data-files') %>
                             </a>
                         </li>
-                        <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
-                            <a class="govuk-header__link" href="/api/">
-                                API
-                            </a>
-                        </li>
-                        <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
-                            <% if (i18n.language === 'en-GB') { %>
-                                <a class="govuk-header__link" href="/cy-GB/">
-                                    Cymraeg
+                        <li class="govuk-header__navigation-item">
+                            <% if (locals?.isAuthenticated) { %>
+                                <a class="govuk-header__link" href="/auth/logout">
+                                    <%= t('logout') %>
                                 </a>
                             <% } else { %>
-                                <a class="govuk-header__link" href="/en-GB/">
-                                    English
+                                <a class="govuk-header__link" href="/auth/login">
+                                    <%= t('login') %>
                                 </a>
                             <% } %>
+                        </li>
+                        <li class="govuk-header__navigation-item">
+                            <a class="govuk-header__link" href="<%= locals.currentPathAltLang %>">
+                                <%= t('change-language') %>
+                            </a>
                         </li>
                     </ul>
                 </nav>
             </div>
         </div>
     </header>
-    
+
     <div class="govuk-width-container app-width-container">
         <div class="govuk-phase-banner">
             <p class="govuk-phase-banner__content">

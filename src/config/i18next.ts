@@ -7,10 +7,19 @@ i18next
     .use(i18nextMiddleware.LanguageDetector)
     .init({
         detection: {
-            order: ['path', 'header'],
+            order: ['path', 'cookie', 'header'],
             lookupHeader: 'accept-language',
             caches: false,
-            ignoreRoutes: ['/healthcheck', '/public', '/css', '/assets']
+            ignoreRoutes: [
+                '/healthcheck',
+                '/public',
+                '/css',
+                '/assets',
+                '/auth',
+                '/favicon.ico',
+                '/robots.txt',
+                '/sitemap.xml'
+            ]
         },
         backend: {
             loadPath: `${__dirname}/resources/locales/{{lng}}.json`

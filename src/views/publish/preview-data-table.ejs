@@ -1,9 +1,10 @@
-<%- include("./partials/top", { isAuthenticated: locals.isAuthenticated }); %>
+<%- include("../partials/top", { isAuthenticated: locals.isAuthenticated }); %>
 
     <div class="govuk-width-container app-width-container">
         <!-- <a href="#" class="govuk-back-link">Back</a> -->
         <main class="govuk-main-wrapper" id="main-content" role="main">
-            <h1 class="govuk-heading-xl"><%- t('display.title') %> <%= locals.datafile_name || `<${t('errors.name_missing')}>` %></h1>
+            <h1 class="govuk-heading-xl"><%- t('publish.preview_datatable.title') %></h1>
+
             <% if (locals.data?.errors) { %>
                 <div class="govuk-error-summary" data-module="govuk-error-summary">
                     <div role="alert">
@@ -24,13 +25,14 @@
                     </div>
                 </div>
             <% } %>
-            <p class="govuk-body"><strong><%- t('display.description') %></strong>
-                <%= locals.datafile_description || `<${t('errors.description_missing')}>` %>
-            </p>
             <% if (locals?.data.data) { %>
-                <div class="table-display" style="border: 1px solid #000000; padding: 1em; margin-bottom: 1em;">
+                <p class="govuk-body"><strong><%- t('publish.preview_datatable.upload-statement') %></strong>
+                <%- t('publish.preview_datatable.rows-and-columns', {total_rows: locals.data.page_info.total_records, total_columns: locals.data.headers.length }) %></p>
+
+                <hr>
+
+                <div class="table-display">
                     <table class="govuk-table">
-                        <caption class="govuk-table__caption">CSV Data</caption>
                         <thead class="govuk-table__head">
                             <tr class="govuk-table__row">
                             <tr>
@@ -54,10 +56,7 @@
                         </tbody>
                     </table>
                 </div>
-                <p class="govuk-body">Showing lines <%= locals.data.page_info.start_record %> - <%= locals.data.page_info.end_record %> of <%=
-                                locals.data.page_info.total_records %>
-                data.</p>
-                <p>&nbsp;</p>
+                <p class="govuk-body"><%= t('publish.preview_datatable.showing', {start_row: locals.data.page_info.start_record, end_row: locals.data.page_info.end_record, total_rows: locals.data.page_info.total_records}) %></p>
 
                 <div class="govuk-grid-row">
                     <div class="govuk-grid-column-one-half">
@@ -67,7 +66,7 @@
                                 <% if (page==='previous' ) { %>
                                     <div class="govuk-pagination__prev">
                                         <a class="govuk-link govuk-pagination__link"
-                                            href="/<%= i18n.language %>/data?file=<%= locals.datafile_id %>&page_number=<%= locals.current_page-1 %>&page_size=<%= locals.page_size %>"
+                                            href="/<%= i18n.language %>/publish/preview-data-table/<%= locals.data.dataset.id %>/?page_number=<%= locals.data.current_page-1 %>&page_size=<%= locals.data.page_size %>"
                                             rel="prev">
                                             <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg"
                                                 height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
@@ -83,7 +82,7 @@
                                     <% } else if (page==='next' ) { %>
                                         <div class="govuk-pagination__next">
                                             <a class="govuk-link govuk-pagination__link"
-                                                href="/<%= i18n.language %>/data?file=<%= locals.datafile_id %>&page_number=<%= locals.current_page+1 %>&page_size=<%= locals.page_size %>"
+                                                href="/<%= i18n.language %>/publish/preview-data-table/<%= locals.data.dataset.id %>/?page_number=<%= locals.data.current_page+1 %>&page_size=<%= locals.data.page_size %>"
                                                 rel="next">
                                                 <span class="govuk-pagination__link-title">
                                                     <%= t('pagination.next') %>
@@ -101,7 +100,7 @@
                                             <li class="govuk-pagination__item govuk-pagination__item--ellipses">
                                                 &ctdot;
                                             </li>
-                                            <% } else if (page===locals.current_page) { %>
+                                            <% } else if (page===locals.data.current_page) { %>
                                                 <li class="govuk-pagination__item govuk-pagination__item--active">
                                                     <span aria-current="page" class="govuk-pagination__link">
                                                         <%= page %>
@@ -110,7 +109,7 @@
                                                 <% } else { %>
                                                     <li class="govuk-pagination__item">
                                                         <a class="govuk-link govuk-pagination__link"
-                                                            href="/<%= i18n.language %>/data?file=<%= locals.datafile_id %>&page_number=<%= page %>&page_size=<%= locals.page_size %>"
+                                                            href="/<%= i18n.language %>/publish/preview-data-table/<%= locals.data.dataset.id %>/?page_number=<%= page %>&page_size=<%= locals.data.page_size %>"
                                                             aria-label="Page <%= page %>">
                                                             <%= page %>
                                                         </a>
@@ -120,12 +119,12 @@
                         </nav>
                     </div>
                     <div class="govuk-grid-column-one-half">
-                        <form action="/<%= i18n.language %>/data" method="get" role="page-size" class="govuk-!-margin-bottom-0">
+                        <form action="/<%= i18n.language %>/publish/preview-data-table/<%= locals.data.dataset.id %>" method="get" role="page-size">
                             <label class="govuk-label govuk-!-display-inline" for="page_size">
                                 Page Size
                             </label>
                             <select class="govuk-select govuk-!-display-inline" id="page_size" name="page_size">
-                                <option value="5" <% if (locals.page_size===5) { %>selected <% }; %>>5</option>
+                                <option value="5" <% if (locals.data.page_size===5) { %>selected <% }; %>>5</option>
                                 <option value="10" <% if (locals.data.page_size===10) { %>selected <% }; %>>10</option>
                                 <option value="25" <% if (locals.data.page_size===25) { %>selected <% }; %>>25</option>
                                 <option value="50" <% if (locals.data.page_size===50) { %>selected <% }; %>>50</option>
@@ -142,8 +141,25 @@
                     </div>
                 </div>
 
+                <hr style="margin-bottom: 1.25em;">
+
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-full">
+                        <form action="/<%= i18n.language %>/publish/confirm-datatable/" method="post" class="govuk-!-margin-bottom-0">
+                            <input type="hidden" name="file" value="<%= locals.data.dataset.id %>">
+                            <div class="govuk-button-group">
+                              <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button">
+                                <%= t('buttons.continue') %>
+                              </button>
+                              <button type="submit" name="confirm" value="false" class="govuk-button govuk-button--secondary" data-module="govuk-button">
+                                <%= t('publish.preview_datatable.choose_new') %>
+                              </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
 
             <% } %> <!-- Do I have data? -->
         </main>
     </div>
-<%- include("partials/bottom"); %>
+<%- include("../partials/bottom"); %>

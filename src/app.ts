@@ -6,14 +6,24 @@ import i18nextMiddleware from 'i18next-http-middleware';
 import rateLimit from 'express-rate-limit';
 import express, { Application, Request, Response } from 'express';
 import session from 'express-session';
+import cookieParser from 'cookie-parser';
 
 import './config/i18next';
 import passport, { auth } from './config/auth_config';
-import { ensureAuthenticated } from './config/authenticate';
 import { healthcheck } from './route/healthcheck';
 import { publish } from './route/publish';
 import { view } from './route/view';
 
+declare module 'express-session' {
+    interface SessionData {
+        returnTo: string;
+        titleLanguage: string;
+        datasetTitle: string;
+        previewFactTableID: string;
+        factTableFileID: string;
+        currentDatasetID: string;
+    }
+}
 if (process.env.NODE_ENV !== 'test') {
     const variables = [
         'BACKEND_SERVER',
@@ -68,7 +78,7 @@ const sessionConfig = {
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: true
+        secure: false
     }
 };
 
@@ -78,6 +88,7 @@ if (app.get('env') === 'production') {
 }
 
 // Middleware Config
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(session(sessionConfig));
 app.use(passport.initialize());
@@ -88,8 +99,8 @@ app.set('view engine', 'ejs');
 
 // Load Routes
 app.use('/auth', auth);
-app.use('/:lang/publish', publish, apiLimiter, ensureAuthenticated);
-app.use('/:lang/dataset', view, apiLimiter, ensureAuthenticated);
+app.use('/:lang/publish', publish, apiLimiter);
+app.use('/:lang/dataset', view, apiLimiter);
 app.use('/:lang/healthcheck', healthcheck);
 app.use('/healthcheck', healthcheck);
 app.use('/public', express.static(`${__dirname}/public`));
@@ -106,7 +117,8 @@ app.get('/', (req: Request, res: Response) => {
     }
 });
 
-app.get('/:lang/', apiLimiter, ensureAuthenticated, (req: Request, res: Response) => {
+app.get('/:lang/', apiLimiter, (req: Request, res: Response) => {
+    res.locals.isAuthenticated = req.isAuthenticated();
     res.render('index');
 });
 

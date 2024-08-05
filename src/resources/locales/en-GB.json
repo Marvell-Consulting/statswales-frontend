@@ -2,6 +2,9 @@
     "greeting": "Hello",
     "beta": "Beta",
     "menu": "Menu",
+    "login": "Log in",
+    "logout": "Log out",
+    "change-language": "Cymraeg",
     "publish-dataset": "Publish a Dataset",
     "upload-csv": "Upload CSV",
     "list-data-files": "List Data Files",
@@ -35,6 +38,14 @@
             "lookup-table": "lookup tables for all relevant dimensions - using either common tables within this service or uploading them yourself",
             "metadata": "details about the dataset including description, quality and how the data was collected"
         },
+        "title": {
+            "title": "What is the title of this dataset?",
+            "appear_on_front": "This title will appear on the StatsWales website",
+            "short_descriptive": "It should be short and descriptive",
+            "display_language": "The title will be shown on the English languague version of the site",
+            "field": "Dataset Title",
+            "title-hint": "Title here"
+        },
         "name": {
             "title": "Name the dataset",
             "description": "This name is for internal use only to identify this dataset.  You'll be asked to add the title that will appear on the StatsWales website with the other mettadata later.",
@@ -43,6 +54,19 @@
         "upload": {
             "title": "Upload the data table",
             "note": "The file must be in CSV format"
+        },
+        "preview_datatable": {
+            "title": "Check the data table",
+            "upload-statement": "Your upload has:",
+            "rows-and-columns": "{{total_rows}} rows and {{total_columns}} columns",
+            "showing": "Showing rows {{start_row}} - {{end_row}} of {{total_rows}} rows of data",
+            "choose_new": "Choose a different data table"
+        },
+        "errors": {
+            "title_missing": "Title is missing from request",
+            "languague_missing": "Languague is missing from request",
+            "upload": "No data table uploaded",
+            "no-data": "No data available"
         }
     },
     "upload": {
@@ -56,7 +80,8 @@
 	"errors": {
 		"missing": "Filename Missing",
 		"problem": "There is a problem",
-        "name_missing": "Dataset Name Missing",
+        "title_missing": "Dataset title is missing",
+        "language_missing": "Display languague is missing from request",
         "dataset_missing": "No dataset found with this ID",
         "upload": {
             "no-csv": "No CSV data provided",
@@ -92,9 +117,11 @@
         "healthcheck": "healthcheck",
         "upload": "upload",
         "list": "list",
+        "dataset": "dataset",
         "data": "data",
         "publish": {
             "start": "publish",
+            "title": "title",
             "name": "name",
             "upload": "upload"
         }
