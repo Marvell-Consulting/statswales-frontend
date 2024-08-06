@@ -60,7 +60,8 @@
             "upload-statement": "Your upload has:",
             "rows-and-columns": "{{total_rows}} rows and {{total_columns}} columns",
             "showing": "Showing rows {{start_row}} - {{end_row}} of {{total_rows}} rows of data",
-            "choose_new": "Choose a different data table"
+            "choose_new": "Choose a different data table",
+            "confirm_facttable": "By continuing, you confirm the data table is correct."
         },
         "errors": {
             "title_missing": "Title is missing from request",

@@ -146,6 +146,7 @@
                 <div class="govuk-grid-row">
                     <div class="govuk-grid-column-full">
                         <form action="/<%= i18n.language %>/publish/confirm-datatable/" method="post" class="govuk-!-margin-bottom-0">
+                            <p class="govuk-body"><%= t('publish.preview_datatable.confirm_facttable') %></p>
                             <input type="hidden" name="file" value="<%= locals.data.dataset.id %>">
                             <div class="govuk-button-group">
                               <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button">
