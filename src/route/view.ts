@@ -4,18 +4,26 @@ import { t } from '../config/i18next';
 import { API } from '../controllers/api';
 import { FileList } from '../dtos/filelist';
 import { ViewErrDTO } from '../dtos/view-dto';
+import { ensureAuthenticated } from '../config/authenticate';
 
 const APIInstance = new API();
 export const view = Router();
 
-view.get('/', async (req: Request, res: Response) => {
+view.get('/', ensureAuthenticated, async (req: Request, res: Response) => {
+    res.locals.isAtuhenticated = req.isAuthenticated();
     const lang = req.i18n.language;
-    const fileList: FileList = await APIInstance.getFileList(lang);
-    console.log(`FileList from server = ${JSON.stringify(fileList)}`);
-    res.render('list', fileList);
+    const filelist: FileList = await APIInstance.getFileList(lang);
+    if (filelist.error) {
+        res.status(filelist.status || 500);
+    }
+    const altLang = req.i18n.language === 'en-GB' ? 'cy-GB' : 'en-GB';
+    const currentPathAltLang = `/${altLang}/${req.i18n.t('routes.dataset', { lng: altLang })}/`;
+    res.render('list', { isAuthenticated: req.isAuthenticated(), currentPathAltLang, filelist });
 });
 
-view.get('/:file', async (req: Request, res: Response) => {
+// Replace with a better file viewer
+view.get('/:file', ensureAuthenticated, async (req: Request, res: Response) => {
+    res.locals.isAtuhenticated = req.isAuthenticated();
     const lang = req.i18n.language;
     const page_number: number = Number.parseInt(req.query.page_number as string, 10) || 1;
     const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 100;
@@ -47,9 +55,11 @@ view.get('/:file', async (req: Request, res: Response) => {
     }
 
     const file_id = req.params.file;
+    const altLang = req.i18n.language === 'en-GB' ? 'cy-GB' : 'en-GB';
+    const currentPathAltLang = `/${altLang}/${req.i18n.t('routes.dataset', { lng: altLang })}/${file_id}`;
     const file = await APIInstance.getFileData(lang, file_id, page_number, page_size);
     if (!file.success) {
         res.status((file as ViewErrDTO).status);
     }
-    res.render('data', file);
+    res.render('data', { isAuthenticated: req.isAuthenticated(), currentPathAltLang, user: req.user, data: file });
 });

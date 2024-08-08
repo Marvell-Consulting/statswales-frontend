@@ -59,5 +59,9 @@ auth.get('/logout', (req: Request, res: Response, next: NextFunction) => {
 auth.get('/google', passport.authenticate('google', { scope: ['profile'] }));
 
 auth.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
-    res.redirect('/');
+    if (req.cookies.returnTo) {
+        res.redirect(req.cookies.returnTo);
+    } else {
+        res.redirect('/');
+    }
 });

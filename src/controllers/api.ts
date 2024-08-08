@@ -2,7 +2,7 @@ import { env } from 'process';
 
 import pino from 'pino';
 
-import { FileListError, FileList } from '../dtos/filelist';
+import { FileList } from '../dtos/filelist';
 import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
 import { Healthcheck } from '../dtos/healthcehck';
 import { UploadDTO, UploadErrDTO } from '../dtos/upload-dto';
@@ -61,7 +61,7 @@ export class API {
             })
             .catch((error) => {
                 logger.error(`An HTTP error occured with status ${error.status} and message "${error.message}"`);
-                return { status: error.status, files: [], error: error.message } as FileListError;
+                return { status: error.status, files: [], error: error.message } as FileList;
             });
         return filelist;
     }
@@ -107,10 +107,51 @@ export class API {
         return file;
     }
 
+    public async getPreviewFileData(lang: string, file_id: string, page_number: number, page_size: number) {
+        const file = await fetch(
+            `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset/${file_id}/preview?page_number=${page_number}&page_size=${page_size}`
+        )
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                const err = new HttpError(response.status);
+                err.handleMessage(response.text());
+                throw err;
+            })
+            .then((api_res) => {
+                return api_res as ViewDTO;
+            })
+            .catch((error) => {
+                logger.error(`An HTTP error occured with status ${error.status} and message "${error.message}"`);
+                return {
+                    success: false,
+                    status: error.status,
+                    errors: [
+                        {
+                            field: 'file',
+                            message: [
+                                {
+                                    lang,
+                                    message: 'errors.dataset_missing'
+                                }
+                            ],
+                            tag: {
+                                name: 'errors.dataset_missing',
+                                params: {}
+                            }
+                        }
+                    ],
+                    dataset_id: file_id
+                } as ViewErrDTO;
+            });
+        return file;
+    }
+
     public async uploadCSV(lang: string, file: Blob, filename: string) {
         const formData = new FormData();
         formData.append('csv', file, filename);
-        formData.append('internal_name', filename);
+        formData.append('title', filename);
 
         const processedCSV = await fetch(
             `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset/`,

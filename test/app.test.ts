@@ -61,8 +61,8 @@ const server = setupServer(
     }),
     http.post('http://somehost.com:3001/en-GB/dataset/', async (req) => {
         const data = await req.request.formData();
-        const internalName = data.get('internal_name') as string;
-        if (internalName === 'test-data-3.csv fail test') {
+        const title = data.get('title') as string;
+        if (title === 'test-data-3.csv fail test') {
             return HttpResponse.json({
                 success: false,
                 errors: [
@@ -84,7 +84,7 @@ const server = setupServer(
                 id: 'bdc40218-af89-424b-b86e-d21710bc92f1',
                 code: null,
                 internal_name: 'Test 1',
-                title: [],
+                title: [{ lang: ENGLISH, text: 'Test 1' }],
                 description: [],
                 creation_date: 'Thu May 30 2024 09:20:29 GMT+0100 (British Summer Time)',
                 created_by: 'BetaUser',
@@ -150,22 +150,26 @@ describe('Test app.ts', () => {
     });
 
     test('Publish upload page returns OK', async () => {
-        const res = await request(app).get('/en-GB/publish/name').set('User-Agent', 'supertest');
+        const res = await request(app).get('/en-GB/publish/title').set('User-Agent', 'supertest');
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Name the dataset');
+        expect(res.text).toContain(t('publish.title.title'));
     });
 
     test('Publish upload page returns 400 if no internal name provided', async () => {
-        const res = await request(app).post('/en-GB/publish/name').set('User-Agent', 'supertest');
+        const res = await request(app)
+            .post('/en-GB/publish/title')
+            .set('User-Agent', 'supertest')
+            .field('displayLanguage', 'en-GB');
         expect(res.status).toBe(400);
-        expect(res.text).toContain(t('errors.name_missing'));
+        expect(res.text).toContain(t('publish.errors.title_missing'));
     });
 
     test('Set name returns 200 with internal name', async () => {
         const res = await request(app)
-            .post('/en-GB/publish/name')
+            .post('/en-GB/publish/title')
             .set('User-Agent', 'supertest')
-            .field('internal_name', 'test-data-3.csv');
+            .field('displayLanguage', 'en-GB')
+            .field('title', 'test-data-3.csv');
         expect(res.status).toBe(200);
         expect(res.text).toContain('test-data-3.csv');
     });
@@ -177,12 +181,12 @@ describe('Test app.ts', () => {
             .post('/en-GB/publish/upload')
             .set('User-Agent', 'supertest')
             .attach('csv', csvfile)
-            .field('internal_name', 'test-data-3.csv on test');
+            .field('title', 'test-data-3.csv on test');
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(`/en-GB/dataset/bdc40218-af89-424b-b86e-d21710bc92f1`);
+        expect(res.header.location).toBe('/en-GB/publish/preview-data-table/bdc40218-af89-424b-b86e-d21710bc92f1');
     });
 
-    test('Upload returns 400 and an error if no internal name provided', async () => {
+    test('Upload returns 400 and an error if no title provided', async () => {
         const csvfile = path.resolve(__dirname, `./test-data-1.csv`);
 
         const res = await request(app)
@@ -190,14 +194,14 @@ describe('Test app.ts', () => {
             .set('User-Agent', 'supertest')
             .attach('csv', csvfile);
         expect(res.status).toBe(400);
-        expect(res.text).toContain(t('errors.name_missing'));
+        expect(res.text).toContain(t('publish.errors.title_missing'));
     });
 
     test('Upload returns 400 and an error if no file attached', async () => {
         const res = await request(app)
             .post('/en-GB/publish/upload')
             .set('User-Agent', 'supertest')
-            .field('internal_name', 'test-data-3.csv');
+            .field('title', 'test-data-3.csv');
         expect(res.status).toBe(400);
         expect(res.text).toContain('No CSV data available');
     });
@@ -209,7 +213,7 @@ describe('Test app.ts', () => {
             .post('/en-GB/publish/upload')
             .set('User-Agent', 'supertest')
             .attach('csv', csvfile)
-            .field('internal_name', 'test-data-3.csv fail test');
+            .field('title', 'test-data-3.csv fail test');
         expect(res.status).toBe(400);
         expect(res.text).toContain(t('errors.upload.no-csv-data'));
     });
