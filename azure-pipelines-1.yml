@@ -1,0 +1,65 @@
+trigger:
+- main
+
+resources:
+- repo: self
+
+variables:
+  # Container registry service connection established during pipeline creation
+  imageRepository: 'statswales-frontend'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: '$(Build.BuildId)'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
+stages:
+- stage: Build
+  displayName: Build and push stage
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: AzureCLI@2
+      displayName: Login to Azure Container Registry
+      inputs:
+        azureSubscription: 'StatsWales-Dev-Test'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az acr login --name $(container_registry)
+
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        containerRegistry: '$(container_registry)'
+        repository: '$(imageRepository)'
+        command: 'buildAndPush'
+        Dockerfile: '$(dockerfilePath)'
+        tags: '$(tag)'
+
+- stage: Deploy
+  displayName: Deploy stage
+  jobs:
+  - job: Deploy
+    displayName: Deploy to Azure Container App
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: AzureCLI@2
+      displayName: Deploy to Azure Container App
+      inputs:
+        azureSubscription: 'StatsWales-Dev-Test'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az containerapp update \
+            --name statswales-develop-frontend \
+            --resource-group $(resource_group) \
+            --environment statswales-container-app-environment \
+            --image $(container_registry)/$(imageRepository):$(tag) \
+            --ingress external \
+            --target-port 3000 \
+            --environment-variables BACKEND_SERVER=$(backend_server) BACKEND_PORT=$(backend_port) BACKEND_PROTOCOL=$(backend_protocol) GOOGLE_CLIENT_ID=$(client_id) GOOGLE_CLIENT_SECRET=$(client_secret) SESSION_SECRET=$(session_secret)
