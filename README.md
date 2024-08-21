@@ -1,6 +1,6 @@
 # StatsWales Frontend Service
 
-> This service is currenrtly in beta and under active development
+> This service is currently in beta and under active development
 > some features maybe incomplete, not working or missing.
 
 ## Requirements
@@ -16,6 +16,9 @@ You'll need to define the following environment variables either in to the envir
 BACKEND_SERVER
 BACKEND_PROTOCOL
 BACKEND_PORT
+SESSION_SECRET
+GOOGLE_CLIENT_ID
+GOOGLE_CLIENT_SECRET
 ```
 
 To run the app should be as simple as:
