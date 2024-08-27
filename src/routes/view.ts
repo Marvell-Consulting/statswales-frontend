@@ -1,29 +1,31 @@
 import { Router, Request, Response } from 'express';
 
-import { t } from '../config/i18next';
 import { API } from '../controllers/api';
-import { FileList } from '../dtos2/filelist';
-import { ViewErrDTO } from '../dtos2/view-dto';
+import { FileList } from '../dtos/filelist';
+import { ViewErrDTO } from '../dtos/view-dto';
+import { i18next } from '../middleware/translation';
+import { logger } from '../utils/logger';
 
+const t = i18next.t;
 const APIInstance = new API();
 export const view = Router();
 
 view.get('/', async (req: Request, res: Response) => {
     const lang = req.i18n.language;
     const fileList: FileList = await APIInstance.getFileList(lang);
-    console.log(`FileList from server = ${JSON.stringify(fileList)}`);
+    logger.debug(`FileList from server = ${JSON.stringify(fileList)}`);
     res.render('list', fileList);
 });
 
-view.get('/:datasetId', async (req: Request, res: Response) => {
+view.get('/:file', async (req: Request, res: Response) => {
     const lang = req.i18n.language;
     const page_number: number = Number.parseInt(req.query.page_number as string, 10) || 1;
     const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 100;
 
-    if (!req.params.datasetId) {
+    if (!req.params.file) {
         const err: ViewErrDTO = {
             success: false,
-            status: 400,
+            status: 404,
             dataset_id: undefined,
             errors: [
                 {
@@ -45,12 +47,11 @@ view.get('/:datasetId', async (req: Request, res: Response) => {
         res.render('data', err);
         return;
     }
-    const datasetId = req.params.datasetId;
 
-    const file = await APIInstance.getDatasetView(lang, datasetId, page_number, page_size);
+    const file_id = req.params.file;
+    const file = await APIInstance.getFileData(lang, file_id, page_number, page_size);
     if (!file.success) {
-        const error = file as ViewErrDTO;
-        res.status(error.status);
+        res.status((file as ViewErrDTO).status);
     }
     res.render('data', file);
 });

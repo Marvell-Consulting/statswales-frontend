@@ -1,17 +1,11 @@
-import { env } from 'process';
-
-import pino from 'pino';
+import { env } from 'node:process';
 
 import { FileListError, FileList } from '../dtos2/filelist';
 import { ViewDTO, ViewErrDTO } from '../dtos2/view-dto';
 import { Healthcheck } from '../dtos2/healthcehck';
 import { UploadDTO, UploadErrDTO } from '../dtos2/upload-dto';
 import { DatasetDTO } from '../dtos2/dataset-dto';
-
-const logger = pino({
-    name: 'StatsWales-Alpha-App: API',
-    level: 'debug'
-});
+import { logger } from '../utils/logger';
 
 class HttpError extends Error {
     public status: number;
@@ -43,6 +37,9 @@ export class API {
     }
 
     public async getFileList(lang: string) {
+        logger.debug(
+            `Fetching file list from ${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset`
+        );
         const filelist: FileList = await fetch(
             `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset`
         )

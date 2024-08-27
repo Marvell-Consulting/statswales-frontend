@@ -16,7 +16,8 @@
         "continue": "Continue",
         "back": "Back",
         "cancel": "Cancel",
-        "choose_different": "Choose a different data table"
+        "choose_different": "Choose a different data table",
+        "login-google": "Login with Google"
     },
     "pagination": {
         "previous": "Previous",

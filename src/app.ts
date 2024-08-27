@@ -1,102 +1,48 @@
-import path from 'path';
+import path from 'node:path';
 
-import i18next from 'i18next';
-import Backend from 'i18next-fs-backend';
-import i18nextMiddleware from 'i18next-http-middleware';
-import rateLimit from 'express-rate-limit';
 import express, { Application, Request, Response } from 'express';
-import session from 'express-session';
 
-import './config/i18next';
-import passport, { auth } from './config/auth_config';
-import { ensureAuthenticated } from './config/authenticate';
-import { healthcheck } from './route/healthcheck';
-import { publish } from './route/publish';
-import { view } from './route/view';
-
-if (process.env.NODE_ENV !== 'test') {
-    const variables = [
-        'BACKEND_SERVER',
-        'BACKEND_PORT',
-        'BACKEND_PROTOCOL',
-        'SESSION_SECRET',
-        'GOOGLE_CLIENT_ID',
-        'GOOGLE_CLIENT_SECRET'
-    ];
-
-    variables.forEach((variable) => {
-        if (!process.env[variable]) {
-            throw new Error(`Environment variable ${variable} is missing`);
-        }
-    });
-}
+import passport, { auth } from './routes/auth';
+import session from './middleware/session';
+import { ensureAuthenticated } from './middleware/ensure-authenticated';
+import { rateLimiter } from './middleware/rate-limiter';
+import { i18next, i18nextMiddleware } from './middleware/translation';
+import { healthcheck } from './routes/healthcheck';
+import { publish } from './routes/publish';
+import { view } from './routes/view';
+import { httpLogger } from './utils/logger';
 
 const app: Application = express();
 
-i18next
-    .use(Backend)
-    .use(i18nextMiddleware.LanguageDetector)
-    .init({
-        detection: {
-            order: ['path', 'header'],
-            lookupHeader: 'accept-language',
-            caches: false,
-            ignoreRoutes: ['/healthcheck', '/public', '/css', '/assets']
-        },
-        backend: {
-            loadPath: `${__dirname}/resources/locales/{{lng}}.json`
-        },
-        fallbackLng: 'en-GB',
-        preload: ['en-GB', 'cy-GB'],
-        debug: false
-    });
-
-const apiLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    standardHeaders: true,
-    legacyHeaders: false,
-    handler(req, res) {
-        res.status(429).json({
-            message: 'Too many requests, please try again later.'
-        });
-    }
-});
-
-const sessionConfig = {
-    secret: process.env.SESSION_SECRET === undefined ? 'default' : process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: false
-    }
-};
+app.disable('x-powered-by');
 
 if (app.get('env') === 'production') {
     app.set('trust proxy', 1);
-    sessionConfig.cookie.secure = true;
 }
 
-// Middleware Config
+// enable middleware
 app.use(express.urlencoded({ extended: true }));
-app.use(session(sessionConfig));
+app.use(httpLogger);
+app.use(i18nextMiddleware.handle(i18next));
+app.use(session);
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(i18nextMiddleware.handle(i18next));
+
+// configure the view engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // Load Routes
-app.use('/auth', auth);
-app.use('/:lang/publish', publish, apiLimiter, ensureAuthenticated);
-app.use('/:lang/dataset', view, apiLimiter, ensureAuthenticated);
-app.use('/:lang/healthcheck', healthcheck);
-app.use('/healthcheck', healthcheck);
 app.use('/public', express.static(`${__dirname}/public`));
 app.use('/css', express.static(`${__dirname}/css`));
 app.use('/assets', express.static(`${__dirname}/assets`));
+app.use('/auth', auth);
+app.use('/healthcheck', healthcheck);
 
-// App Root Routes
+app.use('/:lang/publish', publish, rateLimiter, ensureAuthenticated);
+app.use('/:lang/dataset', view, rateLimiter, ensureAuthenticated);
+app.use('/:lang/healthcheck', healthcheck);
+
 app.get('/', (req: Request, res: Response) => {
     const lang = req.headers['accept-language'] || req.headers['Accept-Language'] || req.i18n.language || 'en-GB';
     if (lang.includes('cy')) {
@@ -106,7 +52,7 @@ app.get('/', (req: Request, res: Response) => {
     }
 });
 
-app.get('/:lang/', apiLimiter, ensureAuthenticated, (req: Request, res: Response) => {
+app.get('/:lang/', rateLimiter, ensureAuthenticated, (req: Request, res: Response) => {
     res.render('index');
 });
 

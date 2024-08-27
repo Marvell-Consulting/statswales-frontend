@@ -1,11 +1,11 @@
-import path from 'path';
+import path from 'node:path';
 
 import request from 'supertest';
 import { Request, Response, NextFunction } from 'express';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
-import { ENGLISH, WELSH, t } from '../src/config/i18next';
+import { ENGLISH, WELSH, i18next } from '../src/middleware/translation';
 import app from '../src/app';
 import { DatasetDTO } from '../src/dtos2/dataset-dto';
 
@@ -15,7 +15,9 @@ declare module 'express-session' {
     }
 }
 
-jest.mock('../src/config/authenticate', () => ({
+const t = i18next.t;
+
+jest.mock('../src/middleware/ensure-authenticated', () => ({
     ensureAuthenticated: (req: Request, res: Response, next: NextFunction) => next()
 }));
 

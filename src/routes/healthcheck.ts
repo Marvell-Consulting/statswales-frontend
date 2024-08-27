@@ -1,12 +1,7 @@
 import { Router } from 'express';
-import pino from 'pino';
 
 import { API } from '../controllers/api';
-
-export const logger = pino({
-    name: 'StatsWales-Alpha-App: Healthcheck',
-    level: 'debug'
-});
+import { logger } from '../utils/logger';
 
 const APIInstance = new API();
 

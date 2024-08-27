@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import { Router, Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
@@ -8,7 +7,6 @@ export interface User {
     displayName: string;
 }
 
-dotenv.config();
 const users: User[] = [];
 
 passport.use(
