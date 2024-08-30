@@ -6,7 +6,7 @@ import multer from 'multer';
 
 import { ViewErrDTO } from '../dtos/view-dto';
 import { i18next } from '../middleware/translation';
-import { API } from '../controllers/api';
+import { API } from '../services/api';
 
 const t = i18next.t;
 const storage = multer.memoryStorage();

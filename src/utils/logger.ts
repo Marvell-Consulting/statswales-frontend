@@ -10,7 +10,7 @@ export const httpLogger = pinoHttp({
     logger,
     autoLogging: {
         ignore: (req) => {
-            const ignorePathsRx = /^\/css|\/public|\/assets/;
+            const ignorePathsRx = /^\/css|\/public|\/assets|\/favicon/;
             return ignorePathsRx.test(req.url || '');
         }
     },
@@ -19,8 +19,6 @@ export const httpLogger = pinoHttp({
             return 'warn';
         } else if (res.statusCode >= 500 || err) {
             return 'error';
-        } else if (res.statusCode >= 300 && res.statusCode < 400) {
-            return 'silent';
         }
         return 'info';
     },

@@ -1,16 +1,20 @@
 import path from 'node:path';
 
 import express, { Application, Request, Response } from 'express';
+import cookieParser from 'cookie-parser';
 
-import passport, { auth } from './routes/auth';
+import { checkConfig } from './utils/check-config';
+import { httpLogger } from './utils/logger';
 import session from './middleware/session';
 import { ensureAuthenticated } from './middleware/ensure-authenticated';
 import { rateLimiter } from './middleware/rate-limiter';
 import { i18next, i18nextMiddleware } from './middleware/translation';
+import { auth } from './routes/auth';
 import { healthcheck } from './routes/healthcheck';
 import { publish } from './routes/publish';
 import { view } from './routes/view';
-import { httpLogger } from './utils/logger';
+
+checkConfig();
 
 const app: Application = express();
 
@@ -22,11 +26,11 @@ if (app.get('env') === 'production') {
 
 // enable middleware
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(httpLogger);
 app.use(i18nextMiddleware.handle(i18next));
 app.use(session);
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(cookieParser());
 
 // configure the view engine
 app.set('views', path.join(__dirname, 'views'));

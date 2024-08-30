@@ -16,13 +16,22 @@
         "continue": "Continue",
         "back": "Back",
         "cancel": "Cancel",
-        "choose_different": "Choose a different data table",
-        "login-google": "Login with Google"
+        "choose_different": "Choose a different data table"
     },
     "pagination": {
         "previous": "Previous",
         "next": "Next",
         "update": "Update"
+    },
+    "login": {
+        "heading": "Login",
+        "buttons": {
+            "google": "Login with Google"
+        },
+        "error": {
+            "summary-title": "There is a problem",
+            "message": "You could not be logged in. Please try again later."
+        }
     },
     "homepage": {
         "title": "Welcome to StatsWales Beta",

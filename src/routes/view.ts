@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 
-import { API } from '../controllers/api';
+import { API } from '../services/api';
 import { FileList } from '../dtos/filelist';
 import { ViewErrDTO } from '../dtos/view-dto';
 import { i18next } from '../middleware/translation';

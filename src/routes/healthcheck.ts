@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { API } from '../controllers/api';
+import { API } from '../services/api';
 import { logger } from '../utils/logger';
 
 const APIInstance = new API();

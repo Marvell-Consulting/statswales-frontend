@@ -1,61 +1,49 @@
-import { Router, Request, Response, NextFunction } from 'express';
-import passport from 'passport';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import { Router, Request, Response } from 'express';
+import JWT from 'jsonwebtoken';
 
-export interface User {
-    id: string;
-    displayName: string;
-}
+import { logger } from '../utils/logger';
+import { JWTPayloadWithUser } from '../interfaces/jwt-payload-with-user';
 
-const users: User[] = [];
-
-passport.use(
-    new GoogleStrategy(
-        {
-            clientID: process.env.GOOGLE_CLIENT_ID || 'client_id',
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'client_secret',
-            callbackURL: '/auth/google/callback'
-        },
-        (accessToken, refreshToken, profile, done) => {
-            let user = users.find((usr) => usr.id === profile.id);
-            if (!user) {
-                user = { id: profile.id, displayName: profile.displayName };
-                users.push(user);
-            }
-            return done(null, user);
-        }
-    )
-);
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-passport.serializeUser((user: any, done) => {
-    done(null, user.id);
-});
-
-passport.deserializeUser((id: string, done) => {
-    const user = users.find((usr) => usr.id === id);
-    done(null, user);
-});
-
-export default passport;
 export const auth = Router();
 
-auth.get('/login', (req, res) => {
-    res.render('login');
+auth.get('/login', (req: Request, res: Response) => {
+    res.render('auth/login');
 });
 
-auth.get('/logout', (req: Request, res: Response, next: NextFunction) => {
-    // eslint-disable-next-line consistent-return
-    req.logout((err): void => {
-        if (err) {
-            return next(err);
+auth.get('/google', (req: Request, res: Response) => {
+    logger.debug('Sending user to backend for authentication');
+    res.redirect(`${process.env.BACKEND_URL}/auth/google`);
+});
+
+auth.get('/callback', (req: Request, res: Response) => {
+    logger.debug('returning from auth backend');
+
+    try {
+        if (!req.cookies.jwt) {
+            logger.error('JWT cookie not found');
+            throw new Error('JWT cookie not found');
         }
-        res.redirect('/');
-    });
+
+        if (req.query.error) {
+            logger.error(`Error from auth backend: ${req.query.error}`);
+            throw new Error(`Error from auth backend: ${req.query.error}`);
+        }
+
+        const secret = process.env.JWT_SECRET || '';
+        const decoded = JWT.verify(req.cookies.jwt, secret) as JWTPayloadWithUser;
+        req.user = decoded.user;
+    } catch (err) {
+        logger.error(`Error verifying JWT: ${err}`);
+        res.status(400);
+        res.render('auth/login', { errors: ['login.error.message'] });
+        return;
+    }
+    console.log(req.user);
+    logger.debug('User successfully logged in');
+    res.redirect('/');
 });
 
-auth.get('/google', passport.authenticate('google', { scope: ['profile'] }));
-
-auth.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
-    res.redirect('/');
+auth.get('/logout', (req: Request, res: Response) => {
+    res.clearCookie('jwt');
+    res.redirect('/auth/login');
 });
