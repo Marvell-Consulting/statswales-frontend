@@ -40,12 +40,12 @@ app.set('view engine', 'ejs');
 app.use('/public', express.static(`${__dirname}/public`));
 app.use('/css', express.static(`${__dirname}/css`));
 app.use('/assets', express.static(`${__dirname}/assets`));
-app.use('/auth', auth);
-app.use('/healthcheck', healthcheck);
+app.use('/auth', rateLimiter, auth);
+app.use('/healthcheck', rateLimiter, healthcheck);
 
-app.use('/:lang/publish', publish, rateLimiter, ensureAuthenticated);
-app.use('/:lang/dataset', view, rateLimiter, ensureAuthenticated);
-app.use('/:lang/healthcheck', healthcheck);
+app.use('/:lang/publish', rateLimiter, ensureAuthenticated, publish);
+app.use('/:lang/dataset', rateLimiter, ensureAuthenticated, view);
+app.use('/:lang/healthcheck', rateLimiter, healthcheck);
 
 app.get('/', (req: Request, res: Response) => {
     const lang = req.headers['accept-language'] || req.headers['Accept-Language'] || req.i18n.language || 'en-GB';

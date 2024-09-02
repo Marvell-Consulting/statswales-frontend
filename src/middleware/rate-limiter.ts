@@ -1,8 +1,8 @@
 import rateLimit from 'express-rate-limit';
 
 export const rateLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
+    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '60000', 10),
+    max: parseInt(process.env.RATE_LIMIT_MAX_REQ || '100', 10),
     standardHeaders: true,
     legacyHeaders: false,
     handler: (req, res) => {
