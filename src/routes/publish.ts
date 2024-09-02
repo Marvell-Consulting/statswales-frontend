@@ -1,22 +1,16 @@
 import { Blob } from 'buffer';
 
 import { Request, Response, Router } from 'express';
-import pino from 'pino';
 import multer from 'multer';
 
+import { logger } from '../utils/logger';
 import { ViewErrDTO } from '../dtos/view-dto';
 import { i18next } from '../middleware/translation';
-import { API } from '../services/api';
+import { StatsWalesApi } from '../services/stats-wales-api';
 
 const t = i18next.t;
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
-const APIInstance = new API();
-
-const logger = pino({
-    name: 'StatsWales-Alpha-App: Publish',
-    level: 'debug'
-});
 
 export const publish = Router();
 
@@ -65,6 +59,8 @@ publish.post('/name', upload.none(), (req: Request, res: Response) => {
 
 publish.post('/upload', upload.single('csv'), async (req: Request, res: Response) => {
     const lang = req.i18n.language;
+    const statsWalesApi = new StatsWalesApi(lang);
+
     if (!req.body?.internal_name) {
         logger.debug('Internal name was missing on request');
         const err: ViewErrDTO = {
@@ -76,7 +72,7 @@ publish.post('/upload', upload.single('csv'), async (req: Request, res: Response
                     field: 'internal_name',
                     message: [
                         {
-                            lang: req.i18n.language,
+                            lang,
                             message: t('errors.name_missing')
                         }
                     ],
@@ -91,8 +87,10 @@ publish.post('/upload', upload.single('csv'), async (req: Request, res: Response
         res.render('publish/name', err);
         return;
     }
+
     logger.debug(`Internal name: ${req.body.internal_name}`);
     const internalName: string = req.body.internal_name;
+
     if (!req.file) {
         logger.debug('Attached file was missing on this request');
         const err: ViewErrDTO = {
@@ -104,7 +102,7 @@ publish.post('/upload', upload.single('csv'), async (req: Request, res: Response
                     field: 'csv',
                     message: [
                         {
-                            lang: req.i18n.language,
+                            lang,
                             message: t('errors.upload.no-csv-data')
                         }
                     ],
@@ -122,9 +120,10 @@ publish.post('/upload', upload.single('csv'), async (req: Request, res: Response
 
     const fileData = new Blob([req.file?.buffer]);
 
-    const processedCSV = await APIInstance.uploadCSV(lang, fileData, internalName);
+    const processedCSV = await statsWalesApi.uploadCSV(fileData, internalName);
+
     if (processedCSV.success) {
-        res.redirect(`/${req.i18n.language}/dataset/${processedCSV.dataset?.id}`);
+        res.redirect(`/${lang}/dataset/${processedCSV.dataset?.id}`);
     } else {
         res.status(400);
         res.render('publish/upload', processedCSV);

@@ -18,16 +18,22 @@ class HttpError extends Error {
     }
 }
 
-export class API {
-    private readonly backendUrl: string | undefined;
+export class StatsWalesApi {
+    private readonly backendUrl = process.env.BACKEND_URL || '';
+    private readonly authHeader: Record<string, string>;
 
-    constructor() {
-        this.backendUrl = process.env.BACKEND_URL;
+    constructor(
+        private lang: string,
+        private token?: string
+    ) {
+        this.lang = lang;
+        this.authHeader = token ? { Authorization: `Bearer ${token}` } : {};
     }
 
-    public async getFileList(lang: string) {
-        logger.debug(`Fetching file list from ${this.backendUrl}/${lang}/dataset`);
-        const filelist: FileList = await fetch(`${this.backendUrl}/${lang}/dataset`)
+    public async getFileList() {
+        logger.debug(`Fetching file list from ${this.backendUrl}/${this.lang}/dataset`);
+
+        const filelist: FileList = await fetch(`${this.backendUrl}/${this.lang}/dataset`, { headers: this.authHeader })
             .then((response) => {
                 if (response.ok) {
                     return response.json();
@@ -46,9 +52,10 @@ export class API {
         return filelist;
     }
 
-    public async getFileData(lang: string, file_id: string, page_number: number, page_size: number) {
+    public async getFileData(file_id: string, page_number: number, page_size: number) {
         const file = await fetch(
-            `${this.backendUrl}/${lang}/dataset/${file_id}/view?page_number=${page_number}&page_size=${page_size}`
+            `${this.backendUrl}/${this.lang}/dataset/${file_id}/view?page_number=${page_number}&page_size=${page_size}`,
+            { headers: this.authHeader }
         )
             .then((response) => {
                 if (response.ok) {
@@ -71,7 +78,7 @@ export class API {
                             field: 'file',
                             message: [
                                 {
-                                    lang,
+                                    lang: this.lang,
                                     message: 'errors.dataset_missing'
                                 }
                             ],
@@ -87,14 +94,15 @@ export class API {
         return file;
     }
 
-    public async uploadCSV(lang: string, file: Blob, filename: string) {
+    public async uploadCSV(file: Blob, filename: string) {
         const formData = new FormData();
         formData.append('csv', file, filename);
         formData.append('internal_name', filename);
 
-        const processedCSV = await fetch(`${this.backendUrl}/${lang}/dataset/`, {
+        const processedCSV = await fetch(`${this.backendUrl}/${this.lang}/dataset/`, {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: this.authHeader
         })
             .then((response) => {
                 if (response.ok) {
@@ -117,7 +125,7 @@ export class API {
                             field: 'csv',
                             message: [
                                 {
-                                    lang,
+                                    lang: this.lang,
                                     message: 'errors.upload.no-csv-data'
                                 }
                             ],
