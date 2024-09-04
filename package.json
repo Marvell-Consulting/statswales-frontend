@@ -16,7 +16,7 @@
     "test:ci": "jest --ci --coverage --config=jest.config.ts",
     "check": "npm-run-all prettier:fix lint:fix test build",
     "dev:check": "npm-run-all check dev",
-    "dev": "nodemon --watch src -e ts,ejs --exec npm run start",
+    "dev": "NODE_ENV=dev nodemon --watch src -e ts,ejs --exec npm run start",
     "start": "npm run build && node dist/server.js | pino-colada",
     "start:container": "node dist/server.js"
   },

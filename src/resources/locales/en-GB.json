@@ -26,11 +26,13 @@
     "login": {
         "heading": "Login",
         "buttons": {
+            "onelogin": "Login with OneLogin",
             "google": "Login with Google"
         },
         "error": {
             "summary-title": "There is a problem",
-            "message": "You could not be logged in. Please try again later."
+            "generic": "You could not be logged in. Please try again later.",
+            "expired": "Your session has expired. Please log in again."
         }
     },
     "homepage": {
