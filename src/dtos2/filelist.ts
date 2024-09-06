@@ -1,6 +1,11 @@
+export interface DatasetTitle {
+    language: string;
+    title: string;
+}
+
 export interface FileDescription {
-    id: string;
-    internal_name: string;
+    dataset_id: string;
+    titles: DatasetTitle[];
 }
 
 export interface FileList {
