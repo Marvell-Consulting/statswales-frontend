@@ -22,7 +22,7 @@
                     </div>
                 </div>
             <% } %>
-             
+
             <form action="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.upload') %>/" method="post" enctype="multipart/form-data">
                 <div class="govuk-form-group">
                     <label class="govuk-label govuk-label--m" for="csv">
@@ -30,7 +30,7 @@
                     </label>
                     <input class="govuk-file-upload" id="csv" name="csv" type="file" accept=".csv">
                 </div>
-                <input type="hidden" name="internal_name" value="<%= locals?.internal_name %>">
+                <input type="hidden" name="title" value="<%= locals?.title %>">
                 <input type="hidden" name="page_number" value="1">
                 <input type="hidden" name="page_size" value="100">
                 <button type="submit" class="govuk-button" data-module="govuk-button">
@@ -39,5 +39,5 @@
             </form>
         </main>
     </div>
-    
+
 <%- include("../partials/bottom"); %>

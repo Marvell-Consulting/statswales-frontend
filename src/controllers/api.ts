@@ -2,10 +2,11 @@ import { env } from 'process';
 
 import pino from 'pino';
 
-import { FileListError, FileList } from '../dtos/filelist';
-import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
-import { Healthcheck } from '../dtos/healthcehck';
-import { UploadDTO, UploadErrDTO } from '../dtos/upload-dto';
+import { FileListError, FileList } from '../dtos2/filelist';
+import { ViewDTO, ViewErrDTO } from '../dtos2/view-dto';
+import { Healthcheck } from '../dtos2/healthcehck';
+import { UploadDTO, UploadErrDTO } from '../dtos2/upload-dto';
+import { DatasetDTO } from '../dtos2/dataset-dto';
 
 const logger = pino({
     name: 'StatsWales-Alpha-App: API',
@@ -42,9 +43,6 @@ export class API {
     }
 
     public async getFileList(lang: string) {
-        console.log(
-            `Fetching file list from ${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset`
-        );
         const filelist: FileList = await fetch(
             `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset`
         )
@@ -66,9 +64,12 @@ export class API {
         return filelist;
     }
 
-    public async getFileData(lang: string, file_id: string, page_number: number, page_size: number) {
+    public async getDatasetView(lang: string, datasetId: string, page_number: number, page_size: number) {
+        logger.info(
+            `Fetching dataset view from ${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset/${datasetId}/view?page_number=${page_number}&page_size=${page_size}`
+        );
         const file = await fetch(
-            `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset/${file_id}/view?page_number=${page_number}&page_size=${page_size}`
+            `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset/${datasetId}/view?page_number=${page_number}&page_size=${page_size}`
         )
             .then((response) => {
                 if (response.ok) {
@@ -101,16 +102,64 @@ export class API {
                             }
                         }
                     ],
-                    dataset_id: file_id
+                    dataset_id: datasetId
                 } as ViewErrDTO;
             });
         return file;
     }
 
-    public async uploadCSV(lang: string, file: Blob, filename: string) {
+    public async getDatasetDatafilePreview(
+        lang: string,
+        datasetId: string,
+        revisionId: string,
+        importId: string,
+        page_number: number,
+        page_size: number
+    ) {
+        const file = await fetch(
+            `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/preview?page_number=${page_number}&page_size=${page_size}`
+        )
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                const err = new HttpError(response.status);
+                err.handleMessage(response.text());
+                throw err;
+            })
+            .then((api_res) => {
+                return api_res as ViewDTO;
+            })
+            .catch((error) => {
+                logger.error(`An HTTP error occured with status ${error.status} and message "${error.message}"`);
+                return {
+                    success: false,
+                    status: error.status,
+                    errors: [
+                        {
+                            field: 'file',
+                            message: [
+                                {
+                                    lang,
+                                    message: 'errors.dataset_missing'
+                                }
+                            ],
+                            tag: {
+                                name: 'errors.dataset_missing',
+                                params: {}
+                            }
+                        }
+                    ],
+                    dataset_id: datasetId
+                } as ViewErrDTO;
+            });
+        return file;
+    }
+
+    public async uploadCSV(lang: string, file: Blob, filename: string, title: string) {
         const formData = new FormData();
-        formData.append('csv', file, filename);
-        formData.append('internal_name', filename);
+        formData.set('csv', file, filename);
+        formData.set('title', title);
 
         const processedCSV = await fetch(
             `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset/`,
@@ -128,7 +177,11 @@ export class API {
                 throw err;
             })
             .then((api_res) => {
-                return api_res as UploadDTO;
+                const datasetDTO = api_res as DatasetDTO;
+                return {
+                    success: true,
+                    dataset: datasetDTO
+                } as UploadDTO;
             })
             .catch((error) => {
                 logger.error(`An HTTP error occured with status ${error.status} and message "${error.message}"`);

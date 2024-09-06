@@ -2,8 +2,8 @@ import { Router, Request, Response } from 'express';
 
 import { t } from '../config/i18next';
 import { API } from '../controllers/api';
-import { FileList } from '../dtos/filelist';
-import { ViewErrDTO } from '../dtos/view-dto';
+import { FileList } from '../dtos2/filelist';
+import { ViewErrDTO } from '../dtos2/view-dto';
 
 const APIInstance = new API();
 export const view = Router();
@@ -15,15 +15,15 @@ view.get('/', async (req: Request, res: Response) => {
     res.render('list', fileList);
 });
 
-view.get('/:file', async (req: Request, res: Response) => {
+view.get('/:datasetId', async (req: Request, res: Response) => {
     const lang = req.i18n.language;
     const page_number: number = Number.parseInt(req.query.page_number as string, 10) || 1;
     const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 100;
 
-    if (!req.params.file) {
+    if (!req.params.datasetId) {
         const err: ViewErrDTO = {
             success: false,
-            status: 404,
+            status: 400,
             dataset_id: undefined,
             errors: [
                 {
@@ -45,11 +45,12 @@ view.get('/:file', async (req: Request, res: Response) => {
         res.render('data', err);
         return;
     }
+    const datasetId = req.params.datasetId;
 
-    const file_id = req.params.file;
-    const file = await APIInstance.getFileData(lang, file_id, page_number, page_size);
+    const file = await APIInstance.getDatasetView(lang, datasetId, page_number, page_size);
     if (!file.success) {
-        res.status((file as ViewErrDTO).status);
+        const error = file as ViewErrDTO;
+        res.status(error.status);
     }
     res.render('data', file);
 });

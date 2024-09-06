@@ -68,7 +68,7 @@ const sessionConfig = {
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: true
+        secure: false
     }
 };
 
