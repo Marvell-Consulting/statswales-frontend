@@ -1,8 +1,8 @@
 import { Router, Response } from 'express';
 
 import { StatsWalesApi } from '../services/stats-wales-api';
-import { FileList } from '../dtos/filelist';
-import { ViewErrDTO } from '../dtos/view-dto';
+import { FileList } from '../dtos2/filelist';
+import { ViewErrDTO } from '../dtos2/view-dto';
 import { i18next } from '../middleware/translation';
 import { logger } from '../utils/logger';
 import { AuthedRequest } from '../interfaces/authed-request';
@@ -22,21 +22,22 @@ view.get('/', async (req: AuthedRequest, res: Response) => {
     res.render('list', fileList);
 });
 
-view.get('/:file', async (req: AuthedRequest, res: Response) => {
+view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
+    const lang = req.i18n.language;
     const page_number: number = Number.parseInt(req.query.page_number as string, 10) || 1;
     const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 100;
 
-    if (!req.params.file) {
+    if (!req.params.datasetId) {
         const err: ViewErrDTO = {
             success: false,
-            status: 404,
+            status: 400,
             dataset_id: undefined,
             errors: [
                 {
                     field: 'file',
                     message: [
                         {
-                            lang: req.i18n.language,
+                            lang,
                             message: t('errors.dataset_missing')
                         }
                     ],
@@ -51,11 +52,12 @@ view.get('/:file', async (req: AuthedRequest, res: Response) => {
         res.render('data', err);
         return;
     }
+    const datasetId = req.params.datasetId;
 
-    const file_id = req.params.file;
-    const file = await statsWalesApi(req).getFileData(file_id, page_number, page_size);
+    const file = await statsWalesApi(req).getDatasetView(datasetId, page_number, page_size);
     if (!file.success) {
-        res.status((file as ViewErrDTO).status);
+        const error = file as ViewErrDTO;
+        res.status(error.status);
     }
     res.render('data', file);
 });

@@ -1,7 +1,8 @@
-import { FileListError, FileList } from '../dtos/filelist';
-import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
-import { Healthcheck } from '../dtos/healthcehck';
-import { UploadDTO, UploadErrDTO } from '../dtos/upload-dto';
+import { FileListError, FileList } from '../dtos2/filelist';
+import { ViewDTO, ViewErrDTO } from '../dtos2/view-dto';
+import { Healthcheck } from '../dtos2/healthcehck';
+import { UploadDTO, UploadErrDTO } from '../dtos2/upload-dto';
+import { DatasetDTO } from '../dtos2/dataset-dto';
 import { logger } from '../utils/logger';
 
 class HttpError extends Error {
@@ -52,9 +53,12 @@ export class StatsWalesApi {
         return filelist;
     }
 
-    public async getFileData(file_id: string, page_number: number, page_size: number) {
+    public async getDatasetView(datasetId: string, pageNumber: number, pageSize: number) {
+        logger.info(
+            `Fetching dataset view from ${this.backendUrl}/${this.lang}/dataset/${datasetId}/view?page_number=${pageNumber}&page_size=${pageSize}`
+        );
         const file = await fetch(
-            `${this.backendUrl}/${this.lang}/dataset/${file_id}/view?page_number=${page_number}&page_size=${page_size}`,
+            `${this.backendUrl}/${this.lang}/dataset/${datasetId}/view?page_number=${pageNumber}&page_size=${pageSize}`,
             { headers: this.authHeader }
         )
             .then((response) => {
@@ -88,16 +92,64 @@ export class StatsWalesApi {
                             }
                         }
                     ],
-                    dataset_id: file_id
+                    dataset_id: datasetId
                 } as ViewErrDTO;
             });
         return file;
     }
 
-    public async uploadCSV(file: Blob, filename: string) {
+    public async getDatasetDatafilePreview(
+        datasetId: string,
+        revisionId: string,
+        importId: string,
+        pageNumber: number,
+        pageSize: number
+    ) {
+        const file = await fetch(
+            `${this.backendUrl}/${this.lang}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/preview?page_number=${pageNumber}&page_size=${pageSize}`,
+            { headers: this.authHeader }
+        )
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                const err = new HttpError(response.status);
+                err.handleMessage(response.text());
+                throw err;
+            })
+            .then((api_res) => {
+                return api_res as ViewDTO;
+            })
+            .catch((error) => {
+                logger.error(`An HTTP error occured with status ${error.status} and message "${error.message}"`);
+                return {
+                    success: false,
+                    status: error.status,
+                    errors: [
+                        {
+                            field: 'file',
+                            message: [
+                                {
+                                    lang: this.lang,
+                                    message: 'errors.dataset_missing'
+                                }
+                            ],
+                            tag: {
+                                name: 'errors.dataset_missing',
+                                params: {}
+                            }
+                        }
+                    ],
+                    dataset_id: datasetId
+                } as ViewErrDTO;
+            });
+        return file;
+    }
+
+    public async uploadCSV(file: Blob, filename: string, title: string) {
         const formData = new FormData();
-        formData.append('csv', file, filename);
-        formData.append('internal_name', filename);
+        formData.set('csv', file, filename);
+        formData.set('title', title);
 
         const processedCSV = await fetch(`${this.backendUrl}/${this.lang}/dataset/`, {
             method: 'POST',
@@ -113,7 +165,11 @@ export class StatsWalesApi {
                 throw err;
             })
             .then((api_res) => {
-                return api_res as UploadDTO;
+                const datasetDTO = api_res as DatasetDTO;
+                return {
+                    success: true,
+                    dataset: datasetDTO
+                } as UploadDTO;
             })
             .catch((error) => {
                 logger.error(`An HTTP error occured with status ${error.status} and message "${error.message}"`);
@@ -146,10 +202,6 @@ export class StatsWalesApi {
             .then((api_res) => api_res.json())
             .then((api_res) => {
                 return api_res as Healthcheck;
-            })
-            .catch((error) => {
-                logger.error(`An HTTP error occured with status ${error.status} and message "${error.message}"`);
-                return { status: 'App is not running' } as Healthcheck;
             });
         return health.status === 'App is running';
     }
