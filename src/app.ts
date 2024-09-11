@@ -2,7 +2,6 @@ import path from 'node:path';
 
 import express, { Application, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
-import { csrf } from 'lusca';
 
 import { checkConfig } from './utils/check-config';
 import { httpLogger } from './utils/logger';
@@ -32,7 +31,6 @@ app.use(httpLogger);
 app.use(i18nextMiddleware.handle(i18next));
 app.use(session);
 app.use(cookieParser());
-app.use(csrf());
 
 // configure the view engine
 app.set('views', path.join(__dirname, 'views'));
