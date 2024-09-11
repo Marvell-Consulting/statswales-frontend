@@ -1,4 +1,5 @@
 import { Router, Response } from 'express';
+import { validate as validateUUID } from 'uuid';
 
 import { StatsWalesApi } from '../services/stats-wales-api';
 import { FileList } from '../dtos2/filelist';
@@ -27,7 +28,7 @@ view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
     const page_number: number = Number.parseInt(req.query.page_number as string, 10) || 1;
     const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 100;
 
-    if (!req.params.datasetId) {
+    if (!req.params.datasetId || !validateUUID(req.params.datasetId)) {
         const err: ViewErrDTO = {
             success: false,
             status: 400,
@@ -52,6 +53,7 @@ view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
         res.render('data', err);
         return;
     }
+
     const datasetId = req.params.datasetId;
 
     const file = await statsWalesApi(req).getDatasetView(datasetId, page_number, page_size);
