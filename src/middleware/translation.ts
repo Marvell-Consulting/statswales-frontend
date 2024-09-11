@@ -2,6 +2,9 @@ import i18next from 'i18next';
 import Backend from 'i18next-fs-backend';
 import i18nextMiddleware from 'i18next-http-middleware';
 
+const ENGLISH = 'en-GB';
+const WELSH = 'cy-GB';
+
 i18next
     .use(Backend)
     .use(i18nextMiddleware.LanguageDetector)
@@ -13,13 +16,11 @@ i18next
             ignoreRoutes: ['/healthcheck', '/public', '/css', '/assets']
         },
         backend: {
-            loadPath: `${__dirname}/resources/locales/{{lng}}.json`
+            loadPath: `${__dirname}/../resources/locales/{{lng}}.json`
         },
-        fallbackLng: 'en-GB',
-        preload: ['en-GB', 'cy-GB'],
+        fallbackLng: ENGLISH,
+        preload: [ENGLISH, WELSH],
         debug: false
     });
 
-export const ENGLISH = 'en-GB';
-export const WELSH = 'cy-GB';
-export const t = i18next.t;
+export { i18next, i18nextMiddleware, ENGLISH, WELSH };

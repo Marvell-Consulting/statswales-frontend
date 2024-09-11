@@ -23,6 +23,18 @@
         "next": "Next",
         "update": "Update"
     },
+    "login": {
+        "heading": "Login",
+        "buttons": {
+            "onelogin": "Login with OneLogin",
+            "google": "Login with Google"
+        },
+        "error": {
+            "summary-title": "There is a problem",
+            "generic": "You could not be logged in. Please try again later.",
+            "expired": "Your session has expired. Please log in again."
+        }
+    },
     "homepage": {
         "title": "Welcome to StatsWales Beta",
         "welcome": "We're going to use the GovUK Design system until we're able to get hold of the Welsh Government GEL",

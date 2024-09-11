@@ -1,11 +1,11 @@
-import path from 'path';
+import path from 'node:path';
 
 import request from 'supertest';
 import { Request, Response, NextFunction } from 'express';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
-import { ENGLISH, WELSH, t } from '../src/config/i18next';
+import { ENGLISH, WELSH, i18next } from '../src/middleware/translation';
 import app from '../src/app';
 import { DatasetDTO } from '../src/dtos2/dataset-dto';
 
@@ -15,12 +15,14 @@ declare module 'express-session' {
     }
 }
 
-jest.mock('../src/config/authenticate', () => ({
+const t = i18next.t;
+
+jest.mock('../src/middleware/ensure-authenticated', () => ({
     ensureAuthenticated: (req: Request, res: Response, next: NextFunction) => next()
 }));
 
 const server = setupServer(
-    http.get('http://somehost.com:3001/en-GB/dataset', () => {
+    http.get('http://example.com:3001/en-GB/dataset', () => {
         return HttpResponse.json({
             filelist: [
                 {
@@ -44,13 +46,13 @@ const server = setupServer(
             ]
         });
     }),
-    http.get('http://somehost.com:3001/en-GB/dataset/missing-id/view', () => {
+    http.get('http://example.com:3001/en-GB/dataset/missing-id/view', () => {
         return new HttpResponse(null, {
             status: 404,
             statusText: '{}'
         });
     }),
-    http.get('http://somehost.com:3001/en-GB/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5', () => {
+    http.get('http://example.com:3001/en-GB/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5', () => {
         return HttpResponse.json({
             id: '5caeb8ed-ea64-4a58-8cf0-b728308833e5',
             creation_date: '2024-09-05T10:05:03.871Z',
@@ -92,7 +94,7 @@ const server = setupServer(
             ]
         });
     }),
-    http.get('http://somehost.com:3001/en-GB/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/view', () => {
+    http.get('http://example.com:3001/en-GB/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/view', () => {
         return HttpResponse.json({
             success: true,
             dataset: {
@@ -138,7 +140,7 @@ const server = setupServer(
             ]
         });
     }),
-    http.post('http://somehost.com:3001/en-GB/dataset/', async (req) => {
+    http.post('http://example.com:3001/en-GB/dataset/', async (req) => {
         const data = await req.request.formData();
         const title = data.get('title') as string;
         if (title === 'test-data-3.csv fail test') {
@@ -201,7 +203,7 @@ const server = setupServer(
             ]
         });
     }),
-    http.get('http://somehost.com:3001/healthcheck', () => {
+    http.get('http://example.com:3001/healthcheck', () => {
         return HttpResponse.json({
             status: 'App is running',
             notes: 'Expand endpoint to check for database connection and other services.'

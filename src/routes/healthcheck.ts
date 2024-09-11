@@ -1,22 +1,18 @@
 import { Router } from 'express';
-import pino from 'pino';
 
-import { API } from '../controllers/api';
-
-export const logger = pino({
-    name: 'StatsWales-Alpha-App: Healthcheck',
-    level: 'debug'
-});
-
-const APIInstance = new API();
+import { StatsWalesApi } from '../services/stats-wales-api';
+import { logger } from '../utils/logger';
 
 export const healthcheck = Router();
 
 healthcheck.get('/', async (req, res) => {
     const lang = req.i18n.language || 'en-GB';
+    const APIInstance = new StatsWalesApi(lang);
     logger.info(`Healthcheck requested in ${lang}`);
+
     const statusMsg = req.t('app-running');
     const beConnected = await APIInstance.ping();
+
     res.json({
         status: statusMsg,
         notes: req.t('health-notes'),

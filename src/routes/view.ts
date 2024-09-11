@@ -1,26 +1,34 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
+import { validate as validateUUID } from 'uuid';
 
-import { t } from '../config/i18next';
-import { API } from '../controllers/api';
+import { StatsWalesApi } from '../services/stats-wales-api';
 import { FileList } from '../dtos2/filelist';
 import { ViewErrDTO } from '../dtos2/view-dto';
+import { i18next } from '../middleware/translation';
+import { logger } from '../utils/logger';
+import { AuthedRequest } from '../interfaces/authed-request';
 
-const APIInstance = new API();
+const t = i18next.t;
 export const view = Router();
 
-view.get('/', async (req: Request, res: Response) => {
+const statsWalesApi = (req: AuthedRequest) => {
     const lang = req.i18n.language;
-    const fileList: FileList = await APIInstance.getFileList(lang);
-    console.log(`FileList from server = ${JSON.stringify(fileList)}`);
+    const token = req.jwt;
+    return new StatsWalesApi(lang, token);
+};
+
+view.get('/', async (req: AuthedRequest, res: Response) => {
+    const fileList: FileList = await statsWalesApi(req).getFileList();
+    logger.debug(`FileList from server = ${JSON.stringify(fileList)}`);
     res.render('list', fileList);
 });
 
-view.get('/:datasetId', async (req: Request, res: Response) => {
+view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
     const lang = req.i18n.language;
     const page_number: number = Number.parseInt(req.query.page_number as string, 10) || 1;
     const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 100;
 
-    if (!req.params.datasetId) {
+    if (!req.params.datasetId || !validateUUID(req.params.datasetId)) {
         const err: ViewErrDTO = {
             success: false,
             status: 400,
@@ -30,7 +38,7 @@ view.get('/:datasetId', async (req: Request, res: Response) => {
                     field: 'file',
                     message: [
                         {
-                            lang: req.i18n.language,
+                            lang,
                             message: t('errors.dataset_missing')
                         }
                     ],
@@ -45,9 +53,10 @@ view.get('/:datasetId', async (req: Request, res: Response) => {
         res.render('data', err);
         return;
     }
+
     const datasetId = req.params.datasetId;
 
-    const file = await APIInstance.getDatasetView(lang, datasetId, page_number, page_size);
+    const file = await statsWalesApi(req).getDatasetView(datasetId, page_number, page_size);
     if (!file.success) {
         const error = file as ViewErrDTO;
         res.status(error.status);

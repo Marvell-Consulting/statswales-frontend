@@ -1,17 +1,9 @@
-import { env } from 'process';
-
-import pino from 'pino';
-
 import { FileListError, FileList } from '../dtos2/filelist';
 import { ViewDTO, ViewErrDTO } from '../dtos2/view-dto';
 import { Healthcheck } from '../dtos2/healthcehck';
 import { UploadDTO, UploadErrDTO } from '../dtos2/upload-dto';
 import { DatasetDTO } from '../dtos2/dataset-dto';
-
-const logger = pino({
-    name: 'StatsWales-Alpha-App: API',
-    level: 'debug'
-});
+import { logger } from '../utils/logger';
 
 class HttpError extends Error {
     public status: number;
@@ -27,25 +19,22 @@ class HttpError extends Error {
     }
 }
 
-export class API {
-    private readonly backend_server: string | undefined;
-    private readonly backend_port: string | undefined;
-    private readonly backend_protocol: string;
+export class StatsWalesApi {
+    private readonly backendUrl = process.env.BACKEND_URL || '';
+    private readonly authHeader: Record<string, string>;
 
-    constructor() {
-        this.backend_server = env.BACKEND_SERVER;
-        this.backend_port = env.BACKEND_PORT;
-        if (env.BACKEND_PROTOCOL === 'https') {
-            this.backend_protocol = 'https';
-        } else {
-            this.backend_protocol = 'http';
-        }
+    constructor(
+        private lang: string,
+        private token?: string
+    ) {
+        this.lang = lang;
+        this.authHeader = token ? { Authorization: `Bearer ${token}` } : {};
     }
 
-    public async getFileList(lang: string) {
-        const filelist: FileList = await fetch(
-            `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset`
-        )
+    public async getFileList() {
+        logger.debug(`Fetching file list from ${this.backendUrl}/${this.lang}/dataset`);
+
+        const filelist: FileList = await fetch(`${this.backendUrl}/${this.lang}/dataset`, { headers: this.authHeader })
             .then((response) => {
                 if (response.ok) {
                     return response.json();
@@ -64,12 +53,13 @@ export class API {
         return filelist;
     }
 
-    public async getDatasetView(lang: string, datasetId: string, page_number: number, page_size: number) {
+    public async getDatasetView(datasetId: string, pageNumber: number, pageSize: number) {
         logger.info(
-            `Fetching dataset view from ${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset/${datasetId}/view?page_number=${page_number}&page_size=${page_size}`
+            `Fetching dataset view from ${this.backendUrl}/${this.lang}/dataset/${datasetId}/view?page_number=${pageNumber}&page_size=${pageSize}`
         );
         const file = await fetch(
-            `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset/${datasetId}/view?page_number=${page_number}&page_size=${page_size}`
+            `${this.backendUrl}/${this.lang}/dataset/${datasetId}/view?page_number=${pageNumber}&page_size=${pageSize}`,
+            { headers: this.authHeader }
         )
             .then((response) => {
                 if (response.ok) {
@@ -92,7 +82,7 @@ export class API {
                             field: 'file',
                             message: [
                                 {
-                                    lang,
+                                    lang: this.lang,
                                     message: 'errors.dataset_missing'
                                 }
                             ],
@@ -109,15 +99,15 @@ export class API {
     }
 
     public async getDatasetDatafilePreview(
-        lang: string,
         datasetId: string,
         revisionId: string,
         importId: string,
-        page_number: number,
-        page_size: number
+        pageNumber: number,
+        pageSize: number
     ) {
         const file = await fetch(
-            `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/preview?page_number=${page_number}&page_size=${page_size}`
+            `${this.backendUrl}/${this.lang}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/preview?page_number=${pageNumber}&page_size=${pageSize}`,
+            { headers: this.authHeader }
         )
             .then((response) => {
                 if (response.ok) {
@@ -140,7 +130,7 @@ export class API {
                             field: 'file',
                             message: [
                                 {
-                                    lang,
+                                    lang: this.lang,
                                     message: 'errors.dataset_missing'
                                 }
                             ],
@@ -156,18 +146,16 @@ export class API {
         return file;
     }
 
-    public async uploadCSV(lang: string, file: Blob, filename: string, title: string) {
+    public async uploadCSV(file: Blob, filename: string, title: string) {
         const formData = new FormData();
         formData.set('csv', file, filename);
         formData.set('title', title);
 
-        const processedCSV = await fetch(
-            `${this.backend_protocol}://${this.backend_server}:${this.backend_port}/${lang}/dataset/`,
-            {
-                method: 'POST',
-                body: formData
-            }
-        )
+        const processedCSV = await fetch(`${this.backendUrl}/${this.lang}/dataset/`, {
+            method: 'POST',
+            body: formData,
+            headers: this.authHeader
+        })
             .then((response) => {
                 if (response.ok) {
                     return response.json();
@@ -193,7 +181,7 @@ export class API {
                             field: 'csv',
                             message: [
                                 {
-                                    lang,
+                                    lang: this.lang,
                                     message: 'errors.upload.no-csv-data'
                                 }
                             ],
@@ -210,7 +198,7 @@ export class API {
     }
 
     public async ping() {
-        const health = await fetch(`${this.backend_protocol}://${this.backend_server}:${this.backend_port}/healthcheck`)
+        const health = await fetch(`${this.backendUrl}/healthcheck`)
             .then((api_res) => api_res.json())
             .then((api_res) => {
                 return api_res as Healthcheck;

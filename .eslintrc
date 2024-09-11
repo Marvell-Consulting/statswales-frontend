@@ -21,7 +21,8 @@
   "rules": {
     "prettier/prettier": 2,
     "no-console": 0,
-    "no-process-env": 0
+    "no-process-env": 0,
+    "line-comment-position": 0
   },
   "globals": {
     "NodeJS": true

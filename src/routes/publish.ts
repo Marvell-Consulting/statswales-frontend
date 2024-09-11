@@ -1,21 +1,17 @@
 import { Blob } from 'buffer';
 
 import { Request, Response, Router } from 'express';
-import pino from 'pino';
 import multer from 'multer';
 
-import { t } from '../config/i18next';
-import { API } from '../controllers/api';
+import { logger } from '../utils/logger';
+import { StatsWalesApi } from '../services/stats-wales-api';
 import { ViewDTO, ViewErrDTO } from '../dtos2/view-dto';
+import { i18next } from '../middleware/translation';
+import { AuthedRequest } from '../interfaces/authed-request';
 
+const t = i18next.t;
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
-const APIInstance = new API();
-
-const logger = pino({
-    name: 'StatsWales-Alpha-App: Publish',
-    level: 'debug'
-});
 
 export const publish = Router();
 
@@ -58,10 +54,12 @@ publish.post('/title', upload.none(), (req: Request, res: Response) => {
     res.render('publish/upload', { title });
 });
 
-publish.post('/upload', upload.single('csv'), async (req: Request, res: Response) => {
+publish.post('/upload', upload.single('csv'), async (req: AuthedRequest, res: Response) => {
     const lang = req.i18n.language;
+    const statsWalesApi = new StatsWalesApi(lang, req.jwt);
+
     if (!req.body?.title) {
-        logger.debug('title was missing on request');
+        logger.debug('Internal name was missing on request');
         const err: ViewErrDTO = {
             success: false,
             status: 400,
@@ -71,7 +69,7 @@ publish.post('/upload', upload.single('csv'), async (req: Request, res: Response
                     field: 'title',
                     message: [
                         {
-                            lang: req.i18n.language,
+                            lang,
                             message: t('errors.title.missing')
                         }
                     ],
@@ -86,8 +84,10 @@ publish.post('/upload', upload.single('csv'), async (req: Request, res: Response
         res.render('publish/title', err);
         return;
     }
-    logger.debug(`Title: ${req.body.title}`);
+
+    logger.debug(`Title name: ${req.body.title}`);
     const title: string = req.body.title;
+
     if (!req.file) {
         logger.debug('Attached file was missing on this request');
         const err: ViewErrDTO = {
@@ -99,7 +99,7 @@ publish.post('/upload', upload.single('csv'), async (req: Request, res: Response
                     field: 'csv',
                     message: [
                         {
-                            lang: req.i18n.language,
+                            lang,
                             message: t('errors.upload.no-csv-data')
                         }
                     ],
@@ -118,12 +118,13 @@ publish.post('/upload', upload.single('csv'), async (req: Request, res: Response
     const fileName = req.file?.originalname;
     const fileData = new Blob([req.file?.buffer], { type: req.file?.mimetype });
 
-    const processedCSV = await APIInstance.uploadCSV(lang, fileData, fileName, title);
+    const processedCSV = await statsWalesApi.uploadCSV(fileData, fileName, title);
+
     if (processedCSV.success) {
         // eslint-disable-next-line require-atomic-updates
         req.session.currentDataset = processedCSV.dataset;
         req.session.save();
-        res.redirect(`/${req.i18n.language}/publish/preview`);
+        res.redirect(`/${lang}/publish/preview`);
     } else {
         res.status(400);
         res.render('publish/upload', processedCSV);
@@ -131,17 +132,18 @@ publish.post('/upload', upload.single('csv'), async (req: Request, res: Response
 });
 
 publish.get('/preview', async (req: Request, res: Response) => {
+    const lang = req.i18n.language;
+    const statsWalesApi = new StatsWalesApi(lang);
+
     const dataset = req.session.currentDataset;
     if (!dataset) {
         logger.debug('No dataset in session');
         res.redirect(`/${req.i18n.language}/publish/title`);
         return;
     }
-    const lang = req.i18n.language;
     const page_number: number = Number.parseInt(req.query.page_number as string, 10) || 1;
     const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 10;
-    const previewData = await APIInstance.getDatasetDatafilePreview(
-        lang,
+    const previewData = await statsWalesApi.getDatasetDatafilePreview(
         dataset.id,
         dataset.revisions[0].id,
         dataset.revisions[0].imports[0].id,
@@ -164,7 +166,7 @@ publish.post('/confirm', upload.none(), (req: Request, res: Response) => {
         res.redirect(`/${req.i18n.language}/publish/title`);
         return;
     }
-    // const lang = req.i18n.language;
+    const lang = req.i18n.language;
     const confirmData = req.body?.confirm;
     if (!confirmData) {
         logger.debug('No confirmation data was provided');
@@ -177,7 +179,7 @@ publish.post('/confirm', upload.none(), (req: Request, res: Response) => {
                     field: 'confirm',
                     message: [
                         {
-                            lang: req.i18n.language,
+                            lang,
                             message: t('errors.confirm.missing')
                         }
                     ],

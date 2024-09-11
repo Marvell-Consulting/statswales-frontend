@@ -8,18 +8,9 @@
 -   Node 20+
 -   An Instance of the StatsWales backend Service
 
-## To get going
+## Configuration
 
-You'll need to define the following environment variables either in to the environment or in to a `.env` file:
-
-```env
-BACKEND_SERVER
-BACKEND_PROTOCOL
-BACKEND_PORT
-SESSION_SECRET
-GOOGLE_CLIENT_ID
-GOOGLE_CLIENT_SECRET
-```
+Copy the [.env-example](.env-example) file to `.env` and provide the missing values.
 
 To run the app should be as simple as:
 
