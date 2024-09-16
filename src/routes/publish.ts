@@ -118,7 +118,7 @@ publish.post('/upload', upload.single('csv'), async (req: AuthedRequest, res: Re
     const fileName = req.file?.originalname;
     const fileData = new Blob([req.file?.buffer], { type: req.file?.mimetype });
 
-    const processedCSV = await statsWalesApi.uploadCSV(fileData, fileName, title);
+    const processedCSV = await statsWalesApi.uploadCSVtoCreateDataset(fileData, fileName, title);
 
     if (processedCSV.success) {
         // eslint-disable-next-line require-atomic-updates
