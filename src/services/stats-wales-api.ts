@@ -2,7 +2,9 @@ import { FileListError, FileList } from '../dtos2/filelist';
 import { ViewDTO, ViewErrDTO } from '../dtos2/view-dto';
 import { Healthcheck } from '../dtos2/healthcehck';
 import { UploadDTO, UploadErrDTO } from '../dtos2/upload-dto';
-import { DatasetDTO } from '../dtos2/dataset-dto';
+import { DatasetDTO, ImportDTO } from '../dtos2/dataset-dto';
+import { DimensionCreationDTO } from '../dtos2/dimension-creation-dto';
+import { ConfirmedImportDTO } from '../dtos2/confirmed-import-dto';
 import { logger } from '../utils/logger';
 
 class HttpError extends Error {
@@ -146,7 +148,7 @@ export class StatsWalesApi {
         return file;
     }
 
-    public async uploadCSV(file: Blob, filename: string, title: string) {
+    public async uploadCSVtoCreateDataset(file: Blob, filename: string, title: string) {
         const formData = new FormData();
         formData.set('csv', file, filename);
         formData.set('title', title);
@@ -173,6 +175,174 @@ export class StatsWalesApi {
             })
             .catch((error) => {
                 logger.error(`An HTTP error occured with status ${error.status} and message "${error.message}"`);
+                return {
+                    success: false,
+                    status: error.status,
+                    errors: [
+                        {
+                            field: 'csv',
+                            message: [
+                                {
+                                    lang: this.lang,
+                                    message: 'errors.upload.no-csv-data'
+                                }
+                            ],
+                            tag: {
+                                name: 'errors.upload.no-csv-data',
+                                params: {}
+                            }
+                        }
+                    ],
+                    dataset: undefined
+                } as UploadErrDTO;
+            });
+        return processedCSV;
+    }
+
+    public async removeFileImport(datasetId: string, revisionId: string, importId: string) {
+        const revisiedDataset = await fetch(
+            `${this.backendUrl}/${this.lang}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}`,
+            {
+                method: 'DELETE',
+                headers: this.authHeader
+            }
+        )
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                const err = new HttpError(response.status);
+                err.handleMessage(response.text());
+                throw err;
+            })
+            .then((api_res) => {
+                const updatedDatasetDto = api_res as DatasetDTO;
+                return {
+                    success: true,
+                    dataset: updatedDatasetDto
+                } as UploadDTO;
+            });
+        return revisiedDataset;
+    }
+
+    public async confirmFileImport(datasetId: string, revisionId: string, importId: string) {
+        const confirmedDataset = await fetch(
+            `${this.backendUrl}/${this.lang}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/confirm`,
+            {
+                method: 'PATCH',
+                headers: this.authHeader
+            }
+        )
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                const err = new HttpError(response.status);
+                err.handleMessage(response.text());
+                throw err;
+            })
+            .then((api_res) => {
+                const updatedImportDto = api_res as ImportDTO;
+                return {
+                    success: true,
+                    fileImport: updatedImportDto
+                } as ConfirmedImportDTO;
+            });
+        return confirmedDataset;
+    }
+
+    public async getSourcesForFileImport(datasetId: string, revisionId: string, importId: string) {
+        const confirmedImport = await fetch(
+            `${this.backendUrl}/${this.lang}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}`,
+            {
+                method: 'GET',
+                headers: this.authHeader
+            }
+        )
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                const err = new HttpError(response.status);
+                err.handleMessage(response.text());
+                throw err;
+            })
+            .then((api_res) => {
+                const updatedImportDto = api_res as ImportDTO;
+                return {
+                    success: true,
+                    fileImport: updatedImportDto
+                } as ConfirmedImportDTO;
+            });
+        return confirmedImport;
+    }
+
+    public async sendCreateDimensionRequest(
+        datasetId: string,
+        revisionId: string,
+        importId: string,
+        dimensionCreationDto: DimensionCreationDTO
+    ) {
+        const confirmedDatasetDto = await fetch(
+            `${this.backendUrl}/${this.lang}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/sources`,
+            {
+                method: 'GET',
+                headers: this.authHeader,
+                body: JSON.stringify(dimensionCreationDto)
+            }
+        )
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                const err = new HttpError(response.status);
+                err.handleMessage(response.text());
+                throw err;
+            })
+            .then((api_res) => {
+                const datasetDTO = api_res as DatasetDTO;
+                return {
+                    success: true,
+                    dataset: datasetDTO
+                } as UploadDTO;
+            });
+        return confirmedDatasetDto;
+    }
+
+    public async uploadCSVToFixDataset(
+        datasetId: string,
+        revisionId: string,
+        file: Blob,
+        filename: string
+    ) {
+        const formData = new FormData();
+        formData.set('csv', file, filename);
+
+        const processedCSV = fetch(
+            `${this.backendUrl}/${this.lang}/dataset/${datasetId}/revision/by-id/${revisionId}/import`,
+            {
+                method: 'POST',
+                headers: this.authHeader,
+                body: formData
+            }
+        )
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                const err = new HttpError(response.status);
+                err.handleMessage(response.text());
+                throw err;
+            })
+            .then((api_res) => {
+                const datasetDTO = api_res as DatasetDTO;
+                return {
+                    success: true,
+                    dataset: datasetDTO
+                } as UploadDTO;
+            })
+            .catch((error) => {
+                logger.error(`An HTTP error occurred with status ${error.status} and message "${error.message}"`);
                 return {
                     success: false,
                     status: error.status,
