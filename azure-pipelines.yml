@@ -49,4 +49,4 @@ stages:
         targetPort: '3000'
         ingress: 'external'
         imageToDeploy: '$(containerRegistry)/$(imageRepository):$(tag)'
-        environmentVariables: 'BACKEND_URL=$(backend_url) SESSION_SECRET=$(session_secret) JWT_SECRET=$(jwt_secret)'
+        environmentVariables: 'BACKEND_URL=$(backend_url) FRONTEND_URL=$(frontend_url) SESSION_SECRET=$(session_secret) JWT_SECRET=$(jwt_secret)'
