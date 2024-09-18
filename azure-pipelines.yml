@@ -49,4 +49,4 @@ stages:
         targetPort: '3000'
         ingress: 'external'
         imageToDeploy: '$(containerRegistry)/$(imageRepository):$(tag)'
-        environmentVariables: 'BACKEND_SERVER=$(backend_server) BACKEND_PORT=$(backend_port) BACKEND_PROTOCOL=$(backend_protocol) GOOGLE_CLIENT_ID=$(client_id) GOOGLE_CLIENT_SECRET=$(client_secret) SESSION_SECRET=$(session_secret)'
+        environmentVariables: 'BACKEND_URL=$(backend_url) SESSION_SECRET=$(session_secret) JWT_SECRET=$(jwt_secret)'
