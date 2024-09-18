@@ -5,6 +5,7 @@ export default session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: process.env.NODE_ENV !== 'dev'
+        secure: process.env.NODE_ENV !== 'dev',
+        sameSite: process.env.NODE_ENV === 'PROD' ? 'none' : 'lax'
     }
 });
