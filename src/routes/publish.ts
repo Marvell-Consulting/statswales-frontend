@@ -201,6 +201,119 @@ publish.get('/', (req: Request, res: Response) => {
     res.render('publish/start', { errors });
 });
 
+publish.get('/title', (req: Request, res: Response) => {
+    res.render('publish/title');
+});
+
+publish.post('/title', upload.none(), (req: Request, res: Response) => {
+    if (!req.body?.title) {
+        logger.error('The user failed to supply a title in the request');
+        res.status(400);
+        res.render(
+            'publish/title',
+            generateViewErrors(undefined, 500, [generateError('title', 'errors.title.missing', {})])
+        );
+        return;
+    }
+    req.session.currentTitle = req.body.title;
+    res.redirect(`/${req.i18n.language}/${req.t('routes.publish.start')}/${req.t('routes.publish.upload')}`);
+});
+
+publish.get('/upload', (req: Request, res: Response) => {
+    const currentTitle = req.session.currentTitle;
+    const currentDataset = req.session.currentDataset;
+    if (!currentDataset || !currentTitle) {
+        logger.error('There is no title or currentDataset in the session.  Abandoning this create journey');
+        req.session.errors = generateViewErrors(undefined, 500, [generateError('title', 'errors.title.missing', {})]);
+        res.redirect(`/${req.i18n.language}/${req.t('routes.publish.start')}/${t('routes.publish.title')}`);
+        return;
+    }
+    const title = currentDataset.datasetInfo?.find((info) => info.language === req.i18n.language) || currentTitle;
+    res.render('publish/upload', { title });
+});
+
+publish.post('/upload', upload.single('csv'), async (req: AuthedRequest, res: Response) => {
+    if (req.session.currentDataset) {
+        await uploadNewFileToExistingDataset(req, res);
+    } else {
+        await createNewDataset(req, res);
+    }
+});
+
+publish.get('/preview', async (req: AuthedRequest, res: Response) => {
+    const lang = req.i18n.language;
+    const statsWalesApi = new StatsWalesApi(lang, req.jwt);
+
+    const currentDataset = checkCurrentDataset(req, res);
+    if (!currentDataset) {
+        return;
+    }
+
+    const currentRevision = checkCurrentRevision(req, res);
+    if (!currentRevision) {
+        return;
+    }
+
+    const currentFileImport = checkCurrentFileImport(req, res);
+    if (!currentFileImport) {
+        return;
+    }
+    const file = req.file;
+    if (!file) {
+        generateFileError(req, res);
+        return;
+    }
+
+    const fileName = file.originalname;
+    const fileData = new Blob([file.buffer], { type: file.mimetype });
+    const processedCSV = await statsWalesApi.uploadCSVtoCreateDataset(fileData, fileName, title);
+    handleProcessedCSV(processedCSV, req, res);
+}
+
+async function uploadNewFileToExistingDataset(req: AuthedRequest, res: Response) {
+    const lang = req.i18n.language;
+    const statsWalesApi = new StatsWalesApi(lang, req.jwt);
+    const currentDataset = checkCurrentDataset(req, res);
+    const currentRevision = checkCurrentRevision(req, res);
+    if (!currentDataset || !currentRevision) {
+        return;
+    }
+
+    if (!req.file) {
+        generateFileError(req, res);
+        return;
+    }
+
+    const fileName = req.file.originalname;
+    const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
+
+    const processedCSV = await statsWalesApi.uploadCSVToFixDataset(
+        currentDataset.id,
+        currentRevision.id,
+        fileData,
+        fileName
+    );
+    handleProcessedCSV(processedCSV, req, res);
+}
+
+function cleanupSession(req: AuthedRequest) {
+    req.session.currentDataset = undefined;
+    req.session.currentRevision = undefined;
+    req.session.currentImport = undefined;
+    req.session.dimensionCreationRequest = undefined;
+    req.session.errors = undefined;
+    req.session.save();
+}
+
+publish.get('/', (req: Request, res: Response) => {
+    const errors = req.session.errors;
+    // This is the start, there are a number of reason we can end up here
+    // from errors in a previous attempt to just starting a new dataset.
+    // So lets clean up any remaining session data.
+    cleanupSession(req);
+    res.render('publish/start', { errors });
+});
+
 publish.get('/title', (req: AuthedRequest, res: Response) => {
     res.render('publish/title');
 });
