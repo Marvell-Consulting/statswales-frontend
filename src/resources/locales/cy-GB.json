@@ -89,6 +89,8 @@
         "healthcheck": "gwiriad iechyd",
         "upload": "lanlwytho",
         "list": "rhestr",
-        "data": "data"
+        "data": "data",
+        "sources": "sources",
+        "tasklist": "tasklist"
     }
 }

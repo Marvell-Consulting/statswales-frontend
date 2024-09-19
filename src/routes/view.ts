@@ -36,12 +36,6 @@ view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
             errors: [
                 {
                     field: 'file',
-                    message: [
-                        {
-                            lang,
-                            message: t('errors.dataset_missing')
-                        }
-                    ],
                     tag: {
                         name: 'errors.dataset_missing',
                         params: {}

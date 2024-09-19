@@ -1,4 +1,4 @@
-import { Error } from './error';
+import { ViewError } from './view-error';
 import { DatasetDTO } from './dataset-dto';
 
 export interface UploadDTO {
@@ -9,5 +9,5 @@ export interface UploadDTO {
 export interface UploadErrDTO {
     success: boolean;
     dataset: DatasetDTO | undefined;
-    errors: Error[];
+    errors: ViewError[];
 }

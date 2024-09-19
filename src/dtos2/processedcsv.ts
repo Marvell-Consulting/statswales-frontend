@@ -1,5 +1,5 @@
 import { DatasetDTO } from './dataset-dto';
-import { Error } from './error';
+import { ViewError } from './view-error';
 
 export interface PageInfo {
     total_records: number | undefined;
@@ -17,5 +17,5 @@ export interface ProcessedCSV {
     total_pages: number | undefined;
     headers: Array<string> | undefined;
     data: Array<Array<string>> | undefined;
-    errors: Array<Error> | undefined;
+    errors: Array<ViewError> | undefined;
 }

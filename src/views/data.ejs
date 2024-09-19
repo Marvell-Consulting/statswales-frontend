@@ -3,7 +3,7 @@
     <div class="govuk-width-container app-width-container">
         <!-- <a href="#" class="govuk-back-link">Back</a> -->
         <main class="govuk-main-wrapper" id="main-content" role="main">
-            <h1 class="govuk-heading-xl"><%- t('display.title') %> <%= locals.datafile_name || `<${t('errors.name_missing')}>` %></h1>
+            <h1 class="govuk-heading-xl"><%- t('display.title') %> <%= locals.dataset.datasetInfo.find((infos) => infos.language === i18n.language).title || `<${t('errors.name_missing')}>` %></h1>
             <% if (locals?.errors) { %>
                 <div class="govuk-error-summary" data-module="govuk-error-summary">
                     <div role="alert">
@@ -25,7 +25,7 @@
                 </div>
             <% } %>
             <p class="govuk-body"><strong><%- t('display.description') %></strong>
-                <%= locals.datafile_description || `<${t('errors.description_missing')}>` %>
+                <%= locals.dataset.datasetInfo.find((infos) => infos.language === i18n.language).title || `<${t('errors.description_missing')}>` %>
             </p>
             <% if (locals?.data) { %>
                 <div class="table-display" style="border: 1px solid #000000; padding: 1em; margin-bottom: 1em;">
@@ -36,7 +36,7 @@
                             <tr>
                                 <% locals.headers.forEach(function(cell) { %>
                                     <th scope="col" class="govuk-table__header">
-                                        <%= cell %>
+                                        <%= cell.name %>
                                     </th>
                                     <% }); %>
                             </tr>

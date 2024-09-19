@@ -49,7 +49,7 @@ export class StatsWalesApi {
                 return api_res as FileList;
             })
             .catch((error) => {
-                logger.error(`An HTTP error occured with status ${error.status} and message "${error.message}"`);
+                logger.error(`An HTTP error occurred with status ${error.status} and message "${error.message}"`);
                 return { status: error.status, files: [], error: error.message } as FileListError;
             });
         return filelist;
@@ -75,19 +75,13 @@ export class StatsWalesApi {
                 return api_res as ViewDTO;
             })
             .catch((error) => {
-                logger.error(`An HTTP error occured with status ${error.status} and message "${error.message}"`);
+                logger.error(`An HTTP error occurred with status ${error.status} and message "${error.message}"`);
                 return {
                     success: false,
                     status: error.status,
                     errors: [
                         {
                             field: 'file',
-                            message: [
-                                {
-                                    lang: this.lang,
-                                    message: 'errors.dataset_missing'
-                                }
-                            ],
                             tag: {
                                 name: 'errors.dataset_missing',
                                 params: {}
@@ -115,6 +109,9 @@ export class StatsWalesApi {
                 if (response.ok) {
                     return response.json();
                 }
+                if (response.status === 401) {
+                    logger.error('JWT timed out and the request was not authorised');
+                }
                 const err = new HttpError(response.status);
                 err.handleMessage(response.text());
                 throw err;
@@ -123,19 +120,13 @@ export class StatsWalesApi {
                 return api_res as ViewDTO;
             })
             .catch((error) => {
-                logger.error(`An HTTP error occured with status ${error.status} and message "${error.message}"`);
+                logger.error(`An HTTP error occurred with status ${error.status} and message "${error.message}"`);
                 return {
                     success: false,
                     status: error.status,
                     errors: [
                         {
                             field: 'file',
-                            message: [
-                                {
-                                    lang: this.lang,
-                                    message: 'errors.dataset_missing'
-                                }
-                            ],
                             tag: {
                                 name: 'errors.dataset_missing',
                                 params: {}
@@ -181,12 +172,6 @@ export class StatsWalesApi {
                     errors: [
                         {
                             field: 'csv',
-                            message: [
-                                {
-                                    lang: this.lang,
-                                    message: 'errors.upload.no-csv-data'
-                                }
-                            ],
                             tag: {
                                 name: 'errors.upload.no-csv-data',
                                 params: {}
@@ -281,14 +266,14 @@ export class StatsWalesApi {
         datasetId: string,
         revisionId: string,
         importId: string,
-        dimensionCreationDto: DimensionCreationDTO
+        dimensionCreationDtoArr: DimensionCreationDTO[]
     ) {
         const confirmedDatasetDto = await fetch(
             `${this.backendUrl}/${this.lang}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/sources`,
             {
                 method: 'GET',
                 headers: this.authHeader,
-                body: JSON.stringify(dimensionCreationDto)
+                body: JSON.stringify(dimensionCreationDtoArr)
             }
         )
             .then((response) => {
@@ -309,16 +294,11 @@ export class StatsWalesApi {
         return confirmedDatasetDto;
     }
 
-    public async uploadCSVToFixDataset(
-        datasetId: string,
-        revisionId: string,
-        file: Blob,
-        filename: string
-    ) {
+    public async uploadCSVToFixDataset(datasetId: string, revisionId: string, file: Blob, filename: string) {
         const formData = new FormData();
         formData.set('csv', file, filename);
 
-        const processedCSV = fetch(
+        const processedCSV = await fetch(
             `${this.backendUrl}/${this.lang}/dataset/${datasetId}/revision/by-id/${revisionId}/import`,
             {
                 method: 'POST',
@@ -349,12 +329,6 @@ export class StatsWalesApi {
                     errors: [
                         {
                             field: 'csv',
-                            message: [
-                                {
-                                    lang: this.lang,
-                                    message: 'errors.upload.no-csv-data'
-                                }
-                            ],
                             tag: {
                                 name: 'errors.upload.no-csv-data',
                                 params: {}
