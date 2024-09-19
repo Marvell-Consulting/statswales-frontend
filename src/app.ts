@@ -20,17 +20,15 @@ const app: Application = express();
 
 app.disable('x-powered-by');
 
-if (app.get('env') === 'production') {
-    app.set('trust proxy', 1);
-}
+app.set('trust proxy', 1);
 
 // enable middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(httpLogger);
+app.use(cookieParser());
 app.use(i18nextMiddleware.handle(i18next));
 app.use(session);
-app.use(cookieParser());
 
 // configure the view engine
 app.set('views', path.join(__dirname, 'views'));
