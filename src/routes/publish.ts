@@ -1,6 +1,6 @@
 import { Blob } from 'buffer';
 
-import { Request, Response, Router } from 'express';
+import { Response, Router } from 'express';
 import multer from 'multer';
 
 import { logger } from '../utils/logger';

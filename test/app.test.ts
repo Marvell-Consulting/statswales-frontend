@@ -4,8 +4,6 @@ import request from 'supertest';
 import { Request, Response, NextFunction } from 'express';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { CookieAccessInfo } from 'cookiejar';
-import supertest from 'supertest';
 
 import { ENGLISH, WELSH, i18next } from '../src/middleware/translation';
 import app from '../src/app';
@@ -19,7 +17,6 @@ declare module 'express-session' {
 }
 
 const t = i18next.t;
-let sessionCookies: string;
 
 jest.mock('../src/middleware/ensure-authenticated', () => ({
     ensureAuthenticated: (req: Request, res: Response, next: NextFunction) => next()
