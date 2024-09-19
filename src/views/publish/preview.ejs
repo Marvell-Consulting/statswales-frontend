@@ -36,7 +36,7 @@
                             <tr>
                                 <% locals.headers.forEach(function(cell) { %>
                                     <th scope="col" class="govuk-table__header">
-                                        <%= cell %>
+                                        <%= cell.name %>
                                     </th>
                                     <% }); %>
                             </tr>
@@ -139,7 +139,7 @@
                 </div>
                 <div class="govuk-grid-row">
                     <div class="govuk-grid-column-one-half">
-                        <form action="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.confirm') %>" method="post">
+                        <form action="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.sources') %>" method="post">
                             <button type="submit" name="confirm" value="true" class="govuk-button govuk-!-display-inline" data-module="govuk-button">
                                 <%= t('buttons.continue') %>
                             </button>

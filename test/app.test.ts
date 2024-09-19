@@ -7,11 +7,18 @@ import { setupServer } from 'msw/node';
 
 import { ENGLISH, WELSH, i18next } from '../src/middleware/translation';
 import app from '../src/app';
-import { DatasetDTO } from '../src/dtos2/dataset-dto';
+import { DatasetDTO, ImportDTO, RevisionDTO } from '../src/dtos2/dataset-dto';
+import { ViewErrDTO } from '../src/dtos2/view-dto';
+import { DimensionCreationDTO } from '../src/dtos2/dimension-creation-dto';
 
 declare module 'express-session' {
     interface SessionData {
-        currentDataset: DatasetDTO;
+        currentDataset: DatasetDTO | undefined;
+        currentRevision: RevisionDTO | undefined;
+        currentImport: ImportDTO | undefined;
+        errors: ViewErrDTO | undefined;
+        dimensionCreationRequest: DimensionCreationDTO[];
+        currentTitle: string | undefined;
     }
 }
 

@@ -1,4 +1,4 @@
-import { Error } from './error';
+import { ViewError } from './view-error';
 import { ImportDTO } from './dataset-dto';
 
 export interface ConfirmedImportDTO {
@@ -9,5 +9,5 @@ export interface ConfirmedImportDTO {
 export interface UploadErrDTO {
     success: boolean;
     fileImport: ImportDTO | undefined;
-    errors: Error[];
+    errors: ViewError[];
 }

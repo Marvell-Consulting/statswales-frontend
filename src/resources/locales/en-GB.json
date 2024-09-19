@@ -4,7 +4,7 @@
     "menu": "Menu",
     "publish-dataset": "Publish a Dataset",
     "upload-csv": "Upload CSV",
-    "list-data-files": "List Data Files",
+    "list-data-files": "List Datasets",
     "feedback": "This is a new service – your feedback will help us to improve it.",
     "share-page": "Share this page",
     "top-of-page": "Back to top",
@@ -67,6 +67,9 @@
             "rows": "rows",
             "row": "row",
             "showing": "Showing rows"
+        },
+        "sources": {
+            "heading": "What does each column in the data table contain?"
         }
     },
     "upload": {
@@ -78,6 +81,18 @@
         "uploadBtn": "Upload CSV"
     },
 	"errors": {
+        "session": {
+            "current_dataset_missing": "Current data set is missing from the session",
+            "current_revision_missing": "Current revision is missing from the session",
+            "current_import_missing": "Current import is missing from the session",
+            "no_sources_on_import": "Current import has no sources present on it, was the CSV empty?"
+        },
+        "source": {
+            "unknowns_found": "You need to tell us what each column contains",
+            "multiple_datavalues": "You can only specify one column as containing data values",
+            "multiple_footnotes": "You can only specify one column as containing notes",
+            "dimension_creation_failed": "Something went wrong trying to create the dimensions.  Please try again."
+        },
 		"missing": "Filename Missing",
 		"problem": "There is a problem",
         "name_missing": "Dataset Name Missing",
@@ -126,7 +141,10 @@
             "title": "title",
             "upload": "upload",
             "preview": "preview",
-            "confirm": "confirm"
+            "confirm": "confirm",
+            "sources": "sources",
+            "source-confirmation": "source-confirmation",
+            "tasklist": "tasklist"
         }
     }
 }

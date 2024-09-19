@@ -17,8 +17,10 @@ export class SourceDTO {
     revision_id: string;
     // Commented out as we don't have lookup tables yet
     // lookup_table_revision_id?: string;
+    column_index: number;
     csv_field: string;
     action: string;
+    type: string;
 }
 
 export class DimensionDTO {
