@@ -1,6 +1,6 @@
 import { Blob } from 'buffer';
 
-import { Request, Response, Router } from 'express';
+import { Response, Router } from 'express';
 import multer from 'multer';
 
 import { logger } from '../utils/logger';
@@ -15,15 +15,15 @@ const upload = multer({ storage });
 
 export const publish = Router();
 
-publish.get('/', (req: Request, res: Response) => {
+publish.get('/', (req: AuthedRequest, res: Response) => {
     res.render('publish/start');
 });
 
-publish.get('/title', (req: Request, res: Response) => {
+publish.get('/title', (req: AuthedRequest, res: Response) => {
     res.render('publish/title');
 });
 
-publish.post('/title', upload.none(), (req: Request, res: Response) => {
+publish.post('/title', upload.none(), (req: AuthedRequest, res: Response) => {
     if (!req.body?.title) {
         logger.debug('Title was missing on request');
         const err: ViewErrDTO = {
@@ -85,11 +85,9 @@ publish.post('/upload', upload.single('csv'), async (req: AuthedRequest, res: Re
         return;
     }
 
-    logger.debug(`Title name: ${req.body.title}`);
     const title: string = req.body.title;
 
     if (!req.file) {
-        logger.debug('Attached file was missing on this request');
         const err: ViewErrDTO = {
             success: false,
             status: 400,
@@ -131,16 +129,17 @@ publish.post('/upload', upload.single('csv'), async (req: AuthedRequest, res: Re
     }
 });
 
-publish.get('/preview', async (req: Request, res: Response) => {
+publish.get('/preview', async (req: AuthedRequest, res: Response) => {
     const lang = req.i18n.language;
-    const statsWalesApi = new StatsWalesApi(lang);
+    const statsWalesApi = new StatsWalesApi(lang, req.jwt);
 
     const dataset = req.session.currentDataset;
     if (!dataset) {
-        logger.debug('No dataset in session');
+        logger.error('No dataset in session');
         res.redirect(`/${req.i18n.language}/publish/title`);
         return;
     }
+
     const page_number: number = Number.parseInt(req.query.page_number as string, 10) || 1;
     const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 10;
     const previewData = await statsWalesApi.getDatasetDatafilePreview(
@@ -159,7 +158,7 @@ publish.get('/preview', async (req: Request, res: Response) => {
     res.render('publish/preview', data);
 });
 
-publish.post('/confirm', upload.none(), (req: Request, res: Response) => {
+publish.post('/confirm', upload.none(), (req: AuthedRequest, res: Response) => {
     const dataset = req.session.currentDataset;
     if (!dataset) {
         logger.debug('No dataset in session');

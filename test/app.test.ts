@@ -11,6 +11,7 @@ import { DatasetDTO } from '../src/dtos2/dataset-dto';
 
 declare module 'express-session' {
     interface SessionData {
+        title: string;
         currentDataset: DatasetDTO;
     }
 }
@@ -140,6 +141,55 @@ const server = setupServer(
             ]
         });
     }),
+    http.get(
+        'http://example.com:3001/en-GB/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/import/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953/preview',
+        () => {
+            return HttpResponse.json({
+                success: true,
+                dataset: {
+                    id: '5caeb8ed-ea64-4a58-8cf0-b728308833e5',
+                    creation_date: '2024-09-05T10:05:03.871Z',
+                    created_by: 'Test User',
+                    live: '',
+                    archive: '',
+                    datasetInfo: [
+                        {
+                            language: 'en-GB',
+                            title: 'test dataset 1',
+                            description: null
+                        }
+                    ],
+                    dimensions: [],
+                    revisions: []
+                },
+                import: {
+                    id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
+                    revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
+                    mime_type: 'text/csv',
+                    filename: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953.csv',
+                    hash: '9aa51a61d5796fbfa2ce82f62b1419d93432b1e606baf095a12daefc7c3273a5',
+                    uploaded_at: '2024-09-05T10:05:03.871Z',
+                    type: 'Draft',
+                    location: 'BlobStorage',
+                    sources: []
+                },
+                current_page: 1,
+                page_info: {
+                    total_records: 2,
+                    start_record: 1,
+                    end_record: 2
+                },
+                pages: [1],
+                page_size: 100,
+                total_pages: 1,
+                headers: ['ID', 'Text', 'Number', 'Date'],
+                data: [
+                    ['1', 'test1', '3423196', '2001-09-20'],
+                    ['2', 'AcHVoWJblA', '4470652', '2002-03-18']
+                ]
+            });
+        }
+    ),
     http.post('http://example.com:3001/en-GB/dataset/', async (req) => {
         const data = await req.request.formData();
         const title = data.get('title') as string;
@@ -232,8 +282,6 @@ afterEach(() => {
 afterAll(() => server.close());
 
 describe('Test app.ts', () => {
-    const agent = request(app);
-
     test('Redirects to language when going to /', async () => {
         const res = await request(app).get('/').set('User-Agent', 'supertest');
         expect(res.status).toBe(302);
@@ -288,7 +336,7 @@ describe('Test app.ts', () => {
     test('Upload returns 302 if a file is attached', async () => {
         const csvfile = path.resolve(__dirname, `./test-data-1.csv`);
 
-        const res = await agent
+        const res = await request(app)
             .post('/en-GB/publish/upload')
             .set('User-Agent', 'supertest')
             .attach('csv', csvfile)
@@ -297,35 +345,15 @@ describe('Test app.ts', () => {
         expect(res.header.location).toBe(`/en-GB/publish/preview`);
     });
 
-    // test('Dataset preview is rendered in the frontend', async () => {
-    //     const res = await agent
-    //         .get('/en-GB/publish/5caeb8ed-ea64-4a58-8cf0-b728308833e5/preview')
-    //         .set('Cookie', cookies)
-    //         .set('User-Agent', 'supertest');
-
-    //     expect(res.status).toBe(200);
-    //     // Header
-    //     expect(res.text).toContain(`<th scope="col" class="govuk-table__header">
-    //                                     ID
-    //                                 </th>`);
-    //     expect(res.text).toContain(`<th scope="col" class="govuk-table__header">
-    //                                     Text
-    //                                 </th>`);
-    //     expect(res.text).toContain(`<th scope="col" class="govuk-table__header">
-    //                                     Number
-    //                                 </th>`);
-    //     // First Row
-    //     expect(res.text).toContain(`<td class="govuk-table__cell">1</td>`);
-    //     expect(res.text).toContain(`<td class="govuk-table__cell">test1</td>`);
-    //     expect(res.text).toContain(`<td class="govuk-table__cell">3423196</td>`);
-    //     expect(res.text).toContain(`<td class="govuk-table__cell">2001-09-20</td>`);
-    //     // Last Row
-    //     expect(res.text).toContain(`<td class="govuk-table__cell">2</td>`);
-    //     expect(res.text).toContain(`<td class="govuk-table__cell">AcHVoWJblA</td>`);
-    //     expect(res.text).toContain(`<td class="govuk-table__cell">4470652</td>`);
-    //     expect(res.text).toContain(`<td class="govuk-table__cell">2002-03-18</td>`);
-    //     expect(res.text).toContain('Showing lines 1 - 2 of 2');
-    // });
+    async function setDatasetToSession() {
+        const csvfile = path.resolve(__dirname, `./test-data-1.csv`);
+        const res = await request(app)
+            .post('/en-GB/publish/upload')
+            .set('User-Agent', 'supertest')
+            .attach('csv', csvfile)
+            .field('title', 'Test dataset 1');
+        return res.headers['set-cookie'];
+    }
 
     test('Upload returns 400 and an error if no title provided', async () => {
         const csvfile = path.resolve(__dirname, `./test-data-1.csv`);
@@ -347,7 +375,7 @@ describe('Test app.ts', () => {
         expect(res.text).toContain('No CSV data available');
     });
 
-    test('Uload returns 400 if API says upload was not a success', async () => {
+    test('Upload returns 400 if API says upload was not a success', async () => {
         const csvfile = path.resolve(__dirname, `./test-data-1.csv`);
 
         const res = await request(app)
@@ -359,7 +387,7 @@ describe('Test app.ts', () => {
         expect(res.text).toContain(t('errors.upload.no-csv-data'));
     });
 
-    test('Check inital healthcheck endpoint works', async () => {
+    test('Check initial healthcheck endpoint works', async () => {
         const res = await request(app).get('/healthcheck').set('User-Agent', 'supertest');
         expect(res.status).toBe(200);
         expect(res.body).toEqual({
@@ -410,5 +438,36 @@ describe('Test app.ts', () => {
         expect(res.status).toBe(404);
         expect(res.text).toContain(t('errors.problem'));
         expect(res.text).toContain(t('errors.dataset_missing'));
+    });
+
+    test('Dataset preview is rendered in the frontend', async () => {
+        const cookies = await setDatasetToSession();
+        const res = await request(app)
+            .get('/en-GB/publish/preview')
+            .set('Cookie', cookies)
+            .set('User-Agent', 'supertest');
+
+        expect(res.status).toBe(200);
+        // Header
+        expect(res.text).toContain(`<th scope="col" class="govuk-table__header">
+                                        ID
+                                    </th>`);
+        expect(res.text).toContain(`<th scope="col" class="govuk-table__header">
+                                        Text
+                                    </th>`);
+        expect(res.text).toContain(`<th scope="col" class="govuk-table__header">
+                                        Number
+                                    </th>`);
+        // First Row
+        expect(res.text).toContain(`<td class="govuk-table__cell">1</td>`);
+        expect(res.text).toContain(`<td class="govuk-table__cell">test1</td>`);
+        expect(res.text).toContain(`<td class="govuk-table__cell">3423196</td>`);
+        expect(res.text).toContain(`<td class="govuk-table__cell">2001-09-20</td>`);
+        // Last Row
+        expect(res.text).toContain(`<td class="govuk-table__cell">2</td>`);
+        expect(res.text).toContain(`<td class="govuk-table__cell">AcHVoWJblA</td>`);
+        expect(res.text).toContain(`<td class="govuk-table__cell">4470652</td>`);
+        expect(res.text).toContain(`<td class="govuk-table__cell">2002-03-18</td>`);
+        expect(res.text).toContain('Showing rows 1 - 2 of 2');
     });
 });
