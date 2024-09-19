@@ -119,7 +119,7 @@ function checkCurrentFileImport(req: AuthedRequest, res: Response): ImportDTO | 
     return currentFileImport;
 }
 
-function handleProcessedCSV(processedCSV: UploadDTO | UploadErrDTO, req: AuthedRequest, res: Response) {
+async function handleProcessedCSV(processedCSV: UploadDTO | UploadErrDTO, req: AuthedRequest, res: Response) {
     if (processedCSV.success) {
         const viewDTO = processedCSV as ViewDTO;
         if (!viewDTO.dataset) {
@@ -130,8 +130,7 @@ function handleProcessedCSV(processedCSV: UploadDTO | UploadErrDTO, req: AuthedR
         setCurrentToSession(viewDTO.dataset, req);
         res.redirect(`/${req.i18n.language}/publish/preview`);
     } else {
-        res.status(400);
-        res.render('publish/upload', processedCSV);
+        await createNewDataset(req, res);
     }
 }
 
@@ -154,7 +153,7 @@ async function createNewDataset(req: AuthedRequest, res: Response) {
     const fileName = file.originalname;
     const fileData = new Blob([file.buffer], { type: file.mimetype });
     const processedCSV = await statsWalesApi.uploadCSVtoCreateDataset(fileData, fileName, title);
-    handleProcessedCSV(processedCSV, req, res);
+    await handleProcessedCSV(processedCSV, req, res);
 }
 
 async function uploadNewFileToExistingDataset(req: AuthedRequest, res: Response) {
@@ -180,7 +179,7 @@ async function uploadNewFileToExistingDataset(req: AuthedRequest, res: Response)
         fileData,
         fileName
     );
-    handleProcessedCSV(processedCSV, req, res);
+    await handleProcessedCSV(processedCSV, req, res);
 }
 
 function cleanupSession(req: AuthedRequest) {
@@ -192,7 +191,7 @@ function cleanupSession(req: AuthedRequest) {
     req.session.save();
 }
 
-publish.get('/', (req: Request, res: Response) => {
+publish.get('/', (req: AuthedRequest, res: Response) => {
     const errors = req.session.errors;
     // This is the start, there are a number of reason we can end up here
     // from errors in a previous attempt to just starting a new dataset.
@@ -202,7 +201,7 @@ publish.get('/', (req: Request, res: Response) => {
 });
 
 publish.get('/title', (req: AuthedRequest, res: Response) => {
-    res.render('publish/title');
+    res.render('publish/title', { errors: req.session.errors });
 });
 
 publish.post('/title', upload.none(), (req: AuthedRequest, res: Response) => {
@@ -219,7 +218,7 @@ publish.post('/title', upload.none(), (req: AuthedRequest, res: Response) => {
     res.redirect(`/${req.i18n.language}/${req.t('routes.publish.start')}/${req.t('routes.publish.upload')}`);
 });
 
-publish.get('/upload', (req: Request, res: Response) => {
+publish.get('/upload', (req: AuthedRequest, res: Response) => {
     const currentTitle = req.session.currentTitle;
     const currentDataset = req.session.currentDataset;
     if (!currentDataset || !currentTitle) {
