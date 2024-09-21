@@ -34,9 +34,11 @@ export class StatsWalesApi {
     }
 
     public async getFileList() {
-        logger.debug(`Fetching file list from ${this.backendUrl}/${this.lang}/dataset`);
+        logger.debug(`Fetching file list from ${this.backendUrl}/${this.lang}/dataset/active`);
 
-        const filelist: FileList = await fetch(`${this.backendUrl}/${this.lang}/dataset`, { headers: this.authHeader })
+        const filelist: FileList = await fetch(`${this.backendUrl}/${this.lang}/dataset/active`, {
+            headers: this.authHeader
+        })
             .then((response) => {
                 if (response.ok) {
                     return response.json();
@@ -173,7 +175,7 @@ export class StatsWalesApi {
                         {
                             field: 'csv',
                             tag: {
-                                name: 'errors.upload.no-csv-data',
+                                name: 'errors.upload.no_csv_data',
                                 params: {}
                             }
                         }
@@ -271,8 +273,8 @@ export class StatsWalesApi {
         const confirmedDatasetDto = await fetch(
             `${this.backendUrl}/${this.lang}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/sources`,
             {
-                method: 'GET',
-                headers: this.authHeader,
+                method: 'PATCH',
+                headers: { ...this.authHeader, 'Content-Type': 'application/json; charset=UTF-8' },
                 body: JSON.stringify(dimensionCreationDtoArr)
             }
         )
@@ -330,7 +332,7 @@ export class StatsWalesApi {
                         {
                             field: 'csv',
                             tag: {
-                                name: 'errors.upload.no-csv-data',
+                                name: 'errors.upload.no_csv_data',
                                 params: {}
                             }
                         }

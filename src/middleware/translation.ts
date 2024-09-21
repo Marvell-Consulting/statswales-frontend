@@ -6,8 +6,8 @@ const ENGLISH = 'en-GB';
 const WELSH = 'cy-GB';
 
 i18next
-    .use(Backend)
     .use(i18nextMiddleware.LanguageDetector)
+    .use(Backend)
     .init({
         detection: {
             order: ['path', 'header'],
@@ -16,10 +16,10 @@ i18next
             ignoreRoutes: ['/healthcheck', '/public', '/css', '/assets']
         },
         backend: {
-            loadPath: `${__dirname}/../resources/locales/{{lng}}.json`
+            loadPath: `${__dirname}/translations/{{lng}}.json`
         },
-        fallbackLng: ENGLISH,
-        preload: [ENGLISH, WELSH],
+        fallbackLng: 'en',
+        preload: ['en', 'cy'],
         debug: false
     });
 

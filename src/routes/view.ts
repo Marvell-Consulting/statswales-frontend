@@ -20,7 +20,7 @@ const statsWalesApi = (req: AuthedRequest) => {
 view.get('/', async (req: AuthedRequest, res: Response) => {
     const fileList: FileList = await statsWalesApi(req).getFileList();
     logger.debug(`FileList from server = ${JSON.stringify(fileList)}`);
-    res.render('list', fileList);
+    res.render('view/list', fileList);
 });
 
 view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
@@ -31,7 +31,7 @@ view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
     if (!req.params.datasetId || !validateUUID(req.params.datasetId)) {
         const err: ViewErrDTO = {
             success: false,
-            status: 400,
+            status: 404,
             dataset_id: undefined,
             errors: [
                 {
@@ -49,11 +49,10 @@ view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
     }
 
     const datasetId = req.params.datasetId;
-
     const file = await statsWalesApi(req).getDatasetView(datasetId, page_number, page_size);
     if (!file.success) {
         const error = file as ViewErrDTO;
         res.status(error.status);
     }
-    res.render('data', file);
+    res.render('view/data', file);
 });

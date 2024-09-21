@@ -81,45 +81,49 @@ function generateViewErrors(datasetID: string | undefined, statusCode: number, e
 }
 
 function checkCurrentDataset(req: AuthedRequest, res: Response): DatasetDTO | undefined {
+    const lang = req.i18n.language;
     const currentDataset = req.session.currentDataset;
     if (!currentDataset) {
         logger.error('No current dataset found in the session... user may have navigated here by mistake');
         req.session.errors = generateViewErrors(undefined, 500, [
             generateError('session', 'errors.session.current_dataset_missing', {})
         ]);
-        res.redirect(`/${req.i18n.language}/${req.t('routes.publish.start')}/`);
+        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/`);
         return undefined;
     }
     return currentDataset;
 }
 
 function checkCurrentRevision(req: AuthedRequest, res: Response): RevisionDTO | undefined {
+    const lang = req.i18n.language;
     const currentRevision = req.session.currentRevision;
     if (!currentRevision) {
         logger.error('No current revision found in the session... user may have navigated here by mistake');
         req.session.errors = generateViewErrors(undefined, 500, [
             generateError('session', 'errors.session.current_revision_missing', {})
         ]);
-        res.redirect(`/${req.i18n.language}/${req.t('routes.publish.start')}/`);
+        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/`);
         return undefined;
     }
     return currentRevision;
 }
 
 function checkCurrentFileImport(req: AuthedRequest, res: Response): ImportDTO | undefined {
+    const lang = req.i18n.language;
     const currentFileImport = req.session.currentImport;
     if (!currentFileImport) {
         logger.error('No current import found in the session... user may have navigated here by mistake');
         req.session.errors = generateViewErrors(undefined, 500, [
             generateError('session', 'errors.session.current_import_missing', {})
         ]);
-        res.redirect(`/${req.i18n.language}/${req.t('routes.publish.start')}/`);
+        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/`);
         return undefined;
     }
     return currentFileImport;
 }
 
 async function handleProcessedCSV(processedCSV: UploadDTO | UploadErrDTO, req: AuthedRequest, res: Response) {
+    const lang = req.i18n.language;
     if (processedCSV.success) {
         const viewDTO = processedCSV as ViewDTO;
         if (!viewDTO.dataset) {
@@ -128,9 +132,13 @@ async function handleProcessedCSV(processedCSV: UploadDTO | UploadErrDTO, req: A
             return;
         }
         setCurrentToSession(viewDTO.dataset, req);
-        res.redirect(`/${req.i18n.language}/publish/preview`);
+        res.redirect(
+            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.preview', { lng: lang })}`
+        );
     } else {
-        await createNewDataset(req, res);
+        const err = processedCSV as UploadErrDTO;
+        req.session.errors = generateViewErrors(err.dataset?.id, 500, err.errors);
+        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/`);
     }
 }
 
@@ -141,7 +149,9 @@ async function createNewDataset(req: AuthedRequest, res: Response) {
     if (!title) {
         logger.debug('Current title was missing from the session.  Something might have gone wrong');
         req.session.errors = generateViewErrors(undefined, 400, [generateError('title', 'errors.title_missing', {})]);
-        res.redirect(`/${req.i18n.language}/${req.t('routes.publish.start')}/${t('routes.publish.title')}`);
+        res.redirect(
+            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${t('routes.publish.title', { lng: lang })}`
+        );
         return;
     }
     const file = req.file;
@@ -215,26 +225,36 @@ publish.post('/title', upload.none(), (req: AuthedRequest, res: Response) => {
         return;
     }
     req.session.currentTitle = req.body.title;
-    res.redirect(`/${req.i18n.language}/${req.t('routes.publish.start')}/${req.t('routes.publish.upload')}`);
+    req.session.save();
+    const lang = req.i18n.language;
+    res.redirect(
+        `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.upload', { lng: lang })}`
+    );
 });
 
 publish.get('/upload', (req: AuthedRequest, res: Response) => {
     const currentTitle = req.session.currentTitle;
     const currentDataset = req.session.currentDataset;
-    if (!currentDataset || !currentTitle) {
+    if (!currentDataset && !currentTitle) {
         logger.error('There is no title or currentDataset in the session.  Abandoning this create journey');
         req.session.errors = generateViewErrors(undefined, 500, [generateError('title', 'errors.title.missing', {})]);
-        res.redirect(`/${req.i18n.language}/${req.t('routes.publish.start')}/${t('routes.publish.title')}`);
+        req.session.save();
+        const lang = req.i18n.language;
+        res.redirect(
+            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${t('routes.publish.title', { lng: lang })}`
+        );
         return;
     }
-    const title = currentDataset.datasetInfo?.find((info) => info.language === req.i18n.language) || currentTitle;
+    const title = currentDataset?.datasetInfo?.find((info) => info.language === req.i18n.language) || currentTitle;
     res.render('publish/upload', { title });
 });
 
 publish.post('/upload', upload.single('csv'), async (req: AuthedRequest, res: Response) => {
     if (req.session.currentDataset) {
+        logger.info('Dataset present... Amending existing Dataset');
         await uploadNewFileToExistingDataset(req, res);
     } else {
+        logger.info('Creating a new dataset');
         await createNewDataset(req, res);
     }
 });
@@ -272,7 +292,8 @@ publish.get('/preview', async (req: AuthedRequest, res: Response) => {
         req.session.errors = generateViewErrors(undefined, 500, [
             generateError('preview', 'errors.preview.failed_to_get_preview', {})
         ]);
-        res.redirect(`/${req.i18n.language}/${req.t('routes.publish.start')}/`);
+        req.session.save();
+        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/`);
         return;
     }
     const data = previewData as ViewDTO;
@@ -287,24 +308,31 @@ async function confirmFileUpload(
     req: AuthedRequest,
     res: Response
 ) {
+    const lang = req.i18n.language;
     try {
         const confirmedImport: ConfirmedImportDTO = await statsWalesApi.confirmFileImport(
             currentDataset.id,
             currentRevision.id,
             currentFileImport.id
         );
-        console.log(JSON.stringify(confirmedImport, null, 2));
         if (confirmedImport.success) {
-            const fileImport = confirmedImport.fileImport;
-            req.session.currentImport = fileImport;
+            req.session.currentImport = confirmedImport.fileImport;
             req.session.save();
-            res.status(200);
-            res.render('publish/sources', { currentImport: fileImport });
+            res.redirect(
+                `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.sources', { lng: lang })}`
+            );
         }
     } catch (err) {
-        logger.error(err);
-        res.status(500);
-        res.render('publish/confirm', { error: err });
+        logger.error(
+            `An HTTP error occurred trying to confirm import from the dataset with the following error: ${err}`
+        );
+        req.session.errors = generateViewErrors(currentDataset.id, 500, [
+            generateError('confirm', 'errors.preview.confirm_error', {})
+        ]);
+        req.session.save();
+        res.redirect(
+            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.preview', { lng: lang })}`
+        );
     }
 }
 
@@ -316,18 +344,29 @@ async function rejectFileReturnToUpload(
     req: AuthedRequest,
     res: Response
 ) {
+    const lang = req.i18n.language;
     try {
-        await statsWalesApi.removeFileImport(currentDataset.id, currentRevision.id, currentFileImport.id);
         req.session.currentImport = undefined;
-        res.redirect(`/${req.i18n.language}/publish/title`);
+        await statsWalesApi.removeFileImport(currentDataset.id, currentRevision.id, currentFileImport.id);
+        req.session.save();
+        res.redirect(
+            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.upload')}`
+        );
     } catch (err) {
-        logger.error(err);
-        res.status(500);
-        res.render('publish/confirm', { error: err });
+        logger.error(
+            `An HTTP error occurred trying to remove the import from the dataset with the following error: ${err}`
+        );
+        req.session.errors = generateViewErrors(currentDataset.id, 500, [
+            generateError('confirm', 'errors.preview.remove_error', {})
+        ]);
+        req.session.save();
+        res.redirect(
+            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.preview', { lng: lang })}`
+        );
     }
 }
 
-publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response) => {
+publish.post('/preview', upload.none(), async (req: AuthedRequest, res: Response) => {
     const currentDataset = checkCurrentDataset(req, res);
     if (!currentDataset) {
         return;
@@ -350,23 +389,50 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
         req.session.errors = generateViewErrors(undefined, 400, [
             generateError('confirmBtn', 'errors.confirm.missing', {})
         ]);
-        res.redirect(`/${req.i18n.language}/publish/preview`);
+        req.session.save();
+        res.redirect(
+            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.preview', { lng: lang })}`
+        );
     }
     const statsWalesApi = new StatsWalesApi(lang, req.jwt);
     if (confirmData === 'true') {
+        logger.info('User confirmed file upload was correct');
         await confirmFileUpload(currentDataset, currentRevision, currentFileImport, statsWalesApi, req, res);
     } else {
+        logger.info('User rejected the file in preview');
         await rejectFileReturnToUpload(currentDataset, currentRevision, currentFileImport, statsWalesApi, req, res);
     }
 });
 
+function updateCurrentImport(currentImport: ImportDTO, dimensionCreationRequest: DimensionCreationDTO[]) {
+    if (currentImport.sources) {
+        currentImport.sources.forEach((source) => {
+            source.type =
+                dimensionCreationRequest.find((dim) => dim.sourceId === source.id)?.sourceType || SourceType.UNKNOWN;
+        });
+    }
+    return currentImport;
+}
+
 publish.get('/sources', upload.none(), (req: AuthedRequest, res: Response) => {
-    const currentFileImport = checkCurrentFileImport(req, res);
+    const lang = req.i18n.language;
+    let currentFileImport = checkCurrentFileImport(req, res);
     const dimensionCreationRequest = req.session.dimensionCreationRequest;
     if (!currentFileImport) {
         return;
     }
+    if (!currentFileImport.sources) {
+        logger.error('No current import found in the session with sources... user may have navigated here by mistake');
+        req.session.errors = generateViewErrors(undefined, 500, [
+            generateError('session', 'errors.session.no_sources_on_import', {})
+        ]);
+        req.session.save();
+        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}`);
+        return;
+    }
     const errs = req.session.errors;
+    req.session.errors = undefined;
+    req.session.save();
     if (errs) {
         res.status(500);
     } else {
@@ -374,19 +440,21 @@ publish.get('/sources', upload.none(), (req: AuthedRequest, res: Response) => {
     }
 
     if (dimensionCreationRequest) {
-        if (currentFileImport.sources) {
-            currentFileImport.sources.forEach((source) => {
-                source.type =
-                    dimensionCreationRequest.find((dim) => dim.sourceId === source.id)?.sourceType ||
-                    SourceType.UNKNOWN;
-            });
-        }
+        currentFileImport = updateCurrentImport(currentFileImport, dimensionCreationRequest);
+    } else {
+        currentFileImport.sources.forEach((source) => {
+            source.type = SourceType.UNKNOWN;
+        });
     }
-
-    res.render('publish/sources', { errors: errs, currentImport: currentFileImport });
+    res.render('publish/sources', {
+        errors: errs,
+        currentImport: currentFileImport,
+        sourceTypes: Object.keys(SourceType)
+    });
 });
 
-publish.post('/source-confirmation', upload.none(), async (req: AuthedRequest, res: Response) => {
+publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response) => {
+    const lang = req.i18n.language;
     const currentDataset = checkCurrentDataset(req, res);
     if (!currentDataset) {
         return;
@@ -407,10 +475,11 @@ publish.post('/source-confirmation', upload.none(), async (req: AuthedRequest, r
         req.session.errors = generateViewErrors(undefined, 500, [
             generateError('session', 'errors.session.no_sources_on_import', {})
         ]);
-        res.redirect(`/${req.i18n.language}/${req.t('routes.publish.start')}/`);
+        req.session.save();
+        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}`);
         return;
     }
-
+    logger.info('Creating Dimension Request object');
     const dimensionCreationRequest: DimensionCreationDTO[] = currentFileImport.sources.map((source) => {
         return {
             sourceId: source.id,
@@ -418,35 +487,68 @@ publish.post('/source-confirmation', upload.none(), async (req: AuthedRequest, r
         };
     });
     req.session.dimensionCreationRequest = dimensionCreationRequest;
-    if (dimensionCreationRequest.find((createRequest) => createRequest.sourceType === SourceType.UNKNOWN)) {
+    req.session.save();
+    const updatedFileImportWithSourceType = updateCurrentImport(currentFileImport, dimensionCreationRequest);
+    console.log(`dimensionCreationRequest = ${JSON.stringify(dimensionCreationRequest)}`);
+
+    logger.info(
+        `Validating the request before sending to the server, dimensionCreationRequest length = ${dimensionCreationRequest.length}`
+    );
+    const sourcesMarkedUnknown = dimensionCreationRequest.filter(
+        (createRequest) => createRequest.sourceType === SourceType.UNKNOWN
+    );
+    const sourcesMarkedDataValues = dimensionCreationRequest.filter(
+        (createRequest) => createRequest.sourceType === SourceType.DATAVALUES
+    );
+    const sourcesMarkedFootnotes = dimensionCreationRequest.filter(
+        (createRequest) => createRequest.sourceType === SourceType.FOOTNOTES
+    );
+    if (sourcesMarkedUnknown.length > 0) {
         logger.error('User failed to identify all sources');
-        req.session.errors = generateViewErrors(undefined, 400, [
-            generateError('session', 'errors.source.unknowns_found', {})
+        const errs = generateViewErrors(undefined, 400, [
+            generateError('session', 'errors.sources.unknowns_found', {})
         ]);
-        res.redirect(`/${req.i18n.language}/publish/source`);
+        req.session.errors = errs;
+        req.session.save();
+        res.render('publish/sources', {
+            errors: errs,
+            currentImport: updatedFileImportWithSourceType,
+            sourceTypes: Object.keys(SourceType)
+        });
         return;
     }
-    if (
-        dimensionCreationRequest.filter((createRequest) => createRequest.sourceType === SourceType.DATAVALUES).length >
-        1
-    ) {
+
+    if (sourcesMarkedDataValues.length > 1) {
         logger.error('User tried to specify multiple data value sources');
-        req.session.errors = generateViewErrors(undefined, 400, [
-            generateError('session', 'errors.source.multiple_datavalues', {})
+        const errs = generateViewErrors(undefined, 400, [
+            generateError('session', 'errors.sources.multiple_datavalues', {})
         ]);
-        res.redirect(`/${req.i18n.language}/publish/source`);
+        req.session.errors = errs;
+        req.session.dimensionCreationRequest = dimensionCreationRequest;
+        req.session.save();
+        res.render('publish/sources', {
+            errors: errs,
+            currentImport: updatedFileImportWithSourceType,
+            sourceTypes: Object.keys(SourceType)
+        });
         return;
     }
-    if (
-        dimensionCreationRequest.filter((createRequest) => createRequest.sourceType === SourceType.FOOTNOTES).length > 1
-    ) {
+
+    if (sourcesMarkedFootnotes.length > 1) {
         logger.error('User tried to specify multiple footnote sources');
-        req.session.errors = generateViewErrors(undefined, 400, [
-            generateError('session', 'errors.source.multiple_footnotes', {})
+        const errs = generateViewErrors(undefined, 400, [
+            generateError('session', 'errors.sources.multiple_footnotes', {})
         ]);
-        res.redirect(`/${req.i18n.language}/publish/source`);
+        req.session.errors = errs;
+        req.session.save();
+        res.render('publish/sources', {
+            errors: errs,
+            currentImport: updatedFileImportWithSourceType,
+            sourceTypes: Object.keys(SourceType)
+        });
         return;
     }
+    logger.info('Dimension creation request checks out... Sending it to the backend to do its thing');
     const statsWalesApi = new StatsWalesApi(req.i18n.language, req.jwt);
     try {
         const updatedDataset: UploadDTO = await statsWalesApi.sendCreateDimensionRequest(
@@ -460,9 +562,24 @@ publish.post('/source-confirmation', upload.none(), async (req: AuthedRequest, r
         res.json(updatedDataset);
     } catch (err) {
         logger.error(`Something went wrong with the Dimension Creation Request with the following error: ${err}`);
-        req.session.errors = generateViewErrors(undefined, 500, [
-            generateError('session', 'errors.source.dimension_creation_failed', {})
+        const errs = generateViewErrors(undefined, 500, [
+            generateError('session', 'errors.sources.dimension_creation_failed', {})
         ]);
-        res.redirect(`/${req.i18n.language}/publish/source`);
+        req.session.save();
+        res.status(500);
+        res.render('publish/sources', {
+            errors: errs,
+            currentImport: updatedFileImportWithSourceType,
+            sourceTypes: Object.keys(SourceType)
+        });
     }
+});
+
+publish.get('/session/', (req: AuthedRequest, res: Response) => {
+    res.status(200);
+    res.header('mime-type', 'application/json');
+    res.json({
+        session: req.session,
+        user: req.user
+    });
 });

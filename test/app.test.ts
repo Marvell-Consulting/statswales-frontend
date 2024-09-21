@@ -140,7 +140,12 @@ const server = setupServer(
             pages: [1],
             page_size: 100,
             total_pages: 1,
-            headers: ['ID', 'Text', 'Number', 'Date'],
+            headers: [
+                { index: 0, name: 'ID' },
+                { index: 1, name: 'Text' },
+                { index: 2, name: 'Number' },
+                { index: 3, name: 'Date' }
+            ],
             data: [
                 ['1', 'test1', '3423196', '2001-09-20'],
                 ['2', 'AcHVoWJblA', '4470652', '2002-03-18']
@@ -188,7 +193,12 @@ const server = setupServer(
                 pages: [1],
                 page_size: 100,
                 total_pages: 1,
-                headers: ['ID', 'Text', 'Number', 'Date'],
+                headers: [
+                    { index: 0, name: 'ID' },
+                    { index: 1, name: 'Text' },
+                    { index: 2, name: 'Number' },
+                    { index: 3, name: 'Date' }
+                ],
                 data: [
                     ['1', 'test1', '3423196', '2001-09-20'],
                     ['2', 'AcHVoWJblA', '4470652', '2002-03-18']
@@ -206,11 +216,7 @@ const server = setupServer(
                     errors: [
                         {
                             field: 'csv',
-                            message: [
-                                { lang: ENGLISH, message: t('errors.upload.no-csv-data', { lng: ENGLISH }) },
-                                { lang: WELSH, message: t('errors.upload.no-csv-data', { lng: WELSH }) }
-                            ],
-                            tag: { name: 'errors.upload.no-csv-data', params: {} }
+                            tag: { name: 'errors.upload.no_csv_data', params: {} }
                         }
                     ]
                 },
@@ -288,6 +294,31 @@ afterEach(() => {
 afterAll(() => server.close());
 
 describe('Test app.ts', () => {
+    async function clearSession() {
+        const res = await request(app).get('/en-GB/publish').set('User-Agent', 'supertest');
+        return res.headers['set-cookie'];
+    }
+
+    async function setTitleToSession(title: string) {
+        const res = await request(app)
+            .post('/en-GB/publish/title')
+            .set('User-Agent', 'supertest')
+            .field('title', title);
+        return res.headers['set-cookie'];
+    }
+
+    async function setDatasetToSession() {
+        await clearSession();
+        const cookie = await setTitleToSession('test dataset 1');
+        const csvfile = path.resolve(__dirname, `./test-data-1.csv`);
+        const res = await request(app)
+            .post('/en-GB/publish/upload')
+            .set('User-Agent', 'supertest')
+            .set('Cookie', cookie)
+            .attach('csv', csvfile);
+        return res.headers['set-cookie'];
+    }
+
     test('Redirects to language when going to /', async () => {
         const res = await request(app).get('/').set('User-Agent', 'supertest');
         expect(res.status).toBe(302);
@@ -330,67 +361,58 @@ describe('Test app.ts', () => {
         expect(res.text).toContain(t('errors.title.missing'));
     });
 
-    test('Set title returns 200 with user title', async () => {
+    test('Set title returns 302 and directs the user to the upload', async () => {
         const res = await request(app)
             .post('/en-GB/publish/title')
             .set('User-Agent', 'supertest')
             .field('title', 'Test dataset 1');
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Test dataset 1');
+        expect(res.status).toBe(302);
+        expect(res.header.location).toBe(`/en-GB/publish/upload`);
     });
 
     test('Upload returns 302 if a file is attached', async () => {
         const csvfile = path.resolve(__dirname, `./test-data-1.csv`);
-
+        const cookies = await setTitleToSession('Test dataset 1');
         const res = await request(app)
             .post('/en-GB/publish/upload')
             .set('User-Agent', 'supertest')
-            .attach('csv', csvfile)
-            .field('title', 'Test dataset 1');
+            .set('Cookie', cookies)
+            .attach('csv', csvfile);
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(`/en-GB/publish/preview`);
     });
 
-    async function setDatasetToSession() {
-        const csvfile = path.resolve(__dirname, `./test-data-1.csv`);
-        const res = await request(app)
-            .post('/en-GB/publish/upload')
-            .set('User-Agent', 'supertest')
-            .attach('csv', csvfile)
-            .field('title', 'Test dataset 1');
-        return res.headers['set-cookie'];
-    }
-
-    test('Upload returns 400 and an error if no title provided', async () => {
+    test('Upload returns 302 and sends user back to title if no title provided', async () => {
         const csvfile = path.resolve(__dirname, `./test-data-1.csv`);
 
         const res = await request(app)
             .post('/en-GB/publish/upload')
             .set('User-Agent', 'supertest')
             .attach('csv', csvfile);
-        expect(res.status).toBe(400);
-        expect(res.text).toContain(t('errors.title.missing'));
+        expect(res.status).toBe(302);
+        expect(res.header.location).toBe(`/en-GB/publish/title`);
     });
 
     test('Upload returns 400 and an error if no file attached', async () => {
+        const cookies = await setTitleToSession('Test dataset 1');
         const res = await request(app)
             .post('/en-GB/publish/upload')
             .set('User-Agent', 'supertest')
-            .field('title', 'Test dataset 1');
+            .set('Cookie', cookies);
         expect(res.status).toBe(400);
         expect(res.text).toContain('No CSV data available');
     });
 
-    test('Upload returns 400 if API says upload was not a success', async () => {
+    test('Upload returns 302 if API says upload was not a success and redirect to start', async () => {
         const csvfile = path.resolve(__dirname, `./test-data-1.csv`);
-
+        const cookies = await setTitleToSession('test-data-3.csv fail test');
         const res = await request(app)
             .post('/en-GB/publish/upload')
             .set('User-Agent', 'supertest')
-            .field('title', 'test-data-3.csv fail test')
+            .set('Cookie', cookies)
             .attach('csv', csvfile);
-        expect(res.status).toBe(400);
-        expect(res.text).toContain(t('errors.upload.no-csv-data'));
+        expect(res.status).toBe(302);
+        expect(res.header.location).toBe(`/en-GB/publish/`);
     });
 
     test('Check initial healthcheck endpoint works', async () => {
@@ -417,15 +439,9 @@ describe('Test app.ts', () => {
             .set('User-Agent', 'supertest');
         expect(res.status).toBe(200);
         // Header
-        expect(res.text).toContain(`<th scope="col" class="govuk-table__header">
-                                        ID
-                                    </th>`);
-        expect(res.text).toContain(`<th scope="col" class="govuk-table__header">
-                                        Text
-                                    </th>`);
-        expect(res.text).toContain(`<th scope="col" class="govuk-table__header">
-                                        Number
-                                    </th>`);
+        expect(res.text).toContain(`<th scope="col" class="govuk-table__header">ID</th>`);
+        expect(res.text).toContain(`<th scope="col" class="govuk-table__header">Text</th>`);
+        expect(res.text).toContain(`<th scope="col" class="govuk-table__header">Number</th>`);
         // First Row
         expect(res.text).toContain(`<td class="govuk-table__cell">1</td>`);
         expect(res.text).toContain(`<td class="govuk-table__cell">test1</td>`);
@@ -448,6 +464,7 @@ describe('Test app.ts', () => {
 
     test('Dataset preview is rendered in the frontend', async () => {
         const cookies = await setDatasetToSession();
+
         const res = await request(app)
             .get('/en-GB/publish/preview')
             .set('Cookie', cookies)
@@ -455,15 +472,9 @@ describe('Test app.ts', () => {
 
         expect(res.status).toBe(200);
         // Header
-        expect(res.text).toContain(`<th scope="col" class="govuk-table__header">
-                                        ID
-                                    </th>`);
-        expect(res.text).toContain(`<th scope="col" class="govuk-table__header">
-                                        Text
-                                    </th>`);
-        expect(res.text).toContain(`<th scope="col" class="govuk-table__header">
-                                        Number
-                                    </th>`);
+        expect(res.text).toContain(`<th scope="col" class="govuk-table__header">ID</th>`);
+        expect(res.text).toContain(`<th scope="col" class="govuk-table__header">Text</th>`);
+        expect(res.text).toContain(`<th scope="col" class="govuk-table__header">Number</th>`);
         // First Row
         expect(res.text).toContain(`<td class="govuk-table__cell">1</td>`);
         expect(res.text).toContain(`<td class="govuk-table__cell">test1</td>`);

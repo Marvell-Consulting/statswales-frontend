@@ -1,9 +1,11 @@
-<%- include("../partials/top"); %>
+<%- include("../partials/header"); %>
 
     <div class="govuk-width-container app-width-container">
         <!-- <a href="#" class="govuk-back-link">Back</a> -->
         <main class="govuk-main-wrapper" id="main-content" role="main">
             <h1 class="govuk-heading-xl"><%= t('publish.title.heading') %></h1>
+
+            <%- include("../partials/error-handler"); %>
 
             <ul class="govuk-list govuk-list--bullet">
                 <li><%= t('publish.title.appear') %></li>
@@ -11,28 +13,9 @@
                 <li><%= t('publish.title.language') %></li>
             </ul>
 
-            <% if (locals?.errors) { %>
-                <div class="govuk-error-summary" data-module="govuk-error-summary">
-                    <div role="alert">
-                        <h2 class="govuk-error-summary__title">
-                            <%= t('errors.problem') %>
-                        </h2>
-                        <div class="govuk-error-summary__body">
-                            <ul class="govuk-list govuk-error-summary__list">
-                                <% errors.forEach(function(error) { %>
-                                    <li>
-                                        <a href="#<%= error.field %>"><%= t(error.tag.name) %></a>
-                                    </li>
-                                    <% }); %>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            <% } %>
-
             <form action="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.title') %>/" enctype="multipart/form-data" method="post">
                 <div class="govuk-form-group">
-                    <input class="govuk-input" id="internal_name" name="title" type="text">
+                    <input class="govuk-input" id="title" name="title" type="text">
                 </div>
                 <p class="govuk-body"><button type="submit" class="govuk-button" data-module="govuk-button">
                     <%= t('buttons.continue') %>
@@ -41,4 +24,4 @@
         </main>
     </div>
 
-<%- include("../partials/bottom"); %>
+<%- include("../partials/footer"); %>
