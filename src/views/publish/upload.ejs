@@ -1,28 +1,10 @@
-<%- include("../partials/top"); %>
+<%- include("../partials/header"); %>
 
     <div class="govuk-width-container app-width-container">
         <!-- <a href="#" class="govuk-back-link">Back</a> -->
         <main class="govuk-main-wrapper" id="main-content" role="main">
             <h1 class="govuk-heading-xl"><%= t('publish.upload.title') %></h1>
-            <% if (locals?.errors) { %>
-                <div class="govuk-error-summary" data-module="govuk-error-summary">
-                    <div role="alert">
-                        <h2 class="govuk-error-summary__title">
-                            <%= t('errors.problem') %>
-                        </h2>
-                        <div class="govuk-error-summary__body">
-                            <ul class="govuk-list govuk-error-summary__list">
-                                <% errors.forEach(function(error) { %>
-                                    <li>
-                                        <a href="#<%= error.field %>"><%= t(error.tag.name) %></a>
-                                    </li>
-                                <% }); %>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            <% } %>
-
+            <%- include("../partials/error-handler"); %>
             <form action="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.upload') %>/" method="post" enctype="multipart/form-data">
                 <div class="govuk-form-group">
                     <label class="govuk-label govuk-label--m" for="csv">
@@ -34,10 +16,10 @@
                 <input type="hidden" name="page_number" value="1">
                 <input type="hidden" name="page_size" value="100">
                 <button type="submit" class="govuk-button" data-module="govuk-button">
-                    <%= t('upload.uploadBtn') %>
+                    <%= t('buttons.upload_csv') %>
                 </button>
             </form>
         </main>
     </div>
 
-<%- include("../partials/bottom"); %>
+<%- include("../partials/footer"); %>

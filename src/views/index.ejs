@@ -1,14 +1,16 @@
-<%- include("partials/top"); %>
+<%- include("partials/header", {developerPage: true}); %>
 
 <div class="govuk-width-container app-width-container">
     <!-- <a href="#" class="govuk-back-link">Back</a> -->
     <main class="govuk-main-wrapper" id="main-content" role="main">
         <h1 class="govuk-heading-xl"><%= t('homepage.title') %></h1>
-    
         <p class="govuk-body"><%= t('homepage.welcome') %></p>
-        
-        <p class="govuk-body"><%= t('homepage.apitext') %> <a href="/api"><code>/api</code></a></p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li><a href="/<%= i18n.language %>/<%= t('routes.publish.start') %>/"><%- t('homepage.dataset_creation') %></a></li>
+            <li><a href="/<%= i18n.language %>/<%= t('routes.dataset') %>/"><%- t('homepage.uploaded_already') %></a> <%- t('developer_tag') %></li>
+        </ul>
+
     </main>
 </div>
-    
-<%- include("partials/bottom"); %>
+
+<%- include("partials/footer"); %>

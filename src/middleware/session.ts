@@ -25,7 +25,7 @@ async function createRedisConnection() {
 
 createRedisConnection()
     .then((result) => logger.info(result))
-    .catch((ex) => logger.error(ex));
+    .catch((ex) => logger.error(`REDIS: ${ex}`));
 
 if (process.env.REDIS_URL) {
     store = new RedisStore({

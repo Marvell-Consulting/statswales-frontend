@@ -1,9 +1,9 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 export enum SourceType {
-    DATAVALUES = 'DataValues',
-    FOOTNOTES = 'Footnotes',
-    DIMENSION = 'Dimension',
-    IGNORE = 'IGNORE',
-    UNKNOWN = 'UNKNOWN'
+    UNKNOWN = 'UNKNOWN',
+    DATAVALUES = 'DATAVALUES',
+    DIMENSION = 'DIMENSION',
+    FOOTNOTES = 'FOOTNOTES',
+    IGNORE = 'IGNORE'
 }

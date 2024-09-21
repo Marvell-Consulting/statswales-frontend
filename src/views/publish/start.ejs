@@ -1,9 +1,10 @@
-<%- include("../partials/top"); %>
+<%- include("../partials/header"); %>
 
 <div class="govuk-width-container app-width-container">
 	<!-- <a href="#" class="govuk-back-link">Back</a> -->
 	<main class="govuk-main-wrapper" id="main-content" role="main">
 		<h1 class="govuk-heading-xl"><%= t('publish.start.title') %></h1>
+		<%- include("../partials/error-handler"); %>
 		<p class="govuk-body"><%= t('publish.start.p1') %></p>
 		<ul class="govuk-list govuk-list--bullet govuk-list--spaced">
 			<li><%= t('publish.start.data-table') %></li>
@@ -17,4 +18,4 @@
 	</main>
 </div>
 
-<%- include("../partials/bottom"); %>
+<%- include("../partials/footer"); %>
