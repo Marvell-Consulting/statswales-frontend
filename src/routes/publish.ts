@@ -51,14 +51,14 @@ function generateFileError(req: AuthedRequest, res: Response) {
             {
                 field: 'csv',
                 tag: {
-                    name: 'errors.upload.no-csv-data',
+                    name: 'errors.upload.no_csv_data',
                     params: {}
                 }
             }
         ]
     };
     res.status(400);
-    res.render('publish/upload', err);
+    res.render('publish/upload', { errors: err });
 }
 
 function generateError(field: string, tag: string, params: object): ViewError {
@@ -333,8 +333,9 @@ publish.post('/title', upload.none(), (req: AuthedRequest, res: Response) => {
         res.status(400);
         res.render(
             'publish/title',
-            generateViewErrors(undefined, 500, [generateError('title', 'errors.title.missing', {})])
-        );
+            {
+            errors: generateViewErrors(undefined, 500, [generateError('title', 'errors.title.missing', {})])
+        });
         return;
     }
     req.session.currentTitle = req.body.title;
@@ -444,7 +445,7 @@ async function confirmFileUpload(
         ]);
         req.session.save();
         res.redirect(
-            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.preview', { lng: lang })}`
+            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.preview', { lng: lang })}/`
         );
     }
 }
@@ -506,6 +507,7 @@ publish.post('/preview', upload.none(), async (req: AuthedRequest, res: Response
         res.redirect(
             `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.preview', { lng: lang })}`
         );
+        return;
     }
     const statsWalesApi = new StatsWalesApi(lang, req.jwt);
     if (confirmData === 'true') {
@@ -534,7 +536,7 @@ publish.get('/sources', upload.none(), (req: AuthedRequest, res: Response) => {
     if (!currentFileImport) {
         return;
     }
-    if (!currentFileImport.sources) {
+    if (currentFileImport.sources.length === 0) {
         logger.error('No current import found in the session with sources... user may have navigated here by mistake');
         req.session.errors = generateViewErrors(undefined, 500, [
             generateError('session', 'errors.session.no_sources_on_import', {})
@@ -583,7 +585,7 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
         return;
     }
 
-    if (!currentFileImport.sources) {
+    if (currentFileImport.sources.length === 0) {
         logger.error('No current import found in the session... user may have navigated here by mistake');
         req.session.errors = generateViewErrors(undefined, 500, [
             generateError('session', 'errors.session.no_sources_on_import', {})
@@ -602,8 +604,6 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
     req.session.dimensionCreationRequest = dimensionCreationRequest;
     req.session.save();
     const updatedFileImportWithSourceType = updateCurrentImport(currentFileImport, dimensionCreationRequest);
-    console.log(`dimensionCreationRequest = ${JSON.stringify(dimensionCreationRequest)}`);
-
     logger.info(
         `Validating the request before sending to the server, dimensionCreationRequest length = ${dimensionCreationRequest.length}`
     );
@@ -623,6 +623,7 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
         ]);
         req.session.errors = errs;
         req.session.save();
+        res.status(400);
         res.render('publish/sources', {
             errors: errs,
             currentImport: updatedFileImportWithSourceType,
@@ -639,6 +640,7 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
         req.session.errors = errs;
         req.session.dimensionCreationRequest = dimensionCreationRequest;
         req.session.save();
+        res.status(400);
         res.render('publish/sources', {
             errors: errs,
             currentImport: updatedFileImportWithSourceType,
@@ -654,6 +656,7 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
         ]);
         req.session.errors = errs;
         req.session.save();
+        res.status(400);
         res.render('publish/sources', {
             errors: errs,
             currentImport: updatedFileImportWithSourceType,
@@ -688,6 +691,7 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
     }
 });
 
+// The following routes are mostly for testing and development purposes
 publish.get('/session/', (req: AuthedRequest, res: Response) => {
     res.status(200);
     res.header('mime-type', 'application/json');
@@ -695,4 +699,24 @@ publish.get('/session/', (req: AuthedRequest, res: Response) => {
         session: req.session,
         user: req.user
     });
+});
+
+publish.delete('/session/', (req: AuthedRequest, res: Response) => {
+    cleanupSession(req);
+    res.status(200);
+    res.json({ message: 'All session data has been cleared' });
+});
+
+publish.delete('/session/currentRevision', (req: AuthedRequest, res: Response) => {
+    req.session.currentRevision = undefined;
+    req.session.save();
+    res.status(200);
+    res.json({ message: 'Current revision has been deleted' });
+});
+
+publish.delete('/session/currentImport', (req: AuthedRequest, res: Response) => {
+    req.session.currentImport = undefined;
+    req.session.save();
+    res.status(200);
+    res.json({ message: 'Current import has been deleted' });
 });
