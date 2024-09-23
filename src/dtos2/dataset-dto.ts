@@ -43,7 +43,7 @@ export class ImportDTO {
     uploaded_at: string;
     type: string;
     location: string;
-    sources?: SourceDTO[];
+    sources: SourceDTO[];
 }
 
 export class RevisionDTO {

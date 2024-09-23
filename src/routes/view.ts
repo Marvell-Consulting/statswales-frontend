@@ -44,7 +44,7 @@ view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
             ]
         };
         res.status(404);
-        res.render('data', err);
+        res.render('view/data', { errors: err });
         return;
     }
 
@@ -53,6 +53,8 @@ view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
     if (!file.success) {
         const error = file as ViewErrDTO;
         res.status(error.status);
+        res.render('view/data', { errors: file });
+        return;
     }
     res.render('view/data', file);
 });
