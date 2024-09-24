@@ -187,7 +187,7 @@ export class StatsWalesApi {
     }
 
     public async removeFileImport(datasetId: string, revisionId: string, importId: string) {
-        const revisiedDataset = await fetch(
+        const revisedDataset = await fetch(
             `${this.backendUrl}/${this.lang}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}`,
             {
                 method: 'DELETE',
@@ -209,7 +209,7 @@ export class StatsWalesApi {
                     dataset: updatedDatasetDto
                 } as UploadDTO;
             });
-        return revisiedDataset;
+        return revisedDataset;
     }
 
     public async confirmFileImport(datasetId: string, revisionId: string, importId: string) {

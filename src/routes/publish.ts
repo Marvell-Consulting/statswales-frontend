@@ -122,24 +122,25 @@ function checkCurrentFileImport(req: AuthedRequest, res: Response): ImportDTO | 
     return currentFileImport;
 }
 
-async function handleProcessedCSV(processedCSV: UploadDTO | UploadErrDTO, req: AuthedRequest, res: Response) {
+function handleProcessedCSV(processedCSV: UploadDTO | UploadErrDTO, req: AuthedRequest, res: Response) {
     const lang = req.i18n.language;
-    if (processedCSV.success) {
-        const viewDTO = processedCSV as ViewDTO;
-        if (!viewDTO.dataset) {
-            res.status(500);
-            res.render('publish/upload', processedCSV);
-            return;
-        }
-        setCurrentToSession(viewDTO.dataset, req);
-        res.redirect(
-            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.preview', { lng: lang })}`
-        );
-    } else {
+    if (!processedCSV.success) {
         const err = processedCSV as UploadErrDTO;
         req.session.errors = generateViewErrors(err.dataset?.id, 500, err.errors);
         res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/`);
+        return;
     }
+
+    const viewDTO = processedCSV as ViewDTO;
+    if (!viewDTO.dataset) {
+        res.status(500);
+        res.render('publish/upload', processedCSV);
+        return;
+    }
+    setCurrentToSession(viewDTO.dataset, req);
+    res.redirect(
+        `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.preview', { lng: lang })}`
+    );
 }
 
 async function createNewDataset(req: AuthedRequest, res: Response) {
@@ -218,11 +219,9 @@ publish.post('/title', upload.none(), (req: AuthedRequest, res: Response) => {
     if (!req.body?.title) {
         logger.error('The user failed to supply a title in the request');
         res.status(400);
-        res.render(
-            'publish/title',
-            {
-                errors: generateViewErrors(undefined, 500, [generateError('title', 'errors.title.missing', {})])
-            });
+        res.render('publish/title', {
+            errors: generateViewErrors(undefined, 500, [generateError('title', 'errors.title.missing', {})])
+        });
         return;
     }
     req.session.currentTitle = req.body.title;
