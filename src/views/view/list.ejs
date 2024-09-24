@@ -4,7 +4,7 @@
         <!-- <a href="#" class="govuk-back-link">Back</a> -->
         <main class="govuk-main-wrapper" id="main-content" role="main">
             <h1 class="govuk-heading-xl"><%= t('view.list.heading') %></h1>
-            <% if (locals?.filelist.length > 0) {%>
+            <% if (locals?.filelist && locals?.filelist.length > 0) {%>
                 <ul class="govuk-list">
                 <% locals?.filelist.forEach(function(file) { %>
                     <% file.titles.forEach(function(title) { %>
