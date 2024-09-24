@@ -34,6 +34,7 @@
         }
     },
     "header": {
+        "product_name": "StatsWales V3.0",
         "beta": "Beta",
         "feedback": "This is a new service – your <a href=\"/en-GB/feedback/\">feedback</a> will help us to improve it.",
         "navigation": {
@@ -136,7 +137,8 @@
             },
             "display": {
                 "no_dimensions": "This dataset has not been completed with dimensions",
-                "no_revisions": "This dataset has not been completed with revisions"
+                "no_revisions": "This dataset has not been completed with revisions",
+                "no_description": "No description available"
             }
         },
         "datalake_error": "Unable to connect to Datalake",
@@ -158,9 +160,9 @@
     },
     "routes": {
         "healthcheck": "healthcheck",
-        "upload": "upload",
-        "dataset": "dataset",
-        "data": "data",
+        "view": {
+            "start": "dataset"
+        },
         "publish": {
             "start": "publish",
             "title": "title",
