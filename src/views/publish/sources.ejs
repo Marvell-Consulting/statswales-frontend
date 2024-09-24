@@ -1,0 +1,51 @@
+<%- include("../partials/header"); %>
+
+    <div class="govuk-width-container app-width-container">
+        <!-- <a href="#" class="govuk-back-link">Back</a> -->
+        <main class="govuk-main-wrapper" id="main-content" role="main">
+            <h1 class="govuk-heading-xl"><%= t('publish.sources.heading') %></h1>
+            <%- include("../partials/error-handler"); %>
+            <form action="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.sources') %>/" method="post">
+                <div class="source-list">
+                <% locals.currentImport.sources.forEach((source) => { %>
+                    <div class="source-list-item">
+                        <div class="govuk-grid-row">
+                            <div class="govuk-grid-column-full">
+                                <span class="fix-width-30"><label class="govuk-label govuk-!-display-inline" for="<%= source.id %>"><strong><%= source.csv_field %></strong></label></span>
+                                <select class="govuk-select govuk-!-display-inline" id="<%= source.id %>" name="<%= source.id %>">
+                                    <% locals.sourceTypes.forEach( (val) => { %>>
+                                    <option value="<%= val %>" <% if (source.type === val ) { %>selected<% } %>><%- t(`publish.sources.types.${val}`) %></option>
+                                    <% })%>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+                </div>
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-full">
+                        <p class="govuk-body"><button type="submit" class="govuk-button" data-module="govuk-button">
+                            <%= t('buttons.continue') %>
+                        </button></p>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+
+<style>
+    .fix-width-30 {
+        min-width: 30%;
+        display: inline-block;
+    }
+    .source-list {
+        margin-bottom: 2em;
+    }
+
+    .source-list-item {
+        border-bottom: 1px solid #0b0c0c;
+        padding-bottom:0.5em;
+        margin-bottom: 0.5em;
+    }
+</style>
+<%- include("../partials/footer"); %>

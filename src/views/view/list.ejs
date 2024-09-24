@@ -1,0 +1,23 @@
+<%- include("../partials/header", {developerPage: true}); %>
+
+    <div class="govuk-width-container app-width-container">
+        <!-- <a href="#" class="govuk-back-link">Back</a> -->
+        <main class="govuk-main-wrapper" id="main-content" role="main">
+            <h1 class="govuk-heading-xl"><%= t('view.list.heading') %></h1>
+            <% if (locals?.filelist.length > 0) {%>
+                <ul class="govuk-list">
+                <% locals?.filelist.forEach(function(file) { %>
+                    <% file.titles.forEach(function(title) { %>
+                        <% if (title.language === i18n.language) { %>
+                            <li><a href="/<%= i18n.language %>/dataset/<%= file.dataset_id %>" class="govuk-link"><i class="fa-solid fa-file-csv"></i> <%= title.title %></a>
+                        <% } %>
+                    <% }); %>
+                <% }); %>
+                </ul>
+            <% } else { %>
+                <p class="govuk-body-l"><i class="fa-solid fa-triangle-exclamation"></i> <%- t('errors.view.list.no_datasets') %></p>
+            <% } %>
+        </main>
+    </div>
+
+<%- include("../partials/footer"); %>

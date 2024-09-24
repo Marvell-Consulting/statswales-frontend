@@ -1,4 +1,4 @@
-<%- include("../partials/top"); %>
+<%- include("../partials/header", t); %>
 
     <div class="govuk-width-container app-width-container">
         <!-- <a href="#" class="govuk-back-link">Back</a> -->
@@ -35,10 +35,8 @@
                             <tr class="govuk-table__row">
                             <tr>
                                 <% locals.headers.forEach(function(cell) { %>
-                                    <th scope="col" class="govuk-table__header">
-                                        <%= cell %>
-                                    </th>
-                                    <% }); %>
+                                    <th scope="col" class="govuk-table__header"><%= cell.name %></th>
+                                <% }); %>
                             </tr>
                         </thead>
                         <tbody>
@@ -139,7 +137,7 @@
                 </div>
                 <div class="govuk-grid-row">
                     <div class="govuk-grid-column-one-half">
-                        <form action="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.confirm') %>" method="post">
+                        <form action="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.preview') %>" method="post">
                             <button type="submit" name="confirm" value="true" class="govuk-button govuk-!-display-inline" data-module="govuk-button">
                                 <%= t('buttons.continue') %>
                             </button>
@@ -152,4 +150,4 @@
             <% } %> <!-- Do I have data? -->
         </main>
     </div>
-<%- include("../partials/bottom"); %>
+<%- include("../partials/footer"); %>

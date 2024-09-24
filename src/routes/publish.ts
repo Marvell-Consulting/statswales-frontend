@@ -8,6 +8,12 @@ import { StatsWalesApi } from '../services/stats-wales-api';
 import { ViewDTO, ViewErrDTO } from '../dtos2/view-dto';
 import { i18next } from '../middleware/translation';
 import { AuthedRequest } from '../interfaces/authed-request';
+import { DatasetDTO, ImportDTO, RevisionDTO } from '../dtos2/dataset-dto';
+import { UploadDTO, UploadErrDTO } from '../dtos2/upload-dto';
+import { ConfirmedImportDTO } from '../dtos2/confirmed-import-dto';
+import { DimensionCreationDTO } from '../dtos2/dimension-creation-dto';
+import { SourceType } from '../enums/source-type';
+import { ViewError } from '../dtos2/view-error';
 
 const t = i18next.t;
 const storage = multer.memoryStorage();
@@ -15,117 +21,241 @@ const upload = multer({ storage });
 
 export const publish = Router();
 
+// Functions to reduce duplicate code
+function setCurrentToSession(dataset: DatasetDTO, req: AuthedRequest): boolean {
+    req.session.currentDataset = dataset;
+    if (!dataset.revisions) {
+        return false;
+    }
+    const currentRevision = dataset.revisions.reduce((prev, curr) => {
+        return new Date(prev.creation_date) > new Date(curr.creation_date) ? prev : curr;
+    });
+    req.session.currentRevision = currentRevision;
+    if (!currentRevision.imports) {
+        return false;
+    }
+    req.session.currentImport = currentRevision.imports.reduce((prev, curr) => {
+        return new Date(prev.uploaded_at) > new Date(curr.uploaded_at) ? prev : curr;
+    });
+    req.session.save();
+    return true;
+}
+
+function generateFileError(req: AuthedRequest, res: Response) {
+    logger.debug('Attached file was missing on this request');
+    const err: ViewErrDTO = {
+        success: false,
+        status: 400,
+        dataset_id: undefined,
+        errors: [
+            {
+                field: 'csv',
+                tag: {
+                    name: 'errors.upload.no_csv_data',
+                    params: {}
+                }
+            }
+        ]
+    };
+    res.status(400);
+    res.render('publish/upload', { errors: err });
+}
+
+function generateError(field: string, tag: string, params: object): ViewError {
+    return {
+        field,
+        tag: {
+            name: tag,
+            params
+        }
+    };
+}
+
+function generateViewErrors(datasetID: string | undefined, statusCode: number, errors: ViewError[]): ViewErrDTO {
+    return {
+        success: false,
+        status: statusCode,
+        errors,
+        dataset_id: datasetID
+    } as ViewErrDTO;
+}
+
+function checkCurrentDataset(req: AuthedRequest, res: Response): DatasetDTO | undefined {
+    const lang = req.i18n.language;
+    const currentDataset = req.session.currentDataset;
+    if (!currentDataset) {
+        logger.error('No current dataset found in the session... user may have navigated here by mistake');
+        req.session.errors = generateViewErrors(undefined, 500, [
+            generateError('session', 'errors.session.current_dataset_missing', {})
+        ]);
+        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/`);
+        return undefined;
+    }
+    return currentDataset;
+}
+
+function checkCurrentRevision(req: AuthedRequest, res: Response): RevisionDTO | undefined {
+    const lang = req.i18n.language;
+    const currentRevision = req.session.currentRevision;
+    if (!currentRevision) {
+        logger.error('No current revision found in the session... user may have navigated here by mistake');
+        req.session.errors = generateViewErrors(undefined, 500, [
+            generateError('session', 'errors.session.current_revision_missing', {})
+        ]);
+        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/`);
+        return undefined;
+    }
+    return currentRevision;
+}
+
+function checkCurrentFileImport(req: AuthedRequest, res: Response): ImportDTO | undefined {
+    const lang = req.i18n.language;
+    const currentFileImport = req.session.currentImport;
+    if (!currentFileImport) {
+        logger.error('No current import found in the session... user may have navigated here by mistake');
+        req.session.errors = generateViewErrors(undefined, 500, [
+            generateError('session', 'errors.session.current_import_missing', {})
+        ]);
+        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/`);
+        return undefined;
+    }
+    return currentFileImport;
+}
+
+function handleProcessedCSV(processedCSV: UploadDTO | UploadErrDTO, req: AuthedRequest, res: Response) {
+    const lang = req.i18n.language;
+    if (!processedCSV.success) {
+        const err = processedCSV as UploadErrDTO;
+        req.session.errors = generateViewErrors(err.dataset?.id, 500, err.errors);
+        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/`);
+        return;
+    }
+
+    const viewDTO = processedCSV as ViewDTO;
+    if (!viewDTO.dataset) {
+        res.status(500);
+        res.render('publish/upload', processedCSV);
+        return;
+    }
+    setCurrentToSession(viewDTO.dataset, req);
+    res.redirect(
+        `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.preview', { lng: lang })}`
+    );
+}
+
+async function createNewDataset(req: AuthedRequest, res: Response) {
+    const lang = req.i18n.language;
+    const statsWalesApi = new StatsWalesApi(lang, req.jwt);
+    const title = req.session.currentTitle;
+    if (!title) {
+        logger.debug('Current title was missing from the session.  Something might have gone wrong');
+        req.session.errors = generateViewErrors(undefined, 400, [generateError('title', 'errors.title_missing', {})]);
+        res.redirect(
+            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${t('routes.publish.title', { lng: lang })}`
+        );
+        return;
+    }
+    const file = req.file;
+    if (!file) {
+        generateFileError(req, res);
+        return;
+    }
+
+    const fileName = file.originalname;
+    const fileData = new Blob([file.buffer], { type: file.mimetype });
+    const processedCSV = await statsWalesApi.uploadCSVtoCreateDataset(fileData, fileName, title);
+    await handleProcessedCSV(processedCSV, req, res);
+}
+
+async function uploadNewFileToExistingDataset(req: AuthedRequest, res: Response) {
+    const lang = req.i18n.language;
+    const statsWalesApi = new StatsWalesApi(lang, req.jwt);
+    const currentDataset = checkCurrentDataset(req, res);
+    const currentRevision = checkCurrentRevision(req, res);
+    if (!currentDataset || !currentRevision) {
+        return;
+    }
+
+    if (!req.file) {
+        generateFileError(req, res);
+        return;
+    }
+
+    const fileName = req.file.originalname;
+    const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
+
+    const processedCSV = await statsWalesApi.uploadCSVToFixDataset(
+        currentDataset.id,
+        currentRevision.id,
+        fileData,
+        fileName
+    );
+    await handleProcessedCSV(processedCSV, req, res);
+}
+
+function cleanupSession(req: AuthedRequest) {
+    req.session.currentDataset = undefined;
+    req.session.currentRevision = undefined;
+    req.session.currentImport = undefined;
+    req.session.dimensionCreationRequest = undefined;
+    req.session.errors = undefined;
+    req.session.save();
+}
+
 publish.get('/', (req: AuthedRequest, res: Response) => {
-    res.render('publish/start');
+    const errors = req.session.errors;
+    // This is the start, there are a number of reason we can end up here
+    // from errors in a previous attempt to just starting a new dataset.
+    // So lets clean up any remaining session data.
+    cleanupSession(req);
+    res.render('publish/start', { errors });
 });
 
 publish.get('/title', (req: AuthedRequest, res: Response) => {
-    res.render('publish/title');
+    res.render('publish/title', { errors: req.session.errors });
 });
 
 publish.post('/title', upload.none(), (req: AuthedRequest, res: Response) => {
     if (!req.body?.title) {
-        logger.debug('Title was missing on request');
-        const err: ViewErrDTO = {
-            success: false,
-            status: 400,
-            dataset_id: undefined,
-            errors: [
-                {
-                    field: 'title',
-                    message: [
-                        {
-                            lang: req.i18n.language,
-                            message: t('errors.title.missing')
-                        }
-                    ],
-                    tag: {
-                        name: 'errors.title.missing',
-                        params: {}
-                    }
-                }
-            ]
-        };
+        logger.error('The user failed to supply a title in the request');
         res.status(400);
-        res.render('publish/title', err);
+        res.render('publish/title', {
+            errors: generateViewErrors(undefined, 500, [generateError('title', 'errors.title.missing', {})])
+        });
         return;
     }
-    const title: string = req.body.title;
+    req.session.currentTitle = req.body.title;
+    req.session.save();
+    const lang = req.i18n.language;
+    res.redirect(
+        `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.upload', { lng: lang })}`
+    );
+});
+
+publish.get('/upload', (req: AuthedRequest, res: Response) => {
+    const currentTitle = req.session.currentTitle;
+    const currentDataset = req.session.currentDataset;
+    if (!currentDataset && !currentTitle) {
+        logger.error('There is no title or currentDataset in the session.  Abandoning this create journey');
+        req.session.errors = generateViewErrors(undefined, 500, [generateError('title', 'errors.title.missing', {})]);
+        req.session.save();
+        const lang = req.i18n.language;
+        res.redirect(
+            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${t('routes.publish.title', { lng: lang })}`
+        );
+        return;
+    }
+    const title = currentDataset?.datasetInfo?.find((info) => info.language === req.i18n.language) || currentTitle;
     res.render('publish/upload', { title });
 });
 
 publish.post('/upload', upload.single('csv'), async (req: AuthedRequest, res: Response) => {
-    const lang = req.i18n.language;
-    const statsWalesApi = new StatsWalesApi(lang, req.jwt);
-
-    if (!req.body?.title) {
-        logger.debug('Internal name was missing on request');
-        const err: ViewErrDTO = {
-            success: false,
-            status: 400,
-            dataset_id: undefined,
-            errors: [
-                {
-                    field: 'title',
-                    message: [
-                        {
-                            lang,
-                            message: t('errors.title.missing')
-                        }
-                    ],
-                    tag: {
-                        name: 'errors.title.missing',
-                        params: {}
-                    }
-                }
-            ]
-        };
-        res.status(400);
-        res.render('publish/title', err);
-        return;
-    }
-
-    const title: string = req.body.title;
-
-    if (!req.file) {
-        const err: ViewErrDTO = {
-            success: false,
-            status: 400,
-            dataset_id: undefined,
-            errors: [
-                {
-                    field: 'csv',
-                    message: [
-                        {
-                            lang,
-                            message: t('errors.upload.no-csv-data')
-                        }
-                    ],
-                    tag: {
-                        name: 'errors.upload.no-csv-data',
-                        params: {}
-                    }
-                }
-            ]
-        };
-        res.status(400);
-        res.render('publish/upload', err);
-        return;
-    }
-
-    const fileName = req.file?.originalname;
-    const fileData = new Blob([req.file?.buffer], { type: req.file?.mimetype });
-
-    const processedCSV = await statsWalesApi.uploadCSV(fileData, fileName, title);
-
-    if (processedCSV.success) {
-        // eslint-disable-next-line require-atomic-updates
-        req.session.currentDataset = processedCSV.dataset;
-        req.session.save();
-        res.redirect(`/${lang}/publish/preview`);
+    if (req.session.currentDataset) {
+        logger.info('Dataset present... Amending existing Dataset');
+        await uploadNewFileToExistingDataset(req, res);
     } else {
-        res.status(400);
-        res.render('publish/upload', processedCSV);
+        logger.info('Creating a new dataset');
+        await createNewDataset(req, res);
     }
 });
 
@@ -133,71 +263,346 @@ publish.get('/preview', async (req: AuthedRequest, res: Response) => {
     const lang = req.i18n.language;
     const statsWalesApi = new StatsWalesApi(lang, req.jwt);
 
-    const dataset = req.session.currentDataset;
-    if (!dataset) {
-        logger.error('No dataset in session');
-        res.redirect(`/${req.i18n.language}/publish/title`);
+    const currentDataset = checkCurrentDataset(req, res);
+    if (!currentDataset) {
+        return;
+    }
+
+    const currentRevision = checkCurrentRevision(req, res);
+    if (!currentRevision) {
+        return;
+    }
+
+    const currentFileImport = checkCurrentFileImport(req, res);
+    if (!currentFileImport) {
         return;
     }
 
     const page_number: number = Number.parseInt(req.query.page_number as string, 10) || 1;
     const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 10;
     const previewData = await statsWalesApi.getDatasetDatafilePreview(
-        dataset.id,
-        dataset.revisions[0].id,
-        dataset.revisions[0].imports[0].id,
+        currentDataset.id,
+        currentRevision.id,
+        currentFileImport.id,
         page_number,
         page_size
     );
     if (!previewData.success) {
         logger.error('Failed to get preview data from the backend');
-        res.status(500);
-        res.render('publish/start');
+        req.session.errors = generateViewErrors(undefined, 500, [
+            generateError('preview', 'errors.preview.failed_to_get_preview', {})
+        ]);
+        req.session.save();
+        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/`);
+        return;
     }
     const data = previewData as ViewDTO;
     res.render('publish/preview', data);
 });
 
-publish.post('/confirm', upload.none(), (req: AuthedRequest, res: Response) => {
-    const dataset = req.session.currentDataset;
-    if (!dataset) {
-        logger.debug('No dataset in session');
-        res.redirect(`/${req.i18n.language}/publish/title`);
+async function confirmFileUpload(
+    currentDataset: DatasetDTO,
+    currentRevision: RevisionDTO,
+    currentFileImport: ImportDTO,
+    statsWalesApi: StatsWalesApi,
+    req: AuthedRequest,
+    res: Response
+) {
+    const lang = req.i18n.language;
+    try {
+        const confirmedImport: ConfirmedImportDTO = await statsWalesApi.confirmFileImport(
+            currentDataset.id,
+            currentRevision.id,
+            currentFileImport.id
+        );
+        if (confirmedImport.success) {
+            req.session.currentImport = confirmedImport.fileImport;
+            req.session.save();
+            res.redirect(
+                `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.sources', { lng: lang })}`
+            );
+        }
+    } catch (err) {
+        logger.error(
+            `An HTTP error occurred trying to confirm import from the dataset with the following error: ${err}`
+        );
+        req.session.errors = generateViewErrors(currentDataset.id, 500, [
+            generateError('confirm', 'errors.preview.confirm_error', {})
+        ]);
+        req.session.save();
+        res.redirect(
+            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.preview', { lng: lang })}/`
+        );
+    }
+}
+
+async function rejectFileReturnToUpload(
+    currentDataset: DatasetDTO,
+    currentRevision: RevisionDTO,
+    currentFileImport: ImportDTO,
+    statsWalesApi: StatsWalesApi,
+    req: AuthedRequest,
+    res: Response
+) {
+    const lang = req.i18n.language;
+    try {
+        req.session.currentImport = undefined;
+        await statsWalesApi.removeFileImport(currentDataset.id, currentRevision.id, currentFileImport.id);
+        req.session.save();
+        res.redirect(
+            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.upload')}`
+        );
+    } catch (err) {
+        logger.error(
+            `An HTTP error occurred trying to remove the import from the dataset with the following error: ${err}`
+        );
+        req.session.errors = generateViewErrors(currentDataset.id, 500, [
+            generateError('confirm', 'errors.preview.remove_error', {})
+        ]);
+        req.session.save();
+        res.redirect(
+            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.preview', { lng: lang })}`
+        );
+    }
+}
+
+publish.post('/preview', upload.none(), async (req: AuthedRequest, res: Response) => {
+    const currentDataset = checkCurrentDataset(req, res);
+    if (!currentDataset) {
         return;
     }
+
+    const currentRevision = checkCurrentRevision(req, res);
+    if (!currentRevision) {
+        return;
+    }
+
+    const currentFileImport = checkCurrentFileImport(req, res);
+    if (!currentFileImport) {
+        return;
+    }
+
     const lang = req.i18n.language;
     const confirmData = req.body?.confirm;
     if (!confirmData) {
-        logger.debug('No confirmation data was provided');
-        const err: ViewErrDTO = {
-            success: false,
-            status: 400,
-            dataset_id: dataset.id,
-            errors: [
-                {
-                    field: 'confirm',
-                    message: [
-                        {
-                            lang,
-                            message: t('errors.confirm.missing')
-                        }
-                    ],
-                    tag: {
-                        name: 'errors.confirm.missing',
-                        params: {}
-                    }
-                }
-            ]
-        };
-        res.status(400);
-        res.render('publish/preview', err);
+        logger.error('The confirm variable is missing on the form submission');
+        req.session.errors = generateViewErrors(undefined, 400, [
+            generateError('confirmBtn', 'errors.confirm.missing', {})
+        ]);
+        req.session.save();
+        res.redirect(
+            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.preview', { lng: lang })}`
+        );
         return;
     }
+    const statsWalesApi = new StatsWalesApi(lang, req.jwt);
     if (confirmData === 'true') {
-        res.status(200);
-        res.json({ confirm: true, dataset_id: dataset.id, message: 'Datatable has been confirmed as correct' });
+        logger.info('User confirmed file upload was correct');
+        await confirmFileUpload(currentDataset, currentRevision, currentFileImport, statsWalesApi, req, res);
+    } else {
+        logger.info('User rejected the file in preview');
+        await rejectFileReturnToUpload(currentDataset, currentRevision, currentFileImport, statsWalesApi, req, res);
+    }
+});
+
+function updateCurrentImport(currentImport: ImportDTO, dimensionCreationRequest: DimensionCreationDTO[]) {
+    if (currentImport.sources) {
+        currentImport.sources.forEach((source) => {
+            source.type =
+                dimensionCreationRequest.find((dim) => dim.sourceId === source.id)?.sourceType || SourceType.UNKNOWN;
+        });
+    }
+    return currentImport;
+}
+
+publish.get('/sources', upload.none(), (req: AuthedRequest, res: Response) => {
+    const lang = req.i18n.language;
+    let currentFileImport = checkCurrentFileImport(req, res);
+    const dimensionCreationRequest = req.session.dimensionCreationRequest;
+    if (!currentFileImport) {
+        return;
+    }
+    if (currentFileImport.sources.length === 0) {
+        logger.error('No current import found in the session with sources... user may have navigated here by mistake');
+        req.session.errors = generateViewErrors(undefined, 500, [
+            generateError('session', 'errors.session.no_sources_on_import', {})
+        ]);
+        req.session.save();
+        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}`);
+        return;
+    }
+    const errs = req.session.errors;
+    req.session.errors = undefined;
+    req.session.save();
+    if (errs) {
+        res.status(500);
     } else {
         res.status(200);
-        res.json({ confirm: false, dataset_id: dataset.id, message: 'Datatable has been rejected as incorrect' });
     }
+
+    if (dimensionCreationRequest) {
+        currentFileImport = updateCurrentImport(currentFileImport, dimensionCreationRequest);
+    } else {
+        currentFileImport.sources.forEach((source) => {
+            source.type = SourceType.UNKNOWN;
+        });
+    }
+    res.render('publish/sources', {
+        errors: errs,
+        currentImport: currentFileImport,
+        sourceTypes: Object.keys(SourceType)
+    });
+});
+
+publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response) => {
+    const lang = req.i18n.language;
+    const currentDataset = checkCurrentDataset(req, res);
+    if (!currentDataset) {
+        return;
+    }
+
+    const currentRevision = checkCurrentRevision(req, res);
+    if (!currentRevision) {
+        return;
+    }
+
+    const currentFileImport = checkCurrentFileImport(req, res);
+    if (!currentFileImport) {
+        return;
+    }
+
+    if (currentFileImport.sources.length === 0) {
+        logger.error('No current import found in the session... user may have navigated here by mistake');
+        req.session.errors = generateViewErrors(undefined, 500, [
+            generateError('session', 'errors.session.no_sources_on_import', {})
+        ]);
+        req.session.save();
+        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}`);
+        return;
+    }
+    logger.info('Creating Dimension Request object');
+    const dimensionCreationRequest: DimensionCreationDTO[] = currentFileImport.sources.map((source) => {
+        return {
+            sourceId: source.id,
+            sourceType: req.body[source.id]
+        };
+    });
+    req.session.dimensionCreationRequest = dimensionCreationRequest;
+    req.session.save();
+    const updatedFileImportWithSourceType = updateCurrentImport(currentFileImport, dimensionCreationRequest);
+    logger.info(
+        `Validating the request before sending to the server, dimensionCreationRequest length = ${dimensionCreationRequest.length}`
+    );
+    const sourcesMarkedUnknown = dimensionCreationRequest.filter(
+        (createRequest) => createRequest.sourceType === SourceType.UNKNOWN
+    );
+    const sourcesMarkedDataValues = dimensionCreationRequest.filter(
+        (createRequest) => createRequest.sourceType === SourceType.DATAVALUES
+    );
+    const sourcesMarkedFootnotes = dimensionCreationRequest.filter(
+        (createRequest) => createRequest.sourceType === SourceType.FOOTNOTES
+    );
+    if (sourcesMarkedUnknown.length > 0) {
+        logger.error('User failed to identify all sources');
+        const errs = generateViewErrors(undefined, 400, [
+            generateError('session', 'errors.sources.unknowns_found', {})
+        ]);
+        req.session.errors = errs;
+        req.session.save();
+        res.status(400);
+        res.render('publish/sources', {
+            errors: errs,
+            currentImport: updatedFileImportWithSourceType,
+            sourceTypes: Object.keys(SourceType)
+        });
+        return;
+    }
+
+    if (sourcesMarkedDataValues.length > 1) {
+        logger.error('User tried to specify multiple data value sources');
+        const errs = generateViewErrors(undefined, 400, [
+            generateError('session', 'errors.sources.multiple_datavalues', {})
+        ]);
+        req.session.errors = errs;
+        req.session.dimensionCreationRequest = dimensionCreationRequest;
+        req.session.save();
+        res.status(400);
+        res.render('publish/sources', {
+            errors: errs,
+            currentImport: updatedFileImportWithSourceType,
+            sourceTypes: Object.keys(SourceType)
+        });
+        return;
+    }
+
+    if (sourcesMarkedFootnotes.length > 1) {
+        logger.error('User tried to specify multiple footnote sources');
+        const errs = generateViewErrors(undefined, 400, [
+            generateError('session', 'errors.sources.multiple_footnotes', {})
+        ]);
+        req.session.errors = errs;
+        req.session.save();
+        res.status(400);
+        res.render('publish/sources', {
+            errors: errs,
+            currentImport: updatedFileImportWithSourceType,
+            sourceTypes: Object.keys(SourceType)
+        });
+        return;
+    }
+    logger.info('Dimension creation request checks out... Sending it to the backend to do its thing');
+    const statsWalesApi = new StatsWalesApi(req.i18n.language, req.jwt);
+    try {
+        const updatedDataset: UploadDTO = await statsWalesApi.sendCreateDimensionRequest(
+            currentDataset.id,
+            currentRevision.id,
+            currentFileImport.id,
+            dimensionCreationRequest
+        );
+        res.status(200);
+        res.setHeader('Content-Type', 'application/json');
+        res.json(updatedDataset);
+    } catch (err) {
+        logger.error(`Something went wrong with the Dimension Creation Request with the following error: ${err}`);
+        const errs = generateViewErrors(undefined, 500, [
+            generateError('session', 'errors.sources.dimension_creation_failed', {})
+        ]);
+        req.session.save();
+        res.status(500);
+        res.render('publish/sources', {
+            errors: errs,
+            currentImport: updatedFileImportWithSourceType,
+            sourceTypes: Object.keys(SourceType)
+        });
+    }
+});
+
+// The following routes are mostly for testing and development purposes
+publish.get('/session/', (req: AuthedRequest, res: Response) => {
+    res.status(200);
+    res.header('mime-type', 'application/json');
+    res.json({
+        session: req.session,
+        user: req.user
+    });
+});
+
+publish.delete('/session/', (req: AuthedRequest, res: Response) => {
+    cleanupSession(req);
+    res.status(200);
+    res.json({ message: 'All session data has been cleared' });
+});
+
+publish.delete('/session/currentRevision', (req: AuthedRequest, res: Response) => {
+    req.session.currentRevision = undefined;
+    req.session.save();
+    res.status(200);
+    res.json({ message: 'Current revision has been deleted' });
+});
+
+publish.delete('/session/currentImport', (req: AuthedRequest, res: Response) => {
+    req.session.currentImport = undefined;
+    req.session.save();
+    res.status(200);
+    res.json({ message: 'Current import has been deleted' });
 });

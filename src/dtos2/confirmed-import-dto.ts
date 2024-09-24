@@ -1,13 +1,13 @@
 import { ViewError } from './view-error';
-import { DatasetDTO } from './dataset-dto';
+import { ImportDTO } from './dataset-dto';
 
-export interface UploadDTO {
+export interface ConfirmedImportDTO {
     success: boolean;
-    dataset: DatasetDTO;
+    fileImport: ImportDTO;
 }
 
 export interface UploadErrDTO {
     success: boolean;
-    dataset: DatasetDTO | undefined;
+    fileImport: ImportDTO | undefined;
     errors: ViewError[];
 }

@@ -20,7 +20,7 @@ const statsWalesApi = (req: AuthedRequest) => {
 view.get('/', async (req: AuthedRequest, res: Response) => {
     const fileList: FileList = await statsWalesApi(req).getFileList();
     logger.debug(`FileList from server = ${JSON.stringify(fileList)}`);
-    res.render('list', fileList);
+    res.render('view/list', fileList);
 });
 
 view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
@@ -31,17 +31,11 @@ view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
     if (!req.params.datasetId || !validateUUID(req.params.datasetId)) {
         const err: ViewErrDTO = {
             success: false,
-            status: 400,
+            status: 404,
             dataset_id: undefined,
             errors: [
                 {
                     field: 'file',
-                    message: [
-                        {
-                            lang,
-                            message: t('errors.dataset_missing')
-                        }
-                    ],
                     tag: {
                         name: 'errors.dataset_missing',
                         params: {}
@@ -50,16 +44,17 @@ view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
             ]
         };
         res.status(404);
-        res.render('data', err);
+        res.render('view/data', { errors: err });
         return;
     }
 
     const datasetId = req.params.datasetId;
-
     const file = await statsWalesApi(req).getDatasetView(datasetId, page_number, page_size);
     if (!file.success) {
         const error = file as ViewErrDTO;
         res.status(error.status);
+        res.render('view/data', { errors: file });
+        return;
     }
-    res.render('data', file);
+    res.render('view/data', file);
 });
