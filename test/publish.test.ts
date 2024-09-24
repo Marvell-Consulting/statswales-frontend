@@ -32,7 +32,8 @@ describe('Publisher Journey Tests', () => {
     beforeAll(() => {
         server.listen({
             onUnhandledRequest: ({ headers, method, url }) => {
-                if (url.includes('http://example.com:3001')) {
+                const parsedUrl = new URL(url);
+                if (parsedUrl.host === 'example.com:3001') {
                     console.log('Request to unhandled URL:', method, url);
                 }
                 if (headers.get('User-Agent') !== 'supertest') {
