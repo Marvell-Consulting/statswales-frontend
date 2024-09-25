@@ -28,7 +28,6 @@ export const ensureAuthenticated: RequestHandler = (req: AuthedRequest, res, nex
 
         // store the token string in the request as we need it for Authorization header in API requests
         req.jwt = token;
-        logger.debug(`JWT: ${token}`);
 
         // store the user object in the request for use in the frontend
         req.user = decoded.user;
