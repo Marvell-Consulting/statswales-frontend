@@ -291,6 +291,7 @@ publish.get('/preview', async (req: AuthedRequest, res: Response) => {
     );
     if (!previewData.success) {
         logger.error('Failed to get preview data from the backend');
+        // eslint-disable-next-line require-atomic-updates
         req.session.errors = generateViewErrors(undefined, 500, [
             generateError('preview', 'errors.preview.failed_to_get_preview', {})
         ]);
@@ -318,6 +319,7 @@ async function confirmFileUpload(
             currentFileImport.id
         );
         if (confirmedImport.success) {
+            // eslint-disable-next-line require-atomic-updates
             req.session.currentImport = confirmedImport.fileImport;
             req.session.save();
             res.redirect(
@@ -328,6 +330,7 @@ async function confirmFileUpload(
         logger.error(
             `An HTTP error occurred trying to confirm import from the dataset with the following error: ${err}`
         );
+        // eslint-disable-next-line require-atomic-updates
         req.session.errors = generateViewErrors(currentDataset.id, 500, [
             generateError('confirm', 'errors.preview.confirm_error', {})
         ]);
