@@ -57,6 +57,26 @@ export class StatsWalesApi {
         return filelist;
     }
 
+    public async getDataset(datasetId: string): Promise<DatasetDTO> {
+        logger.info(`Fetching dataset from ${this.backendUrl}/${this.lang}/dataset/${datasetId}`);
+        const dataset = await fetch(`${this.backendUrl}/${this.lang}/dataset/${datasetId}`, {
+            headers: this.authHeader
+        })
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+                const err = new HttpError(response.status);
+                err.handleMessage(response.text());
+                throw err;
+            })
+            .then((api_res) => {
+                return api_res as DatasetDTO;
+            });
+
+        return dataset;
+    }
+
     public async getDatasetView(datasetId: string, pageNumber: number, pageSize: number) {
         logger.info(
             `Fetching dataset view from ${this.backendUrl}/${this.lang}/dataset/${datasetId}/view?page_number=${pageNumber}&page_size=${pageSize}`

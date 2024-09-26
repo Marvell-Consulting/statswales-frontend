@@ -1,4 +1,4 @@
-import { Blob } from 'buffer';
+import { Blob } from 'node:buffer';
 
 import { Response, Router } from 'express';
 import multer from 'multer';
@@ -14,6 +14,7 @@ import { ConfirmedImportDTO } from '../dtos2/confirmed-import-dto';
 import { DimensionCreationDTO } from '../dtos2/dimension-creation-dto';
 import { SourceType } from '../enums/source-type';
 import { ViewError } from '../dtos2/view-error';
+import { singleLangDataset } from '../utils/single-lang-dataset';
 
 const t = i18next.t;
 const storage = multer.memoryStorage();
@@ -559,9 +560,12 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
             currentFileImport.id,
             dimensionCreationRequest
         );
-        res.status(200);
-        res.setHeader('Content-Type', 'application/json');
-        res.json(updatedDataset);
+
+        const datasetId = updatedDataset.dataset.id;
+
+        res.redirect(
+            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${datasetId}/${req.i18n.t('routes.publish.tasklist', { lng: lang })}`
+        );
     } catch (err) {
         logger.error(`Something went wrong with the Dimension Creation Request with the following error: ${err}`);
         const errs = generateViewErrors(undefined, 500, [
@@ -605,4 +609,24 @@ publish.delete('/session/currentImport', (req: AuthedRequest, res: Response) => 
     req.session.save();
     res.status(200);
     res.json({ message: 'Current import has been deleted' });
+});
+
+publish.get('/:datasetId/tasklist', async (req: AuthedRequest, res: Response) => {
+    const lang = req.i18n.language;
+    const datasetId = req.params.datasetId as string;
+    const statsWalesApi = new StatsWalesApi(lang, req.jwt);
+
+    try {
+        const dataset = await statsWalesApi.getDataset(datasetId);
+        setCurrentToSession(dataset, req);
+
+        res.render('publish/tasklist', {
+            dataset: singleLangDataset(lang, dataset),
+            sourcesUrl: `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.sources', { lng: lang })}`
+        });
+    } catch (err) {
+        logger.error(`Something went wrong viewing the tasklist`);
+        res.status(404);
+        res.render('errors/not-found');
+    }
 });

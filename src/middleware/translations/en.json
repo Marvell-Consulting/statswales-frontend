@@ -100,6 +100,32 @@
                 "IGNORE": "This column can be ignored",
                 "UNKNOWN": "Select"
             }
+        },
+        "tasklist": {
+            "heading": "Dataset Overview",
+            "data": {
+                "subheading": "Data",
+                "datatable": "Data table"
+            },
+            "metadata": {
+                "subheading": "Metadata",
+                "title": "Title",
+                "summary": "Summary",
+                "data_collection": "Data collection",
+                "statistical_quality": "Statistical quality",
+                "data_sources": "Data sources",
+                "related_reports": "Related reports",
+                "update_frequency": "How often the dataset is updated",
+                "designation": "Designation",
+                "relevant_topics": "Relevant topics"
+            },
+            "publishing": {
+                "subheading": "Publishing",
+                "when": "When the dataset should be published",
+                "export": "Export text fields for translation",
+                "import": "Import translations",
+                "submit": "Submit for approval"
+            }
         }
     },
     "view": {
@@ -153,7 +179,8 @@
         "upload": {
             "no_csv": "No CSV data provided",
             "no_csv_data": "No CSV data available"
-        }
+        },
+        "not_found": "Page not found"
 	},
     "api": {
         "available": "API is available"
