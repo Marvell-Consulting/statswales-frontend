@@ -107,7 +107,7 @@ describe('Publisher Journey Tests', () => {
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies);
             expect(res.status).toBe(200);
-            expect(res.body).toEqual({ message: 'All session data has been cleared' })
+            expect(res.body).toEqual({ message: 'All session data has been cleared' });
         });
 
         test('Delete current revision returns 200 with message and removes the current revision from session', async () => {
@@ -555,9 +555,7 @@ describe('Publisher Journey Tests', () => {
 
         describe('Session issues for sources', () => {
             test('No dataset in the session when posting to sources returns 302 back to start', async () => {
-                const res = await request(app)
-                    .post('/en-GB/publish/sources')
-                    .set('User-Agent', 'supertest');
+                const res = await request(app).post('/en-GB/publish/sources').set('User-Agent', 'supertest');
                 expect(res.status).toBe(302);
                 expect(res.header.location).toBe(`/en-GB/publish/`);
             });

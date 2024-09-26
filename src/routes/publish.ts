@@ -2,6 +2,7 @@ import { Blob } from 'node:buffer';
 
 import { Response, Router } from 'express';
 import multer from 'multer';
+import { validate as validateUUID } from 'uuid';
 
 import { logger } from '../utils/logger';
 import { StatsWalesApi } from '../services/stats-wales-api';
@@ -617,6 +618,7 @@ publish.get('/:datasetId/tasklist', async (req: AuthedRequest, res: Response) =>
     const statsWalesApi = new StatsWalesApi(lang, req.jwt);
 
     try {
+        if (!validateUUID(datasetId)) throw new Error('Invalid dataset ID');
         const dataset = await statsWalesApi.getDataset(datasetId);
         setCurrentToSession(dataset, req);
 
@@ -625,7 +627,7 @@ publish.get('/:datasetId/tasklist', async (req: AuthedRequest, res: Response) =>
             sourcesUrl: `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.sources', { lng: lang })}`
         });
     } catch (err) {
-        logger.error(`Something went wrong viewing the tasklist`);
+        logger.error(`Something went wrong viewing the tasklist: ${err}`);
         res.status(404);
         res.render('errors/not-found');
     }

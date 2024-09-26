@@ -93,7 +93,7 @@ const brokenPreviewDataset: DatasetDTO = {
             ]
         }
     ]
-}
+};
 
 export const completedDataset: DatasetDTO = {
     id: '5caeb8ed-ea64-4a58-8cf0-b728308833e5',
