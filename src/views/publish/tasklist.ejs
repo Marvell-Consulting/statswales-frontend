@@ -1,0 +1,147 @@
+<%- include("../partials/header"); %>
+
+<div class="govuk-width-container">
+  <main class="govuk-main-wrapper " id="main-content" role="main">
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h2 class="region-subhead"><%= t('publish.tasklist.heading') %></h2>
+        <h1 class="govuk-heading-l" style="margin-bottom: 15px;"><%= dataset?.datasetInfo?.title %></h1>
+      </div>
+    </div>
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h2 class="govuk-heading-m"><%= t('publish.tasklist.data.subheading') %></h2>
+        <ul class="govuk-task-list">
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="#">
+                <%= t('publish.tasklist.data.datatable') %>
+              </a>
+            </div>
+          </li>
+          <% dataset?.dimensions.forEach(function(dimension) { %>
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+              <div class="govuk-task-list__name-and-hint">
+                  <a class="govuk-link govuk-task-list__link" href="<%= sourcesUrl %>"><%=dimension?.dimensionInfo?.name %></a>
+              </div>
+            </li>
+          <% }); %>
+        </ul>
+
+        <h2 class="govuk-heading-m govuk-!-margin-top-5"><%= t('publish.tasklist.metadata.subheading') %></h2>
+        <ul class="govuk-task-list">
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="metadata-title.html" aria-describedby="prepare-application-3-status">
+                <%= t('publish.tasklist.metadata.title') %>
+              </a>
+            </div>
+          </li>
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="metadata-summary.html" aria-describedby="prepare-application-3-status">
+                <%= t('publish.tasklist.metadata.summary') %>
+              </a>
+            </div>
+          </li>
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="metadata-collection.html">
+                <%= t('publish.tasklist.metadata.data_collection') %>
+              </a>
+            </div>
+          </li>
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="metadata-quality.html">
+                <%= t('publish.tasklist.metadata.statistical_quality') %>
+              </a>
+            </div>
+          </li>
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="metadata-data-source-more" aria-describedby="prepare-application-4-status">
+                <%= t('publish.tasklist.metadata.data_sources') %>
+              </a>
+            </div>
+          </li>
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="metadata-reports-more.html" aria-describedby="prepare-application-5-status">
+                <%= t('publish.tasklist.metadata.related_reports') %>
+              </a>
+            </div>
+          </li>
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="metadata-frequency.html" aria-describedby="prepare-application-5-status">
+                <%= t('publish.tasklist.metadata.update_frequency') %>
+              </a>
+            </div>
+          </li>
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="metadata-designation.html" aria-describedby="prepare-application-5-status">
+                <%= t('publish.tasklist.metadata.designation') %>
+              </a>
+            </div>
+          </li>
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="metadata-topics.html" aria-describedby="prepare-application-5-status">
+                <%= t('publish.tasklist.metadata.relevant_topics') %>
+              </a>
+            </div>
+          </li>
+        </ul>
+
+        <h2 class="govuk-heading-m govuk-!-margin-top-5"><%= t('publish.tasklist.publishing.subheading') %></h2>
+        <ul class="govuk-task-list">
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="schedule" aria-describedby="prepare-application-5-status">
+                <%= t('publish.tasklist.publishing.when') %>
+              </a>
+            </div>
+          </li>
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="schedule" aria-describedby="prepare-application-5-status">
+                <%= t('publish.tasklist.publishing.export') %>
+              </a>
+            </div>
+          </li>
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="schedule" aria-describedby="prepare-application-5-status">
+                <%= t('publish.tasklist.publishing.import') %>
+              </a>
+            </div>
+          </li>
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="schedule" aria-describedby="prepare-application-5-status">
+                <%= t('publish.tasklist.publishing.submit') %>
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</div>
+
+<style>
+  .region-subhead {
+    color: #aa1111;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    line-height: 20px;
+    text-transform: uppercase;
+  }
+</style>
+
+<%- include("../partials/footer"); %>

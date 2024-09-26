@@ -9,7 +9,7 @@ import { DatasetDTO, ImportDTO, RevisionDTO } from '../src/dtos2/dataset-dto';
 import { ViewErrDTO } from '../src/dtos2/view-dto';
 import { DimensionCreationDTO } from '../src/dtos2/dimension-creation-dto';
 
-import { completedDataset, server } from './helpers/mock-server';
+import { server } from './helpers/mock-server';
 
 const t = i18next.t;
 
@@ -107,7 +107,7 @@ describe('Publisher Journey Tests', () => {
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies);
             expect(res.status).toBe(200);
-            expect(res.body).toEqual({ message: 'All session data has been cleared' })
+            expect(res.body).toEqual({ message: 'All session data has been cleared' });
         });
 
         test('Delete current revision returns 200 with message and removes the current revision from session', async () => {
@@ -472,7 +472,7 @@ describe('Publisher Journey Tests', () => {
     });
 
     describe('Setting up sources and dimensions', () => {
-        test('Confirming a single set of datavalies, a single footnote and dimensions returns 200 and a JSON blob', async () => {
+        test('Confirming a single set of datavalues, a single footnote and dimensions returns 200 and a JSON blob', async () => {
             const cookies = await setSourcesIntoSession();
             const res = await request(app)
                 .post('/en-GB/publish/sources')
@@ -483,11 +483,8 @@ describe('Publisher Journey Tests', () => {
                 .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'DIMENSION')
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies);
-            expect(res.status).toBe(200);
-            expect(res.body).toEqual({
-                success: true,
-                dataset: completedDataset
-            });
+            expect(res.status).toBe(302);
+            expect(res.header.location).toBe(`/en-GB/publish/5caeb8ed-ea64-4a58-8cf0-b728308833e5/tasklist`);
         });
 
         test('Confirming a multiple datavalies, a single footnote and dimensions returns 400 and a message to the user', async () => {
@@ -555,9 +552,7 @@ describe('Publisher Journey Tests', () => {
 
         describe('Session issues for sources', () => {
             test('No dataset in the session when posting to sources returns 302 back to start', async () => {
-                const res = await request(app)
-                    .post('/en-GB/publish/sources')
-                    .set('User-Agent', 'supertest');
+                const res = await request(app).post('/en-GB/publish/sources').set('User-Agent', 'supertest');
                 expect(res.status).toBe(302);
                 expect(res.header.location).toBe(`/en-GB/publish/`);
             });
@@ -601,6 +596,32 @@ describe('Publisher Journey Tests', () => {
                 expect(res.status).toBe(302);
                 expect(res.header.location).toBe(`/en-GB/publish`);
             });
+        });
+    });
+
+    describe('Tasklist', () => {
+        test('It loads the dataset', async () => {
+            const cookies = await setSourcesIntoSession();
+            const res = await request(app)
+                .get(`/en-GB/publish/5caeb8ed-ea64-4a58-8cf0-b728308833e5/tasklist`)
+                .set('User-Agent', 'supertest')
+                .set('Cookie', cookies);
+            expect(res.status).toBe(200);
+            expect(res.text).toContain(t('publish.tasklist.heading'));
+            expect(res.text).toContain('test dataset 1');
+            expect(res.text).toContain(t('publish.tasklist.data.datatable'));
+            expect(res.text).toContain(t('publish.tasklist.metadata.update_frequency'));
+            expect(res.text).toContain(t('publish.tasklist.publishing.when'));
+        });
+
+        test('It throws a 404 if the dataset id is invalid', async () => {
+            const cookies = await setSourcesIntoSession();
+            const res = await request(app)
+                .get(`/en-GB/publish/not-a-dataset-uuid/tasklist`)
+                .set('User-Agent', 'supertest')
+                .set('Cookie', cookies);
+            expect(res.status).toBe(404);
+            expect(res.text).toContain(t('errors.not_found'));
         });
     });
 });

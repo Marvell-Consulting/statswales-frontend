@@ -4,11 +4,9 @@ import { validate as validateUUID } from 'uuid';
 import { StatsWalesApi } from '../services/stats-wales-api';
 import { FileList } from '../dtos2/filelist';
 import { ViewErrDTO } from '../dtos2/view-dto';
-import { i18next } from '../middleware/translation';
 import { logger } from '../utils/logger';
 import { AuthedRequest } from '../interfaces/authed-request';
 
-const t = i18next.t;
 export const view = Router();
 
 const statsWalesApi = (req: AuthedRequest) => {
@@ -24,7 +22,6 @@ view.get('/', async (req: AuthedRequest, res: Response) => {
 });
 
 view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
-    const lang = req.i18n.language;
     const page_number: number = Number.parseInt(req.query.page_number as string, 10) || 1;
     const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 100;
 
