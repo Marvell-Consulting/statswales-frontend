@@ -6,15 +6,15 @@ import { validate as validateUUID } from 'uuid';
 
 import { logger } from '../utils/logger';
 import { StatsWalesApi } from '../services/stats-wales-api';
-import { ViewDTO, ViewErrDTO } from '../dtos2/view-dto';
+import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
 import { i18next } from '../middleware/translation';
 import { AuthedRequest } from '../interfaces/authed-request';
-import { DatasetDTO, FileImportDTO, RevisionDTO } from '../dtos2/dataset-dto';
-import { UploadDTO, UploadErrDTO } from '../dtos2/upload-dto';
-import { ConfirmedImportDTO } from '../dtos2/confirmed-import-dto';
-import { DimensionCreationDTO } from '../dtos2/dimension-creation-dto';
+import { DatasetDTO, FileImportDTO, RevisionDTO } from '../dtos/dataset-dto';
+import { UploadDTO, UploadErrDTO } from '../dtos/upload-dto';
+import { ConfirmedImportDTO } from '../dtos/confirmed-import-dto';
+import { DimensionCreationDTO } from '../dtos/dimension-creation-dto';
 import { SourceType } from '../enums/source-type';
-import { ViewError } from '../dtos2/view-error';
+import { ViewError } from '../dtos/view-error';
 import { singleLangDataset } from '../utils/single-lang-dataset';
 
 const t = i18next.t;

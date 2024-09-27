@@ -1,7 +1,7 @@
 import 'express-session';
-import { DatasetDTO, FileImportDTO, RevisionDTO } from '../../dtos2/dataset-dto';
-import { ViewErrDTO } from '../../dtos2/view-dto';
-import { DimensionCreationDTO } from '../../dtos2/dimension-creation-dto';
+import { DatasetDTO, FileImportDTO, RevisionDTO } from '../../dtos/dataset-dto';
+import { ViewErrDTO } from '../../dtos/view-dto';
+import { DimensionCreationDTO } from '../../dtos/dimension-creation-dto';
 
 declare module 'express-session' {
     interface SessionData {

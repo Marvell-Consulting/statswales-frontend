@@ -1,6 +1,6 @@
 import { sortBy, last } from 'lodash';
 
-import { DatasetDTO, FileImportDTO, RevisionDTO } from '../dtos2/dataset-dto';
+import { DatasetDTO, FileImportDTO, RevisionDTO } from '../dtos/dataset-dto';
 
 export const getLatestRevision = (dataset: DatasetDTO): RevisionDTO | undefined => {
     return last(sortBy(dataset.revisions, 'revision_index'));

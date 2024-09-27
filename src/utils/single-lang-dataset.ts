@@ -1,4 +1,4 @@
-import { DatasetDTO } from '../dtos2/dataset-dto';
+import { DatasetDTO } from '../dtos/dataset-dto';
 
 export const singleLangDataset = (lang: string, dataset: DatasetDTO) => {
     return {

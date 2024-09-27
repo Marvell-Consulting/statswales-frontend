@@ -1,10 +1,10 @@
-import { FileListError, FileList } from '../dtos2/file-list';
-import { ViewDTO, ViewErrDTO } from '../dtos2/view-dto';
-import { Healthcheck } from '../dtos2/healthcehck';
-import { UploadDTO, UploadErrDTO } from '../dtos2/upload-dto';
-import { DatasetDTO, FileImportDTO } from '../dtos2/dataset-dto';
-import { DimensionCreationDTO } from '../dtos2/dimension-creation-dto';
-import { ConfirmedImportDTO } from '../dtos2/confirmed-import-dto';
+import { FileListError, FileList } from '../dtos/file-list';
+import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
+import { Healthcheck } from '../dtos/healthcehck';
+import { UploadDTO, UploadErrDTO } from '../dtos/upload-dto';
+import { DatasetDTO, FileImportDTO } from '../dtos/dataset-dto';
+import { DimensionCreationDTO } from '../dtos/dimension-creation-dto';
+import { ConfirmedImportDTO } from '../dtos/confirmed-import-dto';
 import { logger } from '../utils/logger';
 
 class HttpError extends Error {
