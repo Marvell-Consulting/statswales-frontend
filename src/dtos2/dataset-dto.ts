@@ -34,7 +34,7 @@ export class DimensionDTO {
     dataset_id?: string;
 }
 
-export class ImportDTO {
+export class FileImportDTO {
     id: string;
     revision_id: string;
     mime_type: string;
@@ -49,20 +49,20 @@ export class ImportDTO {
 export class RevisionDTO {
     id: string;
     revision_index: number;
-    creation_date: string;
+    created_at: string;
     previous_revision_id?: string;
     online_cube_filename?: string;
-    publish_date?: string;
-    approval_date?: string;
+    publish_at?: string;
+    approved_at?: string;
     approved_by?: string;
     created_by: string;
-    imports: ImportDTO[];
+    imports: FileImportDTO[];
     dataset_id?: string;
 }
 
 export class DatasetDTO {
     id: string;
-    creation_date: string;
+    created_at: string;
     created_by: string;
     live?: string;
     archive?: string;

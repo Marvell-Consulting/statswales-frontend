@@ -9,7 +9,7 @@ import { StatsWalesApi } from '../services/stats-wales-api';
 import { ViewDTO, ViewErrDTO } from '../dtos2/view-dto';
 import { i18next } from '../middleware/translation';
 import { AuthedRequest } from '../interfaces/authed-request';
-import { DatasetDTO, ImportDTO, RevisionDTO } from '../dtos2/dataset-dto';
+import { DatasetDTO, FileImportDTO, RevisionDTO } from '../dtos2/dataset-dto';
 import { UploadDTO, UploadErrDTO } from '../dtos2/upload-dto';
 import { ConfirmedImportDTO } from '../dtos2/confirmed-import-dto';
 import { DimensionCreationDTO } from '../dtos2/dimension-creation-dto';
@@ -30,7 +30,7 @@ function setCurrentToSession(dataset: DatasetDTO, req: AuthedRequest): boolean {
         return false;
     }
     const currentRevision = dataset.revisions.reduce((prev, curr) => {
-        return new Date(prev.creation_date) > new Date(curr.creation_date) ? prev : curr;
+        return new Date(prev.created_at) > new Date(curr.created_at) ? prev : curr;
     });
     req.session.currentRevision = currentRevision;
     if (!currentRevision.imports) {
@@ -110,7 +110,7 @@ function checkCurrentRevision(req: AuthedRequest, res: Response): RevisionDTO | 
     return currentRevision;
 }
 
-function checkCurrentFileImport(req: AuthedRequest, res: Response): ImportDTO | undefined {
+function checkCurrentFileImport(req: AuthedRequest, res: Response): FileImportDTO | undefined {
     const lang = req.i18n.language;
     const currentFileImport = req.session.currentImport;
     if (!currentFileImport) {
@@ -306,7 +306,7 @@ publish.get('/preview', async (req: AuthedRequest, res: Response) => {
 async function confirmFileUpload(
     currentDataset: DatasetDTO,
     currentRevision: RevisionDTO,
-    currentFileImport: ImportDTO,
+    currentFileImport: FileImportDTO,
     statsWalesApi: StatsWalesApi,
     req: AuthedRequest,
     res: Response
@@ -344,7 +344,7 @@ async function confirmFileUpload(
 async function rejectFileReturnToUpload(
     currentDataset: DatasetDTO,
     currentRevision: RevisionDTO,
-    currentFileImport: ImportDTO,
+    currentFileImport: FileImportDTO,
     statsWalesApi: StatsWalesApi,
     req: AuthedRequest,
     res: Response
@@ -410,7 +410,7 @@ publish.post('/preview', upload.none(), async (req: AuthedRequest, res: Response
     }
 });
 
-function updateCurrentImport(currentImport: ImportDTO, dimensionCreationRequest: DimensionCreationDTO[]) {
+function updateCurrentImport(currentImport: FileImportDTO, dimensionCreationRequest: DimensionCreationDTO[]) {
     if (currentImport.sources) {
         currentImport.sources.forEach((source) => {
             source.type =

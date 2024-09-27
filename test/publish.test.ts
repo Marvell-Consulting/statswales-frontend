@@ -5,7 +5,7 @@ import request from 'supertest';
 
 import { i18next } from '../src/middleware/translation';
 import app from '../src/app';
-import { DatasetDTO, ImportDTO, RevisionDTO } from '../src/dtos2/dataset-dto';
+import { DatasetDTO, FileImportDTO, RevisionDTO } from '../src/dtos2/dataset-dto';
 import { ViewErrDTO } from '../src/dtos2/view-dto';
 import { DimensionCreationDTO } from '../src/dtos2/dimension-creation-dto';
 
@@ -17,7 +17,7 @@ declare module 'express-session' {
     interface SessionData {
         currentDataset: DatasetDTO | undefined;
         currentRevision: RevisionDTO | undefined;
-        currentImport: ImportDTO | undefined;
+        currentImport: FileImportDTO | undefined;
         errors: ViewErrDTO | undefined;
         dimensionCreationRequest: DimensionCreationDTO[];
         currentTitle: string | undefined;

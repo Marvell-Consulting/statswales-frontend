@@ -1,8 +1,8 @@
-import { FileListError, FileList } from '../dtos2/filelist';
+import { FileListError, FileList } from '../dtos2/file-list';
 import { ViewDTO, ViewErrDTO } from '../dtos2/view-dto';
 import { Healthcheck } from '../dtos2/healthcehck';
 import { UploadDTO, UploadErrDTO } from '../dtos2/upload-dto';
-import { DatasetDTO, ImportDTO } from '../dtos2/dataset-dto';
+import { DatasetDTO, FileImportDTO } from '../dtos2/dataset-dto';
 import { DimensionCreationDTO } from '../dtos2/dimension-creation-dto';
 import { ConfirmedImportDTO } from '../dtos2/confirmed-import-dto';
 import { logger } from '../utils/logger';
@@ -249,7 +249,7 @@ export class StatsWalesApi {
                 throw err;
             })
             .then((api_res) => {
-                const updatedImportDto = api_res as ImportDTO;
+                const updatedImportDto = api_res as FileImportDTO;
                 return {
                     success: true,
                     fileImport: updatedImportDto
@@ -275,7 +275,7 @@ export class StatsWalesApi {
                 throw err;
             })
             .then((api_res) => {
-                const updatedImportDto = api_res as ImportDTO;
+                const updatedImportDto = api_res as FileImportDTO;
                 return {
                     success: true,
                     fileImport: updatedImportDto

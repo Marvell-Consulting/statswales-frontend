@@ -2,7 +2,7 @@ import { Router, Response } from 'express';
 import { validate as validateUUID } from 'uuid';
 
 import { StatsWalesApi } from '../services/stats-wales-api';
-import { FileList } from '../dtos2/filelist';
+import { FileList } from '../dtos2/file-list';
 import { ViewErrDTO } from '../dtos2/view-dto';
 import { logger } from '../utils/logger';
 import { AuthedRequest } from '../interfaces/authed-request';
