@@ -10,6 +10,7 @@ export default [
       'coverage/**',
       'dist/**',
       'node_modules/**',
+      'src/public/**',
       '**/*.config.{mjs,ts}'
     ],
   },
@@ -28,6 +29,18 @@ export default [
           format: ['camelCase', 'PascalCase', 'UPPER_CASE', 'snake_case'],
         }
       ],
+    }
+  },
+  {
+    files: ['src/config/**/*.ts', 'test/.jest/set-env-vars.ts'],
+    rules: {
+      'no-process-env': 'off',
+    }
+  },
+  {
+    files: ['test/**/*.ts'],
+    rules: {
+      'no-console': 'off',
     }
   },
 ];

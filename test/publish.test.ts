@@ -5,9 +5,9 @@ import request from 'supertest';
 
 import { i18next } from '../src/middleware/translation';
 import app from '../src/app';
-import { DatasetDTO, FileImportDTO, RevisionDTO } from '../src/dtos2/dataset-dto';
-import { ViewErrDTO } from '../src/dtos2/view-dto';
-import { DimensionCreationDTO } from '../src/dtos2/dimension-creation-dto';
+import { DatasetDTO, FileImportDTO, RevisionDTO } from '../src/dtos/dataset-dto';
+import { ViewErrDTO } from '../src/dtos/view-dto';
+import { DimensionCreationDTO } from '../src/dtos/dimension-creation-dto';
 
 import { server } from './helpers/mock-server';
 

@@ -12,11 +12,11 @@
     "lint:ci": "eslint .",
     "lint:fix": "eslint . --fix",
     "build": "npm-run-all clean tsc copy-assets",
-    "test": "jest --coverage",
-    "test:ci": "jest --ci --coverage --config=jest.config.ts",
+    "test": "APP_ENV=ci jest --coverage",
+    "test:ci": "APP_ENV=ci jest --ci --coverage --config=jest.config.ts",
     "check": "npm-run-all prettier:fix lint:fix test build",
     "dev:check": "npm-run-all check dev",
-    "dev": "NODE_ENV=dev nodemon --watch src -e ts,ejs --exec npm run start",
+    "dev": "APP_ENV=local nodemon --watch src -e ts,ejs --exec npm run start",
     "start": "npm run build && node dist/server.js | pino-colada",
     "start:container": "node dist/server.js"
   },
@@ -56,8 +56,7 @@
     "supertest-session": "^5.0.1",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5",
-    "typescript-eslint": "^8.7.0"
+    "typescript": "5.5"
   },
   "dependencies": {
     "connect-redis": "^7.1.1",
@@ -80,6 +79,7 @@
     "pino-http": "^10.2.0",
     "redis": "^4.7.0",
     "ts-node-dev": "^2.0.0",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "walk-object": "^4.0.0"
   }
 }

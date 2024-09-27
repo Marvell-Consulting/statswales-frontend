@@ -4,6 +4,9 @@ import JWT from 'jsonwebtoken';
 import { AuthedRequest } from '../interfaces/authed-request';
 import { JWTPayloadWithUser } from '../interfaces/jwt-payload-with-user';
 import { logger } from '../utils/logger';
+import { appConfig } from '../config';
+
+const config = appConfig();
 
 export const ensureAuthenticated: RequestHandler = (req: AuthedRequest, res, next) => {
     logger.debug('checking if user is authenticated...');
@@ -14,7 +17,7 @@ export const ensureAuthenticated: RequestHandler = (req: AuthedRequest, res, nex
         }
 
         // JWT_SECRET must be the same as the backend or the token will fail verification
-        const secret = process.env.JWT_SECRET || '';
+        const secret = config.auth.jwt.secret;
         const token = req.cookies.jwt;
 
         // verify the JWT token was signed by us

@@ -13,7 +13,7 @@ import { DatasetDTO, FileImportDTO, RevisionDTO } from '../dtos/dataset-dto';
 import { UploadDTO, UploadErrDTO } from '../dtos/upload-dto';
 import { ConfirmedImportDTO } from '../dtos/confirmed-import-dto';
 import { DimensionCreationDTO } from '../dtos/dimension-creation-dto';
-import { SourceType } from '../enums/source-type';
+import { SourceType } from '../enums/source-type.enum';
 import { ViewError } from '../dtos/view-error';
 import { singleLangDataset } from '../utils/single-lang-dataset';
 
@@ -414,7 +414,7 @@ function updateCurrentImport(currentImport: FileImportDTO, dimensionCreationRequ
     if (currentImport.sources) {
         currentImport.sources.forEach((source) => {
             source.type =
-                dimensionCreationRequest.find((dim) => dim.sourceId === source.id)?.sourceType || SourceType.UNKNOWN;
+                dimensionCreationRequest.find((dim) => dim.sourceId === source.id)?.sourceType || SourceType.Unknown;
         });
     }
     return currentImport;
@@ -449,7 +449,7 @@ publish.get('/sources', upload.none(), (req: AuthedRequest, res: Response) => {
         currentFileImport = updateCurrentImport(currentFileImport, dimensionCreationRequest);
     } else {
         currentFileImport.sources.forEach((source) => {
-            source.type = SourceType.UNKNOWN;
+            source.type = SourceType.Unknown;
         });
     }
     res.render('publish/sources', {
@@ -499,13 +499,13 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
         `Validating the request before sending to the server, dimensionCreationRequest length = ${dimensionCreationRequest.length}`
     );
     const sourcesMarkedUnknown = dimensionCreationRequest.filter(
-        (createRequest) => createRequest.sourceType === SourceType.UNKNOWN
+        (createRequest) => createRequest.sourceType === SourceType.Unknown
     );
     const sourcesMarkedDataValues = dimensionCreationRequest.filter(
-        (createRequest) => createRequest.sourceType === SourceType.DATAVALUES
+        (createRequest) => createRequest.sourceType === SourceType.DataValues
     );
     const sourcesMarkedFootnotes = dimensionCreationRequest.filter(
-        (createRequest) => createRequest.sourceType === SourceType.FOOTNOTES
+        (createRequest) => createRequest.sourceType === SourceType.FootNotes
     );
     if (sourcesMarkedUnknown.length > 0) {
         logger.error('User failed to identify all sources');

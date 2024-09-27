@@ -6,6 +6,9 @@ import { DatasetDTO, FileImportDTO } from '../dtos/dataset-dto';
 import { DimensionCreationDTO } from '../dtos/dimension-creation-dto';
 import { ConfirmedImportDTO } from '../dtos/confirmed-import-dto';
 import { logger } from '../utils/logger';
+import { appConfig } from '../config';
+
+const config = appConfig();
 
 class HttpError extends Error {
     public status: number;
@@ -22,7 +25,7 @@ class HttpError extends Error {
 }
 
 export class StatsWalesApi {
-    private readonly backendUrl = process.env.BACKEND_URL || '';
+    private readonly backendUrl = config.backend.url;
     private readonly authHeader: Record<string, string>;
 
     constructor(
@@ -294,6 +297,7 @@ export class StatsWalesApi {
             `${this.backendUrl}/${this.lang}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/sources`,
             {
                 method: 'PATCH',
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 headers: { ...this.authHeader, 'Content-Type': 'application/json; charset=UTF-8' },
                 body: JSON.stringify(dimensionCreationDtoArr)
             }

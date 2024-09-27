@@ -1,7 +1,7 @@
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
 
-import { DatasetDTO } from '../../src/dtos2/dataset-dto';
+import { DatasetDTO } from '../../src/dtos/dataset-dto';
 
 export const createdDataset: DatasetDTO = {
     id: '5caeb8ed-ea64-4a58-8cf0-b728308833e5',
