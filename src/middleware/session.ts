@@ -18,7 +18,7 @@ if (config.session.store === SessionStore.Redis) {
     redisClient
         .connect()
         .then(() => logger.info('Redis session store initialized'))
-        .catch((err) => logger.error(err));
+        .catch((err) => logger.error(`Redis error: ${err}`));
 
     store = new RedisStore({ client: redisClient, prefix: 'sw3f:' });
 } else {
@@ -26,9 +26,11 @@ if (config.session.store === SessionStore.Redis) {
     store = new MemoryStore({});
 }
 
+console.log(config);
+
 export default session({
     secret: config.session.secret,
-    name: 'statswales.backend',
+    name: 'statswales.frontend',
     store,
     resave: false,
     saveUninitialized: false,

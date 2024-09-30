@@ -17,9 +17,11 @@ export function getCIConfig(): AppConfig {
             url: process.env.BACKEND_URL || 'http://localhost:3001'
         },
         session: {
-            store: SessionStore.Memory,
+            store: SessionStore.Redis,
             secret: process.env.SESSION_SECRET || 'mysecret',
-            secure: false
+            secure: false,
+            redisUrl: 'redis://localhost:6379',
+            redisPassword: undefined
         },
         auth: {
             jwt: {

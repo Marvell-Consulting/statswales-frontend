@@ -88,7 +88,7 @@ describe('Publisher Journey Tests', () => {
     }
 
     describe('Test session routes', () => {
-        test('Get the session returns 200 with some data in it', async () => {
+        test.only('Get the session returns 200 with some data in it', async () => {
             const cookies = await setDatasetToSession();
             const res = await request(app)
                 .get('/en-GB/publish/session')
