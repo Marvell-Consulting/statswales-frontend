@@ -73,7 +73,7 @@ describe('Publisher Journey Tests', () => {
         console.log('Saving title to session');
         const res = await request(app)
             .post('/en-GB/publish/title')
-            // .set('User-Agent', 'supertest')
+            .set('User-Agent', 'supertest')
             .field('title', title);
         if (res.error) {
             console.log(res.error);
