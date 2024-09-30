@@ -63,4 +63,6 @@ app.get('/:lang/', rateLimiter, ensureAuthenticated, (req: Request, res: Respons
     res.render('index');
 });
 
+logger.info('Routes loaded');
+
 export default app;

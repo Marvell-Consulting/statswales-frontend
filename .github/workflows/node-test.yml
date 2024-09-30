@@ -30,4 +30,4 @@ jobs:
     - run: npm run prettier:ci
     - run: npm run lint:ci
     - run: npm run build
-    - run: npm test:ci
+    - run: npm run test:ci
