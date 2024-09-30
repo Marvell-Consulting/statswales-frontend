@@ -16,6 +16,7 @@
     "test:ci": "APP_ENV=ci jest --ci --coverage --config=jest.config.ts",
     "check": "npm-run-all prettier:fix lint:fix test build",
     "dev:check": "npm-run-all check dev",
+    "predev": "docker compose up -d redis",
     "dev": "APP_ENV=local nodemon --watch src -e ts,ejs --exec npm run start",
     "start": "npm run build && node dist/server.js | pino-colada",
     "start:container": "node dist/server.js"

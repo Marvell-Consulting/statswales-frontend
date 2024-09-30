@@ -20,7 +20,7 @@ export function getLocalConfig(): AppConfig {
             store: SessionStore.Redis,
             secret: process.env.SESSION_SECRET || 'mysecret',
             secure: false,
-            redisUrl: process.env.REDIS_URL || 'redis://localhost'
+            redisUrl: process.env.REDIS_URL || 'redis://localhost:6380'
         },
         logger: {
             level: 'debug'

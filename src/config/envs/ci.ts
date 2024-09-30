@@ -8,6 +8,9 @@ import { SessionStore } from '../session-store.enum';
 export function getCIConfig(): AppConfig {
     return defineConfig({
         env: AppEnv.Ci,
+        logger: {
+            level: 'debug'
+        },
         frontend: {
             port: parseInt(process.env.FRONTEND_PORT || '3000', 10),
             url: process.env.FRONTEND_URL || 'http://localhost:3000'
@@ -17,11 +20,9 @@ export function getCIConfig(): AppConfig {
             url: process.env.BACKEND_URL || 'http://localhost:3001'
         },
         session: {
-            store: SessionStore.Redis,
+            store: SessionStore.Memory,
             secret: process.env.SESSION_SECRET || 'mysecret',
-            secure: false,
-            redisUrl: 'redis://localhost:6379',
-            redisPassword: undefined
+            secure: false
         },
         auth: {
             jwt: {
