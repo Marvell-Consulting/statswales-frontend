@@ -94,11 +94,11 @@
         "sources": {
             "heading": "What does each column in the data table contain?",
             "types": {
-                "DATAVALUES": "Data values",
-                "FOOTNOTES": "Notes code",
-                "DIMENSION": "Dimension",
-                "IGNORE": "This column can be ignored",
-                "UNKNOWN": "Select"
+                "data_values": "Data values",
+                "foot_notes": "Notes code",
+                "dimension": "Dimension",
+                "ignore": "This column can be ignored",
+                "unknown": "Select"
             }
         },
         "tasklist": {

@@ -455,7 +455,7 @@ publish.get('/sources', upload.none(), (req: AuthedRequest, res: Response) => {
     res.render('publish/sources', {
         errors: errs,
         currentImport: currentFileImport,
-        sourceTypes: Object.keys(SourceType)
+        sourceTypes: Object.values(SourceType)
     });
 });
 
@@ -518,7 +518,7 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
         res.render('publish/sources', {
             errors: errs,
             currentImport: updatedFileImportWithSourceType,
-            sourceTypes: Object.keys(SourceType)
+            sourceTypes: Object.values(SourceType)
         });
         return;
     }
@@ -535,7 +535,7 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
         res.render('publish/sources', {
             errors: errs,
             currentImport: updatedFileImportWithSourceType,
-            sourceTypes: Object.keys(SourceType)
+            sourceTypes: Object.values(SourceType)
         });
         return;
     }
@@ -551,7 +551,7 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
         res.render('publish/sources', {
             errors: errs,
             currentImport: updatedFileImportWithSourceType,
-            sourceTypes: Object.keys(SourceType)
+            sourceTypes: Object.values(SourceType)
         });
         return;
     }
@@ -580,7 +580,7 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
         res.render('publish/sources', {
             errors: errs,
             currentImport: updatedFileImportWithSourceType,
-            sourceTypes: Object.keys(SourceType)
+            sourceTypes: Object.values(SourceType)
         });
     }
 });
