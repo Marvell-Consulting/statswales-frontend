@@ -28,6 +28,10 @@ jest.mock('../src/middleware/ensure-authenticated', () => ({
     ensureAuthenticated: (req: Request, res: Response, next: NextFunction) => next()
 }));
 
+jest.mock('../src/middleware/rate-limiter', () => ({
+    rateLimiter: (req: Request, res: Response, next: NextFunction) => next()
+}));
+
 describe('Publisher Journey Tests', () => {
     beforeAll(() => {
         server.listen({
@@ -51,39 +55,60 @@ describe('Publisher Journey Tests', () => {
         server.resetHandlers();
     });
 
-    afterAll(() => server.close());
+    afterAll(() => {
+        server.close();
+    });
 
     async function clearSession() {
+        console.log('Clearing the session');
         const res = await request(app).get('/en-GB/publish').set('User-Agent', 'supertest');
+        if (res.error) {
+            console.log(res.error);
+            throw new Error('Failed to clear session');
+        }
         return res.headers['set-cookie'];
     }
 
     async function setTitleToSession(title: string) {
+        console.log('Saving title to session');
         const res = await request(app)
             .post('/en-GB/publish/title')
-            .set('User-Agent', 'supertest')
+            // .set('User-Agent', 'supertest')
             .field('title', title);
+        if (res.error) {
+            console.log(res.error);
+            throw new Error('Failed to set title');
+        }
         return res.headers['set-cookie'];
     }
 
     async function setDatasetToSession(title?: string) {
-        const cookie = await setTitleToSession(title || 'test dataset 1');
+        const titleCookie = await setTitleToSession(title || 'test dataset 1');
         const csvfile = path.resolve(__dirname, `./sample-csvs/test-data-1.csv`);
+        console.log('Saving dataset to session');
         const res = await request(app)
             .post('/en-GB/publish/upload')
             .set('User-Agent', 'supertest')
-            .set('Cookie', cookie)
+            .set('Cookie', titleCookie)
             .attach('csv', csvfile);
+        if (res.error) {
+            console.log(res.error);
+            throw new Error('Failed to upload dataset');
+        }
         return res.headers['set-cookie'];
     }
 
     async function setSourcesIntoSession(title?: string) {
-        const titleCookies = await setDatasetToSession(title);
+        const datasetCookie = await setDatasetToSession(title);
         const res = await request(app)
             .post('/en-GB/publish/preview')
             .field('confirm', 'true')
             .set('User-Agent', 'supertest')
-            .set('Cookie', titleCookies);
+            .set('Cookie', datasetCookie);
+        if (res.error) {
+            console.log(res.error);
+            throw new Error('Failed to set sources');
+        }
         return res.headers['set-cookie'];
     }
 
