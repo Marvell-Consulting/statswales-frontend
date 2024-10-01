@@ -503,11 +503,11 @@ describe('Publisher Journey Tests', () => {
             const cookies = await setSourcesIntoSession();
             const res = await request(app)
                 .post('/en-GB/publish/sources')
-                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'IGNORE')
-                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'DATAVALUES')
-                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'FOOTNOTES')
-                .field('32894949-e758-4974-a932-455d51895293', 'DIMENSION')
-                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'DIMENSION')
+                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'ignore')
+                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'data_values')
+                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'foot_notes')
+                .field('32894949-e758-4974-a932-455d51895293', 'dimension')
+                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'dimension')
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies);
             expect(res.status).toBe(302);
@@ -518,11 +518,11 @@ describe('Publisher Journey Tests', () => {
             const cookies = await setSourcesIntoSession();
             const res = await request(app)
                 .post('/en-GB/publish/sources')
-                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'IGNORE')
-                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'DATAVALUES')
-                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'DATAVALUES')
-                .field('32894949-e758-4974-a932-455d51895293', 'DIMENSION')
-                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'DIMENSION')
+                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'ignore')
+                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'data_values')
+                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'data_values')
+                .field('32894949-e758-4974-a932-455d51895293', 'dimension')
+                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'dimension')
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies);
             expect(res.status).toBe(400);
@@ -534,11 +534,11 @@ describe('Publisher Journey Tests', () => {
             const cookies = await setSourcesIntoSession();
             const res = await request(app)
                 .post('/en-GB/publish/sources')
-                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'IGNORE')
-                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'FOOTNOTES')
-                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'FOOTNOTES')
-                .field('32894949-e758-4974-a932-455d51895293', 'DIMENSION')
-                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'DIMENSION')
+                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'ignore')
+                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'foot_notes')
+                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'foot_notes')
+                .field('32894949-e758-4974-a932-455d51895293', 'dimension')
+                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'dimension')
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies);
             expect(res.status).toBe(400);
@@ -550,11 +550,11 @@ describe('Publisher Journey Tests', () => {
             const cookies = await setSourcesIntoSession();
             const res = await request(app)
                 .post('/en-GB/publish/sources')
-                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'UNKNOWN')
-                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'UNKNOWN')
-                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'FOOTNOTES')
-                .field('32894949-e758-4974-a932-455d51895293', 'DIMENSION')
-                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'DIMENSION')
+                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'unknown')
+                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'unknown')
+                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'foot_notes')
+                .field('32894949-e758-4974-a932-455d51895293', 'dimension')
+                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'dimension')
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies);
             expect(res.status).toBe(400);
@@ -566,11 +566,11 @@ describe('Publisher Journey Tests', () => {
             const cookies = await setSourcesIntoSession('test-data-4.csv broken preview');
             const res = await request(app)
                 .post('/en-GB/publish/sources')
-                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'IGNORE')
-                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'DATAVALUES')
-                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'FOOTNOTES')
-                .field('32894949-e758-4974-a932-455d51895293', 'DIMENSION')
-                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'DIMENSION')
+                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'ignore')
+                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'data_values')
+                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'foot_notes')
+                .field('32894949-e758-4974-a932-455d51895293', 'dimension')
+                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'dimension')
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies);
             expect(res.status).toBe(500);
