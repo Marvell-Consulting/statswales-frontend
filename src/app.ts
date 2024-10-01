@@ -15,11 +15,11 @@ import { publish } from './routes/publish';
 import { view } from './routes/view';
 import { appConfig } from './config';
 
-checkConfig();
-
 const app: Application = express();
 
 const config = appConfig();
+
+checkConfig();
 
 logger.info(`App config loaded for '${config.env}' env`);
 
