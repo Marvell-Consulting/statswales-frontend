@@ -13,7 +13,7 @@ import { DatasetDTO, FileImportDTO, RevisionDTO } from '../dtos/dataset-dto';
 import { UploadDTO, UploadErrDTO } from '../dtos/upload-dto';
 import { ConfirmedImportDTO } from '../dtos/confirmed-import-dto';
 import { DimensionCreationDTO } from '../dtos/dimension-creation-dto';
-import { SourceType } from '../enums/source-type.enum';
+import { SourceType } from '../enums/source-type';
 import { ViewError } from '../dtos/view-error';
 import { singleLangDataset } from '../utils/single-lang-dataset';
 
