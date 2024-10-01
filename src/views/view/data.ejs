@@ -29,6 +29,11 @@
                             </a>
                         </li>
                         <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                            <a class="govuk-tabs__tab" href="#imports">
+                                <%= t('view.display.imports') %>
+                            </a>
+                        </li>
+                        <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
                             <a class="govuk-tabs__tab" href="#json">
                                 JSON
                             </a>
@@ -47,8 +52,8 @@
                         <% if (locals.dataset.dimensions.length > 0) { %>
                             <% locals.dataset.dimensions.forEach((dim) => { %>
                                 <p class="govuk-body"><strong>ID:</strong> <%= dim.id %></p>
-                                <p class="govuk-body"><strong>Type:</strong> <%= dim.type %></p>
-                                <p class="govuk-body"><strong>Start Revision ID:</strong> <%= dim.start_revision_id %></p>
+                                <p class="govuk-body"><strong><%- t('view.display.type') %>:</strong> <%= dim.type %></p>
+                                <p class="govuk-body"><strong><%- t('view.display.start_revision') %>:</strong> <%= dim.start_revision_id %></p>
                                 <p class="govuk-body"><strong><%- t('view.display.title') %>
                                     </strong> <%= dim.dimensionInfo.find((info) => info.language === i18n.language).name %>
                                 </p>
@@ -69,9 +74,28 @@
                         <% if (locals.dataset.revisions.length > 0) { %>
                             <% locals.dataset.revisions.forEach((rev) => { %>
                                 <p class="govuk-body"><strong>ID:</strong> <%= rev.id %></p>
-                                <p class="govuk-body"><strong>Index:</strong> <%= rev.revision_index %></p>
-                                <p class="govuk-body"><strong>created_at:</strong> <%= rev.created_at %></p>
-                                <p class="govuk-body"><strong>created_by:</strong> <%= rev.created_by %></p>
+                                <p class="govuk-body"><strong><%- t('view.display.index') %>:</strong> <%= rev.revision_index %></p>
+                                <p class="govuk-body"><strong><%- t('view.display.creation_date') %>:</strong> <%= rev.rev.created_at %></p>
+                                <p class="govuk-body"><strong><%- t('view.display.created_by') %>:</strong> <%= rev.created_by %></p>
+                            <% });%>
+                        <% } else { %>
+                            <p class="govuk-body-l"><%= t('errors.view.display.no_revisions') %></p>
+                        <% } %>
+                    </div>
+                    <div class="govuk-tabs__panel" id="imports">
+                        <h2 class="govuk-heading-m"><%= t('view.display.imports') %></h2>
+                        <% if (locals.dataset.revisions.length > 0) { %>
+                            <% locals.dataset.revisions.forEach((rev) => { %>
+                                <% rev.imports.forEach((imp) => { %>
+                                    <p class="govuk-body"><strong>ID:</strong> <%= imp.id %></p>
+                                    <p class="govuk-body"><strong><%= t('view.display.filename') %>:</strong> <%= imp.filename %></p>
+                                    <p class="govuk-body"><strong><%= t('view.display.mime_type') %>:</strong> <%= imp.mime_type %></p>
+                                    <p class="govuk-body"><strong><%= t('view.display.location') %>:</strong> <%= imp.location %></p>
+                                    <p class="govuk-body"><strong><%= t('view.display.download') %>:</strong>
+                                        <a href="/<%= i18n.language %>/<%= t('routes.view.start') %>/<%= locals.dataset.id %>/import/<%= imp.id %>">
+                                            <i class="fa-solid fa-download"></i> <%= t('view.display.download_file') %>
+                                        </a></p>
+                                <% }); %>
                             <% });%>
                         <% } else { %>
                             <p class="govuk-body-l"><%= t('errors.view.display.no_revisions') %></p>

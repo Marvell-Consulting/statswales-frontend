@@ -52,6 +52,9 @@ app.use('/:lang/healthcheck', rateLimiter, healthcheck);
 
 app.get('/', (req: Request, res: Response) => {
     const lang = req.headers['accept-language'] || req.headers['Accept-Language'] || req.i18n.language || 'en-GB';
+    logger.info(
+        `User arrived at service and we selected ${lang} as the language.  The headers were: ${req.headers['accept-language']}${req.headers['Accept-Language']}, and i18next selected: ${req.i18n.language}`
+    );
     if (lang.includes('cy')) {
         res.redirect('/cy-GB');
     } else {

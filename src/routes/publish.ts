@@ -16,6 +16,9 @@ import { DimensionCreationDTO } from '../dtos/dimension-creation-dto';
 import { SourceType } from '../enums/source-type';
 import { ViewError } from '../dtos/view-error';
 import { singleLangDataset } from '../utils/single-lang-dataset';
+import { DimensionType } from '../enums/dimension-types';
+import { DimensionState } from '../dtos2/dimension-state';
+import { TaskListState } from '../dtos2/task-list-state';
 
 const t = i18next.t;
 const upload = multer({ storage: multer.memoryStorage() });
@@ -614,6 +617,53 @@ publish.delete('/session/currentImport', (req: AuthedRequest, res: Response) => 
     res.json({ message: 'Current import has been deleted' });
 });
 
+// As discussed we'll move this to the backend  in a future PR and have a route which returns this
+function buildStateFromDataset(lang: string, dataset: DatasetDTO): TaskListState {
+    const singleLanguageDataset = singleLangDataset(lang, dataset);
+    const datasetTitle = singleLanguageDataset.datasetInfo?.title || t('publish.tasklist.no_title', { lng: lang });
+    const titleState = singleLanguageDataset.datasetInfo?.title
+        ? { tag: 'publish.tasklist.status.completed', colour: 'green' }
+        : { tag: 'publish.tasklist.status.not_started', colour: 'blue' };
+    const dimensionStates: DimensionState[] = [];
+    const dimensions = singleLanguageDataset.dimensions || [];
+    for (const dim of dimensions) {
+        if (dim.type === DimensionType.FOOTNOTE) {
+            continue;
+        }
+        const dimState =
+            dim.type === DimensionType.RAW
+                ? { tag: 'publish.tasklist.status.not_implemented', colour: 'grey' }
+                : { tag: 'publish.tasklist.status.completed', colour: 'green' };
+        const name = dim.dimensionInfo?.name || 'unknown';
+        dimensionStates.push({
+            name,
+            state: dimState
+        });
+    }
+    const notImplemented = { tag: 'publish.tasklist.status.not_implemented', colour: 'grey' };
+    return {
+        datasetTitle,
+        dimensions: dimensionStates,
+        metadata: {
+            title: titleState,
+            summary: notImplemented,
+            statistical_quality: notImplemented,
+            data_sources: notImplemented,
+            related_reports: notImplemented,
+            update_frequency: notImplemented,
+            designation: notImplemented,
+            data_collection: notImplemented,
+            relevant_topics: notImplemented
+        },
+        publishing: {
+            when: notImplemented,
+            export: notImplemented,
+            import: notImplemented,
+            submit: notImplemented
+        }
+    };
+}
+
 publish.get('/:datasetId/tasklist', async (req: AuthedRequest, res: Response) => {
     const lang = req.i18n.language;
     const datasetId = req.params.datasetId as string;
@@ -623,9 +673,8 @@ publish.get('/:datasetId/tasklist', async (req: AuthedRequest, res: Response) =>
         if (!validateUUID(datasetId)) throw new Error('Invalid dataset ID');
         const dataset = await statsWalesApi.getDataset(datasetId);
         setCurrentToSession(dataset, req);
-
         res.render('publish/tasklist', {
-            dataset: singleLangDataset(lang, dataset),
+            taskList: buildStateFromDataset(lang, dataset),
             sourcesUrl: `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.sources', { lng: lang })}`
         });
     } catch (err) {
