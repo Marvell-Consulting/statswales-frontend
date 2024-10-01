@@ -1,6 +1,6 @@
 import { FileListError, FileList } from '../dtos/file-list';
 import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
-import { Healthcheck } from '../dtos/healthcehck';
+import { Healthcheck } from '../dtos/healthcheck';
 import { UploadDTO, UploadErrDTO } from '../dtos/upload-dto';
 import { DatasetDTO, FileImportDTO } from '../dtos/dataset-dto';
 import { DimensionCreationDTO } from '../dtos/dimension-creation-dto';
