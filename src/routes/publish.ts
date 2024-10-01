@@ -258,12 +258,19 @@ const debugMiddleware: RequestHandler = (req, res, next) => {
 
 publish.post('/upload', debugMiddleware, upload.single('csv'), async (req: AuthedRequest, res: Response) => {
     console.log('IN /upload');
-    if (req.session.currentDataset) {
-        logger.info('Dataset present... Amending existing Dataset');
-        await uploadNewFileToExistingDataset(req, res);
-    } else {
-        logger.info('Creating a new dataset');
-        await createNewDataset(req, res);
+
+    try {
+        if (req.session.currentDataset) {
+            logger.info('Dataset present... Amending existing Dataset');
+            await uploadNewFileToExistingDataset(req, res);
+        } else {
+            logger.info('Creating a new dataset');
+            await createNewDataset(req, res);
+        }
+    } catch (err) {
+        console.log(`OH NOES! ${err}`);
+        res.status(500);
+        res.send('OOPS');
     }
 });
 
