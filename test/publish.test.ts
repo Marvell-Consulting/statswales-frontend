@@ -61,7 +61,6 @@ describe('Publisher Journey Tests', () => {
     });
 
     async function clearSession() {
-        console.log('Clearing the session');
         const res = await request(app).get('/en-GB/publish').set('User-Agent', 'supertest');
         if (res.error) {
             console.log(res.error);
@@ -85,7 +84,6 @@ describe('Publisher Journey Tests', () => {
     async function setDatasetToSession(title?: string) {
         const titleCookie = await setTitleToSession(title || 'test dataset 1');
         const csvfile = path.resolve(__dirname, `./sample-csvs/test-data-1.csv`);
-        console.log(`Saving dataset to session, csv filepath: ${csvfile}`);
         const res = await request(app)
             .post('/en-GB/publish/upload')
             .set('User-Agent', 'supertest')
