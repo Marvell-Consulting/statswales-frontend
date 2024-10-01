@@ -1,3 +1,5 @@
+import { ReadableStream } from 'node:stream/web';
+
 import { FileListError, FileList } from '../dtos2/filelist';
 import { ViewDTO, ViewErrDTO } from '../dtos2/view-dto';
 import { Healthcheck } from '../dtos2/healthcehck';
@@ -55,6 +57,24 @@ export class StatsWalesApi {
                 return { status: error.status, files: [], error: error.message } as FileListError;
             });
         return filelist;
+    }
+
+    public async getFileFromImport(datasetId: string, revisionId: string, importId: string) {
+        logger.debug(
+            `Fetching file from ${this.backendUrl}/${this.lang}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/raw`
+        );
+
+        const fileResponse = await fetch(
+            `${this.backendUrl}/${this.lang}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/raw`,
+            {
+                headers: this.authHeader
+            }
+        );
+        if (!fileResponse.body) {
+            throw new Error('No file response');
+        }
+        const body = fileResponse.body as ReadableStream;
+        return body;
     }
 
     public async getDataset(datasetId: string): Promise<DatasetDTO> {

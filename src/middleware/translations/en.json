@@ -94,7 +94,7 @@
         "sources": {
             "heading": "What does each column in the data table contain?",
             "types": {
-                "DATAVALUES": "Data values",
+                "DATAVALUES": "Data value",
                 "FOOTNOTES": "Notes code",
                 "DIMENSION": "Dimension",
                 "IGNORE": "This column can be ignored",
@@ -103,6 +103,14 @@
         },
         "tasklist": {
             "heading": "Dataset Overview",
+            "no_title": "No Title Available",
+            "status": {
+                "completed": "Completed",
+                "not_started": "Not Started",
+                "incomplete": "Incomplete",
+                "needs_translation": "Needs Translation",
+                "not_implemented": "Not Implemented"
+            },
             "data": {
                 "subheading": "Data",
                 "datatable": "Data table"
@@ -134,17 +142,31 @@
         },
         "display": {
             "heading": "Display a Dataset",
-            "title": "Title:",
-            "description": "Description:",
+            "title": "Title",
+            "description": "Description",
             "notes": "Notes",
             "contents": "Contents",
             "summary": "Summary",
             "dimension": "Dimension",
+            "start_revision": "Start Revision ID",
+            "index": "Index",
+            "type": "Type",
+            "creation_date": "Creation Date",
+            "created_by": "Created By",
             "revision": "Revision",
-            "import": "File Import"
+            "import": "File Import",
+            "imports": "File Imports",
+            "download": "Download",
+            "download_file": "Download File",
+            "location": "Location",
+            "filename": "Filename",
+            "mime_type": "Mime Type"
         }
     },
 	"errors": {
+        "confirm": {
+            "missing": "You need to confirm or reject the uploaded file using the buttons at the end of the preview"
+        },
         "session": {
             "current_dataset_missing": "Current data set is missing from the session",
             "current_revision_missing": "Current revision is missing from the session",
@@ -166,6 +188,11 @@
                 "no_revisions": "This dataset has not been completed with revisions",
                 "no_description": "No description available"
             }
+        },
+        "preview": {
+            "failed_to_get_preview": "We were unable to generate a preview of the uploaded CSV.  Is this a valid CSV?",
+            "remove_error": "We were unable to remove your uploadded file from the server.  Something went wrong.  Please try again",
+            "confirm_error":  "You need to confirm or reject the uploaded file using the buttons at the end of the preview"
         },
         "datalake_error": "Unable to connect to Datalake",
         "blob_storage_errror": "Unable to connect to Blob Storage Service",

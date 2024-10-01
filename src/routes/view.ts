@@ -1,3 +1,5 @@
+import { Readable } from 'stream';
+
 import { Router, Response } from 'express';
 import { validate as validateUUID } from 'uuid';
 
@@ -6,6 +8,7 @@ import { FileList } from '../dtos2/filelist';
 import { ViewErrDTO } from '../dtos2/view-dto';
 import { logger } from '../utils/logger';
 import { AuthedRequest } from '../interfaces/authed-request';
+import { ImportDTO } from '../dtos2/dataset-dto';
 
 export const view = Router();
 
@@ -54,4 +57,80 @@ view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
         return;
     }
     res.render('view/data', file);
+});
+
+view.get('/:datasetId/import/:importId', async (req: AuthedRequest, res: Response) => {
+    if (!req.params.datasetId || !validateUUID(req.params.datasetId)) {
+        const err: ViewErrDTO = {
+            success: false,
+            status: 404,
+            dataset_id: undefined,
+            errors: [
+                {
+                    field: 'file',
+                    tag: {
+                        name: 'errors.dataset_missing',
+                        params: {}
+                    }
+                }
+            ]
+        };
+        res.status(404);
+        res.render('view/data', { errors: err });
+        return;
+    }
+
+    if (!req.params.importId || !validateUUID(req.params.importId)) {
+        const err: ViewErrDTO = {
+            success: false,
+            status: 404,
+            dataset_id: undefined,
+            errors: [
+                {
+                    field: 'file',
+                    tag: {
+                        name: 'errors.import_missing',
+                        params: {}
+                    }
+                }
+            ]
+        };
+        res.status(404);
+        res.render('view/data', { errors: err });
+        return;
+    }
+
+    const datasetId = req.params.datasetId;
+    const importId = req.params.importId;
+    const datasetDTO = await statsWalesApi(req).getDataset(datasetId);
+    const imports: ImportDTO[] = [];
+    for (const rev of datasetDTO.revisions) {
+        rev.imports.forEach((imp: ImportDTO) => imports.push(imp));
+    }
+    const fileImport = imports.find((imp) => imp.id === importId);
+    if (!fileImport) {
+        const err: ViewErrDTO = {
+            success: false,
+            status: 404,
+            dataset_id: undefined,
+            errors: [
+                {
+                    field: 'file',
+                    tag: {
+                        name: 'errors.import_not_found',
+                        params: {}
+                    }
+                }
+            ]
+        };
+        res.status(404);
+        res.render('view/data', { errors: err });
+        return;
+    }
+    const fileStream = await statsWalesApi(req).getFileFromImport(datasetId, fileImport.revision_id, fileImport.id);
+    res.status(200);
+    res.header('Content-Type', fileImport.mime_type);
+    res.header(`Content-Disposition: attachment; filename="${fileImport.filename}"`);
+    const readable: Readable = Readable.from(fileStream);
+    readable.pipe(res);
 });

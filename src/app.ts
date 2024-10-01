@@ -4,7 +4,7 @@ import express, { Application, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 
 import { checkConfig } from './utils/check-config';
-import { httpLogger } from './utils/logger';
+import { httpLogger, logger } from './utils/logger';
 import session from './middleware/session';
 import { ensureAuthenticated } from './middleware/ensure-authenticated';
 import { rateLimiter } from './middleware/rate-limiter';
@@ -47,6 +47,9 @@ app.use('/:lang/healthcheck', rateLimiter, healthcheck);
 
 app.get('/', (req: Request, res: Response) => {
     const lang = req.headers['accept-language'] || req.headers['Accept-Language'] || req.i18n.language || 'en-GB';
+    logger.info(
+        `User arrived at service and we selected ${lang} as the language.  The headers were: ${req.headers['accept-language']}${req.headers['Accept-Language']}, and i18next selected: ${req.i18n.language}`
+    );
     if (lang.includes('cy')) {
         res.redirect('/cy-GB');
     } else {
