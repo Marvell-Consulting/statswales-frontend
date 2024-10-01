@@ -213,7 +213,7 @@ describe('Publisher Journey Tests', () => {
                 .post('/en-GB/publish/upload')
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies)
-                .attach('csv', csvfile);
+                // .attach('csv', csvfile);
 
             console.log(res.error);
 

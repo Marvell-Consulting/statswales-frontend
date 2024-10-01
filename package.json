@@ -12,7 +12,7 @@
     "lint:ci": "eslint .",
     "lint:fix": "eslint . --fix",
     "build": "npm-run-all clean tsc copy-assets",
-    "test": "APP_ENV=ci jest --coverage",
+    "test": "APP_ENV=ci jest",
     "test:ci": "APP_ENV=ci jest --ci --coverage --config=jest.config.ts",
     "check": "npm-run-all prettier:fix lint:fix test build",
     "dev:check": "npm-run-all check dev",
