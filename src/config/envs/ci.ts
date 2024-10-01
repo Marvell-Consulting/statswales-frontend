@@ -12,21 +12,25 @@ export function getCIConfig(): AppConfig {
             level: 'debug'
         },
         frontend: {
-            port: parseInt(process.env.FRONTEND_PORT || '3000', 10),
-            url: process.env.FRONTEND_URL || 'http://localhost:3000'
+            port: 3000,
+            url: 'http://example.com:3000'
         },
         backend: {
-            port: parseInt(process.env.BACKEND_PORT || '3001', 10),
-            url: process.env.BACKEND_URL || 'http://localhost:3001'
+            port: 3001,
+            url: 'http://example.com:3001'
+        },
+        rateLimit: {
+            windowMs: 60000,
+            maxRequests: 1000000
         },
         session: {
             store: SessionStore.Memory,
-            secret: process.env.SESSION_SECRET || 'mysecret',
+            secret: 'mysecret',
             secure: false
         },
         auth: {
             jwt: {
-                secret: process.env.JWT_SECRET || 'jwtsecret'
+                secret: 'mysecret'
             }
         }
     });
