@@ -1,6 +1,6 @@
 import { Blob } from 'node:buffer';
 
-import { Response, Router } from 'express';
+import { RequestHandler, Response, Router } from 'express';
 import multer from 'multer';
 import { validate as validateUUID } from 'uuid';
 
@@ -251,7 +251,13 @@ publish.get('/upload', (req: AuthedRequest, res: Response) => {
     res.render('publish/upload', { title });
 });
 
-publish.post('/upload', upload.single('csv'), async (req: AuthedRequest, res: Response) => {
+const debugMiddleware: RequestHandler = (req, res, next) => {
+    console.log("DEBUG_MIDDLEWARE")
+    next();
+};
+
+publish.post('/upload', debugMiddleware, upload.single('csv'), async (req: AuthedRequest, res: Response) => {
+    console.log('IN /upload');
     if (req.session.currentDataset) {
         logger.info('Dataset present... Amending existing Dataset');
         await uploadNewFileToExistingDataset(req, res);
