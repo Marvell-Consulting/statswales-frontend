@@ -1,17 +1,17 @@
-export class DatasetInfoDTO {
+export interface DatasetInfoDTO {
     language?: string;
     title?: string;
     description?: string;
 }
 
-export class DimensionInfoDTO {
+export interface DimensionInfoDTO {
     language?: string;
     name: string;
     description?: string;
     notes?: string;
 }
 
-export class SourceDTO {
+export interface SourceDTO {
     id: string;
     import_id: string;
     revision_id: string;
@@ -23,7 +23,7 @@ export class SourceDTO {
     type: string;
 }
 
-export class DimensionDTO {
+export interface DimensionDTO {
     id: string;
     type: string;
     start_revision_id: string;
@@ -34,7 +34,7 @@ export class DimensionDTO {
     dataset_id?: string;
 }
 
-export class FileImportDTO {
+export interface FileImportDTO {
     id: string;
     revision_id: string;
     mime_type: string;
@@ -46,7 +46,7 @@ export class FileImportDTO {
     sources: SourceDTO[];
 }
 
-export class RevisionDTO {
+export interface RevisionDTO {
     id: string;
     revision_index: number;
     created_at: string;
@@ -60,7 +60,7 @@ export class RevisionDTO {
     dataset_id?: string;
 }
 
-export class DatasetDTO {
+export interface DatasetDTO {
     id: string;
     created_at: string;
     created_by: string;
