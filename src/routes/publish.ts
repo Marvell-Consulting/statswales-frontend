@@ -1,6 +1,6 @@
 import { Blob } from 'node:buffer';
 
-import { RequestHandler, Response, Router } from 'express';
+import { Response, Router } from 'express';
 import multer from 'multer';
 import { validate as validateUUID } from 'uuid';
 
@@ -18,8 +18,7 @@ import { ViewError } from '../dtos/view-error';
 import { singleLangDataset } from '../utils/single-lang-dataset';
 
 const t = i18next.t;
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
+const upload = multer({ storage: multer.memoryStorage() });
 
 export const publish = Router();
 
@@ -251,26 +250,13 @@ publish.get('/upload', (req: AuthedRequest, res: Response) => {
     res.render('publish/upload', { title });
 });
 
-const debugMiddleware: RequestHandler = (req, res, next) => {
-    console.log("DEBUG_MIDDLEWARE")
-    next();
-};
-
-publish.post('/upload', debugMiddleware, upload.single('csv'), async (req: AuthedRequest, res: Response) => {
-    console.log('IN /upload');
-
-    try {
-        if (req.session.currentDataset) {
-            logger.info('Dataset present... Amending existing Dataset');
-            await uploadNewFileToExistingDataset(req, res);
-        } else {
-            logger.info('Creating a new dataset');
-            await createNewDataset(req, res);
-        }
-    } catch (err) {
-        console.log(`OH NOES! ${err}`);
-        res.status(500);
-        res.send('OOPS');
+publish.post('/upload', upload.single('csv'), async (req: AuthedRequest, res: Response) => {
+    if (req.session.currentDataset) {
+        logger.info('Dataset present... Amending existing Dataset');
+        await uploadNewFileToExistingDataset(req, res);
+    } else {
+        logger.info('Creating a new dataset');
+        await createNewDataset(req, res);
     }
 });
 

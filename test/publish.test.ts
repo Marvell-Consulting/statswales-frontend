@@ -1,4 +1,5 @@
 import path from 'node:path';
+import fs from 'node:fs';
 
 import { NextFunction, Request, Response } from 'express';
 import request from 'supertest';
@@ -213,9 +214,7 @@ describe('Publisher Journey Tests', () => {
                 .post('/en-GB/publish/upload')
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies)
-                // .attach('csv', csvfile);
-
-            console.log(res.error);
+                .attach('csv', csvfile);
 
             expect(res.status).toBe(302);
             expect(res.header.location).toBe(`/en-GB/publish/preview`);
