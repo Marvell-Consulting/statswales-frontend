@@ -75,7 +75,7 @@
                             <% locals.dataset.revisions.forEach((rev) => { %>
                                 <p class="govuk-body"><strong>ID:</strong> <%= rev.id %></p>
                                 <p class="govuk-body"><strong><%- t('view.display.index') %>:</strong> <%= rev.revision_index %></p>
-                                <p class="govuk-body"><strong><%- t('view.display.creation_date') %>:</strong> <%= rev.rev.created_at %></p>
+                                <p class="govuk-body"><strong><%- t('view.display.creation_date') %>:</strong> <%= rev.created_at %></p>
                                 <p class="govuk-body"><strong><%- t('view.display.created_by') %>:</strong> <%= rev.created_by %></p>
                             <% });%>
                         <% } else { %>
