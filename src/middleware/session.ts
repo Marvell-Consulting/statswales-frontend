@@ -31,7 +31,7 @@ if (config.session.store === SessionStore.Redis) {
 
 export default session({
     secret: config.session.secret,
-    name: 'STATSWALES.SESSION.STORE',
+    name: 'statswales.frontend',
     store,
     resave: false,
     saveUninitialized: false,

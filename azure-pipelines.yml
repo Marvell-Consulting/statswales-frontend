@@ -40,7 +40,7 @@ stages:
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
         tags: '$(tag)'
-    
+
     # Step 2: Deploy with AzureContainerApps task
     - task: AzureContainerApps@1
       displayName: 'Deploy to Azure Container Apps'
@@ -56,8 +56,17 @@ stages:
         targetPort: '3000'
         ingress: 'external'
         imageToDeploy: '$(containerRegistry)/$(imageRepository):$(tag)'
-        environmentVariables: 'BACKEND_URL=$(backend_url) FRONTEND_URL=$(frontend_url) SESSION_SECRET=$(session_secret) JWT_SECRET=$(jwt_secret)'
-    
+        environmentVariables: >
+          APP_ENV=$(app_env)
+          BACKEND_URL=$(backend_url)
+          BACKEND_PORT=$(backend_port)
+          FRONTEND_URL=$(frontend_url)
+          FRONTEND_PORT=$(frontend_port)
+          SESSION_SECRET=$(session_secret)
+          JWT_SECRET=$(jwt_secret)
+          REDIS_URL=$(redis_url)
+          REDIS_ACCESS_KEY=$(redis_access_key)
+
     # Step 3: Check deployment success and health check
     - task: Bash@3
       displayName: 'Health Check on New Revision'
@@ -76,7 +85,7 @@ stages:
           else
             echo "New app revision is healthy."
           fi
-    
+
     # Step 4: Rollback to previous revision if needed
     - task: AzureCLI@2
       displayName: 'Rollback to Previous Stable Revision'
