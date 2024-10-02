@@ -8,7 +8,7 @@ import { FileList } from '../dtos/file-list';
 import { ViewErrDTO } from '../dtos/view-dto';
 import { logger } from '../utils/logger';
 import { AuthedRequest } from '../interfaces/authed-request';
-import { ImportDTO } from '../dtos2/dataset-dto';
+import { FileImportDTO } from '../dtos/dataset-dto';
 
 export const view = Router();
 
@@ -103,9 +103,9 @@ view.get('/:datasetId/import/:importId', async (req: AuthedRequest, res: Respons
     const datasetId = req.params.datasetId;
     const importId = req.params.importId;
     const datasetDTO = await statsWalesApi(req).getDataset(datasetId);
-    const imports: ImportDTO[] = [];
+    const imports: FileImportDTO[] = [];
     for (const rev of datasetDTO.revisions) {
-        rev.imports.forEach((imp: ImportDTO) => imports.push(imp));
+        rev.imports.forEach((imp: FileImportDTO) => imports.push(imp));
     }
     const fileImport = imports.find((imp) => imp.id === importId);
     if (!fileImport) {

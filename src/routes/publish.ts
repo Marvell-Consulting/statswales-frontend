@@ -16,9 +16,9 @@ import { DimensionCreationDTO } from '../dtos/dimension-creation-dto';
 import { SourceType } from '../enums/source-type';
 import { ViewError } from '../dtos/view-error';
 import { singleLangDataset } from '../utils/single-lang-dataset';
-import { DimensionType } from '../enums/dimension-types';
-import { DimensionState } from '../dtos2/dimension-state';
-import { TaskListState } from '../dtos2/task-list-state';
+import { DimensionType } from '../enums/dimension-type';
+import { DimensionState } from '../dtos/dimension-state';
+import { TaskListState } from '../dtos/task-list-state';
 
 const t = i18next.t;
 const upload = multer({ storage: multer.memoryStorage() });
@@ -627,11 +627,11 @@ function buildStateFromDataset(lang: string, dataset: DatasetDTO): TaskListState
     const dimensionStates: DimensionState[] = [];
     const dimensions = singleLanguageDataset.dimensions || [];
     for (const dim of dimensions) {
-        if (dim.type === DimensionType.FOOTNOTE) {
+        if (dim.type === DimensionType.FootNote) {
             continue;
         }
         const dimState =
-            dim.type === DimensionType.RAW
+            dim.type === DimensionType.Raw
                 ? { tag: 'publish.tasklist.status.not_implemented', colour: 'grey' }
                 : { tag: 'publish.tasklist.status.completed', colour: 'green' };
         const name = dim.dimensionInfo?.name || 'unknown';
