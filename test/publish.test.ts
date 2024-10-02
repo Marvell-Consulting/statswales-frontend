@@ -1,13 +1,14 @@
 import path from 'node:path';
+import fs from 'node:fs';
 
 import { NextFunction, Request, Response } from 'express';
 import request from 'supertest';
 
 import { i18next } from '../src/middleware/translation';
 import app from '../src/app';
-import { DatasetDTO, ImportDTO, RevisionDTO } from '../src/dtos2/dataset-dto';
-import { ViewErrDTO } from '../src/dtos2/view-dto';
-import { DimensionCreationDTO } from '../src/dtos2/dimension-creation-dto';
+import { DatasetDTO, FileImportDTO, RevisionDTO } from '../src/dtos/dataset-dto';
+import { ViewErrDTO } from '../src/dtos/view-dto';
+import { DimensionCreationDTO } from '../src/dtos/dimension-creation-dto';
 
 import { server } from './helpers/mock-server';
 
@@ -17,7 +18,7 @@ declare module 'express-session' {
     interface SessionData {
         currentDataset: DatasetDTO | undefined;
         currentRevision: RevisionDTO | undefined;
-        currentImport: ImportDTO | undefined;
+        currentImport: FileImportDTO | undefined;
         errors: ViewErrDTO | undefined;
         dimensionCreationRequest: DimensionCreationDTO[];
         currentTitle: string | undefined;
@@ -26,6 +27,10 @@ declare module 'express-session' {
 
 jest.mock('../src/middleware/ensure-authenticated', () => ({
     ensureAuthenticated: (req: Request, res: Response, next: NextFunction) => next()
+}));
+
+jest.mock('../src/middleware/rate-limiter', () => ({
+    rateLimiter: (req: Request, res: Response, next: NextFunction) => next()
 }));
 
 describe('Publisher Journey Tests', () => {
@@ -51,10 +56,16 @@ describe('Publisher Journey Tests', () => {
         server.resetHandlers();
     });
 
-    afterAll(() => server.close());
+    afterAll(() => {
+        server.close();
+    });
 
     async function clearSession() {
         const res = await request(app).get('/en-GB/publish').set('User-Agent', 'supertest');
+        if (res.error) {
+            console.log(res.error);
+            throw new Error('Failed to clear session');
+        }
         return res.headers['set-cookie'];
     }
 
@@ -63,27 +74,39 @@ describe('Publisher Journey Tests', () => {
             .post('/en-GB/publish/title')
             .set('User-Agent', 'supertest')
             .field('title', title);
+        if (res.error) {
+            console.log(res.error);
+            throw new Error('Failed to set title');
+        }
         return res.headers['set-cookie'];
     }
 
     async function setDatasetToSession(title?: string) {
-        const cookie = await setTitleToSession(title || 'test dataset 1');
+        const titleCookie = await setTitleToSession(title || 'test dataset 1');
         const csvfile = path.resolve(__dirname, `./sample-csvs/test-data-1.csv`);
         const res = await request(app)
             .post('/en-GB/publish/upload')
             .set('User-Agent', 'supertest')
-            .set('Cookie', cookie)
+            .set('Cookie', titleCookie)
             .attach('csv', csvfile);
+        if (res.error) {
+            console.log(res.error);
+            throw new Error('Failed to upload dataset');
+        }
         return res.headers['set-cookie'];
     }
 
     async function setSourcesIntoSession(title?: string) {
-        const titleCookies = await setDatasetToSession(title);
+        const datasetCookie = await setDatasetToSession(title);
         const res = await request(app)
             .post('/en-GB/publish/preview')
             .field('confirm', 'true')
             .set('User-Agent', 'supertest')
-            .set('Cookie', titleCookies);
+            .set('Cookie', datasetCookie);
+        if (res.error) {
+            console.log(res.error);
+            throw new Error('Failed to set sources');
+        }
         return res.headers['set-cookie'];
     }
 
@@ -184,11 +207,13 @@ describe('Publisher Journey Tests', () => {
         test('Upload returns 302 if a file is attached', async () => {
             const csvfile = path.resolve(__dirname, `./sample-csvs/test-data-1.csv`);
             const cookies = await setTitleToSession('Test dataset 1');
+
             const res = await request(app)
                 .post('/en-GB/publish/upload')
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies)
                 .attach('csv', csvfile);
+
             expect(res.status).toBe(302);
             expect(res.header.location).toBe(`/en-GB/publish/preview`);
         });
@@ -476,11 +501,11 @@ describe('Publisher Journey Tests', () => {
             const cookies = await setSourcesIntoSession();
             const res = await request(app)
                 .post('/en-GB/publish/sources')
-                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'IGNORE')
-                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'DATAVALUES')
-                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'FOOTNOTES')
-                .field('32894949-e758-4974-a932-455d51895293', 'DIMENSION')
-                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'DIMENSION')
+                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'ignore')
+                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'data_values')
+                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'foot_notes')
+                .field('32894949-e758-4974-a932-455d51895293', 'dimension')
+                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'dimension')
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies);
             expect(res.status).toBe(302);
@@ -491,11 +516,11 @@ describe('Publisher Journey Tests', () => {
             const cookies = await setSourcesIntoSession();
             const res = await request(app)
                 .post('/en-GB/publish/sources')
-                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'IGNORE')
-                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'DATAVALUES')
-                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'DATAVALUES')
-                .field('32894949-e758-4974-a932-455d51895293', 'DIMENSION')
-                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'DIMENSION')
+                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'ignore')
+                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'data_values')
+                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'data_values')
+                .field('32894949-e758-4974-a932-455d51895293', 'dimension')
+                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'dimension')
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies);
             expect(res.status).toBe(400);
@@ -507,11 +532,11 @@ describe('Publisher Journey Tests', () => {
             const cookies = await setSourcesIntoSession();
             const res = await request(app)
                 .post('/en-GB/publish/sources')
-                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'IGNORE')
-                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'FOOTNOTES')
-                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'FOOTNOTES')
-                .field('32894949-e758-4974-a932-455d51895293', 'DIMENSION')
-                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'DIMENSION')
+                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'ignore')
+                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'foot_notes')
+                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'foot_notes')
+                .field('32894949-e758-4974-a932-455d51895293', 'dimension')
+                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'dimension')
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies);
             expect(res.status).toBe(400);
@@ -523,11 +548,11 @@ describe('Publisher Journey Tests', () => {
             const cookies = await setSourcesIntoSession();
             const res = await request(app)
                 .post('/en-GB/publish/sources')
-                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'UNKNOWN')
-                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'UNKNOWN')
-                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'FOOTNOTES')
-                .field('32894949-e758-4974-a932-455d51895293', 'DIMENSION')
-                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'DIMENSION')
+                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'unknown')
+                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'unknown')
+                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'foot_notes')
+                .field('32894949-e758-4974-a932-455d51895293', 'dimension')
+                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'dimension')
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies);
             expect(res.status).toBe(400);
@@ -539,11 +564,11 @@ describe('Publisher Journey Tests', () => {
             const cookies = await setSourcesIntoSession('test-data-4.csv broken preview');
             const res = await request(app)
                 .post('/en-GB/publish/sources')
-                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'IGNORE')
-                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'DATAVALUES')
-                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'FOOTNOTES')
-                .field('32894949-e758-4974-a932-455d51895293', 'DIMENSION')
-                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'DIMENSION')
+                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'ignore')
+                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'data_values')
+                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'foot_notes')
+                .field('32894949-e758-4974-a932-455d51895293', 'dimension')
+                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'dimension')
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies);
             expect(res.status).toBe(500);

@@ -3,8 +3,8 @@ import path from 'node:path';
 import express, { Application, Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 
-import { checkConfig } from './utils/check-config';
-import { httpLogger } from './utils/logger';
+import { checkConfig } from './config/check-config';
+import { httpLogger, logger } from './utils/logger';
 import session from './middleware/session';
 import { ensureAuthenticated } from './middleware/ensure-authenticated';
 import { rateLimiter } from './middleware/rate-limiter';
@@ -13,10 +13,15 @@ import { auth } from './routes/auth';
 import { healthcheck } from './routes/healthcheck';
 import { publish } from './routes/publish';
 import { view } from './routes/view';
+import { appConfig } from './config';
+
+const app: Application = express();
+
+const config = appConfig();
 
 checkConfig();
 
-const app: Application = express();
+logger.info(`App config loaded for '${config.env}' env`);
 
 app.disable('x-powered-by');
 
@@ -57,5 +62,7 @@ app.get('/', (req: Request, res: Response) => {
 app.get('/:lang/', rateLimiter, ensureAuthenticated, (req: Request, res: Response) => {
     res.render('index');
 });
+
+logger.info('Routes loaded');
 
 export default app;

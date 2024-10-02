@@ -6,20 +6,19 @@ import { validate as validateUUID } from 'uuid';
 
 import { logger } from '../utils/logger';
 import { StatsWalesApi } from '../services/stats-wales-api';
-import { ViewDTO, ViewErrDTO } from '../dtos2/view-dto';
+import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
 import { i18next } from '../middleware/translation';
 import { AuthedRequest } from '../interfaces/authed-request';
-import { DatasetDTO, ImportDTO, RevisionDTO } from '../dtos2/dataset-dto';
-import { UploadDTO, UploadErrDTO } from '../dtos2/upload-dto';
-import { ConfirmedImportDTO } from '../dtos2/confirmed-import-dto';
-import { DimensionCreationDTO } from '../dtos2/dimension-creation-dto';
+import { DatasetDTO, FileImportDTO, RevisionDTO } from '../dtos/dataset-dto';
+import { UploadDTO, UploadErrDTO } from '../dtos/upload-dto';
+import { ConfirmedImportDTO } from '../dtos/confirmed-import-dto';
+import { DimensionCreationDTO } from '../dtos/dimension-creation-dto';
 import { SourceType } from '../enums/source-type';
-import { ViewError } from '../dtos2/view-error';
+import { ViewError } from '../dtos/view-error';
 import { singleLangDataset } from '../utils/single-lang-dataset';
 
 const t = i18next.t;
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
+const upload = multer({ storage: multer.memoryStorage() });
 
 export const publish = Router();
 
@@ -30,7 +29,7 @@ function setCurrentToSession(dataset: DatasetDTO, req: AuthedRequest): boolean {
         return false;
     }
     const currentRevision = dataset.revisions.reduce((prev, curr) => {
-        return new Date(prev.creation_date) > new Date(curr.creation_date) ? prev : curr;
+        return new Date(prev.created_at) > new Date(curr.created_at) ? prev : curr;
     });
     req.session.currentRevision = currentRevision;
     if (!currentRevision.imports) {
@@ -110,7 +109,7 @@ function checkCurrentRevision(req: AuthedRequest, res: Response): RevisionDTO | 
     return currentRevision;
 }
 
-function checkCurrentFileImport(req: AuthedRequest, res: Response): ImportDTO | undefined {
+function checkCurrentFileImport(req: AuthedRequest, res: Response): FileImportDTO | undefined {
     const lang = req.i18n.language;
     const currentFileImport = req.session.currentImport;
     if (!currentFileImport) {
@@ -306,7 +305,7 @@ publish.get('/preview', async (req: AuthedRequest, res: Response) => {
 async function confirmFileUpload(
     currentDataset: DatasetDTO,
     currentRevision: RevisionDTO,
-    currentFileImport: ImportDTO,
+    currentFileImport: FileImportDTO,
     statsWalesApi: StatsWalesApi,
     req: AuthedRequest,
     res: Response
@@ -344,7 +343,7 @@ async function confirmFileUpload(
 async function rejectFileReturnToUpload(
     currentDataset: DatasetDTO,
     currentRevision: RevisionDTO,
-    currentFileImport: ImportDTO,
+    currentFileImport: FileImportDTO,
     statsWalesApi: StatsWalesApi,
     req: AuthedRequest,
     res: Response
@@ -410,11 +409,11 @@ publish.post('/preview', upload.none(), async (req: AuthedRequest, res: Response
     }
 });
 
-function updateCurrentImport(currentImport: ImportDTO, dimensionCreationRequest: DimensionCreationDTO[]) {
+function updateCurrentImport(currentImport: FileImportDTO, dimensionCreationRequest: DimensionCreationDTO[]) {
     if (currentImport.sources) {
         currentImport.sources.forEach((source) => {
             source.type =
-                dimensionCreationRequest.find((dim) => dim.sourceId === source.id)?.sourceType || SourceType.UNKNOWN;
+                dimensionCreationRequest.find((dim) => dim.sourceId === source.id)?.sourceType || SourceType.Unknown;
         });
     }
     return currentImport;
@@ -449,13 +448,13 @@ publish.get('/sources', upload.none(), (req: AuthedRequest, res: Response) => {
         currentFileImport = updateCurrentImport(currentFileImport, dimensionCreationRequest);
     } else {
         currentFileImport.sources.forEach((source) => {
-            source.type = SourceType.UNKNOWN;
+            source.type = SourceType.Unknown;
         });
     }
     res.render('publish/sources', {
         errors: errs,
         currentImport: currentFileImport,
-        sourceTypes: Object.keys(SourceType)
+        sourceTypes: Object.values(SourceType)
     });
 });
 
@@ -499,13 +498,13 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
         `Validating the request before sending to the server, dimensionCreationRequest length = ${dimensionCreationRequest.length}`
     );
     const sourcesMarkedUnknown = dimensionCreationRequest.filter(
-        (createRequest) => createRequest.sourceType === SourceType.UNKNOWN
+        (createRequest) => createRequest.sourceType === SourceType.Unknown
     );
     const sourcesMarkedDataValues = dimensionCreationRequest.filter(
-        (createRequest) => createRequest.sourceType === SourceType.DATAVALUES
+        (createRequest) => createRequest.sourceType === SourceType.DataValues
     );
     const sourcesMarkedFootnotes = dimensionCreationRequest.filter(
-        (createRequest) => createRequest.sourceType === SourceType.FOOTNOTES
+        (createRequest) => createRequest.sourceType === SourceType.FootNotes
     );
     if (sourcesMarkedUnknown.length > 0) {
         logger.error('User failed to identify all sources');
@@ -518,7 +517,7 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
         res.render('publish/sources', {
             errors: errs,
             currentImport: updatedFileImportWithSourceType,
-            sourceTypes: Object.keys(SourceType)
+            sourceTypes: Object.values(SourceType)
         });
         return;
     }
@@ -535,7 +534,7 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
         res.render('publish/sources', {
             errors: errs,
             currentImport: updatedFileImportWithSourceType,
-            sourceTypes: Object.keys(SourceType)
+            sourceTypes: Object.values(SourceType)
         });
         return;
     }
@@ -551,7 +550,7 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
         res.render('publish/sources', {
             errors: errs,
             currentImport: updatedFileImportWithSourceType,
-            sourceTypes: Object.keys(SourceType)
+            sourceTypes: Object.values(SourceType)
         });
         return;
     }
@@ -580,7 +579,7 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
         res.render('publish/sources', {
             errors: errs,
             currentImport: updatedFileImportWithSourceType,
-            sourceTypes: Object.keys(SourceType)
+            sourceTypes: Object.values(SourceType)
         });
     }
 });

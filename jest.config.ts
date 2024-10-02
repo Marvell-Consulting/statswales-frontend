@@ -9,7 +9,7 @@ const config: Config = {
   collectCoverage: true,
   coverageReporters: ['cobertura', 'lcov', 'html', 'text'],
   coveragePathIgnorePatterns: ['/node_modules/', '/test/', '/src/controllers/datalake.ts'],
-  setupFiles: ['<rootDir>/test/.jest/setEnvVars.ts']
+  setupFiles: ['<rootDir>/test/.jest/set-env-vars.ts']
 };
 
 export default config;

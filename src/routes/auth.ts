@@ -3,8 +3,11 @@ import JWT from 'jsonwebtoken';
 
 import { logger } from '../utils/logger';
 import { JWTPayloadWithUser } from '../interfaces/jwt-payload-with-user';
+import { appConfig } from '../config';
 
 export const auth = Router();
+
+const config = appConfig();
 
 auth.get('/login', (req: Request, res: Response) => {
     if (req.query.error && req.query.error === 'expired') {
@@ -18,12 +21,12 @@ auth.get('/login', (req: Request, res: Response) => {
 
 auth.get('/google', (req: Request, res: Response) => {
     logger.debug('Sending user to backend for google authentication');
-    res.redirect(`${process.env.BACKEND_URL}/auth/google`);
+    res.redirect(`${config.backend.url}/auth/google`);
 });
 
 auth.get('/onelogin', (req: Request, res: Response) => {
     logger.debug('Sending user to backend for onelogin authentication');
-    res.redirect(`${process.env.BACKEND_URL}/auth/onelogin`);
+    res.redirect(`${config.backend.url}/auth/onelogin`);
 });
 
 auth.get('/callback', (req: Request, res: Response) => {
@@ -39,7 +42,7 @@ auth.get('/callback', (req: Request, res: Response) => {
             throw new Error('JWT cookie not found');
         }
 
-        const secret = process.env.JWT_SECRET || '';
+        const secret = config.auth.jwt.secret;
         const decoded = JWT.verify(req.cookies.jwt, secret) as JWTPayloadWithUser;
         req.user = decoded.user;
     } catch (err) {

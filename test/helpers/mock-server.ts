@@ -1,11 +1,11 @@
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
 
-import { DatasetDTO } from '../../src/dtos2/dataset-dto';
+import { DatasetDTO } from '../../src/dtos/dataset-dto';
 
 export const createdDataset: DatasetDTO = {
     id: '5caeb8ed-ea64-4a58-8cf0-b728308833e5',
-    creation_date: '2024-09-05T10:05:03.871Z',
+    created_at: '2024-09-05T10:05:03.871Z',
     created_by: 'Test User',
     live: '',
     archive: '',
@@ -22,10 +22,10 @@ export const createdDataset: DatasetDTO = {
             id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
             revision_index: 1,
             dataset_id: '5caeb8ed-ea64-4a58-8cf0-b728308833e5',
-            creation_date: '2024-09-05T10:05:04.052Z',
+            created_at: '2024-09-05T10:05:04.052Z',
             online_cube_filename: undefined,
-            publish_date: '',
-            approval_date: '',
+            publish_at: '',
+            approved_at: '',
             created_by: 'Test User',
             imports: [
                 {
@@ -46,7 +46,7 @@ export const createdDataset: DatasetDTO = {
 
 const brokenPreviewDataset: DatasetDTO = {
     id: 'e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18',
-    creation_date: '2024-09-05T10:05:03.871Z',
+    created_at: '2024-09-05T10:05:03.871Z',
     created_by: 'Test User',
     live: '',
     archive: '',
@@ -63,10 +63,10 @@ const brokenPreviewDataset: DatasetDTO = {
             id: '19e34cf5-be3b-4a9c-8980-f4e7346815fc',
             revision_index: 1,
             dataset_id: '5caeb8ed-ea64-4a58-8cf0-b728308833e5',
-            creation_date: '2024-09-05T10:05:04.052Z',
+            created_at: '2024-09-05T10:05:04.052Z',
             online_cube_filename: undefined,
-            publish_date: '',
-            approval_date: '',
+            publish_at: '',
+            approved_at: '',
             created_by: 'Test User',
             imports: [
                 {
@@ -97,7 +97,7 @@ const brokenPreviewDataset: DatasetDTO = {
 
 export const completedDataset: DatasetDTO = {
     id: '5caeb8ed-ea64-4a58-8cf0-b728308833e5',
-    creation_date: '2024-09-05T10:05:03.871Z',
+    created_at: '2024-09-05T10:05:03.871Z',
     created_by: 'Test User',
     live: '',
     archive: '',
@@ -114,10 +114,10 @@ export const completedDataset: DatasetDTO = {
             id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
             revision_index: 1,
             dataset_id: '5caeb8ed-ea64-4a58-8cf0-b728308833e5',
-            creation_date: '2024-09-05T10:05:04.052Z',
+            created_at: '2024-09-05T10:05:04.052Z',
             online_cube_filename: undefined,
-            publish_date: '',
-            approval_date: '',
+            publish_at: '',
+            approved_at: '',
             created_by: 'Test User',
             imports: [
                 {
@@ -186,7 +186,7 @@ export const datasetView = {
     success: true,
     dataset: {
         id: '5caeb8ed-ea64-4a58-8cf0-b728308833e5',
-        creation_date: '2024-09-05T10:05:03.871Z',
+        created_at: '2024-09-05T10:05:03.871Z',
         created_by: 'Test User',
         live: '',
         archive: '',
@@ -292,7 +292,7 @@ export const importWithDraftSources = {
 
 export const revisionWithNoImports = {
     id: '5caeb8ed-ea64-4a58-8cf0-b728308833e5',
-    creation_date: '2024-09-05T10:05:03.871Z',
+    created_at: '2024-09-05T10:05:03.871Z',
     created_by: 'Test User',
     live: '',
     archive: '',
@@ -309,10 +309,10 @@ export const revisionWithNoImports = {
             id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
             revision_index: 1,
             dataset_id: '5caeb8ed-ea64-4a58-8cf0-b728308833e5',
-            creation_date: '2024-09-05T10:05:04.052Z',
+            created_at: '2024-09-05T10:05:04.052Z',
             online_cube_filename: null,
-            publish_date: '',
-            approval_date: '',
+            publish_at: '',
+            approved_at: '',
             created_by: 'Test User',
             imports: []
         }
