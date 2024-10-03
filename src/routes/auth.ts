@@ -4,10 +4,13 @@ import JWT from 'jsonwebtoken';
 import { logger } from '../utils/logger';
 import { JWTPayloadWithUser } from '../interfaces/jwt-payload-with-user';
 import { appConfig } from '../config';
+import { AuthedRequest } from '../interfaces/authed-request';
 
 export const auth = Router();
 
 const config = appConfig();
+const cookieDomain = new URL(config.auth.jwt.cookieDomain).hostname;
+logger.debug(`JWT cookie domain is '${cookieDomain}'`);
 
 auth.get('/login', (req: Request, res: Response) => {
     if (req.query.error && req.query.error === 'expired') {
@@ -21,12 +24,12 @@ auth.get('/login', (req: Request, res: Response) => {
 
 auth.get('/google', (req: Request, res: Response) => {
     logger.debug('Sending user to backend for google authentication');
-    res.redirect(`${config.backend.url}/auth/google`);
+    res.redirect(`${config.backend.url}/auth/google?lang=${req.language}`);
 });
 
 auth.get('/onelogin', (req: Request, res: Response) => {
     logger.debug('Sending user to backend for onelogin authentication');
-    res.redirect(`${config.backend.url}/auth/onelogin`);
+    res.redirect(`${config.backend.url}/auth/onelogin?lang=${req.language}`);
 });
 
 auth.get('/callback', (req: Request, res: Response) => {
@@ -53,10 +56,11 @@ auth.get('/callback', (req: Request, res: Response) => {
     }
 
     logger.debug('User successfully logged in');
-    res.redirect('/');
+    res.redirect(`/${req.language}`);
 });
 
-auth.get('/logout', (req: Request, res: Response) => {
-    res.clearCookie('jwt');
-    res.redirect('/auth/login');
+auth.get('/logout', (req: AuthedRequest, res: Response) => {
+    logger.debug('logging out user');
+    res.clearCookie('jwt', { domain: cookieDomain });
+    res.redirect(`/${req.language}/auth/login`);
 });

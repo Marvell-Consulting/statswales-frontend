@@ -2,8 +2,9 @@ import i18next from 'i18next';
 import Backend from 'i18next-fs-backend';
 import i18nextMiddleware from 'i18next-http-middleware';
 
-const ENGLISH = 'en-GB';
-const WELSH = 'cy-GB';
+const ENGLISH = 'en';
+const WELSH = 'cy';
+const AVAILABLE_LANGUAGES = [ENGLISH, WELSH];
 
 i18next
     .use(i18nextMiddleware.LanguageDetector)
@@ -19,7 +20,7 @@ i18next
             loadPath: `${__dirname}/translations/{{lng}}.json`
         },
         fallbackLng: 'en',
-        preload: ['en', 'cy'],
+        preload: AVAILABLE_LANGUAGES,
         debug: false
     });
 
