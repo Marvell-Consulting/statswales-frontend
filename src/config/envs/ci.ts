@@ -30,7 +30,8 @@ export function getCIConfig(): AppConfig {
         },
         auth: {
             jwt: {
-                secret: 'mysecret'
+                secret: 'mysecret',
+                cookieDomain: 'http://localhost'
             }
         }
     });

@@ -27,7 +27,8 @@ export function getLocalConfig(): AppConfig {
         },
         auth: {
             jwt: {
-                secret: process.env.JWT_SECRET || 'jwtsecret'
+                secret: process.env.JWT_SECRET || 'jwtsecret',
+                cookieDomain: 'http://localhost'
             }
         }
     });

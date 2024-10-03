@@ -31,6 +31,7 @@ export interface AppConfig {
     auth: {
         jwt: {
             secret: string;
+            cookieDomain: string;
         };
     };
 }
