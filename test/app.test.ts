@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import { ENGLISH, WELSH, i18next } from '../src/middleware/translation';
 import app from '../src/app';
 
-import { server } from './helpers/mock-server';
+import { mockBackend } from './mocks/backend';
 
 const t = i18next.t;
 
@@ -14,7 +14,7 @@ jest.mock('../src/middleware/ensure-authenticated', () => ({
 
 describe('Test homepage, middleware and healthcheck', () => {
     beforeAll(() => {
-        server.listen({
+        mockBackend.listen({
             onUnhandledRequest: ({ headers, method, url }) => {
                 if (headers.get('User-Agent') !== 'supertest') {
                     throw new Error(`Unhandled ${method} request to ${url}`);
@@ -28,10 +28,10 @@ describe('Test homepage, middleware and healthcheck', () => {
     });
 
     afterEach(() => {
-        server.resetHandlers();
+        mockBackend.resetHandlers();
     });
 
-    afterAll(() => server.close());
+    afterAll(() => mockBackend.close());
 
     describe('Homepage and language Redirects', () => {
         test('Redirects to language when going to /', async () => {
