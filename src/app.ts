@@ -1,6 +1,6 @@
 import path from 'node:path';
 
-import express, { Application, Request, Response } from 'express';
+import express, { Application } from 'express';
 import cookieParser from 'cookie-parser';
 
 import { checkConfig } from './config/check-config';
