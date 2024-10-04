@@ -319,8 +319,8 @@ export const revisionWithNoImports = {
     ]
 };
 
-export const server = setupServer(
-    http.get('http://example.com:3001/en-GB/dataset/active', () => {
+export const mockBackend = setupServer(
+    http.get('http://example.com:3001/dataset/active', () => {
         return HttpResponse.json({
             filelist: [
                 {
@@ -344,49 +344,32 @@ export const server = setupServer(
             ]
         });
     }),
-    http.get('http://example.com:3001/en-GB/dataset/missing-id/view', () => {
-        return new HttpResponse(null, {
-            status: 404,
-            statusText: '{}'
-        });
+    http.get('http://example.com:3001/dataset/missing-id/view', () => {
+        return new HttpResponse(null, { status: 404 });
     }),
-    http.get('http://example.com:3001/en-GB/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5', () => {
+    http.get('http://example.com:3001/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5', () => {
         return HttpResponse.json(createdDataset);
     }),
-    http.get('http://example.com:3001/en-GB/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/view', () => {
+    http.get('http://example.com:3001/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/view', () => {
         return HttpResponse.json(datasetView);
     }),
     http.get(
-        'http://example.com:3001/en-GB/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/import/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953/preview',
+        'http://example.com:3001/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/import/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953/preview',
         () => {
             return HttpResponse.json(datasetView);
         }
     ),
     http.get(
-        'http://example.com:3001/en-GB/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/import/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2/preview',
+        'http://example.com:3001/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/import/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2/preview',
         () => {
-            return new HttpResponse(null, {
-                status: 404,
-                statusText: '{}'
-            });
+            return new HttpResponse(null, { status: 404 });
         }
     ),
-    http.post('http://example.com:3001/en-GB/dataset/', async (req) => {
+    http.post('http://example.com:3001/dataset', async (req) => {
         const data = await req.request.formData();
         const title = data.get('title') as string;
         if (title === 'test-data-3.csv fail test') {
-            return HttpResponse.json(
-                {
-                    success: false,
-                    errors: [
-                        {
-                            field: 'csv',
-                            tag: { name: 'errors.upload.no_csv_data', params: {} }
-                        }
-                    ]
-                },
-                { status: 400 }
-            );
+            return new HttpResponse(null, { status: 400 });
         }
         if (title === 'test-data-4.csv broken preview') {
             return HttpResponse.json(brokenPreviewDataset);
@@ -395,70 +378,55 @@ export const server = setupServer(
         return HttpResponse.json(createdDataset);
     }),
     http.post(
-        'http://example.com:3001/en-GB/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/import',
+        'http://example.com:3001/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/import',
         async (req) => {
             await req.request.formData();
             return HttpResponse.json(createdDataset);
         }
     ),
     http.patch(
-        'http://example.com:3001/en-GB/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/import/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953/confirm',
+        'http://example.com:3001/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/import/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953/confirm',
         () => {
             return HttpResponse.json(importWithDraftSources);
         }
     ),
     http.patch(
-        'http://example.com:3001/en-GB/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/import/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2/confirm',
+        'http://example.com:3001/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/import/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2/confirm',
         () => {
-            return new HttpResponse(null, {
-                status: 404,
-                statusText: '{}'
-            });
+            return new HttpResponse(null, { status: 404 });
         }
     ),
     http.delete(
-        'http://example.com:3001/en-GB/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/import/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
+        'http://example.com:3001/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/import/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
         () => {
             return HttpResponse.json(revisionWithNoImports);
         }
     ),
     http.patch(
-        'http://example.com:3001/en-GB/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/import/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2/confirm',
+        'http://example.com:3001/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/import/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2/confirm',
         () => {
-            return new HttpResponse(null, {
-                status: 500,
-                statusText: '{}'
-            });
+            return new HttpResponse(null, { status: 500 });
         }
     ),
     http.delete(
-        'http://example.com:3001/en-GB/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/import/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2',
+        'http://example.com:3001/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/import/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2',
         () => {
-            return new HttpResponse(null, {
-                status: 500,
-                statusText: '{}'
-            });
+            return new HttpResponse(null, { status: 500 });
         }
     ),
     http.patch(
-        'http://example.com:3001/en-GB/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/import/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953/sources',
+        'http://example.com:3001/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/import/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953/sources',
         () => {
             return HttpResponse.json(completedDataset);
         }
     ),
     http.patch(
-        'http://example.com:3001/en-GB/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/import/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2/sources',
+        'http://example.com:3001/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/import/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2/sources',
         () => {
-            return new HttpResponse(null, {
-                status: 500,
-                statusText: '{}'
-            });
+            return new HttpResponse(null, { status: 500 });
         }
     ),
     http.get('http://example.com:3001/healthcheck', () => {
-        return HttpResponse.json({
-            status: 'App is running',
-            notes: 'Expand endpoint to check for database connection and other services.'
-        });
+        return HttpResponse.json({ message: 'success' });
     })
 );

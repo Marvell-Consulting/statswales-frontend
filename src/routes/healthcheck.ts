@@ -6,7 +6,7 @@ import { logger } from '../utils/logger';
 export const healthcheck = Router();
 
 healthcheck.get('/', async (req, res) => {
-    const lang = req.i18n.language || 'en-GB';
+    const lang = req.language;
     const APIInstance = new StatsWalesApi(lang);
     logger.info(`Healthcheck requested in ${lang}`);
 

@@ -10,6 +10,11 @@ export function getStagingConfig(): AppConfig {
         env: AppEnv.Staging,
         session: {
             store: SessionStore.Redis
+        },
+        auth: {
+            jwt: {
+                cookieDomain: process.env.BACKEND_URL!.replace('statswales-develop-backend.', '')
+            }
         }
     });
 }

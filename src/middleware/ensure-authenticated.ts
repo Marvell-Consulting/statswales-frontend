@@ -26,7 +26,7 @@ export const ensureAuthenticated: RequestHandler = (req: AuthedRequest, res, nex
         if (decoded.exp && decoded.exp <= Date.now() / 1000) {
             logger.error('JWT token has expired');
             res.status(401);
-            return res.redirect('/auth/login?error=expired');
+            return res.redirect(`/${req.language}/auth/login?error=expired`);
         }
 
         // store the token string in the request as we need it for Authorization header in API requests
@@ -38,7 +38,7 @@ export const ensureAuthenticated: RequestHandler = (req: AuthedRequest, res, nex
     } catch (err) {
         logger.error(`authentication failed: ${err}`);
         res.status(401);
-        return res.redirect('/auth/login');
+        return res.redirect(`/${req.language}/auth/login`);
     }
 
     return next();

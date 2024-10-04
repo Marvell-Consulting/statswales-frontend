@@ -34,7 +34,8 @@ export const getDefaultConfig = (): AppConfig => {
         },
         auth: {
             jwt: {
-                secret: process.env.JWT_SECRET!
+                secret: process.env.JWT_SECRET!,
+                cookieDomain: process.env.JWT_COOKIE_DOMAIN!
             }
         }
     };

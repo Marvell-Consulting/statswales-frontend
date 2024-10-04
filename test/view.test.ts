@@ -4,7 +4,7 @@ import request from 'supertest';
 import { i18next } from '../src/middleware/translation';
 import app from '../src/app';
 
-import { server } from './helpers/mock-server';
+import { mockBackend } from './mocks/backend';
 
 const t = i18next.t;
 
@@ -14,7 +14,7 @@ jest.mock('../src/middleware/ensure-authenticated', () => ({
 
 describe('Developer View Routes', () => {
     beforeAll(() => {
-        server.listen({
+        mockBackend.listen({
             onUnhandledRequest: ({ headers, method, url }) => {
                 if (url.includes('http://example.com:3001')) {
                     console.log('Request to unahndled URL:', method, url);
@@ -31,10 +31,10 @@ describe('Developer View Routes', () => {
     });
 
     afterEach(() => {
-        server.resetHandlers();
+        mockBackend.resetHandlers();
     });
 
-    afterAll(() => server.close());
+    afterAll(() => mockBackend.close());
 
     test('Check list endpoint returns a list of files', async () => {
         const res = await request(app).get('/en-GB/dataset').set('User-Agent', 'supertest');

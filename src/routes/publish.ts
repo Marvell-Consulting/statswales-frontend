@@ -10,8 +10,6 @@ import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
 import { i18next } from '../middleware/translation';
 import { AuthedRequest } from '../interfaces/authed-request';
 import { DatasetDTO, FileImportDTO, RevisionDTO } from '../dtos/dataset-dto';
-import { UploadDTO, UploadErrDTO } from '../dtos/upload-dto';
-import { ConfirmedImportDTO } from '../dtos/confirmed-import-dto';
 import { DimensionCreationDTO } from '../dtos/dimension-creation-dto';
 import { SourceType } from '../enums/source-type';
 import { ViewError } from '../dtos/view-error';
@@ -92,7 +90,7 @@ function checkCurrentDataset(req: AuthedRequest, res: Response): DatasetDTO | un
         req.session.errors = generateViewErrors(undefined, 500, [
             generateError('session', 'errors.session.current_dataset_missing', {})
         ]);
-        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/`);
+        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}`);
         return undefined;
     }
     return currentDataset;
@@ -106,7 +104,7 @@ function checkCurrentRevision(req: AuthedRequest, res: Response): RevisionDTO | 
         req.session.errors = generateViewErrors(undefined, 500, [
             generateError('session', 'errors.session.current_revision_missing', {})
         ]);
-        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/`);
+        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}`);
         return undefined;
     }
     return currentRevision;
@@ -120,46 +118,25 @@ function checkCurrentFileImport(req: AuthedRequest, res: Response): FileImportDT
         req.session.errors = generateViewErrors(undefined, 500, [
             generateError('session', 'errors.session.current_import_missing', {})
         ]);
-        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/`);
+        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}`);
         return undefined;
     }
     return currentFileImport;
 }
 
-function handleProcessedCSV(processedCSV: UploadDTO | UploadErrDTO, req: AuthedRequest, res: Response) {
-    const lang = req.i18n.language;
-    if (!processedCSV.success) {
-        const err = processedCSV as UploadErrDTO;
-        req.session.errors = generateViewErrors(err.dataset?.id, 500, err.errors);
-        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/`);
-        return;
-    }
-
-    const viewDTO = processedCSV as ViewDTO;
-    if (!viewDTO.dataset) {
-        res.status(500);
-        res.render('publish/upload', processedCSV);
-        return;
-    }
-    setCurrentToSession(viewDTO.dataset, req);
-    res.redirect(
-        `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.preview', { lng: lang })}`
-    );
-}
-
-async function createNewDataset(req: AuthedRequest, res: Response) {
-    const lang = req.i18n.language;
-    const statsWalesApi = new StatsWalesApi(lang, req.jwt);
+async function createNewDataset(req: AuthedRequest, res: Response): Promise<void> {
+    const lng = req.language;
+    const statsWalesApi = new StatsWalesApi(lng, req.jwt);
     const title = req.session.currentTitle;
+    const file = req.file;
+
     if (!title) {
-        logger.debug('Current title was missing from the session.  Something might have gone wrong');
+        logger.debug('Current title missing from the session');
         req.session.errors = generateViewErrors(undefined, 400, [generateError('title', 'errors.title_missing', {})]);
-        res.redirect(
-            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${t('routes.publish.title', { lng: lang })}`
-        );
+        res.redirect(`/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${t('routes.publish.title', { lng })}`);
         return;
     }
-    const file = req.file;
+
     if (!file) {
         generateFileError(req, res);
         return;
@@ -167,15 +144,25 @@ async function createNewDataset(req: AuthedRequest, res: Response) {
 
     const fileName = file.originalname;
     const fileData = new Blob([file.buffer], { type: file.mimetype });
-    const processedCSV = await statsWalesApi.uploadCSVtoCreateDataset(fileData, fileName, title);
-    await handleProcessedCSV(processedCSV, req, res);
+
+    try {
+        const dataset = await statsWalesApi.uploadCSVtoCreateDataset(fileData, fileName, title);
+        setCurrentToSession(dataset, req);
+        res.redirect(
+            `/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${req.i18n.t('routes.publish.preview', { lng })}`
+        );
+    } catch (err: any) {
+        req.session.errors = generateViewErrors(undefined, 500, err?.errors);
+        res.redirect(`/${lng}/${req.i18n.t('routes.publish.start', { lng })}`);
+    }
 }
 
 async function uploadNewFileToExistingDataset(req: AuthedRequest, res: Response) {
-    const lang = req.i18n.language;
-    const statsWalesApi = new StatsWalesApi(lang, req.jwt);
+    const lng = req.language;
+    const statsWalesApi = new StatsWalesApi(lng, req.jwt);
     const currentDataset = checkCurrentDataset(req, res);
     const currentRevision = checkCurrentRevision(req, res);
+
     if (!currentDataset || !currentRevision) {
         return;
     }
@@ -188,13 +175,21 @@ async function uploadNewFileToExistingDataset(req: AuthedRequest, res: Response)
     const fileName = req.file.originalname;
     const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
 
-    const processedCSV = await statsWalesApi.uploadCSVToFixDataset(
-        currentDataset.id,
-        currentRevision.id,
-        fileData,
-        fileName
-    );
-    await handleProcessedCSV(processedCSV, req, res);
+    try {
+        const dataset = await statsWalesApi.uploadCSVToFixDataset(
+            currentDataset.id,
+            currentRevision.id,
+            fileData,
+            fileName
+        );
+        setCurrentToSession(dataset, req);
+        res.redirect(
+            `/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${req.i18n.t('routes.publish.preview', { lng })}`
+        );
+    } catch (err: any) {
+        req.session.errors = generateViewErrors(undefined, 500, err?.errors);
+        res.redirect(`/${lng}/${req.i18n.t('routes.publish.start', { lng })}`);
+    }
 }
 
 function cleanupSession(req: AuthedRequest) {
@@ -284,25 +279,25 @@ publish.get('/preview', async (req: AuthedRequest, res: Response) => {
 
     const page_number: number = Number.parseInt(req.query.page_number as string, 10) || 1;
     const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 10;
-    const previewData = await statsWalesApi.getDatasetDatafilePreview(
-        currentDataset.id,
-        currentRevision.id,
-        currentFileImport.id,
-        page_number,
-        page_size
-    );
-    if (!previewData.success) {
+
+    try {
+        const previewData: ViewDTO = await statsWalesApi.getDatasetDatafilePreview(
+            currentDataset.id,
+            currentRevision.id,
+            currentFileImport.id,
+            page_number,
+            page_size
+        );
+        res.render('publish/preview', previewData);
+    } catch (error: any) {
         logger.error('Failed to get preview data from the backend');
         // eslint-disable-next-line require-atomic-updates
         req.session.errors = generateViewErrors(undefined, 500, [
             generateError('preview', 'errors.preview.failed_to_get_preview', {})
         ]);
         req.session.save();
-        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/`);
-        return;
+        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}`);
     }
-    const data = previewData as ViewDTO;
-    res.render('publish/preview', data);
 });
 
 async function confirmFileUpload(
@@ -313,21 +308,19 @@ async function confirmFileUpload(
     req: AuthedRequest,
     res: Response
 ) {
-    const lang = req.i18n.language;
+    const lng = req.language;
     try {
-        const confirmedImport: ConfirmedImportDTO = await statsWalesApi.confirmFileImport(
+        const fileImport: FileImportDTO = await statsWalesApi.confirmFileImport(
             currentDataset.id,
             currentRevision.id,
             currentFileImport.id
         );
-        if (confirmedImport.success) {
-            // eslint-disable-next-line require-atomic-updates
-            req.session.currentImport = confirmedImport.fileImport;
-            req.session.save();
-            res.redirect(
-                `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.sources', { lng: lang })}`
-            );
-        }
+        // eslint-disable-next-line require-atomic-updates
+        req.session.currentImport = fileImport;
+        req.session.save();
+        res.redirect(
+            `/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${req.i18n.t('routes.publish.sources', { lng })}`
+        );
     } catch (err) {
         logger.error(
             `An HTTP error occurred trying to confirm import from the dataset with the following error: ${err}`
@@ -338,7 +331,7 @@ async function confirmFileUpload(
         ]);
         req.session.save();
         res.redirect(
-            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.preview', { lng: lang })}/`
+            `/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${req.i18n.t('routes.publish.preview', { lng })}`
         );
     }
 }
@@ -462,7 +455,7 @@ publish.get('/sources', upload.none(), (req: AuthedRequest, res: Response) => {
 });
 
 publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response) => {
-    const lang = req.i18n.language;
+    const lng = req.language;
     const currentDataset = checkCurrentDataset(req, res);
     if (!currentDataset) {
         return;
@@ -484,9 +477,10 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
             generateError('session', 'errors.session.no_sources_on_import', {})
         ]);
         req.session.save();
-        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}`);
+        res.redirect(`/${lng}/${req.i18n.t('routes.publish.start', { lng })}`);
         return;
     }
+
     logger.info('Creating Dimension Request object');
     const dimensionCreationRequest: DimensionCreationDTO[] = currentFileImport.sources.map((source) => {
         return {
@@ -509,6 +503,7 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
     const sourcesMarkedFootnotes = dimensionCreationRequest.filter(
         (createRequest) => createRequest.sourceType === SourceType.FootNotes
     );
+
     if (sourcesMarkedUnknown.length > 0) {
         logger.error('User failed to identify all sources');
         const errs = generateViewErrors(undefined, 400, [
@@ -557,20 +552,20 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
         });
         return;
     }
+
     logger.info('Dimension creation request checks out... Sending it to the backend to do its thing');
     const statsWalesApi = new StatsWalesApi(req.i18n.language, req.jwt);
+
     try {
-        const updatedDataset: UploadDTO = await statsWalesApi.sendCreateDimensionRequest(
+        const dataset: DatasetDTO = await statsWalesApi.sendCreateDimensionRequest(
             currentDataset.id,
             currentRevision.id,
             currentFileImport.id,
             dimensionCreationRequest
         );
 
-        const datasetId = updatedDataset.dataset.id;
-
         res.redirect(
-            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${datasetId}/${req.i18n.t('routes.publish.tasklist', { lng: lang })}`
+            `/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${dataset.id}/${req.i18n.t('routes.publish.tasklist', { lng })}`
         );
     } catch (err) {
         logger.error(`Something went wrong with the Dimension Creation Request with the following error: ${err}`);

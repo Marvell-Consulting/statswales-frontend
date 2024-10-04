@@ -8,12 +8,13 @@ import { httpLogger, logger } from './utils/logger';
 import session from './middleware/session';
 import { ensureAuthenticated } from './middleware/ensure-authenticated';
 import { rateLimiter } from './middleware/rate-limiter';
-import { i18next, i18nextMiddleware } from './middleware/translation';
+import { i18next, i18nextMiddleware, WELSH } from './middleware/translation';
 import { auth } from './routes/auth';
 import { healthcheck } from './routes/healthcheck';
 import { publish } from './routes/publish';
 import { view } from './routes/view';
 import { appConfig } from './config';
+import { errorHandler } from './routes/error-handler';
 
 const app: Application = express();
 
@@ -43,28 +44,30 @@ app.set('view engine', 'ejs');
 app.use('/public', express.static(`${__dirname}/public`));
 app.use('/css', express.static(`${__dirname}/css`));
 app.use('/assets', express.static(`${__dirname}/assets`));
-app.use('/auth', rateLimiter, auth);
+
+app.get('/', (req: Request, res: Response) => {
+    const lang = req.language;
+    logger.debug(`Language missing from URL path but detected as '${lang}'`);
+
+    if (lang.includes(WELSH)) {
+        res.redirect('/cy-GB');
+        return;
+    }
+    res.redirect('/en-GB');
+});
+
 app.use('/healthcheck', rateLimiter, healthcheck);
 
+app.use('/:lang/auth', rateLimiter, auth);
 app.use('/:lang/publish', rateLimiter, ensureAuthenticated, publish);
 app.use('/:lang/dataset', rateLimiter, ensureAuthenticated, view);
 app.use('/:lang/healthcheck', rateLimiter, healthcheck);
 
-app.get('/', (req: Request, res: Response) => {
-    const lang = req.headers['accept-language'] || req.headers['Accept-Language'] || req.i18n.language || 'en-GB';
-    logger.info(
-        `User arrived at service and we selected ${lang} as the language.  The headers were: ${req.headers['accept-language']}${req.headers['Accept-Language']}, and i18next selected: ${req.i18n.language}`
-    );
-    if (lang.includes('cy')) {
-        res.redirect('/cy-GB');
-    } else {
-        res.redirect('/en-GB');
-    }
-});
-
 app.get('/:lang/', rateLimiter, ensureAuthenticated, (req: Request, res: Response) => {
     res.render('index');
 });
+
+app.use(errorHandler);
 
 logger.info('Routes loaded');
 

@@ -207,7 +207,8 @@
             "no_csv": "No CSV data provided",
             "no_csv_data": "No CSV data available"
         },
-        "not_found": "Page not found"
+        "not_found": "Page not found",
+        "server_error": "An unknown error occcured, please try again later"
 	},
     "api": {
         "available": "API is available"

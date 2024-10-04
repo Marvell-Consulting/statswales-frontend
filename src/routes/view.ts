@@ -25,10 +25,11 @@ view.get('/', async (req: AuthedRequest, res: Response) => {
 });
 
 view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
-    const page_number: number = Number.parseInt(req.query.page_number as string, 10) || 1;
+    const datasetId = req.params.datasetId;
+    const page: number = Number.parseInt(req.query.page_number as string, 10) || 1;
     const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 100;
 
-    if (!req.params.datasetId || !validateUUID(req.params.datasetId)) {
+    if (!validateUUID(datasetId)) {
         const err: ViewErrDTO = {
             success: false,
             status: 404,
@@ -48,15 +49,13 @@ view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
         return;
     }
 
-    const datasetId = req.params.datasetId;
-    const file = await statsWalesApi(req).getDatasetView(datasetId, page_number, page_size);
-    if (!file.success) {
-        const error = file as ViewErrDTO;
-        res.status(error.status);
-        res.render('view/data', { errors: file });
-        return;
+    try {
+        const file = await statsWalesApi(req).getDatasetView(datasetId, page, page_size);
+        res.render('view/data', file);
+    } catch (error: any) {
+        res.status(error?.status);
+        res.render('view/data', { errors: error?.errors });
     }
-    res.render('view/data', file);
 });
 
 view.get('/:datasetId/import/:importId', async (req: AuthedRequest, res: Response) => {

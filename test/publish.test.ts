@@ -10,7 +10,7 @@ import { DatasetDTO, FileImportDTO, RevisionDTO } from '../src/dtos/dataset-dto'
 import { ViewErrDTO } from '../src/dtos/view-dto';
 import { DimensionCreationDTO } from '../src/dtos/dimension-creation-dto';
 
-import { server } from './helpers/mock-server';
+import { mockBackend } from './mocks/backend';
 
 const t = i18next.t;
 
@@ -35,7 +35,7 @@ jest.mock('../src/middleware/rate-limiter', () => ({
 
 describe('Publisher Journey Tests', () => {
     beforeAll(() => {
-        server.listen({
+        mockBackend.listen({
             onUnhandledRequest: ({ headers, method, url }) => {
                 const parsedUrl = new URL(url);
                 if (parsedUrl.host === 'example.com:3001') {
@@ -53,11 +53,11 @@ describe('Publisher Journey Tests', () => {
     });
 
     afterEach(() => {
-        server.resetHandlers();
+        mockBackend.resetHandlers();
     });
 
     afterAll(() => {
-        server.close();
+        mockBackend.close();
     });
 
     async function clearSession() {
@@ -248,7 +248,7 @@ describe('Publisher Journey Tests', () => {
                 .set('Cookie', cookies)
                 .attach('csv', csvfile);
             expect(res.status).toBe(302);
-            expect(res.header.location).toBe(`/en-GB/publish/`);
+            expect(res.header.location).toBe(`/en-GB/publish`);
         });
 
         test('Get the upload page returns 302 and redirects back to the title page if no title is set', async () => {
@@ -320,7 +320,7 @@ describe('Publisher Journey Tests', () => {
         test('Dataset preview returns 302 if no currentDataset is present in the session', async () => {
             const res = await request(app).get('/en-GB/publish/preview').set('User-Agent', 'supertest');
             expect(res.status).toBe(302);
-            expect(res.header.location).toBe(`/en-GB/publish/`);
+            expect(res.header.location).toBe(`/en-GB/publish`);
         });
 
         test('Dataset preview returns 302 if no currentRevision is present in the session', async () => {
@@ -334,7 +334,7 @@ describe('Publisher Journey Tests', () => {
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies);
             expect(res.status).toBe(302);
-            expect(res.header.location).toBe(`/en-GB/publish/`);
+            expect(res.header.location).toBe(`/en-GB/publish`);
         });
 
         test('Dataset preview returns 302 if no currentImport is present in the session', async () => {
@@ -348,7 +348,7 @@ describe('Publisher Journey Tests', () => {
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies);
             expect(res.status).toBe(302);
-            expect(res.header.location).toBe(`/en-GB/publish/`);
+            expect(res.header.location).toBe(`/en-GB/publish`);
         });
 
         test('Dataset preview returns 302 if the API returns an error', async () => {
@@ -358,7 +358,7 @@ describe('Publisher Journey Tests', () => {
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies);
             expect(res.status).toBe(302);
-            expect(res.header.location).toBe(`/en-GB/publish/`);
+            expect(res.header.location).toBe(`/en-GB/publish`);
         });
     });
 
@@ -382,7 +382,7 @@ describe('Publisher Journey Tests', () => {
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookies);
             expect(res.status).toBe(302);
-            expect(res.header.location).toBe(`/en-GB/publish/preview/`);
+            expect(res.header.location).toBe(`/en-GB/publish/preview`);
         });
 
         test('Rejecting a preview returns 302 back to upload', async () => {
@@ -424,7 +424,7 @@ describe('Publisher Journey Tests', () => {
                     .field('confirm', 'false')
                     .set('User-Agent', 'supertest');
                 expect(res.status).toBe(302);
-                expect(res.header.location).toBe(`/en-GB/publish/`);
+                expect(res.header.location).toBe(`/en-GB/publish`);
             });
 
             test('If the currentRevision is missing from the session return to the start of the journey', async () => {
@@ -439,7 +439,7 @@ describe('Publisher Journey Tests', () => {
                     .set('User-Agent', 'supertest')
                     .set('Cookie', cookies);
                 expect(res.status).toBe(302);
-                expect(res.header.location).toBe(`/en-GB/publish/`);
+                expect(res.header.location).toBe(`/en-GB/publish`);
             });
 
             test('If the currentImport is missing from the session return to the start of the journey', async () => {
@@ -454,7 +454,7 @@ describe('Publisher Journey Tests', () => {
                     .set('User-Agent', 'supertest')
                     .set('Cookie', cookies);
                 expect(res.status).toBe(302);
-                expect(res.header.location).toBe(`/en-GB/publish/`);
+                expect(res.header.location).toBe(`/en-GB/publish`);
             });
         });
     });
@@ -492,7 +492,7 @@ describe('Publisher Journey Tests', () => {
                 .set('User-Agent', 'supertest')
                 .set('Cookie', cookie);
             expect(res.status).toBe(302);
-            expect(res.header.location).toBe(`/en-GB/publish/`);
+            expect(res.header.location).toBe(`/en-GB/publish`);
         });
     });
 
@@ -579,7 +579,7 @@ describe('Publisher Journey Tests', () => {
             test('No dataset in the session when posting to sources returns 302 back to start', async () => {
                 const res = await request(app).post('/en-GB/publish/sources').set('User-Agent', 'supertest');
                 expect(res.status).toBe(302);
-                expect(res.header.location).toBe(`/en-GB/publish/`);
+                expect(res.header.location).toBe(`/en-GB/publish`);
             });
 
             test('No current revision in the session returns 302 back to the start', async () => {
@@ -595,7 +595,7 @@ describe('Publisher Journey Tests', () => {
                     .set('Cookie', removedRevisionCookies)
                     .set('User-Agent', 'supertest');
                 expect(res.status).toBe(302);
-                expect(res.header.location).toBe(`/en-GB/publish/`);
+                expect(res.header.location).toBe(`/en-GB/publish`);
             });
 
             test('No current import in the session returns 302 back to the start', async () => {
@@ -609,7 +609,7 @@ describe('Publisher Journey Tests', () => {
                     .set('Cookie', removedImportCookies)
                     .set('User-Agent', 'supertest');
                 expect(res.status).toBe(302);
-                expect(res.header.location).toBe(`/en-GB/publish/`);
+                expect(res.header.location).toBe(`/en-GB/publish`);
             });
 
             test('The current import has no session on it returns 302 back to the start', async () => {
