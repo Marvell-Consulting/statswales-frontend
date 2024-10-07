@@ -8,7 +8,7 @@ import { httpLogger, logger } from './utils/logger';
 import session from './middleware/session';
 import { ensureAuthenticated } from './middleware/ensure-authenticated';
 import { rateLimiter } from './middleware/rate-limiter';
-import { i18next, i18nextMiddleware, WELSH } from './middleware/translation';
+import { i18next, i18nextMiddleware } from './middleware/translation';
 import { languageSwitcher } from './middleware/language-switcher';
 import { auth } from './routes/auth';
 import { healthcheck } from './routes/healthcheck';

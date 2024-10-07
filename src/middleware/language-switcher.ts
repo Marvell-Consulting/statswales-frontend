@@ -1,30 +1,20 @@
-import { RequestHandler, Request } from 'express';
+import { RequestHandler } from 'express';
 import { omit } from 'lodash';
 
 import { logger } from '../utils/logger';
-import { appConfig } from '../config';
-import { AppEnv } from '../config/env.enum';
+import { Locale } from '../enums/locale';
 
-import { ignoreRoutes, ENGLISH, ENGLISH_GB, WELSH, WELSH_GB } from './translation';
+import { ignoreRoutes, SUPPORTED_LOCALES } from './translation';
 
-const config = appConfig();
+export const localeUrl = (path: string, locale: Locale, query?: Record<string, string>): string => {
+    const queryString = query ? new URLSearchParams(query).toString() : '';
 
-const localeUrl = (req: Request, locale: string): string => {
-    const { protocol, hostname, path, query } = req;
-    const port = config.env === AppEnv.Local ? config.frontend.port : undefined;
+    // strip language from the path if present
+    const pathElements = path.split('/').filter((element) => !(SUPPORTED_LOCALES as string[]).includes(element));
 
-    // the language switching links use the lang=xxx query param, but once triggered we want to remove it
-    // while keeping all other query params
-    const queryParams = omit(query, 'lang') as Record<string, string>;
-    const queryString = new URLSearchParams(queryParams).toString();
-    const qs = queryString ? `?${queryString}` : '';
+    // TODO: translate URL path, params? to Welsh language
 
-    const baseUrl = `${protocol}://${hostname}${port ? `:${port}` : ''}`;
-
-    // remove the previous language from the path if present
-    const cleanPath = path.replace(/^\/(en|cy)(-GB)?/, '');
-
-    return `${baseUrl}/${locale}${cleanPath}${qs}`;
+    return `/${locale}${pathElements.join('/')}${queryString}`;
 };
 
 export const languageSwitcher: RequestHandler = (req, res, next): void => {
@@ -35,17 +25,20 @@ export const languageSwitcher: RequestHandler = (req, res, next): void => {
         return;
     }
 
-    const lang = req.language; // language detected by the i18next middleware in ./translation.ts
+    const lang = req.language; // language detected by the translation middleware
 
-    if ([ENGLISH, ENGLISH_GB].includes(lang) && !/^\/en-GB/.test(req.originalUrl)) {
-        const newUrl = localeUrl(req, ENGLISH_GB);
+    // lang switching uses lang=xx query param, once triggered we want to remove it while keeping other query params
+    const queryParams = omit(req.query as Record<string, string>, 'lang');
+
+    if ([Locale.English, Locale.EnglishGb].includes(lang as Locale) && !/^\/en-GB/.test(req.originalUrl)) {
+        const newUrl = localeUrl(req.path, Locale.EnglishGb, queryParams);
         logger.debug(`Language detected as '${lang}' but not present in path, redirecting to ${newUrl}`);
         res.redirect(newUrl);
         return;
     }
 
-    if ([WELSH, WELSH_GB].includes(lang) && !/^\/cy-GB/.test(req.originalUrl)) {
-        const newUrl = localeUrl(req, WELSH_GB);
+    if ([Locale.Welsh, Locale.WelshGb].includes(lang as Locale) && !/^\/cy-GB/.test(req.originalUrl)) {
+        const newUrl = localeUrl(req.path, Locale.WelshGb, queryParams);
         logger.debug(`Language detected as '${lang}' but not present in path, redirecting to ${newUrl}`);
         res.redirect(newUrl);
         return;
