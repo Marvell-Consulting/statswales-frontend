@@ -1,8 +1,9 @@
 import request from 'supertest';
 import { Request, Response, NextFunction } from 'express';
 
-import { ENGLISH, WELSH, i18next } from '../src/middleware/translation';
+import { i18next } from '../src/middleware/translation';
 import app from '../src/app';
+import { Locale } from '../src/enums/locale';
 
 import { mockBackend } from './mocks/backend';
 
@@ -41,21 +42,21 @@ describe('Test homepage, middleware and healthcheck', () => {
         });
 
         test('Redirects to welsh when accept-header is present when going to /', async () => {
-            const res = await request(app).get('/').set('Accept-Language', WELSH).set('User-Agent', 'supertest');
+            const res = await request(app).get('/').set('Accept-Language', Locale.Welsh).set('User-Agent', 'supertest');
             expect(res.status).toBe(302);
             expect(res.header.location).toBe('/cy-GB');
         });
 
         test('App Homepage has correct title', async () => {
-            const res = await request(app).get(`/${ENGLISH}`).set('User-Agent', 'supertest');
+            const res = await request(app).get(`/${Locale.EnglishGb}`).set('User-Agent', 'supertest');
             expect(res.status).toBe(200);
-            expect(res.text).toContain(t('homepage.title', { lng: ENGLISH }));
+            expect(res.text).toContain(t('homepage.title', { lng: Locale.English }));
         });
 
         test('App Homepage has correct title in welsh', async () => {
-            const res = await request(app).get(`/${WELSH}`).set('User-Agent', 'supertest');
+            const res = await request(app).get(`/${Locale.WelshGb}`).set('User-Agent', 'supertest');
             expect(res.status).toBe(200);
-            expect(res.text).toContain(t('homepage.title', { lng: WELSH }));
+            expect(res.text).toContain(t('homepage.title', { lng: Locale.Welsh }));
         });
     });
 
@@ -63,13 +64,7 @@ describe('Test homepage, middleware and healthcheck', () => {
         test('Check initial healthcheck endpoint works', async () => {
             const res = await request(app).get('/healthcheck').set('User-Agent', 'supertest');
             expect(res.status).toBe(200);
-            expect(res.body).toEqual({
-                status: 'App is running',
-                notes: 'Expand endpoint to check for database connection and other services.',
-                services: {
-                    backend_connected: true
-                }
-            });
+            expect(res.body).toEqual({ status: 200, lang: Locale.English, services: { backend: true } });
         });
     });
 });

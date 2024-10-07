@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { omit } from 'lodash';
+import { isEmpty, omit } from 'lodash';
 
 import { logger } from '../utils/logger';
 import { Locale } from '../enums/locale';
@@ -7,14 +7,18 @@ import { Locale } from '../enums/locale';
 import { ignoreRoutes, SUPPORTED_LOCALES } from './translation';
 
 export const localeUrl = (path: string, locale: Locale, query?: Record<string, string>): string => {
-    const queryString = query ? new URLSearchParams(query).toString() : '';
-
-    // strip language from the path if present
-    const pathElements = path.split('/').filter((element) => !(SUPPORTED_LOCALES as string[]).includes(element));
+    const locales = SUPPORTED_LOCALES as string[];
 
     // TODO: translate URL path, params? to Welsh language
+    const pathElements = path
+        .split('/')
+        .filter(Boolean) // strip empty elements to avoid trailing slash
+        .filter((element) => !locales.includes(element)); // strip language from the path if present
 
-    return `/${locale}${pathElements.join('/')}${queryString}`;
+    const newPath = isEmpty(pathElements) ? '' : `/${pathElements.join('/')}`;
+    const queryString = isEmpty(query) ? '' : `?${new URLSearchParams(query).toString()}`;
+
+    return `/${locale}${newPath}${queryString}`;
 };
 
 export const languageSwitcher: RequestHandler = (req, res, next): void => {
