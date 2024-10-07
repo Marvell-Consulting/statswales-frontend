@@ -39,6 +39,7 @@ export const ensureAuthenticated: RequestHandler = (req: AuthedRequest, res, nex
 
         // store the user object in the request for use in the frontend
         req.user = decoded.user;
+        res.locals.isAuthenticated = true;
         logger.info('user is authenticated');
     } catch (err) {
         logger.error(`authentication failed: ${err}`);
