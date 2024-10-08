@@ -13,7 +13,7 @@ import { FileImportDTO } from '../dtos/dataset-dto';
 export const view = Router();
 
 const statsWalesApi = (req: AuthedRequest) => {
-    const lang = req.i18n.language;
+    const lang = req.language;
     const token = req.jwt;
     return new StatsWalesApi(lang, token);
 };
@@ -59,7 +59,7 @@ view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
 });
 
 view.get('/:datasetId/import/:importId', async (req: AuthedRequest, res: Response) => {
-    if (!req.params.datasetId || !validateUUID(req.params.datasetId)) {
+    if (!validateUUID(req.params.datasetId)) {
         const err: ViewErrDTO = {
             success: false,
             status: 404,
@@ -79,7 +79,7 @@ view.get('/:datasetId/import/:importId', async (req: AuthedRequest, res: Respons
         return;
     }
 
-    if (!req.params.importId || !validateUUID(req.params.importId)) {
+    if (!validateUUID(req.params.importId)) {
         const err: ViewErrDTO = {
             success: false,
             status: 404,

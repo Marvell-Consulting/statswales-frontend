@@ -2,26 +2,38 @@ import i18next from 'i18next';
 import Backend from 'i18next-fs-backend';
 import i18nextMiddleware from 'i18next-http-middleware';
 
-const ENGLISH = 'en';
-const WELSH = 'cy';
-const AVAILABLE_LANGUAGES = [ENGLISH, WELSH];
+import { appConfig } from '../config';
+
+const ignoreRoutes = ['/public', '/css', '/assets', '/healthcheck'];
+
+const config = appConfig();
+const cookieDomain = new URL(config.auth.jwt.cookieDomain).hostname;
+
+const TRANSLATIONS = config.language.availableTranslations;
+const SUPPORTED_LOCALES = config.language.supportedLocales;
 
 i18next
     .use(i18nextMiddleware.LanguageDetector)
     .use(Backend)
     .init({
         detection: {
-            order: ['path', 'header'],
+            ignoreRoutes,
+            order: ['querystring', 'path', 'cookie', 'header'],
+            lookupQuerystring: 'lang',
+            lookupPath: 'lang',
+            lookupCookie: 'lang',
             lookupHeader: 'accept-language',
-            caches: false,
-            ignoreRoutes: ['/healthcheck', '/public', '/css', '/assets']
+            caches: ['cookie'],
+            cookieDomain,
+            cookieSecure: config.session.secure
         },
         backend: {
             loadPath: `${__dirname}/translations/{{lng}}.json`
         },
-        fallbackLng: 'en',
-        preload: AVAILABLE_LANGUAGES,
+        fallbackLng: config.language.fallback,
+        preload: TRANSLATIONS,
+        supportedLngs: SUPPORTED_LOCALES,
         debug: false
     });
 
-export { i18next, i18nextMiddleware, ENGLISH, WELSH };
+export { i18next, i18nextMiddleware, ignoreRoutes, SUPPORTED_LOCALES };
