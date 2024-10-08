@@ -9,11 +9,12 @@ import { ViewErrDTO } from '../dtos/view-dto';
 import { logger } from '../utils/logger';
 import { AuthedRequest } from '../interfaces/authed-request';
 import { FileImportDTO } from '../dtos/dataset-dto';
+import { Locale } from '../enums/locale';
 
 export const view = Router();
 
 const statsWalesApi = (req: AuthedRequest) => {
-    const lang = req.language;
+    const lang = req.language as Locale;
     const token = req.jwt;
     return new StatsWalesApi(lang, token);
 };

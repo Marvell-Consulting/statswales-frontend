@@ -1,7 +1,7 @@
 export class ApiException extends Error {
     constructor(
         public message: string,
-        public status: number
+        public status?: number
     ) {
         super(message);
         this.name = 'ApiException';

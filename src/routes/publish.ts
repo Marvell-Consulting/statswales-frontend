@@ -17,6 +17,7 @@ import { singleLangDataset } from '../utils/single-lang-dataset';
 import { DimensionType } from '../enums/dimension-type';
 import { DimensionState } from '../dtos/dimension-state';
 import { TaskListState } from '../dtos/task-list-state';
+import { Locale } from '../enums/locale';
 
 const t = i18next.t;
 const upload = multer({ storage: multer.memoryStorage() });
@@ -125,7 +126,7 @@ function checkCurrentFileImport(req: AuthedRequest, res: Response): FileImportDT
 }
 
 async function createNewDataset(req: AuthedRequest, res: Response): Promise<void> {
-    const lng = req.language;
+    const lng = req.language as Locale;
     const statsWalesApi = new StatsWalesApi(lng, req.jwt);
     const title = req.session.currentTitle;
     const file = req.file;
@@ -158,7 +159,7 @@ async function createNewDataset(req: AuthedRequest, res: Response): Promise<void
 }
 
 async function uploadNewFileToExistingDataset(req: AuthedRequest, res: Response) {
-    const lng = req.language;
+    const lng = req.language as Locale;
     const statsWalesApi = new StatsWalesApi(lng, req.jwt);
     const currentDataset = checkCurrentDataset(req, res);
     const currentRevision = checkCurrentRevision(req, res);
@@ -259,8 +260,8 @@ publish.post('/upload', upload.single('csv'), async (req: AuthedRequest, res: Re
 });
 
 publish.get('/preview', async (req: AuthedRequest, res: Response) => {
-    const lang = req.i18n.language;
-    const statsWalesApi = new StatsWalesApi(lang, req.jwt);
+    const lng = req.language as Locale;
+    const statsWalesApi = new StatsWalesApi(lng, req.jwt);
 
     const currentDataset = checkCurrentDataset(req, res);
     if (!currentDataset) {
@@ -296,7 +297,7 @@ publish.get('/preview', async (req: AuthedRequest, res: Response) => {
             generateError('preview', 'errors.preview.failed_to_get_preview', {})
         ]);
         req.session.save();
-        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}`);
+        res.redirect(`/${lng}/${req.i18n.t('routes.publish.start', { lng })}`);
     }
 });
 
@@ -382,7 +383,7 @@ publish.post('/preview', upload.none(), async (req: AuthedRequest, res: Response
         return;
     }
 
-    const lang = req.i18n.language;
+    const lng = req.language as Locale;
     const confirmData = req.body?.confirm;
     if (!confirmData) {
         logger.error('The confirm variable is missing on the form submission');
@@ -391,11 +392,11 @@ publish.post('/preview', upload.none(), async (req: AuthedRequest, res: Response
         ]);
         req.session.save();
         res.redirect(
-            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.preview', { lng: lang })}`
+            `/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${req.i18n.t('routes.publish.preview', { lng })}`
         );
         return;
     }
-    const statsWalesApi = new StatsWalesApi(lang, req.jwt);
+    const statsWalesApi = new StatsWalesApi(lng, req.jwt);
     if (confirmData === 'true') {
         logger.info('User confirmed file upload was correct');
         await confirmFileUpload(currentDataset, currentRevision, currentFileImport, statsWalesApi, req, res);
@@ -455,7 +456,7 @@ publish.get('/sources', upload.none(), (req: AuthedRequest, res: Response) => {
 });
 
 publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response) => {
-    const lng = req.language;
+    const lng = req.language as Locale;
     const currentDataset = checkCurrentDataset(req, res);
     if (!currentDataset) {
         return;
@@ -554,7 +555,7 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
     }
 
     logger.info('Dimension creation request checks out... Sending it to the backend to do its thing');
-    const statsWalesApi = new StatsWalesApi(req.i18n.language, req.jwt);
+    const statsWalesApi = new StatsWalesApi(lng, req.jwt);
 
     try {
         const dataset: DatasetDTO = await statsWalesApi.sendCreateDimensionRequest(
@@ -660,17 +661,17 @@ function buildStateFromDataset(lang: string, dataset: DatasetDTO): TaskListState
 }
 
 publish.get('/:datasetId/tasklist', async (req: AuthedRequest, res: Response) => {
-    const lang = req.i18n.language;
+    const lng = req.language as Locale;
     const datasetId = req.params.datasetId as string;
-    const statsWalesApi = new StatsWalesApi(lang, req.jwt);
+    const statsWalesApi = new StatsWalesApi(lng, req.jwt);
 
     try {
         if (!validateUUID(datasetId)) throw new Error('Invalid dataset ID');
         const dataset = await statsWalesApi.getDataset(datasetId);
         setCurrentToSession(dataset, req);
         res.render('publish/tasklist', {
-            taskList: buildStateFromDataset(lang, dataset),
-            sourcesUrl: `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.sources', { lng: lang })}`
+            taskList: buildStateFromDataset(lng, dataset),
+            sourcesUrl: `/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${req.i18n.t('routes.publish.sources', { lng })}`
         });
     } catch (err) {
         logger.error(`Something went wrong viewing the tasklist: ${err}`);
