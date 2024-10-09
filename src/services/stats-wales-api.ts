@@ -49,7 +49,7 @@ export class StatsWalesApi {
                 return response;
             })
             .catch((error) => {
-                logger.error(`An error occurred with status '${error.status}' and message '${error.message}'`);
+                logger.error(`An api error occurred with status '${error.status}' and message '${error.message}'`);
                 throw new ApiException(error.message, error.status);
             });
     }
@@ -216,14 +216,9 @@ export class StatsWalesApi {
     public async ping(): Promise<boolean> {
         logger.debug(`Pinging healthcheck...`);
 
-        return this.fetch('healthcheck')
-            .then(() => {
-                logger.debug('API responded to ping');
-                return true;
-            })
-            .catch((error) => {
-                logger.error('API is unreachable');
-                return false;
-            });
+        return this.fetch('healthcheck').then(() => {
+            logger.debug('API responded to ping');
+            return true;
+        });
     }
 }

@@ -12,7 +12,7 @@ import { localeUrl } from './language-switcher';
 const config = appConfig();
 
 export const ensureAuthenticated: RequestHandler = (req: AuthedRequest, res, next) => {
-    logger.debug('checking if user is authenticated...');
+    logger.debug(`checking if user is authenticated for route ${req.originalUrl}...`);
 
     const locale = req.language as Locale;
 

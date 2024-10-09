@@ -18,6 +18,7 @@ import { DimensionType } from '../enums/dimension-type';
 import { DimensionState } from '../dtos/dimension-state';
 import { TaskListState } from '../dtos/task-list-state';
 import { Locale } from '../enums/locale';
+import { generateViewErrors } from '../utils/generate-view-errors';
 
 const t = i18next.t;
 const upload = multer({ storage: multer.memoryStorage() });
@@ -72,15 +73,6 @@ function generateError(field: string, tag: string, params: object): ViewError {
             params
         }
     };
-}
-
-function generateViewErrors(datasetID: string | undefined, statusCode: number, errors: ViewError[]): ViewErrDTO {
-    return {
-        success: false,
-        status: statusCode,
-        errors,
-        dataset_id: datasetID
-    } as ViewErrDTO;
 }
 
 function checkCurrentDataset(req: AuthedRequest, res: Response): DatasetDTO | undefined {
