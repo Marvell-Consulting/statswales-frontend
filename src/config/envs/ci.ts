@@ -9,7 +9,7 @@ export function getCIConfig(): AppConfig {
     return defineConfig({
         env: AppEnv.Ci,
         logger: {
-            level: 'error'
+            level: 'silent'
         },
         frontend: {
             port: 3000,

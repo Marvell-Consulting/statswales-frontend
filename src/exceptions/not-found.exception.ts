@@ -1,6 +1,6 @@
 export class NotFoundException extends Error {
     constructor(
-        public message: string,
+        public message = 'Not Found',
         public status = 404
     ) {
         super(message);

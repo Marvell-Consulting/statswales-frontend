@@ -1,6 +1,6 @@
 import { Readable } from 'stream';
 
-import { Router, Response } from 'express';
+import { Router, Response, NextFunction } from 'express';
 import { validate as validateUUID } from 'uuid';
 
 import { StatsWalesApi } from '../services/stats-wales-api';
@@ -9,19 +9,24 @@ import { ViewErrDTO } from '../dtos/view-dto';
 import { logger } from '../utils/logger';
 import { AuthedRequest } from '../interfaces/authed-request';
 import { FileImportDTO } from '../dtos/dataset-dto';
+import { Locale } from '../enums/locale';
 
 export const view = Router();
 
 const statsWalesApi = (req: AuthedRequest) => {
-    const lang = req.language;
+    const lang = req.language as Locale;
     const token = req.jwt;
     return new StatsWalesApi(lang, token);
 };
 
-view.get('/', async (req: AuthedRequest, res: Response) => {
-    const fileList: FileList = await statsWalesApi(req).getFileList();
-    logger.debug(`FileList from server = ${JSON.stringify(fileList)}`);
-    res.render('view/list', fileList);
+view.get('/', async (req: AuthedRequest, res: Response, next: NextFunction) => {
+    try {
+        const fileList: FileList = await statsWalesApi(req).getFileList();
+        logger.debug(`FileList from server = ${JSON.stringify(fileList)}`);
+        res.render('view/list', fileList);
+    } catch (err: any) {
+        next(err);
+    }
 });
 
 view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {

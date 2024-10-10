@@ -3,21 +3,22 @@ import path from 'node:path';
 import express, { Application } from 'express';
 import cookieParser from 'cookie-parser';
 
+import { appConfig } from './config';
 import { checkConfig } from './config/check-config';
 import { httpLogger, logger } from './utils/logger';
 import session from './middleware/session';
 import { ensureAuthenticated } from './middleware/ensure-authenticated';
 import { rateLimiter } from './middleware/rate-limiter';
 import { i18next, i18nextMiddleware } from './middleware/translation';
+import { skipMap } from './middleware/skip-map';
 import { languageSwitcher } from './middleware/language-switcher';
 import { auth } from './routes/auth';
 import { healthcheck } from './routes/healthcheck';
 import { publish } from './routes/publish';
 import { view } from './routes/view';
-import { appConfig } from './config';
 import { errorHandler } from './routes/error-handler';
-import { NotFoundException } from './exceptions/not-found.exception';
 import { homepage } from './routes/homepage';
+import { notFound } from './routes/not-found';
 
 const app: Application = express();
 const config = appConfig();
@@ -35,6 +36,7 @@ app.use(httpLogger);
 app.use(cookieParser());
 app.use(session);
 app.use(i18nextMiddleware.handle(i18next));
+app.use(skipMap);
 app.use(languageSwitcher);
 
 // configure the view engine
@@ -52,11 +54,10 @@ app.use('/:lang/publish', rateLimiter, ensureAuthenticated, publish);
 app.use('/:lang/dataset', rateLimiter, ensureAuthenticated, view);
 app.use('/:lang', rateLimiter, ensureAuthenticated, homepage);
 
-// handle errors
-app.use((req, res, next) => {
-    next(new NotFoundException('Page not found'));
-});
+// handle 404s
+app.all('*', notFound);
 
+// handle errors
 app.use(errorHandler);
 
 logger.info('Routes loaded');
