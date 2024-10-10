@@ -43,6 +43,12 @@ describe('Homepage', () => {
             expect(res.status).toBe(302);
             expect(res.header.location).toBe('/cy-GB');
         });
+
+        test('Persists query params when redirecting', async () => {
+            const res = await request(app).get('/?foo=bar').set('Accept-Language', Locale.Welsh);
+            expect(res.status).toBe(302);
+            expect(res.header.location).toBe('/cy-GB?foo=bar');
+        });
     });
 
     describe('Content', () => {
