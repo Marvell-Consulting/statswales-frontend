@@ -13,8 +13,8 @@ healthcheck.get('/', async (req: Request, res: Response, next: NextFunction) => 
 
     try {
         backend = await new StatsWalesApi(lang).ping();
-    } catch (error) {
-        logger.error('backend ping failed');
+    } catch (err: any) {
+        next(err);
     }
     res.json({ status: 200, lang: req.language, services: { backend } });
 });
