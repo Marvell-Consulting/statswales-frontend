@@ -15,7 +15,7 @@ import { languageSwitcher } from './middleware/language-switcher';
 import { auth } from './routes/auth';
 import { healthcheck } from './routes/healthcheck';
 import { publish } from './routes/publish';
-import { view } from './routes/view';
+import { dataset } from './routes/dataset';
 import { errorHandler } from './routes/error-handler';
 import { homepage } from './routes/homepage';
 import { notFound } from './routes/not-found';
@@ -51,7 +51,7 @@ app.use('/assets', express.static(`${__dirname}/assets`));
 app.use('/healthcheck', rateLimiter, healthcheck);
 app.use('/:lang/auth', rateLimiter, auth);
 app.use('/:lang/publish', rateLimiter, ensureAuthenticated, publish);
-app.use('/:lang/dataset', rateLimiter, ensureAuthenticated, view);
+app.use('/:lang/dataset', rateLimiter, ensureAuthenticated, dataset);
 app.use('/:lang', rateLimiter, ensureAuthenticated, homepage);
 
 // handle 404s

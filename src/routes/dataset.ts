@@ -11,7 +11,7 @@ import { AuthedRequest } from '../interfaces/authed-request';
 import { FileImportDTO } from '../dtos/dataset-dto';
 import { Locale } from '../enums/locale';
 
-export const view = Router();
+export const dataset = Router();
 
 const statsWalesApi = (req: AuthedRequest) => {
     const lang = req.language as Locale;
@@ -19,7 +19,7 @@ const statsWalesApi = (req: AuthedRequest) => {
     return new StatsWalesApi(lang, token);
 };
 
-view.get('/', async (req: AuthedRequest, res: Response, next: NextFunction) => {
+dataset.get('/', async (req: AuthedRequest, res: Response, next: NextFunction) => {
     try {
         const fileList: FileList = await statsWalesApi(req).getFileList();
         logger.debug(`FileList from server = ${JSON.stringify(fileList)}`);
@@ -29,7 +29,7 @@ view.get('/', async (req: AuthedRequest, res: Response, next: NextFunction) => {
     }
 });
 
-view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
+dataset.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
     const datasetId = req.params.datasetId;
     const page: number = Number.parseInt(req.query.page_number as string, 10) || 1;
     const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 100;
@@ -63,7 +63,7 @@ view.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
     }
 });
 
-view.get('/:datasetId/import/:importId', async (req: AuthedRequest, res: Response) => {
+dataset.get('/:datasetId/import/:importId', async (req: AuthedRequest, res: Response) => {
     if (!validateUUID(req.params.datasetId)) {
         const err: ViewErrDTO = {
             success: false,
