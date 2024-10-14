@@ -82,7 +82,8 @@
             "and": "and",
             "rows": "rows",
             "row": "row",
-            "showing": "Showing rows"
+            "showing": "Showing rows",
+            "unnamed_column": "column {{colNum}}"
         },
         "sources": {
             "heading": "What does each column in the data table contain?",
