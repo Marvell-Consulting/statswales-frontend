@@ -693,7 +693,7 @@ publish.get('/:datasetId/tasklist', async (req: AuthedRequest, res: Response, ne
 });
 
 publish.get('/:datasetId/title', async (req: AuthedRequest, res: Response) => {
-    const lang = req.i18n.language;
+    const lang = req.language as Locale;
     const datasetId = req.params.datasetId as string;
     const statsWalesApi = new StatsWalesApi(lang, req.jwt);
 
@@ -719,7 +719,7 @@ publish.get('/:datasetId/title', async (req: AuthedRequest, res: Response) => {
 });
 
 publish.post('/:datasetId/title', upload.none(), async (req: AuthedRequest, res: Response) => {
-    const lng = req.i18n.language;
+    const lng = req.language as Locale;
     const datasetId = req.params.datasetId as string;
     const statsWalesApi = new StatsWalesApi(lng, req.jwt);
     try {
