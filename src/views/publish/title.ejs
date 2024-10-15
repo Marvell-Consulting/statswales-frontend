@@ -1,8 +1,17 @@
 <%- include("../partials/header"); %>
-
     <div class="govuk-width-container app-width-container">
         <!-- <a href="#" class="govuk-back-link">Back</a> -->
         <main class="govuk-main-wrapper" id="main-content" role="main">
+
+            <% if (locals.isMetadata) { %>
+            <div class="top-links">
+                <div class="govuk-width-container">
+                    <a href="<%= locals.backButtonLink %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                    <a href="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= locals.datasetId %>/<%= t('routes.publish.tasklist') %>/" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+                </div>
+            </div>
+            <% } %>
+
             <h1 class="govuk-heading-xl"><%= t('publish.title.heading') %></h1>
 
             <%- include("../partials/error-handler"); %>
@@ -10,16 +19,19 @@
             <ul class="govuk-list govuk-list--bullet">
                 <li><%= t('publish.title.appear') %></li>
                 <li><%= t('publish.title.descriptive') %></li>
-                <li><%= t('publish.title.language') %></li>
             </ul>
 
-            <form action="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.title') %>/" enctype="multipart/form-data" method="post">
+            <div class="govuk-hint">
+                <%= t('publish.title.language') %>
+            </div>
+
+            <form action="<%= locals.postAction %>" enctype="multipart/form-data" method="post">
                 <div class="govuk-form-group">
-                    <input class="govuk-input" id="title" name="title" type="text">
+                    <input class="govuk-input" id="title" name="title" type="text" value="<%= locals.currentTitle %>">
                 </div>
                 <p class="govuk-body"><button type="submit" class="govuk-button" data-module="govuk-button">
                     <%= t('buttons.continue') %>
-                </button> <a class="govuk-button govuk-button--secondary" href="/<%= i18n.language %>/<%= t('routes.publish.start') %>/"><%= t('buttons.cancel')%></a></p>
+                </button> <a class="govuk-button govuk-button--secondary" href="<%= locals.backButtonLink %>"><%= t('buttons.cancel')%></a></p>
             </form>
         </main>
     </div>

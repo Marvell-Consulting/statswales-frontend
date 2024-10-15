@@ -649,4 +649,42 @@ describe('Publisher Journey Tests', () => {
             expect(res.text).toContain(t('errors.not_found'));
         });
     });
+
+    describe('Metadata: Title', () => {
+        test('It reuturns 200 when you make a get with a valid session', async () => {
+            const cookies = await setSourcesIntoSession();
+            const res = await request(app)
+                .get(`/en-GB/publish/5caeb8ed-ea64-4a58-8cf0-b728308833e5/title`)
+                .set('User-Agent', 'supertest')
+                .set('Cookie', cookies);
+            expect(res.status).toBe(200);
+            expect(res.text).toContain('<div class="top-links">');
+            expect(res.text).toContain(t('publish.title.heading'));
+            expect(res.text).toContain('test dataset 1');
+            expect(res.text).toContain(
+                `/en-GB/${t('routes.publish.start')}/5caeb8ed-ea64-4a58-8cf0-b728308833e5/${t('routes.publish.title')}`
+            );
+        });
+
+        test('It returns 302 to the task list on a successful submit', async () => {
+            const cookies = await setSourcesIntoSession();
+            const res = await request(app)
+                .post(`/en-GB/publish/5caeb8ed-ea64-4a58-8cf0-b728308833e5/title`)
+                .set('User-Agent', 'supertest')
+                .set('Cookie', cookies)
+                .field('title', 'Test dataset 1');
+            expect(res.status).toBe(302);
+            expect(res.header.location).toBe(`/en-GB/publish/5caeb8ed-ea64-4a58-8cf0-b728308833e5/tasklist`);
+        });
+
+        test('It returns 400 if no title is supplied', async () => {
+            const cookies = await setSourcesIntoSession();
+            const res = await request(app)
+                .post(`/en-GB/publish/5caeb8ed-ea64-4a58-8cf0-b728308833e5/title`)
+                .set('User-Agent', 'supertest')
+                .set('Cookie', cookies);
+            expect(res.status).toBe(400);
+            expect(res.text).toContain(t('errors.problem'));
+        });
+    });
 });

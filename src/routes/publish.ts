@@ -9,7 +9,7 @@ import { StatsWalesApi } from '../services/stats-wales-api';
 import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
 import { i18next } from '../middleware/translation';
 import { AuthedRequest } from '../interfaces/authed-request';
-import { DatasetDTO, FileImportDTO, RevisionDTO } from '../dtos/dataset-dto';
+import { DatasetDTO, DatasetInfoDTO, FileImportDTO, RevisionDTO } from '../dtos/dataset-dto';
 import { DimensionCreationDTO } from '../dtos/dimension-creation-dto';
 import { SourceType } from '../enums/source-type';
 import { ViewError } from '../dtos/view-error';
@@ -17,6 +17,7 @@ import { singleLangDataset } from '../utils/single-lang-dataset';
 import { DimensionType } from '../enums/dimension-type';
 import { DimensionState } from '../dtos/dimension-state';
 import { TaskListState } from '../dtos/task-list-state';
+import { SingleLanguageDataset } from '../dtos/single-language/dataset';
 
 const t = i18next.t;
 const upload = multer({ storage: multer.memoryStorage() });
@@ -211,7 +212,13 @@ publish.get('/', (req: AuthedRequest, res: Response) => {
 });
 
 publish.get('/title', (req: AuthedRequest, res: Response) => {
-    res.render('publish/title', { errors: req.session.errors });
+    res.render('publish/title', {
+        errors: req.session.errors,
+        isMetadata: false,
+        currrentTitle: req.session.currentTitle,
+        postAction: `/${req.language}/${t('routes.publish.start')}/${t('routes.publish.title')}`,
+        backButtonLink: `/${req.language}/${t('routes.publish.start')}/`
+    });
 });
 
 publish.post('/title', upload.none(), (req: AuthedRequest, res: Response) => {
@@ -219,7 +226,11 @@ publish.post('/title', upload.none(), (req: AuthedRequest, res: Response) => {
         logger.error('The user failed to supply a title in the request');
         res.status(400);
         res.render('publish/title', {
-            errors: generateViewErrors(undefined, 500, [generateError('title', 'errors.title.missing', {})])
+            errors: generateViewErrors(undefined, 500, [generateError('title', 'errors.title.missing', {})]),
+            isMetadata: false,
+            currrentTitle: req.session.currentTitle,
+            postAction: `/${req.language}/${t('routes.publish.start')}/${t('routes.publish.title')}`,
+            backButtonLink: `/${req.language}/${t('routes.publish.start')}/`
         });
         return;
     }
@@ -582,36 +593,6 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
     }
 });
 
-// The following routes are mostly for testing and development purposes
-publish.get('/session/', (req: AuthedRequest, res: Response) => {
-    res.status(200);
-    res.header('mime-type', 'application/json');
-    res.json({
-        session: req.session,
-        user: req.user
-    });
-});
-
-publish.delete('/session/', (req: AuthedRequest, res: Response) => {
-    cleanupSession(req);
-    res.status(200);
-    res.json({ message: 'All session data has been cleared' });
-});
-
-publish.delete('/session/currentRevision', (req: AuthedRequest, res: Response) => {
-    req.session.currentRevision = undefined;
-    req.session.save();
-    res.status(200);
-    res.json({ message: 'Current revision has been deleted' });
-});
-
-publish.delete('/session/currentImport', (req: AuthedRequest, res: Response) => {
-    req.session.currentImport = undefined;
-    req.session.save();
-    res.status(200);
-    res.json({ message: 'Current import has been deleted' });
-});
-
 // As discussed we'll move this to the backend  in a future PR and have a route which returns this
 function buildStateFromDataset(lang: string, dataset: DatasetDTO): TaskListState {
     const singleLanguageDataset = singleLangDataset(lang, dataset);
@@ -638,6 +619,7 @@ function buildStateFromDataset(lang: string, dataset: DatasetDTO): TaskListState
     const notImplemented = { tag: 'publish.tasklist.status.not_implemented', colour: 'grey' };
     return {
         datasetTitle,
+        datasetId: dataset.id,
         dimensions: dimensionStates,
         metadata: {
             title: titleState,
@@ -677,4 +659,95 @@ publish.get('/:datasetId/tasklist', async (req: AuthedRequest, res: Response) =>
         res.status(404);
         res.render('errors/not-found');
     }
+});
+
+publish.get('/:datasetId/title', async (req: AuthedRequest, res: Response) => {
+    const lang = req.i18n.language;
+    const datasetId = req.params.datasetId as string;
+    const statsWalesApi = new StatsWalesApi(lang, req.jwt);
+
+    try {
+        if (!validateUUID(datasetId)) throw new Error('Invalid dataset ID');
+        const dataset = await statsWalesApi.getDataset(datasetId);
+        setCurrentToSession(dataset, req);
+        const singleLanguageDataset = singleLangDataset(lang, dataset);
+
+        res.render('publish/title', {
+            errors: req.session.errors,
+            currentTitle: singleLanguageDataset.datasetInfo?.title,
+            isMetadata: true,
+            datasetId,
+            postAction: `/${req.language}/${t('routes.publish.start')}/${datasetId}/${t('routes.publish.title')}`,
+            backButtonLink: `/${req.language}/${t('routes.publish.start')}/${datasetId}/${t('routes.publish.tasklist')}`
+        });
+    } catch (err) {
+        logger.error(`Something went wrong trying to load the title: ${err}`);
+        res.status(404);
+        res.render('errors/not-found');
+    }
+});
+
+publish.post('/:datasetId/title', upload.none(), async (req: AuthedRequest, res: Response) => {
+    const lng = req.i18n.language;
+    const datasetId = req.params.datasetId as string;
+    const statsWalesApi = new StatsWalesApi(lng, req.jwt);
+    try {
+        if (!validateUUID(datasetId)) throw new Error('Invalid dataset ID');
+        const dataset = await statsWalesApi.getDataset(datasetId);
+        setCurrentToSession(dataset, req);
+        const singleLanguageDataset = singleLangDataset(lng, dataset);
+        if (!req.body?.title) {
+            logger.error('The user failed to supply a title in the request');
+            res.status(400);
+            res.render('publish/title', {
+                errors: generateViewErrors(undefined, 500, [generateError('title', 'errors.title.missing', {})]),
+                currentTitle: singleLanguageDataset.datasetInfo?.title,
+                isMetadata: true,
+                datasetId,
+                postAction: `/${req.language}/${t('routes.publish.start')}/${datasetId}/${t('routes.publish.title')}`,
+                backButtonLink: `/${req.language}/${t('routes.publish.start')}/${datasetId}/${t('routes.publish.tasklist')}`
+            });
+            return;
+        }
+        const infoDto: DatasetInfoDTO = singleLanguageDataset.datasetInfo || ({ language: lng } as DatasetInfoDTO);
+        infoDto.title = req.body.title;
+        await statsWalesApi.sendDatasetInfo(datasetId, infoDto);
+        res.redirect(
+            `/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${dataset.id}/${req.i18n.t('routes.publish.tasklist', { lng })}`
+        );
+    } catch (err) {
+        logger.error(`Something went wrong trying to load the title: ${err}`);
+        res.status(404);
+        res.render('errors/not-found');
+    }
+});
+
+// The following routes are mostly for testing and development purposes
+publish.get('/session/', (req: AuthedRequest, res: Response) => {
+    res.status(200);
+    res.header('mime-type', 'application/json');
+    res.json({
+        session: req.session,
+        user: req.user
+    });
+});
+
+publish.delete('/session/', (req: AuthedRequest, res: Response) => {
+    cleanupSession(req);
+    res.status(200);
+    res.json({ message: 'All session data has been cleared' });
+});
+
+publish.delete('/session/currentRevision', (req: AuthedRequest, res: Response) => {
+    req.session.currentRevision = undefined;
+    req.session.save();
+    res.status(200);
+    res.json({ message: 'Current revision has been deleted' });
+});
+
+publish.delete('/session/currentImport', (req: AuthedRequest, res: Response) => {
+    req.session.currentImport = undefined;
+    req.session.save();
+    res.status(200);
+    res.json({ message: 'Current import has been deleted' });
 });

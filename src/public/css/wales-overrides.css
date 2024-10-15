@@ -62,3 +62,14 @@
     max-height: 50vh;
     width: 100%;
 }
+
+.top-links {
+    background-color: #ffffff !important;
+    margin-top: -40px;
+    margin-bottom: 40px;
+}
+
+.return-link {
+    float: right;
+    margin-top: 15px;
+}

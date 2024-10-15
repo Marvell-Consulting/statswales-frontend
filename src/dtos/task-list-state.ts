@@ -3,6 +3,7 @@ import { DimensionState } from './dimension-state';
 
 export interface TaskListState {
     datasetTitle: string;
+    datasetId: string;
     dimensions: DimensionState[];
     metadata: {
         title: TaskState;
