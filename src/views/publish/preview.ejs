@@ -116,7 +116,7 @@
                     <div class="govuk-grid-column-one-half">
                         <form action="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.preview') %>" method="get" role="page-size" class="govuk-!-margin-bottom-0">
                             <label class="govuk-label govuk-!-display-inline" for="page_size">
-                                Page Size
+                                <%= t('pagination.page_size') %>
                             </label>
                             <select class="govuk-select govuk-!-display-inline" id="page_size" name="page_size">
                                 <option value="5" <% if (locals.page_size===5) { %>selected <% }; %>>5</option>
