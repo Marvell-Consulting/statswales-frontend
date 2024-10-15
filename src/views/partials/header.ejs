@@ -62,29 +62,31 @@
                     </button>
                     <ul id="navigation" class="govuk-header__navigation-list">
                         <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
-                            <a class="govuk-header__link" href="/<%= i18n.language %>/<%= t('routes.publish.start') %>/">
-                                <%= t('header.navigation.publish-dataset') %>
+                            <a class="govuk-header__link" href="/<%= i18n.language %>/publish">
+                                <%= t('header.navigation.publish_dataset') %>
                             </a>
                         </li>
                         <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
                             <a class="govuk-header__link"
-                                href="/<%= i18n.language %>/<%= t('routes.view.start') %>/">
-                                <%= t('header.navigation.list-datasets') %>
+                                href="/<%= i18n.language %>/dataset">
+                                <%= t('header.navigation.list_datasets') %>
                             </a>
                         </li>
-                        <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
-                            <a class="govuk-header__link"
-                               href="/<%= i18n.language %>/auth/logout">
-                                <%= t('header.navigation.logout') %>
-                            </a>
-                        </li>
+                        <% if (locals?.isAuthenticated) { %>
+                            <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
+                                <a class="govuk-header__link"
+                                href="/<%= i18n.language %>/auth/logout">
+                                    <%= t('header.navigation.logout') %>
+                                </a>
+                            </li>
+                        <% } %>
                         <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
                             <% if (i18n.language === 'en-GB') { %>
-                                <a class="govuk-header__link" href="/cy-GB/">
+                                <a class="govuk-header__link" href="?lang=cy-GB">
                                     Cymraeg
                                 </a>
                             <% } else { %>
-                                <a class="govuk-header__link" href="/en-GB/">
+                                <a class="govuk-header__link" href="?lang=en-GB">
                                     English
                                 </a>
                             <% } %>

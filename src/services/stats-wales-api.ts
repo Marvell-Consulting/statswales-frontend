@@ -1,5 +1,7 @@
 import { ReadableStream } from 'node:stream/web';
 
+import { RequestHandler } from 'express';
+
 import { FileList } from '../dtos/file-list';
 import { ViewDTO } from '../dtos/view-dto';
 import { DatasetDTO, DatasetInfoDTO, FileImportDTO } from '../dtos/dataset-dto';
@@ -9,6 +11,7 @@ import { appConfig } from '../config';
 import { HttpMethod } from '../enums/http-method';
 import { ApiException } from '../exceptions/api.exception';
 import { ViewException } from '../exceptions/view.exception';
+import { Locale } from '../enums/locale';
 
 const config = appConfig();
 
@@ -18,14 +21,14 @@ export class StatsWalesApi {
     private readonly backendUrl = config.backend.url;
 
     constructor(
-        private lang = 'en',
+        private lang = Locale.English,
         private token?: string
     ) {
         this.lang = lang;
         this.token = token;
     }
 
-    private async fetch(
+    public async fetch(
         path: string,
         method: HttpMethod = HttpMethod.Get,
         body?: any,
@@ -39,9 +42,14 @@ export class StatsWalesApi {
         };
 
         return fetch(`${this.backendUrl}/${path}`, { method, headers, body })
-            .then((response) => response)
+            .then((response: Response) => {
+                if (!response.ok) {
+                    throw new ApiException(response.statusText, response.status);
+                }
+                return response;
+            })
             .catch((error) => {
-                logger.error(`An error occurred with status '${error.status}' and message '${error.message}'`);
+                logger.error(`An api error occurred with status '${error.status}' and message '${error.message}'`);
                 throw new ApiException(error.message, error.status);
             });
     }
@@ -57,6 +65,36 @@ export class StatsWalesApi {
         return this.fetch(`dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/raw`).then(
             (response) => response.body as ReadableStream
         );
+    }
+
+    public async confirmFileImport(datasetId: string, revisionId: string, importId: string): Promise<FileImportDTO> {
+        logger.debug(`Confirming file import: ${importId}`);
+
+        return this.fetch(
+            `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/confirm`,
+            HttpMethod.Patch
+        ).then((response) => response.json() as unknown as FileImportDTO);
+    }
+
+    public async getSourcesForFileImport(
+        datasetId: string,
+        revisionId: string,
+        importId: string
+    ): Promise<FileImportDTO> {
+        logger.debug(`Fetching sources for file import: ${importId}`);
+
+        return this.fetch(`dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}`).then(
+            (response) => response.json() as unknown as FileImportDTO
+        );
+    }
+
+    public async removeFileImport(datasetId: string, revisionId: string, importId: string): Promise<DatasetDTO> {
+        logger.debug(`Removing file import: ${importId}`);
+
+        return this.fetch(
+            `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}`,
+            HttpMethod.Delete
+        ).then((response) => response.json() as unknown as DatasetDTO);
     }
 
     public async getDataset(datasetId: string): Promise<DatasetDTO> {
@@ -132,36 +170,6 @@ export class StatsWalesApi {
             });
     }
 
-    public async removeFileImport(datasetId: string, revisionId: string, importId: string): Promise<DatasetDTO> {
-        logger.debug(`Removing file import: ${importId}`);
-
-        return this.fetch(
-            `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}`,
-            HttpMethod.Delete
-        ).then((response) => response.json() as unknown as DatasetDTO);
-    }
-
-    public async confirmFileImport(datasetId: string, revisionId: string, importId: string): Promise<FileImportDTO> {
-        logger.debug(`Confirming file import: ${importId}`);
-
-        return this.fetch(
-            `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/confirm`,
-            HttpMethod.Patch
-        ).then((response) => response.json() as unknown as FileImportDTO);
-    }
-
-    public async getSourcesForFileImport(
-        datasetId: string,
-        revisionId: string,
-        importId: string
-    ): Promise<FileImportDTO> {
-        logger.debug(`Fetching sources for file import: ${importId}`);
-
-        return this.fetch(`dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}`).then(
-            (response) => response.json() as unknown as FileImportDTO
-        );
-    }
-
     public async sendCreateDimensionRequest(
         datasetId: string,
         revisionId: string,
@@ -218,14 +226,9 @@ export class StatsWalesApi {
     public async ping(): Promise<boolean> {
         logger.debug(`Pinging healthcheck...`);
 
-        return this.fetch('healthcheck')
-            .then(() => {
-                logger.debug('API responded to ping');
-                return true;
-            })
-            .catch((error) => {
-                logger.error('API is unreachable');
-                return false;
-            });
+        return this.fetch('healthcheck').then(() => {
+            logger.debug('API responded to ping');
+            return true;
+        });
     }
 }

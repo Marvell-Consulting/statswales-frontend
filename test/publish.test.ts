@@ -1,5 +1,4 @@
 import path from 'node:path';
-import fs from 'node:fs';
 
 import { NextFunction, Request, Response } from 'express';
 import request from 'supertest';

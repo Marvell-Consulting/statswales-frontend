@@ -1,14 +1,6 @@
 {
-    "greeting": "Hello",
-    "share-page": "Share this page",
-    "top-of-page": "Back to top",
-    "app-running": "App is running",
-    "health-notes": "Expand endpoint to check for database connection and other services.",
     "developer_warning": "<strong class=\"govuk-tag govuk-tag--red govuk-phase-banner__content__tag\">Warning</strong> This is a developer page and has not been through user research",
     "developer_tag": "<span class=\"govuk-tag govuk-tag--yellow govuk-phase-banner__content__tag\">Developer Page</span>",
-    "status": {
-        "warning": "Warning"
-    },
     "buttons": {
         "continue": "Continue",
         "back": "Back",
@@ -21,18 +13,6 @@
         "next": "Next",
         "update": "Update"
     },
-    "login": {
-        "heading": "Login",
-        "buttons": {
-            "onelogin": "Login with OneLogin",
-            "google": "Login with Google"
-        },
-        "error": {
-            "summary_title": "There is a problem",
-            "generic": "You could not be logged in. Please try again later.",
-            "expired": "Your session has expired. Please log in again."
-        }
-    },
     "header": {
         "product_name": "StatsWales V3.0",
         "beta": "Beta",
@@ -40,12 +20,13 @@
         "navigation": {
             "menu": "Menu",
             "skip_to_content": "Skip to main content",
-            "publish-dataset": "Publish a Dataset",
-            "list-datasets": "List Datasets",
+            "publish_dataset": "Publish a Dataset",
+            "list_datasets": "List Datasets",
             "logout": "Logout"
         }
     },
     "footer": {
+        "top_of_page": "Back to top",
         "support_link": "Support Links",
         "project_reports": "Project Reports",
         "github_repo": "GitHub Repository",
@@ -56,6 +37,18 @@
         "copyright_notice": "All content is available under the <a class=\"govuk-footer__link\" href=\"https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" rel=\"license\">Open Government Licence v3.0</a>, except where otherwise stated",
         "crown_copyright": "© Crown copyright",
         "welsh_gov": "Welsh Government"
+    },
+    "login": {
+        "heading": "Login",
+        "buttons": {
+            "onelogin": "OneLogin",
+            "google": "Google"
+        },
+        "error": {
+            "summary_title": "There is a problem",
+            "generic": "You could not be logged in. Please try again later.",
+            "expired": "Your session has expired. Please log in again."
+        }
     },
     "homepage": {
         "title": "Welcome to the StatsWales Beta",
@@ -71,8 +64,8 @@
         "start": {
             "title": "Create a new dataset",
             "p1": "To create a new dataset, you'll need:",
-            "data-table": "a data table containing data and references to all relevant dimensions",
-            "lookup-table": "lookup tables for all relevant dimensions - using either common tables within this service or uploading them yourself",
+            "data_table": "a data table containing data and references to all relevant dimensions",
+            "lookup_table": "lookup tables for all relevant dimensions - using either common tables within this service or uploading them yourself",
             "metadata": "details about the dataset including description, quality and how the data was collected"
         },
         "title": {
@@ -93,7 +86,8 @@
             "and": "and",
             "rows": "rows",
             "row": "row",
-            "showing": "Showing rows"
+            "showing": "Showing rows",
+            "unnamed_column": "column {{colNum}}"
         },
         "sources": {
             "heading": "What does each column in the data table contain?",
@@ -155,7 +149,7 @@
             "start_revision": "Start Revision ID",
             "index": "Index",
             "type": "Type",
-            "creation_date": "Creation Date",
+            "created_at": "Creation Date",
             "created_by": "Created By",
             "revision": "Revision",
             "import": "File Import",
@@ -214,9 +208,6 @@
         "not_found": "Page not found",
         "server_error": "An unknown error occcured, please try again later"
 	},
-    "api": {
-        "available": "API is available"
-    },
     "routes": {
         "healthcheck": "healthcheck",
         "view": {
@@ -229,7 +220,7 @@
             "preview": "preview",
             "confirm": "confirm",
             "sources": "sources",
-            "source-confirmation": "source-confirmation",
+            "source_confirmation": "source-confirmation",
             "tasklist": "tasklist"
         }
     }

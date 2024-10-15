@@ -1,61 +1,80 @@
 {
-    "greeting": "Helo",
-    "alpha": "Alffa",
-    "beta": "Beta",
-    "menu": "Dewislen",
-    "upload-csv": "Lanlwythwch ffeil CSV",
-    "publish-dataset": "Cyhoeddi set ddata",
-    "list-data-files": "Rhestrwch y Ffeiliau Data",
-    "feedback": "Mae hwn yn wasanaeth newydd – bydd eich adborth yn ein helpu i'w wella.",
-    "share-page": "Rhannu'r dudalen hon",
-    "top-of-page": "Yn ôl i frig y dudalen",
-    "status-field": "statws",
-    "app-running": "Mae'r ap yn rhedeg",
-    "health-notes": "Ehangu'r pwynt terfyn i wirio am gysylltiad â chronfa ddata a gwasanaethau eraill.",
-    "datalake-error": "Gwall wrth gysylltu â'r Llyn Data",
     "buttons": {
+        "continue": "Parhau",
+        "back": "Yn ol",
         "cancel": "Canslo",
-        "continue": "Parhau"
+        "upload_csv": "Lanlwythwch ffeil CSV"
     },
     "pagination": {
         "previous": "Blaenorol",
         "next": "Nesaf",
         "update": "Diweddariad"
     },
+    "header": {
+        "product_name": "StatsWales V3.0",
+        "beta": "Beta",
+        "feedback": "Mae hwn yn wasanaeth newydd – bydd eich adborth yn ein helpu i'w wella.",
+        "navigation": {
+            "menu": "Dewislen",
+            "skip_to_content": "Skip to main content",
+            "publish_dataset": "Cyhoeddi set ddata",
+            "logout": "Allgofnodi"
+        }
+    },
+    "footer": {
+        "top_of_page": "Yn ôl i frig y dudalen",
+        "support_link": "Dolenni Cymorth",
+		"project_reports": "Adroddiadau Prosiect",
+		"github_repo": "Storfa GitHub",
+		"help": "Help",
+		"cookies": "Cwcis",
+		"contact": "Cysylltu",
+		"terms": "Amodau a thelerau",
+		"copyright_notice": "Mae'r holl gynnwys ar gael dan <a class=\"govuk-footer__link\" href=\"https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" rel=\"license\">Open Government Licence v3.0</a>, ac eithrio lle y nodir fel arall",
+		"crown_copyright": "© Hawlfraint y Goron",
+		"welsh_gov": "Llywodraeth Cymru"
+    },
+    "login": {
+        "heading": "Mewngofnodi",
+        "buttons": {
+            "onelogin": "OneLogin",
+            "google": "Google"
+        },
+        "error": {
+        }
+    },
     "homepage": {
         "title": "Croeso i Alffa StatsCymru",
-        "welcome": "Rydym yn mynd i ddefnyddio system Ddylunio GovUK nes y gallwn gael gafael ar GEL Llywodraeth Cymru",
-        "apitext": "Gallwch weld ein api trwy droi at "
+        "welcome": "Rydym yn mynd i ddefnyddio system Ddylunio GovUK nes y gallwn gael gafael ar GEL Llywodraeth Cymru"
     },
     "publish": {
         "start": {
             "title": "Creu set ddata newydd",
             "p1": "Er mwyn creu set ddata newydd, bydd angen y canlynol arnoch:",
-            "data-table": "tabl data sy'n cynnwys data a chyfeiriadau at yr holl ddimensiynau perthnasol",
-            "lookup-table": "tablau am-edrych ar gyfer yr holl ddimensiynau perthnasol – gan ddefnyddio tablau cyffredin yn y gwasanaeth hwn neu eu lanlwytho eich hun",
+            "data_table": "tabl data sy'n cynnwys data a chyfeiriadau at yr holl ddimensiynau perthnasol",
+            "lookup_table": "tablau am-edrych ar gyfer yr holl ddimensiynau perthnasol – gan ddefnyddio tablau cyffredin yn y gwasanaeth hwn neu eu lanlwytho eich hun",
             "metadata": "manylion am y set ddata, gan gynnwys disgrifiad, ansawdd a sut y casglwyd y data"
         },
-        "name": {
-            "title": "Enwi'r set ddata",
-            "description": "Bydd yr enw hwn at ddefnydd mewnol yn unig, er mwyn nodi'r set ddata hon.  Gofynnir i chi ychwanegu'r teitl a fydd yn ymddangos ar wefan StatsCymru gyda'r metadata yn nes ymlaen.",
-            "internal_name": "Enw mewnol"
+        "title": {
         },
         "upload": {
             "title": "Lanlwytho ffeil CSV",
             "note": "Rhaid bod y ffeil mewn ffurf CSV"
+        },
+        "preview" : {
+        },
+        "sources": {
+        },
+        "tasklist": {
         }
     },
-    "upload": {
-        "title": "Lanlwythwch ffeil CSV",
-        "description": "Lanlwythwch ffeil CSV i'r llyn data",
-        "datasetName": "Enw'r Set Ddata",
-        "selectCSV": "Dewiswch ffeil CSV",
-        "uploadBtn": "Lanlwythwch ffeil CSV"
+    "view": {
     },
 	"errors": {
 		"missing": "Enw ffeil ar Goll",
 		"problem": "Mae problem wedi codi",
         "name_missing": "Ni ddarparwyd enw set ddata",
+        "datalake_error": "Gwall wrth gysylltu â'r Llyn Data",
         "upload": {
             "no-csv": "Ni ddarparwyd data CSV",
             "no-csv-data": "Nid oes data CSV ar gael"
@@ -70,21 +89,6 @@
     "api": {
         "available": "Mae'r API ar gael"
     },
-	"header": {
-
-	},
-	"footer": {
-		"support-link": "Dolenni Cymorth",
-		"project-reports": "Adroddiadau Prosiect",
-		"github-repo": "Storfa GitHub",
-		"help": "Help",
-		"cookies": "Cwcis",
-		"contact": "Cysylltu",
-		"terms": "Amodau a thelerau",
-		"copyright-notice": "Mae'r holl gynnwys ar gael dan <a class=\"govuk-footer__link\" href=\"https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" rel=\"license\">Open Government Licence v3.0</a>, ac eithrio lle y nodir fel arall",
-		"crown-copyright": "© Hawlfraint y Goron",
-		"welsh-gov": "Llywodraeth Cymru"
-	},
     "routes": {
         "healthcheck": "gwiriad iechyd",
         "upload": "lanlwytho",
