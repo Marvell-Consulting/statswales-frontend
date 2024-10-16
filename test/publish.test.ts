@@ -313,7 +313,7 @@ describe('Publisher Journey Tests', () => {
             expect(res.text).toContain(`<td class="govuk-table__cell">AcHVoWJblA</td>`);
             expect(res.text).toContain(`<td class="govuk-table__cell">4470652</td>`);
             expect(res.text).toContain(`<td class="govuk-table__cell">2002-03-18</td>`);
-            expect(res.text).toContain('Showing rows 1 - 2 of 2');
+            expect(res.text).toContain('Showing rows 1 – 2 of 2');
         });
 
         test('Dataset preview returns 302 if no currentDataset is present in the session', async () => {
