@@ -1,25 +1,24 @@
 import { Readable } from 'stream';
 
-import { Router, Response, NextFunction } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { validate as validateUUID } from 'uuid';
 
 import { StatsWalesApi } from '../services/stats-wales-api';
 import { FileList } from '../dtos/file-list';
 import { ViewErrDTO } from '../dtos/view-dto';
 import { logger } from '../utils/logger';
-import { AuthedRequest } from '../interfaces/authed-request';
 import { FileImportDTO } from '../dtos/dataset-dto';
 import { Locale } from '../enums/locale';
 
 export const dataset = Router();
 
-const statsWalesApi = (req: AuthedRequest) => {
+const statsWalesApi = (req: Request) => {
     const lang = req.language as Locale;
     const token = req.jwt;
     return new StatsWalesApi(lang, token);
 };
 
-dataset.get('/', async (req: AuthedRequest, res: Response, next: NextFunction) => {
+dataset.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const fileList: FileList = await statsWalesApi(req).getFileList();
         logger.debug(`FileList from server = ${JSON.stringify(fileList)}`);
@@ -29,7 +28,7 @@ dataset.get('/', async (req: AuthedRequest, res: Response, next: NextFunction) =
     }
 });
 
-dataset.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
+dataset.get('/:datasetId', async (req: Request, res: Response) => {
     const datasetId = req.params.datasetId;
     const page: number = Number.parseInt(req.query.page_number as string, 10) || 1;
     const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 100;
@@ -63,7 +62,7 @@ dataset.get('/:datasetId', async (req: AuthedRequest, res: Response) => {
     }
 });
 
-dataset.get('/:datasetId/import/:importId', async (req: AuthedRequest, res: Response) => {
+dataset.get('/:datasetId/import/:importId', async (req: Request, res: Response) => {
     if (!validateUUID(req.params.datasetId)) {
         const err: ViewErrDTO = {
             success: false,
