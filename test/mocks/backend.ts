@@ -420,6 +420,9 @@ export const mockBackend = setupServer(
             return HttpResponse.json(completedDataset);
         }
     ),
+    http.patch('http://example.com:3001/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/info', () => {
+        return HttpResponse.json(completedDataset);
+    }),
     http.patch(
         'http://example.com:3001/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/import/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2/sources',
         () => {

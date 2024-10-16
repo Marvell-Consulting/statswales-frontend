@@ -54,14 +54,15 @@
                                 <p class="govuk-body"><strong>ID:</strong> <%= dim.id %></p>
                                 <p class="govuk-body"><strong><%- t('view.display.type') %>:</strong> <%= dim.type %></p>
                                 <p class="govuk-body"><strong><%- t('view.display.start_revision') %>:</strong> <%= dim.start_revision_id %></p>
-                                <p class="govuk-body"><strong><%- t('view.display.title') %>
-                                    </strong> <%= dim.dimensionInfo.find((info) => info.language === i18n.language).name %>
+                                <p class="govuk-body"><strong><%- t('view.display.title') %>:</strong>
+                                    <% const info = dim.dimensionInfo.find((info) => info.language === i18n.language) || dim.dimensionInfo.find((info) => info.language === i18n.language.split('-')[0]) %>
+                                    <%= info.name %>
                                 </p>
                                 <p class="govuk-body-m"><strong><%- t('view.display.description') %></strong>
-                                    <%= dim.dimensionInfo.find((infos) => infos.language === i18n.language).description %>
+                                    <%= info.description %>
                                 </p>
                                 <p class="govuk-body-m"><strong><%- t('view.display.notes') %></strong>
-                                    <%= dim.dimensionInfo.find((infos) => infos.language === i18n.language).notes %>
+                                    <%= info.notes %>
                                 </p>
                                 <hr>
                             <% });%>

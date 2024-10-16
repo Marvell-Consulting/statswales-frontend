@@ -10,6 +10,16 @@
     background-color: #aa1111;
 }
 
+.govuk-footer__meta {
+    padding-top: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.govuk-footer__link {
+    text-decoration: none;
+}
+
 .govuk-button--secondary {
     background-color: #f3f2f1;
     box-shadow: 0 2px 0 #929191;
@@ -17,6 +27,8 @@
 
 .sharebar .govuk-button--secondary {
     margin-bottom: 0px !important;
+    margin-left: 20px;
+    box-shadow: none;
 }
 
 .sharebar {
@@ -46,6 +58,8 @@
 }
 
 .welsh-logo {
+    padding-left: 20px;
+    padding-right: 20px;
     margin-top: 1em;
 }
 
@@ -61,4 +75,15 @@
     display: block;
     max-height: 50vh;
     width: 100%;
+}
+
+.top-links {
+    background-color: #ffffff !important;
+    margin-top: -40px;
+    margin-bottom: 40px;
+}
+
+.return-link {
+    float: right;
+    margin-top: 15px;
 }

@@ -1,6 +1,7 @@
 {
     "developer_warning": "<strong class=\"govuk-tag govuk-tag--red govuk-phase-banner__content__tag\">Warning</strong> This is a developer page and has not been through user research",
     "developer_tag": "<span class=\"govuk-tag govuk-tag--yellow govuk-phase-banner__content__tag\">Developer Page</span>",
+    "external_tag": "<span class=\"govuk-tag govuk-tag--orange govuk-phase-banner__content__tag\">External Page</span>",
     "buttons": {
         "continue": "Continue",
         "back": "Back",
@@ -11,7 +12,8 @@
     "pagination": {
         "previous": "Previous",
         "next": "Next",
-        "update": "Update"
+        "update": "Update",
+        "page_size": "Page size"
     },
     "header": {
         "product_name": "StatsWales V3.0",
@@ -27,15 +29,13 @@
     },
     "footer": {
         "top_of_page": "Back to top",
-        "support_link": "Support Links",
-        "project_reports": "Project Reports",
-        "github_repo": "GitHub Repository",
-        "help": "Help",
+        "contact_us": "Contact us",
+        "accessibility": "Accessibility",
+        "copyright_statement": "Copyright Statement",
         "cookies": "Cookies",
-        "contact": "Contact",
-        "terms": "Terms and conditions",
-        "copyright_notice": "All content is available under the <a class=\"govuk-footer__link\" href=\"https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" rel=\"license\">Open Government Licence v3.0</a>, except where otherwise stated",
-        "crown_copyright": "© Crown copyright",
+        "privacy": "Privacy",
+        "terms_conditions": "Terms and conditions",
+        "modern_slavery": "Modern slavery statement",
         "welsh_gov": "Welsh Government"
     },
     "login": {
@@ -54,9 +54,14 @@
         "title": "Welcome to the StatsWales Beta",
         "welcome": "This is a test page for development from here you can do the following:",
         "uploaded_already": "See whats been uploaded already",
-        "dataset_creation": "Start a new dataset creation journey"
+        "dataset_creation": "Start a new dataset creation journey",
+        "project_reports": "See our projects reports"
     },
     "publish": {
+        "header": {
+            "overview": "Return to dataset overview",
+            "back": "Back"
+        },
         "start": {
             "title": "Create a new dataset",
             "p1": "To create a new dataset, you'll need:",
@@ -68,7 +73,7 @@
             "heading": "What is the title of the dataset?",
             "appear": "This title will appear on the StatsWales website",
             "descriptive": "It should be short, descriptive and unique",
-            "language": "The title should be in English.  You'll be asked to provide a Welsh translation later"
+            "language": "This should be entered in the language in which you're viewing this service."
         },
         "upload": {
             "title": "Upload the data table",

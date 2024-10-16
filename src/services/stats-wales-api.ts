@@ -4,7 +4,7 @@ import { RequestHandler } from 'express';
 
 import { FileList } from '../dtos/file-list';
 import { ViewDTO } from '../dtos/view-dto';
-import { DatasetDTO, FileImportDTO } from '../dtos/dataset-dto';
+import { DatasetDTO, DatasetInfoDTO, FileImportDTO } from '../dtos/dataset-dto';
 import { DimensionCreationDTO } from '../dtos/dimension-creation-dto';
 import { logger as parentLogger } from '../utils/logger';
 import { appConfig } from '../config';
@@ -182,6 +182,16 @@ export class StatsWalesApi {
             `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/sources`,
             HttpMethod.Patch,
             JSON.stringify(dimensionCreationDtoArr),
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            { 'Content-Type': 'application/json; charset=UTF-8' }
+        ).then((response) => response.json() as unknown as DatasetDTO);
+    }
+
+    public async sendDatasetInfo(datasetId: string, datasetInfo: DatasetInfoDTO): Promise<DatasetDTO> {
+        return this.fetch(
+            `dataset/${datasetId}/info`,
+            HttpMethod.Patch,
+            JSON.stringify(datasetInfo),
             // eslint-disable-next-line @typescript-eslint/naming-convention
             { 'Content-Type': 'application/json; charset=UTF-8' }
         ).then((response) => response.json() as unknown as DatasetDTO);
