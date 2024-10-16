@@ -4,7 +4,6 @@ import JWT from 'jsonwebtoken';
 import { logger } from '../utils/logger';
 import { JWTPayloadWithUser } from '../interfaces/jwt-payload-with-user';
 import { appConfig } from '../config';
-import { AuthedRequest } from '../interfaces/authed-request';
 
 export const auth = Router();
 
@@ -59,7 +58,7 @@ auth.get('/callback', (req: Request, res: Response) => {
     res.redirect(`/${req.language}`);
 });
 
-auth.get('/logout', (req: AuthedRequest, res: Response) => {
+auth.get('/logout', (req: Request, res: Response) => {
     logger.debug('logging out user');
     res.clearCookie('jwt', { domain: cookieDomain });
     res.redirect(`/${req.language}/auth/login`);
