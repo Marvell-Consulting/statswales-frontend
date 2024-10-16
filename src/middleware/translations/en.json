@@ -18,7 +18,7 @@
     "header": {
         "product_name": "StatsWales V3.0",
         "beta": "Beta",
-        "feedback": "This is a new service – your <a href=\"/en-GB/feedback/\">feedback</a> will help us to improve it.",
+        "feedback": "This is a new service – your <a href=\"{{feedback_url}}\">feedback</a> will help us to improve it.",
         "navigation": {
             "menu": "Menu",
             "skip_to_content": "Skip to main content",
@@ -82,6 +82,8 @@
         "preview": {
             "heading": "Check the data table",
             "upload_has": "Your upload has:",
+            "columns_rows": "{{cols}} column(s) and {{rows}} row(s)",
+            "showing_rows": "Showing rows {{start}} – {{end}} of {{total}}",
             "columns": "columns",
             "column": "column",
             "and": "and",
@@ -211,6 +213,7 @@
 	},
     "routes": {
         "healthcheck": "healthcheck",
+        "feedback": "feedback",
         "view": {
             "start": "dataset"
         },

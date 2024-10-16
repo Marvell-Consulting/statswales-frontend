@@ -1,37 +1,42 @@
 {
+    "developer_warning": "<strong class=\"govuk-tag govuk-tag--red govuk-phase-banner__content__tag\">Rhybudd</strong>  Tudalen datblygwr yw hon ac nid yw wedi bod trwy ymchwil defnyddwyr",
+    "developer_tag": "<span class=\"govuk-tag govuk-tag--yellow govuk-phase-banner__content__tag\">Tudalen Datblygwr</span>",
+    "external_tag": "<span class=\"govuk-tag govuk-tag--orange govuk-phase-banner__content__tag\">Tudalen Allanol</span>",
     "buttons": {
         "continue": "Parhau",
-        "back": "Yn ol",
+        "back": "Yn ôl",
         "cancel": "Canslo",
-        "upload_csv": "Lanlwythwch ffeil CSV"
+        "upload_csv": "Lanlwytho Ffeil CSV",
+        "choose_different": "Dewis tabl data gwahanol"
     },
     "pagination": {
         "previous": "Blaenorol",
         "next": "Nesaf",
-        "update": "Diweddariad"
+        "update": "Diweddaru",
+        "page_size": "Maint y Dudalen"
     },
     "header": {
-        "product_name": "StatsWales V3.0",
+        "product_name": "StatsCymru F3.0",
         "beta": "Beta",
-        "feedback": "Mae hwn yn wasanaeth newydd – bydd eich adborth yn ein helpu i'w wella.",
+        "feedback": "Mae hwn yn wasanaeth newydd – bydd eich <a href=\"{{feedback_url}}\">adborth</a> yn ein helpu i'w wella.",
         "navigation": {
             "menu": "Dewislen",
-            "publish_dataset": "Cyhoeddi set ddata",
+            "skip_to_content": "Neidio i’r prif gynnwys",
+            "publish_dataset": "Cyhoeddi Set Ddata",
+            "list_datasets": "Rhestru Setiau Data",
             "logout": "Allgofnodi"
         }
     },
     "footer": {
         "top_of_page": "Yn ôl i frig y dudalen",
-        "support_link": "Dolenni Cymorth",
-		"project_reports": "Adroddiadau Prosiect",
-		"github_repo": "Storfa GitHub",
-		"help": "Help",
-		"cookies": "Cwcis",
-		"contact": "Cysylltu",
-		"terms": "Amodau a thelerau",
-		"copyright_notice": "Mae'r holl gynnwys ar gael dan <a class=\"govuk-footer__link\" href=\"https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" rel=\"license\">Open Government Licence v3.0</a>, ac eithrio lle y nodir fel arall",
-		"crown_copyright": "© Hawlfraint y Goron",
-		"welsh_gov": "Llywodraeth Cymru"
+        "contact_us": "Cysylltu â ni",
+        "accessibility": "Hygyrchedd",
+        "copyright_statement": "Datganiad Hawlfraint",
+        "cookies": "Cwcis",
+        "privacy": "Preifatrwydd",
+        "terms_conditions": "Amodau a Thelerau",
+        "modern_slavery": "Datganiad caethwasiaeth fodern",
+        "welsh_gov": "Llywodraeth Cymru"
     },
     "login": {
         "heading": "Mewngofnodi",
@@ -40,60 +45,181 @@
             "google": "Google"
         },
         "error": {
+            "summary_title": "Mae problem wedi codi",
+            "generic": "Ni fu modd eich mewngofnodi.  Rhowch gynnig eto yn nes ymlaen.",
+            "expired": "Mae eich sesiwn wedi dod i ben.  Mewngofnodwch eto."
         }
     },
     "homepage": {
-        "title": "Croeso i Alffa StatsCymru",
-        "welcome": "Rydym yn mynd i ddefnyddio system Ddylunio GovUK nes y gallwn gael gafael ar GEL Llywodraeth Cymru"
+        "title": "Croeso i Beta StatsCymru",
+        "welcome": "Tudalen brawf yw hon at ddibenion datblygu, ac o’r fan hon, gallwch wneud y canlynol:",
+        "uploaded_already": "Gweld yr hyn a lanlwythwyd yn barod",
+        "dataset_creation": "Cychwyn ar daith er mwyn creu set ddata newydd",
+        "project_reports": "Gweld ein hadroddiadau prosiectau"
     },
     "publish": {
+        "header": {
+            "overview": "Dychwelyd i’r trosolwg o’r set ddata",
+            "back": "Yn ôl"
+        },
         "start": {
             "title": "Creu set ddata newydd",
-            "p1": "Er mwyn creu set ddata newydd, bydd angen y canlynol arnoch:",
-            "data_table": "tabl data sy'n cynnwys data a chyfeiriadau at yr holl ddimensiynau perthnasol",
-            "lookup_table": "tablau am-edrych ar gyfer yr holl ddimensiynau perthnasol – gan ddefnyddio tablau cyffredin yn y gwasanaeth hwn neu eu lanlwytho eich hun",
-            "metadata": "manylion am y set ddata, gan gynnwys disgrifiad, ansawdd a sut y casglwyd y data"
+            "p1": "Er mwyn creu set ddata newydd, bydd angen:",
+            "data_table": "tabl data sy’n cynnwys data a chyfeiriadau at yr holl ddimensiynau perthnasol",
+            "lookup_table": "tablau edrych i fyny ar gyfer yr holl ddimensiynau perthnasol – gan ddefnyddio tablau cyffredin yn y gwasanaeth hwn neu eu lanlwytho eich hun",
+            "metadata": "manylion am y set ddata gan gynnwys disgrifiad, ansawdd a sut y casglwyd y data"
         },
         "title": {
+            "heading": "Beth yw teitl y set ddata?",
+            "appear": "Bydd y teitl yn ymddangos ar wefan StatsCymru",
+            "descriptive": "Dylai fod yn fyr, yn ddisgrifiadol ac yn unigryw",
+            "language": "Dylid cofnodi hyn yn yr iaith yr ydych chi’n gweld y gwasanaeth hwn."
         },
         "upload": {
-            "title": "Lanlwytho ffeil CSV",
-            "note": "Rhaid bod y ffeil mewn ffurf CSV"
+            "title": "Lanlwytho’r tabl data",
+            "note": "Dylai’r ffeil fod mewn ffurf CSV"
         },
-        "preview" : {
+        "preview": {
+            "heading": "Gwirio’r tabl data",
+            "upload_has": "Mae eich lanlwythiad yn cynnwys:",
+            "columns_rows": "{{cols}} colofn(au) a {{rows}} rhes(i)",
+            "showing_rows": "Dangos rhesi {{start}} – {{end}} o {{total}}",
+            "unnamed_column": "colofn {{colNum}}"
         },
         "sources": {
+            "heading": "Beth mae pob colofn yn y tabl data yn ei gynnwys?",
+            "types": {
+                "data_values": "Gwerth data",
+                "foot_notes": "Cod nod",
+                "dimension": "Dimensiwn",
+                "ignore": "Gellir anwybyddu’r golofn hon",
+                "unknown": "Dewis"
+            }
         },
         "tasklist": {
+            "heading": "Trosolwg o’r Set Ddata",
+            "no_title": "Dim Teitl Ar Gael",
+            "status": {
+                "completed": "Wedi’i Gwblhau",
+                "not_started": "Heb Gychwyn",
+                "incomplete": "Anghyflawn",
+                "needs_translation": "Angen Cyfieithu",
+                "not_implemented": "Heb ei Weithredu"
+            },
+            "data": {
+                "subheading": "Data",
+                "datatable": "Tabl data"
+            },
+            "metadata": {
+                "subheading": "Metadata",
+                "title": "Teitl",
+                "summary": "Crynodeb",
+                "data_collection": "Casglu data",
+                "statistical_quality": "Ansawdd ystadegol",
+                "data_sources": "Ffynonellau data",
+                "related_reports": "Adroddiadau cysylltiedig",
+                "update_frequency": "Pa mor aml y caiff y set ddata ei diweddaru",
+                "designation": "Dynodiad",
+                "relevant_topics": "Pynciau perthnasol"
+            },
+            "publishing": {
+                "subheading": "Cyhoeddi",
+                "when": "Pryd y dylid cyhoeddi’r set ddata",
+                "export": "Allgludo meysydd testun i’w cyfieithu",
+                "import": "Mewngludo cyfieithiadau",
+                "submit": "Cyflwyno i’w gymeradwyo"
+            }
         }
     },
     "view": {
-    },
-	"errors": {
-		"missing": "Enw ffeil ar Goll",
-		"problem": "Mae problem wedi codi",
-        "name_missing": "Ni ddarparwyd enw set ddata",
-        "datalake_error": "Gwall wrth gysylltu â'r Llyn Data",
-        "upload": {
-            "no-csv": "Ni ddarparwyd data CSV",
-            "no-csv-data": "Nid oes data CSV ar gael"
+        "list": {
+            "heading": "Rhestru Setiau Data"
+        },
+        "display": {
+            "heading": "Dangos Set Ddata",
+            "title": "Teitl",
+            "description": "Disgrifiad",
+            "notes": "Nodiadau",
+            "contents": "Cynnwys",
+            "summary": "Crynodeb",
+            "dimension": "Dimensiwn",
+            "start_revision": "Dechrau Diwygio Dynodiad",
+            "index": "Mynegai",
+            "type": "Math",
+            "created_at": "Dyddiad Creu",
+            "created_by": "Crëwyd Gan ",
+            "revision": "Diwygio",
+            "import": "Mewngludo Ffeil ",
+            "imports": "Mewngludo Ffeiliau",
+            "download": "Lawrlwytho",
+            "download_file": "Lawrlwytho Ffeil",
+            "location": "Lleoliad",
+            "filename": "Enw ffeil",
+            "mime_type": "Math Mime"
         }
-	},
-    "list": {
-        "title": "Dangos y Data"
     },
-    "display": {
-        "title": "Dangos Data ar gyfer"
-    },
-    "api": {
-        "available": "Mae'r API ar gael"
+    "errors": {
+        "confirm": {
+            "missing": "Mae angen i chi gadarnhau neu wrthod y ffeil a lanlwythwyd gan ddefnyddio’r botymau ar ddiwedd y rhagolwg"
+        },
+        "session": {
+            "current_dataset_missing": "Mae’r set ddata bresennol ar goll o’r sesiwn",
+            "current_revision_missing": "Mae’r diwygiad presennol ar goll o’r sesiwn",
+            "current_import_missing": "Mae’r mewngludiad presennol ar goll o’r sesiwn",
+            "no_sources_on_import": "Nid yw’r mewngludiad presennol yn cynnwys unrhyw ffynonellau, a oedd y CSV yn wag?"
+        },
+        "sources": {
+            "unknowns_found": "Mae angen i chi ddweud wrthym beth sydd ym mhob colofn",
+            "multiple_datavalues": "Dim ond un colofn y gallwch ei nodi fel un sy’n cynnwys gwerthoedd data",
+            "multiple_footnotes": "Dim ond un colofn y gallwch ei nodi fel un sy’n cynnwys nodiadau",
+            "dimension_creation_failed": "Aeth rhywbeth o’i le wrth geisio creu’r dimensiynau.  Rhowch gynnig arall arno."
+        },
+        "view": {
+            "list": {
+                "no_datasets": "Ni restrir unrhyw setiau data yn y gronfa ddata ar hyn o bryd.  Os oes angen help arnoch, estynnwch allan i aelod o’r tîm datblygu."
+            },
+            "display": {
+                "no_dimensions": "Nid yw’r set ddata hon wedi cael ei chwblhau gyda dimensiynau",
+                "no_revisions": "Nid yw’r set ddata hon wedi cael ei chwblhau gyda diwygiadau",
+                "no_description": "Nid oes disgrifiad ar gael "
+            }
+        },
+        "preview": {
+            "failed_to_get_preview": "Nid oeddem yn gallu creu rhagolwg o’r CSV a lanlwythwyd.  Ai CSV dilys yw hwn?",
+            "remove_error": "Nid oeddem yn gallu dileu eich ffeil a lanlwythwyd o’r gweinydd.  Aeth rhywbeth o’i le.  Rhowch gynnig arall arno",
+            "confirm_error":  "Mae angen i chi gadarnhau neu wrthod y ffeil a lanlwythwyd gan ddefnyddio’r botymau ar ddiwedd y rhagolwg"
+        },
+        "datalake_error": "Methu cysylltu â’r llyn Data",
+        "blob_storage_errror": "Methu cysylltu â Gwasanaeth Storio Blob",
+        "problem": "Mae problem wedi codi",
+        "name_missing": "Enw’r Set Ddata Ar Goll.",
+        "dataset_missing": "Ni chanfuwyd set ddata gyda’r rhif adnabod hwn",
+        "title": {
+            "missing": "Ni chofnodwyd teitl neu mae problem wedi codi.",
+            "duplicate": "Mae’r teitl yn bodoli yn barod"
+        },
+        "upload": {
+            "no_csv": "Ni ddarparwyd data CSV",
+            "no_csv_data": "Nid oes data CSV ar gael"
+        },
+        "not_found": "Ni chanfuwyd y dudalen",
+        "server_error": "Mae gwall anhysbys wedi digwydd, rhowch gynnig eto yn nes ymlaen"
     },
     "routes": {
-        "healthcheck": "gwiriad iechyd",
-        "upload": "lanlwytho",
-        "list": "rhestr",
-        "data": "data",
-        "sources": "sources",
-        "tasklist": "tasklist"
+        "healthcheck": "prawfiechyd",
+        "feedback": "adborth",
+        "view": {
+            "start": "setddata"
+        },
+        "publish": {
+            "start": "cyhoeddi",
+            "title": "teitl",
+            "upload": "lanlwytho",
+            "preview": "rhagolwg",
+            "confirm": "cadarnhau",
+            "sources": "ffynonellau",
+            "source_confirmation": "cadarnhau-ffynhonnell",
+            "tasklist": "rhestrtasgau"
+        }
     }
 }
