@@ -74,28 +74,26 @@ function generateError(field: string, tag: string, params: object): ViewError {
 }
 
 function checkCurrentDataset(req: Request, res: Response): DatasetDTO | undefined {
-    const lang = req.i18n.language;
     const currentDataset = req.session.currentDataset;
     if (!currentDataset) {
         logger.error('No current dataset found in the session... user may have navigated here by mistake');
         req.session.errors = generateViewErrors(undefined, 500, [
             generateError('session', 'errors.session.current_dataset_missing', {})
         ]);
-        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}`);
+        res.redirect(req.buildUrl('/publish', req.language));
         return undefined;
     }
     return currentDataset;
 }
 
 function checkCurrentRevision(req: Request, res: Response): RevisionDTO | undefined {
-    const lang = req.i18n.language;
     const currentRevision = req.session.currentRevision;
     if (!currentRevision) {
         logger.error('No current revision found in the session... user may have navigated here by mistake');
         req.session.errors = generateViewErrors(undefined, 500, [
             generateError('session', 'errors.session.current_revision_missing', {})
         ]);
-        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}`);
+        res.redirect(req.buildUrl('/publish', req.language));
         return undefined;
     }
     return currentRevision;
@@ -109,21 +107,20 @@ function checkCurrentFileImport(req: Request, res: Response): FileImportDTO | un
         req.session.errors = generateViewErrors(undefined, 500, [
             generateError('session', 'errors.session.current_import_missing', {})
         ]);
-        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}`);
+        res.redirect(req.buildUrl('/publish', req.language));
         return undefined;
     }
     return currentFileImport;
 }
 
 async function createNewDataset(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const lng = req.language as Locale;
     const title = req.session.currentTitle;
     const file = req.file;
 
     if (!title) {
         logger.debug('Current title missing from the session');
         req.session.errors = generateViewErrors(undefined, 400, [generateError('title', 'errors.title_missing', {})]);
-        res.redirect(`/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${t('routes.publish.title', { lng })}`);
+        res.redirect(req.buildUrl('/publish/title', req.language));
         return;
     }
 
@@ -138,16 +135,14 @@ async function createNewDataset(req: Request, res: Response, next: NextFunction)
     try {
         const dataset = await req.swapi.uploadCSVtoCreateDataset(fileData, fileName, title);
         setCurrentToSession(dataset, req);
-        res.redirect(
-            `/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${req.i18n.t('routes.publish.preview', { lng })}`
-        );
+        res.redirect(req.buildUrl('/publish/preview', req.language));
     } catch (err: any) {
         if (err?.status === 401) {
             next(err);
             return;
         }
         req.session.errors = generateViewErrors(undefined, 500, err?.errors);
-        res.redirect(`/${lng}/${req.i18n.t('routes.publish.start', { lng })}`);
+        res.redirect(req.buildUrl('/publish', req.language));
     }
 }
 
@@ -176,16 +171,14 @@ async function uploadNewFileToExistingDataset(req: Request, res: Response, next:
             fileName
         );
         setCurrentToSession(dataset, req);
-        res.redirect(
-            `/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${req.i18n.t('routes.publish.preview', { lng })}`
-        );
+        res.redirect(req.buildUrl('/publish/preview', req.language));
     } catch (err: any) {
         if (err?.status === 401) {
             next(err);
             return;
         }
         req.session.errors = generateViewErrors(undefined, 500, err?.errors);
-        res.redirect(`/${lng}/${req.i18n.t('routes.publish.start', { lng })}`);
+        res.redirect(req.buildUrl('/publish', req.language));
     }
 }
 
@@ -212,8 +205,8 @@ publish.get('/title', (req: Request, res: Response) => {
         errors: req.session.errors,
         isMetadata: false,
         currrentTitle: req.session.currentTitle,
-        postAction: `/${req.language}/${t('routes.publish.start')}/${t('routes.publish.title')}`,
-        backButtonLink: `/${req.language}/${t('routes.publish.start')}/`
+        postAction: req.buildUrl('/publish/title', req.language),
+        backButtonLink: req.buildUrl('/publish', req.language)
     });
 });
 
@@ -225,17 +218,15 @@ publish.post('/title', upload.none(), (req: Request, res: Response) => {
             errors: generateViewErrors(undefined, 500, [generateError('title', 'errors.title.missing', {})]),
             isMetadata: false,
             currrentTitle: req.session.currentTitle,
-            postAction: `/${req.language}/${t('routes.publish.start')}/${t('routes.publish.title')}`,
-            backButtonLink: `/${req.language}/${t('routes.publish.start')}/`
+            postAction: req.buildUrl('/publish/title', req.language),
+            backButtonLink: req.buildUrl('/publish', req.language)
         });
         return;
     }
     req.session.currentTitle = req.body.title;
     req.session.save();
     const lang = req.i18n.language;
-    res.redirect(
-        `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.upload', { lng: lang })}`
-    );
+    res.redirect(req.buildUrl('/publish/upload', req.language));
 });
 
 publish.get('/upload', (req: Request, res: Response) => {
@@ -245,10 +236,7 @@ publish.get('/upload', (req: Request, res: Response) => {
         logger.error('There is no title or currentDataset in the session.  Abandoning this create journey');
         req.session.errors = generateViewErrors(undefined, 500, [generateError('title', 'errors.title.missing', {})]);
         req.session.save();
-        const lang = req.i18n.language;
-        res.redirect(
-            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${t('routes.publish.title', { lng: lang })}`
-        );
+        res.redirect(req.buildUrl('/publish/title', req.language));
         return;
     }
     const title = currentDataset?.datasetInfo?.find((info) => info.language === req.i18n.language) || currentTitle;
@@ -266,8 +254,6 @@ publish.post('/upload', upload.single('csv'), async (req: Request, res: Response
 });
 
 publish.get('/preview', async (req: Request, res: Response, next: NextFunction) => {
-    const lng = req.language as Locale;
-
     const currentDataset = checkCurrentDataset(req, res);
     if (!currentDataset) {
         return;
@@ -306,7 +292,7 @@ publish.get('/preview', async (req: Request, res: Response, next: NextFunction) 
             generateError('preview', 'errors.preview.failed_to_get_preview', {})
         ]);
         req.session.save();
-        res.redirect(`/${lng}/${req.i18n.t('routes.publish.start', { lng })}`);
+        res.redirect(req.buildUrl('/publish', req.language));
     }
 });
 
@@ -318,7 +304,6 @@ async function confirmFileUpload(
     res: Response,
     next: NextFunction
 ) {
-    const lng = req.language;
     try {
         const fileImport: FileImportDTO = await req.swapi.confirmFileImport(
             currentDataset.id,
@@ -328,9 +313,7 @@ async function confirmFileUpload(
         // eslint-disable-next-line require-atomic-updates
         req.session.currentImport = fileImport;
         req.session.save();
-        res.redirect(
-            `/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${req.i18n.t('routes.publish.sources', { lng })}`
-        );
+        res.redirect(req.buildUrl('/publish/sources', req.language));
     } catch (err: any) {
         if (err?.status === 401) {
             next(err);
@@ -344,9 +327,7 @@ async function confirmFileUpload(
             generateError('confirm', 'errors.preview.confirm_error', {})
         ]);
         req.session.save();
-        res.redirect(
-            `/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${req.i18n.t('routes.publish.preview', { lng })}`
-        );
+        res.redirect(req.buildUrl('/publish/preview', req.language));
     }
 }
 
@@ -363,9 +344,7 @@ async function rejectFileReturnToUpload(
         req.session.currentImport = undefined;
         await req.swapi.removeFileImport(currentDataset.id, currentRevision.id, currentFileImport.id);
         req.session.save();
-        res.redirect(
-            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.upload')}`
-        );
+        res.redirect(req.buildUrl('/publish/upload', req.language));
     } catch (err: any) {
         if (err?.status === 401) {
             next(err);
@@ -378,9 +357,7 @@ async function rejectFileReturnToUpload(
             generateError('confirm', 'errors.preview.remove_error', {})
         ]);
         req.session.save();
-        res.redirect(
-            `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.preview', { lng: lang })}`
-        );
+        res.redirect(req.buildUrl('/publish/preview', req.language));
     }
 }
 
@@ -400,7 +377,6 @@ publish.post('/preview', upload.none(), async (req: Request, res: Response, next
         return;
     }
 
-    const lng = req.language as Locale;
     const confirmData = req.body?.confirm;
     if (!confirmData) {
         logger.error('The confirm variable is missing on the form submission');
@@ -408,9 +384,7 @@ publish.post('/preview', upload.none(), async (req: Request, res: Response, next
             generateError('confirmBtn', 'errors.confirm.missing', {})
         ]);
         req.session.save();
-        res.redirect(
-            `/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${req.i18n.t('routes.publish.preview', { lng })}`
-        );
+        res.redirect(req.buildUrl('/publish/preview', req.language));
         return;
     }
     if (confirmData === 'true') {
@@ -433,7 +407,6 @@ function updateCurrentImport(currentImport: FileImportDTO, dimensionCreationRequ
 }
 
 publish.get('/sources', upload.none(), (req: Request, res: Response) => {
-    const lang = req.i18n.language;
     let currentFileImport = checkCurrentFileImport(req, res);
     const dimensionCreationRequest = req.session.dimensionCreationRequest;
     if (!currentFileImport) {
@@ -445,7 +418,7 @@ publish.get('/sources', upload.none(), (req: Request, res: Response) => {
             generateError('session', 'errors.session.no_sources_on_import', {})
         ]);
         req.session.save();
-        res.redirect(`/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}`);
+        res.redirect(req.buildUrl('/publish', req.language));
         return;
     }
     const errs = req.session.errors;
@@ -472,7 +445,6 @@ publish.get('/sources', upload.none(), (req: Request, res: Response) => {
 });
 
 publish.post('/sources', upload.none(), async (req: Request, res: Response, next: NextFunction) => {
-    const lng = req.language as Locale;
     const currentDataset = checkCurrentDataset(req, res);
     if (!currentDataset) {
         return;
@@ -494,7 +466,7 @@ publish.post('/sources', upload.none(), async (req: Request, res: Response, next
             generateError('session', 'errors.session.no_sources_on_import', {})
         ]);
         req.session.save();
-        res.redirect(`/${lng}/${req.i18n.t('routes.publish.start', { lng })}`);
+        res.redirect(req.buildUrl('/publish', req.language));
         return;
     }
 
@@ -580,9 +552,7 @@ publish.post('/sources', upload.none(), async (req: Request, res: Response, next
             dimensionCreationRequest
         );
 
-        res.redirect(
-            `/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${dataset.id}/${req.i18n.t('routes.publish.tasklist', { lng })}`
-        );
+        res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
     } catch (err: any) {
         if (err?.status === 401) {
             next(err);
@@ -651,7 +621,6 @@ function buildStateFromDataset(lang: string, dataset: DatasetDTO): TaskListState
 }
 
 publish.get('/:datasetId/tasklist', async (req: Request, res: Response, next: NextFunction) => {
-    const lng = req.language as Locale;
     const datasetId = req.params.datasetId as string;
 
     try {
@@ -659,8 +628,8 @@ publish.get('/:datasetId/tasklist', async (req: Request, res: Response, next: Ne
         const dataset = await req.swapi.getDataset(datasetId);
         setCurrentToSession(dataset, req);
         res.render('publish/tasklist', {
-            taskList: buildStateFromDataset(lng, dataset),
-            sourcesUrl: `/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${req.i18n.t('routes.publish.sources', { lng })}`
+            taskList: buildStateFromDataset(req.language, dataset),
+            sourcesUrl: req.buildUrl('/publish/sources', req.language)
         });
     } catch (err: any) {
         if (err?.status === 401) {
@@ -674,22 +643,21 @@ publish.get('/:datasetId/tasklist', async (req: Request, res: Response, next: Ne
 });
 
 publish.get('/:datasetId/title', async (req: Request, res: Response) => {
-    const lang = req.language as Locale;
     const datasetId = req.params.datasetId as string;
 
     try {
         if (!validateUUID(datasetId)) throw new Error('Invalid dataset ID');
         const dataset = await req.swapi.getDataset(datasetId);
         setCurrentToSession(dataset, req);
-        const singleLanguageDataset = singleLangDataset(lang, dataset);
+        const singleLanguageDataset = singleLangDataset(req.language, dataset);
 
         res.render('publish/title', {
             errors: req.session.errors,
             currentTitle: singleLanguageDataset.datasetInfo?.title,
             isMetadata: true,
             datasetId,
-            postAction: `/${req.language}/${t('routes.publish.start')}/${datasetId}/${t('routes.publish.title')}`,
-            backButtonLink: `/${req.language}/${t('routes.publish.start')}/${datasetId}/${t('routes.publish.tasklist')}`
+            postAction: req.buildUrl(`/publish/${dataset.id}/title`, req.language),
+            backButtonLink: req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language)
         });
     } catch (err) {
         logger.error(`Something went wrong trying to load the title: ${err}`);
@@ -714,17 +682,15 @@ publish.post('/:datasetId/title', upload.none(), async (req: Request, res: Respo
                 currentTitle: singleLanguageDataset.datasetInfo?.title,
                 isMetadata: true,
                 datasetId,
-                postAction: `/${req.language}/${t('routes.publish.start')}/${datasetId}/${t('routes.publish.title')}`,
-                backButtonLink: `/${req.language}/${t('routes.publish.start')}/${datasetId}/${t('routes.publish.tasklist')}`
+                postAction: req.buildUrl(`/publish/${dataset.id}/title`, req.language),
+                backButtonLink: req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language)
             });
             return;
         }
         const infoDto: DatasetInfoDTO = singleLanguageDataset.datasetInfo || ({ language: lng } as DatasetInfoDTO);
         infoDto.title = req.body.title;
         await req.swapi.sendDatasetInfo(datasetId, infoDto);
-        res.redirect(
-            `/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${dataset.id}/${req.i18n.t('routes.publish.tasklist', { lng })}`
-        );
+        res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
     } catch (err) {
         logger.error(`Something went wrong trying to load the title: ${err}`);
         res.status(404);

@@ -60,7 +60,7 @@
                                 <% if (page==='previous' ) { %>
                                     <div class="govuk-pagination__prev">
                                         <a class="govuk-link govuk-pagination__link"
-                                            href="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.preview') %>?page_number=<%= locals.current_page-1 %>&page_size=<%= locals.page_size %>"
+                                            href="<%= buildUrl('/publish/preview', i18n.language, { page_number: locals.current_page - 1, page_size: locals.page_size }) %>"
                                             rel="prev">
                                             <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg"
                                                 height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
@@ -76,7 +76,7 @@
                                     <% } else if (page==='next' ) { %>
                                         <div class="govuk-pagination__next">
                                             <a class="govuk-link govuk-pagination__link"
-                                                href="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.preview') %>?page_number=<%= locals.current_page+1 %>&page_size=<%= locals.page_size %>"
+                                                href="<%= buildUrl('/publish/preview', i18n.language, { page_number: locals.current_page + 1, page_size: locals.page_size }) %>"
                                                 rel="next">
                                                 <span class="govuk-pagination__link-title">
                                                     <%= t('pagination.next') %>
@@ -103,7 +103,7 @@
                                                 <% } else { %>
                                                     <li class="govuk-pagination__item">
                                                         <a class="govuk-link govuk-pagination__link"
-                                                            href="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.preview') %>?page_number=<%= page %>&page_size=<%= locals.page_size %>"
+                                                            href="<%= buildUrl('/publish/preview', i18n.language, { page_number: page - 1, page_size: locals.page_size }) %>"
                                                             aria-label="Page <%= page %>">
                                                             <%= page %>
                                                         </a>
@@ -113,7 +113,7 @@
                         </nav>
                     </div>
                     <div class="govuk-grid-column-one-half">
-                        <form action="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.preview') %>" method="get" role="page-size" class="govuk-!-margin-bottom-0">
+                        <form action="<%= buildUrl('/publish/preview', i18n.language) %>" method="get" role="page-size" class="govuk-!-margin-bottom-0">
                             <label class="govuk-label govuk-!-display-inline" for="page_size">
                                 <%= t('pagination.page_size') %>
                             </label>
@@ -136,7 +136,7 @@
                 </div>
                 <div class="govuk-grid-row">
                     <div class="govuk-grid-column-one-half">
-                        <form action="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.preview') %>" method="post">
+                        <form action="<%= buildUrl('/publish/preview', i18n.language) %>" method="post">
                             <button type="submit" name="confirm" value="true" class="govuk-button govuk-!-display-inline" data-module="govuk-button">
                                 <%= t('buttons.continue') %>
                             </button>

@@ -6,8 +6,8 @@
         <h1 class="govuk-heading-xl"><%= t('homepage.title') %></h1>
         <p class="govuk-body"><%= t('homepage.welcome') %></p>
         <ul class="govuk-list govuk-list--bullet">
-            <li><a href="/<%= i18n.language %>/<%= t('routes.publish.start') %>/"><%- t('homepage.dataset_creation') %></a></li>
-            <li><a href="/<%= i18n.language %>/<%= t('routes.view.start') %>/"><%- t('homepage.uploaded_already') %></a> <%- t('developer_tag') %></li>
+            <li><a href="<%= buildUrl('/publish', i18n.language) %>"><%- t('homepage.dataset_creation') %></a></li>
+            <li><a href="<%= buildUrl('/dataset', i18n.language) %>"><%- t('homepage.uploaded_already') %></a> <%- t('developer_tag') %></li>
             <li><a href="https://marvell-consulting.github.io/project-reports/statswales/project-reports"><%= t('homepage.project_reports') %></a> <%- t('external_tag') %></li>
         </ul>
 

@@ -214,18 +214,15 @@
     "routes": {
         "healthcheck": "healthcheck",
         "feedback": "feedback",
-        "view": {
-            "start": "dataset"
-        },
-        "publish": {
-            "start": "publish",
-            "title": "title",
-            "upload": "upload",
-            "preview": "preview",
-            "confirm": "confirm",
-            "sources": "sources",
-            "source_confirmation": "source-confirmation",
-            "tasklist": "tasklist"
-        }
+        "dataset": "dataset",
+        "publish": "publish",
+        "start": "start",
+        "title": "title",
+        "preview": "preview",
+        "upload": "upload",
+        "confirm": "confirm",
+        "sources": "sources",
+        "source_confirmation": "source-confirmation",
+        "tasklist": "tasklist"
     }
 }

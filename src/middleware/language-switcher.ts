@@ -6,7 +6,7 @@ import { Locale } from '../enums/locale';
 
 import { ignoreRoutes, SUPPORTED_LOCALES, i18next } from './translation';
 
-export const localeUrl = (path: string, locale: Locale, query?: Record<string, string>): string => {
+export const localeUrl = (path: string, locale: Locale | string, query?: Record<string, string>): string => {
     const locales = SUPPORTED_LOCALES as string[];
 
     let pathElements = path
@@ -14,7 +14,7 @@ export const localeUrl = (path: string, locale: Locale, query?: Record<string, s
         .filter(Boolean) // strip empty elements to avoid trailing slash
         .filter((element) => !locales.includes(element)); // strip language from the path if present
 
-    if (![Locale.English, Locale.EnglishGb].includes(locale)) {
+    if (![Locale.English, Locale.EnglishGb].includes(locale as Locale)) {
         // translate the url path to the new locale
         pathElements = pathElements.map((element) => i18next.t(`routes.${element}`, { lng: locale }));
     }

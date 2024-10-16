@@ -660,9 +660,7 @@ describe('Publisher Journey Tests', () => {
             expect(res.text).toContain('<div class="top-links">');
             expect(res.text).toContain(t('publish.title.heading'));
             expect(res.text).toContain('test dataset 1');
-            expect(res.text).toContain(
-                `/en-GB/${t('routes.publish.start')}/5caeb8ed-ea64-4a58-8cf0-b728308833e5/${t('routes.publish.title')}`
-            );
+            expect(res.text).toContain(`/en-GB/publish/5caeb8ed-ea64-4a58-8cf0-b728308833e5/title`);
         });
 
         test('It returns 302 to the task list on a successful submit', async () => {

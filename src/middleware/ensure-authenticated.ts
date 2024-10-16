@@ -4,16 +4,11 @@ import JWT from 'jsonwebtoken';
 import { JWTPayloadWithUser } from '../interfaces/jwt-payload-with-user';
 import { logger } from '../utils/logger';
 import { appConfig } from '../config';
-import { Locale } from '../enums/locale';
-
-import { localeUrl } from './language-switcher';
 
 const config = appConfig();
 
 export const ensureAuthenticated = (req: Request, res: Response, next: NextFunction) => {
     logger.debug(`checking if user is authenticated for route ${req.originalUrl}...`);
-
-    const locale = req.language as Locale;
 
     try {
         if (!req.cookies.jwt) {
@@ -30,7 +25,7 @@ export const ensureAuthenticated = (req: Request, res: Response, next: NextFunct
         if (decoded.exp && decoded.exp <= Date.now() / 1000) {
             logger.error('JWT token has expired');
             res.status(401);
-            return res.redirect(localeUrl('/auth/login', locale, { error: 'expired' }));
+            return res.redirect(req.buildUrl(`/auth/login`, req.language, { error: 'expired' }));
         }
 
         // store the token string in the request as we need it for Authorization header in API requests
@@ -43,7 +38,7 @@ export const ensureAuthenticated = (req: Request, res: Response, next: NextFunct
     } catch (err) {
         logger.error(`authentication failed: ${err}`);
         res.status(401);
-        return res.redirect(localeUrl('/auth/login', locale));
+        return res.redirect(req.buildUrl(`/auth/login`, req.language));
     }
 
     return next();

@@ -5,7 +5,7 @@
         <main class="govuk-main-wrapper" id="main-content" role="main">
             <h1 class="govuk-heading-xl"><%= t('publish.sources.heading') %></h1>
             <%- include("../partials/error-handler"); %>
-            <form action="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.sources') %>/" method="post">
+            <form action="<%= buildUrl('/publish/sources', i18n.language) %>" method="post">
                 <div class="source-list">
                 <% locals.currentImport.sources.forEach((source) => { %>
                     <div class="source-list-item">
