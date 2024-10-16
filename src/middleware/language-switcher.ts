@@ -9,15 +9,16 @@ import { ignoreRoutes, SUPPORTED_LOCALES, i18next } from './translation';
 export const localeUrl = (path: string, locale: Locale | string, query?: Record<string, string>): string => {
     const locales = SUPPORTED_LOCALES as string[];
 
-    let pathElements = path
+    const pathElements = path
         .split('/')
         .filter(Boolean) // strip empty elements to avoid trailing slash
         .filter((element) => !locales.includes(element)); // strip language from the path if present
 
-    if (![Locale.English, Locale.EnglishGb].includes(locale as Locale)) {
-        // translate the url path to the new locale
-        pathElements = pathElements.map((element) => i18next.t(`routes.${element}`, { lng: locale }));
-    }
+    // TODO: re-enable path translation once the router knows how to handle it
+    // if (![Locale.English, Locale.EnglishGb].includes(locale as Locale)) {
+    //     // translate the url path to the new locale
+    //     pathElements = pathElements.map((element) => i18next.t(`routes.${element}`, { lng: locale }));
+    // }
 
     const newPath = isEmpty(pathElements) ? '' : `/${pathElements.join('/')}`;
     const queryString = isEmpty(query) ? '' : `?${new URLSearchParams(query).toString()}`;
