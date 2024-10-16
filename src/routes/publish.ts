@@ -1,14 +1,12 @@
 import { Blob } from 'node:buffer';
 
-import { NextFunction, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import multer from 'multer';
 import { validate as validateUUID } from 'uuid';
 
 import { logger } from '../utils/logger';
-import { StatsWalesApi } from '../services/stats-wales-api';
 import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
 import { i18next } from '../middleware/translation';
-import { AuthedRequest } from '../interfaces/authed-request';
 import { DatasetDTO, DatasetInfoDTO, FileImportDTO, RevisionDTO } from '../dtos/dataset-dto';
 import { DimensionCreationDTO } from '../dtos/dimension-creation-dto';
 import { SourceType } from '../enums/source-type';
@@ -17,7 +15,6 @@ import { singleLangDataset } from '../utils/single-lang-dataset';
 import { DimensionType } from '../enums/dimension-type';
 import { DimensionState } from '../dtos/dimension-state';
 import { TaskListState } from '../dtos/task-list-state';
-import { SingleLanguageDataset } from '../dtos/single-language/dataset';
 import { Locale } from '../enums/locale';
 import { generateViewErrors } from '../utils/generate-view-errors';
 
@@ -27,7 +24,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 export const publish = Router();
 
 // Functions to reduce duplicate code
-function setCurrentToSession(dataset: DatasetDTO, req: AuthedRequest): boolean {
+function setCurrentToSession(dataset: DatasetDTO, req: Request): boolean {
     req.session.currentDataset = dataset;
     if (!dataset.revisions) {
         return false;
@@ -46,7 +43,7 @@ function setCurrentToSession(dataset: DatasetDTO, req: AuthedRequest): boolean {
     return true;
 }
 
-function generateFileError(req: AuthedRequest, res: Response) {
+function generateFileError(req: Request, res: Response) {
     logger.debug('Attached file was missing on this request');
     const err: ViewErrDTO = {
         success: false,
@@ -76,7 +73,7 @@ function generateError(field: string, tag: string, params: object): ViewError {
     };
 }
 
-function checkCurrentDataset(req: AuthedRequest, res: Response): DatasetDTO | undefined {
+function checkCurrentDataset(req: Request, res: Response): DatasetDTO | undefined {
     const lang = req.i18n.language;
     const currentDataset = req.session.currentDataset;
     if (!currentDataset) {
@@ -90,7 +87,7 @@ function checkCurrentDataset(req: AuthedRequest, res: Response): DatasetDTO | un
     return currentDataset;
 }
 
-function checkCurrentRevision(req: AuthedRequest, res: Response): RevisionDTO | undefined {
+function checkCurrentRevision(req: Request, res: Response): RevisionDTO | undefined {
     const lang = req.i18n.language;
     const currentRevision = req.session.currentRevision;
     if (!currentRevision) {
@@ -104,7 +101,7 @@ function checkCurrentRevision(req: AuthedRequest, res: Response): RevisionDTO | 
     return currentRevision;
 }
 
-function checkCurrentFileImport(req: AuthedRequest, res: Response): FileImportDTO | undefined {
+function checkCurrentFileImport(req: Request, res: Response): FileImportDTO | undefined {
     const lang = req.i18n.language;
     const currentFileImport = req.session.currentImport;
     if (!currentFileImport) {
@@ -118,9 +115,8 @@ function checkCurrentFileImport(req: AuthedRequest, res: Response): FileImportDT
     return currentFileImport;
 }
 
-async function createNewDataset(req: AuthedRequest, res: Response, next: NextFunction): Promise<void> {
+async function createNewDataset(req: Request, res: Response, next: NextFunction): Promise<void> {
     const lng = req.language as Locale;
-    const statsWalesApi = new StatsWalesApi(lng, req.jwt);
     const title = req.session.currentTitle;
     const file = req.file;
 
@@ -140,7 +136,7 @@ async function createNewDataset(req: AuthedRequest, res: Response, next: NextFun
     const fileData = new Blob([file.buffer], { type: file.mimetype });
 
     try {
-        const dataset = await statsWalesApi.uploadCSVtoCreateDataset(fileData, fileName, title);
+        const dataset = await req.swapi.uploadCSVtoCreateDataset(fileData, fileName, title);
         setCurrentToSession(dataset, req);
         res.redirect(
             `/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${req.i18n.t('routes.publish.preview', { lng })}`
@@ -155,9 +151,8 @@ async function createNewDataset(req: AuthedRequest, res: Response, next: NextFun
     }
 }
 
-async function uploadNewFileToExistingDataset(req: AuthedRequest, res: Response, next: NextFunction) {
+async function uploadNewFileToExistingDataset(req: Request, res: Response, next: NextFunction) {
     const lng = req.language as Locale;
-    const statsWalesApi = new StatsWalesApi(lng, req.jwt);
     const currentDataset = checkCurrentDataset(req, res);
     const currentRevision = checkCurrentRevision(req, res);
 
@@ -174,7 +169,7 @@ async function uploadNewFileToExistingDataset(req: AuthedRequest, res: Response,
     const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
 
     try {
-        const dataset = await statsWalesApi.uploadCSVToFixDataset(
+        const dataset = await req.swapi.uploadCSVToFixDataset(
             currentDataset.id,
             currentRevision.id,
             fileData,
@@ -194,7 +189,7 @@ async function uploadNewFileToExistingDataset(req: AuthedRequest, res: Response,
     }
 }
 
-function cleanupSession(req: AuthedRequest) {
+function cleanupSession(req: Request) {
     req.session.currentDataset = undefined;
     req.session.currentRevision = undefined;
     req.session.currentImport = undefined;
@@ -203,7 +198,7 @@ function cleanupSession(req: AuthedRequest) {
     req.session.save();
 }
 
-publish.get('/', (req: AuthedRequest, res: Response) => {
+publish.get('/', (req: Request, res: Response) => {
     const errors = req.session.errors;
     // This is the start, there are a number of reason we can end up here
     // from errors in a previous attempt to just starting a new dataset.
@@ -212,7 +207,7 @@ publish.get('/', (req: AuthedRequest, res: Response) => {
     res.render('publish/start', { errors });
 });
 
-publish.get('/routes.title', (req: AuthedRequest, res: Response) => {
+publish.get('/title', (req: Request, res: Response) => {
     res.render('publish/title', {
         errors: req.session.errors,
         isMetadata: false,
@@ -222,7 +217,7 @@ publish.get('/routes.title', (req: AuthedRequest, res: Response) => {
     });
 });
 
-publish.post('/title', upload.none(), (req: AuthedRequest, res: Response) => {
+publish.post('/title', upload.none(), (req: Request, res: Response) => {
     if (!req.body?.title) {
         logger.error('The user failed to supply a title in the request');
         res.status(400);
@@ -243,7 +238,7 @@ publish.post('/title', upload.none(), (req: AuthedRequest, res: Response) => {
     );
 });
 
-publish.get('/upload', (req: AuthedRequest, res: Response) => {
+publish.get('/upload', (req: Request, res: Response) => {
     const currentTitle = req.session.currentTitle;
     const currentDataset = req.session.currentDataset;
     if (!currentDataset && !currentTitle) {
@@ -260,7 +255,7 @@ publish.get('/upload', (req: AuthedRequest, res: Response) => {
     res.render('publish/upload', { title });
 });
 
-publish.post('/upload', upload.single('csv'), async (req: AuthedRequest, res: Response, next: NextFunction) => {
+publish.post('/upload', upload.single('csv'), async (req: Request, res: Response, next: NextFunction) => {
     if (req.session.currentDataset) {
         logger.info('Dataset present... Amending existing Dataset');
         await uploadNewFileToExistingDataset(req, res, next);
@@ -270,9 +265,8 @@ publish.post('/upload', upload.single('csv'), async (req: AuthedRequest, res: Re
     }
 });
 
-publish.get('/preview', async (req: AuthedRequest, res: Response, next: NextFunction) => {
+publish.get('/preview', async (req: Request, res: Response, next: NextFunction) => {
     const lng = req.language as Locale;
-    const statsWalesApi = new StatsWalesApi(lng, req.jwt);
 
     const currentDataset = checkCurrentDataset(req, res);
     if (!currentDataset) {
@@ -293,7 +287,7 @@ publish.get('/preview', async (req: AuthedRequest, res: Response, next: NextFunc
     const page_size: number = Number.parseInt(req.query.page_size as string, 10) || 10;
 
     try {
-        const previewData: ViewDTO = await statsWalesApi.getDatasetDatafilePreview(
+        const previewData: ViewDTO = await req.swapi.getDatasetDatafilePreview(
             currentDataset.id,
             currentRevision.id,
             currentFileImport.id,
@@ -320,14 +314,13 @@ async function confirmFileUpload(
     currentDataset: DatasetDTO,
     currentRevision: RevisionDTO,
     currentFileImport: FileImportDTO,
-    statsWalesApi: StatsWalesApi,
-    req: AuthedRequest,
+    req: Request,
     res: Response,
     next: NextFunction
 ) {
     const lng = req.language;
     try {
-        const fileImport: FileImportDTO = await statsWalesApi.confirmFileImport(
+        const fileImport: FileImportDTO = await req.swapi.confirmFileImport(
             currentDataset.id,
             currentRevision.id,
             currentFileImport.id
@@ -361,15 +354,14 @@ async function rejectFileReturnToUpload(
     currentDataset: DatasetDTO,
     currentRevision: RevisionDTO,
     currentFileImport: FileImportDTO,
-    statsWalesApi: StatsWalesApi,
-    req: AuthedRequest,
+    req: Request,
     res: Response,
     next: NextFunction
 ) {
     const lang = req.i18n.language;
     try {
         req.session.currentImport = undefined;
-        await statsWalesApi.removeFileImport(currentDataset.id, currentRevision.id, currentFileImport.id);
+        await req.swapi.removeFileImport(currentDataset.id, currentRevision.id, currentFileImport.id);
         req.session.save();
         res.redirect(
             `/${lang}/${req.i18n.t('routes.publish.start', { lng: lang })}/${req.i18n.t('routes.publish.upload')}`
@@ -392,7 +384,7 @@ async function rejectFileReturnToUpload(
     }
 }
 
-publish.post('/preview', upload.none(), async (req: AuthedRequest, res: Response, next: NextFunction) => {
+publish.post('/preview', upload.none(), async (req: Request, res: Response, next: NextFunction) => {
     const currentDataset = checkCurrentDataset(req, res);
     if (!currentDataset) {
         return;
@@ -421,21 +413,12 @@ publish.post('/preview', upload.none(), async (req: AuthedRequest, res: Response
         );
         return;
     }
-    const statsWalesApi = new StatsWalesApi(lng, req.jwt);
     if (confirmData === 'true') {
         logger.info('User confirmed file upload was correct');
-        await confirmFileUpload(currentDataset, currentRevision, currentFileImport, statsWalesApi, req, res, next);
+        await confirmFileUpload(currentDataset, currentRevision, currentFileImport, req, res, next);
     } else {
         logger.info('User rejected the file in preview');
-        await rejectFileReturnToUpload(
-            currentDataset,
-            currentRevision,
-            currentFileImport,
-            statsWalesApi,
-            req,
-            res,
-            next
-        );
+        await rejectFileReturnToUpload(currentDataset, currentRevision, currentFileImport, req, res, next);
     }
 });
 
@@ -449,7 +432,7 @@ function updateCurrentImport(currentImport: FileImportDTO, dimensionCreationRequ
     return currentImport;
 }
 
-publish.get('/sources', upload.none(), (req: AuthedRequest, res: Response) => {
+publish.get('/sources', upload.none(), (req: Request, res: Response) => {
     const lang = req.i18n.language;
     let currentFileImport = checkCurrentFileImport(req, res);
     const dimensionCreationRequest = req.session.dimensionCreationRequest;
@@ -488,7 +471,7 @@ publish.get('/sources', upload.none(), (req: AuthedRequest, res: Response) => {
     });
 });
 
-publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response, next: NextFunction) => {
+publish.post('/sources', upload.none(), async (req: Request, res: Response, next: NextFunction) => {
     const lng = req.language as Locale;
     const currentDataset = checkCurrentDataset(req, res);
     if (!currentDataset) {
@@ -588,10 +571,9 @@ publish.post('/sources', upload.none(), async (req: AuthedRequest, res: Response
     }
 
     logger.info('Dimension creation request checks out... Sending it to the backend to do its thing');
-    const statsWalesApi = new StatsWalesApi(lng, req.jwt);
 
     try {
-        const dataset: DatasetDTO = await statsWalesApi.sendCreateDimensionRequest(
+        const dataset: DatasetDTO = await req.swapi.sendCreateDimensionRequest(
             currentDataset.id,
             currentRevision.id,
             currentFileImport.id,
@@ -668,14 +650,13 @@ function buildStateFromDataset(lang: string, dataset: DatasetDTO): TaskListState
     };
 }
 
-publish.get('/:datasetId/tasklist', async (req: AuthedRequest, res: Response, next: NextFunction) => {
+publish.get('/:datasetId/tasklist', async (req: Request, res: Response, next: NextFunction) => {
     const lng = req.language as Locale;
     const datasetId = req.params.datasetId as string;
-    const statsWalesApi = new StatsWalesApi(lng, req.jwt);
 
     try {
         if (!validateUUID(datasetId)) throw new Error('Invalid dataset ID');
-        const dataset = await statsWalesApi.getDataset(datasetId);
+        const dataset = await req.swapi.getDataset(datasetId);
         setCurrentToSession(dataset, req);
         res.render('publish/tasklist', {
             taskList: buildStateFromDataset(lng, dataset),
@@ -692,14 +673,13 @@ publish.get('/:datasetId/tasklist', async (req: AuthedRequest, res: Response, ne
     }
 });
 
-publish.get('/:datasetId/title', async (req: AuthedRequest, res: Response) => {
+publish.get('/:datasetId/title', async (req: Request, res: Response) => {
     const lang = req.language as Locale;
     const datasetId = req.params.datasetId as string;
-    const statsWalesApi = new StatsWalesApi(lang, req.jwt);
 
     try {
         if (!validateUUID(datasetId)) throw new Error('Invalid dataset ID');
-        const dataset = await statsWalesApi.getDataset(datasetId);
+        const dataset = await req.swapi.getDataset(datasetId);
         setCurrentToSession(dataset, req);
         const singleLanguageDataset = singleLangDataset(lang, dataset);
 
@@ -718,13 +698,12 @@ publish.get('/:datasetId/title', async (req: AuthedRequest, res: Response) => {
     }
 });
 
-publish.post('/:datasetId/title', upload.none(), async (req: AuthedRequest, res: Response) => {
+publish.post('/:datasetId/title', upload.none(), async (req: Request, res: Response) => {
     const lng = req.language as Locale;
     const datasetId = req.params.datasetId as string;
-    const statsWalesApi = new StatsWalesApi(lng, req.jwt);
     try {
         if (!validateUUID(datasetId)) throw new Error('Invalid dataset ID');
-        const dataset = await statsWalesApi.getDataset(datasetId);
+        const dataset = await req.swapi.getDataset(datasetId);
         setCurrentToSession(dataset, req);
         const singleLanguageDataset = singleLangDataset(lng, dataset);
         if (!req.body?.title) {
@@ -742,7 +721,7 @@ publish.post('/:datasetId/title', upload.none(), async (req: AuthedRequest, res:
         }
         const infoDto: DatasetInfoDTO = singleLanguageDataset.datasetInfo || ({ language: lng } as DatasetInfoDTO);
         infoDto.title = req.body.title;
-        await statsWalesApi.sendDatasetInfo(datasetId, infoDto);
+        await req.swapi.sendDatasetInfo(datasetId, infoDto);
         res.redirect(
             `/${lng}/${req.i18n.t('routes.publish.start', { lng })}/${dataset.id}/${req.i18n.t('routes.publish.tasklist', { lng })}`
         );
@@ -754,7 +733,7 @@ publish.post('/:datasetId/title', upload.none(), async (req: AuthedRequest, res:
 });
 
 // The following routes are mostly for testing and development purposes
-publish.get('/session/', (req: AuthedRequest, res: Response) => {
+publish.get('/session/', (req: Request, res: Response) => {
     res.status(200);
     res.header('mime-type', 'application/json');
     res.json({
@@ -763,20 +742,20 @@ publish.get('/session/', (req: AuthedRequest, res: Response) => {
     });
 });
 
-publish.delete('/session/', (req: AuthedRequest, res: Response) => {
+publish.delete('/session/', (req: Request, res: Response) => {
     cleanupSession(req);
     res.status(200);
     res.json({ message: 'All session data has been cleared' });
 });
 
-publish.delete('/session/currentRevision', (req: AuthedRequest, res: Response) => {
+publish.delete('/session/currentRevision', (req: Request, res: Response) => {
     req.session.currentRevision = undefined;
     req.session.save();
     res.status(200);
     res.json({ message: 'Current revision has been deleted' });
 });
 
-publish.delete('/session/currentImport', (req: AuthedRequest, res: Response) => {
+publish.delete('/session/currentImport', (req: Request, res: Response) => {
     req.session.currentImport = undefined;
     req.session.save();
     res.status(200);

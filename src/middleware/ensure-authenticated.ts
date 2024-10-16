@@ -1,7 +1,6 @@
-import { RequestHandler } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import JWT from 'jsonwebtoken';
 
-import { AuthedRequest } from '../interfaces/authed-request';
 import { JWTPayloadWithUser } from '../interfaces/jwt-payload-with-user';
 import { logger } from '../utils/logger';
 import { appConfig } from '../config';
@@ -11,7 +10,7 @@ import { localeUrl } from './language-switcher';
 
 const config = appConfig();
 
-export const ensureAuthenticated: RequestHandler = (req: AuthedRequest, res, next) => {
+export const ensureAuthenticated = (req: Request, res: Response, next: NextFunction) => {
     logger.debug(`checking if user is authenticated for route ${req.originalUrl}...`);
 
     const locale = req.language as Locale;

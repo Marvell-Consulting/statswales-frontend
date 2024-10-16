@@ -19,6 +19,7 @@ import { dataset } from './routes/dataset';
 import { errorHandler } from './routes/error-handler';
 import { homepage } from './routes/homepage';
 import { notFound } from './routes/not-found';
+import { initServices } from './middleware/services';
 
 const app: Application = express();
 const config = appConfig();
@@ -38,6 +39,7 @@ app.use(session);
 app.use(i18nextMiddleware.handle(i18next));
 app.use(skipMap);
 app.use(languageSwitcher);
+app.use(initServices);
 
 // configure the view engine
 app.set('views', path.join(__dirname, 'views'));

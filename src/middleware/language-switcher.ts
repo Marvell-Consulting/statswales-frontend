@@ -4,16 +4,20 @@ import { isEmpty, omit } from 'lodash';
 import { logger } from '../utils/logger';
 import { Locale } from '../enums/locale';
 
-import { ignoreRoutes, SUPPORTED_LOCALES } from './translation';
+import { ignoreRoutes, SUPPORTED_LOCALES, i18next } from './translation';
 
 export const localeUrl = (path: string, locale: Locale, query?: Record<string, string>): string => {
     const locales = SUPPORTED_LOCALES as string[];
 
-    // TODO: translate URL path, params? to Welsh language
-    const pathElements = path
+    let pathElements = path
         .split('/')
         .filter(Boolean) // strip empty elements to avoid trailing slash
         .filter((element) => !locales.includes(element)); // strip language from the path if present
+
+    if (![Locale.English, Locale.EnglishGb].includes(locale)) {
+        // translate the url path to the new locale
+        pathElements = pathElements.map((element) => i18next.t(`routes.${element}`, { lng: locale }));
+    }
 
     const newPath = isEmpty(pathElements) ? '' : `/${pathElements.join('/')}`;
     const queryString = isEmpty(query) ? '' : `?${new URLSearchParams(query).toString()}`;
