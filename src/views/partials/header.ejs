@@ -104,7 +104,7 @@
                     <%= t('header.beta') %>
                 </strong>
                 <span class="govuk-phase-banner__text">
-                    <%- t('header.feedback') %>
+                    <%- t('header.feedback', { feedback_url: `/${i18n.language}/${t('routes.feedback')}`}) %>
                 </span>
             </p>
         </div>

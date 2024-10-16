@@ -25,8 +25,7 @@
                 </div>
             <% } %>
             <p class="govuk-body"><strong><%- t('publish.preview.upload_has') %></strong>
-                <%= locals.headers.length %> <%- t('publish.preview.columns') %> <%- t('publish.preview.and') %>
-                <%- locals.page_info.total_records %> <%- t('publish.preview.rows') %>
+                <%= t('publish.preview.columns_rows', {cols: locals.headers.length, rows: locals.page_info.total_records}) %>
             </p>
             <% if (locals?.data) { %>
                 <div class="table-display">
@@ -50,8 +49,8 @@
                         </tbody>
                     </table>
                 </div>
-                <p class="govuk-body"><%= t('publish.preview.showing') %> <%= locals.page_info.start_record %> - <%= locals.page_info.end_record %> of <%=
-                                locals.page_info.total_records %>
+                <p class="govuk-body">
+                    <%= t('publish.preview.showing_rows', {start: locals.page_info.start_record, end: locals.page_info.end_record, total: locals.page_info.total_records}) %>
                 </p>
                 <div class="govuk-grid-row">
                     <div class="govuk-grid-column-one-half">

@@ -212,7 +212,7 @@ publish.get('/', (req: AuthedRequest, res: Response) => {
     res.render('publish/start', { errors });
 });
 
-publish.get('/title', (req: AuthedRequest, res: Response) => {
+publish.get('/routes.title', (req: AuthedRequest, res: Response) => {
     res.render('publish/title', {
         errors: req.session.errors,
         isMetadata: false,
