@@ -55,11 +55,11 @@ auth.get('/callback', (req: Request, res: Response) => {
     }
 
     logger.debug('User successfully logged in');
-    res.redirect(`/${req.language}`);
+    res.redirect(req.buildUrl('/', req.language));
 });
 
 auth.get('/logout', (req: Request, res: Response) => {
     logger.debug('logging out user');
     res.clearCookie('jwt', { domain: cookieDomain });
-    res.redirect(`/${req.language}/auth/login`);
+    res.redirect(req.buildUrl(`/auth/login`, req.language));
 });

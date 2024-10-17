@@ -12,8 +12,8 @@
 			<li><%= t('publish.start.metadata') %></li>
 		</ul>
 		<div class="govuk-button-group">
-			<a href="/<%= i18n.language %>/<%= t('routes.publish.start') %>/<%= t('routes.publish.title') %>/" class="govuk-button"><%= t('buttons.continue') %></a>
-			<a href="/<%= i18n.language %>/" class="govuk-link"><%= t('buttons.cancel') %></a>
+			<a href="<%= buildUrl('/publish/title', i18n.language) %>" class="govuk-button"><%= t('buttons.continue') %></a>
+			<a href="<%= buildUrl('/', i18n.language) %>" class="govuk-link"><%= t('buttons.cancel') %></a>
 		</div>
 	</main>
 </div>

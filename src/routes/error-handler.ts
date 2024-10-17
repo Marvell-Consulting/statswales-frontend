@@ -11,7 +11,7 @@ export const errorHandler: ErrorRequestHandler = (err: any, req: Request, res: R
         case 401:
             logger.error('401 error detected, logging user out');
             res.clearCookie('jwt', { domain: cookieDomain });
-            res.redirect(`/${req.language}/auth/login`);
+            res.redirect(req.buildUrl(`/auth/login`, req.language));
             break;
 
         case 404:
