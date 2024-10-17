@@ -7,11 +7,15 @@
             <%- include("../partials/error-handler"); %>
             <form action="<%= buildUrl('/publish/sources', i18n.language) %>" method="post">
                 <div class="source-list">
-                <% locals.currentImport.sources.forEach((source) => { %>
+                <% locals.currentImport.sources.forEach((source, idx) => { %>
                     <div class="source-list-item">
                         <div class="govuk-grid-row">
                             <div class="govuk-grid-column-full">
-                                <span class="fix-width-30"><label class="govuk-label govuk-!-display-inline" for="<%= source.id %>"><strong><%= source.csv_field %></strong></label></span>
+                                <span class="fix-width-30">
+                                    <label class="govuk-label govuk-!-display-inline" for="<%= source.id %>">
+                                        <strong><%= source.csv_field || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %></strong>
+                                    </label>
+                                </span>
                                 <select class="govuk-select govuk-!-display-inline" id="<%= source.id %>" name="<%= source.id %>">
                                     <% locals.sourceTypes.forEach( (val) => { %>>
                                     <option value="<%= val %>" <% if (source.type === val ) { %>selected<% } %>><%- t(`publish.sources.types.${val}`) %></option>
