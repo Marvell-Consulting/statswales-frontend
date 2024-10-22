@@ -58,7 +58,16 @@ stages:
           targetPort: '3000'
           ingress: 'external'
           imageToDeploy: '$(container_registry)/$(imageRepository):$(tag)'
-          environmentVariables: 'BACKEND_URL=$(backend_url) FRONTEND_URL=$(frontend_url) SESSION_SECRET=$(session_secret) JWT_SECRET=$(jwt_secret)'
+          environmentVariables: >
+            APP_ENV=$(app_env)
+            BACKEND_URL=$(backend_url)
+            BACKEND_PORT=$(backend_port)
+            FRONTEND_URL=$(frontend_url)
+            FRONTEND_PORT=$(frontend_port)
+            SESSION_SECRET=$(session_secret)
+            JWT_SECRET=$(jwt_secret)
+            REDIS_URL=$(redis_url)
+            REDIS_ACCESS_KEY=$(redis_access_key)
 
       # Step 4: Health check
       - task: Bash@3
