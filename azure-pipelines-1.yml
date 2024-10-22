@@ -53,6 +53,7 @@ stages:
           resourceGroup: '$(resourceGroup)'
           containerAppName: 'statswales-develop-frontend'
           containerAppEnvironment: 'statswales-container-app-environment'
+          location: 'UK West'
           targetPort: '3000'
           ingress: 'external'
           imageToDeploy: '$(container_registry)/$(imageRepository):$(tag)'
@@ -64,7 +65,7 @@ stages:
         inputs:
           targetType: 'inline'
           script: |
-            new_revision_url=$(az containerapp ingress show --name statswales-develop-frontend --resource-group $(resourceGroup) --query 'fqdn' -o tsv)
+            new_revision_url=$(az containerapp ingress show --name statswales-develop-frontend --resource-group $(resourceGroup) --location "UK West" --query 'fqdn' -o tsv)
             status=$(curl -s -o /dev/null -w "%{http_code}" $new_revision_url)
 
             if [ "$status" -ne 200 ]; then
@@ -84,4 +85,4 @@ stages:
           scriptLocation: 'inlineScript'
           inlineScript: |
             echo "Rolling back to previous stable revision..."
-            az containerapp revision list --name statswales-develop-frontend --resource-group $(resourceGroup) --query "[?properties.active].name" -o tsv | head -n 1 | xargs -I {} az containerapp update --name statswales-develop-frontend --resource-group $(resourceGroup) --traffic-revisions "{}=100"
+            az containerapp revision list --name statswales-develop-frontend --resource-group $(resourceGroup) --location "UK West" --query "[?properties.active].name" -o tsv | head -n 1 | xargs -I {} az containerapp update --name statswales-develop-frontend --resource-group $(resourceGroup) --location "UK West" --traffic-revisions "{}=100"
