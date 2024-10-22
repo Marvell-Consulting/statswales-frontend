@@ -12,6 +12,7 @@ variables:
 
   # Reference these securely from the Azure DevOps pipeline or variable group
   container_registry: '$(containerRegistryFromAzureDevOps)'
+  acr_name: '$(acrNameFromAzureDevOps)'
   resourceGroup: '$(resourceGroupFromAzureDevOps)'
   azureSubscription: 'StatsWales-Dev-Test'
 
@@ -32,7 +33,7 @@ stages:
           scriptType: 'bash'
           scriptLocation: 'inlineScript'
           inlineScript: |
-            az acr login --name $(container_registry)
+            az acr login --name $(acr_name)
 
       # Step 2: Build and push an image to container registry
       - task: Docker@2
@@ -49,7 +50,7 @@ stages:
         displayName: 'Deploy to Azure Container Apps'
         inputs:
           azureSubscription: '$(azureSubscription)'
-          acrName: '$(container_registry)'
+          acrName: '$(acr_name)'
           resourceGroup: '$(resourceGroup)'
           containerAppName: 'statswales-develop-frontend'
           containerAppEnvironment: 'statswales-container-app-environment'
