@@ -1,0 +1,25 @@
+<%- include("../partials/header"); %>
+
+<div class="govuk-width-container app-width-container">
+	<!-- <a href="#" class="govuk-back-link">Back</a> -->
+	<main class="govuk-main-wrapper" id="main-content" role="main">
+		<h1 class="govuk-heading-xl"><%= t('publish.change_data.title') %></h1>
+		<%- include("../partials/error-handler"); %>
+
+    <form action="<%= buildUrl(`/publish/${locals.datasetId}/change-data`, i18n.language) %>" enctype="multipart/form-data" method="post">
+      <div class="govuk-form-group">
+
+      </div>
+      <p class="govuk-body"><button type="submit" class="govuk-button" data-module="govuk-button">
+          <%= t('buttons.continue') %>
+      </button> <a class="govuk-button govuk-button--secondary" href="<%= locals.backButtonLink %>"><%= t('buttons.cancel')%></a></p>
+  </form>
+
+		<div class="govuk-button-group">
+			<a href="<%= buildUrl('/publish/title', i18n.language) %>" class="govuk-button"><%= t('buttons.continue') %></a>
+			<a href="<%= buildUrl('/', i18n.language) %>" class="govuk-link"><%= t('buttons.cancel') %></a>
+		</div>
+	</main>
+</div>
+
+<%- include("../partials/footer"); %>

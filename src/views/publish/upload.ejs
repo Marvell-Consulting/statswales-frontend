@@ -5,16 +5,13 @@
         <main class="govuk-main-wrapper" id="main-content" role="main">
             <h1 class="govuk-heading-xl"><%= t('publish.upload.title') %></h1>
             <%- include("../partials/error-handler"); %>
-            <form action="<%= buildUrl('/publish/upload', i18n.language) %>" method="post" enctype="multipart/form-data">
+            <form action="<%= buildUrl(`/publish/${locals.datasetId}/upload`, i18n.language) %>" method="post" enctype="multipart/form-data">
                 <div class="govuk-form-group">
                     <label class="govuk-label govuk-label--m" for="csv">
                         <%= t('publish.upload.note') %>
                     </label>
                     <input class="govuk-file-upload" id="csv" name="csv" type="file" accept=".csv">
                 </div>
-                <input type="hidden" name="title" value="<%= locals?.title %>">
-                <input type="hidden" name="page_number" value="1">
-                <input type="hidden" name="page_size" value="100">
                 <button type="submit" class="govuk-button" data-module="govuk-button">
                     <%= t('buttons.upload_csv') %>
                 </button>

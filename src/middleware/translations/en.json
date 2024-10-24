@@ -90,7 +90,8 @@
             "rows": "rows",
             "row": "row",
             "showing": "Showing rows",
-            "unnamed_column": "column {{colNum}}"
+            "unnamed_column": "column {{colNum}}",
+            "confirm_correct": "By continuing, you confirm the data table is correct."
         },
         "sources": {
             "heading": "What does each column in the data table contain?",
@@ -193,7 +194,9 @@
         "preview": {
             "failed_to_get_preview": "We were unable to generate a preview of the uploaded CSV.  Is this a valid CSV?",
             "remove_error": "We were unable to remove your uploadded file from the server.  Something went wrong.  Please try again",
-            "confirm_error":  "You need to confirm or reject the uploaded file using the buttons at the end of the preview"
+            "confirm_error":  "You need to confirm or reject the uploaded file using the buttons at the end of the preview",
+            "revision_missing": "A revision is missing from the dataset",
+            "import_missing": "An import is missing from the dataset"
         },
         "datalake_error": "Unable to connect to Datalake",
         "blob_storage_errror": "Unable to connect to Blob Storage Service",

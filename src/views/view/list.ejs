@@ -4,14 +4,10 @@
         <!-- <a href="#" class="govuk-back-link">Back</a> -->
         <main class="govuk-main-wrapper" id="main-content" role="main">
             <h1 class="govuk-heading-xl"><%= t('view.list.heading') %></h1>
-            <% if (locals?.filelist && locals?.filelist.length > 0) {%>
+            <% if (locals?.datasets && locals?.datasets.length > 0) {%>
                 <ul class="govuk-list">
-                <% locals?.filelist.forEach(function(file) { %>
-                    <% file.titles.forEach(function(title) { %>
-                        <% if (title.language === i18n.language) { %>
-                            <li><a href="/<%= i18n.language %>/dataset/<%= file.dataset_id %>" class="govuk-link"><i class="fa-solid fa-file-csv"></i> <%= title.title %></a>
-                        <% } %>
-                    <% }); %>
+                <% locals?.datasets.forEach(function(dataset) { %>
+                    <li><a href="/<%= i18n.language %>/dataset/<%= dataset.id %>" class="govuk-link"><i class="fa-solid fa-file-csv"></i> <%= dataset.title %></a>
                 <% }); %>
                 </ul>
             <% } else { %>

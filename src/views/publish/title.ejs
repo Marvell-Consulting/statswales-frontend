@@ -3,14 +3,14 @@
         <!-- <a href="#" class="govuk-back-link">Back</a> -->
         <main class="govuk-main-wrapper" id="main-content" role="main">
 
-            <% if (locals.isMetadata) { %>
             <div class="top-links">
                 <div class="govuk-width-container">
-                    <a href="<%= locals.backButtonLink %>" class="govuk-back-link"><%= t('buttons.back') %></a>
-                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+                    <a href="javascript:history.back()" class="govuk-back-link"><%= t('buttons.back') %></a>
+                    <% if (locals.datasetId) { %>
+                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+                    <% } %>
                 </div>
             </div>
-            <% } %>
 
             <h1 class="govuk-heading-xl"><%= t('publish.title.heading') %></h1>
 

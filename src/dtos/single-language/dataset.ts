@@ -1,4 +1,5 @@
-import { DatasetInfoDTO, RevisionDTO } from '../dataset-dto';
+import { DatasetInfoDTO } from '../dataset-info';
+import { RevisionDTO } from '../revision';
 
 import { SingleLanguageDimension } from './dimension';
 

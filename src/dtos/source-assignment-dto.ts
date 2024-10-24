@@ -1,6 +1,6 @@
 import { SourceType } from '../enums/source-type';
 
-export interface DimensionCreationDTO {
+export interface SourceAssignmentDTO {
     sourceId: string;
     sourceType: SourceType;
 }

@@ -14,7 +14,7 @@ import { skipMap } from './middleware/skip-map';
 import { languageSwitcher } from './middleware/language-switcher';
 import { auth } from './routes/auth';
 import { healthcheck } from './routes/healthcheck';
-import { publish } from './routes/publish';
+import { publish } from './routes/publish2';
 import { dataset } from './routes/dataset';
 import { errorHandler } from './routes/error-handler';
 import { homepage } from './routes/homepage';
