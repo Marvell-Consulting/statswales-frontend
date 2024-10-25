@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
 import { Locale } from '../enums/locale';
-import { PublishService } from '../services/publish.service';
 import { StatsWalesApi } from '../services/stats-wales-api';
 
 import { localeUrl } from './language-switcher';
@@ -12,7 +11,6 @@ export const initServices = (req: Request, res: Response, next: NextFunction): v
     if (!/^\/(public|css|assets)/.test(req.originalUrl)) {
         const statsWalesApi = new StatsWalesApi(req.language as Locale, req.cookies.jwt);
         req.swapi = statsWalesApi;
-        req.publish = new PublishService(statsWalesApi);
         req.buildUrl = localeUrl; // for controllers
         res.locals.buildUrl = localeUrl; // for templates
     }

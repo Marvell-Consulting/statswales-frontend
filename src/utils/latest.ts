@@ -1,6 +1,6 @@
 import { sortBy, last } from 'lodash';
 
-import { DatasetDTO } from '../dtos/dataset-dto';
+import { DatasetDTO } from '../dtos/dataset';
 import { FileImportDTO } from '../dtos/file-import';
 import { RevisionDTO } from '../dtos/revision';
 

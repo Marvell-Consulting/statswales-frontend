@@ -1,4 +1,4 @@
-import { DatasetDTO } from './dataset-dto';
+import { DatasetDTO } from './dataset';
 import { ViewError } from './view-error';
 
 export interface PageInfo {

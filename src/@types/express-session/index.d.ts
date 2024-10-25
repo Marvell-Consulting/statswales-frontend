@@ -1,5 +1,5 @@
 import 'express-session';
-import { DatasetDTO, FileImportDTO, RevisionDTO } from '../../dtos/dataset-dto';
+import { DatasetDTO, FileImportDTO, RevisionDTO } from '../../dtos/dataset';
 import { ViewErrDTO } from '../../dtos/view-dto';
 import { SourceAssignmentDTO } from '../../dtos/source-assignment-dto';
 

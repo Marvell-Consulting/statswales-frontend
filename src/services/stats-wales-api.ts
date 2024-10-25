@@ -1,7 +1,7 @@
 import { ReadableStream } from 'node:stream/web';
 
 import { ViewDTO } from '../dtos/view-dto';
-import { DatasetDTO } from '../dtos/dataset-dto';
+import { DatasetDTO } from '../dtos/dataset';
 import { DatasetInfoDTO } from '../dtos/dataset-info';
 import { FileImportDTO } from '../dtos/file-import';
 import { SourceAssignmentDTO } from '../dtos/source-assignment-dto';
@@ -11,7 +11,7 @@ import { HttpMethod } from '../enums/http-method';
 import { ApiException } from '../exceptions/api.exception';
 import { ViewException } from '../exceptions/view.exception';
 import { Locale } from '../enums/locale';
-import { DatasetListItemDTO } from '../dtos/dataset-list-item-dto';
+import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { TaskListState } from '../dtos/task-list-state';
 
 const config = appConfig();

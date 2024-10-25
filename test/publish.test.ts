@@ -5,9 +5,10 @@ import request from 'supertest';
 
 import { i18next } from '../src/middleware/translation';
 import app from '../src/app';
-import { DatasetDTO, FileImportDTO, RevisionDTO } from '../src/dtos/dataset-dto';
+import { DatasetDTO } from '../src/dtos/dataset';
+import { RevisionDTO } from '../src/dtos/revision';
+import { FileImportDTO } from '../src/dtos/file-import';
 import { ViewErrDTO } from '../src/dtos/view-dto';
-import { DimensionCreationDTO } from '../src/dtos/dimension-creation-dto';
 
 import { mockBackend } from './mocks/backend';
 
@@ -19,7 +20,6 @@ declare module 'express-session' {
         currentRevision: RevisionDTO | undefined;
         currentImport: FileImportDTO | undefined;
         errors: ViewErrDTO | undefined;
-        dimensionCreationRequest: DimensionCreationDTO[];
         currentTitle: string | undefined;
     }
 }

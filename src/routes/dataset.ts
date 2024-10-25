@@ -6,7 +6,7 @@ import { ViewDTO } from '../dtos/view-dto';
 import { fetchDataset } from '../middleware/fetch-dataset';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { logger } from '../utils/logger';
-import { DatasetListItemDTO } from '../dtos/dataset-list-item-dto';
+import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { hasError, importIdValidator } from '../validators';
 import { RevisionDTO } from '../dtos/revision';
 import { FileImportDTO } from '../dtos/file-import';
