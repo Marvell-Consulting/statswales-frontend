@@ -8,10 +8,12 @@ import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
 import { SourceType } from '../enums/source-type';
 import { SourceDTO } from '../dtos/source';
 import { SourceAssignmentDTO } from '../dtos/source-assignment-dto';
-import { FileImportDTO } from '../dtos/file-import';
 import { UnknownException } from '../exceptions/unknown.exception';
 import { TaskListState } from '../dtos/task-list-state';
 import { NotFoundException } from '../exceptions/not-found.exception';
+import { statusToColour } from '../utils/status-to-colour';
+import { singleLangDataset } from '../utils/single-lang-dataset';
+import { updateSourceTypes } from '../utils/update-source-types';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -19,6 +21,9 @@ export const start = (req: Request, res: Response, next: NextFunction) => {
 
 export const provideTitle = async (req: Request, res: Response, next: NextFunction) => {
     let errors: ViewErrDTO | undefined;
+    const existingDataset = res.locals.dataset; // dataset does not exist the first time through
+    let title = existingDataset ? singleLangDataset(existingDataset, req.language)?.datasetInfo?.title : undefined;
+    const revisit = Boolean(existingDataset);
 
     if (req.method === 'POST') {
         try {
@@ -26,9 +31,16 @@ export const provideTitle = async (req: Request, res: Response, next: NextFuncti
             if (titleError) {
                 throw new Error('errors.title.missing');
             }
-            logger.debug('Dataset title provided...');
-            const dataset = await req.swapi.createDataset(req.body.title, req.language);
-            res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
+
+            title = req.body.title;
+
+            if (existingDataset) {
+                await req.swapi.updateDatasetInfo(existingDataset.id, { title, language: req.language });
+                res.redirect(req.buildUrl(`/publish/${existingDataset.id}/tasklist`, req.language));
+            } else {
+                const dataset = await req.swapi.createDataset(title, req.language);
+                res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
+            }
             return;
         } catch (err) {
             const error: ViewError = { field: 'title', tag: { name: 'errors.title.missing' } };
@@ -36,11 +48,13 @@ export const provideTitle = async (req: Request, res: Response, next: NextFuncti
         }
     }
 
-    res.render('publish/title', { errors });
+    res.render('publish/title', { title, revisit, errors });
 };
 
 export const uploadFile = async (req: Request, res: Response, next: NextFunction) => {
+    const dataset = res.locals.dataset;
     let errors: ViewErrDTO | undefined;
+    const revisit = dataset.dimensions?.length > 0;
 
     if (req.method === 'POST') {
         try {
@@ -48,7 +62,6 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
                 throw new Error('errors.csv.invalid');
             }
             logger.debug('File upload submitted...');
-            const dataset = res.locals.dataset;
             const fileName = req.file.originalname;
             const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
             await req.swapi.uploadCSVToDataset(dataset.id, fileData, fileName);
@@ -60,31 +73,30 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
         }
     }
 
-    res.render('publish/upload', { errors });
+    res.render('publish/upload', { revisit, errors });
 };
 
-export const preview = async (req: Request, res: Response, next: NextFunction) => {
+export const importPreview = async (req: Request, res: Response, next: NextFunction) => {
+    const { dataset, revision, fileImport } = res.locals;
+    const revisit = dataset.dimensions?.length > 0;
+    let errors: ViewErrDTO | undefined;
     let previewData: ViewDTO | undefined;
 
     try {
-        const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
-        const pageSize = Number.parseInt(req.query.page_size as string, 10) || 10;
-        const { dataset, revision, fileImport } = res.locals;
-
         if (!dataset || !revision || !fileImport) {
             logger.error('Import not found');
             throw new Error('errors.preview.import_missing');
         }
 
+        const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
+        const pageSize = Number.parseInt(req.query.page_size as string, 10) || 10;
         previewData = await req.swapi.getImportPreview(dataset.id, revision.id, fileImport.id, pageNumber, pageSize);
     } catch (err: any) {
         const error: ViewError = { field: 'preview', tag: { name: 'errors.preview.failed_to_get_preview' } };
-        const errors = generateViewErrors(undefined, 400, [error]);
-        res.render('publish/preview', { ...previewData, errors });
-        return;
+        errors = generateViewErrors(undefined, 400, [error]);
     }
 
-    res.render('publish/preview', { ...previewData });
+    res.render('publish/preview', { ...previewData, revisit, errors });
 };
 
 export const confirm = async (req: Request, res: Response, next: NextFunction) => {
@@ -106,15 +118,9 @@ export const confirm = async (req: Request, res: Response, next: NextFunction) =
     }
 };
 
-function updateSourceTypes(fileImport: FileImportDTO, sourceAssign: SourceAssignmentDTO[]) {
-    fileImport.sources.forEach((source) => {
-        source.type = sourceAssign.find((dim) => dim.sourceId === source.id)?.sourceType || SourceType.Unknown;
-    });
-    return fileImport;
-}
-
 export const sources = async (req: Request, res: Response, next: NextFunction) => {
     const { dataset, revision, fileImport } = res.locals;
+    const revisit = dataset.dimensions?.length > 0;
     let error: ViewError | undefined;
     let errors: ViewErrDTO | undefined;
     let currentImport = fileImport;
@@ -159,6 +165,7 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
             } else {
                 await req.swapi.assignSources(dataset.id, revision.id, fileImport.id, sourceAssignment);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+                return;
             }
         }
     } catch (err: any) {
@@ -168,30 +175,38 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
     }
 
     res.render('publish/sources', {
-        errors,
         currentImport,
-        sourceTypes: Object.values(SourceType)
+        sourceTypes: Object.values(SourceType),
+        revisit,
+        errors
     });
 };
 
-export const tasklist = async (req: Request, res: Response, next: NextFunction) => {
+export const taskList = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const tasklist: TaskListState = await req.swapi.getTasklist(res.locals.datasetId);
-        res.render('publish/tasklist', { tasklist });
+        const datasetTitle = singleLangDataset(res.locals.dataset, req.language).datasetInfo?.title;
+        const taskList: TaskListState = await req.swapi.getTaskList(res.locals.datasetId);
+        res.render('publish/tasklist', { datasetTitle, taskList, statusToColour });
     } catch (err) {
         logger.error('Failed to get tasklist', err);
         next(new NotFoundException());
     }
 };
 
-export const redo = async (req: Request, res: Response, next: NextFunction) => {
-    if (req.method === 'POST') {}
-    res.render('publish/redo');
+export const redirectToTasklist = (req: Request, res: Response) => {
+    res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/tasklist`, req.language));
 };
 
-// export const dimensions = async (req: Request, res: Response, next: NextFunction) => {
-//     if (req.method === 'POST') {
-//         // do something
-//     }
-//     res.render('publish/dimensions');
-// };
+export const changeData = async (req: Request, res: Response, next: NextFunction) => {
+    if (req.method === 'POST') {
+        if (req.body.change === 'table') {
+            res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/upload`, req.language));
+            return;
+        }
+        if (req.body.change === 'columns') {
+            res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/sources`, req.language));
+            return;
+        }
+    }
+    res.render('publish/change-data');
+};

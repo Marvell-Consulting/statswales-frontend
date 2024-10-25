@@ -1,7 +1,7 @@
 import { DatasetDTO } from '../dtos/dataset-dto';
 import { SingleLanguageDataset } from '../dtos/single-language/dataset';
 
-export const singleLangDataset = (lang: string, dataset: DatasetDTO): SingleLanguageDataset => {
+export const singleLangDataset = (dataset: DatasetDTO, lang: string): SingleLanguageDataset => {
     return {
         ...dataset,
         datasetInfo: dataset.datasetInfo?.find((info) => info.language === lang),

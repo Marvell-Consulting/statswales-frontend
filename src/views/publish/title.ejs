@@ -3,14 +3,16 @@
         <!-- <a href="#" class="govuk-back-link">Back</a> -->
         <main class="govuk-main-wrapper" id="main-content" role="main">
 
-            <div class="top-links">
-                <div class="govuk-width-container">
-                    <a href="javascript:history.back()" class="govuk-back-link"><%= t('buttons.back') %></a>
-                    <% if (locals.datasetId) { %>
-                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
-                    <% } %>
+            <% if (locals.revisit) { %>
+                <div class="top-links">
+                    <div class="govuk-width-container">
+                        <a href="javascript:history.back()" class="govuk-back-link"><%= t('buttons.back') %></a>
+                        <% if (locals.datasetId) { %>
+                            <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+                        <% } %>
+                    </div>
                 </div>
-            </div>
+            <% } %>
 
             <h1 class="govuk-heading-xl"><%= t('publish.title.heading') %></h1>
 
@@ -25,9 +27,9 @@
                 <%= t('publish.title.language') %>
             </div>
 
-            <form action="<%= locals.postAction %>" enctype="multipart/form-data" method="post">
+            <form enctype="multipart/form-data" method="post">
                 <div class="govuk-form-group">
-                    <input class="govuk-input" id="title" name="title" type="text" value="<%= locals.currentTitle %>">
+                    <input class="govuk-input" id="title" name="title" type="text" value="<%= locals.title %>">
                 </div>
                 <p class="govuk-body"><button type="submit" class="govuk-button" data-module="govuk-button">
                     <%= t('buttons.continue') %>

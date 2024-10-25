@@ -186,7 +186,7 @@ export class StatsWalesApi {
         );
     }
 
-    public async getTasklist(datasetId: string): Promise<TaskListState> {
+    public async getTaskList(datasetId: string): Promise<TaskListState> {
         logger.debug(`Fetching tasklist for dataset: ${datasetId}`);
         return this.fetch({ url: `dataset/${datasetId}/tasklist` }).then(
             (response) => response.json() as unknown as TaskListState
