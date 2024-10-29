@@ -80,9 +80,10 @@
         },
         "preview": {
             "heading": "Check the data table",
-            "heading_summary": "Data table summary",
             "upload_has": "Your upload has:",
             "columns_rows": "{{cols}} column(s) and {{rows}} row(s)",
+            "heading_summary": "Data table summary",
+            "upload_summary": "There are {{cols}} columns and {{rows}} rows in the data table. {{ignored}} column(s) in the CSV upload has been ignored.",
             "showing_rows": "Showing rows {{start}} – {{end}} of {{total}}",
             "columns": "columns",
             "column": "column",
@@ -95,6 +96,13 @@
             "buttons": {
                 "choose_different": "Choose a different data table",
                 "change_datatable": "Change the data table"
+            },
+            "source_type": {
+                "data_values": "Data values",
+                "foot_notes": "Note codes",
+                "dimension": "Dimension",
+                "ignore": "Ignored",
+                "unknown": "Unknown"
             }
         },
         "sources": {
@@ -156,7 +164,9 @@
     },
     "view": {
         "list": {
-            "heading": "List Datasets"
+            "heading": "List Datasets",
+            "details": "Details",
+            "tasklist": "Task List"
         },
         "display": {
             "heading": "Display a Dataset",

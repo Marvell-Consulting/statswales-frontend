@@ -81,6 +81,7 @@ export const importPreview = async (req: Request, res: Response, next: NextFunct
     const revisit = dataset.dimensions?.length > 0;
     let errors: ViewErrDTO | undefined;
     let previewData: ViewDTO | undefined;
+    let ignoredCount = 0;
 
     try {
         if (!dataset || !revision || !fileImport) {
@@ -91,12 +92,13 @@ export const importPreview = async (req: Request, res: Response, next: NextFunct
         const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
         const pageSize = Number.parseInt(req.query.page_size as string, 10) || 10;
         previewData = await req.swapi.getImportPreview(dataset.id, revision.id, fileImport.id, pageNumber, pageSize);
+        ignoredCount = previewData.headers.filter((header) => header.source_type === SourceType.Ignore).length;
     } catch (err: any) {
         const error: ViewError = { field: 'preview', tag: { name: 'errors.preview.failed_to_get_preview' } };
         errors = generateViewErrors(undefined, 400, [error]);
     }
 
-    res.render('publish/preview', { ...previewData, revisit, errors });
+    res.render('publish/preview', { ...previewData, ignoredCount, revisit, errors });
 };
 
 export const confirm = async (req: Request, res: Response, next: NextFunction) => {
