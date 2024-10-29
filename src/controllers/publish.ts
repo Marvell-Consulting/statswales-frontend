@@ -29,6 +29,7 @@ export const provideTitle = async (req: Request, res: Response, next: NextFuncti
         try {
             const titleError = await hasError(titleValidator(), req);
             if (titleError) {
+                res.status(400);
                 throw new Error('errors.title.missing');
             }
 
@@ -68,6 +69,7 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
             res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
             return;
         } catch (err) {
+            res.status(400);
             const error: ViewError = { field: 'csv', tag: { name: 'errors.upload.no_csv_data' } };
             errors = generateViewErrors(undefined, 400, [error]);
         }
@@ -83,41 +85,36 @@ export const importPreview = async (req: Request, res: Response, next: NextFunct
     let previewData: ViewDTO | undefined;
     let ignoredCount = 0;
 
-    try {
-        if (!dataset || !revision || !fileImport) {
-            logger.error('Import not found');
-            throw new Error('errors.preview.import_missing');
-        }
+    if (!dataset || !revision || !fileImport) {
+        logger.error('Import not found');
+        next(new UnknownException('errors.preview.import_missing'));
+        return;
+    }
 
+    if (req.method === 'POST') {
+        try {
+            await req.swapi.confirmFileImport(dataset.id, revision.id, fileImport.id);
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/sources`, req.language));
+            return;
+        } catch (err: any) {
+            res.status(500);
+            const error: ViewError = { field: 'confirm', tag: { name: 'errors.preview.confirm_error' } };
+            errors = generateViewErrors(dataset.id, 500, [error]);
+        }
+    }
+
+    try {
         const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
         const pageSize = Number.parseInt(req.query.page_size as string, 10) || 10;
         previewData = await req.swapi.getImportPreview(dataset.id, revision.id, fileImport.id, pageNumber, pageSize);
         ignoredCount = previewData.headers.filter((header) => header.source_type === SourceType.Ignore).length;
     } catch (err: any) {
+        res.status(400);
         const error: ViewError = { field: 'preview', tag: { name: 'errors.preview.failed_to_get_preview' } };
         errors = generateViewErrors(undefined, 400, [error]);
     }
 
     res.render('publish/preview', { ...previewData, ignoredCount, revisit, errors });
-};
-
-export const confirm = async (req: Request, res: Response, next: NextFunction) => {
-    const { dataset, revision, fileImport } = res.locals;
-
-    try {
-        if (!dataset || !revision || !fileImport) {
-            logger.error('Import not found');
-            throw new Error('errors.preview.import_missing');
-        }
-
-        await req.swapi.confirmFileImport(dataset.id, revision.id, fileImport.id);
-        res.redirect(req.buildUrl(`/publish/${dataset.id}/sources`, req.language));
-    } catch (err: any) {
-        const error: ViewError = { field: 'confirm', tag: { name: 'errors.preview.confirm_error' } };
-        req.session.errors = generateViewErrors(dataset.id, 500, [error]);
-        req.session.save();
-        res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
-    }
 };
 
 export const sources = async (req: Request, res: Response, next: NextFunction) => {

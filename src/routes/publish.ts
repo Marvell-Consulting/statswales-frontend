@@ -2,13 +2,11 @@ import { Router } from 'express';
 import multer from 'multer';
 
 import { fetchDataset } from '../middleware/fetch-dataset';
-import { flashErrors } from '../middleware/flash-errors';
 import {
     start,
     provideTitle,
     uploadFile,
     importPreview,
-    confirm,
     sources,
     taskList,
     changeData,
@@ -32,9 +30,8 @@ publish.post('/:datasetId/title', fetchDataset, upload.none(), provideTitle);
 publish.get('/:datasetId/upload', fetchDataset, uploadFile);
 publish.post('/:datasetId/upload', fetchDataset, upload.single('csv'), uploadFile);
 
-publish.get('/:datasetId/preview', fetchDataset, flashErrors, importPreview);
-
-publish.get('/:datasetId/confirm', fetchDataset, confirm);
+publish.get('/:datasetId/preview', fetchDataset, importPreview);
+publish.post('/:datasetId/preview', fetchDataset, upload.none(), importPreview);
 
 publish.get('/:datasetId/sources', fetchDataset, sources);
 publish.post('/:datasetId/sources', fetchDataset, upload.none(), sources);
