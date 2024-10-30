@@ -10,7 +10,8 @@ import {
     sources,
     taskList,
     changeData,
-    redirectToTasklist
+    redirectToTasklist,
+    provideSummary
 } from '../controllers/publish';
 
 export const publish = Router();
@@ -40,3 +41,6 @@ publish.get('/:datasetId/tasklist', fetchDataset, taskList);
 
 publish.get('/:datasetId/change', fetchDataset, changeData);
 publish.post('/:datasetId/change', fetchDataset, upload.none(), changeData);
+
+publish.get('/:datasetId/summary', fetchDataset, provideSummary);
+publish.post('/:datasetId/summary', fetchDataset, upload.none(), provideSummary);
