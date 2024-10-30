@@ -11,3 +11,4 @@ export const importIdValidator = () => param('importId').trim().notEmpty().isUUI
 
 export const titleValidator = () => body('title').trim().notEmpty();
 export const descriptionValidator = () => body('description').trim().notEmpty();
+export const collectionValidator = () => body('collection').trim().notEmpty();
