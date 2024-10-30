@@ -162,18 +162,19 @@
             </div>
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-one-half">
-                    <form method="post">
                         <% if (locals.revisit) { %>
                             <a href="<%= buildUrl(`/publish/${locals.datasetId}/change`, i18n.language) %>" class="govuk-button govuk-!-display-inline"><%= t('publish.preview.buttons.change_datatable') %></a>
                         <% } else { %>
                             <p class="govuk-body"><%= t('publish.preview.confirm_correct') %></p>
-                            <!-- <a href="<%= buildUrl(`/publish/${locals.datasetId}/confirm`, i18n.language) %>" class="govuk-button govuk-!-display-inline"><%= t('buttons.continue') %></a> -->
-                            <button type="submit" name="confirm" value="true" class="govuk-button govuk-!-display-inline" data-module="govuk-button">
-                                <%= t('buttons.continue') %>
-                            </button>
-                            <a href="<%= buildUrl(`/publish/${locals.datasetId}/upload`, i18n.language) %>" class="govuk-button govuk-button--secondary govuk-!-display-inline"><%= t('publish.preview.buttons.choose_different') %></a>
+                            <form method="post" role="continue">
+                                <button type="submit" name="confirm" value="true" class="govuk-button govuk-!-display-inline" data-module="govuk-button" data-prevent-double-click="true">
+                                    <%= t('buttons.continue') %>
+                                </button>
+                                <button type="submit" name="confirm" value="false" class="govuk-button govuk-button--secondary govuk-!-display-inline" data-module="govuk-button">
+                                    <%= t('publish.preview.buttons.choose_different') %>
+                                </button>
+                            </form>
                         <% } %>
-                    </form>
                 </div>
             </div>
         <% } %> <!-- Do I have data? -->

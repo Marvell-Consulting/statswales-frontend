@@ -93,8 +93,12 @@ export const importPreview = async (req: Request, res: Response, next: NextFunct
 
     if (req.method === 'POST') {
         try {
-            await req.swapi.confirmFileImport(dataset.id, revision.id, fileImport.id);
-            res.redirect(req.buildUrl(`/publish/${dataset.id}/sources`, req.language));
+            if (req.body.confirm === 'true') {
+                await req.swapi.confirmFileImport(dataset.id, revision.id, fileImport.id);
+                res.redirect(req.buildUrl(`/publish/${dataset.id}/sources`, req.language));
+            } else {
+                res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
+            }
             return;
         } catch (err: any) {
             res.status(500);
