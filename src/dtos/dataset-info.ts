@@ -4,4 +4,6 @@ export interface DatasetInfoDTO {
     description?: string;
     collection?: string;
     quality?: string;
+    roundingApplied?: boolean;
+    roundingDescription?: string;
 }
