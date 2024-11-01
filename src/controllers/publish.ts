@@ -80,7 +80,6 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
 
 export const importPreview = async (req: Request, res: Response, next: NextFunction) => {
     const { dataset, revision, fileImport } = res.locals;
-    const revisit = dataset.dimensions?.length > 0;
     let errors: ViewErrDTO | undefined;
     let previewData: ViewDTO | undefined;
     let ignoredCount = 0;
@@ -90,6 +89,9 @@ export const importPreview = async (req: Request, res: Response, next: NextFunct
         next(new UnknownException('errors.preview.import_missing'));
         return;
     }
+
+    // if sources have previously been assigned a type, this is a revisit
+    const revisit = fileImport.sources?.filter((source: SourceDTO) => Boolean(source.type)).length > 0;
 
     if (req.method === 'POST') {
         try {
@@ -123,7 +125,7 @@ export const importPreview = async (req: Request, res: Response, next: NextFunct
 
 export const sources = async (req: Request, res: Response, next: NextFunction) => {
     const { dataset, revision, fileImport } = res.locals;
-    const revisit = dataset.dimensions?.length > 0;
+    const revisit = fileImport.sources?.filter((source: SourceDTO) => Boolean(source.type)).length > 0;
     let error: ViewError | undefined;
     let errors: ViewErrDTO | undefined;
     let currentImport = fileImport;
