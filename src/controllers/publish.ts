@@ -287,6 +287,12 @@ export const provideQuality = async (req: Request, res: Response, next: NextFunc
 
     if (req.method === 'POST') {
         try {
+            datasetInfo = {
+                quality: req.body.quality,
+                roundingApplied: Boolean(req.body.roundingApplied),
+                roundingDescription: req.body.roundingDescription
+            };
+
             for (const validator of [qualityValidator(), roundingAppliedValidator(), roundingDescriptionValidator()]) {
                 const result = await validator.run(req);
                 if (!result.isEmpty()) {
@@ -295,12 +301,6 @@ export const provideQuality = async (req: Request, res: Response, next: NextFunc
                     throw error;
                 }
             }
-
-            datasetInfo = {
-                quality: req.body.quality,
-                roundingApplied: Boolean(req.body.roundingApplied),
-                roundingDescription: req.body.roundingDescription
-            };
 
             await req.swapi.updateDatasetInfo(dataset.id, { ...datasetInfo, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
