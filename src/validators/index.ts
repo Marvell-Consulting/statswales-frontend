@@ -14,6 +14,6 @@ export const descriptionValidator = () => body('description').trim().notEmpty();
 export const collectionValidator = () => body('collection').trim().notEmpty();
 
 export const qualityValidator = () => body('quality').trim().notEmpty();
-export const roundingAppliedValidator = () => body('roundingApplied').notEmpty().isBoolean({ loose: true });
+export const roundingAppliedValidator = () => body('rounding_applied').notEmpty().isBoolean({ loose: true });
 export const roundingDescriptionValidator = () =>
-    body('roundingDescription').if(body('roundingApplied').equals('true')).trim().notEmpty();
+    body('rounding_description').if(body('rounding_applied').equals('true')).trim().notEmpty();

@@ -44,7 +44,7 @@
                             <fieldset class="govuk-fieldset" aria-describedby="rounding">
                                 <div class="govuk-radios" data-module="govuk-radios">
                                     <div class="govuk-radios__item">
-                                        <input class="govuk-radios__input" id="roundingApplied1" name="roundingApplied" data-aria-controls="conditional-rounding1" type="radio" value="true" <%= locals.roundingApplied === true ? 'checked' : '' %> />
+                                        <input class="govuk-radios__input" id="roundingApplied1" name="rounding_applied" data-aria-controls="conditional-rounding1" type="radio" value="true" <%= locals.rounding_applied === true ? 'checked' : '' %> />
                                         <label class="govuk-label govuk-radios__label" for="roundingApplied1"><%= t('publish.quality.rounding.options.yes.label') %></label>
                                     </div>
                                     <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-rounding1">
@@ -54,12 +54,12 @@
                                             <p><%= t('publish.quality.rounding.options.yes.note') %></p>
                                             </legend>
                                             <div class="govuk-hint"><%= t('publish.quality.language') %></div>
-                                            <textarea class="govuk-textarea" id="roundingDescription" name="roundingDescription" rows="4" aria-describedby="roundingDescription-hint"></textarea>
+                                            <textarea class="govuk-textarea" id="roundingDescription" name="rounding_description" rows="4" aria-describedby="roundingDescription-hint"><%= locals.rounding_description %></textarea>
                                         </fieldset>
                                         </div>
                                     </div>
                                     <div class="govuk-radios__item">
-                                        <input class="govuk-radios__input" id="roundingApplied2" name="roundingApplied" type="radio" value="false" <%= locals.roundingApplied === false ? 'checked' : '' %> />
+                                        <input class="govuk-radios__input" id="roundingApplied2" name="rounding_applied" type="radio" value="false" <%= locals.rounding_applied === false ? 'checked' : '' %> />
                                         <label class="govuk-label govuk-radios__label" for="roundingApplied2"><%= t('publish.quality.rounding.options.no.label') %></label>
                                     </div>
                                 </div>

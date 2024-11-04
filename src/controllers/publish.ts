@@ -289,8 +289,8 @@ export const provideQuality = async (req: Request, res: Response, next: NextFunc
         try {
             datasetInfo = {
                 quality: req.body.quality,
-                roundingApplied: Boolean(req.body.roundingApplied),
-                roundingDescription: req.body.roundingDescription
+                rounding_applied: req.body.rounding_applied ? req.body.rounding_applied === 'true' : undefined,
+                rounding_description: req.body.rounding_applied === 'true' ? req.body.rounding_description : ''
             };
 
             for (const validator of [qualityValidator(), roundingAppliedValidator(), roundingDescriptionValidator()]) {
