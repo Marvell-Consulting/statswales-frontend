@@ -1,25 +1,28 @@
-import { TaskState } from './task-state';
+import { TaskStatus } from '../enums/task-status';
+
 import { DimensionState } from './dimension-state';
 
 export interface TaskListState {
-    datasetTitle: string;
-    datasetId: string;
+    datatable: TaskStatus;
+
     dimensions: DimensionState[];
+
     metadata: {
-        title: TaskState;
-        summary: TaskState;
-        data_collection: TaskState;
-        statistical_quality: TaskState;
-        data_sources: TaskState;
-        related_reports: TaskState;
-        update_frequency: TaskState;
-        designation: TaskState;
-        relevant_topics: TaskState;
+        title: TaskStatus;
+        summary: TaskStatus;
+        statistical_quality: TaskStatus;
+        data_sources: TaskStatus;
+        related_reports: TaskStatus;
+        update_frequency: TaskStatus;
+        designation: TaskStatus;
+        data_collection: TaskStatus;
+        relevant_topics: TaskStatus;
     };
+
     publishing: {
-        when: TaskState;
-        export: TaskState;
-        import: TaskState;
-        submit: TaskState;
+        when: TaskStatus;
+        export: TaskStatus;
+        import: TaskStatus;
+        submit: TaskStatus;
     };
 }

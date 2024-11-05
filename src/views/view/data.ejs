@@ -41,16 +41,16 @@
                     </ul>
                     <div class="govuk-tabs__panel" id="summary">
                         <h2 class="govuk-heading-m"><%= t('view.display.summary') %></h2>
-                        <p class="govuk-body-m"><strong><%- t('view.display.title') %></strong> <%= locals.dataset.datasetInfo.find((infos) => infos.language === i18n.language).title || `<${t('errors.name_missing')}>` %></p>
+                        <p class="govuk-body-m"><strong><%- t('view.display.title') %></strong> <%= locals.dataset?.datasetInfo?.find((infos) => infos.language === i18n.language).title || `<${t('errors.name_missing')}>` %></p>
 
                         <p class="govuk-body-m"><strong><%- t('view.display.description') %></strong>
-                            <%= locals.dataset.datasetInfo.find((infos) => infos.language === i18n.language).description || `<${t('errors.view.display.no_description')}>` %>
+                            <%= locals.dataset?.datasetInfo?.find((infos) => infos.language === i18n.language).description || `<${t('errors.view.display.no_description')}>` %>
                         </p>
                     </div>
                     <div class="govuk-tabs__panel" id="dimension">
                         <h2 class="govuk-heading-m"><%= t('view.display.dimension') %></h2>
-                        <% if (locals.dataset.dimensions.length > 0) { %>
-                            <% locals.dataset.dimensions.forEach((dim) => { %>
+                        <% if (locals.dataset?.dimensions?.length > 0) { %>
+                            <% locals.dataset?.dimensions?.forEach((dim) => { %>
                                 <p class="govuk-body"><strong>ID:</strong> <%= dim.id %></p>
                                 <p class="govuk-body"><strong><%- t('view.display.type') %>:</strong> <%= dim.type %></p>
                                 <p class="govuk-body"><strong><%- t('view.display.start_revision') %>:</strong> <%= dim.start_revision_id %></p>
@@ -72,8 +72,8 @@
                     </div>
                     <div class="govuk-tabs__panel" id="revision">
                         <h2 class="govuk-heading-m"><%= t('view.display.revision') %></h2>
-                        <% if (locals.dataset.revisions.length > 0) { %>
-                            <% locals.dataset.revisions.forEach((rev) => { %>
+                        <% if (locals.dataset?.revisions?.length > 0) { %>
+                            <% locals.dataset?.revisions?.forEach((rev) => { %>
                                 <p class="govuk-body"><strong>ID:</strong> <%= rev.id %></p>
                                 <p class="govuk-body"><strong><%- t('view.display.index') %>:</strong> <%= rev.revision_index %></p>
                                 <p class="govuk-body"><strong><%- t('view.display.created_at') %>:</strong> <%= rev.created_at %></p>
@@ -85,15 +85,15 @@
                     </div>
                     <div class="govuk-tabs__panel" id="imports">
                         <h2 class="govuk-heading-m"><%= t('view.display.imports') %></h2>
-                        <% if (locals.dataset.revisions.length > 0) { %>
-                            <% locals.dataset.revisions.forEach((rev) => { %>
-                                <% rev.imports.forEach((imp) => { %>
+                        <% if (locals.dataset?.revisions?.length > 0) { %>
+                            <% locals.dataset?.revisions?.forEach((rev) => { %>
+                                <% rev.imports?.forEach((imp) => { %>
                                     <p class="govuk-body"><strong>ID:</strong> <%= imp.id %></p>
                                     <p class="govuk-body"><strong><%= t('view.display.filename') %>:</strong> <%= imp.filename %></p>
                                     <p class="govuk-body"><strong><%= t('view.display.mime_type') %>:</strong> <%= imp.mime_type %></p>
                                     <p class="govuk-body"><strong><%= t('view.display.location') %>:</strong> <%= imp.location %></p>
                                     <p class="govuk-body"><strong><%= t('view.display.download') %>:</strong>
-                                        <a href="/<%= i18n.language %>/<%= t('routes.view.start') %>/<%= locals.dataset.id %>/import/<%= imp.id %>">
+                                        <a href="<%= buildUrl(`/dataset/${locals.datasetId}/import/${imp.id}`, i18n.language) %>">
                                             <i class="fa-solid fa-download"></i> <%= t('view.display.download_file') %>
                                         </a></p>
                                 <% }); %>
@@ -114,13 +114,13 @@
                         <thead class="govuk-table__head">
                             <tr class="govuk-table__row">
                             <tr>
-                            <% locals.headers.forEach(function(cell) { %>
+                            <% locals.headers?.forEach(function(cell) { %>
                                 <th scope="col" class="govuk-table__header"><%= cell.name %></th>
                             <% }); %>
                             </tr>
                         </thead>
                         <tbody>
-                            <% locals.data.forEach(function(row) { %>
+                            <% locals.data?.forEach(function(row) { %>
                                 <tr>
                                     <% row.forEach(function(cell) { %>
                                         <td class="govuk-table__cell"><%= cell %></td>
@@ -143,7 +143,7 @@
                                 <% if (page==='previous' ) { %>
                                     <div class="govuk-pagination__prev">
                                         <a class="govuk-link govuk-pagination__link"
-                                            href="/<%= i18n.language %>/<%= t('routes.view.start') %>/<%= locals.dataset.id %>?&page_number=<%= locals.current_page-1 %>&page_size=<%= locals.page_size %>"
+                                            href="<%= buildUrl(`/dataset/${locals.datasetId}`, i18n.language, { page_number: locals.current_page - 1, page_size: locals.page_size }) %>"
                                             rel="prev">
                                             <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg"
                                                 height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
@@ -156,47 +156,47 @@
                                             </span>
                                         </a>
                                     </div>
-                                    <% } else if (page==='next' ) { %>
-                                        <div class="govuk-pagination__next">
-                                            <a class="govuk-link govuk-pagination__link"
-                                                href="/<%= i18n.language %>/<%= t('routes.view.start') %>/<%= locals.dataset.id %>?&page_number=<%= locals.current_page+1 %>&page_size=<%= locals.page_size %>"
-                                                rel="next">
-                                                <span class="govuk-pagination__link-title">
-                                                    <%= t('pagination.next') %>
-                                                </span>
-                                                <svg class="govuk-pagination__icon govuk-pagination__icon--next"
-                                                    xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true"
-                                                    focusable="false" viewBox="0 0 15 13">
-                                                    <path
-                                                        d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z">
-                                                    </path>
-                                                </svg>
-                                            </a>
-                                        </div>
-                                        <% } else if (page==='...' ) { %>
-                                            <li class="govuk-pagination__item govuk-pagination__item--ellipses">
-                                                &ctdot;
-                                            </li>
-                                            <% } else if (page===locals.current_page) { %>
-                                                <li class="govuk-pagination__item govuk-pagination__item--active">
-                                                    <span aria-current="page" class="govuk-pagination__link">
-                                                        <%= page %>
-                                                    </span>
-                                                </li>
-                                                <% } else { %>
-                                                    <li class="govuk-pagination__item">
-                                                        <a class="govuk-link govuk-pagination__link"
-                                                            href="/<%= i18n.language %>/<%= t('routes.view.start') %>/<%= locals.dataset.id %>?&page_number=<%= page %>&page_size=<%= locals.page_size %>"
-                                                            aria-label="Page <%= page %>">
-                                                            <%= page %>
-                                                        </a>
-                                                    </li>
-                                                    <% } %>
-                                                        <% }); %>
+                                <% } else if (page==='next' ) { %>
+                                    <div class="govuk-pagination__next">
+                                        <a class="govuk-link govuk-pagination__link"
+                                            href="<%= buildUrl(`/dataset/${locals.datasetId}`, i18n.language, { page_number: locals.current_page + 1, page_size: locals.page_size }) %>"
+                                            rel="next">
+                                            <span class="govuk-pagination__link-title">
+                                                <%= t('pagination.next') %>
+                                            </span>
+                                            <svg class="govuk-pagination__icon govuk-pagination__icon--next"
+                                                xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true"
+                                                focusable="false" viewBox="0 0 15 13">
+                                                <path
+                                                    d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z">
+                                                </path>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                <% } else if (page==='...' ) { %>
+                                    <li class="govuk-pagination__item govuk-pagination__item--ellipses">
+                                        &ctdot;
+                                    </li>
+                                <% } else if (page===locals.current_page) { %>
+                                    <li class="govuk-pagination__item govuk-pagination__item--active">
+                                        <span aria-current="page" class="govuk-pagination__link">
+                                            <%= page %>
+                                        </span>
+                                    </li>
+                                <% } else { %>
+                                    <li class="govuk-pagination__item">
+                                        <a class="govuk-link govuk-pagination__link"
+                                            href="<%= buildUrl(`/dataset/${locals.datasetId}`, i18n.language, { page_number: page, page_size: locals.page_size }) %>"
+                                            aria-label="Page <%= page %>">
+                                            <%= page %>
+                                        </a>
+                                    </li>
+                                <% } %>
+                            <% }); %>
                         </nav>
                     </div>
                     <div class="govuk-grid-column-one-half">
-                        <form action="/<%= i18n.language %>/<%= t('routes.view.start') %>/<%= locals.dataset.id %>" method="get" role="page-size" class="govuk-!-margin-bottom-0">
+                        <form action="<%= buildUrl(`/dataset/${locals.datasetId}`, ) %>" method="get" role="page-size" class="govuk-!-margin-bottom-0">
                             <label class="govuk-label govuk-!-display-inline" for="page_size">
                                 Page Size
                             </label>

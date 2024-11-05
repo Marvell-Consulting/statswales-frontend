@@ -6,7 +6,7 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         <h2 class="region-subhead"><%= t('publish.tasklist.heading') %></h2>
-        <h1 class="govuk-heading-l" style="margin-bottom: 15px;"><%= taskList.datasetTitle %></h1>
+        <h1 class="govuk-heading-l" style="margin-bottom: 15px;"><%= datasetTitle %></h1>
       </div>
     </div>
 
@@ -16,22 +16,24 @@
         <ul class="govuk-task-list">
           <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/preview`, i18n.language) %>" aria-describedby="prepare-application-1-status">
                 <%= t('publish.tasklist.data.datatable') %>
+              </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--green">
-                <%= t('publish.tasklist.status.completed') %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.datatable) %>">
+                <%= t(`publish.tasklist.status.${taskList.datatable}`) %>
               </strong>
             </div>
           </li>
           <% taskList.dimensions.forEach(function(dimension) { %>
             <li class="govuk-task-list__item govuk-task-list__item--with-link">
                 <div class="govuk-task-list__name-and-hint">
-                    <a class="govuk-link govuk-task-list__link" href="<%= sourcesUrl %>"><%=dimension.name %></a>
+                    <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/sources`, i18n.language) %>"><%=dimension.name %></a>
                 </div>
                 <div class="govuk-task-list__status">
-                  <strong class="govuk-tag govuk-tag--<%= dimension.state.colour %>">
-                    <%= t(dimension.state.tag) %>
+                  <strong class="govuk-tag govuk-tag--<%= statusToColour(dimension.status) %>">
+                    <%= t(`publish.tasklist.status.${dimension.status}`) %>
                   </strong>
                 </div>
               </li>
@@ -42,109 +44,109 @@
         <ul class="govuk-task-list">
           <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
-              <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${taskList.datasetId}/title`, i18n.language) %>" aria-describedby="prepare-application-3-status">
+              <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/title`, i18n.language) %>" aria-describedby="prepare-application-3-status">
                 <%= t('publish.tasklist.metadata.title') %>
               </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= taskList.metadata.title.colour %>">
-                <%= t(taskList.metadata.title.tag) %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.title) %>">
+                <%= t(`publish.tasklist.status.${taskList.metadata.title}`) %>
               </strong>
             </div>
           </li>
           <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
-              <a class="govuk-link govuk-task-list__link" href="metadata-summary.html" aria-describedby="prepare-application-3-status">
+              <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/summary`, i18n.language) %>" aria-describedby="prepare-application-3-status">
                 <%= t('publish.tasklist.metadata.summary') %>
               </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= taskList.metadata.summary.colour %>">
-                <%= t(taskList.metadata.summary.tag) %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.summary) %>">
+                <%= t(`publish.tasklist.status.${taskList.metadata.summary}`) %>
               </strong>
             </div>
           </li>
           <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
-              <a class="govuk-link govuk-task-list__link" href="metadata-collection.html">
+              <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/data-collection`, i18n.language) %>">
                 <%= t('publish.tasklist.metadata.data_collection') %>
               </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= taskList.metadata.data_collection.colour %>">
-                <%= t(taskList.metadata.data_collection.tag) %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.data_collection) %>">
+                <%= t(`publish.tasklist.status.${taskList.metadata.data_collection}`) %>
               </strong>
             </div>
           </li>
           <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
-              <a class="govuk-link govuk-task-list__link" href="metadata-quality.html">
+              <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/quality`, i18n.language) %>">
                 <%= t('publish.tasklist.metadata.statistical_quality') %>
               </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= taskList.metadata.statistical_quality.colour %>">
-                <%= t(taskList.metadata.statistical_quality.tag) %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.statistical_quality) %>">
+                <%= t(`publish.tasklist.status.${taskList.metadata.statistical_quality}`) %>
               </strong>
             </div>
           </li>
           <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
-              <a class="govuk-link govuk-task-list__link" href="metadata-data-source-more" aria-describedby="prepare-application-4-status">
+              <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/data-sources`, i18n.language) %>" aria-describedby="prepare-application-4-status">
                 <%= t('publish.tasklist.metadata.data_sources') %>
               </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= taskList.metadata.data_sources.colour %>">
-                <%= t(taskList.metadata.data_sources.tag) %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.data_sources) %>">
+                <%= t(`publish.tasklist.status.${taskList.metadata.data_sources}`) %>
               </strong>
             </div>
           </li>
           <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
-              <a class="govuk-link govuk-task-list__link" href="metadata-reports-more.html" aria-describedby="prepare-application-5-status">
+              <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/related`, i18n.language) %>" aria-describedby="prepare-application-5-status">
                 <%= t('publish.tasklist.metadata.related_reports') %>
               </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= taskList.metadata.related_reports.colour %>">
-                <%= t(taskList.metadata.related_reports.tag) %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.related_reports) %>">
+                <%= t(`publish.tasklist.status.${taskList.metadata.related_reports}`) %>
               </strong>
             </div>
           </li>
           <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
-              <a class="govuk-link govuk-task-list__link" href="metadata-frequency.html" aria-describedby="prepare-application-5-status">
+              <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/update-frequency`, i18n.language) %>" aria-describedby="prepare-application-5-status">
                 <%= t('publish.tasklist.metadata.update_frequency') %>
               </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= taskList.metadata.update_frequency.colour %>">
-                <%= t(taskList.metadata.update_frequency.tag) %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.update_frequency) %>">
+                <%= t(`publish.tasklist.status.${taskList.metadata.update_frequency}`) %>
               </strong>
             </div>
           </li>
           <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
-              <a class="govuk-link govuk-task-list__link" href="metadata-designation.html" aria-describedby="prepare-application-5-status">
+              <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/designation`, i18n.language) %>" aria-describedby="prepare-application-5-status">
                 <%= t('publish.tasklist.metadata.designation') %>
               </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= taskList.metadata.designation.colour %>">
-                <%= t(taskList.metadata.designation.tag) %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.designation) %>">
+                <%= t(`publish.tasklist.status.${taskList.metadata.designation}`) %>
               </strong>
             </div>
           </li>
           <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
-              <a class="govuk-link govuk-task-list__link" href="metadata-topics.html" aria-describedby="prepare-application-5-status">
+              <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/topics`, i18n.language) %>" aria-describedby="prepare-application-5-status">
                 <%= t('publish.tasklist.metadata.relevant_topics') %>
               </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= taskList.metadata.relevant_topics.colour %>">
-                <%= t(taskList.metadata.relevant_topics.tag) %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.relevant_topics) %>">
+                <%= t(`publish.tasklist.status.${taskList.metadata.relevant_topics}`) %>
               </strong>
             </div>
           </li>
@@ -159,8 +161,8 @@
               </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= taskList.publishing.when.colour %>">
-                <%= t(taskList.publishing.when.tag) %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.publishing.when) %>">
+                <%= t(`publish.tasklist.status.${taskList.publishing.when}`) %>
               </strong>
             </div>
           </li>
@@ -171,8 +173,8 @@
               </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= taskList.publishing.export.colour %>">
-                <%= t(taskList.publishing.export.tag) %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.publishing.export) %>">
+                <%= t(`publish.tasklist.status.${taskList.publishing.export}`) %>
               </strong>
             </div>
           </li>
@@ -183,8 +185,8 @@
               </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= taskList.publishing.import.colour %>">
-                <%= t(taskList.publishing.import.tag) %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.publishing.import) %>">
+                <%= t(`publish.tasklist.status.${taskList.publishing.import}`) %>
               </strong>
             </div>
           </li>
@@ -195,8 +197,8 @@
               </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= taskList.publishing.submit.colour %>">
-                <%= t(taskList.publishing.submit.tag) %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.publishing.submit) %>">
+                <%= t(`publish.tasklist.status.${taskList.publishing.submit}`) %>
               </strong>
             </div>
           </li>

@@ -1,21 +1,30 @@
 import { ReadableStream } from 'node:stream/web';
 
-import { RequestHandler } from 'express';
-
-import { FileList } from '../dtos/file-list';
 import { ViewDTO } from '../dtos/view-dto';
-import { DatasetDTO, DatasetInfoDTO, FileImportDTO } from '../dtos/dataset-dto';
-import { DimensionCreationDTO } from '../dtos/dimension-creation-dto';
+import { DatasetDTO } from '../dtos/dataset';
+import { DatasetInfoDTO } from '../dtos/dataset-info';
+import { FileImportDTO } from '../dtos/file-import';
+import { SourceAssignmentDTO } from '../dtos/source-assignment-dto';
 import { logger as parentLogger } from '../utils/logger';
 import { appConfig } from '../config';
 import { HttpMethod } from '../enums/http-method';
 import { ApiException } from '../exceptions/api.exception';
 import { ViewException } from '../exceptions/view.exception';
 import { Locale } from '../enums/locale';
+import { DatasetListItemDTO } from '../dtos/dataset-list-item';
+import { TaskListState } from '../dtos/task-list-state';
 
 const config = appConfig();
 
 const logger = parentLogger.child({ service: 'sw-api' });
+
+interface fetchParams {
+    url: string;
+    method?: HttpMethod;
+    body?: FormData | string;
+    json?: unknown;
+    headers?: Record<string, string>;
+}
 
 export class StatsWalesApi {
     private readonly backendUrl = config.backend.url;
@@ -28,20 +37,20 @@ export class StatsWalesApi {
         this.token = token;
     }
 
-    public async fetch(
-        path: string,
-        method: HttpMethod = HttpMethod.Get,
-        body?: any,
-        extraHeaders?: Record<string, string>
-    ): Promise<Response> {
-        const headers = {
+    public async fetch({ url, method = HttpMethod.Get, body, json, headers }: fetchParams): Promise<Response> {
+        const head = {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             'Accept-Language': this.lang,
             ...(this.token ? { Authorization: `Bearer ${this.token}` } : {}),
-            ...extraHeaders
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            ...(json ? { 'Content-Type': 'application/json; charset=UTF-8' } : {}),
+            ...headers
         };
 
-        return fetch(`${this.backendUrl}/${path}`, { method, headers, body })
+        // if json is passed, then body will be ignored
+        const data = json ? JSON.stringify(json) : body;
+
+        return fetch(`${this.backendUrl}/${url}`, { method, headers: head, body: data })
             .then((response: Response) => {
                 if (!response.ok) {
                     throw new ApiException(response.statusText, response.status);
@@ -54,26 +63,69 @@ export class StatsWalesApi {
             });
     }
 
-    public async getFileList(): Promise<FileList> {
-        logger.debug(`Fetching file list...`);
-        return this.fetch(`dataset/active`).then((response) => response.json() as unknown as FileList);
+    public async ping(): Promise<boolean> {
+        logger.debug(`Pinging backend...`);
+
+        return this.fetch({ url: 'healthcheck' }).then(() => {
+            logger.debug('API responded to ping');
+            return true;
+        });
     }
 
-    public async getFileFromImport(datasetId: string, revisionId: string, importId: string): Promise<ReadableStream> {
+    public async createDataset(title?: string, language?: string): Promise<DatasetDTO> {
+        logger.debug(`Creating dataset...`);
+        const json: DatasetInfoDTO = { title, language };
+
+        return this.fetch({ url: 'dataset', method: HttpMethod.Post, json }).then(
+            (response) => response.json() as unknown as DatasetDTO
+        );
+    }
+
+    public async getDataset(datasetId: string): Promise<DatasetDTO> {
+        logger.debug(`Fetching dataset: ${datasetId}`);
+        return this.fetch({ url: `dataset/${datasetId}` }).then((response) => response.json() as unknown as DatasetDTO);
+    }
+
+    public uploadCSVToDataset(datasetId: string, file: Blob, filename: string): Promise<DatasetDTO> {
+        logger.debug(`Uploading file ${filename} to dataset: ${datasetId}`);
+        const body = new FormData();
+        body.set('csv', file, filename);
+
+        return this.fetch({ url: `dataset/${datasetId}/data`, method: HttpMethod.Post, body }).then(
+            (response) => response.json() as unknown as DatasetDTO
+        );
+    }
+
+    public async getDatasetView(datasetId: string, pageNumber: number, pageSize: number): Promise<ViewDTO> {
+        logger.debug(`Fetching view for dataset: ${datasetId}, page: ${pageNumber}, pageSize: ${pageSize}`);
+
+        return this.fetch({ url: `dataset/${datasetId}/view?page_number=${pageNumber}&page_size=${pageSize}` }).then(
+            (response) => response.json() as unknown as ViewDTO
+        );
+    }
+
+    public async getActiveDatasetList(): Promise<DatasetListItemDTO[]> {
+        logger.debug(`Fetching active dataset list...`);
+        return this.fetch({ url: `dataset/active` }).then(
+            (response) => response.json() as unknown as DatasetListItemDTO[]
+        );
+    }
+
+    public async getOriginalUpload(datasetId: string, revisionId: string, importId: string): Promise<ReadableStream> {
         logger.debug(`Fetching raw file import: ${importId}...`);
 
-        return this.fetch(`dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/raw`).then(
-            (response) => response.body as ReadableStream
-        );
+        return this.fetch({
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/raw`
+        }).then((response) => response.body as ReadableStream);
     }
 
     public async confirmFileImport(datasetId: string, revisionId: string, importId: string): Promise<FileImportDTO> {
         logger.debug(`Confirming file import: ${importId}`);
 
-        return this.fetch(
-            `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/confirm`,
-            HttpMethod.Patch
-        ).then((response) => response.json() as unknown as FileImportDTO);
+        return this.fetch({
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/confirm`,
+            method: HttpMethod.Patch
+        }).then((response) => response.json() as unknown as FileImportDTO);
     }
 
     public async getSourcesForFileImport(
@@ -83,44 +135,21 @@ export class StatsWalesApi {
     ): Promise<FileImportDTO> {
         logger.debug(`Fetching sources for file import: ${importId}`);
 
-        return this.fetch(`dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}`).then(
-            (response) => response.json() as unknown as FileImportDTO
-        );
+        return this.fetch({
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}`
+        }).then((response) => response.json() as unknown as FileImportDTO);
     }
 
     public async removeFileImport(datasetId: string, revisionId: string, importId: string): Promise<DatasetDTO> {
         logger.debug(`Removing file import: ${importId}`);
 
-        return this.fetch(
-            `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}`,
-            HttpMethod.Delete
-        ).then((response) => response.json() as unknown as DatasetDTO);
+        return this.fetch({
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}`,
+            method: HttpMethod.Delete
+        }).then((response) => response.json() as unknown as DatasetDTO);
     }
 
-    public async getDataset(datasetId: string): Promise<DatasetDTO> {
-        logger.debug(`Fetching dataset: ${datasetId}`);
-        return this.fetch(`dataset/${datasetId}`).then((response) => response.json() as unknown as DatasetDTO);
-    }
-
-    public async getDatasetView(datasetId: string, pageNumber: number, pageSize: number): Promise<ViewDTO> {
-        logger.debug(`Fetching view for dataset: ${datasetId}, page: ${pageNumber}, pageSize: ${pageSize}`);
-
-        return this.fetch(`dataset/${datasetId}/view?page_number=${pageNumber}&page_size=${pageSize}`)
-            .then((response) => response.json() as unknown as ViewDTO)
-            .catch((error) => {
-                throw new ViewException(error.message, error.status, [
-                    {
-                        field: 'file',
-                        tag: {
-                            name: 'errors.dataset_missing',
-                            params: {}
-                        }
-                    }
-                ]);
-            });
-    }
-
-    public async getDatasetDatafilePreview(
+    public async getImportPreview(
         datasetId: string,
         revisionId: string,
         importId: string,
@@ -128,34 +157,50 @@ export class StatsWalesApi {
         pageSize: number
     ): Promise<ViewDTO> {
         logger.debug(
-            `Fetching datafile preview for dataset: ${datasetId}, revision: ${revisionId}, import: ${importId}, page: ${pageNumber}, pageSize: ${pageSize}`
+            `Fetching preview for dataset: ${datasetId}, revision: ${revisionId}, import: ${importId}, page: ${pageNumber}, pageSize: ${pageSize}`
         );
 
-        return this.fetch(
-            `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/preview?page_number=${pageNumber}&page_size=${pageSize}`
-        )
-            .then((response) => response.json() as unknown as ViewDTO)
-            .catch((error) => {
-                throw new ViewException(error.message, error.status, [
-                    {
-                        field: 'file',
-                        tag: {
-                            name: 'errors.dataset_missing',
-                            params: {}
-                        }
-                    }
-                ]);
-            });
+        return this.fetch({
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/preview?page_number=${pageNumber}&page_size=${pageSize}`
+        }).then((response) => response.json() as unknown as ViewDTO);
+    }
+
+    public async assignSources(
+        datasetId: string,
+        revisionId: string,
+        importId: string,
+        sourceTypeAssignment: SourceAssignmentDTO[]
+    ): Promise<DatasetDTO> {
+        logger.debug(`Assigning source types for import: ${importId}`);
+
+        return this.fetch({
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/sources`,
+            method: HttpMethod.Patch,
+            json: sourceTypeAssignment
+        }).then((response) => response.json() as unknown as DatasetDTO);
+    }
+
+    public async updateDatasetInfo(datasetId: string, datasetInfo: DatasetInfoDTO): Promise<DatasetDTO> {
+        return this.fetch({ url: `dataset/${datasetId}/info`, method: HttpMethod.Patch, json: datasetInfo }).then(
+            (response) => response.json() as unknown as DatasetDTO
+        );
+    }
+
+    public async getTaskList(datasetId: string): Promise<TaskListState> {
+        logger.debug(`Fetching tasklist for dataset: ${datasetId}`);
+        return this.fetch({ url: `dataset/${datasetId}/tasklist` }).then(
+            (response) => response.json() as unknown as TaskListState
+        );
     }
 
     public async uploadCSVtoCreateDataset(file: Blob, filename: string, title: string): Promise<DatasetDTO> {
         logger.debug(`Uploading CSV to create dataset with title '${title}'`);
 
-        const formData = new FormData();
-        formData.set('csv', file, filename);
-        formData.set('title', title);
+        const body = new FormData();
+        body.set('csv', file, filename);
+        body.set('title', title);
 
-        return this.fetch('dataset', HttpMethod.Post, formData)
+        return this.fetch({ url: 'dataset', method: HttpMethod.Post, body })
             .then((response) => response.json() as unknown as DatasetDTO)
             .catch((error) => {
                 throw new ViewException(error.message, error.status, [
@@ -168,33 +213,6 @@ export class StatsWalesApi {
                     }
                 ]);
             });
-    }
-
-    public async sendCreateDimensionRequest(
-        datasetId: string,
-        revisionId: string,
-        importId: string,
-        dimensionCreationDtoArr: DimensionCreationDTO[]
-    ): Promise<DatasetDTO> {
-        logger.debug(`Creating dimensions for import: ${importId}`);
-
-        return this.fetch(
-            `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/sources`,
-            HttpMethod.Patch,
-            JSON.stringify(dimensionCreationDtoArr),
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            { 'Content-Type': 'application/json; charset=UTF-8' }
-        ).then((response) => response.json() as unknown as DatasetDTO);
-    }
-
-    public async sendDatasetInfo(datasetId: string, datasetInfo: DatasetInfoDTO): Promise<DatasetDTO> {
-        return this.fetch(
-            `dataset/${datasetId}/info`,
-            HttpMethod.Patch,
-            JSON.stringify(datasetInfo),
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            { 'Content-Type': 'application/json; charset=UTF-8' }
-        ).then((response) => response.json() as unknown as DatasetDTO);
     }
 
     public async uploadCSVToFixDataset(
@@ -205,10 +223,14 @@ export class StatsWalesApi {
     ): Promise<DatasetDTO> {
         logger.debug(`Uploading CSV to fix dataset: ${datasetId}`);
 
-        const formData = new FormData();
-        formData.set('csv', file, filename);
+        const body = new FormData();
+        body.set('csv', file, filename);
 
-        return this.fetch(`dataset/${datasetId}/revision/by-id/${revisionId}/import`, HttpMethod.Post, formData)
+        return this.fetch({
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/import`,
+            method: HttpMethod.Post,
+            body
+        })
             .then((response) => response.json() as unknown as DatasetDTO)
             .catch((error) => {
                 throw new ViewException(error.message, error.status, [
@@ -221,14 +243,5 @@ export class StatsWalesApi {
                     }
                 ]);
             });
-    }
-
-    public async ping(): Promise<boolean> {
-        logger.debug(`Pinging healthcheck...`);
-
-        return this.fetch('healthcheck').then(() => {
-            logger.debug('API responded to ping');
-            return true;
-        });
     }
 }

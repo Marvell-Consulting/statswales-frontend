@@ -3,9 +3,20 @@
     <div class="govuk-width-container app-width-container">
         <!-- <a href="#" class="govuk-back-link">Back</a> -->
         <main class="govuk-main-wrapper" id="main-content" role="main">
+            <% if (locals.revisit) { %>
+                <div class="top-links">
+                    <div class="govuk-width-container">
+                        <a href="javascript:history.back()" class="govuk-back-link"><%= t('buttons.back') %></a>
+                        <% if (locals.datasetId) { %>
+                            <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+                        <% } %>
+                    </div>
+                </div>
+            <% } %>
+
             <h1 class="govuk-heading-xl"><%= t('publish.sources.heading') %></h1>
             <%- include("../partials/error-handler"); %>
-            <form action="<%= buildUrl('/publish/sources', i18n.language) %>" method="post">
+            <form action="<%= buildUrl(`/publish/${locals.datasetId}/sources`, i18n.language) %>" method="post">
                 <div class="source-list">
                 <% locals.currentImport.sources.forEach((source, idx) => { %>
                     <div class="source-list-item">

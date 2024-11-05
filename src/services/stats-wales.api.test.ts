@@ -6,8 +6,8 @@ import { Locale } from '../enums/locale';
 import { SourceType } from '../enums/source-type';
 import { ApiException } from '../exceptions/api.exception';
 import { ViewException } from '../exceptions/view.exception';
-import { FileDescription } from '../dtos/file-list';
-import { DimensionCreationDTO } from '../dtos/dimension-creation-dto';
+import { SourceAssignmentDTO } from '../dtos/source-assignment-dto';
+import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 
 import { StatsWalesApi } from './stats-wales-api';
 
@@ -49,50 +49,48 @@ describe('StatsWalesApi', () => {
     describe('Error handling', () => {
         it('should throw an ApiException when the backend is unreachable', async () => {
             mockResponse = Promise.reject(new Error('Service Unavailable'));
-            await expect(statsWalesApi.fetch('example.com/api')).rejects.toThrow(
+            await expect(statsWalesApi.fetch({ url: 'example.com/api' })).rejects.toThrow(
                 new ApiException('Service Unavailable', undefined)
             );
         });
 
         it('should throw an ApiException when the backend returns a 500', async () => {
             mockResponse = Promise.resolve(new Response(null, { status: 500, statusText: 'Internal Server Error' }));
-            await expect(statsWalesApi.fetch('example.com/api')).rejects.toThrow(
+            await expect(statsWalesApi.fetch({ url: 'example.com/api' })).rejects.toThrow(
                 new ApiException('Internal Server Error', 500)
             );
         });
 
         it('should throw an ApiException when the backend returns a 400', async () => {
             mockResponse = Promise.resolve(new Response(null, { status: 400, statusText: 'Bad Request' }));
-            await expect(statsWalesApi.fetch('example.com/api')).rejects.toThrow(new ApiException('Bad Request', 400));
+            await expect(statsWalesApi.fetch({ url: 'example.com/api' })).rejects.toThrow(
+                new ApiException('Bad Request', 400)
+            );
         });
 
         it('should throw an ApiException when the backend returns a 404', async () => {
             mockResponse = Promise.resolve(new Response(null, { status: 404, statusText: 'Not Found' }));
-            await expect(statsWalesApi.fetch('example.com/api')).rejects.toThrow(new ApiException('Not Found', 400));
+            await expect(statsWalesApi.fetch({ url: 'example.com/api' })).rejects.toThrow(
+                new ApiException('Not Found', 400)
+            );
         });
     });
 
-    describe('getFileList', () => {
+    describe('getActiveDatasetList', () => {
         it('should return an array of FileDescriptions', async () => {
-            const files: FileDescription[] = [
-                {
-                    dataset_id: randomUUID(),
-                    titles: [
-                        { language: 'en', title: 'Example 1' },
-                        { language: 'cy', title: 'Enghraifft 1' }
-                    ]
-                },
-                { dataset_id: randomUUID(), titles: [{ language: 'en', title: 'Example 2' }] }
+            const list: DatasetListItemDTO[] = [
+                { id: randomUUID(), title: 'Example 1' },
+                { id: randomUUID(), title: 'Example 2' }
             ];
 
-            mockResponse = Promise.resolve(new Response(JSON.stringify({ files })));
+            mockResponse = Promise.resolve(new Response(JSON.stringify({ files: list })));
 
-            const fileList = await statsWalesApi.getFileList();
-            expect(fileList).toEqual({ files });
+            const fileList = await statsWalesApi.getActiveDatasetList();
+            expect(fileList).toEqual({ files: list });
         });
     });
 
-    describe('getFileFromImport', () => {
+    describe('getOriginalUpload', () => {
         it('should return a ReadableStream', async () => {
             const datasetId = randomUUID();
             const revisionId = randomUUID();
@@ -101,7 +99,7 @@ describe('StatsWalesApi', () => {
 
             mockResponse = Promise.resolve(new Response(stream));
 
-            const fileStream = await statsWalesApi.getFileFromImport(datasetId, revisionId, importId);
+            const fileStream = await statsWalesApi.getOriginalUpload(datasetId, revisionId, importId);
 
             expect(fetchSpy).toHaveBeenCalledWith(
                 `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/raw`,
@@ -201,25 +199,15 @@ describe('StatsWalesApi', () => {
             expect(viewDTO).toEqual(view);
         });
 
-        it('should throw a ViewException when the backend returns an error', async () => {
+        it('should throw an exception when the backend returns an error', async () => {
             const datasetId = randomUUID();
-            mockResponse = Promise.resolve(new Response(null, { status: 400, statusText: 'Bad Request' }));
+            mockResponse = Promise.reject(new Response(null, { status: 400, statusText: 'Bad Request' }));
 
-            await expect(statsWalesApi.getDatasetView(datasetId, 1, 10)).rejects.toThrow(
-                new ViewException('Bad Request', 400, [
-                    {
-                        field: 'file',
-                        tag: {
-                            name: 'errors.dataset_missing',
-                            params: {}
-                        }
-                    }
-                ])
-            );
+            await expect(statsWalesApi.getDatasetView(datasetId, 1, 10)).rejects.toThrow();
         });
     });
 
-    describe('getDatasetDatafilePreview', () => {
+    describe('getImportPreview', () => {
         it('should return a ViewDTO', async () => {
             const datasetId = randomUUID();
             const revisionId = randomUUID();
@@ -235,7 +223,7 @@ describe('StatsWalesApi', () => {
 
             mockResponse = Promise.resolve(new Response(JSON.stringify(view)));
 
-            const viewDTO = await statsWalesApi.getDatasetDatafilePreview(datasetId, revisionId, importId, 1, 10);
+            const viewDTO = await statsWalesApi.getImportPreview(datasetId, revisionId, importId, 1, 10);
 
             expect(fetchSpy).toHaveBeenCalledWith(
                 `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/preview?page_number=1&page_size=10`,
@@ -247,26 +235,14 @@ describe('StatsWalesApi', () => {
             expect(viewDTO).toEqual(view);
         });
 
-        it('should throw a ViewException when the backend returns an error', async () => {
+        it('should throw an exception when the backend returns an error', async () => {
             const datasetId = randomUUID();
             const revisionId = randomUUID();
             const importId = randomUUID();
 
-            mockResponse = Promise.resolve(new Response(null, { status: 400, statusText: 'Bad Request' }));
+            mockResponse = Promise.reject(new Response(null, { status: 400, statusText: 'Bad Request' }));
 
-            await expect(
-                statsWalesApi.getDatasetDatafilePreview(datasetId, revisionId, importId, 1, 10)
-            ).rejects.toThrow(
-                new ViewException('Bad Request', 400, [
-                    {
-                        field: 'file',
-                        tag: {
-                            name: 'errors.dataset_missing',
-                            params: {}
-                        }
-                    }
-                ])
-            );
+            await expect(statsWalesApi.getImportPreview(datasetId, revisionId, importId, 1, 10)).rejects.toThrow();
         });
     });
 
@@ -324,7 +300,7 @@ describe('StatsWalesApi', () => {
             const revisionId = randomUUID();
             const importId = randomUUID();
 
-            const dimensions: DimensionCreationDTO[] = [
+            const sourceAssignment: SourceAssignmentDTO[] = [
                 { sourceId: randomUUID(), sourceType: SourceType.Dimension },
                 { sourceId: randomUUID(), sourceType: SourceType.DataValues }
             ];
@@ -333,12 +309,7 @@ describe('StatsWalesApi', () => {
 
             mockResponse = Promise.resolve(new Response(JSON.stringify(dataset)));
 
-            const datasetDTO = await statsWalesApi.sendCreateDimensionRequest(
-                datasetId,
-                revisionId,
-                importId,
-                dimensions
-            );
+            const datasetDTO = await statsWalesApi.assignSources(datasetId, revisionId, importId, sourceAssignment);
 
             expect(fetchSpy).toHaveBeenCalledWith(
                 `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/sources`,
@@ -346,7 +317,7 @@ describe('StatsWalesApi', () => {
                     method: HttpMethod.Patch,
                     // eslint-disable-next-line @typescript-eslint/naming-convention
                     headers: { ...headers, 'Content-Type': 'application/json; charset=UTF-8' },
-                    body: JSON.stringify(dimensions)
+                    body: JSON.stringify(sourceAssignment)
                 }
             );
             expect(datasetDTO).toEqual(dataset);

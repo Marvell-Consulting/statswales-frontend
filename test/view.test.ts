@@ -3,6 +3,7 @@ import request from 'supertest';
 
 import { i18next } from '../src/middleware/translation';
 import app from '../src/app';
+import { appConfig } from '../src/config';
 
 import { mockBackend } from './mocks/backend';
 
@@ -13,20 +14,14 @@ jest.mock('../src/middleware/ensure-authenticated', () => ({
 }));
 
 describe('Developer View Routes', () => {
+    const config = appConfig();
+
     beforeAll(() => {
         mockBackend.listen({
-            onUnhandledRequest: ({ headers, method, url }) => {
-                if (url.includes('http://example.com:3001')) {
-                    console.log('Request to unahndled URL:', method, url);
-                }
-                if (headers.get('User-Agent') !== 'supertest') {
-                    throw new Error(`Unhandled ${method} request to ${url}`);
-                }
+            onUnhandledRequest: ({ headers, method, url }, print) => {
+                if (!url.includes(config.backend.url)) return;
+                print.error();
             }
-        });
-        app.get('/test', (req, res, next) => {
-            res.send('Test');
-            next();
         });
     });
 
@@ -37,15 +32,13 @@ describe('Developer View Routes', () => {
     afterAll(() => mockBackend.close());
 
     test('Check list endpoint returns a list of files', async () => {
-        const res = await request(app).get('/en-GB/dataset').set('User-Agent', 'supertest');
+        const res = await request(app).get('/en-GB/dataset');
         expect(res.status).toBe(200);
         expect(res.text).toContain('test dataset 1');
     });
 
     test('Data is rendered in the frontend', async () => {
-        const res = await request(app)
-            .get('/en-GB/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5')
-            .set('User-Agent', 'supertest');
+        const res = await request(app).get('/en-GB/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5');
         expect(res.status).toBe(200);
         // Header
         expect(res.text).toContain(`<th scope="col" class="govuk-table__header">ID</th>`);
@@ -65,9 +58,8 @@ describe('Developer View Routes', () => {
     });
 
     test('Data display returns 404 if no file available', async () => {
-        const res = await request(app).get('/en-GB/dataset/missing-id').set('User-Agent', 'supertest');
+        const res = await request(app).get('/en-GB/dataset/missing-id');
         expect(res.status).toBe(404);
-        expect(res.text).toContain(t('errors.problem'));
-        expect(res.text).toContain(t('errors.dataset_missing'));
+        expect(res.text).toContain(t('errors.not_found'));
     });
 });

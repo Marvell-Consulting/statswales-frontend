@@ -1,6 +1,6 @@
-import { TaskState } from './task-state';
+import { TaskStatus } from '../enums/task-status';
 
 export interface DimensionState {
     name: string;
-    state: TaskState;
+    status: TaskStatus;
 }

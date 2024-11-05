@@ -6,8 +6,7 @@
         "continue": "Continue",
         "back": "Back",
         "cancel": "Cancel",
-        "upload_csv": "Upload CSV File",
-        "choose_different": "Choose a different data table"
+        "upload_csv": "Upload CSV File"
     },
     "pagination": {
         "previous": "Previous",
@@ -83,6 +82,8 @@
             "heading": "Check the data table",
             "upload_has": "Your upload has:",
             "columns_rows": "{{cols}} column(s) and {{rows}} row(s)",
+            "heading_summary": "Data table summary",
+            "upload_summary": "There are {{cols}} columns and {{rows}} rows in the data table. {{ignored}} column(s) in the CSV upload have been ignored.",
             "showing_rows": "Showing rows {{start}} – {{end}} of {{total}}",
             "columns": "columns",
             "column": "column",
@@ -90,7 +91,19 @@
             "rows": "rows",
             "row": "row",
             "showing": "Showing rows",
-            "unnamed_column": "column {{colNum}}"
+            "unnamed_column": "column {{colNum}}",
+            "confirm_correct": "By continuing, you confirm the data table is correct.",
+            "buttons": {
+                "choose_different": "Choose a different data table",
+                "change_datatable": "Change the data table"
+            },
+            "source_type": {
+                "data_values": "Data values",
+                "foot_notes": "Note codes",
+                "dimension": "Dimension",
+                "ignore": "Ignored",
+                "unknown": "Unknown"
+            }
         },
         "sources": {
             "heading": "What does each column in the data table contain?",
@@ -135,11 +148,25 @@
                 "import": "Import translations",
                 "submit": "Submit for approval"
             }
+        },
+        "change_data": {
+            "title": "What do you need to do?",
+            "note": "The file should be in a CSV format",
+            "change_table": {
+                "label": "Upload a different data table",
+                "description": "This will remove reference data and notes from all dimensions"
+            },
+            "change_columns": {
+                "label": "Change what each column in the data table contains",
+                "description": "This will remove reference data and notes for any columns you change that contain dimensions"
+            }
         }
     },
     "view": {
         "list": {
-            "heading": "List Datasets"
+            "heading": "List Datasets",
+            "details": "Details",
+            "tasklist": "Task List"
         },
         "display": {
             "heading": "Display a Dataset",
@@ -193,7 +220,9 @@
         "preview": {
             "failed_to_get_preview": "We were unable to generate a preview of the uploaded CSV.  Is this a valid CSV?",
             "remove_error": "We were unable to remove your uploadded file from the server.  Something went wrong.  Please try again",
-            "confirm_error":  "You need to confirm or reject the uploaded file using the buttons at the end of the preview"
+            "confirm_error":  "You need to confirm or reject the uploaded file using the buttons at the end of the preview",
+            "revision_missing": "A revision is missing from the dataset",
+            "import_missing": "An import is missing from the dataset"
         },
         "datalake_error": "Unable to connect to Datalake",
         "blob_storage_errror": "Unable to connect to Blob Storage Service",
