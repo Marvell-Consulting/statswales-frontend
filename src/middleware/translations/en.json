@@ -74,6 +74,13 @@
             "descriptive": "It should be short, descriptive and unique",
             "language": "This should be entered in the language in which you're viewing this service."
         },
+        "summary": {
+            "heading": "What is the summary of the dataset?",
+            "explain": "In short, simple sentences explain:",
+            "explain_1": "what this dataset is about and what it shows",
+            "explain_2": "the dataset's dimensions and why they've been used, if needed",
+            "language": "This should be entered in the language in which you're viewing this service."
+        },
         "upload": {
             "title": "Upload the data table",
             "note": "The file should be in a CSV format"

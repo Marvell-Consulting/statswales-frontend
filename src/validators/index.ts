@@ -10,3 +10,4 @@ export const revisionIdValidator = () => param('revisionId').trim().notEmpty().i
 export const importIdValidator = () => param('importId').trim().notEmpty().isUUID(4);
 
 export const titleValidator = () => body('title').trim().notEmpty();
+export const descriptionValidator = () => body('description').trim().notEmpty();

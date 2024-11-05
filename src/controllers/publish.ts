@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { generateViewErrors } from '../utils/generate-view-errors';
-import { hasError, titleValidator } from '../validators';
+import { descriptionValidator, hasError, titleValidator } from '../validators';
 import { ViewError } from '../dtos/view-error';
 import { logger } from '../utils/logger';
 import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
@@ -214,4 +214,31 @@ export const changeData = async (req: Request, res: Response, next: NextFunction
         }
     }
     res.render('publish/change-data');
+};
+
+export const provideSummary = async (req: Request, res: Response, next: NextFunction) => {
+    let errors: ViewErrDTO | undefined;
+    const dataset = singleLangDataset(res.locals.dataset, req.language);
+    let description = dataset?.datasetInfo?.description;
+
+    if (req.method === 'POST') {
+        try {
+            const descriptionError = await hasError(descriptionValidator(), req);
+            if (descriptionError) {
+                res.status(400);
+                throw new Error('errors.description.missing');
+            }
+
+            description = req.body.description;
+
+            await req.swapi.updateDatasetInfo(dataset.id, { description, language: req.language });
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+            return;
+        } catch (err) {
+            const error: ViewError = { field: 'title', tag: { name: 'errors.title.missing' } };
+            errors = generateViewErrors(undefined, 400, [error]);
+        }
+    }
+
+    res.render('publish/summary', { description, errors });
 };
