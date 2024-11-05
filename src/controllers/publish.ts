@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { generateViewErrors } from '../utils/generate-view-errors';
-import { descriptionValidator, hasError, titleValidator } from '../validators';
+import { collectionValidator, descriptionValidator, hasError, titleValidator } from '../validators';
 import { ViewError } from '../dtos/view-error';
 import { logger } from '../utils/logger';
 import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
@@ -235,10 +235,37 @@ export const provideSummary = async (req: Request, res: Response, next: NextFunc
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
-            const error: ViewError = { field: 'title', tag: { name: 'errors.title.missing' } };
+            const error: ViewError = { field: 'title', tag: { name: 'errors.description.missing' } };
             errors = generateViewErrors(undefined, 400, [error]);
         }
     }
 
     res.render('publish/summary', { description, errors });
+};
+
+export const provideCollection = async (req: Request, res: Response, next: NextFunction) => {
+    let errors: ViewErrDTO | undefined;
+    const dataset = singleLangDataset(res.locals.dataset, req.language);
+    let collection = dataset?.datasetInfo?.collection;
+
+    if (req.method === 'POST') {
+        try {
+            const collectionError = await hasError(collectionValidator(), req);
+            if (collectionError) {
+                res.status(400);
+                throw new Error('errors.collection.missing');
+            }
+
+            collection = req.body.collection;
+
+            await req.swapi.updateDatasetInfo(dataset.id, { collection, language: req.language });
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+            return;
+        } catch (err) {
+            const error: ViewError = { field: 'title', tag: { name: 'errors.collection.missing' } };
+            errors = generateViewErrors(undefined, 400, [error]);
+        }
+    }
+
+    res.render('publish/collection', { collection, errors });
 };

@@ -81,6 +81,14 @@
             "explain_2": "the dataset's dimensions and why they've been used, if needed",
             "language": "This should be entered in the language in which you're viewing this service."
         },
+        "collection": {
+            "heading": "How was the data collected or calculated?",
+            "explain": "In short, simple sentences explain either:",
+            "explain_1": "the methodology used to collect the data",
+            "explain_2": "the methodology used to calculate the data",
+            "explain_3": "both of the above",
+            "language": "This should be entered in the language in which you're viewing this service."
+        },
         "upload": {
             "title": "Upload the data table",
             "note": "The file should be in a CSV format"
@@ -239,6 +247,12 @@
         "title": {
             "missing": "Either a title was not entered or there is a problem.",
             "duplicate": "Title already exists"
+        },
+        "description": {
+            "missing": "You need to provide a summary of the dataset"
+        },
+        "collection": {
+            "missing": "Either a collection method was not entered or there is a problem."
         },
         "upload": {
             "no_csv": "No CSV data provided",
