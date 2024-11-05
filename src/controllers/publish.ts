@@ -6,6 +6,7 @@ import { generateViewErrors } from '../utils/generate-view-errors';
 import {
     collectionValidator,
     descriptionValidator,
+    designationValidator,
     hasError,
     qualityValidator,
     roundingAppliedValidator,
@@ -24,6 +25,7 @@ import { NotFoundException } from '../exceptions/not-found.exception';
 import { statusToColour } from '../utils/status-to-colour';
 import { singleLangDataset } from '../utils/single-lang-dataset';
 import { updateSourceTypes } from '../utils/update-source-types';
+import { Designation } from '../enums/designation';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -317,4 +319,32 @@ export const provideQuality = async (req: Request, res: Response, next: NextFunc
     }
 
     res.render('publish/quality', { ...datasetInfo, errors });
+};
+
+export const provideDesignation = async (req: Request, res: Response, next: NextFunction) => {
+    let errors: ViewErrDTO | undefined;
+    const dataset = singleLangDataset(res.locals.dataset, req.language);
+    const designationOptions = Object.values(Designation);
+    let designation = dataset?.datasetInfo?.designation;
+
+    if (req.method === 'POST') {
+        try {
+            const designationError = await hasError(designationValidator(), req);
+            if (designationError) {
+                res.status(400);
+                throw new Error('errors.designation.missing');
+            }
+
+            designation = req.body.designation;
+
+            await req.swapi.updateDatasetInfo(dataset.id, { designation, language: req.language });
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+            return;
+        } catch (err) {
+            const error: ViewError = { field: 'designation', tag: { name: 'errors.designation.missing' } };
+            errors = generateViewErrors(undefined, 400, [error]);
+        }
+    }
+
+    res.render('publish/designation', { designation, designationOptions, errors });
 };
