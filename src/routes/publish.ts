@@ -13,7 +13,8 @@ import {
     redirectToTasklist,
     provideSummary,
     provideCollection,
-    provideQuality
+    provideQuality,
+    provideDesignation
 } from '../controllers/publish';
 
 export const publish = Router();
@@ -52,3 +53,6 @@ publish.post('/:datasetId/collection', fetchDataset, upload.none(), provideColle
 
 publish.get('/:datasetId/quality', fetchDataset, provideQuality);
 publish.post('/:datasetId/quality', fetchDataset, upload.none(), provideQuality);
+
+publish.get('/:datasetId/designation', fetchDataset, provideDesignation);
+publish.post('/:datasetId/designation', fetchDataset, upload.none(), provideDesignation);

@@ -1,6 +1,8 @@
 import { Request } from 'express';
 import { body, param, ValidationChain } from 'express-validator';
 
+import { Designation } from '../enums/designation';
+
 export const hasError = async (validator: ValidationChain, req: Request) => {
     return !(await validator.run(req)).isEmpty();
 };
@@ -17,3 +19,5 @@ export const qualityValidator = () => body('quality').trim().notEmpty();
 export const roundingAppliedValidator = () => body('rounding_applied').notEmpty().isBoolean();
 export const roundingDescriptionValidator = () =>
     body('rounding_description').if(body('rounding_applied').equals('true')).trim().notEmpty();
+
+export const designationValidator = () => body('designation').trim().isIn(Object.values(Designation));
