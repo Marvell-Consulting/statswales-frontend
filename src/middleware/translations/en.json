@@ -110,6 +110,28 @@
                 }
             }
         },
+        "update_frequency": {
+            "heading": "Will this dataset be regularly updated?",
+            "options": {
+                "yes": {
+                    "label": "Yes"
+                },
+                "no": {
+                    "label": "No"
+                }
+            },
+            "period": {
+                "label": "Enter the period between updates. For example, 1 year."
+            },
+            "unit": {
+                "select": "Select",
+                "day": "Days",
+                "week": "Weeks",
+                "month": "Months",
+                "quarter": "Quarters",
+                "year": "Years"
+            }
+        },
         "designation": {
             "heading": "How is this dataset designated?",
             "options": {
@@ -300,6 +322,9 @@
         },
         "rounding_description": {
             "missing": "You need to provide a description of the rounding applied"
+        },
+        "update_frequency": {
+            "missing": "You need to provide the update frequency of the dataset"
         },
         "designation": {
             "missing": "You need to provide the designation of the dataset"

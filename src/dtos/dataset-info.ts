@@ -1,5 +1,7 @@
 import { Designation } from '../enums/designation';
 
+import { UpdateFrequencyDTO } from './update-frequency';
+
 export interface DatasetInfoDTO {
     language?: string;
     title?: string;
@@ -8,5 +10,6 @@ export interface DatasetInfoDTO {
     quality?: string;
     rounding_applied?: boolean;
     rounding_description?: string;
+    update_frequency?: UpdateFrequencyDTO;
     designation?: Designation;
 }

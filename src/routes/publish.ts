@@ -14,6 +14,7 @@ import {
     provideSummary,
     provideCollection,
     provideQuality,
+    provideUpdateFrequency,
     provideDesignation
 } from '../controllers/publish';
 
@@ -53,6 +54,9 @@ publish.post('/:datasetId/collection', fetchDataset, upload.none(), provideColle
 
 publish.get('/:datasetId/quality', fetchDataset, provideQuality);
 publish.post('/:datasetId/quality', fetchDataset, upload.none(), provideQuality);
+
+publish.get('/:datasetId/update-frequency', fetchDataset, provideUpdateFrequency);
+publish.post('/:datasetId/update-frequency', fetchDataset, upload.none(), provideUpdateFrequency);
 
 publish.get('/:datasetId/designation', fetchDataset, provideDesignation);
 publish.post('/:datasetId/designation', fetchDataset, upload.none(), provideDesignation);
