@@ -1,0 +1,78 @@
+<%- include("../partials/header"); %>
+<div class="govuk-width-container app-width-container">
+    <!-- <a href="#" class="govuk-back-link">Back</a> -->
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+
+        <div class="top-links">
+            <div class="govuk-width-container">
+                <a href="javascript:history.back()" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+            </div>
+        </div>
+
+        <div class="govuk-width-container">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h1 class="govuk-heading-xl"><%= t('publish.quality.heading') %></h1>
+
+                    <form enctype="multipart/form-data" method="post">
+                        <%- include("../partials/error-handler"); %>
+
+                        <p class="govuk-body"><%= t('publish.quality.explain') %></p>
+
+                        <ul class="govuk-list govuk-list--bullet">
+                            <li><%= t('publish.quality.explain_1') %></li>
+                            <ul class="govuk-list govuk-list--bullet">
+                                <li><%= t('publish.quality.explain_1a') %></li>
+                                <li><%= t('publish.quality.explain_1b') %></li>
+                            </ul>
+                            <li><%= t('publish.quality.explain_2') %></li>
+                        </ul>
+
+                        <div class="govuk-hint">
+                            <%= t('publish.quality.language') %>
+                        </div>
+
+
+                        <div class="govuk-form-group">
+                            <textarea class="govuk-textarea" id="quality" name="quality" rows="4"><%= locals.quality %></textarea>
+                        </div>
+
+                        <h2 class="govuk-heading-s"><%= t('publish.quality.rounding.heading') %></h2>
+
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset" aria-describedby="rounding">
+                                <div class="govuk-radios" data-module="govuk-radios">
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="roundingApplied1" name="rounding_applied" data-aria-controls="conditional-rounding1" type="radio" value="true" <%= locals.rounding_applied === true ? 'checked' : '' %> />
+                                        <label class="govuk-label govuk-radios__label" for="roundingApplied1"><%= t('publish.quality.rounding.options.yes.label') %></label>
+                                    </div>
+                                    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-rounding1">
+                                        <div class="govuk-form-group">
+                                        <fieldset class="govuk-fieldset" role="group" aria-describedby="roundingApplied1">
+                                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                            <p><%= t('publish.quality.rounding.options.yes.note') %></p>
+                                            </legend>
+                                            <div class="govuk-hint"><%= t('publish.quality.language') %></div>
+                                            <textarea class="govuk-textarea" id="roundingDescription" name="rounding_description" rows="4" aria-describedby="roundingDescription-hint"><%= locals.rounding_description %></textarea>
+                                        </fieldset>
+                                        </div>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="roundingApplied2" name="rounding_applied" type="radio" value="false" <%= locals.rounding_applied === false ? 'checked' : '' %> />
+                                        <label class="govuk-label govuk-radios__label" for="roundingApplied2"><%= t('publish.quality.rounding.options.no.label') %></label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+
+                        <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
+                        <a class="govuk-button govuk-button--secondary" href="javascript:history.back()"><%= t('buttons.cancel')%></a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<%- include("../partials/footer"); %>

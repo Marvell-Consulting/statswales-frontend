@@ -12,7 +12,8 @@ import {
     changeData,
     redirectToTasklist,
     provideSummary,
-    provideCollection
+    provideCollection,
+    provideQuality
 } from '../controllers/publish';
 
 export const publish = Router();
@@ -48,3 +49,6 @@ publish.post('/:datasetId/summary', fetchDataset, upload.none(), provideSummary)
 
 publish.get('/:datasetId/collection', fetchDataset, provideCollection);
 publish.post('/:datasetId/collection', fetchDataset, upload.none(), provideCollection);
+
+publish.get('/:datasetId/quality', fetchDataset, provideQuality);
+publish.post('/:datasetId/quality', fetchDataset, upload.none(), provideQuality);

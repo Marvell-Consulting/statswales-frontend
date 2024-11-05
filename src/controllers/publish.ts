@@ -1,7 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
+import { snakeCase } from 'lodash';
+import { FieldValidationError } from 'express-validator';
 
 import { generateViewErrors } from '../utils/generate-view-errors';
-import { collectionValidator, descriptionValidator, hasError, titleValidator } from '../validators';
+import {
+    collectionValidator,
+    descriptionValidator,
+    hasError,
+    qualityValidator,
+    roundingAppliedValidator,
+    roundingDescriptionValidator,
+    titleValidator
+} from '../validators';
 import { ViewError } from '../dtos/view-error';
 import { logger } from '../utils/logger';
 import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
@@ -235,7 +245,7 @@ export const provideSummary = async (req: Request, res: Response, next: NextFunc
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
-            const error: ViewError = { field: 'title', tag: { name: 'errors.description.missing' } };
+            const error: ViewError = { field: 'description', tag: { name: 'errors.description.missing' } };
             errors = generateViewErrors(undefined, 400, [error]);
         }
     }
@@ -262,10 +272,49 @@ export const provideCollection = async (req: Request, res: Response, next: NextF
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
-            const error: ViewError = { field: 'title', tag: { name: 'errors.collection.missing' } };
+            const error: ViewError = { field: 'collection', tag: { name: 'errors.collection.missing' } };
             errors = generateViewErrors(undefined, 400, [error]);
         }
     }
 
     res.render('publish/collection', { collection, errors });
+};
+
+export const provideQuality = async (req: Request, res: Response, next: NextFunction) => {
+    let errors: ViewErrDTO | undefined;
+    const dataset = singleLangDataset(res.locals.dataset, req.language);
+    let datasetInfo = dataset?.datasetInfo!;
+
+    if (req.method === 'POST') {
+        try {
+            datasetInfo = {
+                quality: req.body.quality,
+                rounding_applied: req.body.rounding_applied ? req.body.rounding_applied === 'true' : undefined,
+                rounding_description: req.body.rounding_applied === 'true' ? req.body.rounding_description : ''
+            };
+
+            for (const validator of [qualityValidator(), roundingAppliedValidator(), roundingDescriptionValidator()]) {
+                const result = await validator.run(req);
+                if (!result.isEmpty()) {
+                    res.status(400);
+                    const error = result.array()[0] as FieldValidationError;
+                    throw error;
+                }
+            }
+
+            await req.swapi.updateDatasetInfo(dataset.id, { ...datasetInfo, language: req.language });
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+            return;
+        } catch (err: any) {
+            if (err.path) {
+                const error: ViewError = { field: err.path, tag: { name: `errors.${snakeCase(err.path)}.missing` } };
+                errors = generateViewErrors(dataset.id, 400, [error]);
+            } else {
+                next(new UnknownException());
+                return;
+            }
+        }
+    }
+
+    res.render('publish/quality', { ...datasetInfo, errors });
 };

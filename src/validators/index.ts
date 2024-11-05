@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { body, param, query, ValidationChain } from 'express-validator';
+import { body, param, ValidationChain } from 'express-validator';
 
 export const hasError = async (validator: ValidationChain, req: Request) => {
     return !(await validator.run(req)).isEmpty();
@@ -12,3 +12,8 @@ export const importIdValidator = () => param('importId').trim().notEmpty().isUUI
 export const titleValidator = () => body('title').trim().notEmpty();
 export const descriptionValidator = () => body('description').trim().notEmpty();
 export const collectionValidator = () => body('collection').trim().notEmpty();
+
+export const qualityValidator = () => body('quality').trim().notEmpty();
+export const roundingAppliedValidator = () => body('rounding_applied').notEmpty().isBoolean();
+export const roundingDescriptionValidator = () =>
+    body('rounding_description').if(body('rounding_applied').equals('true')).trim().notEmpty();
