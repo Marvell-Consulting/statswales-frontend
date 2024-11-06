@@ -27,4 +27,7 @@ export const frequencyValueValidator = () =>
 export const frequencyUnitValidator = () =>
     body('frequency_unit').if(body('is_updated').equals('true')).isIn(Object.values(DurationUnit));
 
+export const linkUrlValidator = () => body('link_url').trim().notEmpty().isURL();
+export const linkLabelValidator = () => body('link_label').trim().notEmpty();
+
 export const designationValidator = () => body('designation').trim().isIn(Object.values(Designation));

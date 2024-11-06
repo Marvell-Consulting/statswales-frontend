@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { snakeCase } from 'lodash';
 import { FieldValidationError } from 'express-validator';
+import { v4 as uuid } from 'uuid';
 
 import { generateViewErrors } from '../utils/generate-view-errors';
 import {
@@ -11,6 +12,8 @@ import {
     frequencyValueValidator,
     hasError,
     isUpdatedValidator,
+    linkLabelValidator,
+    linkUrlValidator,
     qualityValidator,
     roundingAppliedValidator,
     roundingDescriptionValidator,
@@ -30,6 +33,7 @@ import { singleLangDataset } from '../utils/single-lang-dataset';
 import { updateSourceTypes } from '../utils/update-source-types';
 import { Designation } from '../enums/designation';
 import { DurationUnit } from '../enums/duration-unit';
+import { RelatedLinkDTO } from '../dtos/related-link';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -357,6 +361,50 @@ export const provideUpdateFrequency = async (req: Request, res: Response, next: 
     }
 
     res.render('publish/update-frequency', { ...update_frequency, unitOptions: Object.values(DurationUnit), errors });
+};
+
+export const provideRelatedLinks = async (req: Request, res: Response, next: NextFunction) => {
+    let errors: ViewErrDTO | undefined;
+    const dataset = singleLangDataset(res.locals.dataset, req.language);
+    const related_links = dataset?.datasetInfo?.related_links || [];
+    let relatedLink: RelatedLinkDTO | undefined;
+
+    if (req.params.linkId) {
+        relatedLink = related_links.find((link) => link.id === req.params.linkId);
+        if (!relatedLink) {
+            const error: ViewError = { field: 'related_link', tag: { name: 'errors.related_link.missing' } };
+            errors = generateViewErrors(undefined, 400, [error]);
+        }
+    }
+
+    if (req.method === 'POST') {
+        relatedLink = { id: req.body.link_id || uuid(), url: req.body.link_url, label: req.body.link_label };
+
+        try {
+            for (const validator of [linkUrlValidator(), linkLabelValidator()]) {
+                const result = await validator.run(req);
+                if (!result.isEmpty()) {
+                    res.status(400);
+                    const error = result.array()[0] as FieldValidationError;
+                    console.log(error);
+                    throw error;
+                }
+            }
+
+            await req.swapi.updateDatasetInfo(dataset.id, {
+                related_links: [...related_links, relatedLink],
+                language: req.language
+            });
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+            return;
+        } catch (err) {
+            const error: ViewError = { field: 'related_link', tag: { name: 'errors.related_link.missing' } };
+            errors = generateViewErrors(undefined, 400, [error]);
+        }
+    }
+
+    const link = { link_id: relatedLink?.id, link_url: relatedLink?.url, link_label: relatedLink?.label };
+    res.render('publish/related-links', { ...link, related_links, errors });
 };
 
 export const provideDesignation = async (req: Request, res: Response, next: NextFunction) => {

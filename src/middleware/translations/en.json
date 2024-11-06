@@ -132,6 +132,42 @@
                 "year": "Years"
             }
         },
+        "related": {
+            "add": {
+                "heading": "Add a link to a report"
+            },
+            "list":  {
+                "heading": "Report links added",
+                "table": {
+                    "url": "Link URL",
+                    "label": "Link text",
+                    "action_header": "Change link",
+                    "action_link": "Change"
+                },
+                "add_another": {
+                    "heading": "Do you need to add a link to another report?",
+                    "options": {
+                        "yes": {
+                            "label": "Yes"
+                        },
+                        "no": {
+                            "label": "No"
+                        }
+                    }
+                }
+            },
+            "explain": "This may include reports for:",
+            "explain_1": "GOV.WALES statistics and research",
+            "explain_2": "statistical quality",
+            "explain_3": "other related work",
+            "link_url": {
+                "label": "Link URL"
+            },
+            "link_label": {
+                "label": "Link text to appear on the webpage",
+                "hint": "This should be entered in the language in which you're viewing this service."
+            }
+        },
         "designation": {
             "heading": "How is this dataset designated?",
             "options": {
@@ -325,6 +361,9 @@
         },
         "update_frequency": {
             "missing": "You need to provide the update frequency of the dataset"
+        },
+        "related_link": {
+            "missing": "You need to provide the link URL and text"
         },
         "designation": {
             "missing": "You need to provide the designation of the dataset"
