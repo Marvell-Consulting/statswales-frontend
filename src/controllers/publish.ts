@@ -7,7 +7,10 @@ import {
     collectionValidator,
     descriptionValidator,
     designationValidator,
+    frequencyUnitValidator,
+    frequencyValueValidator,
     hasError,
+    isUpdatedValidator,
     qualityValidator,
     roundingAppliedValidator,
     roundingDescriptionValidator,
@@ -26,6 +29,7 @@ import { statusToColour } from '../utils/status-to-colour';
 import { singleLangDataset } from '../utils/single-lang-dataset';
 import { updateSourceTypes } from '../utils/update-source-types';
 import { Designation } from '../enums/designation';
+import { DurationUnit } from '../enums/duration-unit';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -321,10 +325,43 @@ export const provideQuality = async (req: Request, res: Response, next: NextFunc
     res.render('publish/quality', { ...datasetInfo, errors });
 };
 
+export const provideUpdateFrequency = async (req: Request, res: Response, next: NextFunction) => {
+    let errors: ViewErrDTO | undefined;
+    const dataset = singleLangDataset(res.locals.dataset, req.language);
+    let update_frequency = dataset?.datasetInfo!.update_frequency;
+
+    if (req.method === 'POST') {
+        update_frequency = {
+            is_updated: req.body.is_updated ? req.body.is_updated === 'true' : undefined,
+            frequency_unit: req.body.is_updated ? req.body.frequency_unit : undefined,
+            frequency_value: req.body.is_updated ? req.body.frequency_value : undefined
+        };
+
+        try {
+            for (const validator of [isUpdatedValidator(), frequencyValueValidator(), frequencyUnitValidator()]) {
+                const result = await validator.run(req);
+                if (!result.isEmpty()) {
+                    res.status(400);
+                    const error = result.array()[0] as FieldValidationError;
+                    throw error;
+                }
+            }
+
+            await req.swapi.updateDatasetInfo(dataset.id, { update_frequency, language: req.language });
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+            return;
+        } catch (err) {
+            const error: ViewError = { field: 'update_frequency', tag: { name: 'errors.update_frequency.missing' } };
+            errors = generateViewErrors(undefined, 400, [error]);
+        }
+    }
+
+    res.render('publish/update-frequency', { ...update_frequency, unitOptions: Object.values(DurationUnit), errors });
+};
+
 export const provideDesignation = async (req: Request, res: Response, next: NextFunction) => {
     let errors: ViewErrDTO | undefined;
     const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const designationOptions = Object.values(Designation);
     let designation = dataset?.datasetInfo?.designation;
 
     if (req.method === 'POST') {
@@ -346,5 +383,5 @@ export const provideDesignation = async (req: Request, res: Response, next: Next
         }
     }
 
-    res.render('publish/designation', { designation, designationOptions, errors });
+    res.render('publish/designation', { designation, designationOptions: Object.values(Designation), errors });
 };

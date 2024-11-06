@@ -2,6 +2,7 @@ import { Request } from 'express';
 import { body, param, ValidationChain } from 'express-validator';
 
 import { Designation } from '../enums/designation';
+import { DurationUnit } from '../enums/duration-unit';
 
 export const hasError = async (validator: ValidationChain, req: Request) => {
     return !(await validator.run(req)).isEmpty();
@@ -19,5 +20,11 @@ export const qualityValidator = () => body('quality').trim().notEmpty();
 export const roundingAppliedValidator = () => body('rounding_applied').notEmpty().isBoolean();
 export const roundingDescriptionValidator = () =>
     body('rounding_description').if(body('rounding_applied').equals('true')).trim().notEmpty();
+
+export const isUpdatedValidator = () => body('is_updated').notEmpty().isBoolean();
+export const frequencyValueValidator = () =>
+    body('frequency_value').if(body('is_updated').equals('true')).notEmpty().isInt();
+export const frequencyUnitValidator = () =>
+    body('frequency_unit').if(body('is_updated').equals('true')).isIn(Object.values(DurationUnit));
 
 export const designationValidator = () => body('designation').trim().isIn(Object.values(Designation));
