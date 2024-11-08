@@ -141,8 +141,9 @@
                 "table": {
                     "url": "Link URL",
                     "label": "Link text",
-                    "action_header": "Change link",
-                    "action_link": "Change"
+                    "action_header": "Action",
+                    "action_edit": "Change",
+                    "action_delete": "Remove"
                 },
                 "add_another": {
                     "heading": "Do you need to add a link to another report?",
@@ -363,7 +364,8 @@
             "missing": "You need to provide the update frequency of the dataset"
         },
         "related_link": {
-            "missing": "You need to provide the link URL and text"
+            "required": "You need to provide the link URL and text",
+            "missing": "The related link could not be found"
         },
         "designation": {
             "missing": "You need to provide the designation of the dataset"

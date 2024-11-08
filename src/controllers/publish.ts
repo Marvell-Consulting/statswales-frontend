@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { snakeCase } from 'lodash';
-import { FieldValidationError } from 'express-validator';
-import { v4 as uuid } from 'uuid';
+import { snakeCase, sortBy } from 'lodash';
+import { FieldValidationError, matchedData } from 'express-validator';
+import { nanoid } from 'nanoid';
 
 import { generateViewErrors } from '../utils/generate-view-errors';
 import {
@@ -12,6 +12,7 @@ import {
     frequencyValueValidator,
     hasError,
     isUpdatedValidator,
+    linkIdValidator,
     linkLabelValidator,
     linkUrlValidator,
     qualityValidator,
@@ -364,47 +365,78 @@ export const provideUpdateFrequency = async (req: Request, res: Response, next: 
 };
 
 export const provideRelatedLinks = async (req: Request, res: Response, next: NextFunction) => {
-    let errors: ViewErrDTO | undefined;
     const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const related_links = dataset?.datasetInfo?.related_links || [];
-    let relatedLink: RelatedLinkDTO | undefined;
+    let errors: ViewErrDTO | undefined;
+    let related_links = sortBy(dataset?.datasetInfo?.related_links || [], 'created_at');
+    let link: RelatedLinkDTO = { id: nanoid(4), url: '', label: '' };
+    const deleteId = req.query.delete;
+    const editId = req.query.edit;
+    const now = new Date().toISOString();
 
-    if (req.params.linkId) {
-        relatedLink = related_links.find((link) => link.id === req.params.linkId);
-        if (!relatedLink) {
+    if (deleteId) {
+        try {
+            related_links = related_links.filter((rl) => rl.id !== deleteId);
+            await req.swapi.updateDatasetInfo(dataset.id, { related_links, language: req.language });
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/related`, req.language));
+            return;
+        } catch (err) {
+            next(new UnknownException());
+            return;
+        }
+    }
+
+    if (editId !== undefined && editId !== 'new') {
+        const existingLink = related_links.find((rl) => rl.id === editId);
+        if (existingLink) {
+            link = existingLink;
+        } else {
+            // shouldn't happen unless someone edits the edit query param to an id that doesn't exist
             const error: ViewError = { field: 'related_link', tag: { name: 'errors.related_link.missing' } };
-            errors = generateViewErrors(undefined, 400, [error]);
+            errors = generateViewErrors(dataset.id, 400, [error]);
         }
     }
 
     if (req.method === 'POST') {
-        relatedLink = { id: req.body.link_id || uuid(), url: req.body.link_url, label: req.body.link_label };
+        const { add_link, link_id, link_url, link_label } = req.body;
+        if (add_link === 'true') {
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/related?edit=new`, req.language));
+            return;
+        }
+
+        if (add_link === 'false') {
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+            return;
+        }
+
+        // redisplay the form with submitted values if there are errors
+        link = { id: link_id, url: link_url, label: link_label, created_at: link.created_at ?? now };
 
         try {
-            for (const validator of [linkUrlValidator(), linkLabelValidator()]) {
+            for (const validator of [linkIdValidator(), linkUrlValidator(), linkLabelValidator()]) {
                 const result = await validator.run(req);
                 if (!result.isEmpty()) {
                     res.status(400);
                     const error = result.array()[0] as FieldValidationError;
-                    console.log(error);
                     throw error;
                 }
             }
 
-            await req.swapi.updateDatasetInfo(dataset.id, {
-                related_links: [...related_links, relatedLink],
-                language: req.language
-            });
-            res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+            const { link_id, link_url, link_label } = matchedData(req);
+            link = { id: link_id, url: link_url, label: link_label, created_at: link.created_at };
+
+            // if the link already exists, replace it, otherwise add it, then sort by updated_at
+            related_links = sortBy([...related_links.filter((rl) => rl.id !== link.id), link], 'created_at');
+
+            await req.swapi.updateDatasetInfo(dataset.id, { related_links, language: req.language });
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/related`, req.language));
             return;
         } catch (err) {
-            const error: ViewError = { field: 'related_link', tag: { name: 'errors.related_link.missing' } };
+            const error: ViewError = { field: 'related_link', tag: { name: 'errors.related_link.required' } };
             errors = generateViewErrors(undefined, 400, [error]);
         }
     }
 
-    const link = { link_id: relatedLink?.id, link_url: relatedLink?.url, link_label: relatedLink?.label };
-    res.render('publish/related-links', { ...link, related_links, errors });
+    res.render('publish/related-links', { editId, link, related_links, errors });
 };
 
 export const provideDesignation = async (req: Request, res: Response, next: NextFunction) => {

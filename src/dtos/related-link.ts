@@ -1,5 +1,6 @@
 export interface RelatedLinkDTO {
-    id?: string;
+    id: string;
     url: string;
     label: string;
+    created_at?: string;
 }

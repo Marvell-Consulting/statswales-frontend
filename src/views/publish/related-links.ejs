@@ -1,6 +1,5 @@
 <%- include("../partials/header"); %>
 <div class="govuk-width-container app-width-container">
-    <!-- <a href="#" class="govuk-back-link">Back</a> -->
     <main class="govuk-main-wrapper" id="main-content" role="main">
 
         <div class="top-links">
@@ -14,7 +13,7 @@
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
 
-                    <% if (locals.related_links.length > 0 && !locals.linkId) { %>
+                    <% if (locals.related_links.length > 0 && locals.editId === undefined) { %>
                         <h1 class="govuk-heading-xl"><%= t('publish.related.list.heading') %></h1>
 
                         <table class="govuk-table">
@@ -31,9 +30,18 @@
                                         <td class="govuk-table__cell"><%= link.url %></td>
                                         <td class="govuk-table__cell"><%= link.label %></td>
                                         <td class="govuk-table__cell">
-                                            <a href="<%= buildUrl(`/publish/${locals.datasetId}/related?linkId=${link.id}`, i18n.language) %>" class="govuk-link">
-                                                <%= t('publish.related.list.table.action_link') %>
-                                            </a>
+                                            <ul class="govuk-summary-list__actions-list">
+                                                <li class="govuk-summary-list__actions-list-item">
+                                                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/related?edit=${link.id}`, i18n.language) %>" class="govuk-link">
+                                                        <%= t('publish.related.list.table.action_edit') %>
+                                                    </a>
+                                                </li>
+                                                <li class="govuk-summary-list__actions-list-item">
+                                                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/related?delete=${link.id}`, i18n.language) %>" class="govuk-link">
+                                                        <%= t('publish.related.list.table.action_delete') %>
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </td>
                                     </tr>
                                 <% } %>
@@ -47,11 +55,11 @@
                                 <fieldset class="govuk-fieldset" aria-describedby="add-link">
                                     <div class="govuk-radios" data-module="govuk-radios">
                                         <div class="govuk-radios__item">
-                                            <input class="govuk-radios__input" id="addYes" name="add" type="radio" value="true" />
+                                            <input class="govuk-radios__input" id="addYes" name="add_link" type="radio" value="true" />
                                             <label class="govuk-label govuk-radios__label" for="addYes"><%= t('publish.related.list.add_another.options.yes.label') %></label>
                                         </div>
                                         <div class="govuk-radios__item">
-                                            <input class="govuk-radios__input" id="addNo" name="add" type="radio" value="false" />
+                                            <input class="govuk-radios__input" id="addNo" name="add_link" type="radio" value="false" />
                                             <label class="govuk-label govuk-radios__label" for="addNo"><%= t('publish.related.list.add_another.options.no.label') %></label>
                                         </div>
                                     </div>
@@ -77,15 +85,15 @@
 
                         <form enctype="multipart/form-data" method="post">
                             <fieldset class="govuk-fieldset">
-                                <input type="hidden" name="link_id" value="<%= locals.link_id %>" />
+                                <input type="hidden" name="link_id" value="<%= locals.link.id %>" />
                                 <div class="govuk-form-group">
                                     <label class="govuk-label" for="link_url"><%= t('publish.related.link_url.label') %></label>
-                                    <input class="govuk-input" id="link_url" name="link_url" type="text" value="<%= locals.link_url %>" />
+                                    <input class="govuk-input" id="link_url" name="link_url" type="text" value="<%= locals.link.url %>" />
                                 </div>
                                 <div class="govuk-form-group">
                                     <label class="govuk-label" for="link_label"><%= t('publish.related.link_label.label') %></label>
                                     <div class="govuk-hint"><%= t('publish.related.link_label.hint') %></div>
-                                    <input class="govuk-input" id="link_label" name="link_label" type="text" value="<%= locals.link_label %>" />
+                                    <input class="govuk-input" id="link_label" name="link_label" type="text" value="<%= locals.link.label %>" />
                                 </div>
                             </fieldset>
                             <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
