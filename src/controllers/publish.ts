@@ -424,7 +424,7 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
             const { link_id, link_url, link_label } = matchedData(req);
             link = { id: link_id, url: link_url, label: link_label, created_at: link.created_at };
 
-            // if the link already exists, replace it, otherwise add it, then sort by updated_at
+            // if the link already exists, replace it, otherwise add it, then sort
             related_links = sortBy([...related_links.filter((rl) => rl.id !== link.id), link], 'created_at');
 
             await req.swapi.updateDatasetInfo(dataset.id, { related_links, language: req.language });
