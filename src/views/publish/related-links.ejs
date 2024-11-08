@@ -13,7 +13,7 @@
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
 
-                    <% if (locals.related_links.length > 0 && locals.editId === undefined) { %>
+                    <% if (locals.related_links.length > 0 && !locals.editId) { %>
                         <h1 class="govuk-heading-xl"><%= t('publish.related.list.heading') %></h1>
 
                         <table class="govuk-table">

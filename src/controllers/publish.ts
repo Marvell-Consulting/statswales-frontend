@@ -385,12 +385,12 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
         }
     }
 
-    if (editId !== undefined && editId !== 'new') {
+    if (editId && editId !== 'new') {
         const existingLink = related_links.find((rl) => rl.id === editId);
         if (existingLink) {
             link = existingLink;
         } else {
-            // shouldn't happen unless someone edits the edit query param to an id that doesn't exist
+            // shouldn't happen unless someone changes the query param to an id that doesn't exist
             const error: ViewError = { field: 'related_link', tag: { name: 'errors.related_link.missing' } };
             errors = generateViewErrors(dataset.id, 400, [error]);
         }
