@@ -368,10 +368,10 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     let errors: ViewErrDTO | undefined;
     let related_links = sortBy(dataset?.datasetInfo?.related_links || [], 'created_at');
-    let link: RelatedLinkDTO = { id: nanoid(4), url: '', label: '' };
     const deleteId = req.query.delete;
     const editId = req.query.edit;
     const now = new Date().toISOString();
+    let link: RelatedLinkDTO = { id: nanoid(4), url: '', label: '', created_at: now };
 
     if (deleteId) {
         try {
@@ -409,7 +409,7 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
         }
 
         // redisplay the form with submitted values if there are errors
-        link = { id: link_id, url: link_url, label: link_label, created_at: link.created_at ?? now };
+        link = { id: link_id, url: link_url, label: link_label, created_at: link.created_at };
 
         try {
             for (const validator of [linkIdValidator(), linkUrlValidator(), linkLabelValidator()]) {
