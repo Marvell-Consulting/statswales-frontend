@@ -27,7 +27,7 @@
                             <tbody class="govuk-table__body">
                                 <% for (let link of locals.related_links) { %>
                                     <tr class="govuk-table__row">
-                                        <td class="govuk-table__cell"><%= link.url %></td>
+                                        <td class="govuk-table__cell"><a href="<%= link.url %>" class="govuk-link"><%= link.url %></a></td>
                                         <td class="govuk-table__cell"><%= link.label %></td>
                                         <td class="govuk-table__cell">
                                             <ul class="govuk-summary-list__actions-list">
