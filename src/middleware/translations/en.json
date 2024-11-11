@@ -168,6 +168,36 @@
                 "hint": "This should be entered in the language in which you're viewing this service."
             }
         },
+        "providers": {
+            "add": {
+                "heading": "Add a data provider"
+            },
+            "list":  {
+                "heading": "Sources added",
+                "table": {
+                    "provider": "Provider",
+                    "source": "Source",
+                    "action_header": "Action",
+                    "action_edit": "Change",
+                    "action_delete": "Remove"
+                },
+                "add_another": {
+                    "heading": "Do you need to add another source?",
+                    "options": {
+                        "yes": {
+                            "label": "Yes"
+                        },
+                        "no": {
+                            "label": "No"
+                        }
+                    }
+                }
+            },
+            "explain": "If you cannot find the data provider in the list, you can <a href=\"{{request_data_provider_url}}\">request a data provider be added</a>.",
+            "provider": {
+                "hint": "Start typing or select from the list."
+            }
+        },
         "designation": {
             "heading": "How is this dataset designated?",
             "options": {

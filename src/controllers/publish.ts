@@ -364,6 +364,81 @@ export const provideUpdateFrequency = async (req: Request, res: Response, next: 
     res.render('publish/update-frequency', { ...update_frequency, unitOptions: Object.values(DurationUnit), errors });
 };
 
+export const provideDataProviders = async (req: Request, res: Response, next: NextFunction) => {
+    const dataset = singleLangDataset(res.locals.dataset, req.language);
+    let errors: ViewErrDTO | undefined;
+    let related_links = sortBy(dataset?.datasetInfo?.related_links || [], 'created_at');
+    const deleteId = req.query.delete;
+    const editId = req.query.edit;
+    const now = new Date().toISOString();
+    let link: RelatedLinkDTO = { id: nanoid(4), url: '', label: '', created_at: now };
+
+    if (deleteId) {
+        try {
+            related_links = related_links.filter((rl) => rl.id !== deleteId);
+            await req.swapi.updateDatasetInfo(dataset.id, { related_links, language: req.language });
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/related`, req.language));
+            return;
+        } catch (err) {
+            next(new UnknownException());
+            return;
+        }
+    }
+
+    if (editId && editId !== 'new') {
+        const existingLink = related_links.find((rl) => rl.id === editId);
+        if (existingLink) {
+            link = existingLink;
+        } else {
+            // shouldn't happen unless someone changes the query param to an id that doesn't exist
+            const error: ViewError = { field: 'related_link', tag: { name: 'errors.related_link.missing' } };
+            errors = generateViewErrors(dataset.id, 400, [error]);
+        }
+    }
+
+    if (req.method === 'POST') {
+        const { add_link, link_id, link_url, link_label } = req.body;
+        if (add_link === 'true') {
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/related?edit=new`, req.language));
+            return;
+        }
+
+        if (add_link === 'false') {
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+            return;
+        }
+
+        // redisplay the form with submitted values if there are errors
+        link = { id: link_id, url: link_url, label: link_label, created_at: link.created_at };
+
+        try {
+            for (const validator of [linkIdValidator(), linkUrlValidator(), linkLabelValidator()]) {
+                const result = await validator.run(req);
+                if (!result.isEmpty()) {
+                    res.status(400);
+                    const error = result.array()[0] as FieldValidationError;
+                    throw error;
+                }
+            }
+
+            const { link_id, link_url, link_label } = matchedData(req);
+            link = { id: link_id, url: link_url, label: link_label, created_at: link.created_at };
+
+            // if the link already exists, replace it, otherwise add it, then sort
+            related_links = sortBy([...related_links.filter((rl) => rl.id !== link.id), link], 'created_at');
+
+            await req.swapi.updateDatasetInfo(dataset.id, { related_links, language: req.language });
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/related`, req.language));
+            return;
+        } catch (err) {
+            const error: ViewError = { field: 'related_link', tag: { name: 'errors.related_link.required' } };
+            errors = generateViewErrors(undefined, 400, [error]);
+        }
+    }
+
+    res.render('publish/related-links', { editId, link, related_links, errors });
+};
+
 export const provideRelatedLinks = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     let errors: ViewErrDTO | undefined;

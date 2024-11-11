@@ -1,0 +1,85 @@
+<%- include("../partials/header"); %>
+<div class="govuk-width-container app-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+
+        <div class="top-links">
+            <div class="govuk-width-container">
+                <a href="javascript:history.back()" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+            </div>
+        </div>
+
+        <div class="govuk-width-container">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+
+                  <% if (locals.data_providers.length > 0 && !locals.editId) { %>
+
+                    <h1 class="govuk-heading-xl"><%= t('publish.providers.list.heading') %></h1>
+
+                        <table class="govuk-table">
+                            <thead class="govuk-table__head">
+                                <tr class="govuk-table__row">
+                                    <th scope="col" class="govuk-table__header"><%= t('publish.providers.list.table.provider') %></th>
+                                    <th scope="col" class="govuk-table__header"><%= t('publish.providers.list.table.source') %></th>
+                                    <th scope="col" class="govuk-table__header"><%= t('publish.providers.list.table.action_header') %></th>
+                                </tr>
+                            </thead>
+                            <tbody class="govuk-table__body">
+                                <% for (let provider of locals.data_providers) { %>
+                                    <tr class="govuk-table__row">
+                                        <td class="govuk-table__cell"><%= provider.provider?.name %></td>
+                                        <td class="govuk-table__cell"><%= provider.source?.name %></td>
+                                        <td class="govuk-table__cell">
+                                            <ul class="govuk-summary-list__actions-list">
+                                                <li class="govuk-summary-list__actions-list-item">
+                                                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/provider?edit=${link.id}`, i18n.language) %>" class="govuk-link">
+                                                        <%= t('publish.providers.list.table.action_edit') %>
+                                                    </a>
+                                                </li>
+                                                <li class="govuk-summary-list__actions-list-item">
+                                                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/provider?delete=${link.id}`, i18n.language) %>" class="govuk-link">
+                                                        <%= t('publish.providers.list.table.action_delete') %>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+
+                        <h2 class="govuk-heading-m"><%= t('publish.providers.list.add_another.heading') %></h2>
+
+                        <form enctype="multipart/form-data" method="post">
+                            <div class="govuk-form-group">
+                                <fieldset class="govuk-fieldset" aria-describedby="add-link">
+                                    <div class="govuk-radios" data-module="govuk-radios">
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="addYes" name="add_link" type="radio" value="true" />
+                                            <label class="govuk-label govuk-radios__label" for="addYes"><%= t('publish.providers.list.add_another.options.yes.label') %></label>
+                                        </div>
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="addNo" name="add_link" type="radio" value="false" />
+                                            <label class="govuk-label govuk-radios__label" for="addNo"><%= t('publish.providers.list.add_another.options.no.label') %></label>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
+                            <a class="govuk-button govuk-button--secondary" href="javascript:history.back()"><%= t('buttons.cancel')%></a>
+                        </form>
+
+                  <% } else { %>
+
+
+
+                  <% } %>
+
+                </div>
+              </div>
+          </div>
+      </main>
+  </div>
+
+  <%- include("../partials/footer"); %>
