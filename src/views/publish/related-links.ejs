@@ -11,25 +11,23 @@
 
         <div class="govuk-width-container">
             <div class="govuk-grid-row">
-                <div class="govuk-grid-column-two-thirds">
+                <% if (locals.related_links.length > 0 && !locals.editId) { %>
 
-                    <% if (locals.related_links.length > 0 && !locals.editId) { %>
+                    <div class="govuk-grid-column-two-thirds">
                         <h1 class="govuk-heading-xl"><%= t('publish.related.list.heading') %></h1>
 
                         <table class="govuk-table">
                             <thead class="govuk-table__head">
                                 <tr class="govuk-table__row">
-                                    <th scope="col" class="govuk-table__header"><%= t('publish.related.list.table.url') %></th>
-                                    <th scope="col" class="govuk-table__header"><%= t('publish.related.list.table.label') %></th>
+                                    <th scope="col" class="govuk-table__header"><%= t('publish.related.list.table.link') %></th>
                                     <th scope="col" class="govuk-table__header"><%= t('publish.related.list.table.action_header') %></th>
                                 </tr>
                             </thead>
                             <tbody class="govuk-table__body">
                                 <% for (let link of locals.related_links) { %>
                                     <tr class="govuk-table__row">
-                                        <td class="govuk-table__cell"><a href="<%= link.url %>" class="govuk-link"><%= link.url %></a></td>
-                                        <td class="govuk-table__cell"><%= link.label %></td>
-                                        <td class="govuk-table__cell">
+                                        <td class="govuk-table__cell"><a href="<%= link.url %>" class="govuk-link"><%= link.label %></a></td>
+                                        <td class="govuk-table__cell nowrap">
                                             <ul class="govuk-summary-list__actions-list">
                                                 <li class="govuk-summary-list__actions-list-item">
                                                     <a href="<%= buildUrl(`/publish/${locals.datasetId}/related?edit=${link.id}`, i18n.language) %>" class="govuk-link">
@@ -68,9 +66,11 @@
                             <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
                             <a class="govuk-button govuk-button--secondary" href="javascript:history.back()"><%= t('buttons.cancel')%></a>
                         </form>
+                    </div>
 
-                    <% } else { %>
+                <% } else { %>
 
+                    <div class="govuk-grid-column-two-thirds">
                         <h1 class="govuk-heading-xl"><%= t('publish.related.add.heading') %></h1>
 
                         <%- include("../partials/error-handler"); %>
@@ -99,13 +99,19 @@
                             <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
                             <a class="govuk-button govuk-button--secondary" href="javascript:history.back()"><%= t('buttons.cancel')%></a>
                         </form>
+                    </div>
 
-                    <% } %>
+                <% } %>
 
-                </div>
             </div>
         </div>
     </main>
 </div>
+
+<style>
+    .nowrap {
+        white-space: nowrap;
+    }
+</style>
 
 <%- include("../partials/footer"); %>
