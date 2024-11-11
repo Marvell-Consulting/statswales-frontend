@@ -139,8 +139,7 @@
             "list":  {
                 "heading": "Report links added",
                 "table": {
-                    "url": "Link URL",
-                    "label": "Link text",
+                    "link": "Report Link",
                     "action_header": "Action",
                     "action_edit": "Change",
                     "action_delete": "Remove"
