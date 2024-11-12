@@ -338,8 +338,8 @@ export const provideUpdateFrequency = async (req: Request, res: Response, next: 
     if (req.method === 'POST') {
         update_frequency = {
             is_updated: req.body.is_updated ? req.body.is_updated === 'true' : undefined,
-            frequency_unit: req.body.is_updated ? req.body.frequency_unit : undefined,
-            frequency_value: req.body.is_updated ? req.body.frequency_value : undefined
+            frequency_unit: req.body.is_updated === 'true' ? req.body.frequency_unit : undefined,
+            frequency_value: req.body.is_updated === 'true' ? req.body.frequency_value : undefined
         };
 
         try {
@@ -351,6 +351,14 @@ export const provideUpdateFrequency = async (req: Request, res: Response, next: 
                     throw error;
                 }
             }
+
+            const { is_updated, frequency_unit, frequency_value } = matchedData(req);
+
+            update_frequency = {
+                is_updated,
+                frequency_unit: is_updated ? frequency_unit : undefined,
+                frequency_value: is_updated ? frequency_value : undefined
+            };
 
             await req.swapi.updateDatasetInfo(dataset.id, { update_frequency, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));

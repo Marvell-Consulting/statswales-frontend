@@ -21,9 +21,9 @@ export const roundingAppliedValidator = () => body('rounding_applied').notEmpty(
 export const roundingDescriptionValidator = () =>
     body('rounding_description').if(body('rounding_applied').equals('true')).trim().notEmpty();
 
-export const isUpdatedValidator = () => body('is_updated').notEmpty().isBoolean();
+export const isUpdatedValidator = () => body('is_updated').notEmpty().isBoolean().toBoolean();
 export const frequencyValueValidator = () =>
-    body('frequency_value').if(body('is_updated').equals('true')).notEmpty().isInt();
+    body('frequency_value').if(body('is_updated').equals('true')).notEmpty().isInt().toInt(10);
 export const frequencyUnitValidator = () =>
     body('frequency_unit').if(body('is_updated').equals('true')).isIn(Object.values(DurationUnit));
 
