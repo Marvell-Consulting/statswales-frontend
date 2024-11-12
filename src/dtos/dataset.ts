@@ -1,6 +1,7 @@
-import { DatasetInfoDTO } from './dataset-info';
 import { DimensionDTO } from './dimension';
 import { RevisionDTO } from './revision';
+import { DatasetInfoDTO } from './dataset-info';
+import { DatasetProviderDTO } from './dataset-provider';
 
 export interface DatasetDTO {
     id: string;
@@ -11,4 +12,5 @@ export interface DatasetDTO {
     dimensions?: DimensionDTO[];
     revisions: RevisionDTO[];
     datasetInfo?: DatasetInfoDTO[];
+    providers?: DatasetProviderDTO[];
 }

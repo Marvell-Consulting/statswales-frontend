@@ -170,7 +170,8 @@
         },
         "providers": {
             "add": {
-                "heading": "Add a data provider"
+                "heading": "Add a data provider",
+                "explain": "If you cannot find the data provider in the list, you can <a class=\"govuk-link\" href=\"{{request_data_provider_url}}\">request a data provider be added</a>."
             },
             "list":  {
                 "heading": "Sources added",
@@ -193,9 +194,9 @@
                     }
                 }
             },
-            "explain": "If you cannot find the data provider in the list, you can <a href=\"{{request_data_provider_url}}\">request a data provider be added</a>.",
             "provider": {
-                "hint": "Start typing or select from the list."
+                "hint": "Start typing or select from the list.",
+                "placeholder": "Select a data provider"
             }
         },
         "designation": {
@@ -391,6 +392,9 @@
         },
         "update_frequency": {
             "missing": "You need to provide the update frequency of the dataset"
+        },
+        "provider": {
+            "missing": "You need to select a data provider"
         },
         "related_link": {
             "required": "You need to provide the link URL and text",

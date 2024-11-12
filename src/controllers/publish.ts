@@ -15,6 +15,7 @@ import {
     linkIdValidator,
     linkLabelValidator,
     linkUrlValidator,
+    providerIdValidator,
     qualityValidator,
     roundingAppliedValidator,
     roundingDescriptionValidator,
@@ -35,6 +36,7 @@ import { updateSourceTypes } from '../utils/update-source-types';
 import { Designation } from '../enums/designation';
 import { DurationUnit } from '../enums/duration-unit';
 import { RelatedLinkDTO } from '../dtos/related-link';
+import { DatasetProviderDTO } from '../dtos/dataset-provider';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -365,69 +367,30 @@ export const provideUpdateFrequency = async (req: Request, res: Response, next: 
 };
 
 export const provideDataProviders = async (req: Request, res: Response, next: NextFunction) => {
-    const dataset = singleLangDataset(res.locals.dataset, req.language);
     let errors: ViewErrDTO | undefined;
-    let related_links = sortBy(dataset?.datasetInfo?.related_links || [], 'created_at');
-    const deleteId = req.query.delete;
+    const availableProviders = await req.swapi.getAvailableDataProviders();
+    const dataset = singleLangDataset(res.locals.dataset, req.language);
     const editId = req.query.edit;
-    const now = new Date().toISOString();
-    let link: RelatedLinkDTO = { id: nanoid(4), url: '', label: '', created_at: now };
-
-    if (deleteId) {
-        try {
-            related_links = related_links.filter((rl) => rl.id !== deleteId);
-            await req.swapi.updateDatasetInfo(dataset.id, { related_links, language: req.language });
-            res.redirect(req.buildUrl(`/publish/${dataset.id}/related`, req.language));
-            return;
-        } catch (err) {
-            next(new UnknownException());
-            return;
-        }
-    }
-
-    if (editId && editId !== 'new') {
-        const existingLink = related_links.find((rl) => rl.id === editId);
-        if (existingLink) {
-            link = existingLink;
-        } else {
-            // shouldn't happen unless someone changes the query param to an id that doesn't exist
-            const error: ViewError = { field: 'related_link', tag: { name: 'errors.related_link.missing' } };
-            errors = generateViewErrors(dataset.id, 400, [error]);
-        }
-    }
+    const data_providers = sortBy(dataset?.providers || [], 'created_at');
+    let providerId;
 
     if (req.method === 'POST') {
-        const { add_link, link_id, link_url, link_label } = req.body;
-        if (add_link === 'true') {
-            res.redirect(req.buildUrl(`/publish/${dataset.id}/related?edit=new`, req.language));
-            return;
-        }
-
-        if (add_link === 'false') {
-            res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
-            return;
-        }
-
-        // redisplay the form with submitted values if there are errors
-        link = { id: link_id, url: link_url, label: link_label, created_at: link.created_at };
-
         try {
-            for (const validator of [linkIdValidator(), linkUrlValidator(), linkLabelValidator()]) {
-                const result = await validator.run(req);
-                if (!result.isEmpty()) {
-                    res.status(400);
-                    const error = result.array()[0] as FieldValidationError;
-                    throw error;
-                }
+            const providerIdError = await hasError(providerIdValidator(), req);
+            const providerExists = availableProviders.find((provider) => provider.id === req.body.provider_id);
+
+            if (providerIdError || !providerExists) {
+                res.status(400);
+                throw new Error('errors.provider.missing');
             }
 
-            const { link_id, link_url, link_label } = matchedData(req);
-            link = { id: link_id, url: link_url, label: link_label, created_at: link.created_at };
+            const provider: DatasetProviderDTO = {
+                dataset_id: dataset.id,
+                provider_id: req.body.provider_id,
+                language: req.language
+            };
 
-            // if the link already exists, replace it, otherwise add it, then sort
-            related_links = sortBy([...related_links.filter((rl) => rl.id !== link.id), link], 'created_at');
-
-            await req.swapi.updateDatasetInfo(dataset.id, { related_links, language: req.language });
+            await req.swapi.updateDatasetProviders(dataset.id, [...data_providers, provider]);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/related`, req.language));
             return;
         } catch (err) {
@@ -436,7 +399,7 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
         }
     }
 
-    res.render('publish/related-links', { editId, link, related_links, errors });
+    res.render('publish/providers', { editId, providerId, data_providers, availableProviders, errors });
 };
 
 export const provideRelatedLinks = async (req: Request, res: Response, next: NextFunction) => {

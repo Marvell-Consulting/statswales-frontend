@@ -1,5 +1,6 @@
-import { DatasetInfoDTO } from '../dataset-info';
 import { RevisionDTO } from '../revision';
+import { DatasetInfoDTO } from '../dataset-info';
+import { DatasetProviderDTO } from '../dataset-provider';
 
 import { SingleLanguageDimension } from './dimension';
 
@@ -12,4 +13,5 @@ export interface SingleLanguageDataset {
     dimensions?: SingleLanguageDimension[];
     revisions: RevisionDTO[];
     datasetInfo?: DatasetInfoDTO;
+    providers?: DatasetProviderDTO[];
 }
