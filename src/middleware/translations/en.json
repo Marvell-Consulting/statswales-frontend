@@ -173,6 +173,19 @@
                 "heading": "Add a data provider",
                 "explain": "If you cannot find the data provider in the list, you can <a class=\"govuk-link\" href=\"{{request_data_provider_url}}\">request a data provider be added</a>."
             },
+            "add_source": {
+                "heading": "Add a data source from the selected data provider",
+                "options": {
+                    "yes": {
+                        "label": "Select source",
+                        "note": "If you cannot find the source in the list, you can <a class=\"govuk-link\" href=\"{{request_data_source_url}}\">request a data source be added</a>.",
+                        "hint": "Start typing or select from the list"
+                    },
+                    "no": {
+                        "label": "No specific source from data provider"
+                    }
+                }
+            },
             "list":  {
                 "heading": "Sources added",
                 "table": {
@@ -395,6 +408,9 @@
         },
         "provider": {
             "missing": "You need to select a data provider"
+        },
+        "provider_source": {
+            "missing": "You need to select a data provider source"
         },
         "related_link": {
             "required": "You need to provide the link URL and text",

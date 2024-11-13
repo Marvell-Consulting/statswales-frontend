@@ -15,6 +15,7 @@ import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { TaskListState } from '../dtos/task-list-state';
 import { DatasetProviderDTO } from '../dtos/dataset-provider';
 import { ProviderDTO } from '../dtos/provider';
+import { ProviderSourceDTO } from '../dtos/provider-source';
 
 const config = appConfig();
 
@@ -253,8 +254,15 @@ export class StatsWalesApi {
             });
     }
 
-    public async getAvailableDataProviders(): Promise<ProviderDTO[]> {
-        logger.debug('Fetching available data providers...');
+    public async getAllProviders(): Promise<ProviderDTO[]> {
+        logger.debug('Fetching data providers...');
         return this.fetch({ url: 'provider' }).then((response) => response.json() as unknown as ProviderDTO[]);
+    }
+
+    public async getSourcesByProvider(providerId: string): Promise<ProviderSourceDTO[]> {
+        logger.debug('Fetching data provider sources...');
+        return this.fetch({ url: `provider/${providerId}/sources` }).then(
+            (response) => response.json() as unknown as ProviderSourceDTO[]
+        );
     }
 }
