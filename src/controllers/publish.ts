@@ -392,8 +392,13 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
     }
 
     if (editId && editId !== 'new') {
-        dataProvider = dataProviders.find((dp) => dp.id === editId)!;
-        availableSources = await req.swapi.getSourcesByProvider(dataProvider.provider_id);
+        try {
+            dataProvider = dataProviders.find((dp) => dp.id === editId)!;
+            availableSources = await req.swapi.getSourcesByProvider(dataProvider.provider_id);
+        } catch (err) {
+            next(new UnknownException());
+            return;
+        }
     }
 
     if (req.method === 'POST') {
@@ -443,7 +448,7 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
             // create a new data provider - generate id on the frontend so we can redirect the user to add sources
             dataProvider = { id: uuid(), dataset_id: dataset.id, provider_id, language: req.language };
 
-            await req.swapi.updateDatasetProviders(dataset.id, [...dataProviders, dataProvider]);
+            await req.swapi.addDatasetProvider(dataset.id, dataProvider);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/providers?edit=${dataProvider.id}`, req.language));
             return;
         } catch (err) {

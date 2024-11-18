@@ -87,7 +87,7 @@
                                     <fieldset class="govuk-fieldset" aria-describedby="add-source">
                                         <div class="govuk-radios" data-module="govuk-radios">
                                             <div class="govuk-radios__item">
-                                                <input class="govuk-radios__input" id="addYes" name="add_source" type="radio" value="true" data-aria-controls="conditional-add-source" />
+                                                <input class="govuk-radios__input" id="addYes" name="add_source" type="radio" value="true" data-aria-controls="conditional-add-source" <%= locals.dataProvider?.source_id ? 'checked' : '' %> />
                                                 <label class="govuk-label govuk-radios__label" for="addYes"><%= t('publish.providers.add_source.options.yes.label') %></label>
                                             </div>
 
@@ -103,7 +103,7 @@
                                                         <select id="source" name="source_id" class="govuk-select govuk-!-width-full" aria-describedby="source-hint">
                                                             <option value="" selected disabled></option>
                                                             <% for (let source of locals.availableSources) { %>
-                                                                <option value="<%= source.id %>"><%= source.name %></option>
+                                                                <option value="<%= source.id %>" <%= locals.dataProvider?.source_id === source.id ? 'selected' : '' %>><%= source.name %></option>
                                                             <% } %>
                                                         </select>
                                                     </fieldset>

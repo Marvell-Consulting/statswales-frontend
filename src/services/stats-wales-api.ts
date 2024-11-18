@@ -189,6 +189,12 @@ export class StatsWalesApi {
         );
     }
 
+    public async addDatasetProvider(datasetId: string, provider: DatasetProviderDTO): Promise<DatasetDTO> {
+        return this.fetch({ url: `dataset/${datasetId}/providers`, method: HttpMethod.Post, json: provider }).then(
+            (response) => response.json() as unknown as DatasetDTO
+        );
+    }
+
     public async updateDatasetProviders(datasetId: string, providers: DatasetProviderDTO[]): Promise<DatasetDTO> {
         return this.fetch({ url: `dataset/${datasetId}/providers`, method: HttpMethod.Patch, json: providers }).then(
             (response) => response.json() as unknown as DatasetDTO
