@@ -45,36 +45,34 @@
             <% } %>
         </p>
         <% if (locals?.data) { %>
-            <div class="table-display">
-                <table class="govuk-table">
-                    <colgroup>
+            <table class="govuk-table">
+                <colgroup>
+                    <% locals.headers.forEach(function(cell, idx) { %>
+                        <col class="<%= cell.source_type === 'ignore' ? 'ignore-column' : '' %>" />
+                    <% }); %>
+                </colgroup>
+                <thead class="govuk-table__head">
+                    <tr class="govuk-table__row">
                         <% locals.headers.forEach(function(cell, idx) { %>
-                            <col class="<%= cell.source_type === 'ignore' ? 'ignore-column' : '' %>" />
+                            <th scope="col" class="govuk-table__header">
+                                <% if (cell.source_type && cell.source_type !== 'unknown') { %>
+                                    <span class="region-subhead"><%= t(`publish.preview.source_type.${cell.source_type}`) %></span><br />
+                                <% } %>
+                                <%= cell.name || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %>
+                            </th>
                         <% }); %>
-                    </colgroup>
-                    <thead class="govuk-table__head">
-                        <tr class="govuk-table__row">
-                            <% locals.headers.forEach(function(cell, idx) { %>
-                                <th scope="col" class="govuk-table__header">
-                                    <% if (cell.source_type && cell.source_type !== 'unknown') { %>
-                                        <span class="region-subhead"><%= t(`publish.preview.source_type.${cell.source_type}`) %></span><br />
-                                    <% } %>
-                                    <%= cell.name || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %>
-                                </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% locals.data.forEach(function(row) { %>
+                        <tr>
+                            <% row.forEach(function(cell) { %>
+                                <td class="govuk-table__cell"><%= cell %></td>
                             <% }); %>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <% locals.data.forEach(function(row) { %>
-                            <tr>
-                                <% row.forEach(function(cell) { %>
-                                    <td class="govuk-table__cell"><%= cell %></td>
-                                <% }); %>
-                            </tr>
-                            <% }); %>
-                    </tbody>
-                </table>
-            </div>
+                        <% }); %>
+                </tbody>
+            </table>
             <p class="govuk-body">
                 <%= t('publish.preview.showing_rows', {start: locals.page_info.start_record, end: locals.page_info.end_record, total: locals.page_info.total_records}) %>
             </p>
