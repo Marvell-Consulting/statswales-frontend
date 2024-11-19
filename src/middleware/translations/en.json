@@ -66,19 +66,19 @@
             "p1": "To create a new dataset, you'll need:",
             "data_table": "a data table containing data and references to all relevant dimensions",
             "lookup_table": "lookup tables for all relevant dimensions - using either common tables within this service or uploading them yourself",
-            "metadata": "details about the dataset including description, quality and how the data was collected"
+            "metadata": "details about this dataset including description, quality and how the data was collected"
         },
         "title": {
-            "heading": "What is the title of the dataset?",
+            "heading": "What is the title of this dataset?",
             "appear": "This title will appear on the StatsWales website",
             "descriptive": "It should be short, descriptive and unique",
             "language": "This should be entered in the language in which you're viewing this service."
         },
         "summary": {
-            "heading": "What is the summary of the dataset?",
+            "heading": "What is the summary of this dataset?",
             "explain": "In short, simple sentences explain:",
             "explain_1": "what this dataset is about and what it shows",
-            "explain_2": "the dataset's dimensions and why they've been used, if needed",
+            "explain_2": "this dataset's dimensions and why they've been used, if needed",
             "language": "This should be entered in the language in which you're viewing this service."
         },
         "collection": {
@@ -92,8 +92,8 @@
         "quality": {
             "heading": "What is the statistical quality of this dataset?",
             "explain": "In short, simple sentences explain:",
-            "explain_1": "any issues or methodological changes related to the dataset including any:",
-            "explain_1a": "notes relevant to all data values in the dataset",
+            "explain_1": "any issues or methodological changes related to this dataset including any:",
+            "explain_1a": "notes relevant to all data values in this dataset",
             "explain_1b": "custom explanations needed to clarify any note codes used",
             "explain_2": "a high-level summary of the statistical quality report, if available",
             "language": "This should be entered in the language in which you're viewing this service.",
@@ -248,13 +248,13 @@
                 "statistical_quality": "Statistical quality",
                 "data_sources": "Data sources",
                 "related_reports": "Related reports",
-                "update_frequency": "How often the dataset is updated",
+                "update_frequency": "How often this dataset is updated",
                 "designation": "Designation",
                 "relevant_topics": "Relevant topics"
             },
             "publishing": {
                 "subheading": "Publishing",
-                "when": "When the dataset should be published",
+                "when": "When this dataset should be published",
                 "export": "Export text fields for translation",
                 "import": "Import translations",
                 "submit": "Submit for approval"
@@ -332,8 +332,8 @@
             "failed_to_get_preview": "We were unable to generate a preview of the uploaded CSV.  Is this a valid CSV?",
             "remove_error": "We were unable to remove your uploadded file from the server.  Something went wrong.  Please try again",
             "confirm_error":  "You need to confirm or reject the uploaded file using the buttons at the end of the preview",
-            "revision_missing": "A revision is missing from the dataset",
-            "import_missing": "An import is missing from the dataset"
+            "revision_missing": "A revision is missing from this dataset",
+            "import_missing": "An import is missing from this dataset"
         },
         "datalake_error": "Unable to connect to Datalake",
         "blob_storage_errror": "Unable to connect to Blob Storage Service",
@@ -345,13 +345,13 @@
             "duplicate": "Title already exists"
         },
         "description": {
-            "missing": "You need to provide a summary of the dataset"
+            "missing": "You need to provide a summary of this dataset"
         },
         "collection": {
             "missing": "Either a collection method was not entered or there is a problem."
         },
         "quality": {
-            "missing": "You need to provide the statistical quality of the dataset"
+            "missing": "You need to provide the statistical quality of this dataset"
         },
         "rounding_applied": {
             "missing": "You need to provide whether rounding has been applied to the data values"
@@ -360,14 +360,14 @@
             "missing": "You need to provide a description of the rounding applied"
         },
         "update_frequency": {
-            "missing": "You need to provide the update frequency of the dataset"
+            "missing": "You need to provide the update frequency of this dataset"
         },
         "related_link": {
             "required": "You need to provide the link URL and text",
             "missing": "The related link could not be found"
         },
         "designation": {
-            "missing": "You need to provide the designation of the dataset"
+            "missing": "You need to provide the designation of this dataset"
         },
         "upload": {
             "no_csv": "No CSV data provided",
