@@ -125,11 +125,11 @@
             },
             "unit": {
                 "select": "Select",
-                "day": "Days",
-                "week": "Weeks",
-                "month": "Months",
-                "quarter": "Quarters",
-                "year": "Years"
+                "day": "days",
+                "week": "weeks",
+                "month": "months",
+                "quarter": "quarters",
+                "year": "years"
             }
         },
         "related": {
