@@ -13,6 +13,9 @@ import { ViewException } from '../exceptions/view.exception';
 import { Locale } from '../enums/locale';
 import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { TaskListState } from '../dtos/task-list-state';
+import { DatasetProviderDTO } from '../dtos/dataset-provider';
+import { ProviderDTO } from '../dtos/provider';
+import { ProviderSourceDTO } from '../dtos/provider-source';
 
 const config = appConfig();
 
@@ -186,6 +189,18 @@ export class StatsWalesApi {
         );
     }
 
+    public async addDatasetProvider(datasetId: string, provider: DatasetProviderDTO): Promise<DatasetDTO> {
+        return this.fetch({ url: `dataset/${datasetId}/providers`, method: HttpMethod.Post, json: provider }).then(
+            (response) => response.json() as unknown as DatasetDTO
+        );
+    }
+
+    public async updateDatasetProviders(datasetId: string, providers: DatasetProviderDTO[]): Promise<DatasetDTO> {
+        return this.fetch({ url: `dataset/${datasetId}/providers`, method: HttpMethod.Patch, json: providers }).then(
+            (response) => response.json() as unknown as DatasetDTO
+        );
+    }
+
     public async getTaskList(datasetId: string): Promise<TaskListState> {
         logger.debug(`Fetching tasklist for dataset: ${datasetId}`);
         return this.fetch({ url: `dataset/${datasetId}/tasklist` }).then(
@@ -243,5 +258,17 @@ export class StatsWalesApi {
                     }
                 ]);
             });
+    }
+
+    public async getAllProviders(): Promise<ProviderDTO[]> {
+        logger.debug('Fetching data providers...');
+        return this.fetch({ url: 'provider' }).then((response) => response.json() as unknown as ProviderDTO[]);
+    }
+
+    public async getSourcesByProvider(providerId: string): Promise<ProviderSourceDTO[]> {
+        logger.debug('Fetching data provider sources...');
+        return this.fetch({ url: `provider/${providerId}/sources` }).then(
+            (response) => response.json() as unknown as ProviderSourceDTO[]
+        );
     }
 }

@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { snakeCase, sortBy } from 'lodash';
 import { FieldValidationError, matchedData } from 'express-validator';
 import { nanoid } from 'nanoid';
+import { v4 as uuid } from 'uuid';
 
 import { generateViewErrors } from '../utils/generate-view-errors';
 import {
@@ -15,6 +16,7 @@ import {
     linkIdValidator,
     linkLabelValidator,
     linkUrlValidator,
+    providerIdValidator,
     qualityValidator,
     roundingAppliedValidator,
     roundingDescriptionValidator,
@@ -35,6 +37,9 @@ import { updateSourceTypes } from '../utils/update-source-types';
 import { Designation } from '../enums/designation';
 import { DurationUnit } from '../enums/duration-unit';
 import { RelatedLinkDTO } from '../dtos/related-link';
+import { DatasetProviderDTO } from '../dtos/dataset-provider';
+import { ProviderSourceDTO } from '../dtos/provider-source';
+import { ProviderDTO } from '../dtos/provider';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -370,6 +375,104 @@ export const provideUpdateFrequency = async (req: Request, res: Response, next: 
     }
 
     res.render('publish/update-frequency', { ...update_frequency, unitOptions: Object.values(DurationUnit), errors });
+};
+
+export const provideDataProviders = async (req: Request, res: Response, next: NextFunction) => {
+    let errors: ViewErrDTO | undefined;
+    const availableProviders: ProviderDTO[] = await req.swapi.getAllProviders();
+    const dataset = singleLangDataset(res.locals.dataset, req.language);
+    const deleteId = req.query.delete;
+    const editId = req.query.edit;
+    let dataProviders: DatasetProviderDTO[] = sortBy(dataset?.providers || [], 'created_at');
+    let availableSources: ProviderSourceDTO[] = [];
+    let dataProvider: DatasetProviderDTO | undefined;
+
+    if (deleteId) {
+        try {
+            dataProviders = dataProviders.filter((dp) => dp.id !== deleteId);
+            await req.swapi.updateDatasetProviders(dataset.id, dataProviders);
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/providers`, req.language));
+            return;
+        } catch (err) {
+            next(new UnknownException());
+            return;
+        }
+    }
+
+    if (editId && editId !== 'new') {
+        try {
+            dataProvider = dataProviders.find((dp) => dp.id === editId)!;
+            availableSources = await req.swapi.getSourcesByProvider(dataProvider.provider_id);
+        } catch (err) {
+            next(new UnknownException());
+            return;
+        }
+    }
+
+    if (req.method === 'POST') {
+        const { add_provider, add_source, provider_id, source_id } = req.body;
+
+        if (add_provider === 'true') {
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/providers?edit=new`, req.language));
+            return;
+        }
+
+        if (add_provider === 'false') {
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+            return;
+        }
+
+        if (add_source === 'false') {
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/providers`, req.language));
+            return;
+        }
+
+        try {
+            const validProvider = availableProviders.find((provider) => provider.id === provider_id);
+
+            if (!provider_id || !validProvider) {
+                res.status(400);
+                throw new Error('errors.provider.missing');
+            }
+
+            if (add_source === 'true') {
+                logger.debug('Adding a data provider source');
+                const validSource = availableSources.find((source) => source.id === source_id);
+
+                if (!source_id || !validSource) {
+                    res.status(400);
+                    throw new Error('errors.provider_source.missing');
+                }
+
+                const providerIdx = dataProviders.findIndex((dp) => dp.id === editId);
+                dataProviders[providerIdx].source_id = source_id;
+                await req.swapi.updateDatasetProviders(dataset.id, dataProviders);
+                res.redirect(req.buildUrl(`/publish/${dataset.id}/providers`, req.language));
+                return;
+            }
+
+            logger.debug('Adding a new data provider');
+
+            // create a new data provider - generate id on the frontend so we can redirect the user to add sources
+            dataProvider = { id: uuid(), dataset_id: dataset.id, provider_id, language: req.language };
+
+            await req.swapi.addDatasetProvider(dataset.id, dataProvider);
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/providers?edit=${dataProvider.id}`, req.language));
+            return;
+        } catch (err) {
+            const error: ViewError = { field: 'related_link', tag: { name: 'errors.related_link.required' } };
+            errors = generateViewErrors(undefined, 400, [error]);
+        }
+    }
+
+    res.render('publish/providers', {
+        editId, // id of the data provider being edited
+        dataProvider, // current data provider being edited (if editId is set)
+        dataProviders, // list of assigned data providers
+        availableProviders, // list of all available providers
+        availableSources, // list of sources for the selected provider
+        errors
+    });
 };
 
 export const provideRelatedLinks = async (req: Request, res: Response, next: NextFunction) => {

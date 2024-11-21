@@ -1,0 +1,178 @@
+<%- include("../partials/header"); %>
+<div class="govuk-width-container app-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+
+        <div class="top-links">
+            <div class="govuk-width-container">
+                <a href="javascript:history.back()" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+            </div>
+        </div>
+
+        <div class="govuk-width-container">
+            <div class="govuk-grid-row">
+
+                <% if (locals.dataProviders?.length > 0 && locals.editId !== 'new') { %>
+                    <div class="govuk-grid-column-full">
+                        <!-- Provider table is displayed whenever we're not adding a "new" provider -->
+
+                        <h1 class="govuk-heading-xl">
+                            <%= locals.editId && locals.editId !== 'new' ? t('publish.providers.add_source.heading') : t('publish.providers.list.heading') %>
+                        </h1>
+
+                        <table class="govuk-table">
+                            <thead class="govuk-table__head">
+                                <tr class="govuk-table__row">
+                                    <th scope="col" class="govuk-table__header"><%= t('publish.providers.list.table.provider') %></th>
+
+                                    <% if (!locals.editId) { %>
+                                        <th scope="col" class="govuk-table__header"><%= t('publish.providers.list.table.source') %></th>
+                                    <% } %>
+
+                                    <th scope="col" class="govuk-table__header"><%= t('publish.providers.list.table.action_header') %></th>
+                                </tr>
+                            </thead>
+                            <tbody class="govuk-table__body">
+                                <% for (let provider of locals.dataProviders.filter((dp) => locals.editId ? dp.id === locals.editId : true)) { %>
+                                    <tr class="govuk-table__row">
+                                        <td class="govuk-table__cell"><%= provider.provider_name %></td>
+                                        <% if (!locals.editId) { %>
+                                            <td class="govuk-table__cell"><%= provider.source_name %></td>
+                                        <% } %>
+                                        <td class="govuk-table__cell nowrap">
+                                            <ul class="govuk-summary-list__actions-list">
+                                                <li class="govuk-summary-list__actions-list-item">
+                                                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/providers?edit=${provider.id}`, i18n.language) %>" class="govuk-link">
+                                                        <%= t('publish.providers.list.table.action_edit') %>
+                                                    </a>
+                                                </li>
+                                                <li class="govuk-summary-list__actions-list-item">
+                                                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/providers?delete=${provider.id}`, i18n.language) %>" class="govuk-link">
+                                                        <%= t('publish.providers.list.table.action_delete') %>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+
+                        <% if (!locals.editId) { %>
+                            <!-- Add another provider form is displayed whenever we're not editing a provider -->
+                            <form enctype="multipart/form-data" method="post">
+                                <div class="govuk-form-group">
+                                    <h2 class="govuk-heading-m" id="add-provider"><%= t('publish.providers.list.add_another.heading') %></h2>
+
+                                    <fieldset class="govuk-fieldset" aria-describedby="add-provider">
+                                        <div class="govuk-radios" data-module="govuk-radios">
+                                            <div class="govuk-radios__item">
+                                                <input class="govuk-radios__input" id="addYes" name="add_provider" type="radio" value="true" />
+                                                <label class="govuk-label govuk-radios__label" for="addYes"><%= t('publish.providers.list.add_another.options.yes.label') %></label>
+                                            </div>
+                                            <div class="govuk-radios__item">
+                                                <input class="govuk-radios__input" id="addNo" name="add_provider" type="radio" value="false" />
+                                                <label class="govuk-label govuk-radios__label" for="addNo"><%= t('publish.providers.list.add_another.options.no.label') %></label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
+                            </form>
+                        <% } else { %>
+                            <!-- Select source form is displayed when we're editing a provider -->
+                            <form enctype="multipart/form-data" method="post">
+                                <input type="hidden" name="provider_id" value="<%= locals.dataProvider?.provider_id %>" />
+                                <div class="govuk-form-group">
+                                    <fieldset class="govuk-fieldset" aria-describedby="add-source">
+                                        <div class="govuk-radios" data-module="govuk-radios">
+                                            <div class="govuk-radios__item">
+                                                <input class="govuk-radios__input" id="addYes" name="add_source" type="radio" value="true" data-aria-controls="conditional-add-source" <%= locals.dataProvider?.source_id ? 'checked' : '' %> />
+                                                <label class="govuk-label govuk-radios__label" for="addYes"><%= t('publish.providers.add_source.options.yes.label') %></label>
+                                            </div>
+
+                                            <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-add-source">
+                                                <div class="govuk-form-group">
+                                                    <fieldset class="govuk-fieldset" role="group" aria-describedby="addYes">
+                                                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                                                            <%- t('publish.providers.add_source.options.yes.note') %>
+                                                        </legend>
+
+                                                        <div class="govuk-hint"><%= t('publish.providers.add_source.options.yes.hint') %></div>
+
+                                                        <select id="source" name="source_id" class="govuk-select govuk-!-width-full" aria-describedby="source-hint">
+                                                            <option value="" selected disabled></option>
+                                                            <% for (let source of locals.availableSources) { %>
+                                                                <option value="<%= source.id %>" <%= locals.dataProvider?.source_id === source.id ? 'selected' : '' %>><%= source.name %></option>
+                                                            <% } %>
+                                                        </select>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+
+                                            <div class="govuk-radios__item">
+                                                <input class="govuk-radios__input" id="addNo" name="add_source" type="radio" value="false" />
+                                                <label class="govuk-label govuk-radios__label" for="addNo"><%= t('publish.providers.add_source.options.no.label') %></label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
+                            </form>
+                        <% } %>
+                    </div>
+                <% } else { %>
+                    <div class="govuk-grid-column-two-thirds">
+                        <!-- Add provider form is displayed whenever we're adding a "new" provider, or if there aren't any saved currently -->
+                        <h1 class="govuk-heading-xl"><%= t('publish.providers.add.heading') %></h1>
+
+                        <p class="govuk-body"><%- t('publish.providers.add.explain') %></p>
+
+                        <form enctype="multipart/form-data" method="post">
+                            <div class="govuk-form-group">
+                                <div class="govuk-hint" id="provider-hint"><%= t('publish.providers.provider.hint') %></div>
+
+                                <select id="provider" name="provider_id" class="govuk-select" aria-describedby="provider-hint">
+                                    <option value="" selected disabled></option>
+                                    <% for (let provider of locals.availableProviders) { %>
+                                        <option value="<%= provider.id %>"><%= provider.name %></option>
+                                    <% } %>
+                                </select>
+                            </div>
+                            <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
+                            <a class="govuk-button govuk-button--secondary" href="javascript:history.back()"><%= t('buttons.cancel')%></a>
+                        </form>
+                    </div>
+                <% } %>
+
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<style>
+    .nowrap {
+        white-space: nowrap;
+    }
+</style>
+
+<script src="/assets/js/accessible-autocomplete.min.js"></script>
+
+<script type="text/javascript">
+    accessibleAutocomplete.enhanceSelectElement({
+        selectElement: document.querySelector('#provider'),
+        autoSelect: true,
+        showAllValues: true,
+        defaultValue: ''
+    });
+
+    accessibleAutocomplete.enhanceSelectElement({
+        selectElement: document.querySelector('#source'),
+        autoSelect: true,
+        showAllValues: true,
+        defaultValue: ''
+    });
+</script>
+
+<%- include("../partials/footer"); %>

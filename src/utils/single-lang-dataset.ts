@@ -10,6 +10,7 @@ export const singleLangDataset = (dataset: DatasetDTO, lang: string): SingleLang
                 ...dimension,
                 dimensionInfo: dimension.dimensionInfo?.find((info) => info.language === lang)
             };
-        })
+        }),
+        providers: dataset.providers?.filter((provider) => provider.language === lang.toLowerCase())
     };
 };
