@@ -1,5 +1,5 @@
 export interface ViewError {
-    field: string | undefined;
+    field?: string;
     tag: {
         name: string;
         params?: object;

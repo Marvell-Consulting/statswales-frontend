@@ -410,29 +410,39 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
     }
 
     if (req.method === 'POST') {
-        const { add_provider, add_source, provider_id, source_id } = req.body;
-
-        if (add_provider === 'true') {
-            res.redirect(req.buildUrl(`/publish/${dataset.id}/providers?edit=new`, req.language));
-            return;
-        }
-
-        if (add_provider === 'false') {
-            res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
-            return;
-        }
-
-        if (add_source === 'false') {
-            res.redirect(req.buildUrl(`/publish/${dataset.id}/providers`, req.language));
-            return;
-        }
-
         try {
+            const { add_another, add_provider, provider_id, add_source, source_id } = req.body;
+
+            if (add_provider === 'true') {
+                res.redirect(req.buildUrl(`/publish/${dataset.id}/providers?edit=new`, req.language));
+                return;
+            }
+
+            if (add_provider === 'false') {
+                res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+                return;
+            }
+
+            if (add_source === 'false') {
+                res.redirect(req.buildUrl(`/publish/${dataset.id}/providers`, req.language));
+                return;
+            }
+
+            if (add_another === 'true' && !add_provider) {
+                res.status(400);
+                throw new Error('errors.provider.add_another');
+            }
+
             const validProvider = availableProviders.find((provider) => provider.id === provider_id);
 
             if (!provider_id || !validProvider) {
                 res.status(400);
                 throw new Error('errors.provider.missing');
+            }
+
+            if (editId && editId !== 'new' && !add_source) {
+                res.status(400);
+                throw new Error('errors.provider_source.has_source');
             }
 
             if (add_source === 'true') {
@@ -459,8 +469,8 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
             await req.swapi.addDatasetProvider(dataset.id, dataProvider);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/providers?edit=${dataProvider.id}`, req.language));
             return;
-        } catch (err) {
-            const error: ViewError = { field: 'related_link', tag: { name: 'errors.related_link.required' } };
+        } catch (err: any) {
+            const error: ViewError = { tag: { name: err.message } };
             errors = generateViewErrors(undefined, 400, [error]);
         }
     }
@@ -470,7 +480,8 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
         dataProvider, // current data provider being edited (if editId is set)
         dataProviders, // list of assigned data providers
         availableProviders, // list of all available providers
-        availableSources, // list of sources for the selected provider
+        availableSources, // list of sources for the selected provider,
+        addSource: errors?.errors[0]?.tag.name === 'errors.provider_source.missing', // whether to show the source dropdown
         errors
     });
 };
