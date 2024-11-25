@@ -1,9 +1,9 @@
 import { test as setup } from '@playwright/test';
 import JWT from 'jsonwebtoken';
 
-import { appConfig } from '../src/config';
-import { User } from '../src/interfaces/user.interface';
-import { adminContext, publisherContext, approverContext } from '../playwright/.auth/contexts';
+import { appConfig } from '../../src/config';
+import { User } from '../../src/interfaces/user.interface';
+import { adminContext, publisherContext, approverContext } from '../../playwright/.auth/contexts';
 
 const config = appConfig();
 const jwtSecret = config.auth.jwt.secret;
