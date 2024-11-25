@@ -774,7 +774,7 @@
             "naming_failed": "Something went wrong trying to set the name.  Please try again"
         },
         "title": {
-            "missing": "Either a title was not entered or there is a problem.",
+            "missing": "Enter the title of this dataset",
             "duplicate": "Title already exists"
         },
         "description": {
