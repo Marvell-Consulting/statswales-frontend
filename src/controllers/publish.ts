@@ -1,5 +1,3 @@
-import util from 'node:util';
-
 import { Request, Response, NextFunction } from 'express';
 import { snakeCase, sortBy } from 'lodash';
 import { FieldValidationError, matchedData } from 'express-validator';
