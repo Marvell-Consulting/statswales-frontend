@@ -66,7 +66,7 @@
                                 <% for (let provider of locals.dataProviders.filter((dp) => locals.editId ? dp.id === locals.editId : true)) { %>
                                     <tr class="govuk-table__row">
                                         <td class="govuk-table__cell"><%= provider.provider_name %></td>
-                                        <td class="govuk-table__cell"><%= provider.source_name %></td>
+                                        <td class="govuk-table__cell"><%= provider.source_name || t('publish.providers.list.table.no_source') %></td>
                                         <td class="govuk-table__cell nowrap">
                                             <ul class="govuk-summary-list__actions-list">
                                                 <li class="govuk-summary-list__actions-list-item">
@@ -84,27 +84,29 @@
                 </div>
 
                 <div class="govuk-grid-row">
-                    <!-- Add another provider form is displayed whenever we're not editing a provider -->
-                    <form enctype="multipart/form-data" method="post">
-                        <input type="hidden" name="add_another" value="true" />
-                        <div class="govuk-form-group">
-                            <h2 class="govuk-heading-m" id="add-provider"><%= t('publish.providers.list.add_another.heading') %></h2>
+                    <div class="govuk-grid-column-two-thirds">
+                        <!-- Add another provider form is displayed whenever we're not editing a provider -->
+                        <form enctype="multipart/form-data" method="post">
+                            <input type="hidden" name="add_another" value="true" />
+                            <div class="govuk-form-group">
+                                <h2 class="govuk-heading-m" id="add-provider"><%= t('publish.providers.list.add_another.heading') %></h2>
 
-                            <fieldset class="govuk-fieldset" aria-describedby="add-provider">
-                                <div class="govuk-radios" data-module="govuk-radios">
-                                    <div class="govuk-radios__item">
-                                        <input class="govuk-radios__input" id="addYes" name="add_provider" type="radio" value="true" />
-                                        <label class="govuk-label govuk-radios__label" for="addYes"><%= t('publish.providers.list.add_another.options.yes.label') %></label>
+                                <fieldset class="govuk-fieldset" aria-describedby="add-provider">
+                                    <div class="govuk-radios" data-module="govuk-radios">
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="addYes" name="add_provider" type="radio" value="true" />
+                                            <label class="govuk-label govuk-radios__label" for="addYes"><%= t('publish.providers.list.add_another.options.yes.label') %></label>
+                                        </div>
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="addNo" name="add_provider" type="radio" value="false" />
+                                            <label class="govuk-label govuk-radios__label" for="addNo"><%= t('publish.providers.list.add_another.options.no.label') %></label>
+                                        </div>
                                     </div>
-                                    <div class="govuk-radios__item">
-                                        <input class="govuk-radios__input" id="addNo" name="add_provider" type="radio" value="false" />
-                                        <label class="govuk-label govuk-radios__label" for="addNo"><%= t('publish.providers.list.add_another.options.no.label') %></label>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-                        <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
-                    </form>
+                                </fieldset>
+                            </div>
+                            <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
+                        </form>
+                    </div>
                 </div>
 
             <% } %>
@@ -135,6 +137,8 @@
                                                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
                                                         <%- t('publish.providers.add_source.options.yes.note') %>
                                                     </legend>
+
+                                                    <br />
 
                                                     <div class="govuk-hint"><%= t('publish.providers.add_source.options.yes.hint') %></div>
 
