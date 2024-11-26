@@ -18,7 +18,6 @@ import {
     linkIdValidator,
     linkLabelValidator,
     linkUrlValidator,
-    providerIdValidator,
     qualityValidator,
     roundingAppliedValidator,
     roundingDescriptionValidator,
