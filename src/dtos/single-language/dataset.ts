@@ -15,5 +15,5 @@ export interface SingleLanguageDataset {
     revisions: RevisionDTO[];
     datasetInfo?: DatasetInfoDTO;
     providers?: DatasetProviderDTO[];
-    topics: DatasetTopicDTO[];
+    topics?: DatasetTopicDTO[];
 }

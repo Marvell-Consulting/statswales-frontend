@@ -14,5 +14,5 @@ export interface DatasetDTO {
     revisions: RevisionDTO[];
     datasetInfo?: DatasetInfoDTO[];
     providers?: DatasetProviderDTO[];
-    topics: DatasetTopicDTO[];
+    topics?: DatasetTopicDTO[];
 }
