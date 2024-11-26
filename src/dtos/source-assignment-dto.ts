@@ -1,6 +1,7 @@
 import { SourceType } from '../enums/source-type';
 
 export interface SourceAssignmentDTO {
-    sourceId: string;
+    columnIndex: number;
+    columnName: string;
     sourceType: SourceType;
 }

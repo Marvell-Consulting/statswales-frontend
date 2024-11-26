@@ -18,24 +18,24 @@
             <%- include("../partials/error-handler"); %>
             <form action="<%= buildUrl(`/publish/${locals.datasetId}/sources`, i18n.language) %>" method="post">
                 <div class="source-list">
-                <% locals.currentImport.sources.forEach((source, idx) => { %>
-                    <div class="source-list-item">
-                        <div class="govuk-grid-row">
-                            <div class="govuk-grid-column-full">
-                                <span class="fix-width-30">
-                                    <label class="govuk-label govuk-!-display-inline" for="<%= source.id %>">
-                                        <strong><%= source.csv_field || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %></strong>
-                                    </label>
-                                </span>
-                                <select class="govuk-select govuk-!-display-inline" id="<%= source.id %>" name="<%= source.id %>">
-                                    <% locals.sourceTypes.forEach( (val) => { %>>
-                                    <option value="<%= val %>" <% if (source.type === val ) { %>selected<% } %>><%- t(`publish.sources.types.${val}`) %></option>
-                                    <% })%>
-                                </select>
+                    <% locals.currentImport.info.forEach((source, idx) => { %>
+                        <div class="source-list-item">
+                            <div class="govuk-grid-row">
+                                <div class="govuk-grid-column-full">
+                                    <span class="fix-width-30">
+                                        <label class="govuk-label govuk-!-display-inline" for="column-<%= source.column_index %>">
+                                            <strong><%= source.column_name || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %></strong>
+                                        </label>
+                                    </span>
+                                    <select class="govuk-select govuk-!-display-inline" id="column-<%= source.column_index %>" name="column-<%= source.column_index %>">
+                                        <% locals.sourceTypes.forEach( (val) => { %>>
+                                        <option value="<%= val %>" <%= source.type === val ? 'selected' : '' %>><%- t(`publish.sources.types.${val}`) %></option>
+                                        <% })%>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                <% }); %>
+                    <% }); %>
                 </div>
                 <div class="govuk-grid-row">
                     <div class="govuk-grid-column-full">

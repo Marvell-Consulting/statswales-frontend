@@ -1,14 +1,16 @@
-import { FileImportDTO } from '../dtos/file-import';
-import { SourceDTO } from '../dtos/source';
+import { FactTableDto } from '../dtos/fact-table';
 import { SourceAssignmentDTO } from '../dtos/source-assignment-dto';
 import { SourceType } from '../enums/source-type';
+import { FactTableInfoDto } from '../dtos/fact-table-info';
 
-export const updateSourceTypes = (fileImport: FileImportDTO, sourceAssign: SourceAssignmentDTO[]) => {
+export const updateSourceTypes = (factTable: FactTableDto, sourceAssign: SourceAssignmentDTO[]) => {
     return {
-        ...fileImport,
-        sources: fileImport.sources.map((source: SourceDTO) => {
-            const type = sourceAssign.find((sass) => sass.sourceId === source.id)?.sourceType || SourceType.Unknown;
-            return { ...source, type };
+        ...factTable,
+        sources: factTable.info.map((factTableInfo: FactTableInfoDto) => {
+            const type =
+                sourceAssign.find((sass) => sass.columnName === factTableInfo.column_name)?.sourceType ||
+                SourceType.Unknown;
+            return { ...factTableInfo, type };
         })
     };
 };

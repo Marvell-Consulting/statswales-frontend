@@ -9,7 +9,7 @@ import app from '../src/app';
 import { appConfig } from '../src/config';
 import { DatasetDTO } from '../src/dtos/dataset';
 import { RevisionDTO } from '../src/dtos/revision';
-import { FileImportDTO } from '../src/dtos/file-import';
+import { FactTableDto } from '../src/dtos/fact-table';
 import { ViewErrDTO } from '../src/dtos/view-dto';
 
 import { mockBackend } from './mocks/backend';
@@ -21,7 +21,7 @@ declare module 'express-session' {
     interface SessionData {
         currentDataset: DatasetDTO | undefined;
         currentRevision: RevisionDTO | undefined;
-        currentImport: FileImportDTO | undefined;
+        currentImport: FactTableDto | undefined;
         errors: ViewErrDTO | undefined;
         currentTitle: string | undefined;
     }
@@ -151,7 +151,7 @@ describe('Publisher Journey Tests', () => {
         test('Confirming a preview returns 302 back to preview if the confirmation failed due to a server error', async () => {
             mockBackend.use(
                 http.patch(
-                    `http://example.com:3001/dataset/${datasetWithImport.id}/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/import/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953/confirm`,
+                    `http://example.com:3001/dataset/${datasetWithImport.id}/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/fact-table/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953/confirm`,
                     () => HttpResponse.error()
                 )
             );
@@ -173,11 +173,11 @@ describe('Publisher Journey Tests', () => {
         test('Confirming a multiple datavalies, a single footnote and dimensions returns 400 and a message to the user', async () => {
             const res = await request(app)
                 .post(`/en-GB/publish/${datasetWithImport.id}/sources`)
-                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'ignore')
-                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'data_values')
-                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'data_values')
-                .field('32894949-e758-4974-a932-455d51895293', 'dimension')
-                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'dimension');
+                .field('column-0', 'ignore')
+                .field('column-1', 'data_values')
+                .field('column-2', 'data_values')
+                .field('column-3', 'dimension')
+                .field('column-4', 'dimension');
             expect(res.status).toBe(400);
             expect(res.text).toContain(t('errors.problem'));
             expect(res.text).toContain(t('errors.sources.multiple_datavalues'));
@@ -186,24 +186,37 @@ describe('Publisher Journey Tests', () => {
         test('Confirming a multiple Footnotes and dimensions returns 400 and a message to the user', async () => {
             const res = await request(app)
                 .post(`/en-GB/publish/${datasetWithImport.id}/sources`)
-                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'ignore')
-                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'foot_notes')
-                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'foot_notes')
-                .field('32894949-e758-4974-a932-455d51895293', 'dimension')
-                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'dimension');
+                .field('column-0', 'ignore')
+                .field('column-1', 'note_codes')
+                .field('column-2', 'note_codes')
+                .field('column-3', 'dimension')
+                .field('column-4', 'dimension');
             expect(res.status).toBe(400);
             expect(res.text).toContain(t('errors.problem'));
             expect(res.text).toContain(t('errors.sources.multiple_footnotes'));
         });
 
+        test('Confirming a multiple Measures and dimensions returns 400 and a message to the user', async () => {
+            const res = await request(app)
+                .post(`/en-GB/publish/${datasetWithImport.id}/sources`)
+                .field('column-0', 'ignore')
+                .field('column-1', 'measure')
+                .field('column-2', 'measure')
+                .field('column-3', 'dimension')
+                .field('column-4', 'dimension');
+            expect(res.status).toBe(400);
+            expect(res.text).toContain(t('errors.problem'));
+            expect(res.text).toContain(t('errors.sources.multiple_measures'));
+        });
+
         test('Leave values as unknown results in a 400 error and message to user', async () => {
             const res = await request(app)
                 .post(`/en-GB/publish/${datasetWithImport.id}/sources`)
-                .field('fea70d3f-beb9-491c-83fb-3fae2daa1702', 'unknown')
-                .field('195e44f0-0bf2-40ea-8567-8e7f5dc96054', 'unknown')
-                .field('d5f8a827-9f6d-4b37-974d-cdfcb3380032', 'foot_notes')
-                .field('32894949-e758-4974-a932-455d51895293', 'dimension')
-                .field('8b2ef050-fe84-4150-b124-f993a5e56dc3', 'dimension');
+                .field('column-0', 'unknown')
+                .field('column-1', 'unknown')
+                .field('column-2', 'unknown')
+                .field('column-3', 'unknown')
+                .field('column-4', 'unknown');
             expect(res.status).toBe(400);
             expect(res.text).toContain(t('errors.problem'));
             expect(res.text).toContain(t('errors.sources.unknowns_found'));
@@ -212,7 +225,7 @@ describe('Publisher Journey Tests', () => {
         test('An http error when sending sources to server returns 500 and keeps the user on sources', async () => {
             mockBackend.use(
                 http.patch(
-                    `http://example.com:3001/dataset/${datasetWithImport.id}/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/import/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953/sources`,
+                    `http://example.com:3001/dataset/${datasetWithImport.id}/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/fact-table/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953/sources`,
                     () => HttpResponse.error()
                 )
             );

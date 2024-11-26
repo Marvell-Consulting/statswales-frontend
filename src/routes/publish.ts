@@ -6,7 +6,7 @@ import {
     start,
     provideTitle,
     uploadFile,
-    importPreview,
+    factTablePreview,
     sources,
     taskList,
     changeData,
@@ -37,8 +37,8 @@ publish.post('/:datasetId/title', fetchDataset, upload.none(), provideTitle);
 publish.get('/:datasetId/upload', fetchDataset, uploadFile);
 publish.post('/:datasetId/upload', fetchDataset, upload.single('csv'), uploadFile);
 
-publish.get('/:datasetId/preview', fetchDataset, importPreview);
-publish.post('/:datasetId/preview', fetchDataset, upload.none(), importPreview);
+publish.get('/:datasetId/preview', fetchDataset, factTablePreview);
+publish.post('/:datasetId/preview', fetchDataset, upload.none(), factTablePreview);
 
 publish.get('/:datasetId/sources', fetchDataset, sources);
 publish.post('/:datasetId/sources', fetchDataset, upload.none(), sources);

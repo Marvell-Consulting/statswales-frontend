@@ -1,5 +1,5 @@
 import { DatasetDTO } from '../../src/dtos/dataset';
-import { FileImportDTO } from '../../src/dtos/file-import';
+import { FactTableDto } from '../../src/dtos/fact-table';
 import { TaskListState } from '../../src/dtos/task-list-state';
 import { ViewDTO } from '../../src/dtos/view-dto';
 import { TaskStatus } from '../../src/enums/task-status';
@@ -29,7 +29,7 @@ export const datasetWithImport: DatasetDTO = {
             publish_at: '',
             approved_at: '',
             created_by: 'Test User',
-            imports: [
+            fact_tables: [
                 {
                     id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
                     revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
@@ -37,53 +37,32 @@ export const datasetWithImport: DatasetDTO = {
                     filename: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953.csv',
                     hash: '9aa51a61d5796fbfa2ce82f62b1419d93432b1e606baf095a12daefc7c3273a5',
                     uploaded_at: '2024-09-05T10:05:03.871Z',
-                    type: 'Draft',
-                    location: 'BlobStorage',
-                    sources: [
+                    filetype: 'csv',
+                    info: [
                         {
-                            id: 'fea70d3f-beb9-491c-83fb-3fae2daa1702',
-                            import_id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
-                            revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
                             column_index: 0,
-                            csv_field: 'ID',
-                            action: 'UNKNOWN',
-                            type: 'UNKNOWN'
+                            column_name: 'ID',
+                            column_type: 'UNKNOWN'
                         },
                         {
-                            id: '195e44f0-0bf2-40ea-8567-8e7f5dc96054',
-                            import_id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
-                            revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
                             column_index: 1,
-                            csv_field: 'Values',
-                            action: 'UNKNOWN',
-                            type: 'UNKNOWN'
+                            column_name: 'Values',
+                            column_type: 'UNKNOWN'
                         },
                         {
-                            id: 'd5f8a827-9f6d-4b37-974d-cdfcb3380032',
-                            import_id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
-                            revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
                             column_index: 2,
-                            csv_field: 'Notes',
-                            action: 'UNKNOWN',
-                            type: 'UNKNOWN'
+                            column_name: 'Notes',
+                            column_type: 'UNKNOWN'
                         },
                         {
-                            id: '32894949-e758-4974-a932-455d51895293',
-                            import_id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
-                            revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
                             column_index: 3,
-                            csv_field: 'Dimension 1',
-                            action: 'UNKNOWN',
-                            type: 'UNKNOWN'
+                            column_name: 'Dimension 1',
+                            column_type: 'UNKNOWN'
                         },
                         {
-                            id: '8b2ef050-fe84-4150-b124-f993a5e56dc3',
-                            import_id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
-                            revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
                             column_index: 4,
-                            csv_field: 'Dimension 2',
-                            action: 'UNKNOWN',
-                            type: 'UNKNOWN'
+                            column_name: 'Dimension 2',
+                            column_type: 'UNKNOWN'
                         }
                     ]
                 }
@@ -109,7 +88,7 @@ export const datasetRevWithNoImports: DatasetDTO = {
             publish_at: '',
             approved_at: '',
             created_by: 'Test User',
-            imports: []
+            fact_tables: []
         }
     ]
 };
@@ -132,7 +111,7 @@ export const completedDataset: DatasetDTO = {
             publish_at: '',
             approved_at: '',
             created_by: 'Test User',
-            imports: [
+            fact_tables: [
                 {
                     id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
                     revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
@@ -140,53 +119,32 @@ export const completedDataset: DatasetDTO = {
                     filename: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953.csv',
                     hash: '9aa51a61d5796fbfa2ce82f62b1419d93432b1e606baf095a12daefc7c3273a5',
                     uploaded_at: '2024-09-05T10:05:03.871Z',
-                    type: 'Draft',
-                    location: 'BlobStorage',
-                    sources: [
+                    filetype: 'csv',
+                    info: [
                         {
-                            id: 'fea70d3f-beb9-491c-83fb-3fae2daa1702',
-                            import_id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
-                            revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
                             column_index: 0,
-                            csv_field: 'ID',
-                            action: 'IGNORE',
-                            type: 'IGNORE'
+                            column_name: 'ID',
+                            column_type: 'IGNORE'
                         },
                         {
-                            id: '195e44f0-0bf2-40ea-8567-8e7f5dc96054',
-                            import_id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
-                            revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
                             column_index: 1,
-                            csv_field: 'Values',
-                            action: 'CREATE',
-                            type: 'DATAVALUES'
+                            column_name: 'Values',
+                            column_type: 'DATAVALUES'
                         },
                         {
-                            id: 'd5f8a827-9f6d-4b37-974d-cdfcb3380032',
-                            import_id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
-                            revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
                             column_index: 2,
-                            csv_field: 'Notes',
-                            action: 'CREATE',
-                            type: 'FOOTNOTES'
+                            column_name: 'Notes',
+                            column_type: 'FOOTNOTES'
                         },
                         {
-                            id: '32894949-e758-4974-a932-455d51895293',
-                            import_id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
-                            revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
                             column_index: 3,
-                            csv_field: 'Dimension 1',
-                            action: 'CREATE',
-                            type: 'DIMENSION'
+                            column_name: 'Dimension 1',
+                            column_type: 'DIMENSION'
                         },
                         {
-                            id: '8b2ef050-fe84-4150-b124-f993a5e56dc3',
-                            import_id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
-                            revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
                             column_index: 4,
-                            csv_field: 'Dimension 2',
-                            action: 'CREATE',
-                            type: 'DIMENSION'
+                            column_name: 'Dimension 2',
+                            column_type: 'DIMENSION'
                         }
                     ]
                 }
@@ -207,16 +165,15 @@ export const datasetView: ViewDTO = {
         dimensions: [],
         revisions: []
     },
-    import: {
+    fact_table: {
         id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
         revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
         mime_type: 'text/csv',
         filename: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953.csv',
         hash: '9aa51a61d5796fbfa2ce82f62b1419d93432b1e606baf095a12daefc7c3273a5',
         uploaded_at: '2024-09-05T10:05:03.871Z',
-        type: 'Draft',
-        location: 'BlobStorage',
-        sources: []
+        filetype: 'csv',
+        info: []
     },
     current_page: 1,
     page_info: {
@@ -239,60 +196,39 @@ export const datasetView: ViewDTO = {
     ]
 };
 
-export const importWithDraftSources: FileImportDTO = {
+export const importWithDraftSources: FactTableDto = {
     id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
     revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
     mime_type: 'text/csv',
     filename: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953.csv',
     hash: '9aa51a61d5796fbfa2ce82f62b1419d93432b1e606baf095a12daefc7c3273a5',
     uploaded_at: '2024-09-05T10:05:03.871Z',
-    type: 'Draft',
-    location: 'BlobStorage',
-    sources: [
+    filetype: 'csv',
+    info: [
         {
-            id: 'fea70d3f-beb9-491c-83fb-3fae2daa1702',
-            import_id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
-            revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
             column_index: 0,
-            csv_field: 'ID',
-            action: 'UNKNOWN',
-            type: 'UNKNOWN'
+            column_name: 'ID',
+            column_type: 'UNKNOWN'
         },
         {
-            id: '195e44f0-0bf2-40ea-8567-8e7f5dc96054',
-            import_id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
-            revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
             column_index: 1,
-            csv_field: 'Values',
-            action: 'UNKNOWN',
-            type: 'UNKNOWN'
+            column_name: 'Values',
+            column_type: 'UNKNOWN'
         },
         {
-            id: 'd5f8a827-9f6d-4b37-974d-cdfcb3380032',
-            import_id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
-            revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
             column_index: 2,
-            csv_field: 'Notes',
-            action: 'UNKNOWN',
-            type: 'UNKNOWN'
+            column_name: 'Notes',
+            column_type: 'UNKNOWN'
         },
         {
-            id: '32894949-e758-4974-a932-455d51895293',
-            import_id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
-            revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
             column_index: 3,
-            csv_field: 'Dimension 1',
-            action: 'UNKNOWN',
-            type: 'UNKNOWN'
+            column_name: 'Dimension 1',
+            column_type: 'UNKNOWN'
         },
         {
-            id: '8b2ef050-fe84-4150-b124-f993a5e56dc3',
-            import_id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
-            revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
             column_index: 4,
-            csv_field: 'Dimension 2',
-            action: 'UNKNOWN',
-            type: 'UNKNOWN'
+            column_name: 'Dimension 2',
+            column_type: 'UNKNOWN'
         }
     ]
 };

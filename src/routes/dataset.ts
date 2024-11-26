@@ -7,11 +7,44 @@ import { fetchDataset } from '../middleware/fetch-dataset';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { logger } from '../utils/logger';
 import { DatasetListItemDTO } from '../dtos/dataset-list-item';
-import { hasError, importIdValidator } from '../validators';
+import { hasError, factTableIdValidator } from '../validators';
 import { RevisionDTO } from '../dtos/revision';
-import { FileImportDTO } from '../dtos/file-import';
+import { FactTableDto } from '../dtos/fact-table';
 
 export const dataset = Router();
+
+// Special thanks ChatGPT...  The GovUK pagination algorithm
+function generateSequenceForNumber(highlight: number, end: number): (string | number)[] {
+    const sequence: (string | number)[] = [];
+
+    // Validate input
+    if (highlight > end) {
+        throw new Error(`Highlighted number must be between 1 and ${end}.`);
+    }
+
+    // Numbers before the highlighted number
+    if (highlight - 1 > 1) {
+        sequence.push(1, '...');
+        sequence.push(highlight - 1);
+    } else {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        sequence.push(...Array.from({ length: highlight - 1 }, (_, index) => index + 1));
+    }
+
+    // Highlighted number
+    sequence.push(highlight);
+
+    // Numbers after the highlighted number
+    if (highlight + 1 < end) {
+        sequence.push(highlight + 1);
+        sequence.push('...', end);
+    } else {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        sequence.push(...Array.from({ length: end - highlight }, (_, index) => highlight + 1 + index));
+    }
+
+    return sequence;
+}
 
 dataset.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -34,13 +67,18 @@ dataset.get('/:datasetId', fetchDataset, async (req: Request, res: Response, nex
         logger.error(err);
         next(new NotFoundException());
     }
+    if (!datasetView) {
+        throw new NotFoundException();
+    }
 
+    // eslint-disable-next-line require-atomic-updates
+    res.locals.pagination = generateSequenceForNumber(datasetView?.current_page, datasetView?.total_pages);
     res.render('view/data', datasetView);
 });
 
 dataset.get('/:datasetId/import/:importId', fetchDataset, async (req: Request, res: Response, next: NextFunction) => {
     const dataset = res.locals.dataset;
-    const importIdError = await hasError(importIdValidator(), req);
+    const importIdError = await hasError(factTableIdValidator(), req);
 
     if (importIdError) {
         logger.error('Invalid or missing importId');
@@ -50,21 +88,21 @@ dataset.get('/:datasetId/import/:importId', fetchDataset, async (req: Request, r
 
     try {
         const importId = req.params.importId;
-        let fileImport: FileImportDTO | undefined;
+        let factTable: FactTableDto | undefined;
 
         const revision = dataset.revisions?.find((rev: RevisionDTO) => {
-            fileImport = rev.imports?.find((file: FileImportDTO) => file.id === importId);
-            return Boolean(fileImport);
+            factTable = rev.fact_tables?.find((file: FactTableDto) => file.id === importId);
+            return Boolean(factTable);
         });
 
-        if (!fileImport) {
+        if (!factTable) {
             throw new Error('errors.import_missing');
         }
 
-        const fileStream = await req.swapi.getOriginalUpload(dataset.id, revision.id, fileImport.id);
+        const fileStream = await req.swapi.getOriginalUpload(dataset.id, revision.id, factTable.id);
         res.status(200);
-        res.header('Content-Type', fileImport.mime_type);
-        res.header(`Content-Disposition: attachment; filename="${fileImport.filename}"`);
+        res.header('Content-Type', factTable.mime_type);
+        res.header(`Content-Disposition: attachment; filename="${factTable.filename}"`);
         const readable: Readable = Readable.from(fileStream);
         readable.pipe(res);
     } catch (err) {

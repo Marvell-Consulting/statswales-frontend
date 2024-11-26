@@ -254,8 +254,10 @@
             },
             "source_type": {
                 "data_values": "Data values",
-                "foot_notes": "Note codes",
+                "note_codes": "Note codes",
+                "measure" : "Measure or data types",
                 "dimension": "Dimension",
+                "time": "Dimension containing dates",
                 "ignore": "Ignored",
                 "unknown": "Unknown"
             }
@@ -263,10 +265,12 @@
         "sources": {
             "heading": "What does each column in the data table contain?",
             "types": {
-                "data_values": "Data value",
-                "foot_notes": "Notes code",
+                "data_values": "Data values",
+                "note_codes": "Note codes",
+                "measure" : "Measure or data types",
                 "dimension": "Dimension",
-                "ignore": "This column can be ignored",
+                "time": "Dimension containing dates",
+                "ignore": "Ignored",
                 "unknown": "Select"
             }
         },
