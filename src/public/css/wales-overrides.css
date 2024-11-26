@@ -1,5 +1,9 @@
+h1, h2, h3, h4, p, ol, ul, a, table, .govuk-header__link, .govuk-task-list__status, .govuk-tag, .govuk-input, .govuk-label, .govuk-button, .govuk-select, dl, .govuk-accordion__section-heading-text, span {
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+
 .govuk-header__container {
-  border-bottom: 10px solid #aa1111;
+    border-bottom: 10px solid #aa1111;
 }
 
 .govuk-header__logo {
@@ -86,4 +90,9 @@
 .return-link {
     float: right;
     margin-top: 15px;
+}
+
+.autocomplete__dropdown-arrow-down {
+    pointer-events: none;
+    z-index: 0;
 }

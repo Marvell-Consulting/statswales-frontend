@@ -175,6 +175,7 @@
             },
             "add_source": {
                 "heading": "Add a data source from the selected data provider",
+                "selected_provider": "Selected data provider",
                 "options": {
                     "yes": {
                         "label": "Select source",
@@ -407,10 +408,12 @@
             "missing": "You need to provide the update frequency of this dataset"
         },
         "provider": {
-            "missing": "You need to select a data provider"
+            "missing": "Select a data provider",
+            "add_another": "Select whether you need to add another data source"
         },
         "provider_source": {
-            "missing": "You need to select a data provider source"
+            "missing": "Select a data provider source",
+            "has_source": "Select whether the data provider has a specific source"
         },
         "related_link": {
             "required": "You need to provide the link URL and text",
