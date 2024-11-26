@@ -194,7 +194,8 @@
                     "source": "Source",
                     "action_header": "Action",
                     "action_edit": "Change",
-                    "action_delete": "Remove"
+                    "action_delete": "Remove",
+                    "no_source": "No specific source from data provider"
                 },
                 "add_another": {
                     "heading": "Do you need to add another source?",
