@@ -16,6 +16,7 @@ import { TaskListState } from '../dtos/task-list-state';
 import { DatasetProviderDTO } from '../dtos/dataset-provider';
 import { ProviderDTO } from '../dtos/provider';
 import { ProviderSourceDTO } from '../dtos/provider-source';
+import { TopicDTO } from '../dtos/topic';
 
 const config = appConfig();
 
@@ -269,6 +270,17 @@ export class StatsWalesApi {
         logger.debug('Fetching data provider sources...');
         return this.fetch({ url: `provider/${providerId}/sources` }).then(
             (response) => response.json() as unknown as ProviderSourceDTO[]
+        );
+    }
+
+    public async getAllTopics(): Promise<TopicDTO[]> {
+        logger.debug('Fetching topics...');
+        return this.fetch({ url: 'topic' }).then((response) => response.json() as unknown as TopicDTO[]);
+    }
+
+    public async updateDatasetTopics(datasetId: string, topics: string[]): Promise<DatasetDTO> {
+        return this.fetch({ url: `dataset/${datasetId}/topics`, method: HttpMethod.Patch, json: { topics } }).then(
+            (response) => response.json() as unknown as DatasetDTO
         );
     }
 }

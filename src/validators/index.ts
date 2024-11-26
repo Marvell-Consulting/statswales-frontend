@@ -35,3 +35,5 @@ export const linkLabelValidator = () => body('link_label').trim().notEmpty();
 export const designationValidator = () => body('designation').trim().isIn(Object.values(Designation));
 
 export const providerIdValidator = () => body('provider_id').trim().notEmpty().isUUID(4);
+
+export const topicIdValidator = () => body('topics').isArray({ min: 1 });
