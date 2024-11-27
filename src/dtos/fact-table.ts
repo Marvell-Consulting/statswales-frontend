@@ -8,5 +8,5 @@ export interface FactTableDto {
     filetype: string;
     hash: string;
     uploaded_at: string;
-    info: FactTableInfoDto[];
+    fact_table_info: FactTableInfoDto[];
 }

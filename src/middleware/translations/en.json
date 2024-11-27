@@ -241,10 +241,10 @@
             "columns_other": "{{count}} columns",
             "rows": "{{count}} row",
             "rows_other": "{{count}} rows",
+            "row_number": "Row",
             "columns_rows": "$t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} })",
             "upload_summary": "There are $t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} }) in the data table. $t(publish.preview.columns, {\"count\": {{ignored}} }) in the CSV upload have been ignored.",
             "showing_rows": "Showing rows {{start}} – {{end}} of {{total}}",
-
             "showing": "Showing rows",
             "unnamed_column": "column {{colNum}}",
             "confirm_correct": "By continuing, you confirm the data table is correct.",

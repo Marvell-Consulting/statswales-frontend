@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import { Request, Response, NextFunction } from 'express';
 import { snakeCase, sortBy } from 'lodash';
 import { FieldValidationError, matchedData } from 'express-validator';
@@ -85,11 +87,39 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
 
     if (req.method === 'POST') {
         try {
-            if (!req.file || req.file.mimetype !== 'text/csv') {
+            if (!req.file) {
                 throw new Error('errors.csv.invalid');
             }
-            logger.debug('File upload submitted...');
             const fileName = req.file.originalname;
+            if (req.file.mimetype === 'application/octet-stream') {
+                const ext = path.extname(req.file.originalname);
+                switch (ext) {
+                    case '.parquet':
+                        req.file.mimetype = 'application/vnd.apache.parquet';
+                        break;
+                    case '.json':
+                        req.file.mimetype = 'application/json';
+                        break;
+                    case '.xls':
+                    case '.xlsx':
+                        req.file.mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+                        break;
+                    case '.csv':
+                        req.file.mimetype = 'text/csv';
+                        break;
+                    default:
+                        throw new Error(`unsupported format ${ext}`);
+                }
+            } else if (req.file.mimetype === 'application/x-gzip') {
+                const ext = req.file.originalname.split('.').reverse()[1];
+                switch (ext) {
+                    case 'json':
+                    case 'csv':
+                        break;
+                    default:
+                        throw new Error(`unsupported format ${ext}`);
+                }
+            }
             const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
             await req.swapi.uploadCSVToDataset(dataset.id, fileData, fileName);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
@@ -205,18 +235,20 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
 
         if (req.method === 'POST') {
             const counts = { unknown: 0, dataValues: 0, footnotes: 0, measure: 0 };
-            const sourceAssignment: SourceAssignmentDTO[] = factTable.info.map((factTableInfo: FactTableInfoDto) => {
-                const sourceType = req.body[`column-${factTableInfo.column_index}`];
-                if (sourceType === SourceType.Unknown) counts.unknown++;
-                if (sourceType === SourceType.DataValues) counts.dataValues++;
-                if (sourceType === SourceType.NoteCodes) counts.footnotes++;
-                if (sourceType === SourceType.Measure) counts.measure++;
-                return {
-                    columnIndex: factTableInfo.column_index,
-                    columnName: factTableInfo.column_name,
-                    sourceType
-                };
-            });
+            const sourceAssignment: SourceAssignmentDTO[] = factTable.fact_table_info.map(
+                (factTableInfo: FactTableInfoDto) => {
+                    const sourceType = req.body[`column-${factTableInfo.column_index}`];
+                    if (sourceType === SourceType.Unknown) counts.unknown++;
+                    if (sourceType === SourceType.DataValues) counts.dataValues++;
+                    if (sourceType === SourceType.NoteCodes) counts.footnotes++;
+                    if (sourceType === SourceType.Measure) counts.measure++;
+                    return {
+                        column_index: factTableInfo.column_index,
+                        column_name: factTableInfo.column_name,
+                        column_type: sourceType
+                    };
+                }
+            );
 
             currentImport = updateSourceTypes(factTable, sourceAssignment);
 

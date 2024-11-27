@@ -301,8 +301,8 @@ describe('StatsWalesApi', () => {
             const importId = randomUUID();
 
             const sourceAssignment: SourceAssignmentDTO[] = [
-                { columnIndex: 0, columnName: randomUUID(), sourceType: SourceType.Dimension },
-                { columnIndex: 1, columnName: randomUUID(), sourceType: SourceType.DataValues }
+                { column_index: 0, column_name: randomUUID(), column_type: SourceType.Dimension },
+                { column_index: 1, column_name: randomUUID(), column_type: SourceType.DataValues }
             ];
 
             const dataset = { id: datasetId, title: 'Example Dataset' };

@@ -38,7 +38,7 @@
         <% } %>
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-one-half">
-                <p class="govuk-body">
+                <p class="govuk-body" style="padding-top: 10px;">
                     <% if (locals.revisit) { %>
                         <%= t('publish.preview.upload_summary', {cols: locals.headers?.length - locals.ignoredCount, rows: locals.page_info?.total_records, ignored: locals.ignoredCount}) %>
                     <% } else { %>
@@ -70,7 +70,9 @@
             </div>
         </div>
         <% if (locals?.data) { %>
-            <table class="govuk-table">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-full with-overflow">
+                    <table class="govuk-table" style="position: relative; border-collapse: collapse;">
                 <colgroup>
                     <% locals.headers.forEach(function(cell, idx) { %>
                         <col class="<%= cell.type === 'ignore' ? 'ignore-column' : '' %>" />
@@ -85,6 +87,8 @@
                                 <% } %>
                                 <% if (cell.source_type !== 'line_number') { %>
                                     <%= cell.name || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %>
+                                <% } else { %>
+                                    <%= t('publish.preview.row_number') %>
                                 <% } %>
                             </th>
                         <% }); %>
@@ -104,7 +108,8 @@
                         <% }); %>
                 </tbody>
             </table>
-
+                </div>
+            </div>
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
                     <nav class="govuk-pagination" role="navigation" aria-label="Pagination">
@@ -206,16 +211,28 @@
 </div>
 
 <style>
+    table {
+        position: relative;
+    }
+
+    th {
+        background: white;
+        position: sticky;
+        top: 0; /* Don't forget this, required for the stickiness */
+        box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+    }
+
     .ignore-column {
         background-color: #eeeeee;
     }
 
     .line-number {
         color: #7f7f7f;
+    }
+
+    tbody > tr > td.line-number {
         text-align: right;
         font-family: monospace;
-        border-bottom: none;
-        border-top: none;
     }
 
     .region-subhead {
