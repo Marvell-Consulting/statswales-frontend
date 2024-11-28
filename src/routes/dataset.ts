@@ -17,7 +17,7 @@ export const dataset = Router();
 dataset.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const datasets: DatasetListItemDTO[] = await req.swapi.getActiveDatasetList();
-        res.render('view/list', datasets);
+        res.render('dataset/list', datasets);
     } catch (err) {
         next(err);
     }
@@ -41,7 +41,7 @@ dataset.get('/:datasetId', fetchDataset, async (req: Request, res: Response, nex
 
     // eslint-disable-next-line require-atomic-updates
     res.locals.pagination = generateSequenceForNumber(datasetView?.current_page, datasetView?.total_pages);
-    res.render('view/data', datasetView);
+    res.render('dataset/data', datasetView);
 });
 
 dataset.get(
