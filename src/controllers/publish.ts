@@ -42,6 +42,8 @@ import { RelatedLinkDTO } from '../dtos/related-link';
 import { DatasetProviderDTO } from '../dtos/dataset-provider';
 import { ProviderSourceDTO } from '../dtos/provider-source';
 import { ProviderDTO } from '../dtos/provider';
+import { generateSequenceForNumber } from '../utils/pagination';
+import { fileMimeTypeHandler } from '../utils/file-mimetype-handler';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -91,35 +93,7 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
                 throw new Error('errors.csv.invalid');
             }
             const fileName = req.file.originalname;
-            if (req.file.mimetype === 'application/octet-stream') {
-                const ext = path.extname(req.file.originalname);
-                switch (ext) {
-                    case '.parquet':
-                        req.file.mimetype = 'application/vnd.apache.parquet';
-                        break;
-                    case '.json':
-                        req.file.mimetype = 'application/json';
-                        break;
-                    case '.xls':
-                    case '.xlsx':
-                        req.file.mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-                        break;
-                    case '.csv':
-                        req.file.mimetype = 'text/csv';
-                        break;
-                    default:
-                        throw new Error(`unsupported format ${ext}`);
-                }
-            } else if (req.file.mimetype === 'application/x-gzip') {
-                const ext = req.file.originalname.split('.').reverse()[1];
-                switch (ext) {
-                    case 'json':
-                    case 'csv':
-                        break;
-                    default:
-                        throw new Error(`unsupported format ${ext}`);
-                }
-            }
+            req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
             const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
             await req.swapi.uploadCSVToDataset(dataset.id, fileData, fileName);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
@@ -133,39 +107,6 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
 
     res.render('publish/upload', { revisit, errors });
 };
-
-// Special thanks ChatGPT...  The GovUK pagination algorithm
-function generateSequenceForNumber(highlight: number, end: number): (string | number)[] {
-    const sequence: (string | number)[] = [];
-
-    // Validate input
-    if (highlight > end) {
-        throw new Error(`Highlighted number must be between 1 and ${end}.`);
-    }
-
-    // Numbers before the highlighted number
-    if (highlight - 1 > 1) {
-        sequence.push(1, '...');
-        sequence.push(highlight - 1);
-    } else {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        sequence.push(...Array.from({ length: highlight - 1 }, (_, index) => index + 1));
-    }
-
-    // Highlighted number
-    sequence.push(highlight);
-
-    // Numbers after the highlighted number
-    if (highlight + 1 < end) {
-        sequence.push(highlight + 1);
-        sequence.push('...', end);
-    } else {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        sequence.push(...Array.from({ length: end - highlight }, (_, index) => highlight + 1 + index));
-    }
-
-    return sequence;
-}
 
 export const factTablePreview = async (req: Request, res: Response, next: NextFunction) => {
     const { dataset, revision, factTable } = res.locals;
