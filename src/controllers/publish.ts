@@ -22,7 +22,8 @@ import {
     qualityValidator,
     roundingAppliedValidator,
     roundingDescriptionValidator,
-    titleValidator
+    titleValidator,
+    topicIdValidator
 } from '../validators';
 import { ViewError } from '../dtos/view-error';
 import { logger } from '../utils/logger';
@@ -42,6 +43,9 @@ import { RelatedLinkDTO } from '../dtos/related-link';
 import { DatasetProviderDTO } from '../dtos/dataset-provider';
 import { ProviderSourceDTO } from '../dtos/provider-source';
 import { ProviderDTO } from '../dtos/provider';
+import { TopicDTO } from '../dtos/topic';
+import { DatasetTopicDTO } from '../dtos/dataset-topic';
+import { nestTopics } from '../utils/nested-topics';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -672,4 +676,33 @@ export const provideDesignation = async (req: Request, res: Response, next: Next
     }
 
     res.render('publish/designation', { designation, designationOptions: Object.values(Designation), errors });
+};
+
+export const provideTopics = async (req: Request, res: Response, next: NextFunction) => {
+    let errors: ViewErrDTO | undefined;
+    const dataset = singleLangDataset(res.locals.dataset, req.language);
+    const availableTopics: TopicDTO[] = await req.swapi.getAllTopics();
+    const nestedTopics = nestTopics(availableTopics);
+    const selectedTopics: number[] = dataset.topics?.map((dt: DatasetTopicDTO) => dt.topic_id) || [];
+
+    if (req.method === 'POST') {
+        try {
+            const topicError = await hasError(topicIdValidator(), req);
+
+            if (topicError) {
+                res.status(400);
+                throw new Error('errors.topics.missing');
+            }
+
+            const topicIds = req.body.topics.filter(Boolean); // strip empty values
+            await req.swapi.updateDatasetTopics(dataset.id, topicIds);
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+            return;
+        } catch (err) {
+            const error: ViewError = { field: 'topics', tag: { name: 'errors.topics.missing' } };
+            errors = generateViewErrors(undefined, 400, [error]);
+        }
+    }
+
+    res.render('publish/topics', { nestedTopics, selectedTopics, errors });
 };
