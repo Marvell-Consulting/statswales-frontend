@@ -191,6 +191,10 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
                 await req.swapi.confirmFileImport(dataset.id, revision.id, factTable.id);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/sources`, req.language));
             } else {
+                // IF the user says it's the wrong file... clean up after them!
+                // Post MVP we can add an extra screen asking them to confirm which
+                // is when the delete happens actually happens.
+                await req.swapi.removeFileImport(dataset.id, revision.id, factTable.id);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
             }
             return;
