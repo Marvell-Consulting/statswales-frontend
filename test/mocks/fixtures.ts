@@ -37,7 +37,8 @@ export const datasetWithImport: DatasetDTO = {
                     filename: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953.csv',
                     hash: '9aa51a61d5796fbfa2ce82f62b1419d93432b1e606baf095a12daefc7c3273a5',
                     uploaded_at: '2024-09-05T10:05:03.871Z',
-                    filetype: 'csv',
+                    original_filename: 'testfile.csv',
+                    file_type: 'csv',
                     fact_table_info: [
                         {
                             column_index: 0,
@@ -119,7 +120,8 @@ export const completedDataset: DatasetDTO = {
                     filename: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953.csv',
                     hash: '9aa51a61d5796fbfa2ce82f62b1419d93432b1e606baf095a12daefc7c3273a5',
                     uploaded_at: '2024-09-05T10:05:03.871Z',
-                    filetype: 'csv',
+                    original_filename: 'testfile.csv',
+                    file_type: 'csv',
                     fact_table_info: [
                         {
                             column_index: 0,
@@ -172,7 +174,8 @@ export const datasetView: ViewDTO = {
         filename: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953.csv',
         hash: '9aa51a61d5796fbfa2ce82f62b1419d93432b1e606baf095a12daefc7c3273a5',
         uploaded_at: '2024-09-05T10:05:03.871Z',
-        filetype: 'csv',
+        original_filename: 'testfile.csv',
+        file_type: 'csv',
         fact_table_info: []
     },
     current_page: 1,
@@ -203,7 +206,8 @@ export const importWithDraftSources: FactTableDto = {
     filename: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953.csv',
     hash: '9aa51a61d5796fbfa2ce82f62b1419d93432b1e606baf095a12daefc7c3273a5',
     uploaded_at: '2024-09-05T10:05:03.871Z',
-    filetype: 'csv',
+    original_filename: 'testfile.csv',
+    file_type: 'csv',
     fact_table_info: [
         {
             column_index: 0,

@@ -76,36 +76,40 @@ dataset.get('/:datasetId', fetchDataset, async (req: Request, res: Response, nex
     res.render('view/data', datasetView);
 });
 
-dataset.get('/:datasetId/import/:importId', fetchDataset, async (req: Request, res: Response, next: NextFunction) => {
-    const dataset = res.locals.dataset;
-    const importIdError = await hasError(factTableIdValidator(), req);
+dataset.get(
+    '/:datasetId/import/:factTableId',
+    fetchDataset,
+    async (req: Request, res: Response, next: NextFunction) => {
+        const dataset = res.locals.dataset;
+        const importIdError = await hasError(factTableIdValidator(), req);
 
-    if (importIdError) {
-        logger.error('Invalid or missing importId');
-        next(new NotFoundException('errors.import_missing'));
-        return;
-    }
-
-    try {
-        const importId = req.params.importId;
-        let factTable: FactTableDto | undefined;
-
-        const revision = dataset.revisions?.find((rev: RevisionDTO) => {
-            factTable = rev.fact_tables?.find((file: FactTableDto) => file.id === importId);
-            return Boolean(factTable);
-        });
-
-        if (!factTable) {
-            throw new Error('errors.import_missing');
+        if (importIdError) {
+            logger.error('Invalid or missing importId');
+            next(new NotFoundException('errors.import_missing'));
+            return;
         }
 
-        const fileStream = await req.swapi.getOriginalUpload(dataset.id, revision.id, factTable.id);
-        res.status(200);
-        res.header('Content-Type', factTable.mime_type);
-        res.header(`Content-Disposition: attachment; filename="${factTable.filename}"`);
-        const readable: Readable = Readable.from(fileStream);
-        readable.pipe(res);
-    } catch (err) {
-        next(new NotFoundException('errors.import_missing'));
+        try {
+            const importId = req.params.factTableId;
+            let factTable: FactTableDto | undefined;
+
+            const revision = dataset.revisions?.find((rev: RevisionDTO) => {
+                factTable = rev.fact_tables?.find((file: FactTableDto) => file.id === importId);
+                return Boolean(factTable);
+            });
+
+            if (!factTable) {
+                throw new Error('errors.import_missing');
+            }
+
+            const fileStream = await req.swapi.getOriginalUpload(dataset.id, revision.id, factTable.id);
+            res.status(200);
+            res.header('Content-Type', factTable.mime_type);
+            res.header(`Content-Disposition: attachment; filename="${factTable.filename}"`);
+            const readable: Readable = Readable.from(fileStream);
+            readable.pipe(res);
+        } catch (err) {
+            next(new NotFoundException('errors.import_missing'));
+        }
     }
-});
+);

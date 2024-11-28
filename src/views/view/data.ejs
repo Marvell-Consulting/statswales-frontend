@@ -87,13 +87,15 @@
                         <h2 class="govuk-heading-m"><%= t('view.display.fact_tables') %></h2>
                         <% if (locals.dataset?.revisions?.length > 0) { %>
                             <% locals.dataset?.revisions?.forEach((rev) => { %>
-                                <% rev.fact_tables?.forEach((imp) => { %>
-                                    <p class="govuk-body"><strong>ID:</strong> <%= imp.id %></p>
-                                    <p class="govuk-body"><strong><%= t('view.display.filename') %>:</strong> <%= imp.filename %></p>
-                                    <p class="govuk-body"><strong><%= t('view.display.mime_type') %>:</strong> <%= imp.mime_type %></p>
-                                    <p class="govuk-body"><strong><%= t('view.display.filetype') %>:</strong> <%= imp.filetype %></p>
+                                <% rev.fact_tables?.forEach((factTable) => { %>
+                                    <p class="govuk-body"><strong>ID:</strong> <%= factTable.id %></p>
+                                    <p class="govuk-body"><strong><%= t('view.display.filename') %>:</strong> <%= factTable.filename %></p>
+                                    <p class="govuk-body"><strong><%= t('view.display.original_filename') %>:</strong> <%= factTable.original_filename %></p>
+                                    <p class="govuk-body"><strong><%= t('view.display.mime_type') %>:</strong> <%= factTable.mime_type %></p>
+                                    <p class="govuk-body"><strong><%= t('view.display.filetype') %>:</strong> <%= factTable.file_type %></p>
+                                    <p class="govuk-body"><strong><%= t('view.display.upload_at') %>:</strong> <%= factTable.uploaded_at %></p>
                                     <p class="govuk-body"><strong><%= t('view.display.download') %>:</strong>
-                                        <a href="<%= buildUrl(`/dataset/${locals.datasetId}/import/${imp.id}`, i18n.language) %>">
+                                        <a href="<%= buildUrl(`/dataset/${locals.datasetId}/import/${factTable.id}`, i18n.language) %>">
                                             <i class="fa-solid fa-download"></i> <%= t('view.display.download_file') %>
                                         </a></p>
                                 <% }); %>
@@ -141,7 +143,10 @@
                                 <th scope="col" class="govuk-table__header <%= cell.source_type === 'line_number' ? 'line-number' :'' %>">
                                     <% if (cell.source_type !== 'line_number') { %>
                                         <%= cell.name || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %>
-                                    <% } %></th>
+                                    <% } else { %>
+                                        <%= t('publish.preview.row_number') %>
+                                    <% } %>
+                                </th>
                             <% }); %>
                             </tr>
                         </thead>
@@ -248,16 +253,23 @@
         </main>
     </div>
 <style>
+    table {
+        position: relative;
+    }
+
+    th {
+        background: white;
+        position: sticky;
+        top: 0; /* Don't forget this, required for the stickiness */
+        box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+    }
+
     .ignore-column {
         background-color: #eeeeee;
     }
 
     .line-number {
         color: #7f7f7f;
-        text-align: right;
-        font-family: monospace;
-        border-bottom: none;
-        border-top: none;
     }
 
     .region-subhead {
