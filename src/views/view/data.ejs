@@ -29,8 +29,8 @@
                             </a>
                         </li>
                         <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                            <a class="govuk-tabs__tab" href="#imports">
-                                <%= t('view.display.imports') %>
+                            <a class="govuk-tabs__tab" href="#fact_tables">
+                                <%= t('view.display.fact_tables') %>
                             </a>
                         </li>
                         <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
@@ -83,17 +83,19 @@
                             <p class="govuk-body-l"><%= t('errors.view.display.no_revisions') %></p>
                         <% } %>
                     </div>
-                    <div class="govuk-tabs__panel" id="imports">
-                        <h2 class="govuk-heading-m"><%= t('view.display.imports') %></h2>
+                    <div class="govuk-tabs__panel" id="fact_tables">
+                        <h2 class="govuk-heading-m"><%= t('view.display.fact_tables') %></h2>
                         <% if (locals.dataset?.revisions?.length > 0) { %>
                             <% locals.dataset?.revisions?.forEach((rev) => { %>
-                                <% rev.imports?.forEach((imp) => { %>
-                                    <p class="govuk-body"><strong>ID:</strong> <%= imp.id %></p>
-                                    <p class="govuk-body"><strong><%= t('view.display.filename') %>:</strong> <%= imp.filename %></p>
-                                    <p class="govuk-body"><strong><%= t('view.display.mime_type') %>:</strong> <%= imp.mime_type %></p>
-                                    <p class="govuk-body"><strong><%= t('view.display.location') %>:</strong> <%= imp.location %></p>
+                                <% rev.fact_tables?.forEach((factTable) => { %>
+                                    <p class="govuk-body"><strong>ID:</strong> <%= factTable.id %></p>
+                                    <p class="govuk-body"><strong><%= t('view.display.filename') %>:</strong> <%= factTable.filename %></p>
+                                    <p class="govuk-body"><strong><%= t('view.display.original_filename') %>:</strong> <%= factTable.original_filename %></p>
+                                    <p class="govuk-body"><strong><%= t('view.display.mime_type') %>:</strong> <%= factTable.mime_type %></p>
+                                    <p class="govuk-body"><strong><%= t('view.display.filetype') %>:</strong> <%= factTable.file_type %></p>
+                                    <p class="govuk-body"><strong><%= t('view.display.upload_at') %>:</strong> <%= factTable.uploaded_at %></p>
                                     <p class="govuk-body"><strong><%= t('view.display.download') %>:</strong>
-                                        <a href="<%= buildUrl(`/dataset/${locals.datasetId}/import/${imp.id}`, i18n.language) %>">
+                                        <a href="<%= buildUrl(`/dataset/${locals.datasetId}/import/${factTable.id}`, i18n.language) %>">
                                             <i class="fa-solid fa-download"></i> <%= t('view.display.download_file') %>
                                         </a></p>
                                 <% }); %>
@@ -108,94 +110,8 @@
                     </div>
                 </div>
 
-                <div class="table-display" style="border: 1px solid #000000; padding: 1em; margin-bottom: 1em;">
-                    <table class="govuk-table">
-                        <caption class="govuk-table__caption">CSV Data</caption>
-                        <thead class="govuk-table__head">
-                            <tr class="govuk-table__row">
-                            <tr>
-                            <% locals.headers?.forEach(function(cell) { %>
-                                <th scope="col" class="govuk-table__header"><%= cell.name %></th>
-                            <% }); %>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% locals.data?.forEach(function(row) { %>
-                                <tr>
-                                    <% row.forEach(function(cell) { %>
-                                        <td class="govuk-table__cell"><%= cell %></td>
-                                    <% }); %>
-                                </tr>
-                                <% }); %>
-                        </tbody>
-                    </table>
-                </div>
-                <p class="govuk-body">Showing lines <%= locals.page_info.start_record %> - <%= locals.page_info.end_record %> of <%=
-                                locals.page_info.total_records %>
-                </p>
-                <p>&nbsp;</p>
-
                 <div class="govuk-grid-row">
-                    <div class="govuk-grid-column-one-half">
-                        <nav class="govuk-pagination" role="navigation" aria-label="Pagination">
-                            <ul class="govuk-pagination__list"></ul>
-                            <% locals.pages.forEach(function(page) { %>
-                                <% if (page==='previous' ) { %>
-                                    <div class="govuk-pagination__prev">
-                                        <a class="govuk-link govuk-pagination__link"
-                                            href="<%= buildUrl(`/dataset/${locals.datasetId}`, i18n.language, { page_number: locals.current_page - 1, page_size: locals.page_size }) %>"
-                                            rel="prev">
-                                            <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg"
-                                                height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
-                                                <path
-                                                    d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z">
-                                                </path>
-                                            </svg>
-                                            <span class="govuk-pagination__link-title">
-                                                <%= t('pagination.previous') %>
-                                            </span>
-                                        </a>
-                                    </div>
-                                <% } else if (page==='next' ) { %>
-                                    <div class="govuk-pagination__next">
-                                        <a class="govuk-link govuk-pagination__link"
-                                            href="<%= buildUrl(`/dataset/${locals.datasetId}`, i18n.language, { page_number: locals.current_page + 1, page_size: locals.page_size }) %>"
-                                            rel="next">
-                                            <span class="govuk-pagination__link-title">
-                                                <%= t('pagination.next') %>
-                                            </span>
-                                            <svg class="govuk-pagination__icon govuk-pagination__icon--next"
-                                                xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true"
-                                                focusable="false" viewBox="0 0 15 13">
-                                                <path
-                                                    d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z">
-                                                </path>
-                                            </svg>
-                                        </a>
-                                    </div>
-                                <% } else if (page==='...' ) { %>
-                                    <li class="govuk-pagination__item govuk-pagination__item--ellipses">
-                                        &ctdot;
-                                    </li>
-                                <% } else if (page===locals.current_page) { %>
-                                    <li class="govuk-pagination__item govuk-pagination__item--active">
-                                        <span aria-current="page" class="govuk-pagination__link">
-                                            <%= page %>
-                                        </span>
-                                    </li>
-                                <% } else { %>
-                                    <li class="govuk-pagination__item">
-                                        <a class="govuk-link govuk-pagination__link"
-                                            href="<%= buildUrl(`/dataset/${locals.datasetId}`, i18n.language, { page_number: page, page_size: locals.page_size }) %>"
-                                            aria-label="Page <%= page %>">
-                                            <%= page %>
-                                        </a>
-                                    </li>
-                                <% } %>
-                            <% }); %>
-                        </nav>
-                    </div>
-                    <div class="govuk-grid-column-one-half">
+                    <div class="govuk-grid-column-full" style="text-align: right;">
                         <form action="<%= buildUrl(`/dataset/${locals.datasetId}`, ) %>" method="get" role="page-size" class="govuk-!-margin-bottom-0">
                             <label class="govuk-label govuk-!-display-inline" for="page_size">
                                 Page Size
@@ -217,6 +133,118 @@
                         </form>
                     </div>
                 </div>
+                <div class="table-display" style="border: 1px solid #000000; padding: 1em; margin-bottom: 1em;">
+                    <table class="govuk-table">
+                        <thead class="govuk-table__head">
+                            <tr class="govuk-table__row">
+                            <tr>
+                            <% locals.headers?.forEach(function(cell, index) { %>
+
+                                <th scope="col" class="govuk-table__header <%= cell.source_type === 'line_number' ? 'line-number' :'' %>">
+                                    <% if (cell.source_type !== 'line_number') { %>
+                                        <%= cell.name || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %>
+                                    <% } else { %>
+                                        <%= t('publish.preview.row_number') %>
+                                    <% } %>
+                                </th>
+                            <% }); %>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% locals.data?.forEach(function(row) { %>
+                                <tr>
+                                    <% row.forEach(function(cell, index) { %>
+                                        <% if (locals.headers[index].source_type === 'line_number') { %>
+                                            <td class="govuk-table__cell line-number"><%= cell %></td>
+                                        <% } else { %>
+                                            <td class="govuk-table__cell"><%= cell %></td>
+                                        <% } %>
+                                    <% }); %>
+                                </tr>
+                                <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-two-thirds">
+                        <nav class="govuk-pagination" role="navigation" aria-label="Pagination">
+                            <% if (locals.current_page === locals.total_pages) { %>
+                                <ul class="govuk-pagination__list">
+                                    <li class="govuk-pagination__item govuk-pagination__item--active">
+                                    <span aria-current="page" class="govuk-pagination__link">
+                                        <%= locals.current_page %>
+                                    </span>
+                                    </li>
+                                </ul>
+                            <% } else { %>
+                                <% if (locals.current_page > 1) { %>
+                                    <div class="govuk-pagination__prev">
+                                        <a class="govuk-link govuk-pagination__link"
+                                           href="<%= buildUrl(`/publish/${locals.datasetId}/preview`, i18n.language, { page_number: locals.current_page - 1, page_size: locals.page_size }) %>"
+                                           rel="prev">
+                                            <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg"
+                                                 height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
+                                                <path
+                                                        d="m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z">
+                                                </path>
+                                            </svg>
+                                            <span class="govuk-pagination__link-title">
+                                        <%= t('pagination.previous') %>
+                                    </span>
+                                        </a>
+                                    </div>
+                                <% } %>
+                                <ul class="govuk-pagination__list">
+                                    <% locals.pagination.forEach((item) => { %>
+                                        <% if (item === '...') { %>
+                                            <li class="govuk-pagination__item govuk-pagination__item--ellipses">
+                                                &ctdot;
+                                            </li>
+                                        <% } else if(item === locals.current_page) { %>
+                                            <li class="govuk-pagination__item govuk-pagination__item--active">
+                                            <span aria-current="page" class="govuk-pagination__link">
+                                                <%= item %>
+                                            </span>
+                                            </li>
+                                        <% } else { %>
+                                            <li class="govuk-pagination__item">
+                                                <a class="govuk-link govuk-pagination__link"
+                                                   href="<%= buildUrl(`/publish/${locals.datasetId}/preview`, i18n.language, { page_number: item, page_size: locals.page_size }) %>"
+                                                   aria-label="Page <%= item %>">
+                                                    <%= item %>
+                                                </a>
+                                            </li>
+                                        <% }%>
+                                    <% }); %>
+                                </ul>
+                                <% if (locals.current_page < locals.total_pages) { %>
+                                    <div class="govuk-pagination__next">
+                                        <a class="govuk-link govuk-pagination__link"
+                                           href="<%= buildUrl(`/publish/${locals.datasetId}/preview`, i18n.language, { page_number: locals.current_page + 1, page_size: locals.page_size }) %>"
+                                           rel="next">
+                                    <span class="govuk-pagination__link-title">
+                                        <%= t('pagination.next') %>
+                                    </span>
+                                            <svg class="govuk-pagination__icon govuk-pagination__icon--next"
+                                                 xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true"
+                                                 focusable="false" viewBox="0 0 15 13">
+                                                <path
+                                                        d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z">
+                                                </path>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                <% } %>
+                            <% } %>
+                        </nav>
+                    </div>
+                    <div class="govuk-grid-column-one-third">
+                        <p class="govuk-body" style="text-align: right; padding-top: 10px">
+                            <%= t('publish.preview.showing_rows', {start: locals.page_info.start_record, end: locals.page_info.end_record, total: locals.page_info.total_records}) %>
+                        </p>
+                    </div>
+                </div>
             <% } else { %>
                 <h1 class="govuk-heading-l"><%= t('display.title') %></h1>
 
@@ -224,4 +252,33 @@
             <% } %>
         </main>
     </div>
+<style>
+    table {
+        position: relative;
+    }
+
+    th {
+        background: white;
+        position: sticky;
+        top: 0; /* Don't forget this, required for the stickiness */
+        box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+    }
+
+    .ignore-column {
+        background-color: #eeeeee;
+    }
+
+    .line-number {
+        color: #7f7f7f;
+    }
+
+    .region-subhead {
+        color: #aa1111;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        line-height: 20px;
+        text-transform: uppercase;
+    }
+</style>
 <%- include("../partials/footer"); %>

@@ -3,7 +3,7 @@ import { ReadableStream } from 'node:stream/web';
 import { ViewDTO } from '../dtos/view-dto';
 import { DatasetDTO } from '../dtos/dataset';
 import { DatasetInfoDTO } from '../dtos/dataset-info';
-import { FileImportDTO } from '../dtos/file-import';
+import { FactTableDto } from '../dtos/fact-table';
 import { SourceAssignmentDTO } from '../dtos/source-assignment-dto';
 import { logger as parentLogger } from '../utils/logger';
 import { appConfig } from '../config';
@@ -114,40 +114,44 @@ export class StatsWalesApi {
         );
     }
 
-    public async getOriginalUpload(datasetId: string, revisionId: string, importId: string): Promise<ReadableStream> {
-        logger.debug(`Fetching raw file import: ${importId}...`);
+    public async getOriginalUpload(
+        datasetId: string,
+        revisionId: string,
+        factTableId: string
+    ): Promise<ReadableStream> {
+        logger.debug(`Fetching raw file import: ${factTableId}...`);
 
         return this.fetch({
-            url: `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/raw`
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${factTableId}/raw`
         }).then((response) => response.body as ReadableStream);
     }
 
-    public async confirmFileImport(datasetId: string, revisionId: string, importId: string): Promise<FileImportDTO> {
-        logger.debug(`Confirming file import: ${importId}`);
+    public async confirmFileImport(datasetId: string, revisionId: string, factTableId: string): Promise<FactTableDto> {
+        logger.debug(`Confirming file import: ${factTableId}`);
 
         return this.fetch({
-            url: `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/confirm`,
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${factTableId}/confirm`,
             method: HttpMethod.Patch
-        }).then((response) => response.json() as unknown as FileImportDTO);
+        }).then((response) => response.json() as unknown as FactTableDto);
     }
 
     public async getSourcesForFileImport(
         datasetId: string,
         revisionId: string,
-        importId: string
-    ): Promise<FileImportDTO> {
-        logger.debug(`Fetching sources for file import: ${importId}`);
+        factTableId: string
+    ): Promise<FactTableDto> {
+        logger.debug(`Fetching sources for file import: ${factTableId}`);
 
         return this.fetch({
-            url: `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}`
-        }).then((response) => response.json() as unknown as FileImportDTO);
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${factTableId}`
+        }).then((response) => response.json() as unknown as FactTableDto);
     }
 
-    public async removeFileImport(datasetId: string, revisionId: string, importId: string): Promise<DatasetDTO> {
-        logger.debug(`Removing file import: ${importId}`);
+    public async removeFileImport(datasetId: string, revisionId: string, factTableId: string): Promise<DatasetDTO> {
+        logger.debug(`Removing file import: ${factTableId}`);
 
         return this.fetch({
-            url: `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}`,
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${factTableId}`,
             method: HttpMethod.Delete
         }).then((response) => response.json() as unknown as DatasetDTO);
     }
@@ -155,29 +159,29 @@ export class StatsWalesApi {
     public async getImportPreview(
         datasetId: string,
         revisionId: string,
-        importId: string,
+        factTableId: string,
         pageNumber: number,
         pageSize: number
     ): Promise<ViewDTO> {
         logger.debug(
-            `Fetching preview for dataset: ${datasetId}, revision: ${revisionId}, import: ${importId}, page: ${pageNumber}, pageSize: ${pageSize}`
+            `Fetching preview for dataset: ${datasetId}, revision: ${revisionId}, import: ${factTableId}, page: ${pageNumber}, pageSize: ${pageSize}`
         );
 
         return this.fetch({
-            url: `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/preview?page_number=${pageNumber}&page_size=${pageSize}`
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${factTableId}/preview?page_number=${pageNumber}&page_size=${pageSize}`
         }).then((response) => response.json() as unknown as ViewDTO);
     }
 
     public async assignSources(
         datasetId: string,
         revisionId: string,
-        importId: string,
+        factTableId: string,
         sourceTypeAssignment: SourceAssignmentDTO[]
     ): Promise<DatasetDTO> {
-        logger.debug(`Assigning source types for import: ${importId}`);
+        logger.debug(`Assigning source types for import: ${factTableId}`);
 
         return this.fetch({
-            url: `dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/sources`,
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${factTableId}/sources`,
             method: HttpMethod.Patch,
             json: sourceTypeAssignment
         }).then((response) => response.json() as unknown as DatasetDTO);
@@ -242,7 +246,7 @@ export class StatsWalesApi {
         body.set('csv', file, filename);
 
         return this.fetch({
-            url: `dataset/${datasetId}/revision/by-id/${revisionId}/import`,
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/fact-table`,
             method: HttpMethod.Post,
             body
         })

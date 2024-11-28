@@ -243,10 +243,10 @@
             "columns_other": "{{count}} columns",
             "rows": "{{count}} row",
             "rows_other": "{{count}} rows",
+            "row_number": "Row",
             "columns_rows": "$t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} })",
             "upload_summary": "There are $t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} }) in the data table. $t(publish.preview.columns, {\"count\": {{ignored}} }) in the CSV upload have been ignored.",
             "showing_rows": "Showing rows {{start}} – {{end}} of {{total}}",
-
             "showing": "Showing rows",
             "unnamed_column": "column {{colNum}}",
             "confirm_correct": "By continuing, you confirm the data table is correct.",
@@ -256,8 +256,10 @@
             },
             "source_type": {
                 "data_values": "Data values",
-                "foot_notes": "Note codes",
+                "note_codes": "Note codes",
+                "measure" : "Measure or data types",
                 "dimension": "Dimension",
+                "time": "Dimension containing dates",
                 "ignore": "Ignored",
                 "unknown": "Unknown"
             }
@@ -265,10 +267,12 @@
         "sources": {
             "heading": "What does each column in the data table contain?",
             "types": {
-                "data_values": "Data value",
-                "foot_notes": "Notes code",
+                "data_values": "Data values",
+                "note_codes": "Note codes",
+                "measure" : "Measure or data types",
                 "dimension": "Dimension",
-                "ignore": "This column can be ignored",
+                "time": "Dimension containing dates",
+                "ignore": "Ignored",
                 "unknown": "Select"
             }
         },

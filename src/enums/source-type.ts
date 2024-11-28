@@ -1,7 +1,13 @@
+/*
+    The order of the file is important as it sets the order
+    for the items in the sources select boxes.
+ */
 export enum SourceType {
     Unknown = 'unknown',
-    DataValues = 'data_values',
-    FootNotes = 'foot_notes',
     Dimension = 'dimension',
+    Time = 'time',
+    Measure = 'measure',
+    DataValues = 'data_values',
+    NoteCodes = 'note_codes',
     Ignore = 'ignore'
 }

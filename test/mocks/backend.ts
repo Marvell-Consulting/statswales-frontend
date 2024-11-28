@@ -44,14 +44,14 @@ export const mockBackend = setupServer(
     }),
 
     http.get(
-        `http://example.com:3001/dataset/${datasetWithImport.id}/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/import/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953/preview`,
+        `http://example.com:3001/dataset/${datasetWithImport.id}/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/fact-table/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953/preview`,
         () => {
             return HttpResponse.json(datasetView);
         }
     ),
 
     http.get(
-        'http://example.com:3001/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/import/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2/preview',
+        'http://example.com:3001/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/fact-table/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2/preview',
         () => {
             return new HttpResponse(null, { status: 404 });
         }
@@ -66,7 +66,7 @@ export const mockBackend = setupServer(
     }),
 
     http.post(
-        'http://example.com:3001/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/import',
+        'http://example.com:3001/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/fact-table',
         async (req) => {
             await req.request.formData();
             return HttpResponse.json(datasetWithTitle);
@@ -74,42 +74,42 @@ export const mockBackend = setupServer(
     ),
 
     http.patch(
-        `http://example.com:3001/dataset/${datasetWithImport.id}/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/import/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953/confirm`,
+        `http://example.com:3001/dataset/${datasetWithImport.id}/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/fact-table/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953/confirm`,
         () => {
             return HttpResponse.json(datasetWithImport);
         }
     ),
 
     http.patch(
-        'http://example.com:3001/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/import/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2/confirm',
+        'http://example.com:3001/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/fact-table/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2/confirm',
         () => {
             return new HttpResponse(null, { status: 404 });
         }
     ),
 
     http.delete(
-        'http://example.com:3001/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/import/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
+        'http://example.com:3001/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/fact-table/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
         () => {
             return HttpResponse.json(datasetRevWithNoImports);
         }
     ),
 
     http.patch(
-        'http://example.com:3001/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/import/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2/confirm',
+        'http://example.com:3001/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/fact-table/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2/confirm',
         () => {
             return new HttpResponse(null, { status: 500 });
         }
     ),
 
     http.delete(
-        'http://example.com:3001/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/import/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2',
+        'http://example.com:3001/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/fact-table/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2',
         () => {
             return new HttpResponse(null, { status: 500 });
         }
     ),
 
     http.patch(
-        `http://example.com:3001/dataset/${datasetWithImport.id}/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/import/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953/sources`,
+        `http://example.com:3001/dataset/${datasetWithImport.id}/revision/by-id/09d1c9ac-4cea-482e-89c1-86997f3b6da6/fact-table/by-id/6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953/sources`,
         () => {
             return HttpResponse.json(completedDataset);
         }
@@ -120,7 +120,7 @@ export const mockBackend = setupServer(
     }),
 
     http.patch(
-        'http://example.com:3001/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/import/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2/sources',
+        'http://example.com:3001/dataset/e3e94cb8-b95d-4df8-8828-5e1d5cbe0d18/revision/by-id/19e34cf5-be3b-4a9c-8980-f4e7346815fc/fact-table/by-id/2a44a4b2-d631-4b60-843b-705e29beaad2/sources',
         () => {
             return new HttpResponse(null, { status: 500 });
         }

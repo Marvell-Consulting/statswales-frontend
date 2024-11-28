@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import { Request, Response, NextFunction } from 'express';
 import { snakeCase, sortBy } from 'lodash';
 import { FieldValidationError, matchedData } from 'express-validator';
@@ -26,7 +28,7 @@ import { ViewError } from '../dtos/view-error';
 import { logger } from '../utils/logger';
 import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
 import { SourceType } from '../enums/source-type';
-import { SourceDTO } from '../dtos/source';
+import { FactTableInfoDto } from '../dtos/fact-table-info';
 import { SourceAssignmentDTO } from '../dtos/source-assignment-dto';
 import { UnknownException } from '../exceptions/unknown.exception';
 import { TaskListState } from '../dtos/task-list-state';
@@ -85,11 +87,39 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
 
     if (req.method === 'POST') {
         try {
-            if (!req.file || req.file.mimetype !== 'text/csv') {
+            if (!req.file) {
                 throw new Error('errors.csv.invalid');
             }
-            logger.debug('File upload submitted...');
             const fileName = req.file.originalname;
+            if (req.file.mimetype === 'application/octet-stream') {
+                const ext = path.extname(req.file.originalname);
+                switch (ext) {
+                    case '.parquet':
+                        req.file.mimetype = 'application/vnd.apache.parquet';
+                        break;
+                    case '.json':
+                        req.file.mimetype = 'application/json';
+                        break;
+                    case '.xls':
+                    case '.xlsx':
+                        req.file.mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+                        break;
+                    case '.csv':
+                        req.file.mimetype = 'text/csv';
+                        break;
+                    default:
+                        throw new Error(`unsupported format ${ext}`);
+                }
+            } else if (req.file.mimetype === 'application/x-gzip') {
+                const ext = req.file.originalname.split('.').reverse()[1];
+                switch (ext) {
+                    case 'json':
+                    case 'csv':
+                        break;
+                    default:
+                        throw new Error(`unsupported format ${ext}`);
+                }
+            }
             const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
             await req.swapi.uploadCSVToDataset(dataset.id, fileData, fileName);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
@@ -104,27 +134,67 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
     res.render('publish/upload', { revisit, errors });
 };
 
-export const importPreview = async (req: Request, res: Response, next: NextFunction) => {
-    const { dataset, revision, fileImport } = res.locals;
+// Special thanks ChatGPT...  The GovUK pagination algorithm
+function generateSequenceForNumber(highlight: number, end: number): (string | number)[] {
+    const sequence: (string | number)[] = [];
+
+    // Validate input
+    if (highlight > end) {
+        throw new Error(`Highlighted number must be between 1 and ${end}.`);
+    }
+
+    // Numbers before the highlighted number
+    if (highlight - 1 > 1) {
+        sequence.push(1, '...');
+        sequence.push(highlight - 1);
+    } else {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        sequence.push(...Array.from({ length: highlight - 1 }, (_, index) => index + 1));
+    }
+
+    // Highlighted number
+    sequence.push(highlight);
+
+    // Numbers after the highlighted number
+    if (highlight + 1 < end) {
+        sequence.push(highlight + 1);
+        sequence.push('...', end);
+    } else {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        sequence.push(...Array.from({ length: end - highlight }, (_, index) => highlight + 1 + index));
+    }
+
+    return sequence;
+}
+
+export const factTablePreview = async (req: Request, res: Response, next: NextFunction) => {
+    const { dataset, revision, factTable } = res.locals;
     let errors: ViewErrDTO | undefined;
     let previewData: ViewDTO | undefined;
     let ignoredCount = 0;
+    let pagination: (string | number)[] = [];
 
-    if (!dataset || !revision || !fileImport) {
-        logger.error('Import not found');
+    if (!dataset || !revision || !factTable) {
+        logger.error('Fact table not found');
         next(new UnknownException('errors.preview.import_missing'));
         return;
     }
 
     // if sources have previously been assigned a type, this is a revisit
-    const revisit = fileImport.sources?.filter((source: SourceDTO) => Boolean(source.type)).length > 0;
+    const revisit =
+        factTable.fact_table_info?.filter((factTableInfo: FactTableInfoDto) => Boolean(factTableInfo.column_type))
+            .length > 0;
 
     if (req.method === 'POST') {
         try {
             if (req.body.confirm === 'true') {
-                await req.swapi.confirmFileImport(dataset.id, revision.id, fileImport.id);
+                await req.swapi.confirmFileImport(dataset.id, revision.id, factTable.id);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/sources`, req.language));
             } else {
+                // IF the user says it's the wrong file... clean up after them!
+                // Post MVP we can add an extra screen asking them to confirm which
+                // is when the delete happens actually happens.
+                await req.swapi.removeFileImport(dataset.id, revision.id, factTable.id);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
             }
             return;
@@ -138,42 +208,53 @@ export const importPreview = async (req: Request, res: Response, next: NextFunct
     try {
         const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
         const pageSize = Number.parseInt(req.query.page_size as string, 10) || 10;
-        previewData = await req.swapi.getImportPreview(dataset.id, revision.id, fileImport.id, pageNumber, pageSize);
+        previewData = await req.swapi.getImportPreview(dataset.id, revision.id, factTable.id, pageNumber, pageSize);
         ignoredCount = previewData.headers.filter((header) => header.source_type === SourceType.Ignore).length;
+        if (!previewData) {
+            throw new Error('No preview data found.');
+        }
+        pagination = generateSequenceForNumber(previewData.current_page, previewData.total_pages);
     } catch (err: any) {
         res.status(400);
         const error: ViewError = { field: 'preview', tag: { name: 'errors.preview.failed_to_get_preview' } };
         errors = generateViewErrors(undefined, 400, [error]);
     }
-
-    res.render('publish/preview', { ...previewData, ignoredCount, revisit, errors });
+    res.render('publish/preview', { ...previewData, ignoredCount, pagination, revisit, errors });
 };
 
 export const sources = async (req: Request, res: Response, next: NextFunction) => {
-    const { dataset, revision, fileImport } = res.locals;
-    const revisit = fileImport.sources?.filter((source: SourceDTO) => Boolean(source.type)).length > 0;
+    const { dataset, revision, factTable } = res.locals;
+    const revisit =
+        factTable.fact_table_info?.filter((factTableInfo: FactTableInfoDto) => Boolean(factTableInfo.column_type))
+            .length > 0;
     let error: ViewError | undefined;
     let errors: ViewErrDTO | undefined;
-    let currentImport = fileImport;
+    let currentImport = factTable;
 
     try {
-        if (!dataset || !revision || !fileImport) {
-            logger.error('Import not found');
+        if (!dataset || !revision || !factTable) {
+            logger.error('Fact table not found');
             throw new Error('errors.preview.import_missing');
         }
 
         if (req.method === 'POST') {
-            const counts = { unknown: 0, dataValues: 0, footnotes: 0 };
+            const counts = { unknown: 0, dataValues: 0, footnotes: 0, measure: 0 };
+            const sourceAssignment: SourceAssignmentDTO[] = factTable.fact_table_info.map(
+                (factTableInfo: FactTableInfoDto) => {
+                    const sourceType = req.body[`column-${factTableInfo.column_index}`];
+                    if (sourceType === SourceType.Unknown) counts.unknown++;
+                    if (sourceType === SourceType.DataValues) counts.dataValues++;
+                    if (sourceType === SourceType.NoteCodes) counts.footnotes++;
+                    if (sourceType === SourceType.Measure) counts.measure++;
+                    return {
+                        column_index: factTableInfo.column_index,
+                        column_name: factTableInfo.column_name,
+                        column_type: sourceType
+                    };
+                }
+            );
 
-            const sourceAssignment: SourceAssignmentDTO[] = fileImport.sources.map((source: SourceDTO) => {
-                const sourceType = req.body[source.id];
-                if (sourceType === SourceType.Unknown) counts.unknown++;
-                if (sourceType === SourceType.DataValues) counts.dataValues++;
-                if (sourceType === SourceType.FootNotes) counts.footnotes++;
-                return { sourceId: source.id, sourceType };
-            });
-
-            currentImport = updateSourceTypes(fileImport, sourceAssignment);
+            currentImport = updateSourceTypes(factTable, sourceAssignment);
 
             if (counts.unknown > 0) {
                 logger.error('User failed to identify all sources');
@@ -190,11 +271,16 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
                 error = { field: 'source', tag: { name: 'errors.sources.multiple_footnotes' } };
             }
 
+            if (counts.measure > 1) {
+                logger.error('User tried to specify multiple measure sources');
+                error = { field: 'source', tag: { name: 'errors.sources.multiple_measures' } };
+            }
+
             if (error) {
                 errors = generateViewErrors(undefined, 400, [error]);
                 res.status(400);
             } else {
-                await req.swapi.assignSources(dataset.id, revision.id, fileImport.id, sourceAssignment);
+                await req.swapi.assignSources(dataset.id, revision.id, factTable.id, sourceAssignment);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
                 return;
             }

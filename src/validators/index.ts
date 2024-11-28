@@ -10,7 +10,7 @@ export const hasError = async (validator: ValidationChain, req: Request) => {
 
 export const datasetIdValidator = () => param('datasetId').trim().notEmpty().isUUID(4);
 export const revisionIdValidator = () => param('revisionId').trim().notEmpty().isUUID(4);
-export const importIdValidator = () => param('importId').trim().notEmpty().isUUID(4);
+export const factTableIdValidator = () => param('factTableId').trim().notEmpty().isUUID(4);
 
 export const titleValidator = () => body('title').trim().notEmpty();
 export const descriptionValidator = () => body('description').trim().notEmpty();

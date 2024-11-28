@@ -82,6 +82,7 @@
         "preview": {
             "heading": "Gwirio’r tabl data",
             "upload_has": "Mae eich lanlwythiad yn cynnwys:",
+            "row_number": "Rhes",
             "columns_rows": "{{cols}} colofn(au) a {{rows}} rhes(i)",
             "showing_rows": "Dangos rhesi {{start}} – {{end}} o {{total}}",
             "unnamed_column": "colofn {{colNum}}"

@@ -102,7 +102,7 @@ describe('StatsWalesApi', () => {
             const fileStream = await statsWalesApi.getOriginalUpload(datasetId, revisionId, importId);
 
             expect(fetchSpy).toHaveBeenCalledWith(
-                `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/raw`,
+                `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${importId}/raw`,
                 { method: HttpMethod.Get, headers }
             );
             expect(fileStream).toBe(stream);
@@ -121,7 +121,7 @@ describe('StatsWalesApi', () => {
             const fileImportDTO = await statsWalesApi.confirmFileImport(datasetId, revisionId, importId);
 
             expect(fetchSpy).toHaveBeenCalledWith(
-                `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/confirm`,
+                `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${importId}/confirm`,
                 { method: HttpMethod.Patch, headers }
             );
             expect(fileImportDTO).toEqual(fileImport);
@@ -140,7 +140,7 @@ describe('StatsWalesApi', () => {
             const fileImportDTO = await statsWalesApi.getSourcesForFileImport(datasetId, revisionId, importId);
 
             expect(fetchSpy).toHaveBeenCalledWith(
-                `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}`,
+                `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${importId}`,
                 { method: HttpMethod.Get, headers }
             );
             expect(fileImportDTO).toEqual(fileImport);
@@ -159,7 +159,7 @@ describe('StatsWalesApi', () => {
             const datasetDTO = await statsWalesApi.removeFileImport(datasetId, revisionId, importId);
 
             expect(fetchSpy).toHaveBeenCalledWith(
-                `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}`,
+                `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${importId}`,
                 { method: HttpMethod.Delete, headers }
             );
             expect(datasetDTO).toEqual(dataset);
@@ -226,7 +226,7 @@ describe('StatsWalesApi', () => {
             const viewDTO = await statsWalesApi.getImportPreview(datasetId, revisionId, importId, 1, 10);
 
             expect(fetchSpy).toHaveBeenCalledWith(
-                `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/preview?page_number=1&page_size=10`,
+                `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${importId}/preview?page_number=1&page_size=10`,
                 {
                     method: HttpMethod.Get,
                     headers
@@ -301,8 +301,8 @@ describe('StatsWalesApi', () => {
             const importId = randomUUID();
 
             const sourceAssignment: SourceAssignmentDTO[] = [
-                { sourceId: randomUUID(), sourceType: SourceType.Dimension },
-                { sourceId: randomUUID(), sourceType: SourceType.DataValues }
+                { column_index: 0, column_name: randomUUID(), column_type: SourceType.Dimension },
+                { column_index: 1, column_name: randomUUID(), column_type: SourceType.DataValues }
             ];
 
             const dataset = { id: datasetId, title: 'Example Dataset' };
@@ -312,7 +312,7 @@ describe('StatsWalesApi', () => {
             const datasetDTO = await statsWalesApi.assignSources(datasetId, revisionId, importId, sourceAssignment);
 
             expect(fetchSpy).toHaveBeenCalledWith(
-                `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/import/by-id/${importId}/sources`,
+                `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${importId}/sources`,
                 {
                     method: HttpMethod.Patch,
                     // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -340,7 +340,7 @@ describe('StatsWalesApi', () => {
             const datasetDTO = await statsWalesApi.uploadCSVToFixDataset(datasetId, revisionId, file, filename);
 
             expect(fetchSpy).toHaveBeenCalledWith(
-                `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/import`,
+                `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/fact-table`,
                 {
                     method: HttpMethod.Post,
                     headers,
