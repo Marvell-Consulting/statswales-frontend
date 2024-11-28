@@ -112,7 +112,7 @@
 
                 <div class="govuk-grid-row">
                     <div class="govuk-grid-column-full" style="text-align: right;">
-                        <form action="<%= buildUrl(`/dataset/${locals.datasetId}`, ) %>" method="get" role="page-size" class="govuk-!-margin-bottom-0">
+                        <form action="<%= buildUrl(`/dataset/${locals.datasetId}`, i18n.language) %>" method="get" role="page-size" class="govuk-!-margin-bottom-0">
                             <label class="govuk-label govuk-!-display-inline" for="page_size">
                                 Page Size
                             </label>
@@ -133,7 +133,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="table-display" style="border: 1px solid #000000; padding: 1em; margin-bottom: 1em;">
+                <div class="table-display">
                     <table class="govuk-table">
                         <thead class="govuk-table__head">
                             <tr class="govuk-table__row">
@@ -174,33 +174,5 @@
             <% } %>
         </main>
     </div>
-<style>
-    table {
-        position: relative;
-    }
 
-    th {
-        background: white;
-        position: sticky;
-        top: 0; /* Don't forget this, required for the stickiness */
-        box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
-    }
-
-    .ignore-column {
-        background-color: #eeeeee;
-    }
-
-    .line-number {
-        color: #7f7f7f;
-    }
-
-    .region-subhead {
-        color: #aa1111;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 14px;
-        letter-spacing: 0.08em;
-        line-height: 20px;
-        text-transform: uppercase;
-    }
-</style>
 <%- include("../partials/footer"); %>

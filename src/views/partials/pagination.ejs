@@ -3,17 +3,17 @@
         <nav class="govuk-pagination" role="navigation" aria-label="Pagination">
             <% if (locals.total_pages === 1) { %>
                 <ul class="govuk-pagination__list">
-                    <li class="govuk-pagination__item govuk-pagination__item--active">
-                                    <span aria-current="page" class="govuk-pagination__link">
+                    <li class="govuk-pagination__item govuk-pagination__item--current">
+                                    <a href="#" aria-current="page" class="govuk-link govuk-pagination__link">
                                         <%= locals.current_page %>
-                                    </span>
+                                    </a>
                     </li>
                 </ul>
             <% } else { %>
                 <% if (locals.current_page > 1) { %>
                     <div class="govuk-pagination__prev">
                         <a class="govuk-link govuk-pagination__link"
-                           href="<%= buildUrl(`/publish/${locals.datasetId}/preview`, i18n.language, { page_number: locals.current_page - 1, page_size: locals.page_size }) %>"
+                           href="<%= buildUrl(url, i18n.language, { page_number: locals.current_page - 1, page_size: locals.page_size }) %>"
                            rel="prev">
                             <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg"
                                  height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
@@ -34,15 +34,15 @@
                                 &ctdot;
                             </li>
                         <% } else if(item === locals.current_page) { %>
-                            <li class="govuk-pagination__item govuk-pagination__item--active">
-                                            <span aria-current="page" class="govuk-pagination__link">
+                            <li class="govuk-pagination__item govuk-pagination__item--current">
+                                            <a href="#" aria-current="page" class="govuk-link govuk-pagination__link">
                                                 <%= item %>
-                                            </span>
+                                            </a>
                             </li>
                         <% } else { %>
                             <li class="govuk-pagination__item">
                                 <a class="govuk-link govuk-pagination__link"
-                                   href="<%= buildUrl(`/publish/${locals.datasetId}/preview`, i18n.language, { page_number: item, page_size: locals.page_size }) %>"
+                                   href="<%= buildUrl(url, i18n.language, { page_number: item, page_size: locals.page_size }) %>"
                                    aria-label="Page <%= item %>">
                                     <%= item %>
                                 </a>
@@ -53,7 +53,7 @@
                 <% if (locals.current_page < locals.total_pages) { %>
                     <div class="govuk-pagination__next">
                         <a class="govuk-link govuk-pagination__link"
-                           href="<%= buildUrl(`/publish/${locals.datasetId}/preview`, i18n.language, { page_number: locals.current_page + 1, page_size: locals.page_size }) %>"
+                           href="<%= buildUrl(url, i18n.language, { page_number: locals.current_page + 1, page_size: locals.page_size }) %>"
                            rel="next">
                                     <span class="govuk-pagination__link-title">
                                         <%= t('pagination.next') %>
