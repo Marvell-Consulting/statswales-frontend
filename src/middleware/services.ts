@@ -13,6 +13,7 @@ export const initServices = (req: Request, res: Response, next: NextFunction): v
         req.swapi = statsWalesApi;
         req.buildUrl = localeUrl; // for controllers
         res.locals.buildUrl = localeUrl; // for templates
+        res.locals.url = req.originalUrl; // Allows the passing through of the URL
     }
     next();
 };
