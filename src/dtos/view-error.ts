@@ -1,7 +1,7 @@
 export interface ViewError {
     field?: string;
-    tag: {
-        name: string;
+    message?: {
+        key: string;
         params?: object;
     };
 }

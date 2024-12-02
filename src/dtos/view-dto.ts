@@ -1,5 +1,3 @@
-import { Readable } from 'stream';
-
 import { SourceType } from '../enums/source-type';
 
 import { ViewError } from './view-error';
@@ -19,14 +17,12 @@ export interface PageInfo {
 }
 
 export interface ViewErrDTO {
-    success: boolean;
     status: number;
     errors: ViewError[];
     dataset_id: string | undefined;
 }
 
 export interface ViewDTO {
-    success: boolean;
     dataset: DatasetDTO;
     fact_table: FactTableDto;
     current_page: number;
@@ -36,9 +32,4 @@ export interface ViewDTO {
     total_pages: number;
     headers: CSVHeader[];
     data: string[][];
-}
-
-export interface ViewStream {
-    success: boolean;
-    stream: Readable;
 }

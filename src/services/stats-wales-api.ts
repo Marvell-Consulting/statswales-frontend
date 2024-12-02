@@ -226,8 +226,8 @@ export class StatsWalesApi {
                 throw new ViewException(error.message, error.status, [
                     {
                         field: 'csv',
-                        tag: {
-                            name: 'errors.upload.no_csv_data',
+                        message: {
+                            key: 'errors.upload.no_csv_data',
                             params: {}
                         }
                     }
@@ -256,8 +256,8 @@ export class StatsWalesApi {
                 throw new ViewException(error.message, error.status, [
                     {
                         field: 'csv',
-                        tag: {
-                            name: 'errors.upload.no_csv_data',
+                        message: {
+                            key: 'errors.upload.no_csv_data',
                             params: {}
                         }
                     }
@@ -286,5 +286,13 @@ export class StatsWalesApi {
         return this.fetch({ url: `dataset/${datasetId}/topics`, method: HttpMethod.Patch, json: { topics } }).then(
             (response) => response.json() as unknown as DatasetDTO
         );
+    }
+
+    public async setPublishDate(datasetId: string, revisionId: string, publishDate: string): Promise<DatasetDTO> {
+        return this.fetch({
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/publish-at`,
+            method: HttpMethod.Patch,
+            json: { publish_at: publishDate }
+        }).then((response) => response.json() as unknown as DatasetDTO);
     }
 }

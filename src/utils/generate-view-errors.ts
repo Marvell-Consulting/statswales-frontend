@@ -1,11 +1,19 @@
+import { FieldValidationError } from 'express-validator';
+
 import { ViewErrDTO } from '../dtos/view-dto';
 import { ViewError } from '../dtos/view-error';
 
-export function generateViewErrors(datasetID: string | undefined, statusCode: number, errors: ViewError[]): ViewErrDTO {
-    return {
-        success: false,
-        status: statusCode,
-        errors,
-        dataset_id: datasetID
-    } as ViewErrDTO;
+export function generateViewErrors(dataset_id: string | undefined, status: number, errors: ViewError[]): ViewErrDTO {
+    return { dataset_id, status, errors };
+}
+
+export function generatePageErrors(errors: FieldValidationError[], i18nPrefix: string): ViewError[] {
+    return errors.map((error: FieldValidationError) => {
+        return {
+            field: error.path,
+            message: {
+                key: `${i18nPrefix}.form.${error.path}.error`
+            }
+        };
+    });
 }

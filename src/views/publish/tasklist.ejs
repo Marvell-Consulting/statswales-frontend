@@ -152,53 +152,57 @@
           </li>
         </ul>
 
+        <h2 class="govuk-heading-m govuk-!-margin-top-5"><%= t('publish.tasklist.translation.subheading') %></h2>
+        <ul class="govuk-task-list">
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/translation-export`, i18n.language) %>" aria-describedby="prepare-application-5-status">
+                <%= t('publish.tasklist.translation.export') %>
+              </a>
+            </div>
+            <div class="govuk-task-list__status">
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.translation.export) %>">
+                <%= t(`publish.tasklist.status.${taskList.translation.export}`) %>
+              </strong>
+            </div>
+          </li>
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/translation-import`, i18n.language) %>" aria-describedby="prepare-application-5-status">
+                <%= t('publish.tasklist.translation.import') %>
+              </a>
+            </div>
+            <div class="govuk-task-list__status">
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.translation.import) %>">
+                <%= t(`publish.tasklist.status.${taskList.translation.import}`) %>
+              </strong>
+            </div>
+          </li>
+        </ul>
+
         <h2 class="govuk-heading-m govuk-!-margin-top-5"><%= t('publish.tasklist.publishing.subheading') %></h2>
         <ul class="govuk-task-list">
           <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
-              <a class="govuk-link govuk-task-list__link" href="schedule" aria-describedby="prepare-application-5-status">
+              <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/contacts`, i18n.language) %>" aria-describedby="prepare-application-5-status">
+                <%= t('publish.tasklist.publishing.organisation') %>
+              </a>
+            </div>
+            <div class="govuk-task-list__status">
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.publishing.organisation) %>">
+                <%= t(`publish.tasklist.status.${taskList.publishing.organisation}`) %>
+              </strong>
+            </div>
+          </li>
+          <li class="govuk-task-list__item govuk-task-list__item--with-link">
+            <div class="govuk-task-list__name-and-hint">
+              <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/schedule`, i18n.language) %>" aria-describedby="prepare-application-5-status">
                 <%= t('publish.tasklist.publishing.when') %>
               </a>
             </div>
             <div class="govuk-task-list__status">
               <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.publishing.when) %>">
                 <%= t(`publish.tasklist.status.${taskList.publishing.when}`) %>
-              </strong>
-            </div>
-          </li>
-          <li class="govuk-task-list__item govuk-task-list__item--with-link">
-            <div class="govuk-task-list__name-and-hint">
-              <a class="govuk-link govuk-task-list__link" href="schedule" aria-describedby="prepare-application-5-status">
-                <%= t('publish.tasklist.publishing.export') %>
-              </a>
-            </div>
-            <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.publishing.export) %>">
-                <%= t(`publish.tasklist.status.${taskList.publishing.export}`) %>
-              </strong>
-            </div>
-          </li>
-          <li class="govuk-task-list__item govuk-task-list__item--with-link">
-            <div class="govuk-task-list__name-and-hint">
-              <a class="govuk-link govuk-task-list__link" href="schedule" aria-describedby="prepare-application-5-status">
-                <%= t('publish.tasklist.publishing.import') %>
-              </a>
-            </div>
-            <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.publishing.import) %>">
-                <%= t(`publish.tasklist.status.${taskList.publishing.import}`) %>
-              </strong>
-            </div>
-          </li>
-          <li class="govuk-task-list__item govuk-task-list__item--with-link">
-            <div class="govuk-task-list__name-and-hint">
-              <a class="govuk-link govuk-task-list__link" href="schedule" aria-describedby="prepare-application-5-status">
-                <%= t('publish.tasklist.publishing.submit') %>
-              </a>
-            </div>
-            <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.publishing.submit) %>">
-                <%= t(`publish.tasklist.status.${taskList.publishing.submit}`) %>
               </strong>
             </div>
           </li>
