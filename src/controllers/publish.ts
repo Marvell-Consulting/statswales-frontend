@@ -5,7 +5,6 @@ import { nanoid } from 'nanoid';
 import { v4 as uuid } from 'uuid';
 import { isBefore, isValid, parseISO } from 'date-fns';
 
-import { generatePageErrors, generateViewErrors } from '../utils/generate-view-errors';
 import {
     collectionValidator,
     dayValidator,
@@ -31,7 +30,7 @@ import {
 } from '../validators';
 import { ViewError } from '../dtos/view-error';
 import { logger } from '../utils/logger';
-import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
+import { ViewDTO } from '../dtos/view-dto';
 import { SourceType } from '../enums/source-type';
 import { FactTableInfoDto } from '../dtos/fact-table-info';
 import { SourceAssignmentDTO } from '../dtos/source-assignment-dto';
@@ -59,7 +58,7 @@ export const start = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const provideTitle = async (req: Request, res: Response, next: NextFunction) => {
-    let errors: ViewErrDTO | undefined;
+    let errors: ViewError[] | undefined;
     const existingDataset = res.locals.dataset; // dataset does not exist the first time through
     let title = existingDataset ? singleLangDataset(existingDataset, req.language)?.datasetInfo?.title : undefined;
     const revisit = Boolean(existingDataset);
@@ -83,8 +82,7 @@ export const provideTitle = async (req: Request, res: Response, next: NextFuncti
             }
             return;
         } catch (err) {
-            const error: ViewError = { field: 'title', message: { key: 'errors.title.missing' } };
-            errors = generateViewErrors(undefined, 400, [error]);
+            errors = [{ field: 'title', message: { key: 'errors.title.missing' } }];
         }
     }
 
@@ -93,7 +91,7 @@ export const provideTitle = async (req: Request, res: Response, next: NextFuncti
 
 export const uploadFile = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = res.locals.dataset;
-    let errors: ViewErrDTO | undefined;
+    let errors: ViewError[] | undefined;
     const revisit = dataset.dimensions?.length > 0;
 
     if (req.method === 'POST') {
@@ -109,8 +107,7 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
             return;
         } catch (err) {
             res.status(400);
-            const error: ViewError = { field: 'csv', message: { key: 'errors.upload.no_csv_data' } };
-            errors = generateViewErrors(undefined, 400, [error]);
+            errors = [{ field: 'csv', message: { key: 'errors.upload.no_csv_data' } }];
         }
     }
 
@@ -119,7 +116,7 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
 
 export const factTablePreview = async (req: Request, res: Response, next: NextFunction) => {
     const { dataset, revision, factTable } = res.locals;
-    let errors: ViewErrDTO | undefined;
+    let errors: ViewError[] | undefined;
     let previewData: ViewDTO | undefined;
     let ignoredCount = 0;
     let pagination: (string | number)[] = [];
@@ -150,8 +147,7 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
             return;
         } catch (err: any) {
             res.status(500);
-            const error: ViewError = { field: 'confirm', message: { key: 'errors.preview.confirm_error' } };
-            errors = generateViewErrors(dataset.id, 500, [error]);
+            errors = [{ field: 'confirm', message: { key: 'errors.preview.confirm_error' } }];
         }
     }
 
@@ -166,8 +162,7 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
         pagination = generateSequenceForNumber(previewData.current_page, previewData.total_pages);
     } catch (err: any) {
         res.status(400);
-        const error: ViewError = { field: 'preview', message: { key: 'errors.preview.failed_to_get_preview' } };
-        errors = generateViewErrors(undefined, 400, [error]);
+        errors = [{ field: 'preview', message: { key: 'errors.preview.failed_to_get_preview' } }];
     }
     res.render('publish/preview', { ...previewData, ignoredCount, pagination, revisit, errors });
 };
@@ -178,7 +173,7 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
         factTable.fact_table_info?.filter((factTableInfo: FactTableInfoDto) => Boolean(factTableInfo.column_type))
             .length > 0;
     let error: ViewError | undefined;
-    let errors: ViewErrDTO | undefined;
+    let errors: ViewError[] | undefined;
     let currentImport = factTable;
 
     try {
@@ -227,7 +222,7 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
             }
 
             if (error) {
-                errors = generateViewErrors(undefined, 400, [error]);
+                errors = [error];
                 res.status(400);
             } else {
                 await req.swapi.assignSources(dataset.id, revision.id, factTable.id, sourceAssignment);
@@ -279,7 +274,7 @@ export const changeData = async (req: Request, res: Response, next: NextFunction
 };
 
 export const provideSummary = async (req: Request, res: Response, next: NextFunction) => {
-    let errors: ViewErrDTO | undefined;
+    let errors: ViewError[] | undefined;
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     let description = dataset?.datasetInfo?.description;
 
@@ -298,7 +293,7 @@ export const provideSummary = async (req: Request, res: Response, next: NextFunc
             return;
         } catch (err) {
             const error: ViewError = { field: 'description', message: { key: 'errors.description.missing' } };
-            errors = generateViewErrors(undefined, 400, [error]);
+            errors = [error];
         }
     }
 
@@ -306,7 +301,7 @@ export const provideSummary = async (req: Request, res: Response, next: NextFunc
 };
 
 export const provideCollection = async (req: Request, res: Response, next: NextFunction) => {
-    let errors: ViewErrDTO | undefined;
+    let errors: ViewError[] | undefined;
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     let collection = dataset?.datasetInfo?.collection;
 
@@ -325,7 +320,7 @@ export const provideCollection = async (req: Request, res: Response, next: NextF
             return;
         } catch (err) {
             const error: ViewError = { field: 'collection', message: { key: 'errors.collection.missing' } };
-            errors = generateViewErrors(undefined, 400, [error]);
+            errors = [error];
         }
     }
 
@@ -333,7 +328,7 @@ export const provideCollection = async (req: Request, res: Response, next: NextF
 };
 
 export const provideQuality = async (req: Request, res: Response, next: NextFunction) => {
-    let errors: ViewErrDTO | undefined;
+    let errors: ViewError[] | undefined;
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     let datasetInfo = dataset?.datasetInfo!;
 
@@ -360,7 +355,7 @@ export const provideQuality = async (req: Request, res: Response, next: NextFunc
         } catch (err: any) {
             if (err.path) {
                 const error: ViewError = { field: err.path, message: { key: `errors.${snakeCase(err.path)}.missing` } };
-                errors = generateViewErrors(dataset.id, 400, [error]);
+                errors = [error];
             } else {
                 next(new UnknownException());
                 return;
@@ -372,7 +367,7 @@ export const provideQuality = async (req: Request, res: Response, next: NextFunc
 };
 
 export const provideUpdateFrequency = async (req: Request, res: Response, next: NextFunction) => {
-    let errors: ViewErrDTO | undefined;
+    let errors: ViewError[] | undefined;
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     let update_frequency = dataset?.datasetInfo!.update_frequency;
 
@@ -406,7 +401,7 @@ export const provideUpdateFrequency = async (req: Request, res: Response, next: 
             return;
         } catch (err) {
             const error: ViewError = { field: 'update_frequency', message: { key: 'errors.update_frequency.missing' } };
-            errors = generateViewErrors(undefined, 400, [error]);
+            errors = [error];
         }
     }
 
@@ -414,7 +409,7 @@ export const provideUpdateFrequency = async (req: Request, res: Response, next: 
 };
 
 export const provideDataProviders = async (req: Request, res: Response, next: NextFunction) => {
-    let errors: ViewErrDTO | undefined;
+    let errors: ViewError[] | undefined;
     const availableProviders: ProviderDTO[] = await req.swapi.getAllProviders();
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     const deleteId = req.query.delete;
@@ -506,8 +501,7 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
             res.redirect(req.buildUrl(`/publish/${dataset.id}/providers?edit=${dataProvider.id}`, req.language));
             return;
         } catch (err: any) {
-            const error: ViewError = { message: { key: err.message } };
-            errors = generateViewErrors(undefined, 400, [error]);
+            errors = [{ message: { key: err.message } }];
         }
     }
 
@@ -517,14 +511,14 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
         dataProviders, // list of assigned data providers
         availableProviders, // list of all available providers
         availableSources, // list of sources for the selected provider,
-        addSource: errors?.errors[0]?.message?.key === 'errors.provider_source.missing', // whether to show the source dropdown
+        addSource: errors && errors[0]?.message?.key === 'errors.provider_source.missing', // whether to show the source dropdown
         errors
     });
 };
 
 export const provideRelatedLinks = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
-    let errors: ViewErrDTO | undefined;
+    let errors: ViewError[] | undefined;
     let related_links = sortBy(dataset?.datasetInfo?.related_links || [], 'created_at');
     const deleteId = req.query.delete;
     const editId = req.query.edit;
@@ -549,8 +543,7 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
             link = existingLink;
         } else {
             // shouldn't happen unless someone changes the query param to an id that doesn't exist
-            const error: ViewError = { field: 'related_link', message: { key: 'errors.related_link.missing' } };
-            errors = generateViewErrors(dataset.id, 400, [error]);
+            errors = [{ field: 'related_link', message: { key: 'errors.related_link.missing' } }];
         }
     }
 
@@ -590,7 +583,7 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
             return;
         } catch (err) {
             const error: ViewError = { field: 'related_link', message: { key: 'errors.related_link.required' } };
-            errors = generateViewErrors(undefined, 400, [error]);
+            errors = [error];
         }
     }
 
@@ -598,7 +591,7 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
 };
 
 export const provideDesignation = async (req: Request, res: Response, next: NextFunction) => {
-    let errors: ViewErrDTO | undefined;
+    let errors: ViewError[] | undefined;
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     let designation = dataset?.datasetInfo?.designation;
 
@@ -617,7 +610,7 @@ export const provideDesignation = async (req: Request, res: Response, next: Next
             return;
         } catch (err) {
             const error: ViewError = { field: 'designation', message: { key: 'errors.designation.missing' } };
-            errors = generateViewErrors(undefined, 400, [error]);
+            errors = [error];
         }
     }
 
@@ -625,7 +618,7 @@ export const provideDesignation = async (req: Request, res: Response, next: Next
 };
 
 export const provideTopics = async (req: Request, res: Response, next: NextFunction) => {
-    let errors: ViewErrDTO | undefined;
+    let errors: ViewError[] | undefined;
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     const availableTopics: TopicDTO[] = await req.swapi.getAllTopics();
     const nestedTopics = nestTopics(availableTopics);
@@ -646,7 +639,7 @@ export const provideTopics = async (req: Request, res: Response, next: NextFunct
             return;
         } catch (err) {
             const error: ViewError = { field: 'topics', message: { key: 'errors.topics.missing' } };
-            errors = generateViewErrors(undefined, 400, [error]);
+            errors = [error];
         }
     }
 

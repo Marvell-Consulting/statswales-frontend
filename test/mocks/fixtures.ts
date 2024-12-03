@@ -156,7 +156,6 @@ export const completedDataset: DatasetDTO = {
 };
 
 export const datasetView: ViewDTO = {
-    success: true,
     dataset: {
         id: '7d3d49c0-9fc9-4ce2-ba48-5c466f30946c',
         created_at: '2024-09-05T10:05:03.871Z',
@@ -251,11 +250,13 @@ export const tasklistInProgress: TaskListState = {
         data_collection: TaskStatus.NotStarted,
         relevant_topics: TaskStatus.NotStarted
     },
+    translation: {
+        export: TaskStatus.NotStarted,
+        import: TaskStatus.NotStarted
+    },
     publishing: {
         when: TaskStatus.NotStarted,
-        export: TaskStatus.NotStarted,
-        import: TaskStatus.NotStarted,
-        submit: TaskStatus.NotStarted
+        organisation: TaskStatus.NotStarted
     }
 };
 
