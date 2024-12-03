@@ -14,7 +14,7 @@
                 <div class="govuk-grid-column-two-thirds">
                     <h1 class="govuk-heading-xl"><%= t('publish.schedule.heading') %></h1>
 
-                    <%- include("../partials/error-handler", { errors: locals?.errors?.filter((error) => !['year', 'month', 'day'].includes(error.field)) }); %>
+                    <%- include("../partials/error-handler"); %>
 
                     <form enctype="multipart/form-data" method="post">
                         <div class="govuk-form-group <%= locals.dateError ? 'govuk-form-group--error' : '' %>">

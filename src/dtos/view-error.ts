@@ -1,5 +1,5 @@
 export interface ViewError {
-    field?: string;
+    field: string;
     message?: {
         key: string;
         params?: object;

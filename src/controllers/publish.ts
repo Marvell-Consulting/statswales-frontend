@@ -501,7 +501,7 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
             res.redirect(req.buildUrl(`/publish/${dataset.id}/providers?edit=${dataProvider.id}`, req.language));
             return;
         } catch (err: any) {
-            errors = [{ message: { key: err.message } }];
+            errors = [{ field: 'provider', message: { key: err.message } }];
         }
     }
 
@@ -648,7 +648,7 @@ export const provideTopics = async (req: Request, res: Response, next: NextFunct
 
 export const providePublishDate = async (req: Request, res: Response, next: NextFunction) => {
     const { dataset, revision } = res.locals;
-    let errors: ViewError[] | undefined;
+    let errors: ViewError[] = [];
     let dateError;
     let timeError;
     let values = { year: '', month: '', day: '', hour: '09', minute: '30' };
@@ -674,10 +674,10 @@ export const providePublishDate = async (req: Request, res: Response, next: Next
 
             values = {
                 year: req.body.year,
-                month: req.body.month.padStart(2, '0'),
-                day: req.body.day.padStart(2, '0'),
-                hour: req.body.hour.padStart(2, '0'),
-                minute: req.body.minute.padStart(2, '0')
+                month: req.body.month ? req.body.month.padStart(2, '0') : '',
+                day: req.body.day ? req.body.day.padStart(2, '0') : '',
+                hour: req.body.hour ? req.body.hour.padStart(2, '0') : '',
+                minute: req.body.minute ? req.body.minute.padStart(2, '0') : ''
             };
 
             const publishDate = parseISO(
@@ -686,10 +686,10 @@ export const providePublishDate = async (req: Request, res: Response, next: Next
 
             if (!isValid(publishDate)) {
                 dateError = { field: 'date', message: { key: 'publish.schedule.form.date.error.invalid' } };
-                errors.unshift(dateError);
+                errors.push(dateError);
             } else if (isBefore(publishDate, new Date())) {
                 dateError = { field: 'date', message: { key: 'publish.schedule.form.date.error.past' } };
-                errors.unshift(dateError);
+                errors.push(dateError);
             }
 
             if (errors.some((error) => error.field === 'hour' || error.field === 'minute')) {
