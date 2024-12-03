@@ -19,10 +19,13 @@ export interface TaskListState {
         relevant_topics: TaskStatus;
     };
 
-    publishing: {
-        when: TaskStatus;
+    translation: {
         export: TaskStatus;
         import: TaskStatus;
-        submit: TaskStatus;
+    };
+
+    publishing: {
+        organisation: TaskStatus;
+        when: TaskStatus;
     };
 }

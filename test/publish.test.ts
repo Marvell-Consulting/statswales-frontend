@@ -7,10 +7,7 @@ import { http, HttpResponse } from 'msw';
 import { i18next } from '../src/middleware/translation';
 import app from '../src/app';
 import { appConfig } from '../src/config';
-import { DatasetDTO } from '../src/dtos/dataset';
-import { RevisionDTO } from '../src/dtos/revision';
-import { FactTableDto } from '../src/dtos/fact-table';
-import { ViewErrDTO } from '../src/dtos/view-dto';
+import { ViewError } from '../src/dtos/view-error';
 
 import { mockBackend } from './mocks/backend';
 import { datasetWithTitle, datasetWithImport, completedDataset } from './mocks/fixtures';
@@ -19,11 +16,7 @@ const t = i18next.t;
 
 declare module 'express-session' {
     interface SessionData {
-        currentDataset: DatasetDTO | undefined;
-        currentRevision: RevisionDTO | undefined;
-        currentImport: FactTableDto | undefined;
-        errors: ViewErrDTO | undefined;
-        currentTitle: string | undefined;
+        errors: ViewError[] | undefined;
     }
 }
 

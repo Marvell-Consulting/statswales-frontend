@@ -18,7 +18,8 @@ import {
     provideRelatedLinks,
     provideUpdateFrequency,
     provideDesignation,
-    provideTopics
+    provideTopics,
+    providePublishDate
 } from '../controllers/publish';
 
 export const publish = Router();
@@ -72,3 +73,6 @@ publish.post('/:datasetId/designation', fetchDataset, upload.none(), provideDesi
 
 publish.get('/:datasetId/topics', fetchDataset, provideTopics);
 publish.post('/:datasetId/topics', fetchDataset, upload.none(), provideTopics);
+
+publish.get('/:datasetId/schedule', fetchDataset, providePublishDate);
+publish.post('/:datasetId/schedule', fetchDataset, upload.none(), providePublishDate);

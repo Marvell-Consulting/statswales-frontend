@@ -1,5 +1,6 @@
 import { Request } from 'express';
-import { body, param, ValidationChain } from 'express-validator';
+import { body, FieldValidationError, param, ValidationChain } from 'express-validator';
+import { ResultWithContext } from 'express-validator/lib/chain/context-runner';
 
 import { Designation } from '../enums/designation';
 import { DurationUnit } from '../enums/duration-unit';
@@ -7,6 +8,33 @@ import { DurationUnit } from '../enums/duration-unit';
 export const hasError = async (validator: ValidationChain, req: Request) => {
     return !(await validator.run(req)).isEmpty();
 };
+
+export async function getErrors(
+    validators: ValidationChain | ValidationChain[],
+    req: Request
+): Promise<FieldValidationError[]> {
+    if (!Array.isArray(validators)) {
+        // eslint-disable-next-line no-param-reassign
+        validators = [validators];
+    }
+
+    let errors: FieldValidationError[] = [];
+
+    for (const validator of validators) {
+        const result: ResultWithContext = await validator.run(req);
+        if (!result.isEmpty()) {
+            const fieldErrors = result.array().filter((err) => err.type === 'field');
+            errors = errors.concat(fieldErrors);
+        }
+    }
+
+    return errors;
+}
+
+export async function getErrorFields(validators: ValidationChain | ValidationChain[], req: Request): Promise<string[]> {
+    const errors = await getErrors(validators, req);
+    return errors.map((error) => error.path);
+}
 
 export const datasetIdValidator = () => param('datasetId').trim().notEmpty().isUUID(4);
 export const revisionIdValidator = () => param('revisionId').trim().notEmpty().isUUID(4);
@@ -37,3 +65,9 @@ export const designationValidator = () => body('designation').trim().isIn(Object
 export const providerIdValidator = () => body('provider_id').trim().notEmpty().isUUID(4);
 
 export const topicIdValidator = () => body('topics').isArray({ min: 1 });
+
+export const dayValidator = () => body('day').isInt({ min: 1, max: 31, allow_leading_zeroes: true });
+export const monthValidator = () => body('month').isInt({ min: 1, max: 12, allow_leading_zeroes: true });
+export const yearValidator = () => body('year').isInt({ min: new Date().getFullYear(), allow_leading_zeroes: true });
+export const hourValidator = () => body('hour').isInt({ min: 0, max: 23, allow_leading_zeroes: true });
+export const minuteValidator = () => body('minute').isInt({ min: 0, max: 59, allow_leading_zeroes: true });

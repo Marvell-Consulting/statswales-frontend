@@ -284,8 +284,8 @@ describe('StatsWalesApi', () => {
                 new ViewException('Bad Request', 400, [
                     {
                         field: 'csv',
-                        tag: {
-                            name: 'errors.upload.no_csv_data',
+                        message: {
+                            key: 'errors.upload.no_csv_data',
                             params: {}
                         }
                     }
@@ -365,8 +365,8 @@ describe('StatsWalesApi', () => {
                 new ViewException('Bad Request', 400, [
                     {
                         field: 'csv',
-                        tag: {
-                            name: 'errors.upload.no_csv_data',
+                        message: {
+                            key: 'errors.upload.no_csv_data',
                             params: {}
                         }
                     }

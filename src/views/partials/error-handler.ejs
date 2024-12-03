@@ -1,4 +1,4 @@
-<% if (locals?.errors) { %>
+<% if (locals?.errors && locals.errors.length > 0) { %>
     <div class="govuk-error-summary" data-module="govuk-error-summary">
         <div role="alert">
             <h2 class="govuk-error-summary__title">
@@ -6,9 +6,9 @@
             </h2>
             <div class="govuk-error-summary__body">
                 <ul class="govuk-list govuk-error-summary__list">
-                    <% locals?.errors.errors.forEach(function(error) { %>
+                    <% locals?.errors?.forEach(function(error) { %>
                         <li>
-                            <a href="#<%= error.field %>"><%= t(error.tag.name, error.params) %></a>
+                            <a href="#<%= error.field %>"><%= t(error.message.key, error.message.params) %></a>
                         </li>
                     <% }); %>
                 </ul>
