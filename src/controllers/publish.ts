@@ -52,6 +52,8 @@ import { TopicDTO } from '../dtos/topic';
 import { DatasetTopicDTO } from '../dtos/dataset-topic';
 import { nestTopics } from '../utils/nested-topics';
 import { ApiException } from '../exceptions/api.exception';
+import { OrganisationDTO } from '../dtos/organisation';
+import { TeamDTO } from '../dtos/team';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -713,4 +715,30 @@ export const providePublishDate = async (req: Request, res: Response, next: Next
     }
 
     res.render('publish/schedule', { values, errors, dateError, timeError });
+};
+
+export const provideOrganisation = async (req: Request, res: Response, next: NextFunction) => {
+    const { dataset } = res.locals;
+    const errors: ViewError[] = [];
+    let organisations: OrganisationDTO[] = [];
+    let teams: TeamDTO[] = [];
+    let values;
+
+    try {
+        organisations = await req.swapi.getAllOrganisations();
+        teams = await req.swapi.getAllTeams();
+
+        if (dataset.team_id) {
+            const datasetTeam = await req.swapi.getTeam(dataset.team_id);
+            values = { organisation_id: datasetTeam.organisation_id, team_id: dataset.id };
+        }
+
+        if (req.method === 'POST') {
+            values = req.body;
+        }
+    } catch (err) {
+        console.error(err);
+    }
+
+    res.render('publish/organisation', { values, organisations, teams, errors });
 };

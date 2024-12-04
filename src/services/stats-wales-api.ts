@@ -17,6 +17,8 @@ import { DatasetProviderDTO } from '../dtos/dataset-provider';
 import { ProviderDTO } from '../dtos/provider';
 import { ProviderSourceDTO } from '../dtos/provider-source';
 import { TopicDTO } from '../dtos/topic';
+import { OrganisationDTO } from '../dtos/organisation';
+import { TeamDTO } from '../dtos/team';
 
 const config = appConfig();
 
@@ -294,5 +296,20 @@ export class StatsWalesApi {
             method: HttpMethod.Patch,
             json: { publish_at: publishDate }
         }).then((response) => response.json() as unknown as DatasetDTO);
+    }
+
+    public async getAllOrganisations(): Promise<OrganisationDTO[]> {
+        logger.debug('Fetching organisations...');
+        return this.fetch({ url: 'organisation' }).then((response) => response.json() as unknown as OrganisationDTO[]);
+    }
+
+    public async getAllTeams(): Promise<TeamDTO[]> {
+        logger.debug('Fetching teams...');
+        return this.fetch({ url: 'team' }).then((response) => response.json() as unknown as TeamDTO[]);
+    }
+
+    public async getTeam(teamId: string): Promise<TeamDTO> {
+        logger.debug('Fetching team...');
+        return this.fetch({ url: `team/${teamId}` }).then((response) => response.json() as unknown as TeamDTO);
     }
 }

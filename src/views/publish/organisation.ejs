@@ -1,0 +1,48 @@
+<%- include("../partials/header"); %>
+<div class="govuk-width-container app-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+
+        <div class="top-links">
+            <div class="govuk-width-container">
+                <a href="javascript:history.back()" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+            </div>
+        </div>
+
+        <div class="govuk-width-container">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h1 class="govuk-heading-xl"><%= t('publish.organisation.heading') %></h1>
+
+                    <%- include("../partials/error-handler"); %>
+
+                    <form enctype="multipart/form-data" method="post">
+                        <div class="govuk-form-group">
+                            <h2 class="govuk-heading-s"><%= t('publish.organisation.form.organisation.label') %></h2>
+                            <select id="organisation" name="organisation_id" class="govuk-select" aria-describedby="source-hint">
+                                <option value="" selected disabled><%= t('publish.organisation.form.organisation.placeholder') %></option>
+                                <% for (let organisation of locals.organisations) { %>
+                                    <option value="<%= organisation.id %>" <%= locals.values?.organisation_id === organisation.id ? 'selected' : '' %>><%= organisation.name %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <div class="govuk-form-group">
+                            <h2 class="govuk-heading-s"><%= t('publish.organisation.form.team.label') %></h2>
+                            <p class="govuk-body"><%- t('publish.organisation.form.team.note') %></p>
+                            <select id="team" name="team_id" class="govuk-select" aria-describedby="source-hint">
+                              <option value="" selected disabled><%= t('publish.organisation.form.team.placeholder') %></option>
+                              <% for (let team of locals.teams) { %>
+                                  <option value="<%= team.id %>" <%= locals.values?.team_id === team.id ? 'selected' : '' %>><%= team.name %></option>
+                              <% } %>
+                          </select>
+                        </div>
+                        <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
+                        <a class="govuk-button govuk-button--secondary" href="javascript:history.back()"><%= t('buttons.cancel')%></a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<%- include("../partials/footer"); %>
