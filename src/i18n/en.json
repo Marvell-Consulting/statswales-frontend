@@ -282,13 +282,18 @@
             "form": {
                 "organisation": {
                     "label": "Organisation",
-                    "placeholder": "Select organisation"
+                    "placeholder": "Select organisation",
+                    "error": "Select an organisation"
                 },
                 "team": {
                     "label": "Team",
                     "note": "If you cannot find your team in the list, you can <a class=\"govuk-link\" href=\"{{request_team}}\">request a team be added</a>.",
-                    "placeholder": "Select team"
+                    "placeholder": "Select team",
+                    "error": "Select a team"
                 }
+            },
+            "error": {
+                "saving": "Could not save the team, please try later"
             }
         },
         "upload": {

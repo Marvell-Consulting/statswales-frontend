@@ -290,7 +290,7 @@ export class StatsWalesApi {
         );
     }
 
-    public async setPublishDate(datasetId: string, revisionId: string, publishDate: string): Promise<DatasetDTO> {
+    public async updatePublishDate(datasetId: string, revisionId: string, publishDate: string): Promise<DatasetDTO> {
         return this.fetch({
             url: `dataset/${datasetId}/revision/by-id/${revisionId}/publish-at`,
             method: HttpMethod.Patch,
@@ -311,5 +311,13 @@ export class StatsWalesApi {
     public async getTeam(teamId: string): Promise<TeamDTO> {
         logger.debug('Fetching team...');
         return this.fetch({ url: `team/${teamId}` }).then((response) => response.json() as unknown as TeamDTO);
+    }
+
+    public async updateDatasetTeam(datasetId: string, teamId: string): Promise<DatasetDTO> {
+        logger.debug('Updating dataset team...');
+        const data = { team_id: teamId };
+        return this.fetch({ url: `dataset/${datasetId}/team`, method: HttpMethod.Patch, json: data }).then(
+            (response) => response.json() as unknown as DatasetDTO
+        );
     }
 }
