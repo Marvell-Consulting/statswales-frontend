@@ -28,7 +28,7 @@ i18next
             cookieSecure: config.session.secure
         },
         backend: {
-            loadPath: `${__dirname}/translations/{{lng}}.json`
+            loadPath: `${__dirname}/../i18n/{{lng}}.json`
         },
         fallbackLng: config.language.fallback,
         preload: TRANSLATIONS,

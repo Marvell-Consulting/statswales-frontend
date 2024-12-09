@@ -71,3 +71,6 @@ export const monthValidator = () => body('month').isInt({ min: 1, max: 12, allow
 export const yearValidator = () => body('year').isInt({ min: new Date().getFullYear(), allow_leading_zeroes: true });
 export const hourValidator = () => body('hour').isInt({ min: 0, max: 23, allow_leading_zeroes: true });
 export const minuteValidator = () => body('minute').isInt({ min: 0, max: 59, allow_leading_zeroes: true });
+
+export const organisationIdValidator = () => body('organisation').trim().notEmpty().isUUID(4);
+export const teamIdValidator = () => body('team').trim().notEmpty().isUUID(4);
