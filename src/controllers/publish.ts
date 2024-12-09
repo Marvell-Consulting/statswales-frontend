@@ -753,6 +753,8 @@ export const provideOrganisation = async (req: Request, res: Response, next: Nex
             if (errors.length > 0) throw errors;
 
             await req.swapi.updateDatasetTeam(dataset.id, values.team);
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+            return;
         }
     } catch (err) {
         if (err instanceof ApiException) {
