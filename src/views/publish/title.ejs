@@ -1,6 +1,5 @@
 <%- include("../partials/header"); %>
     <div class="govuk-width-container app-width-container">
-        <!-- <a href="#" class="govuk-back-link">Back</a> -->
         <main class="govuk-main-wrapper" id="main-content" role="main">
 
             <% if (locals.revisit) { %>
@@ -23,13 +22,11 @@
                 <li><%= t('publish.title.descriptive') %></li>
             </ul>
 
-            <div class="govuk-hint">
-                <%= t('publish.title.language') %>
-            </div>
+            <div class="govuk-hint"><%= t('publish.title.form.title.hint') %></div>
 
             <form enctype="multipart/form-data" method="post">
-                <div class="govuk-form-group">
-                    <input class="govuk-input" id="title" name="title" type="text" value="<%= locals.title %>">
+                <div class="govuk-form-group <%= locals.errors?.find(e => e.field === 'title') ? 'govuk-input--error' : '' %>">
+                    <input class="govuk-input <%= locals.errors?.find(e => e.field === 'title') ? 'govuk-input--error' : '' %>" id="title" name="title" type="text" value="<%= locals.title %>">
                 </div>
                 <button type="submit" class="govuk-button" data-module="govuk-button">
                     <%= t('buttons.continue') %>

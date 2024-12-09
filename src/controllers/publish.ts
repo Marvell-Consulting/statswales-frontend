@@ -62,20 +62,23 @@ export const start = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const provideTitle = async (req: Request, res: Response, next: NextFunction) => {
-    let errors: ViewError[] | undefined;
+    let errors: ViewError[] = [];
     const existingDataset = res.locals.dataset; // dataset does not exist the first time through
     let title = existingDataset ? singleLangDataset(existingDataset, req.language)?.datasetInfo?.title : undefined;
     const revisit = Boolean(existingDataset);
 
     if (req.method === 'POST') {
         try {
-            const titleError = await hasError(titleValidator(), req);
-            if (titleError) {
-                res.status(400);
-                throw new Error('errors.title.missing');
-            }
-
             title = req.body.title;
+
+            errors = (await getErrors(titleValidator(), req)).map((error: FieldValidationError) => {
+                return { field: error.path, message: { key: `publish.title.form.title.error.${error.msg}` } };
+            });
+
+            if (errors.length > 0) {
+                res.status(400);
+                throw new Error();
+            }
 
             if (existingDataset) {
                 await req.swapi.updateDatasetInfo(existingDataset.id, { title, language: req.language });
@@ -86,7 +89,9 @@ export const provideTitle = async (req: Request, res: Response, next: NextFuncti
             }
             return;
         } catch (err) {
-            errors = [{ field: 'title', message: { key: 'errors.title.missing' } }];
+            if (err instanceof ApiException) {
+                errors = [{ field: 'api', message: { key: 'error.try_later' } }];
+            }
         }
     }
 
