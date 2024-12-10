@@ -4,7 +4,7 @@ import { DimensionState } from './dimension-state';
 
 export interface TaskListState {
     datatable: TaskStatus;
-
+    measure?: DimensionState;
     dimensions: DimensionState[];
 
     metadata: {

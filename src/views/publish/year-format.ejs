@@ -1,0 +1,121 @@
+<%- include("../partials/header", t); %>
+
+<div class="govuk-width-container app-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+        <div class="top-links">
+            <div class="govuk-width-container">
+                <a href="<%= locals.referrer %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+            </div>
+        </div>
+
+        <h1 class="govuk-heading-xl"><%= t('publish.year_format.heading') %></h1>
+
+        <% if (locals?.errors) { %>
+            <div class="govuk-error-summary" data-module="govuk-error-summary">
+                <div role="alert">
+                    <h2 class="govuk-error-summary__title">
+                        <%= t('errors.problem') %>
+                    </h2>
+                    <div class="govuk-error-summary__body">
+                        <ul class="govuk-list govuk-error-summary__list">
+                            <% locals.errors.errors.forEach(function(error) { %>
+                                <li>
+                                    <a href="#<%= error.field %>">
+                                        <%= t(error.tag.name) %>
+                                    </a>
+                                </li>
+                            <% }); %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <form method="post" role="continue">
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <div class="govuk-radios" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="year-format-1" name="yearType" type="radio" value="YYYY">
+                                    <label class="govuk-label govuk-radios__label" for="year-format-1">
+                                        YYYY
+                                    </label>
+                                    <div id="year-format-1-hint" class="govuk-hint govuk-radios__hint">
+                                        <%= t('publish.year_format.example', { example: '2024' })%>
+                                    </div>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="year-format-2" name="yearType" type="radio" value="YYYYYY">
+                                    <label class="govuk-label govuk-radios__label" for="year-format-2">
+                                        YYYYYY
+                                    </label>
+                                    <div id="year-format-2-hint" class="govuk-hint govuk-radios__hint">
+                                        <%= t('publish.year_format.example', { example: '202324' })%>
+                                    </div>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="year-format-3" name="yearType" type="radio" value="YYYYYYYY">
+                                    <label class="govuk-label govuk-radios__label" for="year-format-3">
+                                        YYYYYYYY
+                                    </label>
+                                    <div id="year-format-4-hint" class="govuk-hint govuk-radios__hint">
+                                        <%= t('publish.year_format.example', { example: '20232024' })%>
+                                    </div>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="year-format-4" name="yearType" type="radio" value="YYYY-YY">
+                                    <label class="govuk-label govuk-radios__label" for="year-format-4">
+                                        YYYY-YY
+                                    </label>
+                                    <div id="year-format-4-hint" class="govuk-hint govuk-radios__hint">
+                                        <%= t('publish.year_format.example', { example: '2023-24' })%>
+                                    </div>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="year-format-5" name="yearType" type="radio" value="YYYY/YY">
+                                    <label class="govuk-label govuk-radios__label" for="year-format-5">
+                                        YYYY/YY
+                                    </label>
+                                    <div id="year-format-5-hint" class="govuk-hint govuk-radios__hint">
+                                        <%- t('publish.year_format.example', { example: '2023/24' })%>
+                                    </div>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="year-format-6" name="yearType" type="radio" value="YYYY-YYYY">
+                                    <label class="govuk-label govuk-radios__label" for="year-format-6">
+                                        YYYY-YYYY
+                                    </label>
+                                    <div id="year-format-6-hint" class="govuk-hint govuk-radios__hint">
+                                        <%- t('publish.year_format.example', { example: '2023-2024' })%>
+                                    </div>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="year-format-7" name="yearType" type="radio" value="YYYY/YYYY">
+                                    <label class="govuk-label govuk-radios__label" for="year-format-7">
+                                        YYYY/YYYY
+                                    </label>
+                                    <div id="year-format-7-hint" class="govuk-hint govuk-radios__hint">
+                                        <%- t('publish.year_format.example', { example: '2023/2024' })%>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="govuk-button-group">
+                        <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                            <%= t('buttons.continue') %>
+                        </button>
+                        <a href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                            <%= t('buttons.preview') %>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+
+<%- include("../partials/footer"); %>

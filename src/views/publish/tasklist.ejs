@@ -26,10 +26,27 @@
               </strong>
             </div>
           </li>
+          <% if (taskList.measure) { %>
+            <li class="govuk-task-list__item govuk-task-list__item--with-link">
+              <div class="govuk-task-list__name-and-hint">
+                <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/measure/`, i18n.language) %>"><%=taskList.measure.name %></a>
+              </div>
+              <div class="govuk-task-list__status">
+                <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.measure.status) %>">
+                  <%= t(`publish.tasklist.status.${taskList.measure.status}`) %>
+                </strong>
+              </div>
+            </li>
+          <% } %>
           <% taskList.dimensions.forEach(function(dimension) { %>
+            <% const dim = locals.dimensions.find((d) => d.dimensionInfo.name === dimension.name) %>
             <li class="govuk-task-list__item govuk-task-list__item--with-link">
                 <div class="govuk-task-list__name-and-hint">
-                    <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/sources`, i18n.language) %>"><%=dimension.name %></a>
+                    <% if (dimension.type === 'time_period') { %>
+                      <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/time-period/${dim.id}`, i18n.language) %>"><%= dimension.name %></a>
+                    <% } else { %>
+                      <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/dimension-data-chooser/${dim.id}`, i18n.language) %>"><%= dimension.name %></a>
+                    <% } %>
                 </div>
                 <div class="govuk-task-list__status">
                   <strong class="govuk-tag govuk-tag--<%= statusToColour(dimension.status) %>">

@@ -1,0 +1,103 @@
+<%- include("../partials/header", t); %>
+
+<div class="govuk-width-container app-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+        <div class="top-links">
+            <div class="govuk-width-container">
+                <a href="<%= locals.referrer %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+            </div>
+        </div>
+
+        <h1 class="govuk-heading-xl"><%= t('publish.year_type.heading') %></h1>
+
+        <% if (locals?.errors) { %>
+            <div class="govuk-error-summary" data-module="govuk-error-summary">
+                <div role="alert">
+                    <h2 class="govuk-error-summary__title">
+                        <%= t('errors.problem') %>
+                    </h2>
+                    <div class="govuk-error-summary__body">
+                        <ul class="govuk-list govuk-error-summary__list">
+                            <% locals.errors.errors.forEach(function(error) { %>
+                                <li>
+                                    <a href="#<%= error.field %>">
+                                        <%= t(error.tag.name) %>
+                                    </a>
+                                </li>
+                            <% }); %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <form method="post" role="continue">
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <div class="govuk-radios" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="yearTypeCalendar" name="yearType" type="radio" value="calendar">
+                                    <label class="govuk-label govuk-radios__label" for="yearTypeCalendar">
+                                        <%= t('publish.year_type.chooser.calendar')%>
+                                    </label>
+                                    <div id="yearTypeCalendar-hint" class="govuk-hint govuk-radios__hint">
+                                        <%= t('publish.year_type.chooser.calendar-hint')%>
+                                    </div>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="yearTypeFinancial" name="yearType" type="radio" value="financial">
+                                    <label class="govuk-label govuk-radios__label" for="yearTypeFinancial">
+                                        <%= t('publish.year_type.chooser.financial')%>
+                                    </label>
+                                    <div id="yearTypeFinancial-hint" class="govuk-hint govuk-radios__hint">
+                                        <%= t('publish.year_type.chooser.financial-hint')%>
+                                    </div>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="yearTypeTax" name="yearType" type="radio" value="tax">
+                                    <label class="govuk-label govuk-radios__label" for="yearTypeTax">
+                                        <%= t('publish.year_type.chooser.tax')%>
+                                    </label>
+                                    <div id="yearTypeTax-hint" class="govuk-hint govuk-radios__hint">
+                                        <%= t('publish.year_type.chooser.tax-hint')%>
+                                    </div>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="yearTypeAcademic" name="yearType" type="radio" value="academic">
+                                    <label class="govuk-label govuk-radios__label" for="yearTypeAcademic">
+                                        <%= t('publish.year_type.chooser.academic')%>
+                                    </label>
+                                    <div id="yearTypeAcademic-hint" class="govuk-hint govuk-radios__hint">
+                                        <%= t('publish.year_type.chooser.academic-hint')%>
+                                    </div>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="yearTypeMeteorological" name="yearType" type="radio" value="meteorological">
+                                    <label class="govuk-label govuk-radios__label" for="yearTypeMeteorological">
+                                        <%= t('publish.year_type.chooser.meteorological')%>
+                                    </label>
+                                    <div id="yearTypeMeteorological-hint" class="govuk-hint govuk-radios__hint">
+                                        <%= t('publish.year_type.chooser.meteorological-hint')%>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="govuk-button-group">
+                        <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                            <%= t('buttons.continue') %>
+                        </button>
+                        <a href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                            <%= t('buttons.preview') %>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+
+<%- include("../partials/footer"); %>

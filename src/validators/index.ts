@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-
 import { Request } from 'express';
 import { body, FieldValidationError, param, ValidationChain } from 'express-validator';
 import { ResultWithContext } from 'express-validator/lib/chain/context-runner';
@@ -42,10 +40,17 @@ export const datasetIdValidator = () => param('datasetId').trim().notEmpty().isU
 export const revisionIdValidator = () => param('revisionId').trim().notEmpty().isUUID(4);
 export const factTableIdValidator = () => param('factTableId').trim().notEmpty().isUUID(4);
 
-export const titleValidator = () => body('title').trim()
-    .notEmpty().withMessage('missing').bail()
-    .isLength({ min: 3 }).withMessage('too_short').bail()
-    .isLength({ max: 1000 }).withMessage('too_long');
+export const titleValidator = () =>
+    body('title')
+        .trim()
+        .notEmpty()
+        .withMessage('missing')
+        .bail()
+        .isLength({ min: 3 })
+        .withMessage('too_short')
+        .bail()
+        .isLength({ max: 1000 })
+        .withMessage('too_long');
 
 export const descriptionValidator = () => body('description').trim().notEmpty();
 export const collectionValidator = () => body('collection').trim().notEmpty();

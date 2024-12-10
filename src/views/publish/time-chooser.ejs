@@ -1,0 +1,144 @@
+<%- include("../partials/header", t); %>
+
+<div class="govuk-width-container app-width-container">
+    <!-- <a href="#" class="govuk-back-link">Back</a> -->
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+        <div class="top-links">
+            <div class="govuk-width-container">
+                <a href="<%= locals.referrer %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+            </div>
+        </div>
+
+        <% if (locals.review) { %>
+            <h1 class="govuk-heading-xl"><%= t('publish.time_dimension_review.heading') %></h1>
+        <% } else { %>
+            <h1 class="govuk-heading-xl"><%= t('publish.time_dimension_chooser.heading') %></h1>
+        <% } %>
+
+        <%- include("../partials/error-handler"); %>
+
+        <% if (locals?.data) { %>
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-full with-overflow">
+                    <table class="govuk-table" style="position: relative; border-collapse: collapse; width:100% !important;">
+                        <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <% locals.headers.forEach(function(cell, idx) { %>
+                                <th scope="col" class="govuk-table__header <%= cell.source_type === 'line_number' ? 'line-number' :'' %>">
+                                    <% if (locals.dimension.extractor) { %>
+                                        <%= t(`publish.time_dimension_review.column_headers.${cell.name}`) %>
+                                    <% } else { %>
+                                        <%= cell.name %>
+                                    <% } %>
+                                </th>
+                            <% }); %>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% locals.data.forEach(function(row) { %>
+                            <tr>
+                                <% row.forEach(function(cell, index) { %>
+                                <td class="govuk-table__cell">
+                                    <% switch (locals.headers[index].name) {
+                                        case 'start_date':
+                                        case 'end_date': %>
+                                            <%= locals.dateFormat(locals.parseISO(cell.split('T')[0]), 'do MMMM yyyy') %>
+                                            <% break;
+                                        case 'date_type': %>
+                                            <%= t(`publish.time_dimension_review.year_type.${cell}`) %>
+                                            <% break;
+                                        default: %>
+                                        <%= cell %>
+                                    <% } %>
+                                </td>
+                                <% }); %>
+                            </tr>
+                        <% }); %>
+                        </tbody>
+                    </table>
+                    <p class="govuk-body"><%= t('publish.time_dimension_review.showing', {rows: locals.page_size, total: locals.page_info.total_records}) %></p>
+                </div>
+            </div>
+
+            <% if (locals.review) { %>
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-full">
+                        <form method="post" role="continue">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    <h2 class="govuk-fieldset__heading">
+                                        <%= t('publish.time_dimension_review.confirm') %>
+                                    </h2>
+                                </legend>
+                                <div class="govuk-button-group">
+                                    <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                                        <%= t('buttons.continue') %>
+                                    </button>
+                                    <button type="submit" name="confirm" value="goback" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                                        <%= t('publish.time_dimension_review.go_back') %>
+                                    </button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            <% } else { %>
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-full">
+                        <form method="post" role="continue">
+                            <div class="govuk-form-group">
+                                <fieldset class="govuk-fieldset">
+                                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                        <h2 class="govuk-fieldset__heading">
+                                            <%= t('publish.time_dimension_chooser.question') %>
+                                        </h2>
+                                    </legend>
+                                    <div class="govuk-radios" data-module="govuk-radios">
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="dimensionTypePeriod" name="dimensionType" type="radio" value="time_period">
+                                            <label class="govuk-label govuk-radios__label" for="dimensionTypePeriod">
+                                                <%= t('publish.time_dimension_chooser.chooser.period')%>
+                                            </label>
+                                            <div class="govuk-hint govuk-radios__hint">
+                                                <%= t('publish.time_dimension_chooser.chooser.period-hint')%>
+                                            </div>
+                                        </div>
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="dimensionTypePoint" name="dimensionType" type="radio" value="time_point">
+                                            <label class="govuk-label govuk-radios__label" for="dimensionTypePoint">
+                                                <%= t('publish.time_dimension_chooser.chooser.point')%>
+                                            </label>
+                                            <div class="govuk-hint govuk-radios__hint">
+                                                <%= t('publish.time_dimension_chooser.chooser.point-hint')%>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <div class="govuk-button-group">
+                                <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                                    <%= t('buttons.continue') %>
+                                </button>
+                                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-button govuk-button--secondary" data-module="govuk-button govuk-button--secondary" style="vertical-align: unset;" data-prevent-double-click="true">
+                                    <%= t('buttons.cancel') %>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            <% } %>
+        <% } %> <!-- Do I have data? -->
+    </main>
+</div>
+
+<style>
+    table {
+        position: relative;
+        width: 30% !important;
+    }
+    .region-subhead {
+        display: none;
+    }
+</style>
+<%- include("../partials/footer"); %>

@@ -6,7 +6,8 @@
         "continue": "Continue",
         "back": "Back",
         "cancel": "Cancel",
-        "upload_csv": "Upload CSV File"
+        "upload_csv": "Upload CSV File",
+        "preview": "Preview (opens in new tab)"
     },
     "pagination": {
         "previous": "Previous",
@@ -67,6 +68,122 @@
             "data_table": "a data table containing data and references to all relevant dimensions",
             "lookup_table": "lookup tables for all relevant dimensions - using either common tables within this service or uploading them yourself",
             "metadata": "details about this dataset including description, quality and how the data was collected"
+        },
+        "dimension_name": {
+            "heading": "What should this dimension be called on the StatsWales website?",
+            "hint": "This should be:",
+            "concise": "concise and clearly explain what the dimension contains",
+            "language": "entered in the language in which you're viewing this service"
+        },
+        "dimension_type_chooser": {
+            "heading": "Add reference data",
+            "subheading": "Dimension",
+            "question": "What kind of data does this dimension contain?",
+            "chooser": {
+                "age": "Age",
+                "ethnicity": "Ethnicity",
+                "geography": "Geography",
+                "religion": "Religion",
+                "sex_gender": "Sex and gender",
+                "lookup": "Something else"
+            }
+        },
+        "time_dimension_chooser": {
+            "heading": "Set up dimension containing time",
+            "subheading": "Dates",
+            "showing": "A sample of {{rows}} of {{total}} rows.",
+            "question": "What kind of dates does the dimension contain?",
+            "chooser": {
+                "period": "Periods of time",
+                "period-hint": "For example, months or years for which data values apply to",
+                "point": "Specific points in time",
+                "point-hint": "For example, specific dates when data values were collected"
+            }
+        },
+        "time_dimension_review": {
+            "heading": "Confirm the dates are correct",
+            "showing": "Showing a sample of {{rows}} of {{total}} rows.",
+            "confirm": "By continuing, you confirm the dates are correct.",
+            "go_back": "Change date format",
+            "column_headers": {
+                "date_code": "Date code",
+                "description": "Description",
+                "start_date": "Start",
+                "end_date": "End",
+                "date_type": "Date type"
+            },
+            "year_type": {
+                "calendar_year": "Calendar Year",
+                "calendar_quarter": "Calendar Quarter",
+                "calendar_month": "Calendar Month",
+                "financial_year": "Financial Year",
+                "financial_quarter": "Financial Quarter",
+                "financial_month": "Financial Month",
+                "academic_year": "Academic Year",
+                "academic_quarter": "Academic Quarter",
+                "academic_month": "Academic Month",
+                "tax_year": "Tax Year",
+                "tax_quarter": "Tax Quarter",
+                "tax_month": "Tax Month",
+                "meteorological_year": "Meteorological Year",
+                "meteorological_quarter": "Meteorological Quarter",
+                "meteorological_month": "Meteorological Month"
+            }
+        },
+        "period-type-chooser": {
+            "heading": "What are the periods of time?",
+            "subheading": "Dates",
+            "chooser": {
+                "years": "Years",
+                "quarters": "Quarters",
+                "months": "Months"
+            }
+        },
+        "year_type": {
+            "heading": "What type of year does this dimension represent?",
+            "chooser": {
+                "calendar": "Calendar",
+                "calendar-hint": "1st January - 31st December",
+                "financial" : "Financial",
+                "financial-hint": "1st April - 31st March",
+                "tax": "Tax",
+                "tax-hint": "6th April - 5th April",
+                "academic": "Academic",
+                "academic-hint": "1st September - 31st August",
+                "meteorological": "Meteorological",
+                "meteorological-hint": "1st March - 28th/29th February"
+            }
+        },
+        "year_format": {
+            "heading": "What format is used to represent years?",
+            "example": "For example, {{example}}"
+        },
+        "quarter_format": {
+            "heading": "What format is used to represent quarters?",
+            "heading-alt": "What format is used for quarterly totals?",
+            "example": "For example, {{example}}",
+            "fifth_quarter": "Year totals are represented as a 5th quarter",
+            "no_quarterly_totals": "There are no quarterly totals"
+        },
+        "month_format": {
+            "heading": "What format is used to represent months?",
+            "example": "For example, {{example}}"
+        },
+        "period_match_failure": {
+            "heading": "Date formatting cannot be matched to the fact table",
+            "information": "{{failureCount}} of the dates in the fact table do not match the date formatting you have indicated. You should check:",
+            "formatting": "the date formatting in the fact table is correct",
+            "choices": "you indicated the correct date formats",
+            "supplied_format":"Indicated date format:",
+            "year_format": "Years: {{format}}",
+            "quarter_format": "Quarters: {{format}}",
+            "month_format": "Months: {{format}}",
+            "date_format": "Date: {{format}}",
+            "subheading": "Date formats that cannot be matched",
+            "upload_different_file": "Upload corrected or different data table",
+            "upload_different_file_warning": "(This will remove reference data from all dimensions)",
+            "try_different_format": "Indicate different date formatting",
+            "no_matches": "None of the dates matched the format supplied"
         },
         "title": {
             "heading": "What is the title of this dataset?",
@@ -400,6 +517,10 @@
                 "label": "Change what each column in the data table contains",
                 "description": "This will remove reference data and notes for any columns you change that contain dimensions"
             }
+        },
+        "point_in_time": {
+            "heading": "What date format is used?",
+            "example": "For example: {{example}}"
         }
     },
     "view": {
@@ -470,6 +591,15 @@
         "try_later": "Please try later",
         "name_missing": "Dataset Name Missing",
         "dataset_missing": "No dataset found with this ID",
+        "dimension": {
+            "name_to_short": "The Dimension name is to short or missing",
+            "name_to_long": "Dimension name is limited to 1024 characters",
+            "naming_failed": "Something went wrong trying to set the name.  Please try again"
+        },
+        "title": {
+            "missing": "Either a title was not entered or there is a problem.",
+            "duplicate": "Title already exists"
+        },
         "description": {
             "missing": "You need to provide a summary of this dataset"
         },
@@ -511,7 +641,8 @@
             "no_csv_data": "No CSV data available"
         },
         "not_found": "Page not found",
-        "server_error": "An unknown error occcured, please try again later"
+        "server_error": "An unknown error occcured, please try again later",
+        "dimension_reset": "Something went wrong trying to reset the dimension"
 	},
     "routes": {
         "healthcheck": "healthcheck",

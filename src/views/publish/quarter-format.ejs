@@ -1,0 +1,113 @@
+<%- include("../partials/header", t); %>
+
+<div class="govuk-width-container app-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+        <div class="top-links">
+            <div class="govuk-width-container">
+                <a href="<%= locals.referrer %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+            </div>
+        </div>
+
+        <% if (locals.quarterTotals) { %>
+            <h1 class="govuk-heading-xl"><%= t('publish.quarter_format.heading-alt') %></h1>
+        <% } else { %>
+            <h1 class="govuk-heading-xl"><%= t('publish.quarter_format.heading') %></h1>
+        <% } %>
+
+        <%- include("../partials/error-handler"); %>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <form method="post" role="continue">
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <div class="govuk-radios" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="quarter-format-2" name="quarterType" type="radio" value="QX">
+                                    <label class="govuk-label govuk-radios__label" for="quarter-format-2">
+                                        Qx
+                                    </label>
+                                    <div id="quarter-format-2-hint" class="govuk-hint govuk-radios__hint">
+                                        <%= t('publish.quarter_format.example', { example: 'Q1' })%>
+                                    </div>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="quarter-format-3" name="quarterType" type="radio" value="_QX">
+                                    <label class="govuk-label govuk-radios__label" for="quarter-format-3">
+                                        _Qx
+                                    </label>
+                                    <div id="quarter-format-4-hint" class="govuk-hint govuk-radios__hint">
+                                        <%= t('publish.quarter_format.example', { example: '_Q1' })%>
+                                    </div>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="quarter-format-4" name="quarterType" type="radio" value="-QX">
+                                    <label class="govuk-label govuk-radios__label" for="quarter-format-4">
+                                        -Qx
+                                    </label>
+                                    <div id="quarter-format-4-hint" class="govuk-hint govuk-radios__hint">
+                                        <%= t('publish.quarter_format.example', { example: '-Q1' })%>
+                                    </div>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="quarter-format-5" name="quarterType" type="radio" value="X">
+                                    <label class="govuk-label govuk-radios__label" for="quarter-format-5">
+                                        x
+                                    </label>
+                                    <div id="quarter-format-5-hint" class="govuk-hint govuk-radios__hint">
+                                        <%- t('publish.quarter_format.example', { example: '1' })%>
+                                    </div>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="quarter-format-6" name="quarterType" type="radio" value="_X">
+                                    <label class="govuk-label govuk-radios__label" for="quarter-format-6">
+                                        _x
+                                    </label>
+                                    <div id="quarter-format-6-hint" class="govuk-hint govuk-radios__hint">
+                                        <%- t('publish.quarter_format.example', { example: '_1' })%>
+                                    </div>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="quarter-format-7" name="quarterType" type="radio" value="-X">
+                                    <label class="govuk-label govuk-radios__label" for="quarter-format-6">
+                                        -x
+                                    </label>
+                                    <div id="quarter-format-6-hint" class="govuk-hint govuk-radios__hint">
+                                        <%- t('publish.quarter_format.example', { example: '-1' })%>
+                                    </div>
+                                </div>
+                            </div>
+                            <% if (locals.quarterTotals) { %>
+                                <div class="govuk-checkboxes__divider">or</div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="quarter-format-1" name="quarterType" type="radio" value="QX">
+                                    <label class="govuk-label govuk-radios__label" for="quarter-format-1">
+                                        <%= t('publish.quarter_format.no_quarterly_totals') %>
+                                    </label>
+                                </div>
+                            <% } %>
+                            <div class="govuk-checkboxes__divider">&nbsp;</div>
+                            <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="fifthQuarter" name="fifthQuarter" type="checkbox" value="true">
+                                <label class="govuk-label govuk-checkboxes__label" for="fifthQuarter">
+                                    <%- t('publish.quarter_format.fifth_quarter')%>
+                                </label>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="govuk-button-group">
+                        <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                            <%= t('buttons.continue') %>
+                        </button>
+                        <a href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                            <%= t('buttons.preview') %>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+
+<%- include("../partials/footer"); %>
