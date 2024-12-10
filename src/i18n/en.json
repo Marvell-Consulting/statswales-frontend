@@ -72,7 +72,17 @@
             "heading": "What is the title of this dataset?",
             "appear": "This title will appear on the StatsWales website",
             "descriptive": "It should be short, descriptive and unique",
-            "language": "This should be entered in the language in which you're viewing this service."
+            "form": {
+                "title": {
+                    "hint": "This should be entered in the language in which you're viewing this service.",
+                    "error": {
+                        "missing": "Enter the title of this dataset",
+                        "too_long": "The title of this dataset must be 1,000 characters or less",
+                        "too_short": "The title of this dataset must be 3 characters or more",
+                        "unique": "The entered title is already in use for a currently published dataset. Enter a unique title for this dataset."
+                    }
+                }
+            }
         },
         "summary": {
             "heading": "What is the summary of this dataset?",
@@ -457,12 +467,9 @@
         "datalake_error": "Unable to connect to Datalake",
         "blob_storage_errror": "Unable to connect to Blob Storage Service",
 		"problem": "There is a problem",
+        "try_later": "Please try later",
         "name_missing": "Dataset Name Missing",
         "dataset_missing": "No dataset found with this ID",
-        "title": {
-            "missing": "Either a title was not entered or there is a problem.",
-            "duplicate": "Title already exists"
-        },
         "description": {
             "missing": "You need to provide a summary of this dataset"
         },
