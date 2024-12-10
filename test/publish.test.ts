@@ -66,7 +66,7 @@ describe('Publisher Journey Tests', () => {
         test('Publish title page returns 400 if no title is provided', async () => {
             const res = await request(app).post('/en-GB/publish/title');
             expect(res.status).toBe(400);
-            expect(res.text).toContain(t('errors.title.missing'));
+            expect(res.text).toContain(t('publish.title.form.title.error.missing'));
         });
 
         test('Set title returns 302 and directs the user to the upload page', async () => {

@@ -62,10 +62,11 @@ export class StatsWalesApi {
         return fetch(`${this.backendUrl}/${url}`, { method, headers: head, body: data })
             .then(async (response: Response) => {
                 if (!response.ok) {
-                    if (response.body) {
+                    const body = await new Response(response.body).text();
+                    if (body) {
                         throw new ApiException(response.statusText, response.status, body);
                     }
-                    throw new ApiException(response.statusText, response.status, body);
+                    throw new ApiException(response.statusText, response.status);
                 }
                 return response;
             })

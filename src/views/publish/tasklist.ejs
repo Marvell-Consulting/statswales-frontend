@@ -42,7 +42,7 @@
             <% const dim = locals.dimensions.find((d) => d.dimensionInfo.name === dimension.name) %>
             <li class="govuk-task-list__item govuk-task-list__item--with-link">
                 <div class="govuk-task-list__name-and-hint">
-                    <% if (dim.type === 'time_period') { %>
+                    <% if (dimension.type === 'time_period') { %>
                       <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/time-period/${dim.id}`, i18n.language) %>"><%= dimension.name %></a>
                     <% } else { %>
                       <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/dimension-data-chooser/${dim.id}`, i18n.language) %>"><%= dimension.name %></a>

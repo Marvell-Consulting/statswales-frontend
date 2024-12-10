@@ -639,13 +639,14 @@ export const periodReview = async (req: Request, res: Response, next: NextFuncti
                             status: error.status || 500,
                             errors: [
                                 {
-                                    tag: {
-                                        name: 'errors.dimension_reset'
+                                    field: '',
+                                    message: {
+                                        key: 'errors.dimension_reset'
                                     }
                                 }
                             ],
                             dataset_id: req.params.datasetId
-                        };
+                        } as ViewErrDTO;
                     }
                     break;
             }
@@ -686,8 +687,8 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                     errors: [
                         {
                             field: 'name',
-                            tag: {
-                                name: 'errors.no_name'
+                            message: {
+                                key: 'errors.no_name'
                             }
                         }
                     ],
@@ -704,8 +705,8 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                     errors: [
                         {
                             field: 'name',
-                            tag: {
-                                name: 'errors.dimension.name_to_long'
+                            message: {
+                                key: 'errors.dimension.name_to_long'
                             }
                         }
                     ],
@@ -721,8 +722,8 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                     errors: [
                         {
                             field: 'name',
-                            tag: {
-                                name: 'errors.dimension.name_to_short'
+                            message: {
+                                key: 'errors.dimension.name_to_short'
                             }
                         }
                     ],
@@ -747,8 +748,9 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                     status: error.status || 500,
                     errors: [
                         {
-                            tag: {
-                                name: 'errors.dimension.naming_failed'
+                            field: '',
+                            message: {
+                                key: 'errors.dimension.naming_failed'
                             }
                         }
                     ],
