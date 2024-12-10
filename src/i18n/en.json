@@ -77,9 +77,9 @@
                     "hint": "This should be entered in the language in which you're viewing this service.",
                     "error": {
                         "missing": "Enter the title of this dataset",
-                        "too_long": "The title must be 1000 characters or fewer",
-                        "too_short": "The title must be at least 3 characters",
-                        "unique": "That title is already in use for a currently published dataset. Enter a unique title for this dataset."
+                        "too_long": "The title of this dataset must be 1,000 characters or less",
+                        "too_short": "The title of this dataset must be 3 characters or more",
+                        "unique": "The entered title is already in use for a currently published dataset. Enter a unique title for this dataset."
                     }
                 }
             }
