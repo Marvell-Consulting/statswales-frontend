@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { snakeCase, sortBy } from 'lodash';
+import { snakeCase, sortBy, uniqBy } from 'lodash';
 import { FieldValidationError, matchedData } from 'express-validator';
 import { nanoid } from 'nanoid';
 import { v4 as uuid } from 'uuid';
@@ -21,9 +21,11 @@ import {
     linkUrlValidator,
     minuteValidator,
     monthValidator,
+    organisationIdValidator,
     qualityValidator,
     roundingAppliedValidator,
     roundingDescriptionValidator,
+    teamIdValidator,
     titleValidator,
     topicIdValidator,
     yearValidator
@@ -52,6 +54,8 @@ import { TopicDTO } from '../dtos/topic';
 import { DatasetTopicDTO } from '../dtos/dataset-topic';
 import { nestTopics } from '../utils/nested-topics';
 import { ApiException } from '../exceptions/api.exception';
+import { OrganisationDTO } from '../dtos/organisation';
+import { TeamDTO } from '../dtos/team';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -702,7 +706,7 @@ export const providePublishDate = async (req: Request, res: Response, next: Next
                 throw new Error('form.validation');
             }
 
-            await req.swapi.setPublishDate(dataset.id, revision.id, publishDate.toISOString());
+            await req.swapi.updatePublishDate(dataset.id, revision.id, publishDate.toISOString());
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
@@ -713,4 +717,50 @@ export const providePublishDate = async (req: Request, res: Response, next: Next
     }
 
     res.render('publish/schedule', { values, errors, dateError, timeError });
+};
+
+export const provideOrganisation = async (req: Request, res: Response, next: NextFunction) => {
+    const { dataset } = res.locals;
+    let organisations: OrganisationDTO[] = [];
+    let teams: TeamDTO[] = [];
+    let errors: ViewError[] = [];
+    let values = { organisation: '', team: '' };
+
+    try {
+        organisations = await req.swapi.getAllOrganisations();
+        teams = await req.swapi.getAllTeams();
+
+        if (dataset.team_id) {
+            const datasetTeam = teams.find((team) => team.id === dataset.team_id)!;
+            values = { organisation: datasetTeam.organisation_id!, team: datasetTeam.id };
+        }
+
+        if (req.method === 'POST') {
+            values = req.body;
+            const validators = [organisationIdValidator(), teamIdValidator()];
+
+            errors = (await getErrors(validators, req)).map((error: FieldValidationError) => {
+                return { field: error.path, message: { key: `publish.organisation.form.${error.path}.error` } };
+            });
+
+            const selectedTeam = teams.find((team) => team.id === values.team);
+
+            if (!selectedTeam) {
+                errors.push({ field: 'team', message: { key: 'publish.organisation.form.team.error' } });
+            }
+
+            errors = uniqBy(errors, 'field');
+            if (errors.length > 0) throw errors;
+
+            await req.swapi.updateDatasetTeam(dataset.id, values.team);
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+            return;
+        }
+    } catch (err) {
+        if (err instanceof ApiException) {
+            errors = [{ field: 'api', message: { key: 'publish.organisation.error.saving' } }];
+        }
+    }
+
+    res.render('publish/organisation', { values, organisations, teams, errors });
 };

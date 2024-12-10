@@ -15,4 +15,5 @@ export interface DatasetDTO {
     datasetInfo?: DatasetInfoDTO[];
     providers?: DatasetProviderDTO[];
     topics?: DatasetTopicDTO[];
+    team_id?: string;
 }
