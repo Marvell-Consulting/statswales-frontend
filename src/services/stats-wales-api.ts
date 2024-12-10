@@ -1,6 +1,6 @@
 import { ReadableStream } from 'node:stream/web';
 
-import { ViewDTO } from '../dtos/view-dto';
+import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
 import { DatasetDTO } from '../dtos/dataset';
 import { DatasetInfoDTO } from '../dtos/dataset-info';
 import { FactTableDto } from '../dtos/fact-table';
@@ -19,6 +19,9 @@ import { ProviderSourceDTO } from '../dtos/provider-source';
 import { TopicDTO } from '../dtos/topic';
 import { OrganisationDTO } from '../dtos/organisation';
 import { TeamDTO } from '../dtos/team';
+import { DimensionPatchDto } from '../dtos/dimension-patch-dto';
+import { DimensionDTO } from '../dtos/dimension';
+import { DimensionInfoDTO } from '../dtos/dimension-info';
 
 const config = appConfig();
 
@@ -57,15 +60,18 @@ export class StatsWalesApi {
         const data = json ? JSON.stringify(json) : body;
 
         return fetch(`${this.backendUrl}/${url}`, { method, headers: head, body: data })
-            .then((response: Response) => {
+            .then(async (response: Response) => {
                 if (!response.ok) {
-                    throw new ApiException(response.statusText, response.status);
+                    if (response.body) {
+                        throw new ApiException(response.statusText, response.status, body);
+                    }
+                    throw new ApiException(response.statusText, response.status, body);
                 }
                 return response;
             })
             .catch((error) => {
                 logger.error(`An api error occurred with status '${error.status}' and message '${error.message}'`);
-                throw new ApiException(error.message, error.status);
+                throw new ApiException(error.message, error.status, error.body);
             });
     }
 
@@ -159,6 +165,15 @@ export class StatsWalesApi {
         }).then((response) => response.json() as unknown as DatasetDTO);
     }
 
+    public async resetDimension(datasetId: string, dimensionId: string): Promise<DimensionDTO> {
+        logger.debug(`Resetting dimension: ${dimensionId}`);
+
+        return this.fetch({
+            url: `dataset/${datasetId}/dimension/by-id/${dimensionId}/reset`,
+            method: HttpMethod.Delete
+        }).then((response) => response.json() as unknown as DimensionDTO);
+    }
+
     public async getImportPreview(
         datasetId: string,
         revisionId: string,
@@ -190,6 +205,32 @@ export class StatsWalesApi {
         }).then((response) => response.json() as unknown as DatasetDTO);
     }
 
+    public async patchDimension(
+        datasetId: string,
+        dimensionId: string,
+        dimensionPatch: DimensionPatchDto
+    ): Promise<ViewDTO> {
+        logger.debug(`sending patch request for dimension: ${dimensionId}`);
+
+        return this.fetch({
+            url: `dataset/${datasetId}/dimension/by-id/${dimensionId}`,
+            method: HttpMethod.Patch,
+            json: dimensionPatch
+        }).then((response) => response.json() as unknown as ViewDTO);
+    }
+
+    public async updateDimensionInfo(
+        datasetId: string,
+        dimensionId: string,
+        dimensionInfo: DimensionInfoDTO
+    ): Promise<DimensionDTO> {
+        return this.fetch({
+            url: `dataset/${datasetId}/dimension/by-id/${dimensionId}/info`,
+            method: HttpMethod.Patch,
+            json: dimensionInfo
+        }).then((response) => response.json() as unknown as DimensionDTO);
+    }
+
     public async updateDatasetInfo(datasetId: string, datasetInfo: DatasetInfoDTO): Promise<DatasetDTO> {
         return this.fetch({ url: `dataset/${datasetId}/info`, method: HttpMethod.Patch, json: datasetInfo }).then(
             (response) => response.json() as unknown as DatasetDTO
@@ -212,6 +253,20 @@ export class StatsWalesApi {
         logger.debug(`Fetching tasklist for dataset: ${datasetId}`);
         return this.fetch({ url: `dataset/${datasetId}/tasklist` }).then(
             (response) => response.json() as unknown as TaskListState
+        );
+    }
+
+    public async getDimensionPreview(datasetId: string, dimensionId: string): Promise<ViewDTO> {
+        logger.debug(`Fetching dimension preview for dimension: ${datasetId}`);
+        return this.fetch({ url: `dataset/${datasetId}/dimension/by-id/${dimensionId}/preview` }).then(
+            (response) => response.json() as unknown as ViewDTO
+        );
+    }
+
+    public async getDimension(datasetId: string, dimensionId: string): Promise<DimensionDTO> {
+        logger.debug(`Fetching dimension: ${dimensionId}`);
+        return this.fetch({ url: `dataset/${datasetId}/dimension/by-id/${dimensionId}/` }).then(
+            (response) => response.json() as unknown as DimensionDTO
         );
     }
 

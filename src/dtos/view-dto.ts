@@ -23,6 +23,7 @@ export interface ViewErrDTO {
 }
 
 export interface ViewDTO {
+    status: number;
     dataset: DatasetDTO;
     fact_table: FactTableDto;
     current_page: number;

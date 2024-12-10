@@ -20,7 +20,18 @@ import {
     provideDesignation,
     provideTopics,
     providePublishDate,
-    provideOrganisation
+    provideOrganisation,
+    fetchDimensionPreview,
+    fetchTimeDimensionPreview,
+    pointInTimeChooser,
+    periodOfTimeChooser,
+    yearFormat,
+    quarterChooser,
+    monthChooser,
+    yearTypeChooser,
+    periodType,
+    periodReview,
+    dimensionName
 } from '../controllers/publish';
 
 export const publish = Router();
@@ -48,6 +59,32 @@ publish.post('/:datasetId/sources', fetchDataset, upload.none(), sources);
 
 publish.get('/:datasetId/tasklist', fetchDataset, taskList);
 
+/* Dimension creation routes */
+publish.get('/:datasetId/dimension-data-chooser/:dimensionId', fetchDataset, fetchDimensionPreview);
+publish.post('/:datasetId/dimension-data-chooser/:dimensionId', fetchDataset, fetchDimensionPreview);
+
+publish.get('/:datasetId/time-period/:dimensionId', fetchDataset, fetchTimeDimensionPreview);
+publish.post('/:datasetId/time-period/:dimensionId', fetchDataset, fetchTimeDimensionPreview);
+publish.get('/:datasetId/time-period/:dimensionId/point-in-time', fetchDataset, pointInTimeChooser);
+publish.post('/:datasetId/time-period/:dimensionId/point-in-time', fetchDataset, pointInTimeChooser);
+
+// Period of time flow)
+publish.get('/:datasetId/time-period/:dimensionId/period-of-time', fetchDataset, yearTypeChooser);
+publish.post('/:datasetId/time-period/:dimensionId/period-of-time', fetchDataset, yearTypeChooser);
+publish.get('/:datasetId/time-period/:dimensionId/period-of-time/year-format', fetchDataset, yearFormat);
+publish.post('/:datasetId/time-period/:dimensionId/period-of-time/year-format', fetchDataset, yearFormat);
+publish.get('/:datasetId/time-period/:dimensionId/period-of-time/period-type', fetchDataset, periodType);
+publish.post('/:datasetId/time-period/:dimensionId/period-of-time/period-type', fetchDataset, periodType);
+publish.get('/:datasetId/time-period/:dimensionId/period-of-time/quarters', fetchDataset, quarterChooser);
+publish.post('/:datasetId/time-period/:dimensionId/period-of-time/quarters', fetchDataset, quarterChooser);
+publish.get('/:datasetId/time-period/:dimensionId/period-of-time/months', fetchDataset, monthChooser);
+publish.post('/:datasetId/time-period/:dimensionId/period-of-time/months', fetchDataset, monthChooser);
+publish.get('/:datasetId/time-period/:dimensionId/review', fetchDataset, periodReview);
+publish.post('/:datasetId/time-period/:dimensionId/review', fetchDataset, periodReview);
+publish.get('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchDataset, dimensionName);
+publish.post('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchDataset, dimensionName);
+
+/* Meta Data related Routes */
 publish.get('/:datasetId/change', fetchDataset, changeData);
 publish.post('/:datasetId/change', fetchDataset, upload.none(), changeData);
 

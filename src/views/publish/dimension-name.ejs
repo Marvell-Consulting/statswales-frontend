@@ -1,0 +1,33 @@
+<%- include("../partials/header"); %>
+<div class="govuk-width-container app-width-container">
+    <!-- <a href="#" class="govuk-back-link">Back</a> -->
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+        <div class="top-links">
+            <div class="govuk-width-container">
+                <a href="<%= locals.referrer %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+            </div>
+        </div>
+
+        <h1 class="govuk-heading-xl"><%= t('publish.dimension_name.heading') %></h1>
+
+        <%- include("../partials/error-handler"); %>
+
+        <p class="govuk-body"><%= t('publish.dimension_name.hint') %></p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li><%= t('publish.dimension_name.concise') %></li>
+            <li><%= t('publish.dimension_name.language') %></li>
+        </ul>
+
+        <form enctype="multipart/form-data" method="post">
+            <div class="govuk-form-group">
+                <input class="govuk-input" id="name" name="name" type="text" value="<%= locals.dimensionName %>">
+            </div>
+            <button type="submit" class="govuk-button" data-module="govuk-button">
+                <%= t('buttons.continue') %>
+            </button>
+        </form>
+    </main>
+</div>
+
+<%- include("../partials/footer"); %>

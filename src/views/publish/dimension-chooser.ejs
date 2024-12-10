@@ -1,0 +1,155 @@
+<%- include("../partials/header", t); %>
+
+<div class="govuk-width-container app-width-container">
+    <!-- <a href="#" class="govuk-back-link">Back</a> -->
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+        <div class="top-links">
+            <div class="govuk-width-container">
+                <a href="javascript:history.back()" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+            </div>
+        </div>
+
+        <h1 class="govuk-heading-xl"><%= t('publish.dimension_type_chooser.heading') %></h1>
+
+        <h2 class="govuk-heading"><%= t('publish.dimension_type_chooser.subheading') %></h2>
+
+        <% if (locals?.errors) { %>
+            <div class="govuk-error-summary" data-module="govuk-error-summary">
+                <div role="alert">
+                    <h2 class="govuk-error-summary__title">
+                        <%= t('errors.problem') %>
+                    </h2>
+                    <div class="govuk-error-summary__body">
+                        <ul class="govuk-list govuk-error-summary__list">
+                            <% locals.errors.errors.forEach(function(error) { %>
+                                <li>
+                                    <a href="#<%= error.field %>">
+                                        <%= t(error.tag.name) %>
+                                    </a>
+                                </li>
+                            <% }); %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+
+        <% if (locals?.data) { %>
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-full with-overflow">
+                    <table class="govuk-table" style="position: relative; border-collapse: collapse;">
+                        <colgroup>
+                            <% locals.headers.forEach(function(cell, idx) { %>
+                                <col class="<%= cell.type === 'ignore' ? 'ignore-column' : '' %>" />
+                            <% }); %>
+                        </colgroup>
+                        <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <% locals.headers.forEach(function(cell, idx) { %>
+                                <th scope="col" class="govuk-table__header <%= cell.source_type === 'line_number' ? 'line-number' :'' %>">
+                                    <% if (cell.source_type && cell.source_type !== 'unknown' && cell.source_type !== 'line_number') { %>
+                                        <span class="region-subhead"><%= t(`publish.preview.source_type.${cell.source_type}`) %></span><br />
+                                    <% } %>
+                                    <% if (cell.source_type !== 'line_number') { %>
+                                        <%= cell.name || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %>
+                                    <% } else { %>
+                                        <%= t('publish.preview.row_number') %>
+                                    <% } %>
+                                </th>
+                            <% }); %>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% locals.data.forEach(function(row) { %>
+                            <tr>
+                                <% row.forEach(function(cell, index) { %>
+                                    <% if (locals.headers[index].source_type === 'line_number') { %>
+                                        <td class="govuk-table__cell line-number"><span class="linespan"><%= cell %></span></td>
+                                    <% } else { %>
+                                        <td class="govuk-table__cell"><%= cell %></td>
+                                    <% } %>
+                                <% }); %>
+                            </tr>
+                        <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-full">
+                    <form method="post" role="continue">
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                    <h2 class="govuk-fieldset__heading">
+                                        <%= t('publish.dimension_type_chooser.question') %>
+                                    </h2>
+                                </legend>
+                                <div class="govuk-radios" data-module="govuk-radios">
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="dimensionTypeAge" name="dimensionType" type="radio" value="age">
+                                        <label class="govuk-label govuk-radios__label" for="dimensionTypeAge">
+                                            <%= t('publish.dimension_type_chooser.chooser.age')%>
+                                        </label>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="dimensionTypeEthnicity" name="dimensionType" type="radio" value="ethnicity">
+                                        <label class="govuk-label govuk-radios__label" for="dimensionTypeEthnicity">
+                                            <%= t('publish.dimension_type_chooser.chooser.ethnicity')%>
+                                        </label>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="dimensionTypeGeography" name="dimensionType" type="radio" value="geography">
+                                        <label class="govuk-label govuk-radios__label" for="dimensionTypeGeography">
+                                            <%= t('publish.dimension_type_chooser.chooser.geography')%>
+                                        </label>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="dimensionTypeReligion" name="dimensionType" type="radio" value="religion">
+                                        <label class="govuk-label govuk-radios__label" for="dimensionTypeReligion">
+                                            <%= t('publish.dimension_type_chooser.chooser.religion')%>
+                                        </label>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="dimensionTypeSexGender" name="dimensionType" type="radio" value="sexGender">
+                                        <label class="govuk-label govuk-radios__label" for="dimensionTypeSexGender">
+                                            <%= t('publish.dimension_type_chooser.chooser.sex_gender')%>
+                                        </label>
+                                    </div>
+                                    <div class="govuk-radios__divider">or</div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="dimensionTypeTimeLookup" name="dimensionType" type="radio" value="lookup">
+                                        <label class="govuk-label govuk-radios__label" for="dimensionTypeTimeLookup">
+                                            <%= t('publish.dimension_type_chooser.chooser.lookup')%>
+                                        </label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="govuk-button-group">
+                            <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                                <%= t('buttons.continue') %>
+                            </button>
+                            <a href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                                <%= t('buttons.preview') %>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        <% } %> <!-- Do I have data? -->
+    </main>
+</div>
+<pre><code><%= JSON.stringify(locals.dimensionPreview) %></code></pre>
+<style>
+    table {
+        position: relative;
+        width: 30% !important;
+    }
+    .region-subhead {
+        display: none;
+    }
+</style>
+<%- include("../partials/footer"); %>

@@ -1,8 +1,10 @@
 import 'express-session';
-import { ViewError } from '../../dtos/view-error';
+import { ViewErrDTO } from '../../dtos/view-dto';
+import { DimensionPatchDto } from '../../dtos/dimension-patch-dto';
 
 declare module 'express-session' {
     interface SessionData {
-        errors: ViewError[] | undefined;
+        errors: ViewErrDTO | undefined;
+        dimensionPatch: DimensionPatchDto | undefined;
     }
 }
