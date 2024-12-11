@@ -547,11 +547,20 @@
             "heading": "Export text fields for translation",
             "table": {
                 "field": "Text field",
-                "text_en": "English",
-                "text_cy": "Welsh"
+                "value": "Text",
+                "action": "Change link"
             },
+            "field": {
+                "title": "Title",
+                "description": "Summary",
+                "collection": "Data collection",
+                "quality": "Statistical quality",
+                "roundingDescription": "Rounding applied"
+            },
+            "dimension": "{{key}} dimension name",
             "buttons": {
-                "export": "Export CSV"
+                "export": "Export CSV",
+                "change": "Change"
             }
         }
     },

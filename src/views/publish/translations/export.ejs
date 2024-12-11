@@ -3,15 +3,40 @@
 <div class="govuk-width-container app-width-container">
 	<main class="govuk-main-wrapper" id="main-content" role="main">
 
-		<h1 class="govuk-heading-xl"><%= t('translations.export.heading') %></h1>
+			<div class="top-links">
+					<div class="govuk-width-container">
+							<a href="javascript:history.back()" class="govuk-back-link"><%= t('buttons.back') %></a>
+							<a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+					</div>
+			</div>
 
-		<table class="govuk-table">
+			<div class="govuk-width-container">
+				<h1 class="govuk-heading-xl"><%= t('translations.export.heading') %></h1>
 
-		</table>
+				<table class="govuk-table">
+					<thead class="govuk-table__head">
+						<tr class="govuk-table__row">
+							<th scope="col" class="govuk-table__header"><%= t('translations.export.table.field') %></th>
+							<th scope="col" class="govuk-table__header"><%= t('translations.export.table.value') %></th>
+							<th scope="col" class="govuk-table__header"><%= t('translations.export.table.action') %></th>
+						</tr>
+					</thead>
+					<tbody class="govuk-table__body">
+						<% translations.forEach(function(translation) { %>
+							<tr class="govuk-table__row">
+								<td class="govuk-table__cell"><%= translation.type === 'metadata' ? t(`translations.export.field.${translation.key}`) : t(`translations.export.dimension`, { key: translation.key }) %></td>
+								<td class="govuk-table__cell"><%= i18n.language.includes('en') ? translation.english : translation.cymraeg %></td>
+								<td class="govuk-table__cell"><a href="<%= translation.edit_link %>"><%= t('translations.export.buttons.change') %></a></td>
+							</tr>
+						<% }); %>
+					</tbody>
+				</table>
 
-		<div class="govuk-button-group">
-			<a href="<%= buildUrl('/publish/translations/export?format=csv', i18n.language) %>" class="govuk-button"><%= t('translations.export.buttons.export') %></a>
-		</div>
+				<div class="govuk-button-group">
+					<a href="<%= buildUrl(`/publish/${locals.datasetId}/translation/export?format=csv`, i18n.language) %>" class="govuk-button"><%= t('translations.export.buttons.export') %></a>
+				</div>
+			</div>
+
 	</main>
 </div>
 

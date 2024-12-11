@@ -22,6 +22,7 @@ import { TeamDTO } from '../dtos/team';
 import { DimensionPatchDto } from '../dtos/dimension-patch-dto';
 import { DimensionDTO } from '../dtos/dimension';
 import { DimensionInfoDTO } from '../dtos/dimension-info';
+import { TranslationDTO } from '../dtos/translations';
 
 const config = appConfig();
 
@@ -386,6 +387,20 @@ export class StatsWalesApi {
         const data = { team_id: teamId };
         return this.fetch({ url: `dataset/${datasetId}/team`, method: HttpMethod.Patch, json: data }).then(
             (response) => response.json() as unknown as DatasetDTO
+        );
+    }
+
+    public async getTranslationPreview(datasetId: string): Promise<TranslationDTO[]> {
+        logger.debug('Fetching translation preview...');
+        return this.fetch({ url: `translation/${datasetId}/preview` }).then(
+            (response) => response.json() as unknown as TranslationDTO[]
+        );
+    }
+
+    public async getTranslationExport(datasetId: string): Promise<ReadableStream> {
+        logger.debug('Fetching translation export...');
+        return this.fetch({ url: `translation/${datasetId}/export` }).then(
+            (response) => response.body as ReadableStream
         );
     }
 }

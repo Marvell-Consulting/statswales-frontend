@@ -1,3 +1,5 @@
+import { Readable } from 'node:stream';
+
 import { NextFunction, Request, Response } from 'express';
 import { snakeCase, sortBy, uniqBy } from 'lodash';
 import { FieldValidationError, matchedData } from 'express-validator';
@@ -60,6 +62,7 @@ import { DimensionPatchDto } from '../dtos/dimension-patch-dto';
 import { ApiException } from '../exceptions/api.exception';
 import { DimensionInfoDTO } from '../dtos/dimension-info';
 import { YearType } from '../enums/year-type';
+import { addEditLinks } from '../utils/add-edit-links';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -1524,11 +1527,23 @@ export const provideOrganisation = async (req: Request, res: Response, next: Nex
     res.render('publish/organisation', { values, organisations, teams, errors });
 };
 
-export const exportTranslations = (req: Request, res: Response, next: NextFunction) => {
+export const exportTranslations = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        res.render('publish/translations/export', {});
+        const dataset = res.locals.dataset;
+
+        if (req.query.format === 'csv') {
+            const fileName = `translations-${dataset.id}.csv`;
+            res.setHeader('Content-Type', 'text/csv');
+            res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+            const translationStream = await req.swapi.getTranslationExport(dataset.id);
+            Readable.from(translationStream).pipe(res);
+            return;
+        }
+
+        let translations = await req.swapi.getTranslationPreview(dataset.id);
+        translations = addEditLinks(translations, dataset.id, req);
+        res.render('publish/translations/export', { translations });
     } catch (err) {
-        console.error(err);
         next(new UnknownException());
     }
 };
