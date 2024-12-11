@@ -1523,3 +1523,12 @@ export const provideOrganisation = async (req: Request, res: Response, next: Nex
 
     res.render('publish/organisation', { values, organisations, teams, errors });
 };
+
+export const exportTranslations = (req: Request, res: Response, next: NextFunction) => {
+    try {
+        res.render('publish/translations/export', {});
+    }  catch (err) {
+        console.error(err);
+        next(new UnknownException());
+    }
+};

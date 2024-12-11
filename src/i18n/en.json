@@ -542,6 +542,19 @@
             "example": "For example: {{example}}"
         }
     },
+    "translations": {
+        "export": {
+            "heading": "Export text fields for translation",
+            "table": {
+                "field": "Text field",
+                "text_en": "English",
+                "text_cy": "Welsh"
+            },
+            "buttons": {
+                "export": "Export CSV"
+            }
+        }
+    },
     "view": {
         "list": {
             "heading": "List Datasets",
