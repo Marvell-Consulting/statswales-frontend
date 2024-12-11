@@ -24,7 +24,6 @@ import {
     fetchDimensionPreview,
     fetchTimeDimensionPreview,
     pointInTimeChooser,
-    periodOfTimeChooser,
     yearFormat,
     quarterChooser,
     monthChooser,
