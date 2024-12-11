@@ -46,6 +46,8 @@
             <% } %>
         </ul>
 
+        <h2 class="govuk-heading-l"><%= t('publish.period_match_failure.actions') %></h2>
+
         <p class="govuk-body"><a href="<%= buildUrl(`/publish/${locals.dataset.id}/upload`, i18n.language) %>" class="govuk-link">
                 <%= t('publish.period_match_failure.upload_different_file')%>
             </a><br>

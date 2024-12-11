@@ -19,13 +19,12 @@
         <%- include("../partials/error-handler"); %>
 
         <div class="govuk-grid-row">
-            <div class="govuk-grid-column-one-half">
-                <p class="govuk-body" style="padding-top: 10px;">
+            <div class="govuk-grid-column-one-half" style="padding-top: 7px">
+                <p class="govuk-body">
                     <% if (locals.revisit) { %>
                         <%= t('publish.preview.upload_summary', {cols: locals.headers?.length - locals.ignoredCount, rows: locals.page_info?.total_records, ignored: locals.ignoredCount}) %>
                     <% } else { %>
-                        <strong><%- t('publish.preview.upload_has') %></strong>
-                        <%= t('publish.preview.columns_rows', {cols: locals.headers.length, rows: locals.page_info.total_records}) %>
+                        <%= t('publish.preview.preview_summary', {cols: locals.headers.length, rows: locals.page_info.total_records}) %>
                     <% } %>
                 </p>
             </div>
@@ -63,16 +62,18 @@
                 <thead class="govuk-table__head">
                     <tr class="govuk-table__row">
                         <% locals.headers.forEach(function(cell, idx) { %>
-                            <th scope="col" class="govuk-table__header <%= cell.source_type === 'line_number' ? 'line-number' :'' %>">
-                                <% if (cell.source_type && cell.source_type !== 'unknown' && cell.source_type !== 'line_number') { %>
-                                    <span class="region-subhead"><%= t(`publish.preview.source_type.${cell.source_type}`) %></span><br />
-                                <% } %>
-                                <% if (cell.source_type !== 'line_number') { %>
+                            <% if (cell.source_type === 'line_number') { %>
+                                <th scope="col" class="govuk-table__header">
+                                    <span class="govuk-visually-hidden"><%= t('publish.preview.row_number') %></span>
+                                </th>
+                            <% } else { %>
+                                <th scope="col" class="govuk-table__header">
+                                    <% if (cell.source_type && cell.source_type !== 'unknown' && cell.source_type !== 'line_number') { %>
+                                        <span class="region-subhead"><%= t(`publish.preview.source_type.${cell.source_type}`) %></span><br />
+                                    <% } %>
                                     <%= cell.name || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %>
-                                <% } else { %>
-                                    <%= t('publish.preview.row_number') %>
-                                <% } %>
-                            </th>
+                                </th>
+                            <% } %>
                         <% }); %>
                     </tr>
                 </thead>
@@ -80,11 +81,9 @@
                     <% locals.data.forEach(function(row) { %>
                         <tr>
                             <% row.forEach(function(cell, index) { %>
-                                <% if (index === 0) { %>
-                                    <td class="govuk-table__cell line-number"><span class="linespan"><%= cell %></span></td>
-                                <% } else { %>
-                                    <td class="govuk-table__cell"><%= cell %></td>
-                                <% } %>
+                                <td class="govuk-table__cell <%= locals.headers[index].source_type %>">
+                                    <%= cell %>
+                                </td>
                             <% }); %>
                         </tr>
                         <% }); %>
@@ -96,20 +95,24 @@
             <%- include("../partials/pagination", t, locals.current_page, locals.total_records, locals.pagaination); %>
 
             <div class="govuk-grid-row">
-                <div class="govuk-grid-column-one-half">
-                        <% if (locals.revisit) { %>
-                            <a href="<%= buildUrl(`/publish/${locals.datasetId}/change`, i18n.language) %>" class="govuk-button govuk-!-display-inline"><%= t('publish.preview.buttons.change_datatable') %></a>
-                        <% } else { %>
-                            <p class="govuk-body"><%= t('publish.preview.confirm_correct') %></p>
-                            <form method="post" role="continue">
-                                <button type="submit" name="confirm" value="true" class="govuk-button govuk-!-display-inline" data-module="govuk-button" data-prevent-double-click="true">
+                <div class="govuk-grid-column-full">
+                    <form method="post" role="continue">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                <h2 class="govuk-fieldset__heading">
+                                    <%= t('publish.preview.confirm_correct') %>
+                                </h2>
+                            </legend>
+                            <div class="govuk-button-group">
+                                <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
                                     <%= t('buttons.continue') %>
                                 </button>
                                 <button type="submit" name="confirm" value="false" class="govuk-button govuk-button--secondary govuk-!-display-inline" data-module="govuk-button">
                                     <%= t('publish.preview.buttons.choose_different') %>
                                 </button>
-                            </form>
-                        <% } %>
+                            </div>
+                        </fieldset>
+                    </form>
                 </div>
             </div>
         <% } %> <!-- Do I have data? -->
@@ -133,13 +136,10 @@
         background-color: #eeeeee;
     }
 
-    .line-number {
-        color: #7f7f7f;
-    }
-
-    tbody > tr > td.line-number {
+    tbody > tr > td.line_number {
         text-align: right;
         font-family: monospace;
+        color: #7f7f7f;
     }
 
     .region-subhead {

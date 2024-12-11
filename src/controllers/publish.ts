@@ -337,9 +337,8 @@ export const fetchTimeDimensionPreview = async (req: Request, res: Response, nex
 
 export const yearTypeChooser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const dimension = singleLangDataset(res.locals.dataset, req.language).dimensions?.find(
-            (dim) => dim.id === req.params.dimensionId
-        );
+        const dataset = singleLangDataset(res.locals.dataset, req.language);
+        const dimension = dataset.dimensions?.find((dim) => dim.id === req.params.dimensionId);
         if (!dimension) {
             logger.error('Failed to find dimension in dataset');
             next(new NotFoundException());
@@ -361,19 +360,20 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
                     )
                 );
                 return;
+            } else {
+                req.session.dimensionPatch = {
+                    dimension_type: DimensionType.TimePeriod,
+                    date_type: req.body.yearType
+                };
+                req.session.save();
+                res.redirect(
+                    req.buildUrl(
+                        `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/period-of-time/year-format`,
+                        req.language
+                    )
+                );
+                return;
             }
-            req.session.dimensionPatch = {
-                dimension_type: DimensionType.TimePeriod,
-                date_type: req.body.yearType
-            };
-            req.session.save();
-            res.redirect(
-                req.buildUrl(
-                    `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/period-of-time/year-format`,
-                    req.language
-                )
-            );
-            return;
         }
 
         res.render('publish/year-type');
@@ -516,7 +516,7 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
                 return;
             }
             patchRequest.quarter_format = req.body.quarterType;
-            if (req.body.fifthQuarter) {
+            if (req.body.fifthQuater === 'yes') {
                 patchRequest.fifth_quarter = true;
             }
             try {
@@ -527,6 +527,8 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
                 res.redirect(`/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/review`);
                 return;
             } catch (err) {
+                req.session.dimensionPatch = undefined;
+                req.session.save();
                 const error = err as ApiException;
                 logger.debug(`Error is: ${JSON.stringify(error, null, 2)}`);
                 if (error.status === 400) {
@@ -537,6 +539,7 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
                     return;
                 }
                 logger.error('Something went wrong other than not matching');
+                logger.error(`Full error JSON: ${JSON.stringify(error, null, 2)}`);
                 res.redirect(
                     req.buildUrl(
                         `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/period-of-time/`,
