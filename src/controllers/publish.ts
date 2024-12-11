@@ -94,7 +94,7 @@ export const provideTitle = async (req: Request, res: Response, next: NextFuncti
             return;
         } catch (err) {
             if (err instanceof ApiException) {
-                errors = [{ field: 'api', message: { key: 'error.try_later' } }];
+                errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
             }
         }
     }
