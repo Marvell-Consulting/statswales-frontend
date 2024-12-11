@@ -1,0 +1,18 @@
+<%- include("../../partials/header"); %>
+
+<div class="govuk-width-container app-width-container">
+	<main class="govuk-main-wrapper" id="main-content" role="main">
+
+		<h1 class="govuk-heading-xl"><%= t('translations.export.heading') %></h1>
+
+		<table class="govuk-table">
+
+		</table>
+
+		<div class="govuk-button-group">
+			<a href="<%= buildUrl('/publish/translations/export?format=csv', i18n.language) %>" class="govuk-button"><%= t('translations.export.buttons.export') %></a>
+		</div>
+	</main>
+</div>
+
+<%- include("../../partials/footer"); %>

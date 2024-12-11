@@ -32,6 +32,7 @@ import {
     periodType,
     periodReview,
     dimensionName
+    exportTranslations
 } from '../controllers/publish';
 
 export const publish = Router();
@@ -117,3 +118,7 @@ publish.post('/:datasetId/schedule', fetchDataset, upload.none(), providePublish
 
 publish.get('/:datasetId/organisation', fetchDataset, provideOrganisation);
 publish.post('/:datasetId/organisation', fetchDataset, upload.none(), provideOrganisation);
+
+publish.get('/:datasetId/translation/export', fetchDataset, exportTranslations);
+// publish.get('/:datasetId/translation/import', fetchDataset, upload.none(), importTranslations);
+// publish.post('/:datasetId/translation/import', fetchDataset, upload.single('csv'), importTranslations);
