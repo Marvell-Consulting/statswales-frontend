@@ -2,6 +2,8 @@
     "developer_warning": "<strong class=\"govuk-tag govuk-tag--red govuk-phase-banner__content__tag\">Warning</strong> This is a developer page and has not been through user research",
     "developer_tag": "<span class=\"govuk-tag govuk-tag--yellow govuk-phase-banner__content__tag\">Developer Page</span>",
     "external_tag": "<span class=\"govuk-tag govuk-tag--orange govuk-phase-banner__content__tag\">External Page</span>",
+    "yes": "Yes",
+    "no": "No",
     "buttons": {
         "continue": "Continue",
         "back": "Back",
@@ -89,7 +91,7 @@
             }
         },
         "time_dimension_chooser": {
-            "heading": "Set up dimension containing time",
+            "heading": "Set up dimension containing dates",
             "subheading": "Dates",
             "showing": "A sample of {{rows}} of {{total}} rows.",
             "question": "What kind of dates does the dimension contain?",
@@ -131,7 +133,7 @@
             }
         },
         "period-type-chooser": {
-            "heading": "What are the periods of time?",
+            "heading": "What are the shortest periods of time in the dimension?",
             "subheading": "Dates",
             "chooser": {
                 "years": "Years",
@@ -140,46 +142,47 @@
             }
         },
         "year_type": {
-            "heading": "What type of year does this dimension represent?",
+            "heading": "What type of year does the dimension represent?",
             "chooser": {
                 "calendar": "Calendar",
-                "calendar-hint": "1st January - 31st December",
+                "calendar-hint": "1 January to 31 December",
                 "financial" : "Financial",
-                "financial-hint": "1st April - 31st March",
+                "financial-hint": "1 April to 31 March",
                 "tax": "Tax",
-                "tax-hint": "6th April - 5th April",
+                "tax-hint": "6 April to 5 April",
                 "academic": "Academic",
-                "academic-hint": "1st September - 31st August",
+                "academic-hint": "1 September to 31 August",
                 "meteorological": "Meteorological",
-                "meteorological-hint": "1st March - 28th/29th February"
+                "meteorological-hint": "1 March to 28 or 29 February"
             }
         },
         "year_format": {
-            "heading": "What format is used to represent years?",
+            "heading": "What format is used for years in the dimension?",
             "example": "For example, {{example}}"
         },
         "quarter_format": {
-            "heading": "What format is used to represent quarters?",
+            "heading": "What format is used for quarters in the dimension?",
             "heading-alt": "What format is used for quarterly totals?",
             "example": "For example, {{example}}",
-            "fifth_quarter": "Year totals are represented as a 5th quarter",
+            "fifth_quarter": "Is a quarter used to represent yearly totals?\n",
             "no_quarterly_totals": "There are no quarterly totals"
         },
         "month_format": {
-            "heading": "What format is used to represent months?",
+            "heading": "What format is used for months in the dimension?",
             "example": "For example, {{example}}"
         },
         "period_match_failure": {
-            "heading": "Date formatting cannot be matched to the fact table",
-            "information": "{{failureCount}} of the dates in the fact table do not match the date formatting you have indicated. You should check:",
-            "formatting": "the date formatting in the fact table is correct",
-            "choices": "you indicated the correct date formats",
-            "supplied_format":"Indicated date format:",
+            "heading": "Date formatting cannot be matched to the dimension",
+            "information": "{{failureCount, number}} date codes in the dimension do not match the date formatting you have indicated. You should check:",
+            "formatting": "all date codes in the dimension are correct",
+            "choices": "you indicated the correct date formatting",
+            "supplied_format":"Indicated date formatting:",
             "year_format": "Years: {{format}}",
             "quarter_format": "Quarters: {{format}}",
             "month_format": "Months: {{format}}",
             "date_format": "Date: {{format}}",
-            "subheading": "Date formats that cannot be matched",
+            "subheading": "Unique date codes that cannot be matched",
+            "actions": "Actions",
             "upload_different_file": "Upload corrected or different data table",
             "upload_different_file_warning": "(This will remove reference data from all dimensions)",
             "try_different_format": "Indicate different date formatting",
@@ -436,6 +439,7 @@
             "rows": "{{count}} row",
             "rows_other": "{{count}} rows",
             "row_number": "Row",
+            "preview_summary": "There are $t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} }) in your upload.",
             "columns_rows": "$t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} })",
             "upload_summary": "There are $t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} }) in the data table. $t(publish.preview.columns, {\"count\": {{ignored}} }) in the CSV upload have been ignored.",
             "showing_rows": "Showing rows {{start}} – {{end}} of {{total}}",
@@ -452,7 +456,7 @@
                 "measure" : "Measure or data types",
                 "dimension": "Dimension",
                 "time": "Dimension containing dates",
-                "ignore": "Ignored",
+                "ignore": "This column can be ignored",
                 "unknown": "Unknown"
             }
         },
@@ -549,7 +553,8 @@
             "download_file": "Download File",
             "location": "Location",
             "filename": "Filename",
-            "mime_type": "Mime Type"
+            "mime_type": "Mime Type",
+            "fact_tables": "Fact Tables"
         }
     },
 	"errors": {

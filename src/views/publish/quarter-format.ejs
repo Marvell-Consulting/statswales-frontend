@@ -87,15 +87,33 @@
                                     </label>
                                 </div>
                             <% } %>
-                            <div class="govuk-checkboxes__divider">&nbsp;</div>
-                            <div class="govuk-checkboxes__item">
-                                <input class="govuk-checkboxes__input" id="fifthQuarter" name="fifthQuarter" type="checkbox" value="true">
-                                <label class="govuk-label govuk-checkboxes__label" for="fifthQuarter">
-                                    <%- t('publish.quarter_format.fifth_quarter')%>
-                                </label>
-                            </div>
                         </fieldset>
                     </div>
+
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                <h2 class="govuk-fieldset__heading">
+                                    <%- t('publish.quarter_format.fifth_quarter')%>
+                                </h2>
+                            </legend>
+                            <p class="govuk-hint"><%- t('publish.quarter_format.example', { example: 'Q5' })%></p>
+                            <div class="govuk-radios" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="fifth-quater-yes" name="fifthQuater" type="radio" value="yes">
+                                    <label class="govuk-label govuk-radios__label" for="fifth-quater-yes">
+                                        <%= t('yes') %>
+                                    </label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="fifth-quater-no" name="fifthQuater" type="radio" value="no">
+                                    <label class="govuk-label govuk-radios__label" for="fifth-quater-no">
+                                        <%= t('no') %>
+                                    </label>
+                                </div>
+                        </fieldset>
+                    </div>
+
                     <div class="govuk-button-group">
                         <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
                             <%= t('buttons.continue') %>
