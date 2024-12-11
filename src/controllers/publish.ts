@@ -1366,7 +1366,7 @@ export const provideOrganisation = async (req: Request, res: Response, next: Nex
 export const exportTranslations = (req: Request, res: Response, next: NextFunction) => {
     try {
         res.render('publish/translations/export', {});
-    }  catch (err) {
+    } catch (err) {
         console.error(err);
         next(new UnknownException());
     }

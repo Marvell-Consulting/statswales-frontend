@@ -24,14 +24,13 @@ import {
     fetchDimensionPreview,
     fetchTimeDimensionPreview,
     pointInTimeChooser,
-    periodOfTimeChooser,
     yearFormat,
     quarterChooser,
     monthChooser,
     yearTypeChooser,
     periodType,
     periodReview,
-    dimensionName
+    dimensionName,
     exportTranslations
 } from '../controllers/publish';
 
