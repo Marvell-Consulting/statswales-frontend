@@ -491,6 +491,7 @@
             "heading": "Dataset Overview",
             "no_title": "No Title Available",
             "status": {
+                "cannot_start": "Cannot start yet",
                 "completed": "Completed",
                 "not_started": "Not Started",
                 "incomplete": "Incomplete",
