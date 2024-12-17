@@ -33,7 +33,8 @@ import {
     dimensionName,
     uploadLookupTable,
     lookupReview,
-    exportTranslations
+    exportTranslations,
+    importTranslations
 } from '../controllers/publish';
 
 export const publish = Router();
@@ -42,6 +43,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 publish.get('/', start);
 
+/* Dataset creation */
 publish.get('/title', provideTitle);
 publish.post('/title', upload.none(), provideTitle);
 
@@ -59,9 +61,10 @@ publish.post('/:datasetId/preview', fetchDataset, upload.none(), factTablePrevie
 publish.get('/:datasetId/sources', fetchDataset, sources);
 publish.post('/:datasetId/sources', fetchDataset, upload.none(), sources);
 
+/* Tasklist */
 publish.get('/:datasetId/tasklist', fetchDataset, taskList);
 
-/* Dimension creation routes */
+/* Dimension creation */
 publish.get('/:datasetId/dimension-data-chooser/:dimensionId', fetchDataset, fetchDimensionPreview);
 publish.post('/:datasetId/dimension-data-chooser/:dimensionId', fetchDataset, fetchDimensionPreview);
 
@@ -76,7 +79,7 @@ publish.post('/:datasetId/time-period/:dimensionId', fetchDataset, fetchTimeDime
 publish.get('/:datasetId/time-period/:dimensionId/point-in-time', fetchDataset, pointInTimeChooser);
 publish.post('/:datasetId/time-period/:dimensionId/point-in-time', fetchDataset, pointInTimeChooser);
 
-// Period of time flow
+/* Period of time flow */
 publish.get('/:datasetId/time-period/:dimensionId/period-of-time', fetchDataset, yearTypeChooser);
 publish.post('/:datasetId/time-period/:dimensionId/period-of-time', fetchDataset, yearTypeChooser);
 publish.get('/:datasetId/time-period/:dimensionId/period-of-time/year-format', fetchDataset, yearFormat);
@@ -90,11 +93,11 @@ publish.post('/:datasetId/time-period/:dimensionId/period-of-time/months', fetch
 publish.get('/:datasetId/time-period/:dimensionId/review', fetchDataset, periodReview);
 publish.post('/:datasetId/time-period/:dimensionId/review', fetchDataset, periodReview);
 
-// Applies to all dimensions
+/* Applies to all dimensions */
 publish.get('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchDataset, dimensionName);
 publish.post('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchDataset, dimensionName);
 
-/* Meta Data related Routes */
+/* Metadata */
 publish.get('/:datasetId/change', fetchDataset, changeData);
 publish.post('/:datasetId/change', fetchDataset, upload.none(), changeData);
 
@@ -122,12 +125,14 @@ publish.post('/:datasetId/designation', fetchDataset, upload.none(), provideDesi
 publish.get('/:datasetId/topics', fetchDataset, provideTopics);
 publish.post('/:datasetId/topics', fetchDataset, upload.none(), provideTopics);
 
+/* Publishing */
 publish.get('/:datasetId/schedule', fetchDataset, providePublishDate);
 publish.post('/:datasetId/schedule', fetchDataset, upload.none(), providePublishDate);
 
 publish.get('/:datasetId/organisation', fetchDataset, provideOrganisation);
 publish.post('/:datasetId/organisation', fetchDataset, upload.none(), provideOrganisation);
 
+/* Translations */
 publish.get('/:datasetId/translation/export', fetchDataset, exportTranslations);
-// publish.get('/:datasetId/translation/import', fetchDataset, upload.none(), importTranslations);
-// publish.post('/:datasetId/translation/import', fetchDataset, upload.single('csv'), importTranslations);
+publish.get('/:datasetId/translation/import', fetchDataset, importTranslations);
+publish.post('/:datasetId/translation/import', fetchDataset, upload.single('csv'), importTranslations);

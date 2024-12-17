@@ -6,6 +6,7 @@ import { FieldValidationError, matchedData } from 'express-validator';
 import { nanoid } from 'nanoid';
 import { v4 as uuid } from 'uuid';
 import { isBefore, isValid, parseISO } from 'date-fns';
+import { parse } from 'csv-parse';
 
 import {
     collectionValidator,
@@ -63,6 +64,7 @@ import { ApiException } from '../exceptions/api.exception';
 import { DimensionInfoDTO } from '../dtos/dimension-info';
 import { YearType } from '../enums/year-type';
 import { addEditLinks } from '../utils/add-edit-links';
+import { TranslationDTO } from '../dtos/translations';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -1546,4 +1548,51 @@ export const exportTranslations = async (req: Request, res: Response, next: Next
     } catch (err) {
         next(new UnknownException());
     }
+};
+
+const parseUploadedTranslations = async (fileBuffer: Buffer): Promise<TranslationDTO[]> => {
+    const translations: TranslationDTO[] = [];
+
+    const csvParser: AsyncIterable<TranslationDTO> = Readable.from(fileBuffer).pipe(
+        parse({ bom: true, columns: true })
+    );
+
+    for await (const row of csvParser) {
+        translations.push(row);
+    }
+
+    return translations;
+};
+
+export const importTranslations = async (req: Request, res: Response, next: NextFunction) => {
+    const dataset = res.locals.dataset;
+    let errors: ViewError[] = [];
+    let preview = false;
+    let translations: TranslationDTO[] = [];
+
+    try {
+        if (req.query.confirm === 'true') {
+            await req.swapi.updateTranslations(dataset.id);
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+            return;
+        }
+
+        if (req.method === 'POST') {
+            if (!req.file) {
+                errors = [{ field: 'csv', message: { key: 'translations.import.form.file.error.missing' } }];
+                throw new Error();
+            }
+
+            const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
+            await req.swapi.uploadTranslationImport(dataset.id, fileData);
+
+            preview = true;
+            translations = await parseUploadedTranslations(req.file.buffer);
+        }
+    } catch (err) {
+        res.status(400);
+        errors.push({ field: 'csv', message: { key: 'translations.import.form.file.error.invalid' } });
+    }
+
+    res.render('publish/translations/import', { preview, translations, errors });
 };

@@ -403,4 +403,22 @@ export class StatsWalesApi {
             (response) => response.body as ReadableStream
         );
     }
+
+    public uploadTranslationImport(datasetId: string, file: Blob): Promise<DatasetDTO> {
+        logger.debug(`Uploading translations to dataset: ${datasetId}`);
+        const body = new FormData();
+        body.set('csv', file);
+
+        return this.fetch({ url: `translation/${datasetId}/import`, method: HttpMethod.Post, body }).then(
+            (response) => response.json() as unknown as DatasetDTO
+        );
+    }
+
+    public updateTranslations(datasetId: string): Promise<DatasetDTO> {
+        logger.debug(`Updating translations for dataset: ${datasetId}`);
+
+        return this.fetch({ url: `translation/${datasetId}/import`, method: HttpMethod.Patch }).then(
+            (response) => response.json() as unknown as DatasetDTO
+        );
+    }
 }
