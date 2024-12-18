@@ -31,7 +31,9 @@ import {
     yearTypeChooser,
     periodType,
     periodReview,
-    dimensionName
+    dimensionName,
+    uploadLookupTable,
+    lookupReview
 } from '../controllers/publish';
 
 export const publish = Router();
@@ -63,12 +65,18 @@ publish.get('/:datasetId/tasklist', fetchDataset, taskList);
 publish.get('/:datasetId/dimension-data-chooser/:dimensionId', fetchDataset, fetchDimensionPreview);
 publish.post('/:datasetId/dimension-data-chooser/:dimensionId', fetchDataset, fetchDimensionPreview);
 
+/* lookup table handlers */
+publish.get('/:datasetId/lookup/:dimensionId', fetchDataset, uploadLookupTable);
+publish.post('/:datasetId/lookup/:dimensionId', fetchDataset, upload.single('csv'), uploadLookupTable);
+publish.get('/:datasetId/lookup/:dimensionId/review', fetchDataset, lookupReview);
+publish.post('/:datasetId/lookup/:dimensionId/review', fetchDataset, lookupReview);
+
 publish.get('/:datasetId/time-period/:dimensionId', fetchDataset, fetchTimeDimensionPreview);
 publish.post('/:datasetId/time-period/:dimensionId', fetchDataset, fetchTimeDimensionPreview);
 publish.get('/:datasetId/time-period/:dimensionId/point-in-time', fetchDataset, pointInTimeChooser);
 publish.post('/:datasetId/time-period/:dimensionId/point-in-time', fetchDataset, pointInTimeChooser);
 
-// Period of time flow)
+// Period of time flow
 publish.get('/:datasetId/time-period/:dimensionId/period-of-time', fetchDataset, yearTypeChooser);
 publish.post('/:datasetId/time-period/:dimensionId/period-of-time', fetchDataset, yearTypeChooser);
 publish.get('/:datasetId/time-period/:dimensionId/period-of-time/year-format', fetchDataset, yearFormat);
@@ -81,6 +89,8 @@ publish.get('/:datasetId/time-period/:dimensionId/period-of-time/months', fetchD
 publish.post('/:datasetId/time-period/:dimensionId/period-of-time/months', fetchDataset, monthChooser);
 publish.get('/:datasetId/time-period/:dimensionId/review', fetchDataset, periodReview);
 publish.post('/:datasetId/time-period/:dimensionId/review', fetchDataset, periodReview);
+
+// Applies to all dimensions
 publish.get('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchDataset, dimensionName);
 publish.post('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchDataset, dimensionName);
 

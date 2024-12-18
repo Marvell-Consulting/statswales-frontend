@@ -16,7 +16,7 @@
 
             <h1 class="govuk-heading-xl"><%= t('publish.upload.title') %></h1>
             <%- include("../partials/error-handler"); %>
-            <form action="<%= buildUrl(`/publish/${locals.datasetId}/upload`, i18n.language) %>" method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data">
                 <div class="govuk-form-group">
                     <label class="govuk-label govuk-label--m" for="csv">
                         <%= t('publish.upload.note') %>

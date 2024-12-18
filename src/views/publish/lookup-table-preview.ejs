@@ -1,0 +1,102 @@
+<%- include("../partials/header", t); %>
+
+<div class="govuk-width-container app-width-container">
+    <!-- <a href="#" class="govuk-back-link">Back</a> -->
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+        <div class="top-links">
+            <div class="govuk-width-container">
+                <a href="<%= locals.referrer %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+            </div>
+        </div>
+
+        <h1 class="govuk-heading-xl"><%= t('publish.lookup_table_review.heading') %></h1>
+
+        <%- include("../partials/error-handler"); %>
+
+        <% if (locals?.data) { %>
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-full with-overflow">
+                    <table class="govuk-table" style="position: relative; border-collapse: collapse; width:100% !important;">
+                        <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <% locals.headers.forEach(function(cell, idx) { %>
+                                <th scope="col" class="govuk-table__header">
+                                    <% if (cell.name === dimension.joinColumn) { %>
+                                        <%= cell.name %>
+                                    <% } else { %>
+                                        <%= t(`publish.lookup_table_review.column_headers.${cell.name.toLowerCase()}`) %>
+                                    <% } %>
+                                </th>
+                            <% }); %>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% locals.data.forEach(function(row) { %>
+                            <tr>
+                                <% row.forEach(function(cell, index) { %>
+                                    <td class="govuk-table__cell">
+                                        <% switch (locals.headers[index].name) {
+                                            case 'start_date':
+                                        case 'end_date': %>
+                                        <%= locals.dateFormat(locals.parseISO(cell.split('T')[0]), 'do MMMM yyyy') %>
+                                        <% break;
+                                        case 'date_type': %>
+                                        <%= t(`publish.lookup_table_review.year_type.${cell}`) %>
+                                        <% break;
+                                        default: %>
+                                        <%= cell %>
+                                        <% } %>
+                                    </td>
+                                <% }); %>
+                            </tr>
+                        <% }); %>
+                        </tbody>
+                    </table>
+                    <p class="govuk-body govuk-hint"><%= t('publish.lookup_table_review.showing', {rows: locals.page_size, total: locals.page_info.total_records}) %></p>
+                </div>
+            </div>
+
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-full">
+                    <form method="post" role="continue">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                <h2 class="govuk-fieldset__heading">
+                                    <%= t('publish.lookup_table_review.confirm') %>
+                                </h2>
+                            </legend>
+                            <div class="govuk-button-group">
+                                <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                                    <%= t('buttons.continue') %>
+                                </button>
+                                <button type="submit" name="confirm" value="goback" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                                    <%= t('publish.lookup_table_review.go_back') %>
+                                </button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        <% } %> <!-- Do I have data? -->
+    </main>
+</div>
+
+<style>
+    table {
+        position: relative;
+        width: 30% !important;
+    }
+    th {
+        vertical-align: bottom !important;
+    }
+    .column_label {
+        white-space: nowrap;
+        color: #aa1111;
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        line-height: 20px;
+        text-transform: uppercase;
+    }
+</style>
+<%- include("../partials/footer"); %>
