@@ -14,6 +14,7 @@
     "build": "npm-run-all clean tsc copy-assets",
     "test": "APP_ENV=ci jest",
     "test:ci": "APP_ENV=ci jest --ci --coverage --config=jest.config.ts",
+    "test:e2e": "APP_ENV=ci npx playwright test",
     "check": "npm-run-all prettier:fix lint:fix test build",
     "dev:check": "npm-run-all check dev",
     "predev": "f() { if [ $(command -v podman) ]; then podman compose up -d redis; else docker compose up -d redis; fi }; f",

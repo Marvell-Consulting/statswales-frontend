@@ -1,7 +1,6 @@
 import type { Page, Locator } from '@playwright/test';
 
 import { appConfig } from '../../../src/config';
-import { DatasetDTO } from '../../../src/dtos/dataset';
 
 const config = appConfig();
 const baseUrl = config.frontend.url;
