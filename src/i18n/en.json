@@ -491,10 +491,11 @@
             "heading": "Dataset Overview",
             "no_title": "No Title Available",
             "status": {
+                "cannot_start": "Cannot start yet",
+                "available": "Available",
                 "completed": "Completed",
-                "not_started": "Not Started",
+                "not_started": "Not yet started",
                 "incomplete": "Incomplete",
-                "needs_translation": "Needs Translation",
                 "not_implemented": "Not Implemented"
             },
             "data": {
@@ -540,6 +541,51 @@
         "point_in_time": {
             "heading": "What date format is used?",
             "example": "For example: {{example}}"
+        }
+    },
+    "translations": {
+        "export": {
+            "heading": "Export text fields for translation",
+            "table": {
+                "field": "Text field",
+                "value": "Text",
+                "action": "Change link"
+            },
+            "field": {
+                "title": "Title",
+                "description": "Summary",
+                "collection": "Data collection",
+                "quality": "Statistical quality",
+                "roundingDescription": "Rounding applied"
+            },
+            "dimension": "{{key}} dimension name",
+            "buttons": {
+                "export": "Export CSV",
+                "change": "Change"
+            }
+        },
+        "import": {
+            "heading": "Import translation file",
+            "heading_preview": "Check the translated text",
+            "note": "You can only import the translation file if it has been fully populated.",
+            "form": {
+                "file": {
+                    "label": "The file must be in CSV format",
+                    "error": {
+                        "missing": "Select the populated translation file to upload",
+                        "invalid": "The selected file must be in CSV format"
+                    }
+                }
+            },
+            "buttons": {
+                "import": "Import CSV",
+                "confirm": "Continue"
+            },
+            "table": {
+                "field": "Text field",
+                "english": "Text (English)",
+                "welsh": "Text (Welsh)"
+            }
         }
     },
     "view": {
