@@ -324,10 +324,7 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
                 logger.error('Something went wrong other than not matching');
                 logger.error(`Full error JSON: ${JSON.stringify(error, null, 2)}`);
                 res.redirect(
-                    req.buildUrl(
-                        `/publish/${dataset.id}/dimension-data-chooser/${dimension.id}/`,
-                        req.language
-                    )
+                    req.buildUrl(`/publish/${dataset.id}/dimension-data-chooser/${dimension.id}/`, req.language)
                 );
                 return;
             }
@@ -366,12 +363,7 @@ export const lookupReview = async (req: Request, res: Response, next: NextFuncti
                 case 'goback':
                     try {
                         await req.swapi.resetDimension(dataset.id, dimension.id);
-                        res.redirect(
-                            req.buildUrl(
-                                `/publish/${dataset.id}/lookup/${dimension.id}/`,
-                                req.language
-                            )
-                        );
+                        res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/`, req.language));
                     } catch (err) {
                         const error = err as ApiException;
                         logger.error(
