@@ -7,6 +7,8 @@ import { nanoid } from 'nanoid';
 import { v4 as uuid } from 'uuid';
 import { isBefore, isValid, parseISO } from 'date-fns';
 import { parse } from 'csv-parse';
+import detectCharacterEncoding from 'detect-character-encoding';
+import iconv from 'iconv-lite';
 
 import {
     collectionValidator,
@@ -66,6 +68,20 @@ import { YearType } from '../enums/year-type';
 import { addEditLinks } from '../utils/add-edit-links';
 import { TranslationDTO } from '../dtos/translations';
 
+function convertBufferToUTF8(buffer: Buffer): Buffer {
+    const fileEncoding = detectCharacterEncoding(buffer)?.encoding;
+    if (fileEncoding !== 'utf-8') {
+        logger.warn('File is not UTF-8 encoded... Going to try to recode it');
+        if (!fileEncoding) {
+            logger.warn('Could not detect file encoding for the file');
+            throw new Error('errors.csv.invalid');
+        }
+        const decodedString = iconv.decode(buffer, fileEncoding);
+        return iconv.encode(decodedString, 'utf-8');
+    }
+    return buffer;
+}
+
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
 };
@@ -123,7 +139,7 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
             }
             const fileName = req.file.originalname;
             req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
-            const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
+            const fileData = new Blob([convertBufferToUTF8(req.file.buffer)], { type: req.file.mimetype });
             logger.debug('Sending file to backend.');
             await req.swapi.uploadCSVToDataset(dataset.id, fileData, fileName);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
@@ -305,7 +321,7 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
             }
             const fileName = req.file.originalname;
             req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
-            const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
+            const fileData = new Blob([convertBufferToUTF8(req.file.buffer)], { type: req.file.mimetype });
             try {
                 logger.debug('Sending lookup table to backend');
                 await req.swapi.uploadLookupTable(dataset.id, dimension.id, fileData, fileName);
@@ -328,6 +344,14 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
                 }
                 logger.error('Something went wrong other than not matching');
                 logger.error(`Full error JSON: ${JSON.stringify(error, null, 2)}`);
+                req.session.errors = [
+                    {
+                        field: 'unknown',
+                        message: {
+                            key: 'errors.csv.unknown'
+                        }
+                    }
+                ];
                 res.redirect(
                     req.buildUrl(`/publish/${dataset.id}/dimension-data-chooser/${dimension.id}/`, req.language)
                 );
@@ -433,7 +457,19 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
             }
         }
         const dataPreview = await req.swapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
-        res.render('publish/dimension-chooser', { ...dataPreview, dimension });
+        if (req.session.errors) {
+            const errors = req.session.errors;
+            req.session.errors = undefined;
+            req.session.save();
+            res.status(500);
+            res.render('publish/dimension-data-chooser', {
+                ...dataPreview,
+                dimension,
+                errors
+            });
+        } else {
+            res.render('publish/dimension-chooser', { ...dataPreview, dimension });
+        }
     } catch (err) {
         logger.error('Failed to get dimension preview', err);
         next(new NotFoundException());
