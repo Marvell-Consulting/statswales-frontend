@@ -12,8 +12,6 @@
 
         <h1 class="govuk-heading-xl"><%= t('publish.dimension_type_chooser.heading') %></h1>
 
-        <h2 class="govuk-heading"><%= t('publish.dimension_type_chooser.subheading') %></h2>
-
         <% if (locals?.errors) { %>
             <div class="govuk-error-summary" data-module="govuk-error-summary">
                 <div role="alert">
@@ -48,10 +46,10 @@
                         <tr class="govuk-table__row">
                             <% locals.headers.forEach(function(cell, idx) { %>
                                 <th scope="col" class="govuk-table__header">
-                                    <% if (cell.name === dimension.joinColumn) { %>
-                                        <%= cell.name %>
-                                    <% } else { %>
+                                    <% if (i18n.exists(`publish.lookup_table_review.column_headers.${cell.name.toLowerCase()}`)) { %>
                                         <%= t(`publish.lookup_table_review.column_headers.${cell.name.toLowerCase()}`) %>
+                                    <% } else { %>
+                                        <%= cell.name %>
                                     <% } %>
                                 </th>
                             <% }); %>

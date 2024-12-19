@@ -129,7 +129,7 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
         }
     }
 
-    res.render('publish/upload', { revisit, errors });
+    res.render('publish/upload', { revisit, errors, uploadType: false });
 };
 
 export const factTablePreview = async (req: Request, res: Response, next: NextFunction) => {
@@ -314,7 +314,7 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
                     res.status(400);
                     logger.error('Lookup table did not match data in the fact table.', err);
                     const failurePreview = JSON.parse(error.body as string) as ViewErrDTO;
-                    res.render('publish/period-match-failure', {
+                    res.render('publish/dimension-match-failure', {
                         ...failurePreview,
                         patchRequest: { dimension_type: DimensionType.LookupTable },
                         dimension
@@ -336,7 +336,7 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
         }
     }
 
-    res.render('publish/upload', { revisit, errors });
+    res.render('publish/upload', { revisit, errors, uploadType: 'lookup' });
 };
 
 export const lookupReview = async (req: Request, res: Response, next: NextFunction) => {
