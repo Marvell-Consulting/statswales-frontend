@@ -1,5 +1,3 @@
-import path from 'node:path';
-
 import type { Page, Locator } from '@playwright/test';
 
 import { appConfig } from '../../../src/config';

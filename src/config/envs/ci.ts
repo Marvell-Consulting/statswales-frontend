@@ -13,11 +13,11 @@ export function getCIConfig(): AppConfig {
         },
         frontend: {
             port: 3000,
-            url: 'http://example.com:3000'
+            url: 'http://localhost:3000'
         },
         backend: {
             port: 3001,
-            url: 'http://example.com:3001'
+            url: 'http://localhost:3001'
         },
         rateLimit: {
             windowMs: 60000,

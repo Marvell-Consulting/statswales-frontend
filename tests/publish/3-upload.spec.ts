@@ -30,25 +30,25 @@ test.describe('Upload page', () => {
     test.use({ storageState: publisherContext });
 
     test('Has a heading', async ({ page }) => {
-      await page.goto('/en-GB/publish/upload');
+      await uploadPage.goto(dataset1.id!);
       await page.getByRole('textbox', { name: 'title' }).fill('Dataset 1');
       await page.getByRole('button', { name: 'Continue' }).click();
       await expect(page.getByRole('heading', { name: 'Upload the data table' })).toBeVisible();
     });
 
     test('Can switch to Welsh', async ({ page }) => {
-      await page.goto('/en-GB/publish/upload');
+      await uploadPage.goto(dataset1.id!);
       await page.getByText('Cymraeg').click();
       await page.getByRole('heading', { name: 'Lanlwytho’r tabl data' }).click();
     });
 
-    test('Can be cancelled', async ({ page }) => {
-      await page.goto('/en-GB/publish/title');
-      await page.getByRole('link', { name: 'Cancel' }).click();
-      await expect(page.url()).toBe('http://localhost:3000/en-GB');
-    });
-
     test.describe('Form', () => {
+      test('Displays a validation error when no file is provided', async ({ page }) => {
+        await uploadPage.goto(dataset1.id!);
+        await uploadPage.submit();
+        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset1.id}/upload`);
+        await expect(page.getByText('Select a data table')).toBeVisible();
+      });
     });
   });
 });
