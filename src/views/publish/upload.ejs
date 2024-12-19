@@ -6,7 +6,7 @@
             <% if (locals.revisit) { %>
                 <div class="top-links">
                     <div class="govuk-width-container">
-                        <a href="javascript:history.back()" class="govuk-back-link"><%= t('buttons.back') %></a>
+                        <a href="<%= locals.referrer %>" class="govuk-back-link"><%= t('buttons.back') %></a>
                         <% if (locals.datasetId) { %>
                             <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
                         <% } %>
@@ -14,8 +14,16 @@
                 </div>
             <% } %>
 
-            <h1 class="govuk-heading-xl"><%= t('publish.upload.title') %></h1>
+            <% if (locals.uploadType === 'lookup') { %>
+                <h1 class="govuk-heading-xl"><%= t('publish.upload.lookup_heading') %></h1>
+            <% } else if (locals.uploadType === 'measure') { %>
+                <h1 class="govuk-heading-xl"><%= t('publish.upload.measure_heading') %></h1>
+            <% } else { %>
+                <h1 class="govuk-heading-xl"><%= t('publish.upload.title') %></h1>
+            <% } %>
+
             <%- include("../partials/error-handler"); %>
+
             <form method="post" enctype="multipart/form-data">
                 <div class="govuk-form-group">
                     <label class="govuk-label govuk-label--m" for="csv">
@@ -26,6 +34,9 @@
                 <button type="submit" class="govuk-button" data-module="govuk-button">
                     <%= t('buttons.upload_csv') %>
                 </button>
+                <% if (locals.uploadType) { %>
+                    <a href="#" class="govuk-button govuk-button--secondary"><%= t('buttons.preview') %></a>
+                <% } %>
             </form>
         </main>
     </div>
