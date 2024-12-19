@@ -353,12 +353,7 @@ export const lookupReview = async (req: Request, res: Response, next: NextFuncti
         if (req.method === 'POST') {
             switch (req.body.confirm) {
                 case 'true':
-                    res.redirect(
-                        req.buildUrl(
-                            `/publish/${dataset.id}/dimension/${dimension.id}/name`,
-                            req.language
-                        )
-                    );
+                    res.redirect(req.buildUrl(`/publish/${dataset.id}/dimension/${dimension.id}/name`, req.language));
                     break;
                 case 'goback':
                     try {
@@ -402,6 +397,7 @@ export const lookupReview = async (req: Request, res: Response, next: NextFuncti
 
 export const fetchDimensionPreview = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const dataset = singleLangDataset(res.locals.dataset, req.language);
         const dimension = singleLangDataset(res.locals.dataset, req.language).dimensions?.find(
             (dim) => dim.id === req.params.dimensionId
         );
@@ -417,7 +413,7 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
                     req.session.dimensionPatch = {
                         dimension_type: DimensionType.LookupTable
                     };
-                    res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/lookup/${dimension.id}`, req.language));
+                    res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}`, req.language));
                     return;
                 case 'age':
                 case 'ethnicity':
