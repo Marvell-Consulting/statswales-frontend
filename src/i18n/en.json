@@ -588,7 +588,8 @@
                     "label": "The file must be in CSV format",
                     "error": {
                         "missing": "Select the populated translation file to upload",
-                        "invalid": "The selected file must be in CSV format"
+                        "invalid": "The selected file must match the required format",
+                        "values": "The translation file must be fully populated for both languages"
                     }
                 }
             },

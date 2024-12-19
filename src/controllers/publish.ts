@@ -1592,6 +1592,13 @@ export const importTranslations = async (req: Request, res: Response, next: Next
     } catch (err) {
         res.status(400);
         errors.push({ field: 'csv', message: { key: 'translations.import.form.file.error.invalid' } });
+
+        if (err instanceof ApiException) {
+            const error = JSON.parse(err.body as string).error;
+            if (error.includes('invalid.values')) {
+                errors = [{ field: 'csv', message: { key: 'translations.import.form.file.error.values' } }];
+            }
+        }
     }
 
     res.render('publish/translations/import', { preview, translations, errors });
