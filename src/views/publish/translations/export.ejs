@@ -13,7 +13,7 @@
 			<div class="govuk-width-container">
 				<h1 class="govuk-heading-xl"><%= t('translations.export.heading') %></h1>
 
-				<table class="govuk-table">
+				<table class="govuk-table translation-export">
 					<thead class="govuk-table__head">
 						<tr class="govuk-table__row">
 							<th scope="col" class="govuk-table__header"><%= t('translations.export.table.field') %></th>
@@ -39,5 +39,11 @@
 
 	</main>
 </div>
+
+<style>
+	.translation-export td {
+		white-space: pre-line;
+	}
+</style>
 
 <%- include("../../partials/footer"); %>
