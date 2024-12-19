@@ -325,7 +325,7 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
                 logger.error(`Full error JSON: ${JSON.stringify(error, null, 2)}`);
                 res.redirect(
                     req.buildUrl(
-                        `/publish/${req.params.datasetId}/dimension-data-chooser/${req.params.dimensionId}/`,
+                        `/publish/${dataset.id}/dimension-data-chooser/${dimension.id}/`,
                         req.language
                     )
                 );
