@@ -355,7 +355,7 @@ export const lookupReview = async (req: Request, res: Response, next: NextFuncti
                 case 'true':
                     res.redirect(
                         req.buildUrl(
-                            `/publish/${req.params.datasetId}/dimension/${req.params.dimensionId}/name`,
+                            `/publish/${dataset.id}/dimension/${dimension.id}/name`,
                             req.language
                         )
                     );
