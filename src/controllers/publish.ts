@@ -368,7 +368,7 @@ export const lookupReview = async (req: Request, res: Response, next: NextFuncti
                         await req.swapi.resetDimension(dataset.id, dimension.id);
                         res.redirect(
                             req.buildUrl(
-                                `/publish/${req.params.datasetId}/lookup/${req.params.dimensionId}/`,
+                                `/publish/${dataset.id}/lookup/${dimension.id}/`,
                                 req.language
                             )
                         );
