@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { snakeCase, sortBy, uniqBy } from 'lodash';
 import { FieldValidationError, matchedData } from 'express-validator';
 import { nanoid } from 'nanoid';
@@ -65,6 +65,8 @@ export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
 };
 
+export const dimensionColumnNameRegex = /^[a-zA-ZÀ-ž()\-_ ]+$/;
+
 export const provideTitle = async (req: Request, res: Response, next: NextFunction) => {
     let errors: ViewError[] = [];
     const existingDataset = res.locals.dataset; // dataset does not exist the first time through
@@ -108,13 +110,16 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
     const revisit = dataset.dimensions?.length > 0;
 
     if (req.method === 'POST') {
+        logger.debug('User is uploading a fact table.');
         try {
             if (!req.file) {
+                logger.error('No file is present in the request');
                 throw new Error('errors.csv.invalid');
             }
             const fileName = req.file.originalname;
             req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
             const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
+            logger.debug('Sending file to backend.');
             await req.swapi.uploadCSVToDataset(dataset.id, fileData, fileName);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
             return;
@@ -273,8 +278,126 @@ export const redirectToTasklist = (req: Request, res: Response) => {
     res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/tasklist`, req.language));
 };
 
+export const uploadLookupTable = async (req: Request, res: Response, next: NextFunction) => {
+    const dataset = res.locals.dataset;
+    const dimension = singleLangDataset(res.locals.dataset, req.language).dimensions?.find(
+        (dim) => dim.id === req.params.dimensionId
+    );
+    if (!dimension) {
+        logger.error('Failed to find dimension in dataset');
+        next(new NotFoundException());
+        return;
+    }
+    let errors: ViewError[] | undefined;
+    const revisit = dataset.dimensions?.length > 0;
+
+    if (req.method === 'POST') {
+        logger.debug('User submitted a look up table');
+        try {
+            if (!req.file) {
+                logger.error('No file attached to request');
+                throw new Error('errors.csv.invalid');
+            }
+            const fileName = req.file.originalname;
+            req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
+            const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
+            try {
+                logger.debug('Sending lookup table to backend');
+                await req.swapi.uploadLookupTable(dataset.id, dimension.id, fileData, fileName);
+                res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/review`, req.language));
+            } catch (err) {
+                req.session.dimensionPatch = undefined;
+                req.session.save();
+                const error = err as ApiException;
+                logger.debug(`Error is: ${JSON.stringify(error, null, 2)}`);
+                if (error.status === 400) {
+                    res.status(400);
+                    logger.error('Lookup table did not match data in the fact table.', err);
+                    const failurePreview = JSON.parse(error.body as string) as ViewErrDTO;
+                    res.render('publish/period-match-failure', {
+                        ...failurePreview,
+                        patchRequest: { dimension_type: DimensionType.LookupTable },
+                        dimension
+                    });
+                    return;
+                }
+                logger.error('Something went wrong other than not matching');
+                logger.error(`Full error JSON: ${JSON.stringify(error, null, 2)}`);
+                res.redirect(
+                    req.buildUrl(`/publish/${dataset.id}/dimension-data-chooser/${dimension.id}/`, req.language)
+                );
+                return;
+            }
+
+            return;
+        } catch (err) {
+            res.status(400);
+            errors = [{ field: 'csv', message: { key: 'errors.upload.no_csv_data' } }];
+        }
+    }
+
+    res.render('publish/upload', { revisit, errors });
+};
+
+export const lookupReview = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const dataset = singleLangDataset(res.locals.dataset, req.language);
+        const dimension = dataset.dimensions?.find((dim) => dim.id === req.params.dimensionId);
+        if (!dimension) {
+            logger.error('Failed to find dimension in dataset');
+            next(new NotFoundException());
+            return;
+        }
+        let errors: ViewErrDTO | undefined;
+
+        if (req.method === 'POST') {
+            switch (req.body.confirm) {
+                case 'true':
+                    res.redirect(req.buildUrl(`/publish/${dataset.id}/dimension/${dimension.id}/name`, req.language));
+                    break;
+                case 'goback':
+                    try {
+                        await req.swapi.resetDimension(dataset.id, dimension.id);
+                        res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/`, req.language));
+                    } catch (err) {
+                        const error = err as ApiException;
+                        logger.error(
+                            `Something went wrong trying to reset the dimension with the following error: ${err}`
+                        );
+                        errors = {
+                            status: error.status || 500,
+                            errors: [
+                                {
+                                    field: '',
+                                    message: {
+                                        key: 'errors.dimension_reset'
+                                    }
+                                }
+                            ],
+                            dataset_id: req.params.datasetId
+                        } as ViewErrDTO;
+                    }
+                    break;
+            }
+            return;
+        }
+
+        const dataPreview = await req.swapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
+        if (errors) {
+            res.status(errors.status || 500);
+            res.render('publish/lookup-table-preview', { ...dataPreview, review: true, dimension, errors });
+        } else {
+            res.render('publish/lookup-table-preview', { ...dataPreview, review: true, dimension });
+        }
+    } catch (err) {
+        logger.error('Failed to get dimension preview', err);
+        next(new NotFoundException());
+    }
+};
+
 export const fetchDimensionPreview = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const dataset = singleLangDataset(res.locals.dataset, req.language);
         const dimension = singleLangDataset(res.locals.dataset, req.language).dimensions?.find(
             (dim) => dim.id === req.params.dimensionId
         );
@@ -283,8 +406,29 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
             next(new NotFoundException());
             return;
         }
+
+        if (req.method === 'POST') {
+            switch (req.body.dimensionType) {
+                case 'lookup':
+                    req.session.dimensionPatch = {
+                        dimension_type: DimensionType.LookupTable
+                    };
+                    res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}`, req.language));
+                    return;
+                case 'age':
+                case 'ethnicity':
+                case 'geography':
+                case 'religion':
+                case 'sexGender':
+                    req.session.dimensionPatch = {
+                        dimension_type: DimensionType.ReferenceData,
+                        reference_type: req.body.dimensionType
+                    };
+                    break;
+            }
+        }
         const dataPreview = await req.swapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
-        res.render('publish/dimension-chooser', { ...dataPreview });
+        res.render('publish/dimension-chooser', { ...dataPreview, dimension });
     } catch (err) {
         logger.error('Failed to get dimension preview', err);
         next(new NotFoundException());
@@ -701,7 +845,7 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                 res.render('publish/dimension-name', { ...{ updatedName }, errors });
                 return;
             }
-            if (updatedName.length > 1024) {
+            if (updatedName.length > 256) {
                 logger.error(`Dimension name is to long... Dimension name is ${req.body.name.length} characters long.`);
                 errors = {
                     status: 400,
@@ -727,6 +871,23 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                             field: 'name',
                             message: {
                                 key: 'errors.dimension.name_to_short'
+                            }
+                        }
+                    ],
+                    dataset_id: req.params.datasetId
+                };
+                res.status(400);
+                res.render('publish/dimension-name', { ...{ updatedName }, errors });
+                return;
+            } else if (!dimensionColumnNameRegex.test(updatedName)) {
+                logger.error(`Dimension name contains characters which aren't allowed.`);
+                errors = {
+                    status: 400,
+                    errors: [
+                        {
+                            field: 'name',
+                            message: {
+                                key: 'errors.dimension.illegal_characters'
                             }
                         }
                     ],

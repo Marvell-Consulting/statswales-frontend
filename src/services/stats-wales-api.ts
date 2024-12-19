@@ -109,6 +109,18 @@ export class StatsWalesApi {
         );
     }
 
+    public uploadLookupTable(datasetId: string, dimensionId: string, file: Blob, filename: string): Promise<ViewDTO> {
+        logger.debug(`Uploading file ${filename} to dataset: ${datasetId}`);
+        const body = new FormData();
+        body.set('csv', file, filename);
+
+        return this.fetch({
+            url: `dataset/${datasetId}/dimension/by-id/${dimensionId}/lookup`,
+            method: HttpMethod.Post,
+            body
+        }).then((response) => response.json() as unknown as ViewDTO);
+    }
+
     public async getDatasetView(datasetId: string, pageNumber: number, pageSize: number): Promise<ViewDTO> {
         logger.debug(`Fetching view for dataset: ${datasetId}, page: ${pageNumber}, pageSize: ${pageSize}`);
 

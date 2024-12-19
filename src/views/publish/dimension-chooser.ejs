@@ -47,14 +47,11 @@
                         <thead class="govuk-table__head">
                         <tr class="govuk-table__row">
                             <% locals.headers.forEach(function(cell, idx) { %>
-                                <th scope="col" class="govuk-table__header <%= cell.source_type === 'line_number' ? 'line-number' :'' %>">
-                                    <% if (cell.source_type && cell.source_type !== 'unknown' && cell.source_type !== 'line_number') { %>
-                                        <span class="region-subhead"><%= t(`publish.preview.source_type.${cell.source_type}`) %></span><br />
-                                    <% } %>
-                                    <% if (cell.source_type !== 'line_number') { %>
-                                        <%= cell.name || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %>
+                                <th scope="col" class="govuk-table__header">
+                                    <% if (cell.name === dimension.joinColumn) { %>
+                                        <%= cell.name %>
                                     <% } else { %>
-                                        <%= t('publish.preview.row_number') %>
+                                        <%= t(`publish.lookup_table_review.column_headers.${cell.name.toLowerCase()}`) %>
                                     <% } %>
                                 </th>
                             <% }); %>
