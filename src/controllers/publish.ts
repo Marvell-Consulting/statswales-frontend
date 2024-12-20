@@ -111,7 +111,7 @@ export const provideTitle = async (req: Request, res: Response, next: NextFuncti
 
 export const uploadFile = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = res.locals.dataset;
-    let errors: ViewError[] | undefined;
+    let errors: ViewError[] = [];
     const revisit = dataset.dimensions?.length > 0;
 
     if (req.method === 'POST') {
@@ -119,7 +119,8 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
         try {
             if (!req.file) {
                 logger.error('No file is present in the request');
-                throw new Error('errors.csv.invalid');
+                errors.push({ field: 'csv', message: { key: 'publish.upload.errors.missing' } });
+                throw new Error();
             }
             const fileName = req.file.originalname;
             req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
@@ -130,7 +131,9 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
             return;
         } catch (err) {
             res.status(400);
-            errors = [{ field: 'csv', message: { key: 'errors.upload.no_csv_data' } }];
+            if (err instanceof ApiException) {
+                errors = [{ field: 'csv', message: { key: 'publish.upload.errors.api' } }];
+            }
         }
     }
 

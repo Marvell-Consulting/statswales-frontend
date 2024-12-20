@@ -552,7 +552,18 @@
             "title": "Upload the data table",
             "lookup_heading": "Upload a lookup table",
             "measure_heading": "Upload a measure table",
-            "note": "This file must be in CSV, JSON or Parquet formats"
+            "form": {
+                "file": {
+                    "label": "The file should be in CSV, JSON or Parquet format"
+                }
+            },
+            "buttons": {
+                "upload": "Upload CSV File"
+            },
+            "errors": {
+                "missing": "Select a data table",
+                "api": "The selected file could not be uploaded – try again"
+            }
         },
         "preview": {
             "heading": "Check the data table",
