@@ -18,7 +18,7 @@ export class UploadPage {
 
   async chooseFile(filePath: string) {
     const fileChooserPromise = this.page.waitForEvent('filechooser');
-    await this.page.getByRole('button', { name: 'Choose file' }).click();
+    await this.page.locator('input[name="csv"]').click();
     const fileChooser = await fileChooserPromise;
     await fileChooser.setFiles(filePath);
   }
