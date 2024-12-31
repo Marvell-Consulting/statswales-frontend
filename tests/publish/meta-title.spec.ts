@@ -40,14 +40,14 @@ test.describe('Metadata Title', () => {
     });
 
     test.describe('Form', () => {
-      test('Displays a validation error when no title is provided', async ({ page }) => {
+      test('Displays a validation error when no input is provided', async ({ page }) => {
         await titlePage.fillForm('');
         await titlePage.submit();
         await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/title`);
         await expect(page.getByText('Enter the title of this dataset')).toBeVisible();
       });
 
-      test('Displays a validation error when the title is just whitespace', async ({ page }) => {
+      test('Displays a validation error when the input is only whitespace', async ({ page }) => {
         await titlePage.fillForm('   ');
         await titlePage.submit();
         await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/title`);

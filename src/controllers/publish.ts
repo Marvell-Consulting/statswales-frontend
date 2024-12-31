@@ -1313,20 +1313,24 @@ export const provideCollection = async (req: Request, res: Response, next: NextF
 
     if (req.method === 'POST') {
         try {
-            const collectionError = await hasError(collectionValidator(), req);
-            if (collectionError) {
-                res.status(400);
-                throw new Error('errors.collection.missing');
-            }
-
             collection = req.body.collection;
+
+            errors = (await getErrors(collectionValidator(), req)).map((error: FieldValidationError) => {
+                return { field: error.path, message: { key: `publish.collection.form.collection.error.missing` } };
+            });
+
+            if (errors.length > 0) {
+                res.status(400);
+                throw new Error();
+            }
 
             await req.swapi.updateDatasetInfo(dataset.id, { collection, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
-            const error: ViewError = { field: 'collection', message: { key: 'errors.collection.missing' } };
-            errors = [error];
+            if (err instanceof ApiException) {
+                errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+            }
         }
     }
 

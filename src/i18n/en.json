@@ -346,7 +346,14 @@
             "explain_1": "the methodology used to collect the data",
             "explain_2": "the methodology used to calculate the data",
             "explain_3": "both of the above",
-            "language": "This should be entered in the language in which you're viewing this service."
+            "language": "This should be entered in the language in which you're viewing this service.",
+            "form": {
+                "collection": {
+                    "error": {
+                        "missing": "Enter how the data was collected or calculated"
+                    }
+                }
+            }
         },
         "quality": {
             "heading": "What is the statistical quality of this dataset?",
@@ -790,9 +797,6 @@
             "name_to_short": "The Dimension name is to short or missing",
             "name_to_long": "Dimension name is limited to 1024 characters",
             "naming_failed": "Something went wrong trying to set the name.  Please try again"
-        },
-        "collection": {
-            "missing": "Either a collection method was not entered or there is a problem."
         },
         "quality": {
             "missing": "You need to provide the statistical quality of this dataset"
