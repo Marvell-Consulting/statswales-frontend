@@ -5,16 +5,15 @@ import { appConfig } from '../../../src/config';
 const config = appConfig();
 const baseUrl = config.frontend.url;
 
-export class TitlePage {
+export class SummaryPage {
   private readonly inputBox: Locator;
 
   constructor(public readonly page: Page) {
-    this.inputBox = this.page.locator('input#title');
+    this.inputBox = this.page.locator('input#description');
   }
 
-  async goto(datasetId?: string) {
-    const url = datasetId ? `${baseUrl}/en-GB/publish/${datasetId}/title` : `${baseUrl}/en-GB/publish/title`;
-    await this.page.goto(url);
+  async goto(datasetId: string) {
+    await this.page.goto(`${baseUrl}/en-GB/publish/${datasetId}/summary`);
   }
 
   async fillForm(text: string) {
