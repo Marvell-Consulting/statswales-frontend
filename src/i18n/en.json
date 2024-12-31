@@ -331,7 +331,14 @@
             "explain": "In short, simple sentences explain:",
             "explain_1": "what this dataset is about and what it shows",
             "explain_2": "this dataset's dimensions and why they've been used, if needed",
-            "language": "This should be entered in the language in which you're viewing this service."
+            "language": "This should be entered in the language in which you're viewing this service.",
+            "form": {
+                "description": {
+                    "error": {
+                        "missing": "Enter the summary of this dataset"
+                    }
+                }
+            }
         },
         "collection": {
             "heading": "How was the data collected or calculated?",
@@ -783,13 +790,6 @@
             "name_to_short": "The Dimension name is to short or missing",
             "name_to_long": "Dimension name is limited to 1024 characters",
             "naming_failed": "Something went wrong trying to set the name.  Please try again"
-        },
-        "title": {
-            "missing": "Enter the title of this dataset",
-            "duplicate": "Title already exists"
-        },
-        "description": {
-            "missing": "You need to provide a summary of this dataset"
         },
         "collection": {
             "missing": "Either a collection method was not entered or there is a problem."

@@ -1282,20 +1282,24 @@ export const provideSummary = async (req: Request, res: Response, next: NextFunc
 
     if (req.method === 'POST') {
         try {
-            const descriptionError = await hasError(descriptionValidator(), req);
-            if (descriptionError) {
-                res.status(400);
-                throw new Error('errors.description.missing');
-            }
-
             description = req.body.description;
+
+            errors = (await getErrors(descriptionValidator(), req)).map((error: FieldValidationError) => {
+                return { field: error.path, message: { key: `publish.summary.form.description.error.missing` } };
+            });
+
+            if (errors.length > 0) {
+                res.status(400);
+                throw new Error();
+            }
 
             await req.swapi.updateDatasetInfo(dataset.id, { description, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
-            const error: ViewError = { field: 'description', message: { key: 'errors.description.missing' } };
-            errors = [error];
+            if (err instanceof ApiException) {
+                errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+            }
         }
     }
 
