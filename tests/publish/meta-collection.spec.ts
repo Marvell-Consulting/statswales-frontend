@@ -4,21 +4,21 @@ import { publisherContext } from '../../playwright/.auth/contexts';
 import { appConfig } from '../../src/config';
 import { metadata as dataset } from '../fixtures/datasets';
 
-import { SummaryPage } from './pages/summary-page';
+import { CollectionPage } from './pages/collection-page';
 
 const config = appConfig();
 const baseUrl = config.frontend.url;
 
-test.describe('Metadata Summary', () => {
-  let summaryPage: SummaryPage;
+test.describe('Metadata Data Collection', () => {
+  let collectionPage: CollectionPage;
 
   test.beforeEach(async ({ page }) => {
-    summaryPage = new SummaryPage(page);
+    collectionPage = new CollectionPage(page);
   });
 
   test.describe('Not authed', () => {
     test('Redirects to login page when not authenticated', async ({ page }) => {
-      await summaryPage.goto(dataset.id);
+      await collectionPage.goto(dataset.id);
       await expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
     });
   });
@@ -27,11 +27,11 @@ test.describe('Metadata Summary', () => {
     test.use({ storageState: publisherContext });
 
     test.beforeEach(async () => {
-      await summaryPage.goto(dataset.id);
+      await collectionPage.goto(dataset.id);
     });
 
     test('Has a heading', async ({ page }) => {
-      await expect(page.getByRole('heading', { name: 'What is the summary of this dataset?' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'How was the data collected or calculated?' })).toBeVisible();
     });
 
     test.fixme('Can switch to Welsh', async ({ page }) => {
@@ -40,29 +40,24 @@ test.describe('Metadata Summary', () => {
       await expect(page.getByRole('heading', { name: '' })).toBeVisible();
     });
 
-    test('Can be cancelled and return to tasklist', async ({ page }) => {
-      await summaryPage.cancel();
-      await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/tasklist`);
-    });
-
     test.describe('Form', () => {
       test('Displays a validation error when no input is provided', async ({ page }) => {
-        await summaryPage.fillForm('');
-        await summaryPage.submit();
-        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/summary`);
-        await expect(page.getByText('Enter the summary of this dataset')).toBeVisible();
+        await collectionPage.fillForm('');
+        await collectionPage.submit();
+        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/collection`);
+        await expect(page.getByText('Enter how the data was collected or calculated')).toBeVisible();
       });
 
       test('Displays a validation error when the input is only whitespace', async ({ page }) => {
-        await summaryPage.fillForm('   ');
-        await summaryPage.submit();
-        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/summary`);
-        await expect(page.getByText('Enter the summary of this dataset')).toBeVisible();
+        await collectionPage.fillForm('   ');
+        await collectionPage.submit();
+        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/collection`);
+        await expect(page.getByText('Enter how the data was collected or calculated')).toBeVisible();
       });
 
-      test('Can add a summary and return to the tasklist', async ({ page }) => {
-        await summaryPage.fillForm('This is a summary.');
-        await summaryPage.submit();
+      test('Can add info about data collection and return to the tasklist', async ({ page }) => {
+        await collectionPage.fillForm('This is info about collection.');
+        await collectionPage.submit();
         await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/tasklist`);
       });
     });

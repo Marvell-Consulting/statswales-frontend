@@ -5,15 +5,15 @@ import { appConfig } from '../../../src/config';
 const config = appConfig();
 const baseUrl = config.frontend.url;
 
-export class SummaryPage {
+export class CollectionPage {
   private readonly inputBox: Locator;
 
   constructor(public readonly page: Page) {
-    this.inputBox = this.page.locator('textarea#description');
+    this.inputBox = this.page.locator('textarea#collection');
   }
 
   async goto(datasetId: string) {
-    await this.page.goto(`${baseUrl}/en-GB/publish/${datasetId}/summary`);
+    await this.page.goto(`${baseUrl}/en-GB/publish/${datasetId}/collection`);
   }
 
   async fillForm(text: string) {
