@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 import { publisherContext } from '../../playwright/.auth/contexts';
 import { appConfig } from '../../src/config';
-import { metadata as dataset } from '../fixtures/datasets';
+import { metadataA as dataset } from '../fixtures/datasets';
 
 import { CollectionPage } from './pages/collection-page';
 

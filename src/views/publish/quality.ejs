@@ -29,38 +29,42 @@
                             <li><%= t('publish.quality.explain_2') %></li>
                         </ul>
 
-                        <div class="govuk-hint">
-                            <%= t('publish.quality.language') %>
+                        <div class="govuk-form-group">
+                            <div class="govuk-hint"><%= t('publish.quality.language') %></div>
+                            <% if(locals.errors?.find(e => e.field === 'quality')) { %>
+                                <p id="quality-error" class="govuk-error-message"><%= t('publish.quality.form.quality.error.missing') %></p>
+                            <% } %>
+                            <textarea class="govuk-textarea <%= locals.errors?.find(e => e.field === 'quality') ? 'govuk-textarea--error' : '' %>" id="quality" name="quality" rows="4"><%= locals.quality %></textarea>
                         </div>
 
-
-                        <div class="govuk-form-group">
-                            <textarea class="govuk-textarea" id="quality" name="quality" rows="4"><%= locals.quality %></textarea>
-                        </div>
-
-                        <h2 class="govuk-heading-s"><%= t('publish.quality.rounding.heading') %></h2>
-
-                        <div class="govuk-form-group">
+                        <div class="govuk-form-group <%= locals.errors?.find(e => e.field === 'rounding_applied') ? 'govuk-form-group--error' : '' %>">
                             <fieldset class="govuk-fieldset" aria-describedby="rounding">
+                                <h2 class="govuk-heading-s"><%= t('publish.quality.form.rounding_applied.heading') %></h2>
+                                <% if(locals.errors?.find(e => e.field === 'rounding_applied')) { %>
+                                    <p id="rounding_applied-error" class="govuk-error-message"><%= t('publish.quality.form.rounding_applied.error.missing') %></p>
+                                <% } %>
                                 <div class="govuk-radios" data-module="govuk-radios">
                                     <div class="govuk-radios__item">
                                         <input class="govuk-radios__input" id="roundingApplied1" name="rounding_applied" data-aria-controls="conditional-rounding1" type="radio" value="true" <%= locals.rounding_applied === true ? 'checked' : '' %> />
-                                        <label class="govuk-label govuk-radios__label" for="roundingApplied1"><%= t('publish.quality.rounding.options.yes.label') %></label>
+                                        <label class="govuk-label govuk-radios__label" for="roundingApplied1"><%= t('publish.quality.form.rounding_applied.options.yes.label') %></label>
                                     </div>
                                     <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-rounding1">
-                                        <div class="govuk-form-group">
+                                        <div class="govuk-form-group <%= locals.errors?.find(e => e.field === 'rounding_description') ? 'govuk-form-group--error' : '' %>">
                                         <fieldset class="govuk-fieldset" role="group" aria-describedby="roundingApplied1">
                                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                                            <p><%= t('publish.quality.rounding.options.yes.note') %></p>
+                                                <%= t('publish.quality.form.rounding_description.label') %>
                                             </legend>
                                             <div class="govuk-hint"><%= t('publish.quality.language') %></div>
+                                            <% if(locals.errors?.find(e => e.field === 'rounding_description')) { %>
+                                                <p id="rounding_description-error" class="govuk-error-message"><%= t('publish.quality.form.rounding_description.error.missing') %></p>
+                                            <% } %>
                                             <textarea class="govuk-textarea" id="roundingDescription" name="rounding_description" rows="4" aria-describedby="roundingDescription-hint"><%= locals.rounding_description %></textarea>
                                         </fieldset>
                                         </div>
                                     </div>
                                     <div class="govuk-radios__item">
                                         <input class="govuk-radios__input" id="roundingApplied2" name="rounding_applied" type="radio" value="false" <%= locals.rounding_applied === false ? 'checked' : '' %> />
-                                        <label class="govuk-label govuk-radios__label" for="roundingApplied2"><%= t('publish.quality.rounding.options.no.label') %></label>
+                                        <label class="govuk-label govuk-radios__label" for="roundingApplied2"><%= t('publish.quality.form.rounding_applied.options.no.label') %></label>
                                     </div>
                                 </div>
                             </fieldset>

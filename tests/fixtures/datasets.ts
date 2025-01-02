@@ -34,10 +34,18 @@ export const sources: DatasetDTO = {
   datasetInfo: [{ language: 'en-GB', title: 'Test - Sources' }]
 };
 
-export const metadata: DatasetDTO = {
+export const metadataA: DatasetDTO = {
   id: '47dcdd38-57d4-405f-93ac-9db20bebcfc6',
   created_by: publisher1.id,
   created_at: new Date().toISOString(),
   revisions: [],
-  datasetInfo: [{ language: 'en-GB', title: 'Test - Sources' }]
+  datasetInfo: [{ language: 'en-GB', title: 'Test - Metadata A' }]
+};
+
+export const metadataB: DatasetDTO = {
+  id: '3837564c-a901-42be-9aa6-e62232150ff6',
+  created_by: publisher1.id,
+  created_at: new Date().toISOString(),
+  revisions: [],
+  datasetInfo: [{ language: 'en-GB', title: 'Test - Metadata B' }]
 };
