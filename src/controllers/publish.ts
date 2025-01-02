@@ -1605,20 +1605,24 @@ export const provideDesignation = async (req: Request, res: Response, next: Next
 
     if (req.method === 'POST') {
         try {
-            const designationError = await hasError(designationValidator(), req);
-            if (designationError) {
-                res.status(400);
-                throw new Error('errors.designation.missing');
-            }
-
             designation = req.body.designation;
+
+            errors = (await getErrors(designationValidator(), req)).map((error: FieldValidationError) => {
+                return { field: error.path, message: { key: `publish.designation.form.designation.error.missing` } };
+            });
+
+            if (errors.length > 0) {
+                res.status(400);
+                throw new Error();
+            }
 
             await req.swapi.updateDatasetInfo(dataset.id, { designation, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
-            const error: ViewError = { field: 'designation', message: { key: 'errors.designation.missing' } };
-            errors = [error];
+            if (err instanceof ApiException) {
+                errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+            }
         }
     }
 
@@ -1634,11 +1638,13 @@ export const provideTopics = async (req: Request, res: Response, next: NextFunct
 
     if (req.method === 'POST') {
         try {
-            const topicError = await hasError(topicIdValidator(), req);
+            errors = (await getErrors(topicIdValidator(), req)).map((error: FieldValidationError) => {
+                return { field: error.path, message: { key: `publish.topics.form.topics.error.missing` } };
+            });
 
-            if (topicError) {
+            if (errors.length > 0) {
                 res.status(400);
-                throw new Error('errors.topics.missing');
+                throw new Error();
             }
 
             const topicIds = req.body.topics.filter(Boolean); // strip empty values
@@ -1646,8 +1652,9 @@ export const provideTopics = async (req: Request, res: Response, next: NextFunct
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
-            const error: ViewError = { field: 'topics', message: { key: 'errors.topics.missing' } };
-            errors = [error];
+            if (err instanceof ApiException) {
+                errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+            }
         }
     }
 

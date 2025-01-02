@@ -498,23 +498,37 @@
         },
         "designation": {
             "heading": "How is this dataset designated?",
-            "options": {
-                "official": {
-                    "label": "Official statistics"
-                },
-                "accredited": {
-                    "label": "Accredited official statistics"
-                },
-                "in_development": {
-                    "label": "Official statistics in development"
-                },
-                "none": {
-                    "label": "No designation"
+            "form": {
+                "designation": {
+                    "options": {
+                        "official": {
+                            "label": "Official statistics"
+                        },
+                        "accredited": {
+                            "label": "Accredited official statistics"
+                        },
+                        "in_development": {
+                            "label": "Official statistics in development"
+                        },
+                        "none": {
+                            "label": "No designation"
+                        }
+                    },
+                    "error": {
+                        "missing": "Select how this dataset is designated"
+                    }
                 }
             }
         },
         "topics": {
-            "heading": "Which topics are relevant to this dataset?"
+            "heading": "Which topics are relevant to this dataset?",
+            "form": {
+                "topics": {
+                    "error": {
+                        "missing": "Select which topics are relevant to this dataset"
+                    }
+                }
+            }
         },
         "schedule": {
             "heading": "When should this dataset be published?",

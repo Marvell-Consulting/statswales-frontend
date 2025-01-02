@@ -34,8 +34,4 @@ export class QualityPage {
   async submit() {
     await this.page.getByRole('button', { name: 'Continue' }).click();
   }
-
-  async cancel() {
-    await this.page.getByRole('link', { name: 'Cancel' }).click();
-  }
 }
