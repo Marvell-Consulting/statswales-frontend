@@ -394,24 +394,38 @@
         },
         "update_frequency": {
             "heading": "Will this dataset be regularly updated?",
-            "options": {
-                "yes": {
-                    "label": "Yes"
+            "form": {
+                "is_updated": {
+                    "options": {
+                        "yes": {
+                            "label": "Yes"
+                        },
+                        "no": {
+                            "label": "No"
+                        }
+                    },
+                    "error": {
+                        "missing": "Select if this dataset will be regularly updated or not"
+                    }
                 },
-                "no": {
-                    "label": "No"
+                "frequency_value": {
+                    "label": "Enter the period between updates. For example, 1 year.",
+                    "error": {
+                        "missing": "Enter the number of weeks, months or years for the period between updates"
+                    }
+                },
+                "frequency_unit": {
+                    "options": {
+                        "select": "Select",
+                        "day": "days",
+                        "week": "weeks",
+                        "month": "months",
+                        "year": "years"
+                    },
+                    "error": {
+                        "missing": "Select whether the period between updates is in weeks, months or years"
+                    }
                 }
-            },
-            "period": {
-                "label": "Enter the period between updates. For example, 1 year."
-            },
-            "unit": {
-                "select": "Select",
-                "day": "days",
-                "week": "weeks",
-                "month": "months",
-                "quarter": "quarters",
-                "year": "years"
             }
         },
         "related": {

@@ -1387,13 +1387,18 @@ export const provideUpdateFrequency = async (req: Request, res: Response, next: 
         };
 
         try {
-            for (const validator of [isUpdatedValidator(), frequencyValueValidator(), frequencyUnitValidator()]) {
-                const result = await validator.run(req);
-                if (!result.isEmpty()) {
-                    res.status(400);
-                    const error = result.array()[0] as FieldValidationError;
-                    throw error;
-                }
+            const validators = [isUpdatedValidator(), frequencyValueValidator(), frequencyUnitValidator()];
+
+            errors = (await getErrors(validators, req)).map((error: FieldValidationError) => {
+                return {
+                    field: error.path,
+                    message: { key: `publish.update_frequency.form.${error.path}.error.missing` }
+                };
+            });
+
+            if (errors.length > 0) {
+                res.status(400);
+                throw new Error();
             }
 
             const { is_updated, frequency_unit, frequency_value } = matchedData(req);
@@ -1408,8 +1413,9 @@ export const provideUpdateFrequency = async (req: Request, res: Response, next: 
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
-            const error: ViewError = { field: 'update_frequency', message: { key: 'errors.update_frequency.missing' } };
-            errors = [error];
+            if (err instanceof ApiException) {
+                errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+            }
         }
     }
 
