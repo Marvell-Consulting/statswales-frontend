@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 import { publisherContext } from '../../playwright/.auth/contexts';
 import { appConfig } from '../../src/config';
-import { metadata as dataset } from '../fixtures/datasets';
+import { metadataA as dataset, metadataB as datasetB } from '../fixtures/datasets';
 
 import { SummaryPage } from './pages/summary-page';
 
@@ -26,26 +26,24 @@ test.describe('Metadata Summary', () => {
   test.describe('Authed as a publisher', () => {
     test.use({ storageState: publisherContext });
 
-    test.beforeEach(async () => {
-      await summaryPage.goto(dataset.id);
-    });
-
     test('Has a heading', async ({ page }) => {
+      await summaryPage.goto(dataset.id);
       await expect(page.getByRole('heading', { name: 'What is the summary of this dataset?' })).toBeVisible();
     });
 
     test.fixme('Can switch to Welsh', async ({ page }) => {
       // TODO: waiting on translations
+      await summaryPage.goto(dataset.id);
       await page.getByText('Cymraeg').click();
       await expect(page.getByRole('heading', { name: '' })).toBeVisible();
     });
 
-    test('Can be cancelled and return to tasklist', async ({ page }) => {
-      await summaryPage.cancel();
-      await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/tasklist`);
-    });
+    test.describe('Form validation', () => {
+      test.beforeEach(async () => {
+        // Only use metadata A dataset for failed form validation
+        await summaryPage.goto(dataset.id);
+      });
 
-    test.describe('Form', () => {
       test('Displays a validation error when no input is provided', async ({ page }) => {
         await summaryPage.fillForm('');
         await summaryPage.submit();
@@ -59,11 +57,18 @@ test.describe('Metadata Summary', () => {
         await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/summary`);
         await expect(page.getByText('Enter the summary of this dataset')).toBeVisible();
       });
+    });
+
+    test.describe('Form success', () => {
+      test.beforeEach(async () => {
+        // Use metadata B for successful form submission
+        await summaryPage.goto(datasetB.id);
+      });
 
       test('Can add a summary and return to the tasklist', async ({ page }) => {
         await summaryPage.fillForm('This is a summary.');
         await summaryPage.submit();
-        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/tasklist`);
+        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetB.id}/tasklist`);
       });
     });
   });

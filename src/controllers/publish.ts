@@ -1350,25 +1350,23 @@ export const provideQuality = async (req: Request, res: Response, next: NextFunc
                 rounding_description: req.body.rounding_applied === 'true' ? req.body.rounding_description : ''
             };
 
-            for (const validator of [qualityValidator(), roundingAppliedValidator(), roundingDescriptionValidator()]) {
-                const result = await validator.run(req);
-                if (!result.isEmpty()) {
-                    res.status(400);
-                    const error = result.array()[0] as FieldValidationError;
-                    throw error;
-                }
+            const validators = [qualityValidator(), roundingAppliedValidator(), roundingDescriptionValidator()];
+
+            errors = (await getErrors(validators, req)).map((error: FieldValidationError) => {
+                return { field: error.path, message: { key: `publish.quality.form.${error.path}.error.missing` } };
+            });
+
+            if (errors.length > 0) {
+                res.status(400);
+                throw new Error();
             }
 
             await req.swapi.updateDatasetInfo(dataset.id, { ...datasetInfo, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err: any) {
-            if (err.path) {
-                const error: ViewError = { field: err.path, message: { key: `errors.${snakeCase(err.path)}.missing` } };
-                errors = [error];
-            } else {
-                next(new UnknownException());
-                return;
+            if (err instanceof ApiException) {
+                errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
             }
         }
     }

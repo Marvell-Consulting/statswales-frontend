@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 import { publisherContext } from '../../playwright/.auth/contexts';
 import { appConfig } from '../../src/config';
-import { metadata as dataset } from '../fixtures/datasets';
+import { metadataA as datasetA } from '../fixtures/datasets';
 
 import { TitlePage } from './pages/title-page';
 
@@ -18,7 +18,7 @@ test.describe('Metadata Title', () => {
 
   test.describe('Not authed', () => {
     test('Redirects to login page when not authenticated', async ({ page }) => {
-      await titlePage.goto(dataset.id);
+      await titlePage.goto(datasetA.id);
       await expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
     });
   });
@@ -27,7 +27,7 @@ test.describe('Metadata Title', () => {
     test.use({ storageState: publisherContext });
 
     test.beforeEach(async () => {
-      await titlePage.goto(dataset.id);
+      await titlePage.goto(datasetA.id);
     });
 
     test('Has a heading', async ({ page }) => {
@@ -43,30 +43,26 @@ test.describe('Metadata Title', () => {
       test('Displays a validation error when no input is provided', async ({ page }) => {
         await titlePage.fillForm('');
         await titlePage.submit();
-        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/title`);
+        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetA.id}/title`);
         await expect(page.getByText('Enter the title of this dataset')).toBeVisible();
       });
 
       test('Displays a validation error when the input is only whitespace', async ({ page }) => {
         await titlePage.fillForm('   ');
         await titlePage.submit();
-        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/title`);
+        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetA.id}/title`);
         await expect(page.getByText('Enter the title of this dataset')).toBeVisible();
       });
 
       test('Can update the title and return to the tasklist', async ({ page }) => {
-        await titlePage.fillForm('Dataset Title Test 1');
+        await titlePage.fillForm('Test - Metadata Updated');
         await titlePage.submit();
-        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/tasklist`);
+        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetA.id}/tasklist`);
       });
 
       test.fixme('Displays a validation error when the title already exists', async ({ page }) => {
         // TODO: implement title uniqueness check
-        await titlePage.fillForm('Dataset Title Not Unique');
-        await titlePage.submit();
-
-        await titlePage.goto();
-        await titlePage.fillForm('Dataset Title Not Unique');
+        await titlePage.fillForm('Test - Metadata B');
         await titlePage.submit();
 
         await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/title`);

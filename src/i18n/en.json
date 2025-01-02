@@ -363,15 +363,31 @@
             "explain_1b": "custom explanations needed to clarify any note codes used",
             "explain_2": "a high-level summary of the statistical quality report, if available",
             "language": "This should be entered in the language in which you're viewing this service.",
-            "rounding": {
-                "heading": "Has rounding been applied to the data values?",
-                "options": {
-                    "yes": {
-                        "label": "Yes",
-                        "note": "In short, simple sentences explain what rounding has been applied."
+            "form": {
+                "quality": {
+                    "error": {
+                        "missing": "Enter the statistical quality of this dataset"
+                    }
+                },
+                "rounding_applied": {
+                    "heading": "Has rounding been applied to the data values?",
+                    "options": {
+                        "yes": {
+                            "label": "Yes",
+                            "note": "In short, simple sentences explain what rounding has been applied."
+                        },
+                        "no": {
+                            "label": "No"
+                        }
                     },
-                    "no": {
-                        "label": "No"
+                    "error": {
+                        "missing": "Select whether any rounding has been applied to the data values"
+                    }
+                },
+                "rounding_description": {
+                    "label": "In short, simple sentences explain what rounding has been applied",
+                    "error": {
+                        "missing": "Enter what rounding has been applied to the data values"
                     }
                 }
             }
@@ -797,36 +813,6 @@
             "name_to_short": "The Dimension name is to short or missing",
             "name_to_long": "Dimension name is limited to 1024 characters",
             "naming_failed": "Something went wrong trying to set the name.  Please try again"
-        },
-        "quality": {
-            "missing": "You need to provide the statistical quality of this dataset"
-        },
-        "rounding_applied": {
-            "missing": "You need to provide whether rounding has been applied to the data values"
-        },
-        "rounding_description": {
-            "missing": "You need to provide a description of the rounding applied"
-        },
-        "update_frequency": {
-            "missing": "You need to provide the update frequency of this dataset"
-        },
-        "provider": {
-            "missing": "Select a data provider",
-            "add_another": "Select whether you need to add another data source"
-        },
-        "provider_source": {
-            "missing": "Select a data provider source",
-            "has_source": "Select whether the data provider has a specific source"
-        },
-        "related_link": {
-            "required": "You need to provide the link URL and text",
-            "missing": "The related link could not be found"
-        },
-        "designation": {
-            "missing": "You need to provide the designation of this dataset"
-        },
-        "topics": {
-            "missing": "Select the topics relevant to this dataset"
         },
         "upload": {
             "no_csv": "No CSV data provided",
