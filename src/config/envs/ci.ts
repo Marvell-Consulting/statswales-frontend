@@ -20,8 +20,7 @@ export function getCIConfig(): AppConfig {
             url: 'http://localhost:3001'
         },
         rateLimit: {
-            windowMs: 60000,
-            maxRequests: 1000000
+            windowMs: -1 // disable rate limiting in CI
         },
         session: {
             store: SessionStore.Memory,

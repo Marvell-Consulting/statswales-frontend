@@ -21,6 +21,8 @@ export class QualityPage {
   async fillForm(quality: string, roundingApplied?: boolean, roundingDescription?: string) {
     await this.inputQuality.fill(quality);
 
+    // Note - playwright seems to get stuck in a loop when using getByLabel() with radio buttons that expand to
+    // reveal content. It seems to be because the click position changes on DOM render. Using getByText instead.
     if (roundingApplied === true) {
       await this.page.getByText('Yes', { exact: true }).click();
       await this.inputRoundingDescription.fill(roundingDescription!);
