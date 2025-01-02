@@ -23,19 +23,19 @@
                                 <div class="govuk-radios" data-module="govuk-radios">
                                     <div class="govuk-radios__item">
                                         <input class="govuk-radios__input" id="isUpdatedYes" name="is_updated" data-aria-controls="conditional-isUpdated1" type="radio" value="true" <%= locals.is_updated === true ? 'checked' : '' %> />
-                                        <label class="govuk-label govuk-radios__label" for="isUpdatedYes"><%= t('publish.update_frequency.options.yes.label') %></label>
+                                        <label class="govuk-label govuk-radios__label" for="isUpdatedYes"><%= t('publish.update_frequency.form.is_updated.options.yes.label') %></label>
                                     </div>
                                     <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-isUpdated1">
-                                        <div class="govuk-form-group">
+                                        <div class="govuk-form-group <%= locals.errors?.find(e => ['frequency_unit', 'frequency_value'].includes(e.field)) ? 'govuk-form-group--error' : '' %>">
                                             <fieldset class="govuk-fieldset" role="group" aria-describedby="isUpdatedYes">
                                                 <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                                                    <p><%= t('publish.update_frequency.period.label') %></p>
+                                                    <%= t('publish.update_frequency.form.frequency_value.label') %>
                                                 </legend>
                                                 <input class="govuk-input govuk-input--width-2" id="frequency_value" name="frequency_value" type="text" value="<%= locals.frequency_value %>" />
                                                 <select class="govuk-select govuk-!-display-inline" id="frequency_unit" name="frequency_unit">
-                                                    <option value=""><%= t(`publish.update_frequency.unit.select`) %></option>
+                                                    <option value=""><%= t(`publish.update_frequency.form.frequency_unit.options.select`) %></option>
                                                     <% locals.unitOptions.forEach((unit) => { %>>
-                                                        <option value="<%= unit %>" <%= locals.frequency_unit === unit ? 'selected' : '' %>><%= t(`publish.update_frequency.unit.${unit}`) %></option>
+                                                        <option value="<%= unit %>" <%= locals.frequency_unit === unit ? 'selected' : '' %>><%= t(`publish.update_frequency.form.frequency_unit.options.${unit}`) %></option>
                                                     <% })%>
                                                 </select>
                                             </fieldset>
@@ -43,7 +43,7 @@
                                     </div>
                                     <div class="govuk-radios__item">
                                         <input class="govuk-radios__input" id="isUpdatedNo" name="is_updated" type="radio" value="false" <%= locals.is_updated === false ? 'checked' : '' %> />
-                                        <label class="govuk-label govuk-radios__label" for="isUpdatedNo"><%= t('publish.update_frequency.options.no.label') %></label>
+                                        <label class="govuk-label govuk-radios__label" for="isUpdatedNo"><%= t('publish.update_frequency.form.is_updated.options.no.label') %></label>
                                     </div>
                                 </div>
                             </fieldset>
