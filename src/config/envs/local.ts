@@ -25,6 +25,9 @@ export function getLocalConfig(): AppConfig {
         logger: {
             level: 'debug'
         },
+        rateLimit: {
+            windowMs: -1 // disable rate limiting in local
+        },
         auth: {
             jwt: {
                 secret: process.env.JWT_SECRET || 'jwtsecret',
