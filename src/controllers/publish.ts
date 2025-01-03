@@ -370,7 +370,7 @@ export const redirectToTasklist = (req: Request, res: Response) => {
 export const measurePreview = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const dataset = singleLangDataset(res.locals.dataset, req.language);
-        const measure = singleLangDataset(res.locals.dataset, req.language).measure;
+        const measure = dataset.measure;
         if (!measure) {
             logger.error('Measure not defined for this dataset');
             next(new UnknownException('errors.preview.measure_not_found'));

@@ -7,5 +7,5 @@ export class MeasureDTO {
     fact_table_column: string;
     join_column: string | null;
     lookup_table?: LookupTableDTO;
-    measure_info: MeasureInfoDTO[] | undefined;
+    measure_info?: MeasureInfoDTO[];
 }
