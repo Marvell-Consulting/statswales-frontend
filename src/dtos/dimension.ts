@@ -1,5 +1,5 @@
 import { DimensionInfoDTO } from './dimension-info';
-import { LookupTable } from './lookup-table';
+import { LookupTableDTO } from './lookup-table';
 
 export interface DimensionDTO {
     id: string;
@@ -9,6 +9,6 @@ export interface DimensionDTO {
     joinColumn?: string; // <-- Tells you have to join the dimension to the fact_table
     factTableColumn: string; // <-- Tells you which column in the fact table you're joining to
     isSliceDimension: boolean;
-    lookupTable?: LookupTable;
+    lookupTable?: LookupTableDTO;
     dimensionInfo?: DimensionInfoDTO[];
 }

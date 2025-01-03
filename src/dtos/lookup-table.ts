@@ -1,4 +1,4 @@
-export class LookupTable {
+export class LookupTableDTO {
     id: string;
     dimension_id?: string;
     measure_id?: string;

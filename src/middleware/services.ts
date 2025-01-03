@@ -19,7 +19,6 @@ export const initServices = (req: Request, res: Response, next: NextFunction): v
         res.locals.parseISO = parseISO;
         res.locals.dateFormat = format;
         res.locals.dateAdd = add;
-        res.locals.languague = req.language;
     }
     next();
 };

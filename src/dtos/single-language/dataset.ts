@@ -2,7 +2,7 @@ import { RevisionDTO } from '../revision';
 import { DatasetInfoDTO } from '../dataset-info';
 import { DatasetProviderDTO } from '../dataset-provider';
 import { DatasetTopicDTO } from '../dataset-topic';
-import { Measure } from '../measure';
+import { MeasureDTO } from '../measure';
 import { TeamDTO } from '../team';
 
 import { SingleLanguageDimension } from './dimension';
@@ -13,7 +13,7 @@ export interface SingleLanguageDataset {
     created_by: string;
     live?: string;
     archive?: string;
-    measure?: Measure;
+    measure?: MeasureDTO;
     dimensions?: SingleLanguageDimension[];
     revisions: RevisionDTO[];
     datasetInfo?: DatasetInfoDTO;

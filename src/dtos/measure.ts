@@ -1,11 +1,11 @@
-import { LookupTable } from './lookup-table';
-import { MeasureInfo } from './measure-info';
+import { LookupTableDTO } from './lookup-table';
+import { MeasureInfoDTO } from './measure-info';
 
-export class Measure {
+export class MeasureDTO {
     id: string;
     dataset_id: string;
     fact_table_column: string;
     join_column: string | null;
-    lookup_table?: LookupTable;
-    measure_info: MeasureInfo[] | undefined;
+    lookup_table?: LookupTableDTO;
+    measure_info: MeasureInfoDTO[] | undefined;
 }

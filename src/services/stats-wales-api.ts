@@ -3,7 +3,7 @@ import { ReadableStream } from 'node:stream/web';
 import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
 import { DatasetDTO } from '../dtos/dataset';
 import { DatasetInfoDTO } from '../dtos/dataset-info';
-import { FactTableDto } from '../dtos/fact-table';
+import { FactTableDTO } from '../dtos/fact-table';
 import { SourceAssignmentDTO } from '../dtos/source-assignment-dto';
 import { logger as parentLogger } from '../utils/logger';
 import { appConfig } from '../config';
@@ -19,7 +19,7 @@ import { ProviderSourceDTO } from '../dtos/provider-source';
 import { TopicDTO } from '../dtos/topic';
 import { OrganisationDTO } from '../dtos/organisation';
 import { TeamDTO } from '../dtos/team';
-import { DimensionPatchDto } from '../dtos/dimension-patch-dto';
+import { DimensionPatchDTO } from '../dtos/dimension-patch-dto';
 import { DimensionDTO } from '../dtos/dimension';
 import { DimensionInfoDTO } from '../dtos/dimension-info';
 import { TranslationDTO } from '../dtos/translations';
@@ -201,25 +201,25 @@ export class StatsWalesApi {
         }).then((response) => response.body as ReadableStream);
     }
 
-    public async confirmFileImport(datasetId: string, revisionId: string, factTableId: string): Promise<FactTableDto> {
+    public async confirmFileImport(datasetId: string, revisionId: string, factTableId: string): Promise<FactTableDTO> {
         logger.debug(`Confirming file import: ${factTableId}`);
 
         return this.fetch({
             url: `dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${factTableId}/confirm`,
             method: HttpMethod.Patch
-        }).then((response) => response.json() as unknown as FactTableDto);
+        }).then((response) => response.json() as unknown as FactTableDTO);
     }
 
     public async getSourcesForFileImport(
         datasetId: string,
         revisionId: string,
         factTableId: string
-    ): Promise<FactTableDto> {
+    ): Promise<FactTableDTO> {
         logger.debug(`Fetching sources for file import: ${factTableId}`);
 
         return this.fetch({
             url: `dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${factTableId}`
-        }).then((response) => response.json() as unknown as FactTableDto);
+        }).then((response) => response.json() as unknown as FactTableDTO);
     }
 
     public async removeFileImport(datasetId: string, revisionId: string, factTableId: string): Promise<DatasetDTO> {
@@ -298,7 +298,7 @@ export class StatsWalesApi {
     public async patchDimension(
         datasetId: string,
         dimensionId: string,
-        dimensionPatch: DimensionPatchDto
+        dimensionPatch: DimensionPatchDTO
     ): Promise<ViewDTO> {
         logger.debug(`sending patch request for dimension: ${dimensionId}`);
 

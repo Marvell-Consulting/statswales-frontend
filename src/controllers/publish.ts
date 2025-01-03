@@ -37,7 +37,7 @@ import { ViewError } from '../dtos/view-error';
 import { logger } from '../utils/logger';
 import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
 import { SourceType } from '../enums/source-type';
-import { FactTableInfoDto } from '../dtos/fact-table-info';
+import { FactTableInfoDTO } from '../dtos/fact-table-info';
 import { SourceAssignmentDTO } from '../dtos/source-assignment-dto';
 import { UnknownException } from '../exceptions/unknown.exception';
 import { TaskListState } from '../dtos/task-list-state';
@@ -59,7 +59,7 @@ import { nestTopics } from '../utils/nested-topics';
 import { OrganisationDTO } from '../dtos/organisation';
 import { TeamDTO } from '../dtos/team';
 import { DimensionType } from '../enums/dimension-type';
-import { DimensionPatchDto } from '../dtos/dimension-patch-dto';
+import { DimensionPatchDTO } from '../dtos/dimension-patch-dto';
 import { ApiException } from '../exceptions/api.exception';
 import { DimensionInfoDTO } from '../dtos/dimension-info';
 import { YearType } from '../enums/year-type';
@@ -152,7 +152,7 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
 
     // if sources have previously been assigned a type, this is a revisit
     const revisit =
-        factTable.fact_table_info?.filter((factTableInfo: FactTableInfoDto) => Boolean(factTableInfo.column_type))
+        factTable.fact_table_info?.filter((factTableInfo: FactTableInfoDTO) => Boolean(factTableInfo.column_type))
             .length > 0;
 
     if (req.method === 'POST') {
@@ -193,7 +193,7 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
 export const sources = async (req: Request, res: Response, next: NextFunction) => {
     const { dataset, revision, factTable } = res.locals;
     const revisit =
-        factTable.fact_table_info?.filter((factTableInfo: FactTableInfoDto) => Boolean(factTableInfo.column_type))
+        factTable.fact_table_info?.filter((factTableInfo: FactTableInfoDTO) => Boolean(factTableInfo.column_type))
             .length > 0;
     let error: ViewError | undefined;
     let errors: ViewError[] | undefined;
@@ -208,7 +208,7 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
         if (req.method === 'POST') {
             const counts = { unknown: 0, dataValues: 0, footnotes: 0, measure: 0 };
             const sourceAssignment: SourceAssignmentDTO[] = factTable.fact_table_info.map(
-                (factTableInfo: FactTableInfoDto) => {
+                (factTableInfo: FactTableInfoDTO) => {
                     const sourceType = req.body[`column-${factTableInfo.column_index}`];
                     if (sourceType === SourceType.Unknown) counts.unknown++;
                     if (sourceType === SourceType.DataValues) counts.dataValues++;
@@ -453,10 +453,10 @@ export const measureReview = async (req: Request, res: Response, next: NextFunct
         if (req.method === 'POST') {
             logger.debug(`User has reviewed measure lookup table.`);
             switch (req.body.confirm) {
-                case 'true':
+                case 'continue':
                     res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
                     break;
-                case 'goback':
+                case 'cancel':
                     try {
                         await req.swapi.resetMeasure(dataset.id);
                         res.redirect(req.buildUrl(`/publish/${dataset.id}/measure`, req.language));
@@ -486,10 +486,8 @@ export const measureReview = async (req: Request, res: Response, next: NextFunct
         const dataPreview = await req.swapi.getMeasurePreview(res.locals.dataset.id);
         if (errors) {
             res.status(errors.status || 500);
-            res.render('publish/measure-review', { ...dataPreview, measure, review: true, errors });
-        } else {
-            res.render('publish/measure-review', { ...dataPreview, measure, review: true });
         }
+        res.render('publish/measure-review', { ...dataPreview, measure, review: true, errors });
     } catch (err) {
         logger.error('Failed to get dimension preview', err);
         next(new NotFoundException());
@@ -1181,7 +1179,7 @@ export const pointInTimeChooser = async (req: Request, res: Response, next: Next
     }
 
     if (req.method === 'POST') {
-        const patchRequest: DimensionPatchDto = {
+        const patchRequest: DimensionPatchDTO = {
             date_format: req.body.dateFormat,
             dimension_type: DimensionType.TimePoint,
             date_type: YearType.PointInTime

@@ -1,4 +1,4 @@
-export class MeasureInfo {
+export class MeasureInfoDTO {
     measure_id: string;
     language: string;
     reference_id: string;
