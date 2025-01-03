@@ -395,9 +395,9 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
                 const error = err as ApiException;
                 logger.debug(`Error is: ${JSON.stringify(error, null, 2)}`);
                 if (error.status === 400) {
-                    res.status(400);
                     logger.error('Measure lookup table did not match data in the fact table.', err);
                     const failurePreview = JSON.parse(error.body as string) as ViewErrDTO;
+                    res.status(400);
                     res.render('publish/measure-match-failure', {
                         ...failurePreview,
                         measure

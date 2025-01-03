@@ -1,0 +1,44 @@
+<%- include("../partials/header", t); %>
+
+<div class="govuk-width-container app-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+        <div class="top-links">
+            <div class="govuk-width-container">
+                <a href="<%= locals.referrer %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+            </div>
+        </div>
+
+        <h1 class="govuk-heading-xl"><%= t('publish.dimension_match_failure.lookup_heading') %></h1>
+
+        <p class="govuk-body"><%= t('publish.dimension_match_failure.information', {failureCount: locals.extension.totalNonMatching}) %></p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li class="govuk-list--bullet"><%= t('publish.dimension_match_failure.formatting') %></li>
+            <li class="govuk-list--bullet"><%= t('publish.dimension_match_failure.choices') %></li>
+        </ul>
+
+        <h2 class="govuk-heading-l"><%= t('publish.dimension_match_failure.subheading') %></h2>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <% if (locals.extension.nonMatchingValues.length === 0) { %>
+                <li class="govuk-list--bullet"><%= t('publish.dimension_match_failure.no_matches') %></li>
+            <% } else { %>
+                <% locals.extension.nonMatchingValues.forEach((value) => { %>
+                    <li class="govuk-list--bullet"><%= value %></li>
+                <% });%>
+            <% } %>
+        </ul>
+
+        <h2 class="govuk-heading-l"><%= t('publish.dimension_match_failure.actions') %></h2>
+
+        <p class="govuk-body"><a href="<%= buildUrl(`/publish/${locals.dataset.id}/upload`, i18n.language) %>" class="govuk-link">
+                <%= t('publish.dimension_match_failure.upload_different_file')%>
+            </a><br>
+            <%= t('publish.dimension_match_failure.upload_different_file_warning')%></p>
+
+        <p class="govuk-body"><a href="<%= buildUrl(`/publish/${locals.datasetId}/measure/`, i18n.language) %>" class="govuk-link">
+                <%= t('publish.dimension_match_failure.try_different_format')%></a></p>
+    </main>
+</div>
+
+<%- include("../partials/footer"); %>
