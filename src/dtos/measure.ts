@@ -7,5 +7,5 @@ export class Measure {
     fact_table_column: string;
     join_column: string | null;
     lookup_table?: LookupTable;
-    measure_info: MeasureInfo[] | undefined;
+    measure_info?: MeasureInfo[];
 }
