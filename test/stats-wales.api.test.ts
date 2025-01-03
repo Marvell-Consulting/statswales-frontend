@@ -1,15 +1,14 @@
 import { randomUUID } from 'crypto';
 
-import { appConfig } from '../config';
-import { HttpMethod } from '../enums/http-method';
-import { Locale } from '../enums/locale';
-import { SourceType } from '../enums/source-type';
-import { ApiException } from '../exceptions/api.exception';
-import { ViewException } from '../exceptions/view.exception';
-import { SourceAssignmentDTO } from '../dtos/source-assignment-dto';
-import { DatasetListItemDTO } from '../dtos/dataset-list-item';
-
-import { StatsWalesApi } from './stats-wales-api';
+import { appConfig } from '../src/config';
+import { HttpMethod } from '../src/enums/http-method';
+import { Locale } from '../src/enums/locale';
+import { SourceType } from '../src/enums/source-type';
+import { ApiException } from '../src/exceptions/api.exception';
+import { ViewException } from '../src/exceptions/view.exception';
+import { SourceAssignmentDTO } from '../src/dtos/source-assignment-dto';
+import { DatasetListItemDTO } from '../src/dtos/dataset-list-item';
+import { StatsWalesApi } from '../src/services/stats-wales-api';
 
 describe('StatsWalesApi', () => {
     let statsWalesApi: StatsWalesApi;

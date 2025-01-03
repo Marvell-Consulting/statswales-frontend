@@ -34,9 +34,11 @@ dataset.get('/:datasetId', fetchDataset, async (req: Request, res: Response, nex
     } catch (err) {
         logger.error(err);
         next(new NotFoundException());
+        return;
     }
     if (!datasetView) {
-        throw new NotFoundException();
+        next(new NotFoundException());
+        return;
     }
 
     // eslint-disable-next-line require-atomic-updates

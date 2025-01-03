@@ -22,7 +22,11 @@
                         <tr class="govuk-table__row">
                             <% locals.headers.forEach(function(cell, idx) { %>
                                 <th scope="col" class="govuk-table__header">
-                                    <%= cell.name === dimension.joinColumn ? cell.name : t(`publish.lookup_table_review.column_headers.${cell.name.toLowerCase()}`) %>
+                                    <% if (i18n.exists(`publish.lookup_table_review.column_headers.${cell.name.toLowerCase()}`)) { %>
+                                        <%= t(`publish.lookup_table_review.column_headers.${cell.name.toLowerCase()}`) %>
+                                    <% } else { %>
+                                        <%= cell.name %>
+                                    <% } %>
                                 </th>
                             <% }); %>
                         </tr>

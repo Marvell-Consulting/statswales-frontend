@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { format, parseISO } from 'date-fns';
+import { add, format, parseISO } from 'date-fns';
 
 import { Locale } from '../enums/locale';
 import { StatsWalesApi } from '../services/stats-wales-api';
@@ -18,6 +18,8 @@ export const initServices = (req: Request, res: Response, next: NextFunction): v
         res.locals.referrer = req.get('Referrer');
         res.locals.parseISO = parseISO;
         res.locals.dateFormat = format;
+        res.locals.dateAdd = add;
+        res.locals.languague = req.language;
     }
     next();
 };

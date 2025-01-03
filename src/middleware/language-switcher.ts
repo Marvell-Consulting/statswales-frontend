@@ -6,7 +6,12 @@ import { Locale } from '../enums/locale';
 
 import { ignoreRoutes, SUPPORTED_LOCALES, i18next } from './translation';
 
-export const localeUrl = (path: string, locale: Locale | string, query?: Record<string, string>): string => {
+export const localeUrl = (
+    path: string,
+    locale: Locale | string,
+    query?: Record<string, string>,
+    anchor?: string
+): string => {
     const locales = SUPPORTED_LOCALES as string[];
 
     const pathElements = path
@@ -22,8 +27,8 @@ export const localeUrl = (path: string, locale: Locale | string, query?: Record<
 
     const newPath = isEmpty(pathElements) ? '' : `/${pathElements.join('/')}`;
     const queryString = isEmpty(query) ? '' : `?${new URLSearchParams(query).toString()}`;
-
-    return `/${locale}${newPath}${queryString}`;
+    const anchorString = isEmpty(anchor) ? '' : `#${anchor}`;
+    return `/${locale}${newPath}${queryString}${anchorString}`;
 };
 
 export const languageSwitcher: RequestHandler = (req, res, next): void => {

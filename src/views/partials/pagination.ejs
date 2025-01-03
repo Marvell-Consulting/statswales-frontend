@@ -13,7 +13,7 @@
                 <% if (locals.current_page > 1) { %>
                     <div class="govuk-pagination__prev">
                         <a class="govuk-link govuk-pagination__link"
-                           href="<%= buildUrl(url, i18n.language, { page_number: locals.current_page - 1, page_size: locals.page_size }) %>"
+                           href="<%= buildUrl(url.split('?')[0], i18n.language, { page_number: locals.current_page - 1, page_size: locals.page_size }, locals.anchor) %>"
                            rel="prev">
                             <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg"
                                  height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
@@ -42,7 +42,7 @@
                         <% } else { %>
                             <li class="govuk-pagination__item">
                                 <a class="govuk-link govuk-pagination__link"
-                                   href="<%= buildUrl(url, i18n.language, { page_number: item, page_size: locals.page_size }) %>"
+                                   href="<%= buildUrl(url.split('?')[0], i18n.language, { page_number: item, page_size: locals.page_size }, locals.anchor) %>"
                                    aria-label="Page <%= item %>">
                                     <%= item %>
                                 </a>
@@ -53,7 +53,7 @@
                 <% if (locals.current_page < locals.total_pages) { %>
                     <div class="govuk-pagination__next">
                         <a class="govuk-link govuk-pagination__link"
-                           href="<%= buildUrl(url, i18n.language, { page_number: locals.current_page + 1, page_size: locals.page_size }) %>"
+                           href="<%= buildUrl(url.split('?')[0], i18n.language, { page_number: locals.current_page + 1, page_size: locals.page_size }, locals.anchor) %>"
                            rel="next">
                                     <span class="govuk-pagination__link-title">
                                         <%= t('pagination.next') %>
