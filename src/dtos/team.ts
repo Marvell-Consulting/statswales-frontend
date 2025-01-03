@@ -7,4 +7,5 @@ export class TeamDTO {
     email?: string;
     organisation_id?: string;
     organisation?: OrganisationDTO;
+    language?: string;
 }

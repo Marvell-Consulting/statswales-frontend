@@ -3,7 +3,7 @@ import { ReadableStream } from 'node:stream/web';
 import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
 import { DatasetDTO } from '../dtos/dataset';
 import { DatasetInfoDTO } from '../dtos/dataset-info';
-import { FactTableDto } from '../dtos/fact-table';
+import { FactTableDTO } from '../dtos/fact-table';
 import { SourceAssignmentDTO } from '../dtos/source-assignment-dto';
 import { logger as parentLogger } from '../utils/logger';
 import { appConfig } from '../config';
@@ -19,7 +19,7 @@ import { ProviderSourceDTO } from '../dtos/provider-source';
 import { TopicDTO } from '../dtos/topic';
 import { OrganisationDTO } from '../dtos/organisation';
 import { TeamDTO } from '../dtos/team';
-import { DimensionPatchDto } from '../dtos/dimension-patch-dto';
+import { DimensionPatchDTO } from '../dtos/dimension-patch-dto';
 import { DimensionDTO } from '../dtos/dimension';
 import { DimensionInfoDTO } from '../dtos/dimension-info';
 import { TranslationDTO } from '../dtos/translations';
@@ -122,7 +122,27 @@ export class StatsWalesApi {
         }).then((response) => response.json() as unknown as ViewDTO);
     }
 
+    public uploadMeasureLookup(datasetId: string, file: Blob, filename: string): Promise<ViewDTO> {
+        logger.debug(`Uploading file ${filename} to dataset: ${datasetId}`);
+        const body = new FormData();
+        body.set('csv', file, filename);
+
+        return this.fetch({
+            url: `dataset/${datasetId}/measure`,
+            method: HttpMethod.Post,
+            body
+        }).then((response) => response.json() as unknown as ViewDTO);
+    }
+
     public async getDatasetView(datasetId: string, pageNumber: number, pageSize: number): Promise<ViewDTO> {
+        logger.debug(`Fetching view for dataset: ${datasetId}, page: ${pageNumber}, pageSize: ${pageSize}`);
+
+        return this.fetch({ url: `dataset/${datasetId}/view?page_number=${pageNumber}&page_size=${pageSize}` }).then(
+            (response) => response.json() as unknown as ViewDTO
+        );
+    }
+
+    public async getDatasetCubeView(datasetId: string, pageNumber: number, pageSize: number): Promise<ViewDTO> {
         logger.debug(`Fetching view for dataset: ${datasetId}, page: ${pageNumber}, pageSize: ${pageSize}`);
 
         return this.fetch({ url: `dataset/${datasetId}/view?page_number=${pageNumber}&page_size=${pageSize}` }).then(
@@ -149,25 +169,57 @@ export class StatsWalesApi {
         }).then((response) => response.body as ReadableStream);
     }
 
-    public async confirmFileImport(datasetId: string, revisionId: string, factTableId: string): Promise<FactTableDto> {
+    public async getRevisionCubeCSV(datasetId: string, revisionId: string): Promise<ReadableStream> {
+        logger.debug(`Fetching CSV for revision: ${revisionId}...`);
+
+        return this.fetch({
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/cube/csv`
+        }).then((response) => response.body as ReadableStream);
+    }
+
+    public async getRevisionCubeParquet(datasetId: string, revisionId: string): Promise<ReadableStream> {
+        logger.debug(`Fetching CSV for revision: ${revisionId}...`);
+
+        return this.fetch({
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/cube/parquet`
+        }).then((response) => response.body as ReadableStream);
+    }
+
+    public async getRevisionCubeExcel(datasetId: string, revisionId: string): Promise<ReadableStream> {
+        logger.debug(`Fetching CSV for revision: ${revisionId}...`);
+
+        return this.fetch({
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/cube/excel`
+        }).then((response) => response.body as ReadableStream);
+    }
+
+    public async getRevisionCube(datasetId: string, revisionId: string): Promise<ReadableStream> {
+        logger.debug(`Fetching CSV for revision: ${revisionId}...`);
+
+        return this.fetch({
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/cube`
+        }).then((response) => response.body as ReadableStream);
+    }
+
+    public async confirmFileImport(datasetId: string, revisionId: string, factTableId: string): Promise<FactTableDTO> {
         logger.debug(`Confirming file import: ${factTableId}`);
 
         return this.fetch({
             url: `dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${factTableId}/confirm`,
             method: HttpMethod.Patch
-        }).then((response) => response.json() as unknown as FactTableDto);
+        }).then((response) => response.json() as unknown as FactTableDTO);
     }
 
     public async getSourcesForFileImport(
         datasetId: string,
         revisionId: string,
         factTableId: string
-    ): Promise<FactTableDto> {
+    ): Promise<FactTableDTO> {
         logger.debug(`Fetching sources for file import: ${factTableId}`);
 
         return this.fetch({
             url: `dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${factTableId}`
-        }).then((response) => response.json() as unknown as FactTableDto);
+        }).then((response) => response.json() as unknown as FactTableDTO);
     }
 
     public async removeFileImport(datasetId: string, revisionId: string, factTableId: string): Promise<DatasetDTO> {
@@ -188,6 +240,15 @@ export class StatsWalesApi {
         }).then((response) => response.json() as unknown as DimensionDTO);
     }
 
+    public async resetMeasure(datasetId: string): Promise<DatasetDTO> {
+        logger.debug(`Resetting measure on dataset: ${datasetId}`);
+
+        return this.fetch({
+            url: `dataset/${datasetId}/measure/reset`,
+            method: HttpMethod.Delete
+        }).then((response) => response.json() as unknown as DatasetDTO);
+    }
+
     public async getImportPreview(
         datasetId: string,
         revisionId: string,
@@ -201,6 +262,21 @@ export class StatsWalesApi {
 
         return this.fetch({
             url: `dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${factTableId}/preview?page_number=${pageNumber}&page_size=${pageSize}`
+        }).then((response) => response.json() as unknown as ViewDTO);
+    }
+
+    public async getRevisionPreview(
+        datasetId: string,
+        revisionId: string,
+        pageNumber: number,
+        pageSize: number
+    ): Promise<ViewDTO> {
+        logger.debug(
+            `Fetching preview for dataset: ${datasetId}, revision: ${revisionId}, page: ${pageNumber}, pageSize: ${pageSize}`
+        );
+
+        return this.fetch({
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/preview?page_number=${pageNumber}&page_size=${pageSize}`
         }).then((response) => response.json() as unknown as ViewDTO);
     }
 
@@ -222,7 +298,7 @@ export class StatsWalesApi {
     public async patchDimension(
         datasetId: string,
         dimensionId: string,
-        dimensionPatch: DimensionPatchDto
+        dimensionPatch: DimensionPatchDTO
     ): Promise<ViewDTO> {
         logger.debug(`sending patch request for dimension: ${dimensionId}`);
 
@@ -273,6 +349,13 @@ export class StatsWalesApi {
     public async getDimensionPreview(datasetId: string, dimensionId: string): Promise<ViewDTO> {
         logger.debug(`Fetching dimension preview for dimension: ${datasetId}`);
         return this.fetch({ url: `dataset/${datasetId}/dimension/by-id/${dimensionId}/preview` }).then(
+            (response) => response.json() as unknown as ViewDTO
+        );
+    }
+
+    public async getMeasurePreview(datasetId: string): Promise<ViewDTO> {
+        logger.debug(`Fetching measure preview for dataset: ${datasetId}`);
+        return this.fetch({ url: `dataset/${datasetId}/measure/preview` }).then(
             (response) => response.json() as unknown as ViewDTO
         );
     }

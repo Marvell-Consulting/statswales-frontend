@@ -1,6 +1,6 @@
-import { FactTableInfoDto } from './fact-table-info';
+import { FactTableInfoDTO } from './fact-table-info';
 
-export interface FactTableDto {
+export interface FactTableDTO {
     id: string;
     revision_id: string;
     mime_type: string;
@@ -12,5 +12,5 @@ export interface FactTableDto {
     delimiter?: string;
     quote?: string;
     linebreak?: string;
-    fact_table_info: FactTableInfoDto[];
+    fact_table_info: FactTableInfoDTO[];
 }

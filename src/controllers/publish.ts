@@ -7,8 +7,6 @@ import { nanoid } from 'nanoid';
 import { v4 as uuid } from 'uuid';
 import { isBefore, isValid, parseISO } from 'date-fns';
 import { parse } from 'csv-parse';
-import detectCharacterEncoding from 'detect-character-encoding';
-import iconv from 'iconv-lite';
 
 import {
     collectionValidator,
@@ -39,7 +37,7 @@ import { ViewError } from '../dtos/view-error';
 import { logger } from '../utils/logger';
 import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
 import { SourceType } from '../enums/source-type';
-import { FactTableInfoDto } from '../dtos/fact-table-info';
+import { FactTableInfoDTO } from '../dtos/fact-table-info';
 import { SourceAssignmentDTO } from '../dtos/source-assignment-dto';
 import { UnknownException } from '../exceptions/unknown.exception';
 import { TaskListState } from '../dtos/task-list-state';
@@ -61,26 +59,12 @@ import { nestTopics } from '../utils/nested-topics';
 import { OrganisationDTO } from '../dtos/organisation';
 import { TeamDTO } from '../dtos/team';
 import { DimensionType } from '../enums/dimension-type';
-import { DimensionPatchDto } from '../dtos/dimension-patch-dto';
+import { DimensionPatchDTO } from '../dtos/dimension-patch-dto';
 import { ApiException } from '../exceptions/api.exception';
 import { DimensionInfoDTO } from '../dtos/dimension-info';
 import { YearType } from '../enums/year-type';
 import { addEditLinks } from '../utils/add-edit-links';
 import { TranslationDTO } from '../dtos/translations';
-
-function convertBufferToUTF8(buffer: Buffer): Buffer {
-    const fileEncoding = detectCharacterEncoding(buffer)?.encoding;
-    if (fileEncoding !== 'utf-8') {
-        logger.warn('File is not UTF-8 encoded... Going to try to recode it');
-        if (!fileEncoding) {
-            logger.warn('Could not detect file encoding for the file');
-            throw new Error('errors.csv.invalid');
-        }
-        const decodedString = iconv.decode(buffer, fileEncoding);
-        return iconv.encode(decodedString, 'utf-8');
-    }
-    return buffer;
-}
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -139,7 +123,7 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
             }
             const fileName = req.file.originalname;
             req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
-            const fileData = new Blob([convertBufferToUTF8(req.file.buffer)], { type: req.file.mimetype });
+            const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
             logger.debug('Sending file to backend.');
             await req.swapi.uploadCSVToDataset(dataset.id, fileData, fileName);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
@@ -168,7 +152,7 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
 
     // if sources have previously been assigned a type, this is a revisit
     const revisit =
-        factTable.fact_table_info?.filter((factTableInfo: FactTableInfoDto) => Boolean(factTableInfo.column_type))
+        factTable.fact_table_info?.filter((factTableInfo: FactTableInfoDTO) => Boolean(factTableInfo.column_type))
             .length > 0;
 
     if (req.method === 'POST') {
@@ -209,7 +193,7 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
 export const sources = async (req: Request, res: Response, next: NextFunction) => {
     const { dataset, revision, factTable } = res.locals;
     const revisit =
-        factTable.fact_table_info?.filter((factTableInfo: FactTableInfoDto) => Boolean(factTableInfo.column_type))
+        factTable.fact_table_info?.filter((factTableInfo: FactTableInfoDTO) => Boolean(factTableInfo.column_type))
             .length > 0;
     let error: ViewError | undefined;
     let errors: ViewError[] | undefined;
@@ -224,7 +208,7 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
         if (req.method === 'POST') {
             const counts = { unknown: 0, dataValues: 0, footnotes: 0, measure: 0 };
             const sourceAssignment: SourceAssignmentDTO[] = factTable.fact_table_info.map(
-                (factTableInfo: FactTableInfoDto) => {
+                (factTableInfo: FactTableInfoDTO) => {
                     const sourceType = req.body[`column-${factTableInfo.column_index}`];
                     if (sourceType === SourceType.Unknown) counts.unknown++;
                     if (sourceType === SourceType.DataValues) counts.dataValues++;
@@ -295,8 +279,219 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
     }
 };
 
+export const cubePreview = async (req: Request, res: Response, next: NextFunction) => {
+    const dataset = singleLangDataset(res.locals.dataset, req.language);
+    const revision = res.locals.revision;
+    let errors: ViewError[] | undefined;
+    let previewData: ViewDTO | undefined;
+    let pagination: (string | number)[] = [];
+
+    if (!dataset || !revision) {
+        logger.error('Dataset or Revision not found');
+        next(new UnknownException('errors.preview.revision_not_found'));
+        return;
+    }
+
+    try {
+        const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
+        const pageSize = Number.parseInt(req.query.page_size as string, 10) || 10;
+        previewData = await req.swapi.getRevisionPreview(dataset.id, revision.id, pageNumber, pageSize);
+        if (!previewData) {
+            throw new Error('No preview data found.');
+        }
+        pagination = generateSequenceForNumber(previewData.current_page, previewData.total_pages);
+    } catch (err: any) {
+        res.status(400);
+        errors = [{ field: 'preview', message: { key: 'errors.preview.failed_to_get_preview' } }];
+    }
+    res.render('publish/cube-preview', { ...previewData, dataset, pagination, errors });
+};
+
+export const downloadAsCSV = async (req: Request, res: Response, next: NextFunction) => {
+    const dataset = singleLangDataset(res.locals.dataset, req.language);
+    const revision = res.locals.revision;
+    const fileStream = await req.swapi.getRevisionCubeCSV(dataset.id, revision.id);
+    res.writeHead(200, {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        'Content-Type': 'text/csv; charset=utf-8',
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        'Content-disposition': `attachment;filename=${revision.id}.csv`
+    });
+    const readable: Readable = Readable.from(fileStream);
+    readable.pipe(res);
+};
+
+export const downloadAsParquet = async (req: Request, res: Response, next: NextFunction) => {
+    const dataset = singleLangDataset(res.locals.dataset, req.language);
+    const revision = res.locals.revision;
+    const fileStream = await req.swapi.getRevisionCubeParquet(dataset.id, revision.id);
+    res.writeHead(200, {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        'Content-Type': 'application/vnd.apache.parquet',
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        'Content-disposition': `attachment;filename=${revision.id}.parquet`
+    });
+    const readable: Readable = Readable.from(fileStream);
+    readable.pipe(res);
+};
+
+export const downloadAsExcel = async (req: Request, res: Response, next: NextFunction) => {
+    const dataset = singleLangDataset(res.locals.dataset, req.language);
+    const revision = res.locals.revision;
+    const fileStream = await req.swapi.getRevisionCubeExcel(dataset.id, revision.id);
+    res.writeHead(200, {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        'Content-Type': 'application/vnd.ms-excel',
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        'Content-disposition': `attachment;filename=${revision.id}.xlsx`
+    });
+    const readable: Readable = Readable.from(fileStream);
+    readable.pipe(res);
+};
+
+export const downloadAsDuckDb = async (req: Request, res: Response, next: NextFunction) => {
+    const dataset = singleLangDataset(res.locals.dataset, req.language);
+    const revision = res.locals.revision;
+    const fileStream = await req.swapi.getRevisionCube(dataset.id, revision.id);
+    res.writeHead(200, {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        'Content-Type': 'application/octet-stream',
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        'Content-disposition': `attachment;filename=${revision.id}.duckdb`
+    });
+    const readable: Readable = Readable.from(fileStream);
+    readable.pipe(res);
+};
+
 export const redirectToTasklist = (req: Request, res: Response) => {
     res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/tasklist`, req.language));
+};
+
+export const measurePreview = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const dataset = singleLangDataset(res.locals.dataset, req.language);
+        const measure = dataset.measure;
+        if (!measure) {
+            logger.error('Measure not defined for this dataset');
+            next(new UnknownException('errors.preview.measure_not_found'));
+            return;
+        }
+
+        if (req.method === 'POST') {
+            logger.debug('User is uploading a measure lookup table..');
+            try {
+                if (!req.file) {
+                    logger.error('No file is present in the request');
+                    throw new Error('errors.csv.invalid');
+                }
+                const fileName = req.file.originalname;
+                req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
+                const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
+                logger.debug('Sending file to backend.');
+                await req.swapi.uploadMeasureLookup(dataset.id, fileData, fileName);
+                res.redirect(req.buildUrl(`/publish/${dataset.id}/measure/review`, req.language));
+                return;
+            } catch (err) {
+                const error = err as ApiException;
+                logger.debug(`Error is: ${JSON.stringify(error, null, 2)}`);
+                if (error.status === 400) {
+                    logger.error('Measure lookup table did not match data in the fact table.', err);
+                    const failurePreview = JSON.parse(error.body as string) as ViewErrDTO;
+                    res.status(400);
+                    res.render('publish/measure-match-failure', {
+                        ...failurePreview,
+                        measure
+                    });
+                    return;
+                }
+                logger.error('Something went wrong other than not matching');
+                logger.debug(`Full error JSON: ${JSON.stringify(error, null, 2)}`);
+                req.session.errors = [
+                    {
+                        field: 'unknown',
+                        message: {
+                            key: 'errors.csv.unknown'
+                        }
+                    }
+                ];
+                res.redirect(req.buildUrl(`/publish/${dataset.id}/measure`, req.language));
+                return;
+            }
+        }
+
+        const dataPreview = await req.swapi.getMeasurePreview(res.locals.dataset.id);
+        if (req.session.errors) {
+            const errors = req.session.errors;
+            req.session.errors = undefined;
+            req.session.save();
+            res.status(500);
+            res.render('publish/measure-preview', {
+                ...dataPreview,
+                measure,
+                errors
+            });
+        } else {
+            res.render('publish/measure-preview', { ...dataPreview, measure });
+        }
+    } catch (err) {
+        logger.error('Failed to get dimension preview', err);
+        next(new NotFoundException());
+    }
+};
+
+export const measureReview = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const dataset = singleLangDataset(res.locals.dataset, req.language);
+        const measure = dataset.measure;
+        if (!measure) {
+            logger.error('Failed to find measure in dataset');
+            next(new NotFoundException());
+            return;
+        }
+        let errors: ViewErrDTO | undefined;
+
+        if (req.method === 'POST') {
+            logger.debug(`User has reviewed measure lookup table.`);
+            switch (req.body.confirm) {
+                case 'continue':
+                    res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+                    break;
+                case 'cancel':
+                    try {
+                        await req.swapi.resetMeasure(dataset.id);
+                        res.redirect(req.buildUrl(`/publish/${dataset.id}/measure`, req.language));
+                    } catch (err) {
+                        const error = err as ApiException;
+                        logger.error(
+                            `Something went wrong trying to reset the dimension with the following error: ${err}`
+                        );
+                        errors = {
+                            status: error.status || 500,
+                            errors: [
+                                {
+                                    field: '',
+                                    message: {
+                                        key: 'errors.dimension_reset'
+                                    }
+                                }
+                            ],
+                            dataset_id: req.params.datasetId
+                        } as ViewErrDTO;
+                    }
+                    break;
+            }
+            return;
+        }
+
+        const dataPreview = await req.swapi.getMeasurePreview(res.locals.dataset.id);
+        if (errors) {
+            res.status(errors.status || 500);
+        }
+        res.render('publish/measure-review', { ...dataPreview, measure, review: true, errors });
+    } catch (err) {
+        logger.error('Failed to get dimension preview', err);
+        next(new NotFoundException());
+    }
 };
 
 export const uploadLookupTable = async (req: Request, res: Response, next: NextFunction) => {
@@ -321,7 +516,7 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
             }
             const fileName = req.file.originalname;
             req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
-            const fileData = new Blob([convertBufferToUTF8(req.file.buffer)], { type: req.file.mimetype });
+            const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
             try {
                 logger.debug('Sending lookup table to backend');
                 await req.swapi.uploadLookupTable(dataset.id, dimension.id, fileData, fileName);
@@ -984,7 +1179,7 @@ export const pointInTimeChooser = async (req: Request, res: Response, next: Next
     }
 
     if (req.method === 'POST') {
-        const patchRequest: DimensionPatchDto = {
+        const patchRequest: DimensionPatchDTO = {
             date_format: req.body.dateFormat,
             dimension_type: DimensionType.TimePoint,
             date_type: YearType.PointInTime

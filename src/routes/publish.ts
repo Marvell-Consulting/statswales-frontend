@@ -34,7 +34,14 @@ import {
     uploadLookupTable,
     lookupReview,
     exportTranslations,
-    importTranslations
+    importTranslations,
+    cubePreview,
+    measurePreview,
+    measureReview,
+    downloadAsCSV,
+    downloadAsParquet,
+    downloadAsExcel,
+    downloadAsDuckDb
 } from '../controllers/publish';
 
 export const publish = Router();
@@ -63,6 +70,19 @@ publish.post('/:datasetId/sources', fetchDataset, upload.none(), sources);
 
 /* Tasklist */
 publish.get('/:datasetId/tasklist', fetchDataset, taskList);
+
+/* Cube Preview */
+publish.get('/:datasetId/cube-preview', fetchDataset, cubePreview);
+publish.get('/:datasetId/cube-preview/csv', fetchDataset, downloadAsCSV);
+publish.get('/:datasetId/cube-preview/parquet', fetchDataset, downloadAsParquet);
+publish.get('/:datasetId/cube-preview/excel', fetchDataset, downloadAsExcel);
+publish.get('/:datasetId/cube-preview/cube', fetchDataset, downloadAsDuckDb);
+
+/* Measure creation */
+publish.get('/:datasetId/measure', fetchDataset, measurePreview);
+publish.post('/:datasetId/measure', fetchDataset, upload.single('csv'), measurePreview);
+publish.get('/:datasetId/measure/review', fetchDataset, measureReview);
+publish.post('/:datasetId/measure/review', fetchDataset, measureReview);
 
 /* Dimension creation */
 publish.get('/:datasetId/dimension-data-chooser/:dimensionId', fetchDataset, fetchDimensionPreview);

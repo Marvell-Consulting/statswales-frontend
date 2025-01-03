@@ -1,5 +1,5 @@
 import { DatasetDTO } from '../../src/dtos/dataset';
-import { FactTableDto } from '../../src/dtos/fact-table';
+import { FactTableDTO } from '../../src/dtos/fact-table';
 import { TaskListState } from '../../src/dtos/task-list-state';
 import { ViewDTO } from '../../src/dtos/view-dto';
 import { TaskStatus } from '../../src/enums/task-status';
@@ -199,7 +199,7 @@ export const datasetView: ViewDTO = {
     ]
 };
 
-export const importWithDraftSources: FactTableDto = {
+export const importWithDraftSources: FactTableDTO = {
     id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
     revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
     mime_type: 'text/csv',

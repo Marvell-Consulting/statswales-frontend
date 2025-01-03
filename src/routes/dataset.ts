@@ -9,7 +9,7 @@ import { logger } from '../utils/logger';
 import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { hasError, factTableIdValidator } from '../validators';
 import { RevisionDTO } from '../dtos/revision';
-import { FactTableDto } from '../dtos/fact-table';
+import { FactTableDTO } from '../dtos/fact-table';
 import { generateSequenceForNumber } from '../utils/pagination';
 
 export const dataset = Router();
@@ -34,9 +34,11 @@ dataset.get('/:datasetId', fetchDataset, async (req: Request, res: Response, nex
     } catch (err) {
         logger.error(err);
         next(new NotFoundException());
+        return;
     }
     if (!datasetView) {
-        throw new NotFoundException();
+        next(new NotFoundException());
+        return;
     }
 
     // eslint-disable-next-line require-atomic-updates
@@ -59,10 +61,10 @@ dataset.get(
 
         try {
             const importId = req.params.factTableId;
-            let factTable: FactTableDto | undefined;
+            let factTable: FactTableDTO | undefined;
 
             const revision = dataset.revisions?.find((rev: RevisionDTO) => {
-                factTable = rev.fact_tables?.find((file: FactTableDto) => file.id === importId);
+                factTable = rev.fact_tables?.find((file: FactTableDTO) => file.id === importId);
                 return Boolean(factTable);
             });
 

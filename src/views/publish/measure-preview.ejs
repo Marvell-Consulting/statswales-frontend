@@ -1,0 +1,116 @@
+<%- include("../partials/header", t); %>
+
+
+<main class="govuk-main-wrapper" id="main-content" role="main">
+    <div class="govuk-width-container app-width-container">
+        <div class="top-links">
+            <div class="govuk-width-container">
+                <a href="<%= locals.referrer %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+            </div>
+        </div>
+
+        <h1 class="govuk-heading-xl"><%= t('publish.measure_preview.heading') %></h1>
+
+        <% if (locals?.errors) { %>
+            <div class="govuk-error-summary" data-module="govuk-error-summary">
+                <div role="alert">
+                    <h2 class="govuk-error-summary__title">
+                        <%= t('errors.problem') %>
+                    </h2>
+                    <div class="govuk-error-summary__body">
+                        <ul class="govuk-list govuk-error-summary__list">
+                            <% locals.errors.errors.forEach(function(error) { %>
+                                <li>
+                                    <a href="#<%= error.field %>">
+                                        <%= t(error.tag.name) %>
+                                    </a>
+                                </li>
+                            <% }); %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+
+        <% if (locals?.data) { %>
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-full with-overflow">
+                    <table class="govuk-table" style="position: relative; border-collapse: collapse;">
+                        <colgroup>
+                            <% locals.headers.forEach(function(cell, idx) { %>
+                                <col class="<%= cell.type === 'ignore' ? 'ignore-column' : '' %>" />
+                            <% }); %>
+                        </colgroup>
+                        <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <% locals.headers.forEach(function(cell, idx) { %>
+                                <th scope="col" class="govuk-table__header">
+                                    <% if (i18n.exists(`publish.lookup_table_review.column_headers.${cell.name.toLowerCase()}`)) { %>
+                                        <%= t(`publish.lookup_table_review.column_headers.${cell.name.toLowerCase()}`) %>
+                                    <% } else { %>
+                                        <%= cell.name %>
+                                    <% } %>
+                                </th>
+                            <% }); %>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% locals.data.forEach(function(row) { %>
+                            <tr>
+                                <% row.forEach(function(cell, index) { %>
+                                    <% if (locals.headers[index].source_type === 'line_number') { %>
+                                        <td class="govuk-table__cell line-number"><span class="linespan"><%= cell %></span></td>
+                                    <% } else { %>
+                                        <td class="govuk-table__cell"><%= cell %></td>
+                                    <% } %>
+                                <% }); %>
+                            </tr>
+                        <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-full">
+                    <form method="post" role="continue" enctype="multipart/form-data">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                <h2 class="govuk-fieldset__heading">
+                                    <%= t('publish.measure_preview.question') %>
+                                </h2>
+                            </legend>
+                            <div class="govuk-form-group">
+                                <label class="govuk-label govuk-label--m" for="csv">
+                                    <%= t('publish.upload.note') %>
+                                </label>
+                                <input class="govuk-file-upload" id="csv" name="csv" type="file" placeholder="Upload Data Files!" accept=".csv,.parquet,.json,.xls,.xlsx,.gz,text/csv,application/vnd.apache.parquet,application/parquet,application/json,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/msexcel,application/gzip">
+                            </div>
+                            <div class="govuk-form-group">
+                                <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                                    <%= t('buttons.upload_csv') %>
+                                </button>
+                                <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview`, i18n.language) %>" target="_blank" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                                    <%= t('buttons.preview') %>
+                                </a>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        <% } %> <!-- Do I have data? -->
+    </div>
+</main>
+
+<style>
+    table {
+        position: relative;
+        width: 30% !important;
+    }
+    .region-subhead {
+        display: none;
+    }
+</style>
+
+<%- include("../partials/footer"); %>

@@ -8,7 +8,7 @@
         "continue": "Continue",
         "back": "Back",
         "cancel": "Cancel",
-        "upload_csv": "Upload CSV File",
+        "upload_csv": "Upload File",
         "preview": "Preview (opens in new tab)"
     },
     "pagination": {
@@ -59,10 +59,76 @@
         "dataset_creation": "Start a new dataset creation journey",
         "project_reports": "See our projects reports"
     },
+    "dataset_view": {
+        "key_information": "Key information",
+        "last_update": "Most recent update",
+        "next_update": "Next update expected (provisional)",
+        "data_provider": "Data providers",
+        "data_source": "Data source",
+        "designation": "Designation",
+        "data_categories": "Data categories",
+        "time_covered": "Time period covered",
+        "buttons": {
+            "csv": "Download as CSV",
+            "excel": "Download as Excel",
+            "json": "Download as JSON",
+            "duckdb": "Download as DuckDB"
+        },
+        "data_notes": {
+            "heading": "Data Notes",
+            "a": "Average",
+            "c": "Confidential information",
+            "e": "Estimated",
+            "f": "Forecast",
+            "k": "Low figure",
+            "p": "Provisional",
+            "r": "Revised",
+            "t": "Total",
+            "u": "Low reliability",
+            "x": "Missing data",
+            "z": "Not applicable"
+        },
+        "designations": {
+            "official": "Official statistics",
+            "accredited": "Accredited official statistics",
+            "in_development": "Official statistics in development",
+            "none": "No designation"
+        },
+        "contents": "Contents",
+        "download": "Download",
+        "download_as": {
+            "csv": "Download as CSV",
+            "parquet": "Download as Parquet",
+            "excel": "Download as Excel",
+            "duckdb": "Download as DuckDB"
+        },
+        "table_preview": "Table Preview",
+        "table_note": "This is not shown in the consumer view",
+        "about_heading": "About this dataset",
+        "summary": "Summary",
+        "data_collection": "Data collection and calculation",
+        "statistical_quality": "Statistical quality",
+        "related_reports": "Related reports",
+        "published_heading": "Published by",
+        "org": "Organisation",
+        "contact": "Contact email",
+        "not_entered": "Not entered yet",
+        "not_selected": "Not selected yet",
+        "not_available": "Not Available",
+        "update_missing": "Publish date not entered yet",
+        "next_update_missing": "Publish date and update frequency not entered yet",
+        "categories_missing": "Reference data not selected yet",
+        "period_cover_missing": "Date information not entered yet"
+    },
     "publish": {
         "header": {
             "overview": "Return to dataset overview",
             "back": "Back"
+        },
+        "cube_preview": {
+            "panel": "This is a preview of this dataset.",
+            "heading": "Key information"
+
         },
         "start": {
             "title": "Create a new dataset",
@@ -113,8 +179,32 @@
                 "description_en": "Description (English)",
                 "description_cy": "Description (Welsh)",
                 "sort_order": "Sort Order",
+                "hierarchy": "Hierarchy",
                 "notes_en": "Notes (English)",
                 "notes_cy": "Notes (Welsh)"
+            }
+        },
+        "measure_review": {
+            "heading": "Check the measure table",
+            "showing": "Showing rows {{rows}} of {{total}} rows.",
+            "confirm": "By continuing, you confirm the measure table is correct.",
+            "go_back": "Choose a different measure table",
+            "column_headers": {
+                "fact_table": "Fact Table:",
+                "lookup_table": "Lookup Table:",
+                "description_en": "Description (English)",
+                "description_cy": "Description (Welsh)",
+                "sort": "Sort Order",
+                "sort_order": "Sort Order",
+                "notes_en": "Notes (English)",
+                "notes_cy": "Notes (Welsh)",
+                "decimal": "Decimal Value",
+                "format": "Format",
+                "measure_type": "Value Type"
+            },
+            "column_values": {
+                "1": "Yes",
+                "0": "No"
             }
         },
         "time_dimension_review": {
@@ -146,6 +236,10 @@
                 "meteorological_quarter": "Meteorological Quarter",
                 "meteorological_month": "Meteorological Month"
             }
+        },
+        "measure_preview": {
+            "heading": "Setup Measures and Datatypes",
+            "question": "Upload a measure lookup table"
         },
         "period-type-chooser": {
             "heading": "What are the shortest periods of time in the dimension?",
@@ -458,7 +552,7 @@
             "title": "Upload the data table",
             "lookup_heading": "Upload a lookup table",
             "measure_heading": "Upload a measure table",
-            "note": "The file should be in a CSV format"
+            "note": "This file must be in CSV, JSON or Parquet formats"
         },
         "preview": {
             "heading": "Check the data table",
@@ -505,6 +599,7 @@
         "tasklist": {
             "heading": "Dataset Overview",
             "no_title": "No Title Available",
+            "preview": "Preview (opens in new tab)",
             "status": {
                 "cannot_start": "Cannot start yet",
                 "available": "Available",
