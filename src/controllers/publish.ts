@@ -1475,19 +1475,19 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
 
             if (add_another === 'true' && !add_provider) {
                 res.status(400);
-                throw new Error('errors.provider.add_another');
+                throw new Error('publish.providers.list.form.add_another.error.missing');
             }
 
             const validProvider = availableProviders.find((provider) => provider.id === provider_id);
 
             if (!provider_id || !validProvider) {
                 res.status(400);
-                throw new Error('errors.provider.missing');
+                throw new Error('publish.providers.add.form.provider.error.missing');
             }
 
             if (editId && editId !== 'new' && !add_source) {
                 res.status(400);
-                throw new Error('errors.provider_source.has_source');
+                throw new Error('publish.providers.add_source.form.has_source.error.missing');
             }
 
             if (add_source === 'true') {
@@ -1496,7 +1496,7 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
 
                 if (!source_id || !validSource) {
                     res.status(400);
-                    throw new Error('errors.provider_source.missing');
+                    throw new Error('publish.providers.add_source.form.source.error.missing');
                 }
 
                 const providerIdx = dataProviders.findIndex((dp) => dp.id === editId);

@@ -467,19 +467,39 @@
         "providers": {
             "add": {
                 "heading": "Add a data provider",
-                "explain": "If you cannot find the data provider in the list, you can <a class=\"govuk-link\" href=\"{{request_data_provider_url}}\">request a data provider be added</a>."
+                "explain": "If you cannot find the data provider in the list, you can <a class=\"govuk-link\" href=\"{{request_data_provider_url}}\">request a data provider be added</a>.",
+                "form": {
+                    "provider": {
+                        "hint": "Start typing or select from the list",
+                        "error": {
+                            "missing": "Select a data provider from the list of data providers"
+                        }
+                    }
+                }
             },
             "add_source": {
                 "heading": "Add a data source from the selected data provider",
                 "selected_provider": "Selected data provider",
-                "options": {
-                    "yes": {
-                        "label": "Select source",
-                        "note": "If you cannot find the source in the list, you can <a class=\"govuk-link\" href=\"{{request_data_source_url}}\">request a data source be added</a>.",
-                        "hint": "Start typing or select from the list"
+                "form" : {
+                    "has_source": {
+                        "options": {
+                            "yes": {
+                                "label": "Select source"
+                            },
+                            "no": {
+                                "label": "No specific source from data provider"
+                            }
+                        },
+                        "error": {
+                            "missing": "Select whether to select a source or indicate there is no specific source from the data provider"
+                        }
                     },
-                    "no": {
-                        "label": "No specific source from data provider"
+                    "source": {
+                        "note": "If you cannot find the source in the list, you can <a class=\"govuk-link\" href=\"{{request_data_source_url}}\">request a data source be added</a>.",
+                        "hint": "Start typing or select from the list",
+                        "error": {
+                            "missing": "Select a source from the list of sources for the selected data provider"
+                        }
                     }
                 }
             },
@@ -493,21 +513,22 @@
                     "action_delete": "Remove",
                     "no_source": "No specific source from data provider"
                 },
-                "add_another": {
-                    "heading": "Do you need to add another source?",
-                    "options": {
-                        "yes": {
-                            "label": "Yes"
+                "form": {
+                    "add_another": {
+                        "heading": "Do you need to add another source?",
+                        "options": {
+                            "yes": {
+                                "label": "Yes"
+                            },
+                            "no": {
+                                "label": "No"
+                            }
                         },
-                        "no": {
-                            "label": "No"
+                        "error": {
+                            "missing": "Select yes if you need to add another source"
                         }
                     }
                 }
-            },
-            "provider": {
-                "hint": "Start typing or select from the list.",
-                "placeholder": "Select a data provider"
             }
         },
         "designation": {
