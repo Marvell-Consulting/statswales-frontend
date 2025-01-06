@@ -11,7 +11,7 @@ const baseUrl = config.frontend.url;
 
 test.describe.configure({ mode: 'serial' }); // tests in this file must be performed in order to avoid test failures
 
-test.describe('Metadata Data Collection', () => {
+test.describe('Metadata Data Providers', () => {
   let providerPage: ProviderPage;
 
   test.beforeEach(async ({ page }) => {
