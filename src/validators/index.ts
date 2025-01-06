@@ -68,7 +68,7 @@ export const frequencyUnitValidator = () =>
 
 export const linkIdValidator = () => body('link_id').trim().notEmpty();
 export const linkUrlValidator = () =>
-    body('link_url').trim().notEmpty().isURL({ require_tld: true, require_protocol: true });
+    body('link_url').trim().notEmpty().bail().isURL({ require_tld: true, require_protocol: true });
 export const linkLabelValidator = () => body('link_label').trim().notEmpty();
 
 export const designationValidator = () => body('designation').trim().isIn(Object.values(Designation));

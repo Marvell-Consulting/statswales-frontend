@@ -1562,7 +1562,7 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
     }
 
     if (req.method === 'POST') {
-        const { add_link, link_id, link_url, link_label } = req.body;
+        const { add_another, add_link, link_id, link_url, link_label } = req.body;
         if (add_link === 'true') {
             res.redirect(req.buildUrl(`/publish/${dataset.id}/related?edit=new`, req.language));
             return;
@@ -1577,13 +1577,28 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
         link = { id: link_id, url: link_url, label: link_label, created_at: link.created_at };
 
         try {
-            for (const validator of [linkIdValidator(), linkUrlValidator(), linkLabelValidator()]) {
-                const result = await validator.run(req);
-                if (!result.isEmpty()) {
-                    res.status(400);
-                    const error = result.array()[0] as FieldValidationError;
-                    throw error;
+            if (add_another === 'true' && !add_link) {
+                res.status(400);
+                errors = [
+                    { field: 'add_another', message: { key: 'publish.related.list.form.add_another.error.missing' } }
+                ];
+                throw new Error();
+            }
+
+            errors = (await getErrors([linkIdValidator(), linkUrlValidator(), linkLabelValidator()], req)).map(
+                (error: FieldValidationError) => {
+                    return {
+                        field: error.path,
+                        message: {
+                            key: `publish.related.add.form.${error.path}.error.${error.value ? 'invalid' : 'missing'}`
+                        }
+                    };
                 }
+            );
+
+            if (errors.length > 0) {
+                res.status(400);
+                throw new Error();
             }
 
             const { link_id, link_url, link_label } = matchedData(req);
@@ -1596,8 +1611,9 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
             res.redirect(req.buildUrl(`/publish/${dataset.id}/related`, req.language));
             return;
         } catch (err) {
-            const error: ViewError = { field: 'related_link', message: { key: 'errors.related_link.required' } };
-            errors = [error];
+            if (err instanceof ApiException) {
+                errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+            }
         }
     }
 

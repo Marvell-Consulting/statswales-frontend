@@ -430,7 +430,28 @@
         },
         "related": {
             "add": {
-                "heading": "Add a link to a report"
+                "heading": "Add a link to a report",
+                "explain": "This may include reports for:",
+                "explain_1": "GOV.WALES statistics and research",
+                "explain_2": "statistical quality",
+                "explain_3": "other related work",
+                "form": {
+                    "link_url": {
+                        "label": "Link URL",
+                        "hint": "This should start with either 'https://' or 'http://'",
+                        "error": {
+                            "missing": "Enter the link URL for a related report",
+                            "invalid": "Enter the link URL in the correct format"
+                        }
+                    },
+                    "link_label": {
+                        "label": "Link text to appear on the webpage",
+                        "hint": "This should be entered in the language in which you're viewing this service.",
+                        "error": {
+                            "missing": "Enter the link text to appear on the webpage for a related report"
+                        }
+                    }
+                }
             },
             "list":  {
                 "heading": "Report links added",
@@ -440,28 +461,22 @@
                     "action_edit": "Change",
                     "action_delete": "Remove"
                 },
-                "add_another": {
-                    "heading": "Do you need to add a link to another report?",
-                    "options": {
-                        "yes": {
-                            "label": "Yes"
+                "form": {
+                    "add_another": {
+                        "heading": "Do you need to add a link to another report?",
+                        "options": {
+                            "yes": {
+                                "label": "Yes"
+                            },
+                            "no": {
+                                "label": "No"
+                            }
                         },
-                        "no": {
-                            "label": "No"
+                        "error": {
+                            "missing": "Select yes if you need to add a link to another report"
                         }
                     }
                 }
-            },
-            "explain": "This may include reports for:",
-            "explain_1": "GOV.WALES statistics and research",
-            "explain_2": "statistical quality",
-            "explain_3": "other related work",
-            "link_url": {
-                "label": "Link URL"
-            },
-            "link_label": {
-                "label": "Link text to appear on the webpage",
-                "hint": "This should be entered in the language in which you're viewing this service."
             }
         },
         "providers": {
