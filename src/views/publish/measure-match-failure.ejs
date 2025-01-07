@@ -9,12 +9,12 @@
             </div>
         </div>
 
-        <h1 class="govuk-heading-xl"><%= t('publish.dimension_match_failure.lookup_heading') %></h1>
+        <h1 class="govuk-heading-xl"><%= t('publish.measure_match_failure.heading') %></h1>
 
-        <p class="govuk-body"><%= t('publish.dimension_match_failure.information', {failureCount: locals.extension.totalNonMatching}) %></p>
+        <p class="govuk-body"><%= t('publish.measure_match_failure.information', {failureCount: locals.extension.totalNonMatching}) %></p>
         <ul class="govuk-list govuk-list--bullet">
-            <li class="govuk-list--bullet"><%= t('publish.dimension_match_failure.formatting') %></li>
-            <li class="govuk-list--bullet"><%= t('publish.dimension_match_failure.choices') %></li>
+            <li class="govuk-list--bullet"><%= t('publish.measure_match_failure.formatting') %></li>
+            <li class="govuk-list--bullet"><%= t('publish.measure_match_failure.choices') %></li>
         </ul>
 
         <h2 class="govuk-heading-l"><%= t('publish.dimension_match_failure.subheading') %></h2>
