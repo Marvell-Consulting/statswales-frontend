@@ -639,17 +639,54 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
                     };
                     res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}`, req.language));
                     return;
-                case 'age':
-                case 'ethnicity':
-                case 'geography':
-                case 'religion':
-                case 'sexGender':
+                case 'Geog':
+                case 'Age':
+                case 'Eth':
+                case 'Gen':
+                case 'Rlgn':
                     req.session.dimensionPatch = {
                         dimension_type: DimensionType.ReferenceData,
                         reference_type: req.body.dimensionType
                     };
+                    try {
+                        await req.swapi.patchDimension(res.locals.dataset.id, dimension.id, req.session.dimensionPatch);
+                        res.redirect(
+                            req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/review`, req.language)
+                        );
+                    } catch (err) {
+                        req.session.dimensionPatch = undefined;
+                        req.session.save();
+                        const error = err as ApiException;
+                        logger.debug(`Error is: ${JSON.stringify(error, null, 2)}`);
+                        if (error.status === 400) {
+                            res.status(400);
+                            logger.error('Reference data did not match data in the fact table.', err);
+                            const failurePreview = JSON.parse(error.body as string) as ViewErrDTO;
+                            res.render('publish/dimension-match-failure', {
+                                ...failurePreview,
+                                patchRequest: { dimension_type: DimensionType.LookupTable },
+                                dimension
+                            });
+                            return;
+                        }
+                        logger.error('Something went wrong other than not matching');
+                        logger.error(`Full error JSON: ${JSON.stringify(error, null, 2)}`);
+                        req.session.errors = [
+                            {
+                                field: 'unknown',
+                                message: {
+                                    key: 'errors.csv.unknown'
+                                }
+                            }
+                        ];
+                        res.redirect(
+                            req.buildUrl(`/publish/${dataset.id}/dimension-data-chooser/${dimension.id}/`, req.language)
+                        );
+                        return;
+                    }
                     break;
             }
+            return;
         }
         const dataPreview = await req.swapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
         if (req.session.errors) {

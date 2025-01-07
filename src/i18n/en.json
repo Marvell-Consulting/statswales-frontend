@@ -8,7 +8,7 @@
         "continue": "Continue",
         "back": "Back",
         "cancel": "Cancel",
-        "upload_csv": "Upload File",
+        "upload_csv": "Continue",
         "preview": "Preview (opens in new tab)"
     },
     "pagination": {
@@ -280,13 +280,21 @@
             "heading": "What format is used for months in the dimension?",
             "example": "For example, {{example}}"
         },
+        "measure_match_failure": {
+            "heading": "Measure lookup table data cannot be matched to the data table",
+            "information": "{{failureCount, number}} references in the dimension do not match the references in your measure lookup table. You should check:",
+            "formatting": "the reference codes used in the data table are correct",
+            "choices": "you selected the correct lookup table for your measure"
+        },
         "dimension_match_failure": {
             "lookup_heading": "Lookup table data cannot be matched to the data table",
             "heading": "Reference data cannot be matched to the data table",
-            "information": "{{failureCount, number}} date codes in the dimension do not match the date formatting you have indicated. You should check:",
+            "lookup_information": "{{failureCount, number}} references in the dimension do not match the references in your lookup table. You should check:",
+            "ref_information": "{{failureCount, number}} references in the dimension do not match the the category of reference data you selected. You should check:",
             "formatting": "the reference codes used in the data table are correct",
             "choices": "you selected the correct lookup table",
             "subheading": "Reference codes that cannot be matched",
+            "ref_choices": "you selected the correct reference data category",
             "actions": "Actions",
             "upload_different_file": "Upload corrected or different data table",
             "upload_different_file_warning": "(This will remove reference data from all dimensions)",
