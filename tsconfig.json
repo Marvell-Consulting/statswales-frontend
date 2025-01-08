@@ -7,8 +7,8 @@
     "./dist",
     "./tools",
     "**/*.test.ts",
-    "./oldtest",
     "./tests",
+    "./tests-e2e",
     "./playwright/*"
   ],
   "compilerOptions": {

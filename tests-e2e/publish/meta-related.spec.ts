@@ -41,15 +41,12 @@ test.describe('Metadata Related Links', () => {
     });
 
     test.describe('Form validation', () => {
-      test.beforeEach(async () => {
-        await relatedPage.goto(dataset.id);
-      });
-
-      test.afterEach(async ({ page }) => {
+      test.beforeEach(async ({ page }) => {
         await relatedPage.goto(dataset.id);
 
-        while (await page.getByRole('link', { name: 'Remove' }).isVisible()) {
-          await page.getByRole('link', { name: 'Remove' }).click();
+        // clean up any existing links before each test
+        while (await page.getByRole('link', { name: 'Remove' }).first().isVisible()) {
+          await page.getByRole('link', { name: 'Remove' }).first().click();
         }
       });
 

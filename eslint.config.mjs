@@ -32,13 +32,13 @@ export default [
     }
   },
   {
-    files: ['src/config/**/*.ts', 'test/.jest/set-env-vars.ts'],
+    files: ['src/config/**/*.ts', 'tests/.jest/set-env-vars.ts'],
     rules: {
       'no-process-env': 'off',
     }
   },
   {
-    files: ['test/**/*.ts'],
+    files: ['tests/**/*.ts'],
     rules: {
       'no-console': 'off',
     }

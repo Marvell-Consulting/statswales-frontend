@@ -41,15 +41,12 @@ test.describe('Metadata Data Providers', () => {
     });
 
     test.describe('Form validation', () => {
-      test.beforeEach(async () => {
-        await providerPage.goto(dataset.id);
-      });
-
-      test.afterEach(async ({ page }) => {
+      test.beforeEach(async ({ page }) => {
         await providerPage.goto(dataset.id);
 
-        while (await page.getByRole('link', { name: 'Remove' }).isVisible()) {
-          await page.getByRole('link', { name: 'Remove' }).click();
+        // clean up any existing providers before each test
+        while (await page.getByRole('link', { name: 'Remove' }).first().isVisible()) {
+          await page.getByRole('link', { name: 'Remove' }).first().click();
         }
       });
 
@@ -148,6 +145,10 @@ test.describe('Metadata Data Providers', () => {
       });
 
       test('Can add single provider with no source', async ({ page }) => {
+        while (await page.getByRole('link', { name: 'Remove' }).first().isVisible()) {
+          await page.getByRole('link', { name: 'Remove' }).first().click();
+        }
+
         // provider 1
         await providerPage.selectProvider('Department for Transport');
         await providerPage.submit();
