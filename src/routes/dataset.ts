@@ -17,7 +17,7 @@ export const dataset = Router();
 dataset.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const datasets: DatasetListItemDTO[] = await req.swapi.getActiveDatasetList();
-        res.render('dataset/list', datasets);
+        res.render('dataset/list', { datasets });
     } catch (err) {
         next(err);
     }

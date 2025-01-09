@@ -53,11 +53,28 @@
         }
     },
     "homepage": {
-        "title": "Welcome to the StatsWales Beta",
-        "welcome": "This is a test page for development from here you can do the following:",
-        "uploaded_already": "See whats been uploaded already",
-        "dataset_creation": "Start a new dataset creation journey",
-        "project_reports": "See our projects reports"
+        "title": "StatsWales datasets",
+        "table": {
+            "id": "ID",
+            "title": "Title",
+            "last_updated": "Last updated",
+            "dataset_status": "Dataset status",
+            "publish_status": "Publishing status"
+        },
+        "status": {
+            "new": "New",
+            "live": "Live"
+        },
+        "publishing_status": {
+            "incomplete": "Incomplete",
+            "update_incomplete": "Update Incomplete",
+            "scheduled": "Scheduled",
+            "update_scheduled": "Update Scheduled",
+            "published": "Published"
+        },
+        "buttons": {
+            "create": "Create new dataset"
+        }
     },
     "dataset_view": {
         "key_information": "Key information",
