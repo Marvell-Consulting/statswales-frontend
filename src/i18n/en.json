@@ -133,9 +133,9 @@
         "start": {
             "title": "Create a new dataset",
             "p1": "To create a new dataset, you'll need:",
-            "data_table": "a data table containing data and references to all relevant dimensions",
-            "lookup_table": "lookup tables for all relevant dimensions - using either common tables within this service or uploading them yourself",
-            "metadata": "details about this dataset including description, quality and how the data was collected"
+            "data_table": "a data table containing data values and references to all relevant dimensions",
+            "lookup_table": "any user-generated lookup tables you need to include (if relevant)",
+            "metadata": "metadata about this dataset, in the language in which you're viewing this service"
         },
         "dimension_name": {
             "heading": "What should this dimension be called on the StatsWales website?",
@@ -320,7 +320,7 @@
         },
         "title": {
             "heading": "What is the title of this dataset?",
-            "appear": "This title will appear on the StatsWales website",
+            "appear": "This is the title that will appear on the StatsWales website",
             "descriptive": "It should be short, descriptive and unique",
             "form": {
                 "title": {
@@ -339,7 +339,14 @@
             "explain": "In short, simple sentences explain:",
             "explain_1": "what this dataset is about and what it shows",
             "explain_2": "this dataset's dimensions and why they've been used, if needed",
-            "language": "This should be entered in the language in which you're viewing this service."
+            "language": "This should be entered in the language in which you're viewing this service.",
+            "form": {
+                "description": {
+                    "error": {
+                        "missing": "Enter the summary of this dataset"
+                    }
+                }
+            }
         },
         "collection": {
             "heading": "How was the data collected or calculated?",
@@ -347,7 +354,14 @@
             "explain_1": "the methodology used to collect the data",
             "explain_2": "the methodology used to calculate the data",
             "explain_3": "both of the above",
-            "language": "This should be entered in the language in which you're viewing this service."
+            "language": "This should be entered in the language in which you're viewing this service.",
+            "form": {
+                "collection": {
+                    "error": {
+                        "missing": "Enter how the data was collected or calculated"
+                    }
+                }
+            }
         },
         "quality": {
             "heading": "What is the statistical quality of this dataset?",
@@ -357,55 +371,39 @@
             "explain_1b": "custom explanations needed to clarify any note codes used",
             "explain_2": "a high-level summary of the statistical quality report, if available",
             "language": "This should be entered in the language in which you're viewing this service.",
-            "rounding": {
-                "heading": "Has rounding been applied to the data values?",
-                "options": {
-                    "yes": {
-                        "label": "Yes",
-                        "note": "In short, simple sentences explain what rounding has been applied."
+            "form": {
+                "quality": {
+                    "error": {
+                        "missing": "Enter the statistical quality of this dataset"
+                    }
+                },
+                "rounding_applied": {
+                    "heading": "Has rounding been applied to the data values?",
+                    "options": {
+                        "yes": {
+                            "label": "Yes",
+                            "note": "In short, simple sentences explain what rounding has been applied."
+                        },
+                        "no": {
+                            "label": "No"
+                        }
                     },
-                    "no": {
-                        "label": "No"
+                    "error": {
+                        "missing": "Select whether any rounding has been applied to the data values"
+                    }
+                },
+                "rounding_description": {
+                    "label": "In short, simple sentences explain what rounding has been applied",
+                    "error": {
+                        "missing": "Enter what rounding has been applied to the data values"
                     }
                 }
             }
         },
         "update_frequency": {
             "heading": "Will this dataset be regularly updated?",
-            "options": {
-                "yes": {
-                    "label": "Yes"
-                },
-                "no": {
-                    "label": "No"
-                }
-            },
-            "period": {
-                "label": "Enter the period between updates. For example, 1 year."
-            },
-            "unit": {
-                "select": "Select",
-                "day": "days",
-                "week": "weeks",
-                "month": "months",
-                "quarter": "quarters",
-                "year": "years"
-            }
-        },
-        "related": {
-            "add": {
-                "heading": "Add a link to a report"
-            },
-            "list":  {
-                "heading": "Report links added",
-                "table": {
-                    "link": "Report Link",
-                    "action_header": "Action",
-                    "action_edit": "Change",
-                    "action_delete": "Remove"
-                },
-                "add_another": {
-                    "heading": "Do you need to add a link to another report?",
+            "form": {
+                "is_updated": {
                     "options": {
                         "yes": {
                             "label": "Yes"
@@ -413,37 +411,118 @@
                         "no": {
                             "label": "No"
                         }
+                    },
+                    "error": {
+                        "missing": "Select if this dataset will be regularly updated or not"
+                    }
+                },
+                "frequency_value": {
+                    "label": "Enter the period between updates. For example, 1 year.",
+                    "error": {
+                        "missing": "Enter the number of weeks, months or years for the period between updates"
+                    }
+                },
+                "frequency_unit": {
+                    "options": {
+                        "select": "Select",
+                        "day": "days",
+                        "week": "weeks",
+                        "month": "months",
+                        "year": "years"
+                    },
+                    "error": {
+                        "missing": "Select whether the period between updates is in weeks, months or years"
+                    }
+                }
+            }
+        },
+        "related": {
+            "add": {
+                "heading": "Add a link to a report",
+                "explain": "This may include reports for:",
+                "explain_1": "GOV.WALES statistics and research",
+                "explain_2": "statistical quality",
+                "explain_3": "other related work",
+                "form": {
+                    "link_url": {
+                        "label": "Link URL",
+                        "hint": "This should start with either 'https://' or 'http://'",
+                        "error": {
+                            "missing": "Enter the link URL for a related report",
+                            "invalid": "Enter the link URL in the correct format"
+                        }
+                    },
+                    "link_label": {
+                        "label": "Link text to appear on the webpage",
+                        "hint": "This should be entered in the language in which you're viewing this service.",
+                        "error": {
+                            "missing": "Enter the link text to appear on the webpage for a related report"
+                        }
                     }
                 }
             },
-            "explain": "This may include reports for:",
-            "explain_1": "GOV.WALES statistics and research",
-            "explain_2": "statistical quality",
-            "explain_3": "other related work",
-            "link_url": {
-                "label": "Link URL"
-            },
-            "link_label": {
-                "label": "Link text to appear on the webpage",
-                "hint": "This should be entered in the language in which you're viewing this service."
+            "list":  {
+                "heading": "Report links added",
+                "table": {
+                    "link": "Report link",
+                    "action_header": "Action",
+                    "action_edit": "Change",
+                    "action_delete": "Remove"
+                },
+                "form": {
+                    "add_another": {
+                        "heading": "Do you need to add a link to another report?",
+                        "options": {
+                            "yes": {
+                                "label": "Yes"
+                            },
+                            "no": {
+                                "label": "No"
+                            }
+                        },
+                        "error": {
+                            "missing": "Select yes if you need to add a link to another report"
+                        }
+                    }
+                }
             }
         },
         "providers": {
             "add": {
                 "heading": "Add a data provider",
-                "explain": "If you cannot find the data provider in the list, you can <a class=\"govuk-link\" href=\"{{request_data_provider_url}}\">request a data provider be added</a>."
+                "explain": "If you cannot find the data provider in the list, you can <a class=\"govuk-link\" href=\"{{request_data_provider_url}}\">request a data provider be added</a>.",
+                "form": {
+                    "provider": {
+                        "hint": "Start typing or select from the list",
+                        "error": {
+                            "missing": "Select a data provider from the list of data providers"
+                        }
+                    }
+                }
             },
             "add_source": {
                 "heading": "Add a data source from the selected data provider",
                 "selected_provider": "Selected data provider",
-                "options": {
-                    "yes": {
-                        "label": "Select source",
-                        "note": "If you cannot find the source in the list, you can <a class=\"govuk-link\" href=\"{{request_data_source_url}}\">request a data source be added</a>.",
-                        "hint": "Start typing or select from the list"
+                "form" : {
+                    "has_source": {
+                        "options": {
+                            "yes": {
+                                "label": "Select source"
+                            },
+                            "no": {
+                                "label": "No specific source from data provider"
+                            }
+                        },
+                        "error": {
+                            "missing": "Select whether to select a source or indicate there is no specific source from the data provider"
+                        }
                     },
-                    "no": {
-                        "label": "No specific source from data provider"
+                    "source": {
+                        "note": "If you cannot find the source in the list, you can <a class=\"govuk-link\" href=\"{{request_data_source_url}}\">request a data source be added</a>.",
+                        "hint": "Start typing or select from the list",
+                        "error": {
+                            "missing": "Select a source from the list of sources for the selected data provider"
+                        }
                     }
                 }
             },
@@ -457,42 +536,57 @@
                     "action_delete": "Remove",
                     "no_source": "No specific source from data provider"
                 },
-                "add_another": {
-                    "heading": "Do you need to add another source?",
-                    "options": {
-                        "yes": {
-                            "label": "Yes"
+                "form": {
+                    "add_another": {
+                        "heading": "Do you need to add another source?",
+                        "options": {
+                            "yes": {
+                                "label": "Yes"
+                            },
+                            "no": {
+                                "label": "No"
+                            }
                         },
-                        "no": {
-                            "label": "No"
+                        "error": {
+                            "missing": "Select yes if you need to add another source"
                         }
                     }
                 }
-            },
-            "provider": {
-                "hint": "Start typing or select from the list.",
-                "placeholder": "Select a data provider"
             }
         },
         "designation": {
             "heading": "How is this dataset designated?",
-            "options": {
-                "official": {
-                    "label": "Official statistics"
-                },
-                "accredited": {
-                    "label": "Accredited official statistics"
-                },
-                "in_development": {
-                    "label": "Official statistics in development"
-                },
-                "none": {
-                    "label": "No designation"
+            "form": {
+                "designation": {
+                    "options": {
+                        "official": {
+                            "label": "Official statistics"
+                        },
+                        "accredited": {
+                            "label": "Accredited official statistics"
+                        },
+                        "in_development": {
+                            "label": "Official statistics in development"
+                        },
+                        "none": {
+                            "label": "No designation"
+                        }
+                    },
+                    "error": {
+                        "missing": "Select how this dataset is designated"
+                    }
                 }
             }
         },
         "topics": {
-            "heading": "Which topics are relevant to this dataset?"
+            "heading": "Which topics are relevant to this dataset?",
+            "form": {
+                "topics": {
+                    "error": {
+                        "missing": "Select which topics are relevant to this dataset"
+                    }
+                }
+            }
         },
         "schedule": {
             "heading": "When should this dataset be published?",
@@ -560,7 +654,18 @@
             "title": "Upload the data table",
             "lookup_heading": "Upload a lookup table",
             "measure_heading": "Upload a measure table",
-            "note": "This file must be in CSV, JSON or Parquet formats"
+            "form": {
+                "file": {
+                    "label": "The file should be in CSV, JSON or Parquet format"
+                }
+            },
+            "buttons": {
+                "upload": "Upload CSV File"
+            },
+            "errors": {
+                "missing": "Select a data table",
+                "api": "The selected file could not be uploaded – try again"
+            }
         },
         "preview": {
             "heading": "Check the data table",
@@ -649,11 +754,11 @@
             "note": "The file should be in a CSV format",
             "change_table": {
                 "label": "Upload a different data table",
-                "description": "This will remove reference data and notes from all dimensions"
+                "description": "This will remove reference data from all dimensions"
             },
             "change_columns": {
                 "label": "Change what each column in the data table contains",
-                "description": "This will remove reference data and notes for any columns you change that contain dimensions"
+                "description": "This will remove reference data for any columns that contain dimensions that you change"
             }
         },
         "point_in_time": {
@@ -780,46 +885,6 @@
             "name_to_short": "The Dimension name is to short or missing",
             "name_to_long": "Dimension name is limited to 1024 characters",
             "naming_failed": "Something went wrong trying to set the name.  Please try again"
-        },
-        "title": {
-            "missing": "Either a title was not entered or there is a problem.",
-            "duplicate": "Title already exists"
-        },
-        "description": {
-            "missing": "You need to provide a summary of this dataset"
-        },
-        "collection": {
-            "missing": "Either a collection method was not entered or there is a problem."
-        },
-        "quality": {
-            "missing": "You need to provide the statistical quality of this dataset"
-        },
-        "rounding_applied": {
-            "missing": "You need to provide whether rounding has been applied to the data values"
-        },
-        "rounding_description": {
-            "missing": "You need to provide a description of the rounding applied"
-        },
-        "update_frequency": {
-            "missing": "You need to provide the update frequency of this dataset"
-        },
-        "provider": {
-            "missing": "Select a data provider",
-            "add_another": "Select whether you need to add another data source"
-        },
-        "provider_source": {
-            "missing": "Select a data provider source",
-            "has_source": "Select whether the data provider has a specific source"
-        },
-        "related_link": {
-            "required": "You need to provide the link URL and text",
-            "missing": "The related link could not be found"
-        },
-        "designation": {
-            "missing": "You need to provide the designation of this dataset"
-        },
-        "topics": {
-            "missing": "Select the topics relevant to this dataset"
         },
         "upload": {
             "no_csv": "No CSV data provided",

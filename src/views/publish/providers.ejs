@@ -24,7 +24,7 @@
 
                         <form enctype="multipart/form-data" method="post">
                             <div class="govuk-form-group">
-                                <div class="govuk-hint" id="provider-hint"><%= t('publish.providers.provider.hint') %></div>
+                                <div class="govuk-hint" id="provider-hint"><%= t('publish.providers.add.form.provider.hint') %></div>
                                 <select id="provider" name="provider_id" class="govuk-select" aria-describedby="provider-hint">
                                     <option value="" selected disabled></option>
                                     <% for (let provider of locals.availableProviders) { %>
@@ -89,17 +89,17 @@
                         <form enctype="multipart/form-data" method="post">
                             <input type="hidden" name="add_another" value="true" />
                             <div class="govuk-form-group">
-                                <h2 class="govuk-heading-m" id="add-provider"><%= t('publish.providers.list.add_another.heading') %></h2>
+                                <h2 class="govuk-heading-m" id="add-provider"><%= t('publish.providers.list.form.add_another.heading') %></h2>
 
                                 <fieldset class="govuk-fieldset" aria-describedby="add-provider">
                                     <div class="govuk-radios" data-module="govuk-radios">
                                         <div class="govuk-radios__item">
                                             <input class="govuk-radios__input" id="addYes" name="add_provider" type="radio" value="true" />
-                                            <label class="govuk-label govuk-radios__label" for="addYes"><%= t('publish.providers.list.add_another.options.yes.label') %></label>
+                                            <label class="govuk-label govuk-radios__label" for="addYes"><%= t('publish.providers.list.form.add_another.options.yes.label') %></label>
                                         </div>
                                         <div class="govuk-radios__item">
                                             <input class="govuk-radios__input" id="addNo" name="add_provider" type="radio" value="false" />
-                                            <label class="govuk-label govuk-radios__label" for="addNo"><%= t('publish.providers.list.add_another.options.no.label') %></label>
+                                            <label class="govuk-label govuk-radios__label" for="addNo"><%= t('publish.providers.list.form.add_another.options.no.label') %></label>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -128,19 +128,19 @@
                                     <div class="govuk-radios" data-module="govuk-radios">
                                         <div class="govuk-radios__item">
                                             <input class="govuk-radios__input" id="addYes" name="add_source" type="radio" value="true" data-aria-controls="conditional-add-source" <%= locals.dataProvider?.source_id || locals.addSource === true ? 'checked' : '' %> />
-                                            <label class="govuk-label govuk-radios__label" for="addYes"><%= t('publish.providers.add_source.options.yes.label') %></label>
+                                            <label class="govuk-label govuk-radios__label" for="addYes"><%= t('publish.providers.add_source.form.has_source.options.yes.label') %></label>
                                         </div>
 
                                         <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-add-source">
                                             <div class="govuk-form-group">
                                                 <fieldset class="govuk-fieldset" role="group" aria-describedby="addYes">
                                                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                                                        <%- t('publish.providers.add_source.options.yes.note') %>
+                                                        <%- t('publish.providers.add_source.form.source.note') %>
                                                     </legend>
 
                                                     <br />
 
-                                                    <div class="govuk-hint"><%= t('publish.providers.add_source.options.yes.hint') %></div>
+                                                    <div class="govuk-hint"><%= t('publish.providers.add_source.form.source.hint') %></div>
 
                                                     <select id="source" name="source_id" class="govuk-select govuk-!-width-full" aria-describedby="source-hint">
                                                         <option value="" selected disabled></option>
@@ -162,7 +162,7 @@
 
                                         <div class="govuk-radios__item">
                                             <input class="govuk-radios__input" id="addNo" name="add_source" type="radio" value="false" />
-                                            <label class="govuk-label govuk-radios__label" for="addNo"><%= t('publish.providers.add_source.options.no.label') %></label>
+                                            <label class="govuk-label govuk-radios__label" for="addNo"><%= t('publish.providers.add_source.form.has_source.options.no.label') %></label>
                                         </div>
                                     </div>
                                 </fieldset>

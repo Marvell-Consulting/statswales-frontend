@@ -25,13 +25,13 @@
             <div class="govuk-hint"><%= t('publish.title.form.title.hint') %></div>
 
             <form enctype="multipart/form-data" method="post">
-                <div class="govuk-form-group <%= locals.errors?.find(e => e.field === 'title') ? 'govuk-input--error' : '' %>">
+                <div class="govuk-form-group">
                     <input class="govuk-input <%= locals.errors?.find(e => e.field === 'title') ? 'govuk-input--error' : '' %>" id="title" name="title" type="text" value="<%= locals.title %>">
                 </div>
                 <button type="submit" class="govuk-button" data-module="govuk-button">
                     <%= t('buttons.continue') %>
                 </button>
-                <a class="govuk-button govuk-button--secondary" href="javascript:history.back()"><%= t('buttons.cancel')%></a>
+                <a class="govuk-button govuk-button--secondary" href="<%= locals.revisit ? buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) : buildUrl('/', i18n.language) %>"><%= t('buttons.cancel')%></a>
             </form>
         </main>
     </div>
