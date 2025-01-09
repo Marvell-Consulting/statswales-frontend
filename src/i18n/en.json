@@ -133,9 +133,9 @@
         "start": {
             "title": "Create a new dataset",
             "p1": "To create a new dataset, you'll need:",
-            "data_table": "a data table containing data and references to all relevant dimensions",
-            "lookup_table": "lookup tables for all relevant dimensions - using either common tables within this service or uploading them yourself",
-            "metadata": "details about this dataset including description, quality and how the data was collected"
+            "data_table": "a data table containing data values and references to all relevant dimensions",
+            "lookup_table": "any user-generated lookup tables you need to include (if relevant)",
+            "metadata": "metadata about this dataset, in the language in which you're viewing this service"
         },
         "dimension_name": {
             "heading": "What should this dimension be called on the StatsWales website?",
