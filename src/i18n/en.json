@@ -312,7 +312,7 @@
         },
         "title": {
             "heading": "What is the title of this dataset?",
-            "appear": "This title will appear on the StatsWales website",
+            "appear": "This is the title that will appear on the StatsWales website",
             "descriptive": "It should be short, descriptive and unique",
             "form": {
                 "title": {
