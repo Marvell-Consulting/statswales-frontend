@@ -7,9 +7,10 @@ export default [
     ignores: [
       '.github/**',
       '.vscode/**',
+      'node_modules/**',
       'coverage/**',
       'dist/**',
-      'node_modules/**',
+      'playwright/**',
       'src/public/**',
       '**/*.config.{mjs,ts}'
     ],
