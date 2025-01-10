@@ -641,7 +641,7 @@
                 },
                 "team": {
                     "label": "Team",
-                    "note": "If you cannot find your team in the list, you can <a class=\"govuk-link\" href=\"{{request_team}}\">request a team be added</a>.",
+                    "note": "If you cannot find your team in the list, or your team name has changed, you can <a class=\"govuk-link\" href=\"{{request_team}}\">request a team be added or changed</a>.",
                     "placeholder": "Select team",
                     "error": "Select a team"
                 }
