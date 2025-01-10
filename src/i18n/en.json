@@ -924,5 +924,18 @@
         "sources": "sources",
         "source_confirmation": "source-confirmation",
         "tasklist": "tasklist"
+    },
+    "consumer": {
+        "global": {
+            "heading": "StatsWales",
+            "phase_banner": {
+                "beta": "Beta",
+                "feedback": "You're viewing a new version of StatsWales. <a class=\"govuk-link\" href=\"{{feedback_url}}\" target=\"_blank\">Give feedback (opens in new tab)</a>."
+            }
+        },
+        "list": {
+            "heading": "Find statistics and data from the Welsh Government",
+            "total_datasets": "datasets"
+        }
     }
 }

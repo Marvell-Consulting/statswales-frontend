@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" class="govuk-template">
+
+<head>
+    <meta charset="utf-8">
+    <title>StatsWales <%= t('beta') %>
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#0b0c0c">
+    <link rel="icon" sizes="48x48" href="/assets/images/favicon.ico">
+    <link rel="icon" sizes="any" href="/assets/images/favicon.svg" type="image/svg+xml">
+    <link rel="mask-icon" href="/assets/images/govuk-icon-mask.svg" color="#0b0c0c">
+    <link rel="apple-touch-icon" href="/assets/images/govuk-icon-180.png">
+    <link rel="manifest" href="/assets/manifest.json">
+    <link rel="stylesheet" href="/css/sw-consumer.css">
+</head>
+
+<body class="govuk-template__body app-body-class" data-test="My value" data-other="report:details">
+    <a id="top"></a>
+    <script>
+        document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
+    </script>
+    <a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
+
+    <div class="govuk-phase-banner">
+        <div class="govuk-width-container">
+            <p class="govuk-phase-banner__content">
+                <strong class="govuk-tag govuk-phase-banner__content__tag"><%= t('consumer.global.phase_banner.beta') %></strong>
+                <span class="govuk-phase-banner__text">
+                    <%- t('consumer.global.phase_banner.feedback', { feedback_url: `/${i18n.language}/${t('routes.feedback')}`}) %>
+                </span>
+            </p>
+        </div>
+    </div>
+
+    <header id="wg-header" class="wg-header" style="background-color: #323232;">
+        <div class="layout-container">
+            <div class="header" id="header">
+                <div class="header__components container-fluid">
+                    <div id="block-govwales-branding">
+                        <a href="/index" title="Welsh Government" class="header__logo" id="logo">
+                            <span class="visually-hidden">Home</span>
+                        </a>
+                    </div>
+                    <div class="language-switcher-language-url" id="block-govwales-languageswitcher" role="navigation"
+                        aria-label="Language">
+                        <ul class="links">
+                            <% if (i18n.language === 'en-GB') { %>
+                                <li class="cy">
+                                    <a class="language-link" lang="cy" hreflang="cy" href="?lang=cy-GB" role="button">Cymraeg</a>
+                                </li>
+                            <% } else { %>
+                                <li class="en">
+                                    <a class="language-link" lang="en" hreflang="en" href="?lang=en-GB" role="button">English</a>
+                                </li>
+                            <% } %>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <% if (locals.developerPage) { %>
+        <div class="govuk-width-container app-width-container">
+            <div class="govuk-phase-banner">
+                <p class="govuk-phase-banner__content"><%- t('developer_warning')%></p>
+            </div>
+        </div>
+    <% } %>
+
+    <div class="govuk-width-container govuk-!-margin-top-4">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <div class="statsWales-logo" role="img" aria-label="StatsWales logo"></div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="govuk-section-break govuk-section-break--l govuk-!-margin-bottom-0 govuk-section-break--visible">
