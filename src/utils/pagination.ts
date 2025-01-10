@@ -62,3 +62,19 @@ export function generateSequenceForNumber(highlight: number, end: number): (stri
 
     return sequence;
 }
+
+export const getPaginationProps = (page: number, limit: number, totalRows: number) => {
+    const totalPages = Math.ceil(totalRows / limit);
+
+    return {
+        current_page: page,
+        total_pages: totalPages,
+        page_size: limit,
+        page_info: {
+            total_records: totalRows,
+            start_record: (page - 1) * limit + 1,
+            end_record: Math.min(page * limit, totalRows)
+        },
+        pagination: totalPages > 1 ? generateSequenceForNumber(page, totalPages) : []
+    };
+};

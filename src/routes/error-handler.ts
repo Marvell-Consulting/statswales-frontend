@@ -22,7 +22,7 @@ export const errorHandler: ErrorRequestHandler = (err: any, req: Request, res: R
 
         case 500:
         default:
-            logger.error(`unknown error detected for ${req.originalUrl}, rendering error page`);
+            logger.error(err, `error detected for ${req.originalUrl}, rendering error page`);
             res.status(500);
             res.render('errors/server-error');
             break;
