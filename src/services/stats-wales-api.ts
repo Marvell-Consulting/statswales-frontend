@@ -23,6 +23,7 @@ import { DimensionPatchDTO } from '../dtos/dimension-patch-dto';
 import { DimensionDTO } from '../dtos/dimension';
 import { DimensionInfoDTO } from '../dtos/dimension-info';
 import { TranslationDTO } from '../dtos/translations';
+import { ResultsetWithCount } from '../interfaces/resultset-with-count';
 
 const config = appConfig();
 
@@ -150,10 +151,12 @@ export class StatsWalesApi {
         );
     }
 
-    public async getActiveDatasetList(): Promise<DatasetListItemDTO[]> {
+    public async getActiveDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {
         logger.debug(`Fetching active dataset list...`);
-        return this.fetch({ url: `dataset/active` }).then(
-            (response) => response.json() as unknown as DatasetListItemDTO[]
+        const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
+
+        return this.fetch({ url: `dataset/active?${qs}` }).then(
+            (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
         );
     }
 

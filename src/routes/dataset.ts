@@ -11,13 +11,14 @@ import { hasError, factTableIdValidator } from '../validators';
 import { RevisionDTO } from '../dtos/revision';
 import { FactTableDTO } from '../dtos/fact-table';
 import { generateSequenceForNumber } from '../utils/pagination';
+import { ResultsetWithCount } from '../interfaces/resultset-with-count';
 
 export const dataset = Router();
 
 dataset.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const datasets: DatasetListItemDTO[] = await req.swapi.getActiveDatasetList();
-        res.render('dataset/list', datasets);
+        const results: ResultsetWithCount<DatasetListItemDTO> = await req.swapi.getActiveDatasetList();
+        res.render('dataset/list', { datasets: results.data });
     } catch (err) {
         next(err);
     }
