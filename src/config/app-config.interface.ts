@@ -7,6 +7,7 @@ import { SessionStore } from './session-store.enum';
 
 export interface AppConfig {
     env: AppEnv;
+    supportEmail: string;
     frontend: {
         port: number;
         url: string;

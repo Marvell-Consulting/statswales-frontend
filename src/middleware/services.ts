@@ -1,10 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import { add, format, parseISO } from 'date-fns';
 
+import { appConfig } from '../config';
 import { Locale } from '../enums/locale';
 import { StatsWalesApi } from '../services/stats-wales-api';
 
 import { localeUrl } from './language-switcher';
+
+const config = appConfig();
 
 // initialise any request-scoped services required by the app and store them on the request object for later use
 // see interfaces/service-container.ts and @types/express/index.d.ts for details
@@ -19,6 +22,7 @@ export const initServices = (req: Request, res: Response, next: NextFunction): v
         res.locals.parseISO = parseISO;
         res.locals.dateFormat = format;
         res.locals.dateAdd = add;
+        res.locals.supportEmail = config.supportEmail;
     }
     next();
 };
