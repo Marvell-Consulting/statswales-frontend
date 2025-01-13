@@ -11922,15 +11922,6 @@ nav.primary .nav__content .is-helper {
   display: none;
 }
 
-.statsWales-logo {
-  width: 182px;
-  height: 28px;
-  margin-top: 7px;
-  background-image: url("/assets/images/StatsWales.svg");
-  background-size: cover;
-  float: left;
-}
-
 .autocomplete__wrapper {
   position: relative;
 }
