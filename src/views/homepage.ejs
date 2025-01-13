@@ -35,14 +35,18 @@
                                     <td class="govuk-table__cell"><a href="/<%= i18n.language %>/publish/<%= dataset.id %>/tasklist" class="govuk-link"><%= dataset.title %></a></td>
                                     <td class="govuk-table__cell date"><%= dateFormat(dataset.last_updated, 'd MMMM yyyy') %></td>
                                     <td class="govuk-table__cell">
-                                        <strong class="govuk-tag govuk-tag--<%= statusToColour(dataset.status) %>">
-                                            <%= t(`homepage.status.${dataset.status}`) %>
-                                        </strong>
+                                        <% if (dataset.status) { %>
+                                            <strong class="govuk-tag govuk-tag--<%= statusToColour(dataset.status) %>">
+                                                <%= t(`homepage.status.${dataset.status}`) %>
+                                            </strong>
+                                        <% } %>
                                     </td>
                                     <td class="govuk-table__cell">
-                                        <strong class="govuk-tag govuk-tag--<%= statusToColour(dataset.publishing_status) %>">
-                                            <%= t(`homepage.publishing_status.${dataset.publishing_status}`) %>
-                                        </strong>
+                                        <% if (dataset.publishing_status) { %>
+                                            <strong class="govuk-tag govuk-tag--<%= statusToColour(dataset.publishing_status) %>">
+                                                <%= t(`homepage.publishing_status.${dataset.publishing_status}`) %>
+                                            </strong>
+                                        <% } %>
                                     </td>
                                 </tr>
                             <% } %>
