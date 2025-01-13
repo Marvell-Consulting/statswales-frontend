@@ -12,6 +12,16 @@ export const statusToColour = (status: TaskStatus | DatasetStatus | PublishingSt
         case TaskStatus.NotImplemented:
             return 'red';
 
+        case PublishingStatus.Scheduled:
+        case PublishingStatus.UpdateScheduled:
+            return 'orange';
+
+        case DatasetStatus.Migrated:
+            return 'yellow';
+
+        case DatasetStatus.Live:
+            return 'blue';
+
         case TaskStatus.NotStarted:
         case TaskStatus.Incomplete:
         case PublishingStatus.Incomplete:
