@@ -1,7 +1,7 @@
 import { Readable } from 'node:stream';
 
 import { NextFunction, Request, Response } from 'express';
-import { snakeCase, sortBy, uniqBy } from 'lodash';
+import { sortBy, uniqBy } from 'lodash';
 import { FieldValidationError, matchedData } from 'express-validator';
 import { nanoid } from 'nanoid';
 import { v4 as uuid } from 'uuid';
@@ -16,7 +16,6 @@ import {
     frequencyUnitValidator,
     frequencyValueValidator,
     getErrors,
-    hasError,
     hourValidator,
     isUpdatedValidator,
     linkIdValidator,
@@ -54,7 +53,6 @@ import { ProviderDTO } from '../dtos/provider';
 import { generateSequenceForNumber } from '../utils/pagination';
 import { fileMimeTypeHandler } from '../utils/file-mimetype-handler';
 import { TopicDTO } from '../dtos/topic';
-import { DatasetTopicDTO } from '../dtos/dataset-topic';
 import { nestTopics } from '../utils/nested-topics';
 import { OrganisationDTO } from '../dtos/organisation';
 import { TeamDTO } from '../dtos/team';
@@ -110,7 +108,7 @@ export const provideTitle = async (req: Request, res: Response, next: NextFuncti
 };
 
 export const uploadFile = async (req: Request, res: Response, next: NextFunction) => {
-    const dataset = res.locals.dataset;
+    const { dataset, revision, factTable } = res.locals;
     let errors: ViewError[] = [];
     const revisit = dataset.dimensions?.length > 0;
 
@@ -122,6 +120,12 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
                 errors.push({ field: 'csv', message: { key: 'publish.upload.errors.missing' } });
                 throw new Error();
             }
+
+            if (revisit && revision && factTable) {
+                // cleanup previous fact table
+                await req.swapi.removeFileImport(dataset.id, revision.id, factTable.id);
+            }
+
             const fileName = req.file.originalname;
             req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
             const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
@@ -164,10 +168,6 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
                 await req.swapi.confirmFileImport(dataset.id, revision.id, factTable.id);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/sources`, req.language));
             } else {
-                // IF the user says it's the wrong file... clean up after them!
-                // Post MVP we can add an extra screen asking them to confirm which
-                // is when the delete happens actually happens.
-                await req.swapi.removeFileImport(dataset.id, revision.id, factTable.id);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
             }
             return;
