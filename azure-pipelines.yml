@@ -66,6 +66,7 @@ stages:
           JWT_SECRET=$(jwt_secret)
           REDIS_URL=$(redis_url)
           REDIS_ACCESS_KEY=$(redis_access_key)
+          SUPPORT_EMAIL=$(support_email)
 
     # Step 3: Check deployment success and health check
     - task: Bash@3
