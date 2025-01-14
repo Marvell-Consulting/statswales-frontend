@@ -8,6 +8,7 @@ import { checkConfig } from './config/check-config';
 import { httpLogger, logger } from './utils/logger';
 import session from './middleware/session';
 import { ensureAuthenticated } from './middleware/ensure-authenticated';
+import { ensureDeveloper } from './middleware/ensure-developer';
 import { rateLimiter } from './middleware/rate-limiter';
 import { i18next, i18nextMiddleware } from './middleware/translation';
 import { skipMap } from './middleware/skip-map';
@@ -15,7 +16,7 @@ import { languageSwitcher } from './middleware/language-switcher';
 import { auth } from './routes/auth';
 import { healthcheck } from './routes/healthcheck';
 import { publish } from './routes/publish';
-import { dataset } from './routes/dataset';
+import { developer } from './routes/developer';
 import { errorHandler } from './routes/error-handler';
 import { homepage } from './routes/homepage';
 import { notFound } from './routes/not-found';
@@ -53,7 +54,7 @@ app.use('/assets', express.static(`${__dirname}/assets`));
 app.use('/healthcheck', rateLimiter, healthcheck);
 app.use('/:lang/auth', rateLimiter, auth);
 app.use('/:lang/publish', rateLimiter, ensureAuthenticated, publish);
-app.use('/:lang/dataset', rateLimiter, ensureAuthenticated, dataset);
+app.use('/:lang/developer', rateLimiter, ensureAuthenticated, ensureDeveloper, developer);
 app.use('/:lang', rateLimiter, ensureAuthenticated, homepage);
 
 // handle 404s

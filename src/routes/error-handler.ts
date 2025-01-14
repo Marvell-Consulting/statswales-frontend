@@ -14,6 +14,11 @@ export const errorHandler: ErrorRequestHandler = (err: any, req: Request, res: R
             res.redirect(req.buildUrl(`/auth/login`, req.language));
             break;
 
+        case 403:
+            logger.error('403 error detected');
+            res.render('errors/forbidden');
+            break;
+
         case 404:
             logger.error(`404 error detected for ${req.originalUrl}, rendering not-found page`);
             res.status(404);

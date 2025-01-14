@@ -26,7 +26,8 @@
             "skip_to_content": "Skip to main content",
             "publish_dataset": "Publish a Dataset",
             "list_datasets": "List Datasets",
-            "logout": "Logout"
+            "logout": "Logout",
+            "developer": "Developer"
         }
     },
     "footer": {
@@ -829,11 +830,15 @@
             }
         }
     },
-    "view": {
+    "developer": {
+        "heading": "Developer Tools",
         "list": {
             "heading": "List Datasets",
             "details": "Details",
-            "tasklist": "Task List"
+            "tasklist": "Task List",
+            "error": {
+                "no_datasets": "No datasets are currently listed in the database.  If you need help please reach out to a member of the development team."
+            }
         },
         "display": {
             "heading": "Display a Dataset",
@@ -856,7 +861,12 @@
             "location": "Location",
             "filename": "Filename",
             "mime_type": "Mime Type",
-            "fact_tables": "Fact Tables"
+            "fact_tables": "Fact Tables",
+            "error": {
+                "no_dimensions": "This dataset has not been completed with dimensions",
+                "no_revisions": "This dataset has not been completed with revisions",
+                "no_description": "No description available"
+            }
         }
     },
 	"errors": {
@@ -874,16 +884,6 @@
             "multiple_datavalues": "You can only specify one column as containing data values",
             "multiple_footnotes": "You can only specify one column as containing notes",
             "dimension_creation_failed": "Something went wrong trying to create the dimensions.  Please try again."
-        },
-        "view": {
-            "list": {
-                "no_datasets": "No datasets are currently listed in the database.  If you need help please reach out to a member of the development team."
-            },
-            "display": {
-                "no_dimensions": "This dataset has not been completed with dimensions",
-                "no_revisions": "This dataset has not been completed with revisions",
-                "no_description": "No description available"
-            }
         },
         "preview": {
             "failed_to_get_preview": "We were unable to generate a preview of the uploaded CSV.  Is this a valid CSV?",
@@ -909,6 +909,7 @@
         },
         "not_found": "Page not found",
         "server_error": "An unknown error occcured, please try again later",
+        "forbidden": "You do not have permission to access this page",
         "dimension_reset": "Something went wrong trying to reset the dimension"
 	},
     "routes": {

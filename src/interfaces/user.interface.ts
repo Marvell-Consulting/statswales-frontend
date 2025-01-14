@@ -4,4 +4,5 @@ export interface User {
     name: string;
     givenName?: string;
     familyName?: string;
+    isDeveloper?: boolean;
 }
