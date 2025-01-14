@@ -10,6 +10,7 @@ const ONE_DAY = 24 * 60 * 60 * 1000;
 export const getDefaultConfig = (): AppConfig => {
     return {
         env: AppEnv.Default, // MUST be overridden by other configs
+        supportEmail: process.env.SUPPORT_EMAIL!,
         frontend: {
             port: parseInt(process.env.FRONTEND_PORT!, 10),
             url: process.env.FRONTEND_URL!

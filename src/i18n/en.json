@@ -20,7 +20,7 @@
     "header": {
         "product_name": "StatsWales V3.0",
         "beta": "Beta",
-        "feedback": "This is a new service – your <a href=\"{{feedback_url}}\">feedback</a> will help us to improve it.",
+        "feedback": "You’re viewing a new version of Stats Wales. <a href=\"mailto:{{support_email}}\">Get support</a>.",
         "navigation": {
             "menu": "Menu",
             "skip_to_content": "Skip to main content",
