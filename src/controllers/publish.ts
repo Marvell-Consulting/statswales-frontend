@@ -1693,7 +1693,7 @@ export const provideTopics = async (req: Request, res: Response, next: NextFunct
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     const availableTopics: TopicDTO[] = await req.swapi.getAllTopics();
     const nestedTopics = nestTopics(availableTopics);
-    const selectedTopics: number[] = dataset.topics?.map((dt: DatasetTopicDTO) => dt.topic_id) || [];
+    const selectedTopics: number[] = dataset.topics?.map((topic: TopicDTO) => topic.id) || [];
 
     if (req.method === 'POST') {
         try {

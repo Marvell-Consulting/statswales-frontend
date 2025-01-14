@@ -2,7 +2,7 @@ import { DimensionDTO } from './dimension';
 import { RevisionDTO } from './revision';
 import { DatasetInfoDTO } from './dataset-info';
 import { DatasetProviderDTO } from './dataset-provider';
-import { DatasetTopicDTO } from './dataset-topic';
+import { TopicDTO } from './topic';
 import { MeasureDTO } from './measure';
 import { TeamDTO } from './team';
 
@@ -17,7 +17,7 @@ export interface DatasetDTO {
     revisions: RevisionDTO[];
     datasetInfo?: DatasetInfoDTO[];
     providers?: DatasetProviderDTO[];
-    topics?: DatasetTopicDTO[];
+    topics?: TopicDTO[];
     team?: TeamDTO[];
     start_date?: string;
     end_date?: string;
