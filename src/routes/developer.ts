@@ -13,18 +13,18 @@ import { FactTableDTO } from '../dtos/fact-table';
 import { generateSequenceForNumber } from '../utils/pagination';
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
 
-export const dataset = Router();
+export const developer = Router();
 
-dataset.get('/', async (req: Request, res: Response, next: NextFunction) => {
+developer.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const results: ResultsetWithCount<DatasetListItemDTO> = await req.swapi.getActiveDatasetList();
-        res.render('dataset/list', { datasets: results.data });
+        res.render('developer/list', { datasets: results.data });
     } catch (err) {
         next(err);
     }
 });
 
-dataset.get('/:datasetId', fetchDataset, async (req: Request, res: Response, next: NextFunction) => {
+developer.get('/:datasetId', fetchDataset, async (req: Request, res: Response, next: NextFunction) => {
     const datasetId = res.locals.datasetId;
     const page: number = Number.parseInt(req.query.page_number as string, 10) || 1;
     const pageSize: number = Number.parseInt(req.query.page_size as string, 10) || 100;
@@ -44,10 +44,10 @@ dataset.get('/:datasetId', fetchDataset, async (req: Request, res: Response, nex
 
     // eslint-disable-next-line require-atomic-updates
     res.locals.pagination = generateSequenceForNumber(datasetView?.current_page, datasetView?.total_pages);
-    res.render('dataset/data', datasetView);
+    res.render('developer/data', datasetView);
 });
 
-dataset.get(
+developer.get(
     '/:datasetId/import/:factTableId',
     fetchDataset,
     async (req: Request, res: Response, next: NextFunction) => {

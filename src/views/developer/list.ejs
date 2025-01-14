@@ -3,14 +3,14 @@
 <div class="govuk-width-container app-width-container">
     <!-- <a href="#" class="govuk-back-link">Back</a> -->
     <main class="govuk-main-wrapper" id="main-content" role="main">
-        <h1 class="govuk-heading-xl"><%= t('view.list.heading') %></h1>
+        <h1 class="govuk-heading-xl"><%= t('developer.heading') %></h1>
         <% if (locals?.datasets && locals?.datasets.length > 0) {%>
             <ul class="govuk-list">
             <% locals?.datasets.forEach(function(dataset) { %>
                 <li>
                     <span><strong><%= dataset.title %>:</strong></span>
-                    <span><a href="/<%= i18n.language %>/publish/<%= dataset.id %>/tasklist" class="govuk-link"><%= t('view.list.tasklist') %></a></span>
-                    <span><a href="/<%= i18n.language %>/dataset/<%= dataset.id %>" class="govuk-link"><%= t('view.list.details') %> <i class="fa-solid fa-file-csv"></i></a></span>
+                    <span><a href="/<%= i18n.language %>/publish/<%= dataset.id %>/tasklist" class="govuk-link"><%= t('developer.list.tasklist') %></a></span>
+                    <span><a href="/<%= i18n.language %>/developer/<%= dataset.id %>" class="govuk-link"><%= t('developer.list.details') %> <i class="fa-solid fa-file-csv"></i></a></span>
                 </li>
             <% }); %>
             </ul>
