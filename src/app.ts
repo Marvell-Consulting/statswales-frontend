@@ -13,6 +13,7 @@ import { rateLimiter } from './middleware/rate-limiter';
 import { i18next, i18nextMiddleware } from './middleware/translation';
 import { skipMap } from './middleware/skip-map';
 import { languageSwitcher } from './middleware/language-switcher';
+import { initServices } from './middleware/services';
 import { auth } from './routes/auth';
 import { healthcheck } from './routes/healthcheck';
 import { publish } from './routes/publish';
@@ -20,7 +21,7 @@ import { developer } from './routes/developer';
 import { errorHandler } from './routes/error-handler';
 import { homepage } from './routes/homepage';
 import { notFound } from './routes/not-found';
-import { initServices } from './middleware/services';
+import { consumer } from './routes/consumer';
 
 const app: Application = express();
 const config = appConfig();
@@ -46,13 +47,17 @@ app.use(initServices);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// load routes
+// asset routes
 app.use('/public', express.static(`${__dirname}/public`));
 app.use('/css', express.static(`${__dirname}/css`));
 app.use('/assets', express.static(`${__dirname}/assets`));
 
+// public routes
 app.use('/healthcheck', rateLimiter, healthcheck);
 app.use('/:lang/auth', rateLimiter, auth);
+app.use('/:lang/published', rateLimiter, consumer);
+
+// authenticated routes
 app.use('/:lang/publish', rateLimiter, ensureAuthenticated, publish);
 app.use('/:lang/developer', rateLimiter, ensureAuthenticated, ensureDeveloper, developer);
 app.use('/:lang', rateLimiter, ensureAuthenticated, homepage);

@@ -72,7 +72,9 @@
         </nav>
     </div>
 
-    <div class="govuk-grid-column-one-third govuk-hint" style="text-align: right; padding-top: 10px">
-        <%= t('publish.preview.showing_rows', {start: locals.page_info.start_record, end: locals.page_info.end_record, total: locals.page_info.total_records}) %>
-    </div>
+    <% if (!locals.hide_pagination_hint) { %>
+        <div class="govuk-grid-column-one-third govuk-hint" style="text-align: right; padding-top: 10px">
+            <%= t('publish.preview.showing_rows', {start: locals.page_info.start_record, end: locals.page_info.end_record, total: locals.page_info.total_records}) %>
+        </div>
+    <% } %>
 </div>
