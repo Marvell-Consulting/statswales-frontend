@@ -25,6 +25,7 @@
             "menu": "Menu",
             "skip_to_content": "Skip to main content",
             "publish_dataset": "Publish a Dataset",
+            "guidance": "Publishing Guidance",
             "list_datasets": "List Datasets",
             "logout": "Logout"
         }
