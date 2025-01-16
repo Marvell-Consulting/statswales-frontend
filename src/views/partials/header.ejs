@@ -80,23 +80,29 @@
                         </li>
                         <% if (locals?.isAuthenticated) { %>
                             <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
-                                <a class="govuk-header__link"
-                                href="/<%= i18n.language %>/auth/logout">
+                                <a class="govuk-header__link" href="/<%= i18n.language %>/auth/logout">
                                     <%= t('header.navigation.logout') %>
                                 </a>
                             </li>
                         <% } %>
                         <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
                             <% if (i18n.language === 'en-GB') { %>
-                                <a class="govuk-header__link" href="?lang=cy-GB">
+                                <a class="govuk-header__link" lang="cy" hreflang="cy" href="?lang=cy-GB">
                                     Cymraeg
                                 </a>
                             <% } else { %>
-                                <a class="govuk-header__link" href="?lang=en-GB">
+                                <a class="govuk-header__link" lang="en" hreflang="en" href="?lang=en-GB">
                                     English
                                 </a>
                             <% } %>
                         </li>
+                        <% if (locals?.isDeveloper) { %>
+                            <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
+                                <a class="govuk-header__link" href="/<%= i18n.language %>/developer">
+                                    <%= t('header.navigation.developer') %>
+                                </a>
+                            </li>
+                        <% } %>
                     </ul>
                 </nav>
             </div>
@@ -110,7 +116,7 @@
                     <%= t('header.beta') %>
                 </strong>
                 <span class="govuk-phase-banner__text">
-                    <%- t('header.feedback', { feedback_url: `/${i18n.language}/${t('routes.feedback')}`}) %>
+                    <%- t('header.feedback', { support_email: locals.supportEmail }) %>
                 </span>
             </p>
         </div>

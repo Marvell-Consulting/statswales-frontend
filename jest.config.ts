@@ -5,11 +5,12 @@ const config: Config = {
   reporters: ['default', ['jest-junit', { outputDirectory: 'coverage/test-report', outputName: 'junit-report.xml' }]],
   preset: 'ts-jest',
   testEnvironment: 'node',
+  testPathIgnorePatterns: ['/node_modules/', '/tests-e2e/'],
   coverageDirectory: './coverage',
   collectCoverage: true,
   coverageReporters: ['cobertura', 'lcov', 'html', 'text'],
-  coveragePathIgnorePatterns: ['/node_modules/', '/test/', '/src/controllers/datalake.ts', '/src/config/envs/'],
-  setupFiles: ['<rootDir>/test/.jest/set-env-vars.ts']
+  coveragePathIgnorePatterns: ['/node_modules/', '/tests/', '/tests-e2e/', '/src/controllers/datalake.ts', '/src/config/envs/'],
+  setupFiles: ['<rootDir>/tests/.jest/set-env-vars.ts']
 };
 
 export default config;

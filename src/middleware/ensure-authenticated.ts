@@ -31,8 +31,13 @@ export const ensureAuthenticated = (req: Request, res: Response, next: NextFunct
         // store the token string in the request as we need it for Authorization header in API requests
         req.jwt = token;
 
-        // store the user object in the request for use in the frontend
-        req.user = decoded.user;
+        if (decoded.user) {
+            req.user = decoded.user;
+            // TODO: replace with role-based permissions are available
+            req.user.isDeveloper = /@marvell-consulting.com$/.test(decoded.user.email);
+            res.locals.isDeveloper = req.user.isDeveloper;
+        }
+
         res.locals.isAuthenticated = true;
         logger.info('user is authenticated');
     } catch (err) {

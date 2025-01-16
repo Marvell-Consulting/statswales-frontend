@@ -1,0 +1,178 @@
+<%- include("../partials/header", { developerPage: true }); %>
+
+    <div class="govuk-width-container app-width-container">
+        <!-- <a href="#" class="govuk-back-link">Back</a> -->
+        <main class="govuk-main-wrapper" id="main-content" role="main">
+            <% if (locals?.data) { %>
+                <h1 class="govuk-heading-xl"><%- t('developer.display.heading') %></h1>
+
+                <%= include('../partials/error-handler') %>
+
+                <div class="govuk-tabs" data-module="govuk-tabs">
+                    <h2 class="govuk-tabs__title">
+                        <%= t('developer.display.contents') %>
+                    </h2>
+                    <ul class="govuk-tabs__list">
+                        <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                            <a class="govuk-tabs__tab" href="#summary">
+                                <%= t('developer.display.summary') %>
+                            </a>
+                        </li>
+                        <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                            <a class="govuk-tabs__tab" href="#dimension">
+                                <%= t('developer.display.dimension') %>
+                            </a>
+                        </li>
+                        <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                            <a class="govuk-tabs__tab" href="#revision">
+                                <%= t('developer.display.revision') %>
+                            </a>
+                        </li>
+                        <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                            <a class="govuk-tabs__tab" href="#fact_tables">
+                                <%= t('developer.display.fact_tables') %>
+                            </a>
+                        </li>
+                        <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                            <a class="govuk-tabs__tab" href="#json">
+                                JSON
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="govuk-tabs__panel" id="summary">
+                        <h2 class="govuk-heading-m"><%= t('developer.display.summary') %></h2>
+                        <p class="govuk-body-m"><strong><%- t('developer.display.title') %></strong> <%= locals.dataset?.datasetInfo?.find((infos) => infos.language === i18n.language).title || `<${t('errors.name_missing')}>` %></p>
+
+                        <p class="govuk-body-m"><strong><%- t('developer.display.description') %></strong>
+                            <%= locals.dataset?.datasetInfo?.find((infos) => infos.language === i18n.language).description || `<${t('developer.display.error.no_description')}>` %>
+                        </p>
+                    </div>
+                    <div class="govuk-tabs__panel" id="dimension">
+                        <h2 class="govuk-heading-m"><%= t('developer.display.dimension') %></h2>
+                        <% if (locals.dataset?.dimensions?.length > 0) { %>
+                            <% locals.dataset?.dimensions?.forEach((dim) => { %>
+                                <p class="govuk-body"><strong>ID:</strong> <%= dim.id %></p>
+                                <p class="govuk-body"><strong><%- t('developer.display.type') %>:</strong> <%= dim.type %></p>
+                                <p class="govuk-body"><strong><%- t('developer.display.start_revision') %>:</strong> <%= dim.start_revision_id %></p>
+                                <p class="govuk-body"><strong><%- t('developer.display.title') %>:</strong>
+                                    <% const info = dim.dimensionInfo.find((info) => info.language === i18n.language) || dim.dimensionInfo.find((info) => info.language === i18n.language.split('-')[0]) %>
+                                    <%= info.name %>
+                                </p>
+                                <p class="govuk-body-m"><strong><%- t('developer.display.description') %></strong>
+                                    <%= info.description %>
+                                </p>
+                                <p class="govuk-body-m"><strong><%- t('developer.display.notes') %></strong>
+                                    <%= info.notes %>
+                                </p>
+                                <hr>
+                            <% });%>
+                        <% } else { %>
+                            <p class="govuk-body-l"><%= t('developer.display.error.display.no_dimensions') %></p>
+                        <% } %>
+                    </div>
+                    <div class="govuk-tabs__panel" id="revision">
+                        <h2 class="govuk-heading-m"><%= t('developer.display.revision') %></h2>
+                        <% if (locals.dataset?.revisions?.length > 0) { %>
+                            <% locals.dataset?.revisions?.forEach((rev) => { %>
+                                <p class="govuk-body"><strong>ID:</strong> <%= rev.id %></p>
+                                <p class="govuk-body"><strong><%- t('developer.display.index') %>:</strong> <%= rev.revision_index %></p>
+                                <p class="govuk-body"><strong><%- t('developer.display.created_at') %>:</strong> <%= rev.created_at %></p>
+                                <p class="govuk-body"><strong><%- t('developer.display.created_by') %>:</strong> <%= rev.created_by %></p>
+                            <% });%>
+                        <% } else { %>
+                            <p class="govuk-body-l"><%= t('developer.display.error.no_revisions') %></p>
+                        <% } %>
+                    </div>
+                    <div class="govuk-tabs__panel" id="fact_tables">
+                        <h2 class="govuk-heading-m"><%= t('developer.display.fact_tables') %></h2>
+                        <% if (locals.dataset?.revisions?.length > 0) { %>
+                            <% locals.dataset?.revisions?.forEach((rev) => { %>
+                                <% rev.fact_tables?.forEach((factTable) => { %>
+                                    <p class="govuk-body"><strong>ID:</strong> <%= factTable.id %></p>
+                                    <p class="govuk-body"><strong><%= t('developer.display.filename') %>:</strong> <%= factTable.filename %></p>
+                                    <p class="govuk-body"><strong><%= t('developer.display.original_filename') %>:</strong> <%= factTable.original_filename %></p>
+                                    <p class="govuk-body"><strong><%= t('developer.display.mime_type') %>:</strong> <%= factTable.mime_type %></p>
+                                    <p class="govuk-body"><strong><%= t('developer.display.filetype') %>:</strong> <%= factTable.file_type %></p>
+                                    <p class="govuk-body"><strong><%= t('developer.display.upload_at') %>:</strong> <%= factTable.uploaded_at %></p>
+                                    <p class="govuk-body"><strong><%= t('developer.display.download') %>:</strong>
+                                        <a href="<%= buildUrl(`/dataset/${locals.datasetId}/import/${factTable.id}`, i18n.language) %>">
+                                            <i class="fa-solid fa-download"></i> <%= t('developer.display.download_file') %>
+                                        </a></p>
+                                <% }); %>
+                            <% });%>
+                        <% } else { %>
+                            <p class="govuk-body-l"><%= t('developer.display.error.no_revisions') %></p>
+                        <% } %>
+                    </div>
+                    <div class="govuk-tabs__panel" id="json">
+                        <h2 class="govuk-heading-m">JSON</h2>
+                        <textarea rows="20" cols="80"><%= JSON.stringify(locals.dataset) %></textarea>
+                    </div>
+                </div>
+
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-full" style="text-align: right;">
+                        <form action="<%= buildUrl(`/dataset/${locals.datasetId}`, i18n.language) %>" method="get" role="page-size" class="govuk-!-margin-bottom-0">
+                            <label class="govuk-label govuk-!-display-inline" for="page_size">
+                                Page Size
+                            </label>
+                            <select class="govuk-select govuk-!-display-inline" id="page_size" name="page_size">
+                                <option value="5" <% if (locals.page_size===5) { %>selected <% }; %>>5</option>
+                                <option value="10" <% if (locals.page_size===10) { %>selected <% }; %>>10</option>
+                                <option value="25" <% if (locals.page_size===25) { %>selected <% }; %>>25</option>
+                                <option value="50" <% if (locals.page_size===50) { %>selected <% }; %>>50</option>
+                                <option value="100" <% if (locals.page_size===100) { %>selected <% }; %>>100</option>
+                                <option value="250" <% if (locals.page_size===250) { %>selected <% }; %>>250</option>
+                                <option value="500" <% if (locals.page_size===500) { %>selected <% }; %>>500</option>
+                            </select>
+                            <input type="hidden" name="file" value="<%= locals.datafile_id %>">
+                            <input type="hidden" name="page_number" value="1">
+                            <button type="submit" class="govuk-button govuk-!-display-inline" data-module="govuk-button">
+                                <%= t('pagination.update') %>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-display">
+                    <table class="govuk-table">
+                        <thead class="govuk-table__head">
+                            <tr class="govuk-table__row">
+                            <tr>
+                            <% locals.headers?.forEach(function(cell, index) { %>
+
+                                <th scope="col" class="govuk-table__header <%= cell.source_type === 'line_number' ? 'line-number' :'' %>">
+                                    <% if (cell.source_type !== 'line_number') { %>
+                                        <%= cell.name || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %>
+                                    <% } else { %>
+                                        <%= t('publish.preview.row_number') %>
+                                    <% } %>
+                                </th>
+                            <% }); %>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% locals.data?.forEach(function(row) { %>
+                                <tr>
+                                    <% row.forEach(function(cell, index) { %>
+                                        <% if (locals.headers[index].source_type === 'line_number') { %>
+                                            <td class="govuk-table__cell line-number"><%= cell %></td>
+                                        <% } else { %>
+                                            <td class="govuk-table__cell"><%= cell %></td>
+                                        <% } %>
+                                    <% }); %>
+                                </tr>
+                                <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <%- include("../partials/pagination", t, locals.current_page, locals.total_records, locals.pagaination); %>
+            <% } else { %>
+                <h1 class="govuk-heading-l"><%= t('display.title') %></h1>
+
+                <%= include('../partials/error-handler') %>
+            <% } %>
+        </main>
+    </div>
+
+<%- include("../partials/footer"); %>

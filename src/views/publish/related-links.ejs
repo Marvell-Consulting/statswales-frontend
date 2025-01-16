@@ -16,6 +16,8 @@
                     <div class="govuk-grid-column-two-thirds">
                         <h1 class="govuk-heading-xl"><%= t('publish.related.list.heading') %></h1>
 
+                        <%- include("../partials/error-handler"); %>
+
                         <table class="govuk-table">
                             <thead class="govuk-table__head">
                                 <tr class="govuk-table__row">
@@ -47,17 +49,18 @@
                         </table>
 
                         <form enctype="multipart/form-data" method="post">
+                            <input type="hidden" name="add_another" value="true" />
                             <div class="govuk-form-group">
-                                <h2 class="govuk-heading-m" id="add-link"><%= t('publish.related.list.add_another.heading') %></h2>
+                                <h2 class="govuk-heading-m" id="add-link"><%= t('publish.related.list.form.add_another.heading') %></h2>
                                 <fieldset class="govuk-fieldset" aria-describedby="add-link">
                                     <div class="govuk-radios" data-module="govuk-radios">
                                         <div class="govuk-radios__item">
                                             <input class="govuk-radios__input" id="addYes" name="add_link" type="radio" value="true" />
-                                            <label class="govuk-label govuk-radios__label" for="addYes"><%= t('publish.related.list.add_another.options.yes.label') %></label>
+                                            <label class="govuk-label govuk-radios__label" for="addYes"><%= t('publish.related.list.form.add_another.options.yes.label') %></label>
                                         </div>
                                         <div class="govuk-radios__item">
                                             <input class="govuk-radios__input" id="addNo" name="add_link" type="radio" value="false" />
-                                            <label class="govuk-label govuk-radios__label" for="addNo"><%= t('publish.related.list.add_another.options.no.label') %></label>
+                                            <label class="govuk-label govuk-radios__label" for="addNo"><%= t('publish.related.list.form.add_another.options.no.label') %></label>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -74,25 +77,32 @@
 
                         <%- include("../partials/error-handler"); %>
 
-                        <p class="govuk-body"><%= t('publish.related.explain') %></p>
+                        <p class="govuk-body"><%= t('publish.related.add.explain') %></p>
 
                         <ul class="govuk-list govuk-list--bullet">
-                            <li><%= t('publish.related.explain_1') %></li>
-                            <li><%= t('publish.related.explain_2') %></li>
-                            <li><%= t('publish.related.explain_3') %></li>
+                            <li><%= t('publish.related.add.explain_1') %></li>
+                            <li><%= t('publish.related.add.explain_2') %></li>
+                            <li><%= t('publish.related.add.explain_3') %></li>
                         </ul>
 
                         <form enctype="multipart/form-data" method="post">
                             <fieldset class="govuk-fieldset">
                                 <input type="hidden" name="link_id" value="<%= locals.link.id %>" />
-                                <div class="govuk-form-group">
-                                    <label class="govuk-label" for="link_url"><%= t('publish.related.link_url.label') %></label>
-                                    <input class="govuk-input" id="link_url" name="link_url" type="text" value="<%= locals.link.url %>" />
+                                <div class="govuk-form-group <%= locals.errors?.find(e => e.field === 'link_url') ? 'govuk-form-group--error' : '' %>">
+                                    <label class="govuk-label" for="link_url"><%= t('publish.related.add.form.link_url.label') %></label>
+                                    <div class="govuk-hint"><%= t('publish.related.add.form.link_url.hint') %></div>
+                                    <% if(locals.errors?.find(e => e.field === 'link_url')) { %>
+                                        <p id="link_url-error" class="govuk-error-message"><%= t(`publish.related.add.form.link_url.error.${locals.link?.url ? 'invalid' : 'missing'}`) %></p>
+                                    <% } %>
+                                    <input class="govuk-input <%= locals.errors?.find(e => e.field === 'link_url') ? 'govuk-input--error' : '' %>" id="link_url" name="link_url" type="text" value="<%= locals.link.url %>" />
                                 </div>
-                                <div class="govuk-form-group">
-                                    <label class="govuk-label" for="link_label"><%= t('publish.related.link_label.label') %></label>
-                                    <div class="govuk-hint"><%= t('publish.related.link_label.hint') %></div>
-                                    <input class="govuk-input" id="link_label" name="link_label" type="text" value="<%= locals.link.label %>" />
+                                <div class="govuk-form-group <%= locals.errors?.find(e => e.field === 'link_label') ? 'govuk-form-group--error' : '' %>">
+                                    <label class="govuk-label" for="link_label"><%= t('publish.related.add.form.link_label.label') %></label>
+                                    <div class="govuk-hint"><%= t('publish.related.add.form.link_label.hint') %></div>
+                                    <% if(locals.errors?.find(e => e.field === 'link_label')) { %>
+                                        <p id="link_label-error" class="govuk-error-message"><%= t('publish.related.add.form.link_label.error.missing') %></p>
+                                    <% } %>
+                                    <input class="govuk-input <%= locals.errors?.find(e => e.field === 'link_label') ? 'govuk-input--error' : '' %>" id="link_label" name="link_label" type="text" value="<%= locals.link.label %>" />
                                 </div>
                             </fieldset>
                             <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>

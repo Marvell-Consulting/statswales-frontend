@@ -1,7 +1,7 @@
 import { Readable } from 'node:stream';
 
 import { NextFunction, Request, Response } from 'express';
-import { snakeCase, sortBy, uniqBy } from 'lodash';
+import { sortBy, uniqBy } from 'lodash';
 import { FieldValidationError, matchedData } from 'express-validator';
 import { nanoid } from 'nanoid';
 import { v4 as uuid } from 'uuid';
@@ -19,7 +19,6 @@ import {
     frequencyUnitValidator,
     frequencyValueValidator,
     getErrors,
-    hasError,
     hourValidator,
     isUpdatedValidator,
     linkIdValidator,
@@ -57,7 +56,6 @@ import { ProviderDTO } from '../dtos/provider';
 import { generateSequenceForNumber } from '../utils/pagination';
 import { fileMimeTypeHandler } from '../utils/file-mimetype-handler';
 import { TopicDTO } from '../dtos/topic';
-import { DatasetTopicDTO } from '../dtos/dataset-topic';
 import { nestTopics } from '../utils/nested-topics';
 import { OrganisationDTO } from '../dtos/organisation';
 import { TeamDTO } from '../dtos/team';
@@ -113,8 +111,8 @@ export const provideTitle = async (req: Request, res: Response, next: NextFuncti
 };
 
 export const uploadFile = async (req: Request, res: Response, next: NextFunction) => {
-    const dataset = res.locals.dataset;
-    let errors: ViewError[] | undefined;
+    const { dataset, revision, factTable } = res.locals;
+    let errors: ViewError[] = [];
     const revisit = dataset.dimensions?.length > 0;
 
     if (req.method === 'POST') {
@@ -122,8 +120,15 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
         try {
             if (!req.file) {
                 logger.error('No file is present in the request');
-                throw new Error('errors.csv.invalid');
+                errors.push({ field: 'csv', message: { key: 'publish.upload.errors.missing' } });
+                throw new Error();
             }
+
+            if (revisit && revision && factTable) {
+                // cleanup previous fact table
+                await req.swapi.removeFileImport(dataset.id, revision.id, factTable.id);
+            }
+
             const fileName = req.file.originalname;
             req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
             const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
@@ -133,7 +138,9 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
             return;
         } catch (err) {
             res.status(400);
-            errors = [{ field: 'csv', message: { key: 'errors.upload.no_csv_data' } }];
+            if (err instanceof ApiException) {
+                errors = [{ field: 'csv', message: { key: 'publish.upload.errors.api' } }];
+            }
         }
     }
 
@@ -164,10 +171,6 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
                 await req.swapi.confirmFileImport(dataset.id, revision.id, factTable.id);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/sources`, req.language));
             } else {
-                // IF the user says it's the wrong file... clean up after them!
-                // Post MVP we can add an extra screen asking them to confirm which
-                // is when the delete happens actually happens.
-                await req.swapi.removeFileImport(dataset.id, revision.id, factTable.id);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
             }
             return;
@@ -1327,20 +1330,24 @@ export const provideSummary = async (req: Request, res: Response, next: NextFunc
 
     if (req.method === 'POST') {
         try {
-            const descriptionError = await hasError(descriptionValidator(), req);
-            if (descriptionError) {
-                res.status(400);
-                throw new Error('errors.description.missing');
-            }
-
             description = req.body.description;
+
+            errors = (await getErrors(descriptionValidator(), req)).map((error: FieldValidationError) => {
+                return { field: error.path, message: { key: `publish.summary.form.description.error.missing` } };
+            });
+
+            if (errors.length > 0) {
+                res.status(400);
+                throw new Error();
+            }
 
             await req.swapi.updateDatasetInfo(dataset.id, { description, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
-            const error: ViewError = { field: 'description', message: { key: 'errors.description.missing' } };
-            errors = [error];
+            if (err instanceof ApiException) {
+                errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+            }
         }
     }
 
@@ -1354,20 +1361,24 @@ export const provideCollection = async (req: Request, res: Response, next: NextF
 
     if (req.method === 'POST') {
         try {
-            const collectionError = await hasError(collectionValidator(), req);
-            if (collectionError) {
-                res.status(400);
-                throw new Error('errors.collection.missing');
-            }
-
             collection = req.body.collection;
+
+            errors = (await getErrors(collectionValidator(), req)).map((error: FieldValidationError) => {
+                return { field: error.path, message: { key: `publish.collection.form.collection.error.missing` } };
+            });
+
+            if (errors.length > 0) {
+                res.status(400);
+                throw new Error();
+            }
 
             await req.swapi.updateDatasetInfo(dataset.id, { collection, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
-            const error: ViewError = { field: 'collection', message: { key: 'errors.collection.missing' } };
-            errors = [error];
+            if (err instanceof ApiException) {
+                errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+            }
         }
     }
 
@@ -1387,25 +1398,23 @@ export const provideQuality = async (req: Request, res: Response, next: NextFunc
                 rounding_description: req.body.rounding_applied === 'true' ? req.body.rounding_description : ''
             };
 
-            for (const validator of [qualityValidator(), roundingAppliedValidator(), roundingDescriptionValidator()]) {
-                const result = await validator.run(req);
-                if (!result.isEmpty()) {
-                    res.status(400);
-                    const error = result.array()[0] as FieldValidationError;
-                    throw error;
-                }
+            const validators = [qualityValidator(), roundingAppliedValidator(), roundingDescriptionValidator()];
+
+            errors = (await getErrors(validators, req)).map((error: FieldValidationError) => {
+                return { field: error.path, message: { key: `publish.quality.form.${error.path}.error.missing` } };
+            });
+
+            if (errors.length > 0) {
+                res.status(400);
+                throw new Error();
             }
 
             await req.swapi.updateDatasetInfo(dataset.id, { ...datasetInfo, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err: any) {
-            if (err.path) {
-                const error: ViewError = { field: err.path, message: { key: `errors.${snakeCase(err.path)}.missing` } };
-                errors = [error];
-            } else {
-                next(new UnknownException());
-                return;
+            if (err instanceof ApiException) {
+                errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
             }
         }
     }
@@ -1426,13 +1435,18 @@ export const provideUpdateFrequency = async (req: Request, res: Response, next: 
         };
 
         try {
-            for (const validator of [isUpdatedValidator(), frequencyValueValidator(), frequencyUnitValidator()]) {
-                const result = await validator.run(req);
-                if (!result.isEmpty()) {
-                    res.status(400);
-                    const error = result.array()[0] as FieldValidationError;
-                    throw error;
-                }
+            const validators = [isUpdatedValidator(), frequencyValueValidator(), frequencyUnitValidator()];
+
+            errors = (await getErrors(validators, req)).map((error: FieldValidationError) => {
+                return {
+                    field: error.path,
+                    message: { key: `publish.update_frequency.form.${error.path}.error.missing` }
+                };
+            });
+
+            if (errors.length > 0) {
+                res.status(400);
+                throw new Error();
             }
 
             const { is_updated, frequency_unit, frequency_value } = matchedData(req);
@@ -1447,8 +1461,9 @@ export const provideUpdateFrequency = async (req: Request, res: Response, next: 
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
-            const error: ViewError = { field: 'update_frequency', message: { key: 'errors.update_frequency.missing' } };
-            errors = [error];
+            if (err instanceof ApiException) {
+                errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+            }
         }
     }
 
@@ -1508,19 +1523,19 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
 
             if (add_another === 'true' && !add_provider) {
                 res.status(400);
-                throw new Error('errors.provider.add_another');
+                throw new Error('publish.providers.list.form.add_another.error.missing');
             }
 
             const validProvider = availableProviders.find((provider) => provider.id === provider_id);
 
             if (!provider_id || !validProvider) {
                 res.status(400);
-                throw new Error('errors.provider.missing');
+                throw new Error('publish.providers.add.form.provider.error.missing');
             }
 
             if (editId && editId !== 'new' && !add_source) {
                 res.status(400);
-                throw new Error('errors.provider_source.has_source');
+                throw new Error('publish.providers.add_source.form.has_source.error.missing');
             }
 
             if (add_source === 'true') {
@@ -1529,7 +1544,7 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
 
                 if (!source_id || !validSource) {
                     res.status(400);
-                    throw new Error('errors.provider_source.missing');
+                    throw new Error('publish.providers.add_source.form.source.error.missing');
                 }
 
                 const providerIdx = dataProviders.findIndex((dp) => dp.id === editId);
@@ -1595,7 +1610,7 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
     }
 
     if (req.method === 'POST') {
-        const { add_link, link_id, link_url, link_label } = req.body;
+        const { add_another, add_link, link_id, link_url, link_label } = req.body;
         if (add_link === 'true') {
             res.redirect(req.buildUrl(`/publish/${dataset.id}/related?edit=new`, req.language));
             return;
@@ -1610,13 +1625,28 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
         link = { id: link_id, url: link_url, label: link_label, created_at: link.created_at };
 
         try {
-            for (const validator of [linkIdValidator(), linkUrlValidator(), linkLabelValidator()]) {
-                const result = await validator.run(req);
-                if (!result.isEmpty()) {
-                    res.status(400);
-                    const error = result.array()[0] as FieldValidationError;
-                    throw error;
+            if (add_another === 'true' && !add_link) {
+                res.status(400);
+                errors = [
+                    { field: 'add_another', message: { key: 'publish.related.list.form.add_another.error.missing' } }
+                ];
+                throw new Error();
+            }
+
+            errors = (await getErrors([linkIdValidator(), linkUrlValidator(), linkLabelValidator()], req)).map(
+                (error: FieldValidationError) => {
+                    return {
+                        field: error.path,
+                        message: {
+                            key: `publish.related.add.form.${error.path}.error.${error.value ? 'invalid' : 'missing'}`
+                        }
+                    };
                 }
+            );
+
+            if (errors.length > 0) {
+                res.status(400);
+                throw new Error();
             }
 
             const { link_id, link_url, link_label } = matchedData(req);
@@ -1629,8 +1659,9 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
             res.redirect(req.buildUrl(`/publish/${dataset.id}/related`, req.language));
             return;
         } catch (err) {
-            const error: ViewError = { field: 'related_link', message: { key: 'errors.related_link.required' } };
-            errors = [error];
+            if (err instanceof ApiException) {
+                errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+            }
         }
     }
 
@@ -1644,20 +1675,24 @@ export const provideDesignation = async (req: Request, res: Response, next: Next
 
     if (req.method === 'POST') {
         try {
-            const designationError = await hasError(designationValidator(), req);
-            if (designationError) {
-                res.status(400);
-                throw new Error('errors.designation.missing');
-            }
-
             designation = req.body.designation;
+
+            errors = (await getErrors(designationValidator(), req)).map((error: FieldValidationError) => {
+                return { field: error.path, message: { key: `publish.designation.form.designation.error.missing` } };
+            });
+
+            if (errors.length > 0) {
+                res.status(400);
+                throw new Error();
+            }
 
             await req.swapi.updateDatasetInfo(dataset.id, { designation, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
-            const error: ViewError = { field: 'designation', message: { key: 'errors.designation.missing' } };
-            errors = [error];
+            if (err instanceof ApiException) {
+                errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+            }
         }
     }
 
@@ -1669,15 +1704,17 @@ export const provideTopics = async (req: Request, res: Response, next: NextFunct
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     const availableTopics: TopicDTO[] = await req.swapi.getAllTopics();
     const nestedTopics = nestTopics(availableTopics);
-    const selectedTopics: number[] = dataset.topics?.map((dt: DatasetTopicDTO) => dt.topic_id) || [];
+    const selectedTopics: number[] = dataset.topics?.map((topic: TopicDTO) => topic.id) || [];
 
     if (req.method === 'POST') {
         try {
-            const topicError = await hasError(topicIdValidator(), req);
+            errors = (await getErrors(topicIdValidator(), req)).map((error: FieldValidationError) => {
+                return { field: error.path, message: { key: `publish.topics.form.topics.error.missing` } };
+            });
 
-            if (topicError) {
+            if (errors.length > 0) {
                 res.status(400);
-                throw new Error('errors.topics.missing');
+                throw new Error();
             }
 
             const topicIds = req.body.topics.filter(Boolean); // strip empty values
@@ -1685,8 +1722,9 @@ export const provideTopics = async (req: Request, res: Response, next: NextFunct
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
-            const error: ViewError = { field: 'topics', message: { key: 'errors.topics.missing' } };
-            errors = [error];
+            if (err instanceof ApiException) {
+                errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+            }
         }
     }
 

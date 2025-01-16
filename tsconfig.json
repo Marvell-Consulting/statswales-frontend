@@ -1,5 +1,16 @@
 {
-  "exclude": ["./coverage", "./dist", "./test", "**/*.test.ts", "jest.config.ts", "eslint.config.mjs", "./tools"],
+  "exclude": [
+    "jest.config.ts",
+    "eslint.config.mjs",
+    "playwright.config.ts",
+    "./coverage",
+    "./dist",
+    "./tools",
+    "**/*.test.ts",
+    "./tests",
+    "./tests-e2e",
+    "./playwright/*"
+  ],
   "compilerOptions": {
 
     /* Projects */
