@@ -928,6 +928,7 @@
     },
     "consumer": {
         "global": {
+            "home_label": "Home",
             "heading": "StatsWales",
             "phase_banner": {
                 "beta": "Beta",
