@@ -44,7 +44,7 @@
     "login": {
         "heading": "Login",
         "buttons": {
-            "onelogin": "OneLogin",
+            "entraid": "Microsoft",
             "google": "Google"
         },
         "error": {

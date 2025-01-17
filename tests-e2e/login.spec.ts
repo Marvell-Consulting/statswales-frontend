@@ -16,7 +16,7 @@ test('Provides Google auth', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'Google' })).toBeVisible();
 });
 
-test('Provides OneLogin auth', async ({ page }) => {
+test('Provides Microsoft (EntraID) auth', async ({ page }) => {
   await page.goto('/en-GB/auth/login');
-  await expect(page.getByRole('link', { name: 'OneLogin' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Microsoft' })).toBeVisible();
 });
