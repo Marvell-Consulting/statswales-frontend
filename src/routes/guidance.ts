@@ -1,4 +1,3 @@
-import * as Path from 'node:path';
 import * as fs from 'node:fs';
 import path from 'node:path';
 import * as readline from 'node:readline';
@@ -13,7 +12,7 @@ import { NotFoundException } from '../exceptions/not-found.exception';
 import { logger } from '../utils/logger';
 
 export const guidance = Router();
-const docsPath = Path.join(__dirname, '..', '..', 'docs', 'guidance');
+const docsPath = path.join(__dirname, '..', '..', 'docs', 'guidance');
 
 async function getTitle(pathToFile: string): Promise<string> {
     const readable = fs.createReadStream(pathToFile);
