@@ -78,13 +78,15 @@ guidance.get('/:file', async (req: Request, res: Response, next: NextFunction) =
             break;
         }
     }
-    if (fs.existsSync(path.join(fullDocsPath, req.params.file))) {
+    const requestedFilePath = path.join(fullDocsPath, `${req.params.file}.md`);
+    const normalizedFilePath = path.resolve(requestedFilePath);
+    if (!normalizedFilePath.startsWith(fullDocsPath) || !fs.existsSync(normalizedFilePath)) {
         logger.error(`File does not exist in guidance: ${req.params.file}`);
         next(new NotFoundException());
+        return;
     }
-    const filePath = path.join(fullDocsPath, `${req.params.file}.md`);
-    const title = await getTitle(filePath);
-    const mardkwonFile: string = fs.readFileSync(filePath, 'utf8');
+    const title = await getTitle(normalizedFilePath);
+    const mardkwonFile: string = fs.readFileSync(normalizedFilePath, 'utf8');
     const { window } = new JSDOM(`<!DOCTYPE html>`);
     const domPurify = DOMPurify(window);
     const toc = createToc(mardkwonFile);
