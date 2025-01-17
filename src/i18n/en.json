@@ -20,7 +20,7 @@
     "header": {
         "product_name": "StatsWales V3.0",
         "beta": "Beta",
-        "feedback": "You’re viewing a new version of Stats Wales. <a href=\"mailto:{{support_email}}\">Get support</a>.",
+        "feedback": "You’re viewing a new version of StatsWales. Get support at <a href=\"mailto:{{support_email}}\">{{support_email}}</a>.",
         "navigation": {
             "menu": "Menu",
             "skip_to_content": "Skip to main content",
@@ -931,7 +931,7 @@
             "heading": "StatsWales",
             "phase_banner": {
                 "beta": "Beta",
-                "feedback": "You're viewing a new version of StatsWales. <a class=\"govuk-link\" href=\"{{feedback_url}}\" target=\"_blank\">Give feedback (opens in new tab)</a>."
+                "feedback": "You’re viewing a new version of StatsWales"
             }
         },
         "list": {
