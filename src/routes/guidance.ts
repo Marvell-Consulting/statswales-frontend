@@ -4,12 +4,13 @@ import path from 'node:path';
 import * as readline from 'node:readline';
 
 import { NextFunction, Request, Response, Router } from 'express';
-import { logger } from '../utils/logger';
-import { NotFoundException } from '../exceptions/not-found.exception';
 import { JSDOM } from 'jsdom';
 import DOMPurify from 'dompurify';
 import { marked, Tokens } from 'marked';
 import { gfmHeadingId } from 'marked-gfm-heading-id';
+
+import { NotFoundException } from '../exceptions/not-found.exception';
+import { logger } from '../utils/logger';
 
 export const guidance = Router();
 const docsPath = Path.join(__dirname, '..', '..', 'docs', 'guidance');
