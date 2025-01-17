@@ -26,9 +26,9 @@ auth.get('/google', (req: Request, res: Response) => {
     res.redirect(`${config.backend.url}/auth/google?lang=${req.language}`);
 });
 
-auth.get('/onelogin', (req: Request, res: Response) => {
-    logger.debug('Sending user to backend for onelogin authentication');
-    res.redirect(`${config.backend.url}/auth/onelogin?lang=${req.language}`);
+auth.get('/entraid', (req: Request, res: Response) => {
+    logger.debug('Sending user to backend for entraid authentication');
+    res.redirect(`${config.backend.url}/auth/entraid?lang=${req.language}`);
 });
 
 auth.get('/callback', (req: Request, res: Response) => {
