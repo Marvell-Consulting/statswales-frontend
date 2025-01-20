@@ -7,6 +7,9 @@ import { nanoid } from 'nanoid';
 import { v4 as uuid } from 'uuid';
 import { isBefore, isValid, parseISO } from 'date-fns';
 import { parse } from 'csv-parse';
+import { marked } from 'marked';
+import { JSDOM } from 'jsdom';
+import DOMPurify from 'dompurify';
 
 import {
     collectionValidator,
@@ -307,6 +310,14 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
         res.status(400);
         errors = [{ field: 'preview', message: { key: 'errors.preview.failed_to_get_preview' } }];
     }
+    const { window } = new JSDOM(`<!DOCTYPE html>`);
+    const domPurify = DOMPurify(window);
+    if (dataset.datasetInfo?.description)
+        dataset.datasetInfo.description = domPurify.sanitize(await marked.parse(dataset.datasetInfo?.description));
+    if (dataset.datasetInfo?.quality)
+        dataset.datasetInfo.quality = domPurify.sanitize(await marked.parse(dataset.datasetInfo?.quality));
+    if (dataset.datasetInfo?.collection)
+        dataset.datasetInfo.collection = domPurify.sanitize(await marked.parse(dataset.datasetInfo?.collection));
     res.render('publish/cube-preview', { ...previewData, dataset, pagination, errors });
 };
 
