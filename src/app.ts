@@ -21,6 +21,7 @@ import { developer } from './routes/developer';
 import { errorHandler } from './routes/error-handler';
 import { homepage } from './routes/homepage';
 import { notFound } from './routes/not-found';
+import { guidance } from './routes/guidance';
 import { consumer } from './routes/consumer';
 
 const app: Application = express();
@@ -59,6 +60,7 @@ app.use('/:lang/published', rateLimiter, consumer);
 
 // authenticated routes
 app.use('/:lang/publish', rateLimiter, ensureAuthenticated, publish);
+app.use('/:lang/guidance', rateLimiter, ensureAuthenticated, guidance);
 app.use('/:lang/developer', rateLimiter, ensureAuthenticated, ensureDeveloper, developer);
 app.use('/:lang', rateLimiter, ensureAuthenticated, homepage);
 
