@@ -26,6 +26,11 @@ npm run dev
 
 The service should now be available on port 3000.
 
+### Windows
+
+On occasion the Redis Client times outs if this happens restart the frontend service and try again.
+We are investigating this issue.
+
 ## Testing the service
 
 There are a number of unit and functional tests under the `/tests` directory which are executed using jest with no
