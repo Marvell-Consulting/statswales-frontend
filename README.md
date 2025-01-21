@@ -7,6 +7,10 @@
 -   Node 20+
 -   An Instance of the StatsWales backend Service
 
+### Windows
+
+- Git Bash
+
 ## Configuration
 
 Copy the [.env-example](.env-example) file to `.env` and provide the missing values.
@@ -21,6 +25,11 @@ npm run dev
 ```
 
 The service should now be available on port 3000.
+
+### Windows
+
+On occasion the Redis Client times outs if this happens restart the frontend service and try again.
+We are investigating this issue.
 
 ## Testing the service
 
