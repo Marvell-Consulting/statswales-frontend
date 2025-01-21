@@ -7,6 +7,10 @@
 -   Node 20+
 -   An Instance of the StatsWales backend Service
 
+### Windows
+
+- Git Bash
+
 ## Configuration
 
 Copy the [.env-example](.env-example) file to `.env` and provide the missing values.
