@@ -222,7 +222,7 @@
                     <%= t('dataset_view.summary') %>
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    <%= dataset.datasetInfo.description || t('dataset_view.not_entered') %>
+                    <%- dataset.datasetInfo.description || t('dataset_view.not_entered') %>
                 </dd>
             </div>
             <div class="govuk-summary-list__row">
@@ -230,7 +230,7 @@
                     <%= t('dataset_view.data_collection') %>
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    <%= dataset.datasetInfo.collection || t('dataset_view.not_entered') %>
+                    <%- dataset.datasetInfo.collection || t('dataset_view.not_entered') %>
                 </dd>
             </div>
             <div class="govuk-summary-list__row">
@@ -238,7 +238,7 @@
                     <%= t('dataset_view.statistical_quality') %>
                 </dt>
                 <dd class="govuk-summary-list__value">
-                    <%= dataset.datasetInfo.quality || t('dataset_view.not_entered') %>
+                    <%- dataset.datasetInfo.quality || t('dataset_view.not_entered') %>
                 </dd>
             </div>
             <div class="govuk-summary-list__row">

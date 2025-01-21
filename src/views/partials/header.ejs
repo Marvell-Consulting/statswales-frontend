@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>StatsWales <%= t('beta') %></title>
+    <title>StatsWales <%= t('beta') %><%= locals.title ? ` - ${locals.title}` : '' %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="blue">
     <link rel="icon" sizes="48x48" href="/assets/images/favicon.ico">
@@ -64,6 +64,20 @@
                     <ul id="navigation" class="govuk-header__navigation-list">
                         <% if (locals?.isAuthenticated) { %>
                             <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
+                                <a class="govuk-header__link" href="/<%= i18n.language %>/guidance">
+                                    <%= t('header.navigation.guidance') %>
+                                </a>
+                            </li>
+                        <% } %>
+                        <% if (locals?.isDeveloper) { %>
+                            <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
+                                <a class="govuk-header__link" href="/<%= i18n.language %>/developer">
+                                    <%= t('header.navigation.developer') %>
+                                </a>
+                            </li>
+                        <% } %>
+                        <% if (locals?.isAuthenticated) { %>
+                            <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
                                 <a class="govuk-header__link" href="/<%= i18n.language %>/auth/logout">
                                     <%= t('header.navigation.logout') %>
                                 </a>
@@ -80,13 +94,6 @@
                                 </a>
                             <% } %>
                         </li>
-                        <% if (locals?.isDeveloper) { %>
-                            <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
-                                <a class="govuk-header__link" href="/<%= i18n.language %>/developer">
-                                    <%= t('header.navigation.developer') %>
-                                </a>
-                            </li>
-                        <% } %>
                     </ul>
                 </nav>
             </div>
