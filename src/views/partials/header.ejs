@@ -62,22 +62,20 @@
                         <%= t('header.navigation.menu') %>
                     </button>
                     <ul id="navigation" class="govuk-header__navigation-list">
-                        <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
-                            <a class="govuk-header__link" href="/<%= i18n.language %>/publish">
-                                <%= t('header.navigation.publish_dataset') %>
-                            </a>
-                        </li>
-                        <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
-                            <a class="govuk-header__link" href="/<%= i18n.language %>/guidance">
-                                <%= t('header.navigation.guidance') %>
-                            </a>
-                        </li>
-                        <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
-                            <a class="govuk-header__link"
-                                href="/<%= i18n.language %>/dataset">
-                                <%= t('header.navigation.list_datasets') %>
-                            </a>
-                        </li>
+                        <% if (locals?.isAuthenticated) { %>
+                            <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
+                                <a class="govuk-header__link" href="/<%= i18n.language %>/guidance">
+                                    <%= t('header.navigation.guidance') %>
+                                </a>
+                            </li>
+                        <% } %>
+                        <% if (locals?.isDeveloper) { %>
+                            <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
+                                <a class="govuk-header__link" href="/<%= i18n.language %>/developer">
+                                    <%= t('header.navigation.developer') %>
+                                </a>
+                            </li>
+                        <% } %>
                         <% if (locals?.isAuthenticated) { %>
                             <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
                                 <a class="govuk-header__link" href="/<%= i18n.language %>/auth/logout">
@@ -96,13 +94,6 @@
                                 </a>
                             <% } %>
                         </li>
-                        <% if (locals?.isDeveloper) { %>
-                            <li class="govuk-header__navigation-item govuk-header__navigation-item--active">
-                                <a class="govuk-header__link" href="/<%= i18n.language %>/developer">
-                                    <%= t('header.navigation.developer') %>
-                                </a>
-                            </li>
-                        <% } %>
                     </ul>
                 </nav>
             </div>
