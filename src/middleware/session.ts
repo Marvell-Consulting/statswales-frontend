@@ -19,19 +19,17 @@ if (config.session.store === SessionStore.Redis) {
         disableOfflineQueue: true,
         pingInterval: 1000,
         socket: {
-            reconnectStrategy: 1000
+            reconnectStrategy: 1000,
+            connectTimeout: 7500,
+            family: 4
         }
     });
 
     logger.debug(`Connecting to redis server: ${config.session.redisUrl}`);
 
-    redisClient.on('connect', () => logger.info('Redis connected'));
-    redisClient
-        .connect()
-        .then(() => logger.info('Redis session store initialized'))
-        .catch((err) => {
-            logger.error(err);
-        });
+    redisClient.on('connect', () => logger.info('Redis session store initialized'));
+    redisClient.on('error', (err) => logger.error(`An error occurred with Redis with the following error: ${err}`));
+    redisClient.connect();
 
     store = new RedisStore({ client: redisClient, prefix: 'sw3f:' });
 } else {
