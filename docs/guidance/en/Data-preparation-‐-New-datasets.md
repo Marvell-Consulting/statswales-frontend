@@ -4,7 +4,7 @@ Datasets consist of a set of statistics and their associated metadata. The datas
 
 ## Data tables
 
-For new datasets you need to have a data table. The table should be in [CSV format](#csv-format) and contain columns for:
+For new datasets you need to have a data table. The table should preferably be in [CSV format](#csv-format) and must contain columns for:
 
 - data values (including rows for any calculated [totals or averages](#totals-and-averages) you want to include)
 - all relevant dimensions and [reference codes](#reference-data-lookup-tables-and-date-formatting)
@@ -15,15 +15,15 @@ In this guidance, we’ll be using the example scenario of data for council tax 
 
 | AreaCode | YearCode | BandCode | NoteCodes | Measure | Data   |
 | :------- | :------- | :------- | :-------- | :------ | :----- |
-| 512      | 199697   | A-       |           | 1       | 256.88 |
-| 512      | 199697   | A        | x         |         |        |
-| 512      | 199697   | B        |           | 1       | 359.64 |
-| 512      | 199697   | C        | e         | 1       | 411.01 |
-| 512      | 199697   | D        |           | 1       | 462.39 |
+| 512      | 202425   | A-       |           | 1       | 256.88 |
+| 512      | 202425   | A        | x         |         |        |
+| 512      | 202425   | B        |           | 1       | 359.64 |
+| 512      | 202425   | C        | e         | 1       | 411.01 |
+| 512      | 202425   | D        |           | 1       | 462.39 |
 
-### CSV format
+### File format
 
-CSV files should have:
+The preferred file format is a CSV with:
 
 - values separated by commas
 - headings in the first row
@@ -32,6 +32,8 @@ CSV files should have:
 - data values as numeric values only
 
 The preferred format for CSVs is UTF-8, as this works better with any special characters used. This format should be an option in the software you use to generate CSVs, and may be under 'text encoding' or similar. In Excel, 'CSV UTF-8' is under common formats in the 'Save as' options.
+
+Whilst CSVs are the recommended format, the system can also accept JSON and Parquet formats as well.
 
 ### Headings
 
@@ -48,6 +50,10 @@ You should include rows in your data table for any totals or averages you want t
 In our council tax example, the AreaCode dimension refers to local authorities. If you wanted to include a total for the whole of Wales, you would need to include a row containing the total, the reference code for Wales [596] and a ‘t’ note code. If the value for Wales was an average, this would be an ‘a’ note code.
 
 If your data contains hierarchies with multiple layers - for example economic regions, which are groupings of local authorities - you can provide multiple totals or averages. For example, a total for each economic region and a total for Wales.
+
+### Column ordering
+
+The order of columns in your data table file will affect the ordering of the data table that consumers will download, based on the sort orders defined by each dimension's reference data. In our council tax example above, the data table would first be sorted by local authority (AreaCode), then year (YearCode), then council tax band (BandCode), then measure.
 
 ## Reference data (date formatting and lookup tables)
 
