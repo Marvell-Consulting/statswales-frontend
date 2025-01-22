@@ -24,9 +24,9 @@
         "navigation": {
             "menu": "Menu",
             "skip_to_content": "Skip to main content",
-            "publish_dataset": "Publish a Dataset",
-            "guidance": "Publishing Guidance",
-            "list_datasets": "List Datasets",
+            "publish_dataset": "Publish a dataset",
+            "guidance": "Guidance",
+            "list_datasets": "List datasets",
             "logout": "Logout",
             "developer": "Developer"
         }

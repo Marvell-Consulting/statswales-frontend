@@ -22,8 +22,8 @@
         "navigation": {
             "menu": "Dewislen",
             "skip_to_content": "Neidio i’r prif gynnwys",
-            "publish_dataset": "Cyhoeddi Set Ddata",
-            "list_datasets": "Rhestru Setiau Data",
+            "publish_dataset": "Cyhoeddi set ddata",
+            "list_datasets": "Rhestru setiau data",
             "logout": "Allgofnodi"
         }
     },
