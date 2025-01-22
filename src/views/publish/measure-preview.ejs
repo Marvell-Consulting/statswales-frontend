@@ -76,14 +76,9 @@
                 <div class="govuk-grid-column-full">
                     <form method="post" role="continue" enctype="multipart/form-data">
                         <fieldset class="govuk-fieldset">
-                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                <h2 class="govuk-fieldset__heading">
-                                    <%= t('publish.measure_preview.question') %>
-                                </h2>
-                            </legend>
                             <div class="govuk-form-group">
                                 <label class="govuk-label govuk-label--m" for="csv">
-                                    <%= t('publish.upload.note') %>
+                                    <%= t('publish.upload.form.file.label') %>
                                 </label>
                                 <input class="govuk-file-upload" id="csv" name="csv" type="file" placeholder="Upload Data Files!" accept=".csv,.parquet,.json,.xls,.xlsx,.gz,text/csv,application/vnd.apache.parquet,application/parquet,application/json,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/msexcel,application/gzip">
                             </div>
