@@ -257,8 +257,7 @@
             }
         },
         "measure_preview": {
-            "heading": "Setup Measures and Datatypes",
-            "question": "Upload a measure lookup table"
+            "heading": "Upload a measure lookup table"
         },
         "period-type-chooser": {
             "heading": "What are the shortest periods of time in the dimension?",
