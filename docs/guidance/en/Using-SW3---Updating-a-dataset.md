@@ -1,10 +1,10 @@
-# Updating Datasets in StatsWales 3
+# Using SW3 - Updating a dataset
 
 ## Data
 
 From your home screen, select the dataset you need to update. On the next screen select ‘Update this dataset’.
 
-Using your [prepared update data table](Data-preparation-%E2%80%90-Updating-datasets), go through the following steps:
+Using your [prepared update data table](Data-preparation-‐-Updating-datasets), go through the following steps:
 
 1. Click ‘Data table’ from your dataset overview
 1. Select whether you’re adding new data only or replacing all existing data
@@ -31,7 +31,7 @@ Indicate what date and time the updated dataset should be published. Publication
 
 If you change any of the text fields, you’ll need to provide updated translations. You’ll also need to provide translations if you enter any revision notes.
 
-You should follow the same process as for [translating a new dataset](Creating-a-new-dataset-in-SW3#translations). The only difference is that the exported CSV will have columns for:
+You should follow the same process as for [translating a new dataset](Using-SW3---Creating-a-new-dataset#guidance-translations). The only difference is that the exported CSV will have columns for:
 
 - Text field name
 - Previous text (English) (not applicable for revision notes)

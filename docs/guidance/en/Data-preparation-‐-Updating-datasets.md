@@ -34,8 +34,8 @@ If you need to replace existing data, currently in SW3 your update data table sh
 It is very important that you ensure:
 
 - the data in the update data table is correct
-- no data will be lost from the currently published dataset (unless it needs to be [removed for a legitimate reason](#removing-data))
-- all revised data values have [an ‘r’ in the note code column](notes)
+- no data will be lost from the currently published dataset (unless it needs to be [removed for a legitimate reason](#guidance-removing-data))
+- all revised data values have [an ‘r’ in the note code column](Data-preparation-‐-New-datasets#guidance-notes)
 
 Example rows of update data table for council tax bands, revising data for 2022/23 for Isle of Anglesey:
 
@@ -60,9 +60,9 @@ You should only remove data values if there is a legitimate, statistical reason 
 To remove data values, you should follow the same process as for replacing data but with:
 
 - empty cells for the removed data values
-- the [appropriate data value note shorthand](notes) to explain why the data value is no longer present, as well as the ‘r’ indicating this is a revision
+- the [appropriate data value note shorthand](Data-preparation-‐-New-datasets#guidance-notes) to explain why the data value is no longer present, as well as the ‘r’ indicating this is a revision
 
-Depending on the reason for removal, it may be necessary to add an explanation to the [‘Statistical quality’ metadata section](Data-preparation-%E2%80%90-New-datasets#statistical-quality).
+Depending on the reason for removal, it may be necessary to add an explanation to the [‘Statistical quality’ metadata section](Data-preparation-‐-New-datasets#guidance-statistical-quality).
 
 Example rows of update data table for council tax bands, removing data for council tax band A- prior to 2001/02:
 
@@ -78,4 +78,4 @@ _Please note this example is for demonstration purposes only and is not a genuin
 
 ## Updating metadata
 
-Any [section of the metadata](Data-preparation-%E2%80%90-New-datasets#metadata) can be updated if needed. This can be done whether the data itself is being updated or not. It may also be necessary to explain why the metadata has been changed, within the relevant section.
+Any [section of the metadata](Data-preparation-‐-New-datasets#guidance-metadata) can be updated if needed. This can be done whether the data itself is being updated or not. It may also be necessary to explain why the metadata has been changed, within the relevant section.

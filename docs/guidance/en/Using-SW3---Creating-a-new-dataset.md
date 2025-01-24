@@ -1,8 +1,8 @@
-# Creating a new dataset in StatsWales 3
+# Using SW3 - Creating a new dataset
 
 ## Data
 
-From your home screen, click ‘Create new dataset’. Using your [prepared data](Data-preparation-%E2%80%90-New-datasets#data-tables), you’ll go through the following steps:
+From your home screen, click ‘Create new dataset’. Using your [prepared data](Data-preparation-‐-New-datasets#guidance-data-tables), you’ll go through the following steps:
 
 1. Add title
 1. Upload your data table
@@ -15,7 +15,7 @@ From your home screen, click ‘Create new dataset’. Using your [prepared data
 1. Add reference data for each dimension
    - For dimensions containing dates, answer the questions about date formatting
    - Name the dimensions
-   - For measure or data types, upload the [appropriate lookup table](Data-preparation-%E2%80%90-New-datasets#measure-or-data-types)
+   - For measure or data types, upload the [appropriate lookup table](Data-preparation-‐-New-datasets#guidance-measure-or-data-types)
 
 ### Date formatting
 
@@ -26,9 +26,9 @@ For dimensions containing dates, you’ll need to answer a set of questions abou
    - specific points in time - for example, specific dates when data values were collected
 1. For periods of time you’ll be asked:
    - whether the periods of time are months, quarters or years
-   - [the date format used](Data-preparation-%E2%80%90-New-datasets#date-formatting) for months, quarters or years (as appropriate)
+   - [the date format used](Data-preparation-‐-New-datasets#guidance-date-formatting) for months, quarters or years (as appropriate)
 1. For specific points in times you’ll just be asked for the date format used
-1. Lastly you’ll need to select [the type of year](Data-preparation-%E2%80%90-New-datasets#year-type) the dimension covers.
+1. Lastly you’ll need to select [the type of year](Data-preparation-‐-New-datasets#guidance-year-type) the dimension covers.
 
 ### Errors
 
@@ -51,7 +51,7 @@ If you click on a dimension, you can either:
 
 ## Metadata
 
-You should add all [prepared metadata](Data-preparation-%E2%80%90-New-datasets#metadata) to the appropriate sections. This can be done in any order. You can go back to any section by clicking on it from your dataset overview.
+You should add all [prepared metadata](Data-preparation-‐-New-datasets#guidance-metadata) to the appropriate sections. This can be done in any order. You can go back to any section by clicking on it from your dataset overview.
 
 ## Translations
 
@@ -84,7 +84,7 @@ Once you’ve completed all text entry fields, you’ll be able to export all th
 
 Select your organisation and team. Teams have a set contact email address associated with them.
 
-The [list of teams and associated emails [link TBD]]#) is centrally managed. If you need to have a team in the list added or changed, you need to:
+The [list of teams and associated emails [link TBD](#)] is centrally managed. If you need to have a team in the list added or changed, you need to:
 
 - email ... at ... [process TBD]
 - provide the team and its email address in both English and Welsh
