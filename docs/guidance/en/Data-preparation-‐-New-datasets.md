@@ -1,15 +1,15 @@
-# Data preparation - New Datasets
+# Data preparation - New datasets
 
 Datasets consist of a set of statistics and their associated metadata. The dataset is built in SW3 as a data cube from a data table and reference, or lookup, data.
 
 ## Data tables
 
-For new datasets you need to have a data table. The table should preferably be in [CSV format](#csv-format) and must contain columns for:
+For new datasets you need to have a data table. The table should preferably be in [CSV format](#guidance-file-format) and must contain columns for:
 
-- data values (including rows for any calculated [totals or averages](#totals-and-averages) you want to include)
-- all relevant dimensions and [reference codes](#reference-data-lookup-tables-and-date-formatting)
-- [measure or data types](#measure-or-data-types)
-- [standardised shorthand](#notes) note codes to label specific data values - **you must include this column**, even if you do not have any note codes to include
+- data values (including rows for any calculated [totals or averages](#guidance-totals-and-averages) you want to include)
+- all relevant dimensions and [reference codes](#guidance-reference-data)
+- [measure or data types](#guidance-measure-or-data-types)
+- [standardised shorthand](#guidance-notes) note codes to label specific data values - **you must include this column**, even if you do not have any note codes to include
 
 In this guidance, we’ll be using the example scenario of data for council tax bands. Here are example rows of a data table for this scenario:
 
@@ -37,15 +37,15 @@ Whilst CSVs are the recommended format, the system can also accept JSON and Parq
 
 ### Headings
 
-Column headings should have meaningful names, so that you know what each column contains. This will be important when [uploading your CSV](creating-a-new-dataset-in-SW3) into SW3. They can have spaces between words if required.
+Column headings should have meaningful names, so that you know what each column contains. This will be important when [uploading your CSV](Using-SW3---Creating-a-new-dataset) into SW3. They can have spaces between words if required.
 
 ### Totals and averages
 
 You should include rows in your data table for any totals or averages you want to include with the dataset. The rows should contain:
 
 - totals or averages
-- correct [references codes](#reference-data-lookup-tables-and-date-formatting) or [date formats](#date-formatting)
-- a [standard note code](#notes) indicating whether the data value is a total (t) or an average (a)
+- correct [references codes](#guidance-reference-data) or [date formats](#guidance-date-formatting)
+- a [standard note code](#guidance-notes) indicating whether the data value is a total (t) or an average (a)
 
 In our council tax example, the AreaCode dimension refers to local authorities. If you wanted to include a total for the whole of Wales, you would need to include a row containing the total, the reference code for Wales [596] and a ‘t’ note code. If the value for Wales was an average, this would be an ‘a’ note code.
 
@@ -55,13 +55,13 @@ If your data contains hierarchies with multiple layers - for example economic re
 
 The order of columns in your data table file will affect the ordering of the data table that consumers will download, based on the sort orders defined by each dimension's reference data. In our council tax example above, the data table would first be sorted by local authority (AreaCode), then year (YearCode), then council tax band (BandCode), then measure.
 
-## Reference data (date formatting and lookup tables)
+## Reference data
 
-When you build your dataset in SW3, you’ll need to select reference data for each dimension in your data table. In our example table, this would mean selecting lookup tables for ‘AreaCode’ and ‘BandCode’, and confirming date formats for 'YearCode'. You do not need to add lookup tables for [data value notes](#notes).
+When you build your dataset in SW3, you’ll need to select reference data for each dimension in your data table. In our example table, this would mean selecting lookup tables for ‘AreaCode’ and ‘BandCode’, and confirming date formats for 'YearCode'. You do not need to add lookup tables for [data value notes](#guidance-notes).
 
 ### Standardised reference data
 
-SW3 does not use lookup tables for dimensions containing dates, instead taking a [standardised approach to formatting](#date-formatting).
+SW3 does not use lookup tables for dimensions containing dates, instead taking a [standardised approach to formatting](#guidance-date-formatting).
 
 In addition, in the near future SW3 will have standardised, centrally-managed lookup tables for:
 
@@ -81,7 +81,7 @@ This guidance will be updated once this standardised reference data has been imp
 
 ### Date formatting
 
-SW3 can only accept certain date formats in your data table. When you [build your dataset](Creating-a-new-dataset-in-SW3) in SW3, for dimensions containing dates [you’ll be asked about the date formats you’ve used](Creating-a-new-dataset-in-SW3#date-formatting).
+SW3 can only accept certain date formats in your data table. When you [build your dataset](Using-SW3---Creating-a-new-dataset) in SW3, for dimensions containing dates [you’ll be asked about the date formats you’ve used](Using-SW3---Creating-a-new-dataset#guidance-date-formatting).
 
 The dates that will appear on the consumer website, that is the English and Welsh descriptions, are standardised and built into the system.
 
@@ -157,7 +157,7 @@ For dimensions not containing dates, you should prepare your own lookup tables, 
 
 A lookup table tells the system what each of the reference codes used in a relevant dimension represents. It's important that the reference codes in the dimension in the data table **match exactly** with those in the lookup table.
 
-Your lookup table should be in [CSV format](#csv-format) and in one of the following formats.
+Your lookup table should be preferrably in [CSV format](#guidance-file-format) and in one of the following formats.
 
 #### 2-row format (preferred)
 
@@ -206,7 +206,7 @@ Example part of lookup table for tax band code:
 
 It is important **these specific column headings** are used.
 
-Lookup table notes can be provided, but **are not currently shown in the consumer view** in SW3. If notes contain important information, you should ensure this information is also provided in the most appropriate [metadata section](#metadata).
+Lookup table notes can be provided, but **are not currently shown in the consumer view** in SW3. If notes contain important information, you should ensure this information is also provided in the most appropriate [metadata section](#guidance-metadata).
 
 ### Dimension names
 
@@ -221,7 +221,7 @@ Dimension names should be:
 
 A measure, or data type, indicates what the data value represents. You **must** include a column for this in your data table, even if there is only one type of measure in your dataset. Including measures helps consumers better understand the data in your dataset.
 
-For a dimension containing measures, you should prepare your own lookup table, which you will upload to SW3. It should be in the same format as other [lookup tables](#lookup-tables), with the following additional columns:
+For a dimension containing measures, you should prepare your own lookup table, which you will upload to SW3. It should be in the same format as other [lookup tables](#guidance-lookup-tables), with the following additional columns:
 
 | Heading | What the column contains                                                                                                                                                                                                                                                                                     |
 | :------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -260,17 +260,17 @@ SW3 uses shorthand note codes, with standardised explanations, closely following
 | x                                  | Missing data             | For example, where a data value is not collected in a region                                                                                                                                                                            |
 | z                                  | Not applicable           | For example, in tables of employment where people under 16 cannot legally be employed                                                                                                                                                   |
 
-If you need to provide any custom explanations to clarify any note codes used, these should be provided in the most appropriate [metadata section](#metadata).
+If you need to provide any custom explanations to clarify any note codes used, these should be provided in the most appropriate [metadata section](#guidance-metadata).
 
 If you need to add multiple note codes to a single data value, these should be comma separated, for example ‘p,f’.
 
 ### Other notes
 
-All other notes about dimensions or the dataset should be provided in the most appropriate [metadata section](#metadata).
+All other notes about dimensions or the dataset should be provided in the most appropriate [metadata section](#guidance-metadata).
 
 ## Metadata
 
-Before you create a new dataset in SW3, you should prepare all the related metadata you need. You should provide this **all in the same language**. This should be whichever language you’ll use when using SW3, either English or Welsh. Translations of metadata into the other language are [processed with all other translations](Creating-a-new-dataset-in-SW3#translations).
+Before you create a new dataset in SW3, you should prepare all the related metadata you need. You should provide this **all in the same language**. This should be whichever language you’ll use when using SW3, either English or Welsh. Translations of metadata into the other language are [processed with all other translations](Using-SW3---Creating-a-new-dataset#guidance-translations).
 
 The following is all the metadata you’ll need to provide.
 
@@ -314,7 +314,7 @@ This is split into data providers, such as ‘Office for National Statistics (ON
 
 You can add multiple sources if required.
 
-The [list of data providers and sources [link TBD]](#) is centrally managed. If you need to have a data provider or source added to the list, you need to:
+The [list of data providers and sources [link TBD]](#guidance-) is centrally managed. If you need to have a data provider or source added to the list, you need to:
 
 - email ... at ... [process TBD]
 - provide the name of the data provider and source in both English and Welsh
