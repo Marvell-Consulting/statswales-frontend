@@ -20,7 +20,7 @@
     "header": {
         "product_name": "StatsWales V3.0",
         "beta": "Beta",
-        "feedback": "You’re viewing a new version of StatsWales. Get support at <a href=\"mailto:{{support_email}}\">{{support_email}}</a>.",
+        "feedback": "You’re viewing a new version of StatsWales. Get support at <a class=\"govuk-link\" href=\"mailto:{{support_email}}\">{{support_email}}</a>.",
         "navigation": {
             "menu": "Menu",
             "skip_to_content": "Skip to main content",
@@ -766,6 +766,10 @@
                 "organisation": "Publisher organisation and contact",
                 "when": "When this dataset should be published",
                 "submit": "Submit for approval"
+            },
+            "submit": {
+                "subheading": "By continuing, you confirm that all data and metadata has been checked and is correct.",
+                "button": "Submit for publishing"
             }
         },
         "change_data": {
@@ -783,6 +787,32 @@
         "point_in_time": {
             "heading": "What date format is used?",
             "example": "For example: {{example}}"
+        },
+        "overview": {
+            "scheduled": {
+                "notification": {
+                    "header": "Success",
+                    "content": "Dataset submitted successfully for publishing"
+                },
+                "publish_at": "Scheduled publishing date: <strong>{{publish_at}}</strong>",
+                "what_next": "What do you want to do?",
+                "buttons": {
+                    "change_dataset": "Change dataset before publication"
+                }
+            },
+            "badge": {
+                "dataset_status": {
+                    "new": "New dataset",
+                    "live": "Live dataset"
+                },
+                "publishing_status": {
+                    "published": "Published",
+                    "incomplete": "Incomplete",
+                    "scheduled": "Scheduled",
+                    "update_incomplete": "Update Incomplete",
+                    "update_scheduled": "Update Scheduled"
+                }
+            }
         }
     },
     "translations": {

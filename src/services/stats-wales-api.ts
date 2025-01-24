@@ -1,6 +1,6 @@
 import { ReadableStream } from 'node:stream/web';
 
-import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
+import { ViewDTO } from '../dtos/view-dto';
 import { DatasetDTO } from '../dtos/dataset';
 import { DatasetInfoDTO } from '../dtos/dataset-info';
 import { FactTableDTO } from '../dtos/fact-table';
@@ -499,7 +499,7 @@ export class StatsWalesApi {
         );
     }
 
-    public uploadTranslationImport(datasetId: string, file: Blob): Promise<DatasetDTO> {
+    public async uploadTranslationImport(datasetId: string, file: Blob): Promise<DatasetDTO> {
         logger.debug(`Uploading translations to dataset: ${datasetId}`);
         const body = new FormData();
         body.set('csv', file);
@@ -509,10 +509,17 @@ export class StatsWalesApi {
         );
     }
 
-    public updateTranslations(datasetId: string): Promise<DatasetDTO> {
+    public async updateTranslations(datasetId: string): Promise<DatasetDTO> {
         logger.debug(`Updating translations for dataset: ${datasetId}`);
 
         return this.fetch({ url: `translation/${datasetId}/import`, method: HttpMethod.Patch }).then(
+            (response) => response.json() as unknown as DatasetDTO
+        );
+    }
+
+    public async approveForPublication(datasetId: string): Promise<DatasetDTO> {
+        logger.debug(`Attempting to approve dataset for publication: ${datasetId}`);
+        return this.fetch({ url: `dataset/${datasetId}/approve`, method: HttpMethod.Post }).then(
             (response) => response.json() as unknown as DatasetDTO
         );
     }

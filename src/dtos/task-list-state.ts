@@ -28,4 +28,6 @@ export interface TaskListState {
         organisation: TaskStatus;
         when: TaskStatus;
     };
+
+    canPublish: boolean;
 }
