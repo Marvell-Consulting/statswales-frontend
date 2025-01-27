@@ -1947,6 +1947,17 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
     const datasetStatus = getStatus(dataset);
     const publishingStatus = getPublishingStatus(dataset);
     const justScheduled = req.query?.scheduled === 'true';
+    let errors: ViewError[] = [];
+
+    if (req.query.withdraw) {
+        try {
+            await req.swapi.withdrawFromPublication(dataset.id);
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+            return;
+        } catch (err) {
+            errors = [{ field: 'withdraw', message: { key: 'publish.overview.error.withdraw' } }];
+        }
+    }
 
     res.render('publish/overview', {
         dataset,
@@ -1955,6 +1966,7 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
         justScheduled,
         datasetStatus,
         publishingStatus,
-        statusToColour
+        statusToColour,
+        errors
     });
 };

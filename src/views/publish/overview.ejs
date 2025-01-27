@@ -36,7 +36,7 @@
 				<h2 class="govuk-heading-m"><%= t('publish.overview.scheduled.what_next') %></h2>
 
 				<div class="actions">
-					<a href="#" class="govuk-link"><%= t('publish.overview.scheduled.buttons.change_dataset') %></a>
+					<a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language, { withdraw: 'true' }) %>"><%= t('publish.overview.scheduled.buttons.change_dataset') %></a>
 				</div>
 
 			</div>

@@ -161,3 +161,4 @@ publish.post('/:datasetId/translation/import', fetchDataset, upload.single('csv'
 
 /* Dataset Overview */
 publish.get('/:datasetId/overview', fetchDataset, overview);
+publish.post('/:datasetId/overview', fetchDataset, upload.none(), overview);
