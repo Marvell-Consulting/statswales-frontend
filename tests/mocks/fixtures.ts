@@ -258,7 +258,8 @@ export const tasklistInProgress: TaskListState = {
   publishing: {
     when: TaskStatus.NotStarted,
     organisation: TaskStatus.NotStarted
-  }
+  },
+  canPublish: false
 };
 
 export const datasets: DatasetDTO[] = [datasetWithTitle, datasetWithImport, completedDataset, datasetRevWithNoImports];

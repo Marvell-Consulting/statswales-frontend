@@ -41,7 +41,8 @@ import {
     downloadAsCSV,
     downloadAsParquet,
     downloadAsExcel,
-    downloadAsDuckDb
+    downloadAsDuckDb,
+    overview
 } from '../controllers/publish';
 
 export const publish = Router();
@@ -70,6 +71,7 @@ publish.post('/:datasetId/sources', fetchDataset, upload.none(), sources);
 
 /* Tasklist */
 publish.get('/:datasetId/tasklist', fetchDataset, taskList);
+publish.post('/:datasetId/tasklist', fetchDataset, upload.none(), taskList);
 
 /* Cube Preview */
 publish.get('/:datasetId/cube-preview', fetchDataset, cubePreview);
@@ -156,3 +158,7 @@ publish.post('/:datasetId/organisation', fetchDataset, upload.none(), provideOrg
 publish.get('/:datasetId/translation/export', fetchDataset, exportTranslations);
 publish.get('/:datasetId/translation/import', fetchDataset, importTranslations);
 publish.post('/:datasetId/translation/import', fetchDataset, upload.single('csv'), importTranslations);
+
+/* Dataset Overview */
+publish.get('/:datasetId/overview', fetchDataset, overview);
+publish.post('/:datasetId/overview', fetchDataset, upload.none(), overview);

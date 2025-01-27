@@ -11,7 +11,7 @@
 
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-one-half">
-                <a class="govuk-button" href="/<%= i18n.language %>/publish"><%= t('homepage.buttons.create') %></a>
+                <a class="govuk-button" href="<%= buildUrl(`/publish`, i18n.language) %>"><%= t('homepage.buttons.create') %></a>
             </div>
         </div>
 
@@ -32,7 +32,13 @@
                             <% for (const dataset of locals.data) { %>
                                 <tr class="govuk-table__row">
                                     <td class="govuk-table__cell"><%= dataset.code %></td>
-                                    <td class="govuk-table__cell"><a href="/<%= i18n.language %>/publish/<%= dataset.id %>/tasklist" class="govuk-link"><%= dataset.title %></a></td>
+                                    <td class="govuk-table__cell">
+                                        <% if (dataset.publishing_status === 'incomplete') { %>
+                                            <a href="<%= buildUrl(`/publish/${dataset.id}/tasklist`, i18n.language) %>" class="govuk-link"><%= dataset.title %></a>
+                                        <% } else { %>
+                                            <a href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language) %>" class="govuk-link"><%= dataset.title %></a>
+                                        <% } %>
+                                    </td>
                                     <td class="govuk-table__cell date"><%= dateFormat(dataset.last_updated, 'd MMMM yyyy') %></td>
                                     <td class="govuk-table__cell">
                                         <% if (dataset.status) { %>

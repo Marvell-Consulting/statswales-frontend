@@ -1,0 +1,48 @@
+<%- include("../partials/header"); %>
+
+<div class="govuk-width-container app-width-container">
+	<main class="govuk-main-wrapper" id="main-content" role="main">
+
+		<div class="govuk-grid-row">
+			<div class="govuk-grid-column-two-thirds">
+
+				<% if (locals.publishingStatus === 'scheduled' && justScheduled) { %>
+					<div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+						<div class="govuk-notification-banner__header">
+							<h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title"><%= t('publish.overview.scheduled.notification.header') %></h2>
+						</div>
+						<div class="govuk-notification-banner__content">
+							<h3 class="govuk-notification-banner__heading"><%= t('publish.overview.scheduled.notification.content') %></h3>
+						</div>
+					</div>
+				<% } %>
+
+				<h1 class="govuk-heading-xl govuk-!-margin-bottom-2"><%= title %></h1>
+
+				<div class="govuk-!-margin-bottom-8">
+					<strong class="govuk-tag govuk-tag--<%= statusToColour(datasetStatus) %>"><%= t(`publish.overview.badge.dataset_status.${datasetStatus}`) %></strong>
+
+					<% if (locals.publishingStatus) { %>
+						<strong class="govuk-tag govuk-tag--<%= statusToColour(publishingStatus) %>"><%= t(`publish.overview.badge.publishing_status.${publishingStatus}`) %></strong>
+					<% } %>
+				</div>
+
+				<%- include("../partials/error-handler"); %>
+
+				<% if (locals.publishingStatus === 'scheduled') { %>
+					<p class="govuk-body"><%- t('publish.overview.scheduled.publish_at', { publish_at: dateFormat(revision.publish_at, 'd MMMM yyyy HH:mm') }) %></p>
+				<% } %>
+
+				<h2 class="govuk-heading-m"><%= t('publish.overview.scheduled.what_next') %></h2>
+
+				<div class="actions">
+					<a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language, { withdraw: 'true' }) %>"><%= t('publish.overview.scheduled.buttons.change_dataset') %></a>
+				</div>
+
+			</div>
+		</div>
+
+	</main>
+</div>
+
+<%- include("../partials/footer"); %>

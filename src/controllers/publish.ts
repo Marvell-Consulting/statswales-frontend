@@ -66,6 +66,8 @@ import { DimensionInfoDTO } from '../dtos/dimension-info';
 import { YearType } from '../enums/year-type';
 import { addEditLinks } from '../utils/add-edit-links';
 import { TranslationDTO } from '../dtos/translations';
+import { getLatestRevision } from '../utils/latest';
+import { getPublishingStatus, getStatus } from '../utils/dataset-status';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -274,13 +276,30 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
 };
 
 export const taskList = async (req: Request, res: Response, next: NextFunction) => {
+    const dataset = singleLangDataset(res.locals.dataset, req.language);
+
     try {
-        const datasetTitle = singleLangDataset(res.locals.dataset, req.language).datasetInfo?.title;
-        const dimensions = singleLangDataset(res.locals.dataset, req.language).dimensions;
-        const taskList: TaskListState = await req.swapi.getTaskList(res.locals.datasetId);
+        if (req.method === 'POST') {
+            // TODO: for MVP there is no approval process, so we are jumping straight to approve
+            // once we have approval process, there will be an interstitial status while the dataset is waiting to
+            // be approved by a suitable member of the team
+            logger.debug('submitting dataset for publication');
+            const scheduledDataset = await req.swapi.approveForPublication(dataset.id);
+
+            if (scheduledDataset) {
+                res.redirect(
+                    req.buildUrl(`/publish/${scheduledDataset.id}/overview`, req.language, { scheduled: 'true' })
+                );
+                return;
+            }
+        }
+
+        const datasetTitle = dataset.datasetInfo?.title;
+        const dimensions = dataset.dimensions;
+        const taskList: TaskListState = await req.swapi.getTaskList(dataset.id);
         res.render('publish/tasklist', { datasetTitle, taskList, dimensions, statusToColour });
     } catch (err) {
-        logger.error(`Failed to get tasklist with the following error: ${err}`);
+        logger.error(err, `Failed to fetch the tasklist`);
         next(new NotFoundException());
     }
 };
@@ -1919,4 +1938,35 @@ export const importTranslations = async (req: Request, res: Response, next: Next
     }
 
     res.render('publish/translations/import', { preview, translations, errors });
+};
+
+export const overview = async (req: Request, res: Response, next: NextFunction) => {
+    const dataset = singleLangDataset(res.locals.dataset, req.language);
+    const revision = getLatestRevision(res.locals.dataset);
+    const title = dataset.datasetInfo?.title;
+    const datasetStatus = getStatus(dataset);
+    const publishingStatus = getPublishingStatus(dataset);
+    const justScheduled = req.query?.scheduled === 'true';
+    let errors: ViewError[] = [];
+
+    if (req.query.withdraw) {
+        try {
+            await req.swapi.withdrawFromPublication(dataset.id);
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+            return;
+        } catch (err) {
+            errors = [{ field: 'withdraw', message: { key: 'publish.overview.error.withdraw' } }];
+        }
+    }
+
+    res.render('publish/overview', {
+        dataset,
+        revision,
+        title,
+        justScheduled,
+        datasetStatus,
+        publishingStatus,
+        statusToColour,
+        errors
+    });
 };

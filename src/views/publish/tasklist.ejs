@@ -231,6 +231,14 @@
             </div>
           </li>
         </ul>
+        <% if (taskList.canPublish) { %>
+          <div>
+            <h2 class="govuk-heading-m govuk-!-margin-top-5"><%= t('publish.tasklist.submit.subheading') %></h2>
+            <form enctype="multipart/form-data" method="post">
+              <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('publish.tasklist.submit.button') %></button>
+            </form>
+          </div>
+        <% } %>
       </div>
       <div class="govuk-grid-column-one-third">
         <p class="govuk-heading-s">
