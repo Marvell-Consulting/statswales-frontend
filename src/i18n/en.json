@@ -678,7 +678,7 @@
                 }
             },
             "buttons": {
-                "upload": "Upload CSV File"
+                "upload": "Continue"
             },
             "errors": {
                 "missing": "Select a data table",
