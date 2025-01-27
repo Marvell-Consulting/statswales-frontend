@@ -1955,7 +1955,7 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
-            errors = [{ field: 'withdraw', message: { key: '' } }];
+            errors = [{ field: 'withdraw', message: { key: 'publish.overview.error.withdraw' } }];
         }
     }
 
