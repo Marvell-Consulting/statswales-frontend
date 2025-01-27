@@ -523,4 +523,11 @@ export class StatsWalesApi {
             (response) => response.json() as unknown as DatasetDTO
         );
     }
+
+    public async withdrawFromPublication(datasetId: string): Promise<DatasetDTO> {
+        logger.debug(`Attempting to withdraw latest revision publication: ${datasetId}`);
+        return this.fetch({ url: `dataset/${datasetId}/withdraw`, method: HttpMethod.Post }).then(
+            (response) => response.json() as unknown as DatasetDTO
+        );
+    }
 }

@@ -729,7 +729,6 @@
             }
         },
         "tasklist": {
-            "heading": "Dataset Overview",
             "no_title": "No Title Available",
             "preview": "Preview (opens in new tab)",
             "status": {
@@ -812,6 +811,9 @@
                     "update_incomplete": "Update Incomplete",
                     "update_scheduled": "Update Scheduled"
                 }
+            },
+            "error": {
+                "withdraw": "Could not withdraw dataset from publication, please contact support"
             }
         }
     },
