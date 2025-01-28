@@ -67,7 +67,7 @@ import { YearType } from '../enums/year-type';
 import { addEditLinks } from '../utils/add-edit-links';
 import { TranslationDTO } from '../dtos/translations';
 import { getLatestRevision } from '../utils/latest';
-import { getPublishingStatus, getStatus } from '../utils/dataset-status';
+import { getPublishingStatus, getDatasetStatus } from '../utils/dataset-status';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -1944,7 +1944,7 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     const revision = getLatestRevision(res.locals.dataset);
     const title = dataset.datasetInfo?.title;
-    const datasetStatus = getStatus(dataset);
+    const datasetStatus = getDatasetStatus(dataset);
     const publishingStatus = getPublishingStatus(dataset);
     const justScheduled = req.query?.scheduled === 'true';
     let errors: ViewError[] = [];

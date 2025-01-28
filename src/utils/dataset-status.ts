@@ -7,14 +7,14 @@ import { PublishingStatus } from '../enums/publishing-status';
 
 import { getLatestRevision } from './latest';
 
-export const getStatus = (dataset: DatasetDTO | SingleLanguageDataset): DatasetStatus => {
-    return dataset.live ? DatasetStatus.Live : DatasetStatus.New;
+export const getDatasetStatus = (dataset: DatasetDTO | SingleLanguageDataset): DatasetStatus => {
+    return dataset.live && isBefore(dataset.live, new Date()) ? DatasetStatus.Live : DatasetStatus.New;
 };
 
 export const getPublishingStatus = (dataset: DatasetDTO | SingleLanguageDataset): PublishingStatus => {
     const revision = getLatestRevision(dataset);
 
-    if (getStatus(dataset) === DatasetStatus.New) {
+    if (getDatasetStatus(dataset) === DatasetStatus.New) {
         return revision?.approved_at ? PublishingStatus.Scheduled : PublishingStatus.Incomplete;
     }
 
