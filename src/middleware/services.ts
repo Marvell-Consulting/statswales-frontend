@@ -4,6 +4,7 @@ import { add, format, parseISO } from 'date-fns';
 import { appConfig } from '../config';
 import { Locale } from '../enums/locale';
 import { StatsWalesApi } from '../services/stats-wales-api';
+import { SWConsumerApi } from '../services/sw-consumer-api';
 
 import { localeUrl } from './language-switcher';
 
@@ -14,6 +15,7 @@ const config = appConfig();
 export const initServices = (req: Request, res: Response, next: NextFunction): void => {
     if (!/^\/(public|css|assets)/.test(req.originalUrl)) {
         req.swapi = new StatsWalesApi(req.language as Locale, req.cookies.jwt);
+        req.swcapi = new SWConsumerApi(req.language as Locale);
         req.buildUrl = localeUrl; // for controllers
         res.locals.buildUrl = localeUrl; // for templates
         res.locals.url = req.originalUrl; // Allows the passing through of the URL

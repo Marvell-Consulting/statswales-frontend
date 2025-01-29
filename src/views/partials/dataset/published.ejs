@@ -1,0 +1,28 @@
+<div class="dataset-published">
+
+  <h2 class="govuk-heading-m govuk-!-margin-top-6"><%= t('dataset_view.published.heading') %></h2>
+
+  <dl class="govuk-summary-list">
+    <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+            <%= t('dataset_view.published.org') %>
+        </dt>
+        <dd class="govuk-summary-list__value">
+            <%= published.team?.organisation?.name || t('dataset_view.not_entered') %>
+        </dd>
+    </div>
+    <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+            <%= t('dataset_view.published.contact') %>
+        </dt>
+        <dd class="govuk-summary-list__value">
+            <% if (published.team?.email) { %>
+                <a class="govuk-link govuk-link--no-underline" href="mailto:<%= published.team.email %>"><%= published.team.email %></a>
+            <% } else { %>
+                <%= t('dataset_view.not_entered') %>
+            <% } %>
+        </dd>
+    </div>
+  </dl>
+
+</div>

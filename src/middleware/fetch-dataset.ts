@@ -7,6 +7,7 @@ import { hasError, datasetIdValidator } from '../validators';
 
 export const fetchDataset = async (req: Request, res: Response, next: NextFunction) => {
     const datasetIdError = await hasError(datasetIdValidator(), req);
+
     if (datasetIdError) {
         logger.error('Invalid or missing datasetId');
         next(new NotFoundException('errors.dataset_missing'));
@@ -24,6 +25,27 @@ export const fetchDataset = async (req: Request, res: Response, next: NextFuncti
             next(err);
             return;
         }
+        next(new NotFoundException('errors.dataset_missing'));
+        return;
+    }
+
+    next();
+};
+
+export const fetchPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
+    const datasetIdError = await hasError(datasetIdValidator(), req);
+
+    if (datasetIdError) {
+        logger.error('Invalid or missing datasetId');
+        next(new NotFoundException('errors.dataset_missing'));
+        return;
+    }
+
+    try {
+        const dataset = await req.swcapi.getPublishedDataset(req.params.datasetId);
+        res.locals.datasetId = dataset.id;
+        res.locals.dataset = dataset;
+    } catch (err: any) {
         next(new NotFoundException('errors.dataset_missing'));
         return;
     }

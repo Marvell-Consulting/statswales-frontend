@@ -24,6 +24,7 @@ import { DimensionDTO } from '../dtos/dimension';
 import { DimensionInfoDTO } from '../dtos/dimension-info';
 import { TranslationDTO } from '../dtos/translations';
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
+import { FileFormat } from '../enums/file-format';
 
 const config = appConfig();
 
@@ -160,15 +161,6 @@ export class StatsWalesApi {
         );
     }
 
-    public async getPublishedDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {
-        logger.debug(`Fetching published dataset list...`);
-        const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
-
-        return this.fetch({ url: `published/list?${qs}` }).then(
-            (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
-        );
-    }
-
     public async getOriginalUpload(
         datasetId: string,
         revisionId: string,
@@ -181,36 +173,15 @@ export class StatsWalesApi {
         }).then((response) => response.body as ReadableStream);
     }
 
-    public async getRevisionCubeCSV(datasetId: string, revisionId: string): Promise<ReadableStream> {
-        logger.debug(`Fetching CSV for revision: ${revisionId}...`);
+    public async getCubeFileStream(datasetId: string, revisionId: string, format: FileFormat): Promise<ReadableStream> {
+        logger.debug(`Fetching ${format} stream for revision: ${revisionId}...`);
 
-        return this.fetch({
-            url: `dataset/${datasetId}/revision/by-id/${revisionId}/cube/csv`
-        }).then((response) => response.body as ReadableStream);
-    }
+        const url =
+            format === FileFormat.DuckDb
+                ? `dataset/${datasetId}/revision/by-id/${revisionId}/cube`
+                : `dataset/${datasetId}/revision/by-id/${revisionId}/cube/${format}`;
 
-    public async getRevisionCubeParquet(datasetId: string, revisionId: string): Promise<ReadableStream> {
-        logger.debug(`Fetching CSV for revision: ${revisionId}...`);
-
-        return this.fetch({
-            url: `dataset/${datasetId}/revision/by-id/${revisionId}/cube/parquet`
-        }).then((response) => response.body as ReadableStream);
-    }
-
-    public async getRevisionCubeExcel(datasetId: string, revisionId: string): Promise<ReadableStream> {
-        logger.debug(`Fetching CSV for revision: ${revisionId}...`);
-
-        return this.fetch({
-            url: `dataset/${datasetId}/revision/by-id/${revisionId}/cube/excel`
-        }).then((response) => response.body as ReadableStream);
-    }
-
-    public async getRevisionCube(datasetId: string, revisionId: string): Promise<ReadableStream> {
-        logger.debug(`Fetching CSV for revision: ${revisionId}...`);
-
-        return this.fetch({
-            url: `dataset/${datasetId}/revision/by-id/${revisionId}/cube`
-        }).then((response) => response.body as ReadableStream);
+        return this.fetch({ url }).then((response) => response.body as ReadableStream);
     }
 
     public async confirmFileImport(datasetId: string, revisionId: string, factTableId: string): Promise<FactTableDTO> {
@@ -527,6 +498,22 @@ export class StatsWalesApi {
     public async withdrawFromPublication(datasetId: string): Promise<DatasetDTO> {
         logger.debug(`Attempting to withdraw latest revision publication: ${datasetId}`);
         return this.fetch({ url: `dataset/${datasetId}/withdraw`, method: HttpMethod.Post }).then(
+            (response) => response.json() as unknown as DatasetDTO
+        );
+    }
+
+    public async getPublishedDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {
+        logger.debug(`Fetching published dataset list...`);
+        const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
+
+        return this.fetch({ url: `published/list?${qs}` }).then(
+            (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
+        );
+    }
+
+    public async getPublishedDataset(datasetId: string): Promise<DatasetDTO> {
+        logger.debug(`Fetching published dataset: ${datasetId}`);
+        return this.fetch({ url: `published/${datasetId}` }).then(
             (response) => response.json() as unknown as DatasetDTO
         );
     }

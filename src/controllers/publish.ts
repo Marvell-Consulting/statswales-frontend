@@ -7,9 +7,6 @@ import { nanoid } from 'nanoid';
 import { v4 as uuid } from 'uuid';
 import { isBefore, isValid, parseISO } from 'date-fns';
 import { parse } from 'csv-parse';
-import { marked } from 'marked';
-import { JSDOM } from 'jsdom';
-import DOMPurify from 'dompurify';
 
 import {
     collectionValidator,
@@ -68,6 +65,9 @@ import { addEditLinks } from '../utils/add-edit-links';
 import { TranslationDTO } from '../dtos/translations';
 import { getLatestRevision } from '../utils/latest';
 import { getPublishingStatus, getDatasetStatus } from '../utils/dataset-status';
+import { getDatasetPreview } from '../utils/dataset-preview';
+import { FileFormat } from '../enums/file-format';
+import { getDownloadHeaders } from '../utils/download-headers';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -307,6 +307,7 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
 export const cubePreview = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     const revision = res.locals.revision;
+
     let errors: ViewError[] | undefined;
     let previewData: ViewDTO | undefined;
     let pagination: (string | number)[] = [];
@@ -329,71 +330,35 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
         res.status(400);
         errors = [{ field: 'preview', message: { key: 'errors.preview.failed_to_get_preview' } }];
     }
-    const { window } = new JSDOM(`<!DOCTYPE html>`);
-    const domPurify = DOMPurify(window);
-    if (dataset.datasetInfo?.description)
-        dataset.datasetInfo.description = domPurify.sanitize(await marked.parse(dataset.datasetInfo?.description));
-    if (dataset.datasetInfo?.quality)
-        dataset.datasetInfo.quality = domPurify.sanitize(await marked.parse(dataset.datasetInfo?.quality));
-    if (dataset.datasetInfo?.collection)
-        dataset.datasetInfo.collection = domPurify.sanitize(await marked.parse(dataset.datasetInfo?.collection));
-    res.render('publish/cube-preview', { ...previewData, dataset, pagination, errors });
+
+    const preview = await getDatasetPreview(dataset, revision);
+
+    res.render('publish/cube-preview', { ...previewData, dataset, preview, pagination, errors });
 };
 
-export const downloadAsCSV = async (req: Request, res: Response, next: NextFunction) => {
+export const downloadDataset = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     const revision = res.locals.revision;
-    const fileStream = await req.swapi.getRevisionCubeCSV(dataset.id, revision.id);
-    res.writeHead(200, {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        'Content-Type': 'text/csv; charset=utf-8',
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        'Content-disposition': `attachment;filename=${revision.id}.csv`
-    });
-    const readable: Readable = Readable.from(fileStream);
-    readable.pipe(res);
-};
 
-export const downloadAsParquet = async (req: Request, res: Response, next: NextFunction) => {
-    const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const revision = res.locals.revision;
-    const fileStream = await req.swapi.getRevisionCubeParquet(dataset.id, revision.id);
-    res.writeHead(200, {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        'Content-Type': 'application/vnd.apache.parquet',
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        'Content-disposition': `attachment;filename=${revision.id}.parquet`
-    });
-    const readable: Readable = Readable.from(fileStream);
-    readable.pipe(res);
-};
+    try {
+        if (!dataset.live || !revision) {
+            throw new NotFoundException('no published revision found');
+        }
 
-export const downloadAsExcel = async (req: Request, res: Response, next: NextFunction) => {
-    const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const revision = res.locals.revision;
-    const fileStream = await req.swapi.getRevisionCubeExcel(dataset.id, revision.id);
-    res.writeHead(200, {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        'Content-Type': 'application/vnd.ms-excel',
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        'Content-disposition': `attachment;filename=${revision.id}.xlsx`
-    });
-    const readable: Readable = Readable.from(fileStream);
-    readable.pipe(res);
-};
+        const format = req.query.format as FileFormat;
+        const headers = getDownloadHeaders(format, revision);
 
-export const downloadAsDuckDb = async (req: Request, res: Response, next: NextFunction) => {
-    const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const revision = res.locals.revision;
-    const fileStream = await req.swapi.getRevisionCube(dataset.id, revision.id);
-    res.writeHead(200, {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        'Content-Type': 'application/octet-stream',
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        'Content-disposition': `attachment;filename=${revision.id}.duckdb`
-    });
-    const readable: Readable = Readable.from(fileStream);
-    readable.pipe(res);
+        if (!headers) {
+            throw new NotFoundException('invalid file format');
+        }
+
+        const fileStream = await req.swapi.getCubeFileStream(dataset.id, revision.id, format);
+        res.writeHead(200, headers);
+        const readable: Readable = Readable.from(fileStream);
+        readable.pipe(res);
+    } catch (err) {
+        next(err);
+    }
 };
 
 export const redirectToTasklist = (req: Request, res: Response) => {
