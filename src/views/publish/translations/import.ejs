@@ -35,6 +35,7 @@
                 <a href="<%= buildUrl(`/publish/${locals.datasetId}/translation/import?confirm=true`, i18n.language) %>" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
                     <%= t('buttons.continue') %>
                 </a>
+                <a class="govuk-button govuk-button--secondary" href="javascript:history.back()"><%= t('buttons.cancel')%></a>
             <% } else { %>
                 <h1 class="govuk-heading-xl"><%= t('translations.import.heading') %></h1>
 
@@ -53,6 +54,7 @@
                     <button type="submit" class="govuk-button" data-module="govuk-button">
                         <%= t('translations.import.buttons.import') %>
                     </button>
+                    <a class="govuk-button govuk-button--secondary" href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>"><%= t('buttons.cancel')%></a>
                 </form>
             <% } %>
 
