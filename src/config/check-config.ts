@@ -12,8 +12,8 @@ export const checkConfig = () => {
 
     walkObject(config, ({ key, value, location, isLeaf }) => {
         if (isLeaf && !optionalProperties.includes(key) && value === undefined) {
-            logger.error(`config.${location.join('.')} is undefined`);
-            throw new Error('invalid or missing config detected, stopping server');
+            const configPath = location.join('.');
+            throw new Error(`${configPath} is invalid or missing, stopping server`);
         }
     });
 };
