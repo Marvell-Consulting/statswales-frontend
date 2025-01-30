@@ -34,6 +34,7 @@
 
 				<div class="govuk-button-group">
 					<a href="<%= buildUrl(`/publish/${locals.datasetId}/translation/export?format=csv`, i18n.language) %>" class="govuk-button"><%= t('translations.export.buttons.export') %></a>
+					<a class="govuk-button govuk-button--secondary" href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>"><%= t('buttons.cancel')%></a>
 				</div>
 			</div>
 
