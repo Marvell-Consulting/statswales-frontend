@@ -15,7 +15,7 @@ export const nextUpdateAt = (
 
     if (update.is_updated === false) return false;
 
-    if (!update || !update.is_updated || !update.frequency_unit || !update.frequency_value) return undefined;
+    if (!update.frequency_unit || !update.frequency_value) return undefined;
 
     return add(revision.publish_at, { [`${update.frequency_unit}s`]: update.frequency_value });
 };
