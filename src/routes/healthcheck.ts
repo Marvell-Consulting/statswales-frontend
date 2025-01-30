@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from 'express';
 
-import { StatsWalesApi } from '../services/stats-wales-api';
+import { PublisherApi } from '../services/publisher-api';
 import { Locale } from '../enums/locale';
 import { logger } from '../utils/logger';
 
@@ -12,7 +12,7 @@ healthcheck.get('/', async (req: Request, res: Response, next: NextFunction) => 
     logger.info(`Healthcheck requested in ${lang}`);
 
     try {
-        backend = await new StatsWalesApi(lang).ping();
+        backend = await new PublisherApi(lang).ping();
     } catch (err: any) {
         next(err);
     }

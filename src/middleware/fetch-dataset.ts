@@ -15,7 +15,7 @@ export const fetchDataset = async (req: Request, res: Response, next: NextFuncti
     }
 
     try {
-        const dataset = await req.swapi.getDataset(req.params.datasetId);
+        const dataset = await req.pubapi.getDataset(req.params.datasetId);
         res.locals.datasetId = dataset.id;
         res.locals.dataset = dataset;
         res.locals.revision = getLatestRevision(dataset);
@@ -42,7 +42,7 @@ export const fetchPublishedDataset = async (req: Request, res: Response, next: N
     }
 
     try {
-        const dataset = await req.swcapi.getPublishedDataset(req.params.datasetId);
+        const dataset = await req.conapi.getPublishedDataset(req.params.datasetId);
         res.locals.datasetId = dataset.id;
         res.locals.dataset = dataset;
     } catch (err: any) {

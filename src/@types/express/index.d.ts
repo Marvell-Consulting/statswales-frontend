@@ -1,14 +1,14 @@
 import { User } from '../../interfaces/user.interface';
-import { StatsWalesApi } from '../../services/stats-wales-api';
+import { PublisherApi } from '../../services/publisher-api';
 import { Locale } from '../../enums/locale';
-import { SWConsumerApi } from '../../services/sw-consumer-api';
+import { ConsumerApi } from '../../services/consumer-api';
 
 declare module 'express-serve-static-core' {
     interface Request {
         user?: User;
         jwt?: string;
-        swapi: StatsWalesApi;
-        swcapi: SWConsumerApi;
+        pubapi: PublisherApi;
+        conapi: ConsumerApi;
         buildUrl: (path: string, locale: Locale | string, query?: Record<string, string>) => string;
     }
 }

@@ -95,10 +95,10 @@ export const provideTitle = async (req: Request, res: Response, next: NextFuncti
             }
 
             if (existingDataset) {
-                await req.swapi.updateDatasetInfo(existingDataset.id, { title, language: req.language });
+                await req.pubapi.updateDatasetInfo(existingDataset.id, { title, language: req.language });
                 res.redirect(req.buildUrl(`/publish/${existingDataset.id}/tasklist`, req.language));
             } else {
-                const dataset = await req.swapi.createDataset(title, req.language);
+                const dataset = await req.pubapi.createDataset(title, req.language);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
             }
             return;
@@ -128,14 +128,14 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
 
             if (revisit && revision && factTable) {
                 // cleanup previous fact table
-                await req.swapi.removeFileImport(dataset.id, revision.id, factTable.id);
+                await req.pubapi.removeFileImport(dataset.id, revision.id, factTable.id);
             }
 
             const fileName = req.file.originalname;
             req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
             const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
             logger.debug('Sending file to backend.');
-            await req.swapi.uploadCSVToDataset(dataset.id, fileData, fileName);
+            await req.pubapi.uploadCSVToDataset(dataset.id, fileData, fileName);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
             return;
         } catch (err) {
@@ -170,7 +170,7 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
     if (req.method === 'POST') {
         try {
             if (req.body.confirm === 'true') {
-                await req.swapi.confirmFileImport(dataset.id, revision.id, factTable.id);
+                await req.pubapi.confirmFileImport(dataset.id, revision.id, factTable.id);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/sources`, req.language));
             } else {
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
@@ -185,7 +185,7 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
     try {
         const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
         const pageSize = Number.parseInt(req.query.page_size as string, 10) || 10;
-        previewData = await req.swapi.getImportPreview(dataset.id, revision.id, factTable.id, pageNumber, pageSize);
+        previewData = await req.pubapi.getImportPreview(dataset.id, revision.id, factTable.id, pageNumber, pageSize);
         ignoredCount = previewData.headers.filter((header) => header.source_type === SourceType.Ignore).length;
         if (!previewData) {
             throw new Error('No preview data found.');
@@ -256,7 +256,7 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
                 errors = [error];
                 res.status(400);
             } else {
-                await req.swapi.assignSources(dataset.id, revision.id, factTable.id, sourceAssignment);
+                await req.pubapi.assignSources(dataset.id, revision.id, factTable.id, sourceAssignment);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
                 return;
             }
@@ -284,7 +284,7 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
             // once we have approval process, there will be an interstitial status while the dataset is waiting to
             // be approved by a suitable member of the team
             logger.debug('submitting dataset for publication');
-            const scheduledDataset = await req.swapi.approveForPublication(dataset.id);
+            const scheduledDataset = await req.pubapi.approveForPublication(dataset.id);
 
             if (scheduledDataset) {
                 res.redirect(
@@ -296,7 +296,7 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
 
         const datasetTitle = dataset.datasetInfo?.title;
         const dimensions = dataset.dimensions;
-        const taskList: TaskListState = await req.swapi.getTaskList(dataset.id);
+        const taskList: TaskListState = await req.pubapi.getTaskList(dataset.id);
         res.render('publish/tasklist', { datasetTitle, taskList, dimensions, statusToColour });
     } catch (err) {
         logger.error(err, `Failed to fetch the tasklist`);
@@ -321,7 +321,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
     try {
         const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
         const pageSize = Number.parseInt(req.query.page_size as string, 10) || 10;
-        previewData = await req.swapi.getRevisionPreview(dataset.id, revision.id, pageNumber, pageSize);
+        previewData = await req.pubapi.getRevisionPreview(dataset.id, revision.id, pageNumber, pageSize);
         if (!previewData) {
             throw new Error('No preview data found.');
         }
@@ -352,7 +352,7 @@ export const downloadDataset = async (req: Request, res: Response, next: NextFun
             throw new NotFoundException('invalid file format');
         }
 
-        const fileStream = await req.swapi.getCubeFileStream(dataset.id, revision.id, format);
+        const fileStream = await req.pubapi.getCubeFileStream(dataset.id, revision.id, format);
         res.writeHead(200, headers);
         const readable: Readable = Readable.from(fileStream);
         readable.pipe(res);
@@ -386,7 +386,7 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
                 req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
                 const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
                 logger.debug('Sending file to backend.');
-                await req.swapi.uploadMeasureLookup(dataset.id, fileData, fileName);
+                await req.pubapi.uploadMeasureLookup(dataset.id, fileData, fileName);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/measure/review`, req.language));
                 return;
             } catch (err) {
@@ -417,7 +417,7 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
             }
         }
 
-        const dataPreview = await req.swapi.getMeasurePreview(res.locals.dataset.id);
+        const dataPreview = await req.pubapi.getMeasurePreview(res.locals.dataset.id);
         if (req.session.errors) {
             const errors = req.session.errors;
             req.session.errors = undefined;
@@ -456,7 +456,7 @@ export const measureReview = async (req: Request, res: Response, next: NextFunct
                     break;
                 case 'cancel':
                     try {
-                        await req.swapi.resetMeasure(dataset.id);
+                        await req.pubapi.resetMeasure(dataset.id);
                         res.redirect(req.buildUrl(`/publish/${dataset.id}/measure`, req.language));
                     } catch (err) {
                         const error = err as ApiException;
@@ -481,7 +481,7 @@ export const measureReview = async (req: Request, res: Response, next: NextFunct
             return;
         }
 
-        const dataPreview = await req.swapi.getMeasurePreview(res.locals.dataset.id);
+        const dataPreview = await req.pubapi.getMeasurePreview(res.locals.dataset.id);
         if (errors) {
             res.status(errors.status || 500);
         }
@@ -517,7 +517,7 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
             const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
             try {
                 logger.debug('Sending lookup table to backend');
-                await req.swapi.uploadLookupTable(dataset.id, dimension.id, fileData, fileName);
+                await req.pubapi.uploadLookupTable(dataset.id, dimension.id, fileData, fileName);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/review`, req.language));
             } catch (err) {
                 req.session.dimensionPatch = undefined;
@@ -579,7 +579,7 @@ export const lookupReview = async (req: Request, res: Response, next: NextFuncti
                     break;
                 case 'goback':
                     try {
-                        await req.swapi.resetDimension(dataset.id, dimension.id);
+                        await req.pubapi.resetDimension(dataset.id, dimension.id);
                         res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/`, req.language));
                     } catch (err) {
                         const error = err as ApiException;
@@ -604,7 +604,7 @@ export const lookupReview = async (req: Request, res: Response, next: NextFuncti
             return;
         }
 
-        const dataPreview = await req.swapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
+        const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
         if (errors) {
             res.status(errors.status || 500);
             res.render('publish/lookup-table-preview', { ...dataPreview, review: true, dimension, errors });
@@ -647,7 +647,11 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
                         reference_type: req.body.dimensionType
                     };
                     try {
-                        await req.swapi.patchDimension(res.locals.dataset.id, dimension.id, req.session.dimensionPatch);
+                        await req.pubapi.patchDimension(
+                            res.locals.dataset.id,
+                            dimension.id,
+                            req.session.dimensionPatch
+                        );
                         res.redirect(
                             req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/review`, req.language)
                         );
@@ -686,7 +690,7 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
             }
             return;
         }
-        const dataPreview = await req.swapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
+        const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
         if (req.session.errors) {
             const errors = req.session.errors;
             req.session.errors = undefined;
@@ -742,7 +746,7 @@ export const fetchTimeDimensionPreview = async (req: Request, res: Response, nex
             return;
         }
 
-        const dataPreview = await req.swapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
+        const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
         res.render('publish/time-chooser', { ...dataPreview, dimension });
     } catch (err) {
         logger.error('Failed to get dimension preview', err);
@@ -856,7 +860,7 @@ export const periodType = async (req: Request, res: Response, next: NextFunction
             switch (req.body.periodType) {
                 case 'years':
                     try {
-                        const previewData = await req.swapi.patchDimension(dataset.id, dimension.id, patchRequest);
+                        const previewData = await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
                         logger.debug('Matching complete for year... Redirecting to review.');
                         res.redirect(
                             req.buildUrl(
@@ -935,7 +939,7 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
                 patchRequest.fifth_quarter = true;
             }
             try {
-                const previewData = await req.swapi.patchDimension(dataset.id, dimension.id, patchRequest);
+                const previewData = await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
                 // eslint-disable-next-line require-atomic-updates
                 req.session.dimensionPatch = undefined;
                 req.session.save();
@@ -996,7 +1000,7 @@ export const monthChooser = async (req: Request, res: Response, next: NextFuncti
             );
             req.session.save();
             try {
-                const previewData = await req.swapi.patchDimension(dataset.id, dimension.id, patchRequest);
+                const previewData = await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
                 // eslint-disable-next-line require-atomic-updates
                 req.session.dimensionPatch = undefined;
                 req.session.save();
@@ -1010,7 +1014,7 @@ export const monthChooser = async (req: Request, res: Response, next: NextFuncti
                 return;
             }
         }
-        const dataPreview = await req.swapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
+        const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
         res.render('publish/month-format', { ...dataPreview });
     } catch (err) {
         logger.error('Failed to get dimension preview', err);
@@ -1041,7 +1045,7 @@ export const periodReview = async (req: Request, res: Response, next: NextFuncti
                     break;
                 case 'goback':
                     try {
-                        await req.swapi.resetDimension(dataset.id, dimension.id);
+                        await req.pubapi.resetDimension(dataset.id, dimension.id);
                         res.redirect(
                             req.buildUrl(
                                 `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/`,
@@ -1071,7 +1075,7 @@ export const periodReview = async (req: Request, res: Response, next: NextFuncti
             return;
         }
 
-        const dataPreview = await req.swapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
+        const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
         if (errors) {
             res.status(errors.status || 500);
             res.render('publish/time-chooser', { ...dataPreview, review: true, dimension, errors });
@@ -1173,7 +1177,7 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                 language: req.language
             };
             try {
-                await req.swapi.updateDimensionInfo(dataset.id, dimension.id, info);
+                await req.pubapi.updateDimensionInfo(dataset.id, dimension.id, info);
                 res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/tasklist`, req.language));
                 return;
             } catch (err) {
@@ -1220,7 +1224,7 @@ export const pointInTimeChooser = async (req: Request, res: Response, next: Next
             date_type: YearType.PointInTime
         };
         try {
-            const previewData = await req.swapi.patchDimension(dataset.id, dimension.id, patchRequest);
+            const previewData = await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
             logger.debug('Matching complete for specific point in time... Redirecting to review.');
             res.redirect(
                 req.buildUrl(
@@ -1325,7 +1329,7 @@ export const provideSummary = async (req: Request, res: Response, next: NextFunc
                 throw new Error();
             }
 
-            await req.swapi.updateDatasetInfo(dataset.id, { description, language: req.language });
+            await req.pubapi.updateDatasetInfo(dataset.id, { description, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
@@ -1356,7 +1360,7 @@ export const provideCollection = async (req: Request, res: Response, next: NextF
                 throw new Error();
             }
 
-            await req.swapi.updateDatasetInfo(dataset.id, { collection, language: req.language });
+            await req.pubapi.updateDatasetInfo(dataset.id, { collection, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
@@ -1393,7 +1397,7 @@ export const provideQuality = async (req: Request, res: Response, next: NextFunc
                 throw new Error();
             }
 
-            await req.swapi.updateDatasetInfo(dataset.id, { ...datasetInfo, language: req.language });
+            await req.pubapi.updateDatasetInfo(dataset.id, { ...datasetInfo, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err: any) {
@@ -1441,7 +1445,7 @@ export const provideUpdateFrequency = async (req: Request, res: Response, next: 
                 frequency_value: is_updated ? frequency_value : undefined
             };
 
-            await req.swapi.updateDatasetInfo(dataset.id, { update_frequency, language: req.language });
+            await req.pubapi.updateDatasetInfo(dataset.id, { update_frequency, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
@@ -1456,7 +1460,7 @@ export const provideUpdateFrequency = async (req: Request, res: Response, next: 
 
 export const provideDataProviders = async (req: Request, res: Response, next: NextFunction) => {
     let errors: ViewError[] | undefined;
-    const availableProviders: ProviderDTO[] = await req.swapi.getAllProviders();
+    const availableProviders: ProviderDTO[] = await req.pubapi.getAllProviders();
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     const deleteId = req.query.delete;
     const editId = req.query.edit;
@@ -1467,7 +1471,7 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
     if (deleteId) {
         try {
             dataProviders = dataProviders.filter((dp) => dp.id !== deleteId);
-            await req.swapi.updateDatasetProviders(dataset.id, dataProviders);
+            await req.pubapi.updateDatasetProviders(dataset.id, dataProviders);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/providers`, req.language));
             return;
         } catch (err) {
@@ -1479,7 +1483,7 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
     if (editId && editId !== 'new') {
         try {
             dataProvider = dataProviders.find((dp) => dp.id === editId)!;
-            availableSources = await req.swapi.getSourcesByProvider(dataProvider.provider_id);
+            availableSources = await req.pubapi.getSourcesByProvider(dataProvider.provider_id);
         } catch (err) {
             next(new UnknownException());
             return;
@@ -1533,7 +1537,7 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
 
                 const providerIdx = dataProviders.findIndex((dp) => dp.id === editId);
                 dataProviders[providerIdx].source_id = source_id;
-                await req.swapi.updateDatasetProviders(dataset.id, dataProviders);
+                await req.pubapi.updateDatasetProviders(dataset.id, dataProviders);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/providers`, req.language));
                 return;
             }
@@ -1543,7 +1547,7 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
             // create a new data provider - generate id on the frontend so we can redirect the user to add sources
             dataProvider = { id: uuid(), dataset_id: dataset.id, provider_id, language: req.language };
 
-            await req.swapi.addDatasetProvider(dataset.id, dataProvider);
+            await req.pubapi.addDatasetProvider(dataset.id, dataProvider);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/providers?edit=${dataProvider.id}`, req.language));
             return;
         } catch (err: any) {
@@ -1574,7 +1578,7 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
     if (deleteId) {
         try {
             related_links = related_links.filter((rl) => rl.id !== deleteId);
-            await req.swapi.updateDatasetInfo(dataset.id, { related_links, language: req.language });
+            await req.pubapi.updateDatasetInfo(dataset.id, { related_links, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/related`, req.language));
             return;
         } catch (err) {
@@ -1639,7 +1643,7 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
             // if the link already exists, replace it, otherwise add it, then sort
             related_links = sortBy([...related_links.filter((rl) => rl.id !== link.id), link], 'created_at');
 
-            await req.swapi.updateDatasetInfo(dataset.id, { related_links, language: req.language });
+            await req.pubapi.updateDatasetInfo(dataset.id, { related_links, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/related`, req.language));
             return;
         } catch (err) {
@@ -1670,7 +1674,7 @@ export const provideDesignation = async (req: Request, res: Response, next: Next
                 throw new Error();
             }
 
-            await req.swapi.updateDatasetInfo(dataset.id, { designation, language: req.language });
+            await req.pubapi.updateDatasetInfo(dataset.id, { designation, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
@@ -1686,7 +1690,7 @@ export const provideDesignation = async (req: Request, res: Response, next: Next
 export const provideTopics = async (req: Request, res: Response, next: NextFunction) => {
     let errors: ViewError[] | undefined;
     const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const availableTopics: TopicDTO[] = await req.swapi.getAllTopics();
+    const availableTopics: TopicDTO[] = await req.pubapi.getAllTopics();
     const nestedTopics = nestTopics(availableTopics);
     const selectedTopics: number[] = dataset.topics?.map((topic: TopicDTO) => topic.id) || [];
 
@@ -1702,7 +1706,7 @@ export const provideTopics = async (req: Request, res: Response, next: NextFunct
             }
 
             const topicIds = req.body.topics.filter(Boolean); // strip empty values
-            await req.swapi.updateDatasetTopics(dataset.id, topicIds);
+            await req.pubapi.updateDatasetTopics(dataset.id, topicIds);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
@@ -1771,7 +1775,7 @@ export const providePublishDate = async (req: Request, res: Response, next: Next
                 throw new Error('form.validation');
             }
 
-            await req.swapi.updatePublishDate(dataset.id, revision.id, publishDate.toISOString());
+            await req.pubapi.updatePublishDate(dataset.id, revision.id, publishDate.toISOString());
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
@@ -1792,8 +1796,8 @@ export const provideOrganisation = async (req: Request, res: Response, next: Nex
     let values = { organisation: '', team: '' };
 
     try {
-        organisations = await req.swapi.getAllOrganisations();
-        teams = await req.swapi.getAllTeams();
+        organisations = await req.pubapi.getAllOrganisations();
+        teams = await req.pubapi.getAllTeams();
 
         if (dataset.team_id) {
             const datasetTeam = teams.find((team) => team.id === dataset.team_id)!;
@@ -1817,7 +1821,7 @@ export const provideOrganisation = async (req: Request, res: Response, next: Nex
             errors = uniqBy(errors, 'field');
             if (errors.length > 0) throw errors;
 
-            await req.swapi.updateDatasetTeam(dataset.id, values.team);
+            await req.pubapi.updateDatasetTeam(dataset.id, values.team);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         }
@@ -1838,12 +1842,12 @@ export const exportTranslations = async (req: Request, res: Response, next: Next
             const fileName = `translations-${dataset.id}.csv`;
             res.setHeader('Content-Type', 'text/csv');
             res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
-            const translationStream = await req.swapi.getTranslationExport(dataset.id);
+            const translationStream = await req.pubapi.getTranslationExport(dataset.id);
             Readable.from(translationStream).pipe(res);
             return;
         }
 
-        let translations = await req.swapi.getTranslationPreview(dataset.id);
+        let translations = await req.pubapi.getTranslationPreview(dataset.id);
         translations = addEditLinks(translations, dataset.id, req);
         res.render('publish/translations/export', { translations });
     } catch (err) {
@@ -1873,7 +1877,7 @@ export const importTranslations = async (req: Request, res: Response, next: Next
 
     try {
         if (req.query.confirm === 'true') {
-            await req.swapi.updateTranslations(dataset.id);
+            await req.pubapi.updateTranslations(dataset.id);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         }
@@ -1885,7 +1889,7 @@ export const importTranslations = async (req: Request, res: Response, next: Next
             }
 
             const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
-            await req.swapi.uploadTranslationImport(dataset.id, fileData);
+            await req.pubapi.uploadTranslationImport(dataset.id, fileData);
 
             preview = true;
             translations = await parseUploadedTranslations(req.file.buffer);
@@ -1916,7 +1920,7 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
 
     if (req.query.withdraw) {
         try {
-            await req.swapi.withdrawFromPublication(dataset.id);
+            await req.pubapi.withdrawFromPublication(dataset.id);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {

@@ -38,7 +38,7 @@ interface fetchParams {
     headers?: Record<string, string>;
 }
 
-export class StatsWalesApi {
+export class PublisherApi {
     private readonly backendUrl = config.backend.url;
 
     constructor(

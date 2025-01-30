@@ -22,7 +22,7 @@ interface fetchParams {
     headers?: Record<string, string>;
 }
 
-export class SWConsumerApi {
+export class ConsumerApi {
     private readonly backendUrl = config.backend.url;
 
     constructor(private lang = Locale.English) {}

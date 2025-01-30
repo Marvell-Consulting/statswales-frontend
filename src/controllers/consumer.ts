@@ -16,7 +16,7 @@ export const listPublishedDatasets = async (req: Request, res: Response, next: N
     try {
         const page = parseInt(req.query.page_number as string, 10) || 1;
         const limit = parseInt(req.query.page_size as string, 10) || 10;
-        const results: ResultsetWithCount<DatasetListItemDTO> = await req.swcapi.getPublishedDatasetList(page, limit);
+        const results: ResultsetWithCount<DatasetListItemDTO> = await req.conapi.getPublishedDatasetList(page, limit);
 
         const { data, count } = results;
         const pagination = getPaginationProps(page, limit, count);
@@ -57,7 +57,7 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
             throw new NotFoundException('invalid file format');
         }
 
-        const fileStream = await req.swcapi.getCubeFileStream(dataset.id, revision.id, format);
+        const fileStream = await req.conapi.getCubeFileStream(dataset.id, revision.id, format);
         res.writeHead(200, headers);
         const readable: Readable = Readable.from(fileStream);
         readable.pipe(res);
