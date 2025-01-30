@@ -341,8 +341,8 @@ export const downloadDataset = async (req: Request, res: Response, next: NextFun
     const revision = res.locals.revision;
 
     try {
-        if (!dataset.live || !revision) {
-            throw new NotFoundException('no published revision found');
+        if (!revision) {
+            throw new NotFoundException('no revision found');
         }
 
         const format = req.query.format as FileFormat;
