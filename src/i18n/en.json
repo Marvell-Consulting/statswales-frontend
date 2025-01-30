@@ -82,7 +82,7 @@
         "key_information": {
             "heading": "Key information",
             "last_update": "Most recent update",
-            "next_update": "Next update expected",
+            "next_update": "Next update expected (provisional)",
             "data_provider": "Data provider",
             "data_providers": "Data provider {{index}}",
             "data_source": "Data source",
