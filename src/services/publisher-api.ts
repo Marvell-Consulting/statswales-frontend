@@ -501,20 +501,4 @@ export class PublisherApi {
             (response) => response.json() as unknown as DatasetDTO
         );
     }
-
-    public async getPublishedDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {
-        logger.debug(`Fetching published dataset list...`);
-        const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
-
-        return this.fetch({ url: `published/list?${qs}` }).then(
-            (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
-        );
-    }
-
-    public async getPublishedDataset(datasetId: string): Promise<DatasetDTO> {
-        logger.debug(`Fetching published dataset: ${datasetId}`);
-        return this.fetch({ url: `published/${datasetId}` }).then(
-            (response) => response.json() as unknown as DatasetDTO
-        );
-    }
 }
