@@ -19,6 +19,7 @@ export const getDatasetPreview = async (dataset: SingleLanguageDataset, revision
         keyInfo: {
             updatedAt: revision?.publish_at,
             nextUpdateAt: nextUpdateAt(revision, dataset.datasetInfo!),
+            designation,
             providers: dataset.providers?.map(({ provider_name, source_name }) => ({ provider_name, source_name })),
             timePeriod: { start: dataset.start_date, end: dataset.end_date }
         },
@@ -33,7 +34,6 @@ export const getDatasetPreview = async (dataset: SingleLanguageDataset, revision
             summary: await markdownToSafeHTML(description),
             quality: await markdownToSafeHTML(quality),
             collection: await markdownToSafeHTML(collection),
-            designation,
             relatedLinks: related_links
         },
         published: {
