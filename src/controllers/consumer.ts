@@ -11,6 +11,7 @@ import { getLatestPublishedRevision } from '../utils/latest';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { FileFormat } from '../enums/file-format';
 import { getDownloadHeaders } from '../utils/download-headers';
+import { logger } from '../utils/logger';
 
 export const listPublishedDatasets = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -42,6 +43,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
 };
 
 export const downloadPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
+    logger.debug('downloading published dataset');
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     const revision = getLatestPublishedRevision(dataset);
 

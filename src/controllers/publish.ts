@@ -342,14 +342,14 @@ export const downloadDataset = async (req: Request, res: Response, next: NextFun
 
     try {
         if (!revision) {
-            throw new NotFoundException('no revision found');
+            throw new NotFoundException('errors.preview.revision_missing');
         }
 
         const format = req.query.format as FileFormat;
         const headers = getDownloadHeaders(format, revision);
 
         if (!headers) {
-            throw new NotFoundException('invalid file format');
+            throw new NotFoundException('errors.preview.invalid_download_format');
         }
 
         const fileStream = await req.pubapi.getCubeFileStream(dataset.id, revision.id, format);

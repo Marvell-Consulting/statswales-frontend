@@ -941,7 +941,8 @@
             "remove_error": "We were unable to remove your uploadded file from the server.  Something went wrong.  Please try again",
             "confirm_error":  "You need to confirm or reject the uploaded file using the buttons at the end of the preview",
             "revision_missing": "A revision is missing from this dataset",
-            "import_missing": "An import is missing from this dataset"
+            "import_missing": "An import is missing from this dataset",
+            "invalid_download_format": "Specify a valid file format (csv, excel, parquet, duckdb)"
         },
         "datalake_error": "Unable to connect to Datalake",
         "blob_storage_errror": "Unable to connect to Blob Storage Service",
