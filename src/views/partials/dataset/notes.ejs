@@ -1,35 +1,39 @@
-<div class="dataset-notes">
+<% if (notes.publishedRevisions.length > 0 || notes.roundingApplied) { %>
+  <div class="dataset-notes">
 
-  <h2 class="govuk-heading-m govuk-!-margin-top-6"><%= t('dataset_view.notes.heading') %></h2>
+    <h2 class="govuk-heading-m govuk-!-margin-top-6"><%= t('dataset_view.notes.heading') %></h2>
 
-  <dl class="govuk-summary-list">
+    <dl class="govuk-summary-list">
 
-    <div id="revisions" class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-            <%= t('dataset_view.notes.revisions') %>
-        </dt>
-        <dd class="govuk-summary-list__value">
-          <ul class="govuk-list">
-            <% for (const revision of notes.publishedRevisions) { %>
-              <li>
-                <strong><%= locals.dateFormat(revision.publish_at, 'd MMMM yyyy') %></strong>
-              </li>
-            <% } %>
-          </ul>
-        </dd>
-    </div>
+      <% if (notes.publishedRevisions.length > 0) { %>
+        <div id="revisions" class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+                <%= t('dataset_view.notes.revisions') %>
+            </dt>
+            <dd class="govuk-summary-list__value">
+              <ul class="govuk-list">
+                <% for (const revision of notes.publishedRevisions) { %>
+                  <li>
+                    <strong><%= locals.dateFormat(revision.publish_at, 'd MMMM yyyy') %></strong>
+                  </li>
+                <% } %>
+              </ul>
+            </dd>
+        </div>
+      <% } %>
 
-    <% if (notes.roundingApplied) { %>
-      <div id="data-rounding" class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-            <%= t('dataset_view.notes.rounding') %>
-        </dt>
-        <dd class="govuk-summary-list__value">
-            <%- notes.roundingDescription %>
-        </dd>
-      </div>
-    <% } %>
+      <% if (notes.roundingApplied) { %>
+        <div id="data-rounding" class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+              <%= t('dataset_view.notes.rounding') %>
+          </dt>
+          <dd class="govuk-summary-list__value">
+              <%- notes.roundingDescription %>
+          </dd>
+        </div>
+      <% } %>
 
-  </dl>
+    </dl>
 
-</div>
+  </div>
+<% } %>
