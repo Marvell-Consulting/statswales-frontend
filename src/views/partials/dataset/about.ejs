@@ -1,0 +1,62 @@
+<div class="dataset-about">
+
+  <h2 class="govuk-heading-m"><%= t('dataset_view.about.heading') %></h2>
+
+  <dl class="govuk-summary-list">
+
+    <div id="summary" class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+            <%= t('dataset_view.about.summary') %>
+        </dt>
+        <dd class="govuk-summary-list__value">
+            <%- about.summary || t('dataset_view.not_entered') %>
+        </dd>
+    </div>
+
+    <div id="data-collection" class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">
+            <%= t('dataset_view.about.data_collection') %>
+        </dt>
+        <dd class="govuk-summary-list__value">
+          <%- about.collection || t('dataset_view.not_entered') %>
+        </dd>
+    </div>
+
+    <div id="data-quality" class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+          <%= t('dataset_view.about.statistical_quality') %>
+      </dt>
+      <dd class="govuk-summary-list__value">
+        <%- about.quality || t('dataset_view.not_entered') %>
+      </dd>
+    </div>
+
+    <div id="designation" class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+          <%= t('dataset_view.about.designation') %>
+      </dt>
+      <dd class="govuk-summary-list__value">
+        <%= about.designation ? t(`dataset_view.about.designations.${dataset.datasetInfo.designation}`) : t('dataset_view.not_selected') %>
+      </dd>
+    </div>
+
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">
+          <%= t('dataset_view.about.related_reports') %>
+      </dt>
+      <dd class="govuk-summary-list__value">
+        <% if (about.relatedLinks?.length > 0) {%>
+          <ul class="govuk-list">
+            <% for(const link of about.relatedLinks) {%>
+              <li><a class="govuk-link govuk-link--no-underline" href="<%= link.url %>" target="_blank"><%= link.label %></a></li>
+            <% } %>
+          </ul>
+        <% } else { %>
+            <%= t('dataset_view.not_entered') %>
+        <% } %>
+      </dd>
+    </div>
+
+  </dl>
+
+</div>

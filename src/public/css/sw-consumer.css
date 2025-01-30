@@ -10090,21 +10090,21 @@ p {
   line-height: 24px;
 }
 
-button.govuk-button {
+.govuk-button {
   background: #aa1111;
   color: #ffffff;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   padding: 15px 20px 15px 20px;
   margin-bottom: 15px;
   box-shadow: none;
 }
 
-button.govuk-button:hover, .govuk-button[disabled]:hover {
+.govuk-button:hover, .govuk-button[disabled]:hover {
   background: #d81f1f;
 }
 
-button.govuk-button-lang {
+.govuk-button-lang {
   background: #1f1f1f;
   color: #ffffff;
   font-size: 14px;
@@ -10116,12 +10116,12 @@ button.govuk-button-lang {
   cursor: pointer;
 }
 
-button.govuk-button-lang:hover {
+.govuk-button-lang:hover {
   background: #999999;
   cursor: pointer;
 }
 
-button.secondary.blue {
+.govuk-butto.secondary.blue {
   border: 1px solid #0360a6;
   background-color: #ffffff;
   color: #0360a6;
@@ -10130,7 +10130,7 @@ button.secondary.blue {
   padding: 10px 20px;
 }
 
-button.secondary.blue:hover {
+.govuk-butto.secondary.blue:hover {
   background: #0360a6;
   border: 1px solid #0360a6;
   color: #ffffff;
@@ -10233,7 +10233,7 @@ dd {
 
 .govuk-button.secondary, a:visited {
   background: #666666;
-  color: #ffffff !important;
+  color: #ffffff;
   font-size: 20px;
   font-weight: bold;
   padding: 15px 20px 15px 20px;
@@ -10475,9 +10475,9 @@ p.govuk-hint {
 }
 
 .govuk-button-group .govuk-link, a, a:visited, .govuk-task-list__link, .govuk-button-group .app-task-list__task-name > a {
-  font-weight: bold !important;
-  text-decoration: none !important;
-  color: #0360a6 !important;
+  font-weight: bold;
+  text-decoration: none;
+  color: #0360a6;
   font-size: 18px;
 }
 

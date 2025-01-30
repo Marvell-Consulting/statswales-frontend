@@ -26,7 +26,7 @@
                     <ul class="govuk-list">
                         <% for (const dataset of locals.data) { %>
                             <li class="index-list__item">
-                                <a href="#">
+                                <a href="<%= buildUrl(`/published/${dataset.id}`, i18n.language) %>">
                                     <h3 class="govuk-heading-xs govuk-!-margin-bottom-0"><%= dataset.title %></h3>
                                 </a>
                                 <div class="index-list__meta">

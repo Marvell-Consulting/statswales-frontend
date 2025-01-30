@@ -38,11 +38,8 @@ import {
     cubePreview,
     measurePreview,
     measureReview,
-    downloadAsCSV,
-    downloadAsParquet,
-    downloadAsExcel,
-    downloadAsDuckDb,
-    overview
+    overview,
+    downloadDataset
 } from '../controllers/publish';
 
 export const publish = Router();
@@ -75,10 +72,7 @@ publish.post('/:datasetId/tasklist', fetchDataset, upload.none(), taskList);
 
 /* Cube Preview */
 publish.get('/:datasetId/cube-preview', fetchDataset, cubePreview);
-publish.get('/:datasetId/cube-preview/csv', fetchDataset, downloadAsCSV);
-publish.get('/:datasetId/cube-preview/parquet', fetchDataset, downloadAsParquet);
-publish.get('/:datasetId/cube-preview/excel', fetchDataset, downloadAsExcel);
-publish.get('/:datasetId/cube-preview/cube', fetchDataset, downloadAsDuckDb);
+publish.get('/:datasetId/cube-preview/download', fetchDataset, downloadDataset);
 
 /* Measure creation */
 publish.get('/:datasetId/measure', fetchDataset, measurePreview);

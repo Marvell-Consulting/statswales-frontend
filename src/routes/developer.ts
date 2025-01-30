@@ -17,7 +17,7 @@ export const developer = Router();
 
 developer.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const results: ResultsetWithCount<DatasetListItemDTO> = await req.swapi.getActiveDatasetList();
+        const results: ResultsetWithCount<DatasetListItemDTO> = await req.pubapi.getActiveDatasetList();
         res.render('developer/list', { datasets: results.data });
     } catch (err) {
         next(err);
@@ -31,7 +31,7 @@ developer.get('/:datasetId', fetchDataset, async (req: Request, res: Response, n
     let datasetView: ViewDTO | undefined;
 
     try {
-        datasetView = await req.swapi.getDatasetView(datasetId, page, pageSize);
+        datasetView = await req.pubapi.getDatasetView(datasetId, page, pageSize);
     } catch (err) {
         logger.error(err);
         next(new NotFoundException());
@@ -73,7 +73,7 @@ developer.get(
                 throw new Error('errors.import_missing');
             }
 
-            const fileStream = await req.swapi.getOriginalUpload(dataset.id, revision.id, factTable.id);
+            const fileStream = await req.pubapi.getOriginalUpload(dataset.id, revision.id, factTable.id);
             res.status(200);
             res.header('Content-Type', factTable.mime_type);
             res.header(`Content-Disposition: attachment; filename="${factTable.filename}"`);

@@ -8,10 +8,10 @@ import { ApiException } from '../src/exceptions/api.exception';
 import { ViewException } from '../src/exceptions/view.exception';
 import { SourceAssignmentDTO } from '../src/dtos/source-assignment-dto';
 import { DatasetListItemDTO } from '../src/dtos/dataset-list-item';
-import { StatsWalesApi } from '../src/services/stats-wales-api';
+import { PublisherApi } from '../src/services/publisher-api';
 
-describe('StatsWalesApi', () => {
-  let statsWalesApi: StatsWalesApi;
+describe('PublisherApi', () => {
+  let statsWalesApi: PublisherApi;
   let fetchSpy: jest.SpyInstance;
   let mockResponse: Promise<Response>;
 
@@ -24,7 +24,7 @@ describe('StatsWalesApi', () => {
 
   beforeEach(() => {
     fetchSpy = jest.spyOn(global, 'fetch').mockImplementation(() => mockResponse);
-    statsWalesApi = new StatsWalesApi();
+    statsWalesApi = new PublisherApi();
   });
 
   afterEach(() => {
@@ -33,7 +33,7 @@ describe('StatsWalesApi', () => {
 
   describe('Authorization', () => {
     it('should include an Authorization header when a token is provided', async () => {
-      statsWalesApi = new StatsWalesApi(Locale.English, token);
+      statsWalesApi = new PublisherApi(Locale.English, token);
       mockResponse = Promise.resolve(new Response(null, { status: 200 }));
 
       await statsWalesApi.ping();

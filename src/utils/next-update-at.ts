@@ -1,0 +1,21 @@
+import { add } from 'date-fns';
+
+import { DatasetInfoDTO } from '../dtos/dataset-info';
+import { RevisionDTO } from '../dtos/revision';
+
+export const nextUpdateAt = (
+    revision: RevisionDTO | undefined,
+    metadata: DatasetInfoDTO
+): Date | boolean | undefined => {
+    if (!revision?.publish_at) return undefined;
+
+    const update = metadata.update_frequency;
+
+    if (!update) return undefined;
+
+    if (update.is_updated === false) return false;
+
+    if (!update.frequency_unit || !update.frequency_value) return undefined;
+
+    return add(revision.publish_at, { [`${update.frequency_unit}s`]: update.frequency_value });
+};

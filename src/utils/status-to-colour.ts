@@ -22,6 +22,9 @@ export const statusToColour = (status: TaskStatus | DatasetStatus | PublishingSt
         case DatasetStatus.Live:
             return 'blue';
 
+        case PublishingStatus.Published:
+            return 'light-blue';
+
         case TaskStatus.NotStarted:
         case TaskStatus.Incomplete:
         case PublishingStatus.Incomplete:

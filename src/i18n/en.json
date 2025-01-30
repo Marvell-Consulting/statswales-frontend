@@ -79,22 +79,31 @@
         }
     },
     "dataset_view": {
-        "key_information": "Key information",
-        "last_update": "Most recent update",
-        "next_update": "Next update expected (provisional)",
-        "data_provider": "Data providers",
-        "data_source": "Data source",
-        "designation": "Designation",
-        "data_categories": "Data categories",
-        "time_covered": "Time period covered",
-        "buttons": {
-            "csv": "Download as CSV",
-            "excel": "Download as Excel",
-            "json": "Download as JSON",
-            "duckdb": "Download as DuckDB"
+        "key_information": {
+            "heading": "Key information",
+            "last_update": "Most recent update",
+            "next_update": "Next update expected (provisional)",
+            "data_provider": "Data provider",
+            "data_providers": "Data provider {{index}}",
+            "data_source": "Data source",
+            "data_sources": "Data source {{index}}",
+            "no_source": "No specific source from data provider",
+            "data_categories": "Data categories",
+            "time_covered": "Time period covered",
+            "time_period": "{{start}} to {{end}}",
+            "update_missing": "Publish date not entered yet",
+            "next_update_missing": "Publish date or update frequency not entered yet",
+            "not_updated": "This dataset will not be updated"
         },
-        "data_notes": {
-            "heading": "Data Notes",
+        "downloads": {
+            "heading": "Downloads"
+        },
+        "notes": {
+            "heading": "Data notes",
+            "revisions": "Revisions",
+            "data_value_shorthand": "Data value shorthand",
+            "rounding": "Rounding applied",
+            "no_rounding": "None applied",
             "a": "Average",
             "c": "Confidential information",
             "e": "Estimated",
@@ -107,11 +116,30 @@
             "x": "Missing data",
             "z": "Not applicable"
         },
-        "designations": {
-            "official": "Official statistics",
-            "accredited": "Accredited official statistics",
-            "in_development": "Official statistics in development",
-            "none": "No designation"
+        "about": {
+            "heading": "About this dataset",
+            "summary": "Summary",
+            "data_collection": "Data collection and calculation",
+            "statistical_quality": "Statistical quality",
+            "designation": "Designation",
+            "designations": {
+                "official": "Official statistics",
+                "accredited": "Accredited official statistics",
+                "in_development": "Official statistics in development",
+                "none": "No designation"
+            },
+            "related_reports": "Related reports"
+        },
+        "published": {
+            "heading": "Published by",
+            "org": "Organisation",
+            "contact": "Contact email"
+        },
+        "buttons": {
+            "csv": "Download as CSV",
+            "excel": "Download as Excel",
+            "json": "Download as JSON",
+            "duckdb": "Download as DuckDB"
         },
         "contents": "Contents",
         "download": "Download",
@@ -123,19 +151,9 @@
         },
         "table_preview": "Table Preview",
         "table_note": "This is not shown in the consumer view",
-        "about_heading": "About this dataset",
-        "summary": "Summary",
-        "data_collection": "Data collection and calculation",
-        "statistical_quality": "Statistical quality",
-        "related_reports": "Related reports",
-        "published_heading": "Published by",
-        "org": "Organisation",
-        "contact": "Contact email",
         "not_entered": "Not entered yet",
         "not_selected": "Not selected yet",
         "not_available": "Not Available",
-        "update_missing": "Publish date not entered yet",
-        "next_update_missing": "Publish date and update frequency not entered yet",
         "categories_missing": "Reference data not selected yet",
         "period_cover_missing": "Date information not entered yet"
     },
@@ -795,7 +813,8 @@
                 "publish_at": "Publishing scheduled: <strong>{{publish_at}}</strong>",
                 "what_next": "What do you want to do?",
                 "buttons": {
-                    "change_dataset": "Change dataset before publication"
+                    "change_dataset": "Change dataset before publication",
+                    "view_published_dataset": "View published dataset (opens in new tab)"
                 }
             },
             "badge": {
@@ -922,7 +941,8 @@
             "remove_error": "We were unable to remove your uploadded file from the server.  Something went wrong.  Please try again",
             "confirm_error":  "You need to confirm or reject the uploaded file using the buttons at the end of the preview",
             "revision_missing": "A revision is missing from this dataset",
-            "import_missing": "An import is missing from this dataset"
+            "import_missing": "An import is missing from this dataset",
+            "invalid_download_format": "Specify a valid file format (csv, excel, parquet, duckdb)"
         },
         "datalake_error": "Unable to connect to Datalake",
         "blob_storage_errror": "Unable to connect to Blob Storage Service",

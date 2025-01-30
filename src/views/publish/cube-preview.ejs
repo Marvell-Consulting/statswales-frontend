@@ -11,105 +11,7 @@
             </p>
         </div>
 
-        <h2 class="govuk-heading-l">
-            <%= t('dataset_view.key_information') %>
-        </h2>
-
-        <%
-            const publishDate = new Date(Math.max.apply(null, dataset.revisions.map((rev) => new Date(Date.parse(rev.publish_at? rev.publish_at : rev.created_at)))));
-            let updateObj = { years: 0 };
-            if (dataset.datasetInfo.update_frequency) {
-                if (dataset.datasetInfo.update_frequency.frequency_unit === 'year')
-                    updateObj = { years: dataset.datasetInfo.update_frequency.frequency_value };
-                if (dataset.datasetInfo.update_frequency.frequency_unit === 'month')
-                    updateObj = { months: dataset.datasetInfo.update_frequency.frequency_value };
-                if (dataset.datasetInfo.update_frequency.frequency_unit === 'week')
-                    updateObj = { weeks: dataset.datasetInfo.update_frequency.frequency_value };
-                if (dataset.datasetInfo.update_frequency.frequency_unit === 'day')
-                    updateObj = { days: dataset.datasetInfo.update_frequency.frequency_value };
-            }
-            const nextUpdate = locals.dateAdd(publishDate, updateObj);
-        %>
-
-        <dl class="govuk-summary-list">
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    <%= t('dataset_view.last_update') %>
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    <%= locals.dateFormat(publishDate, 'd MMMM yyyy h:mm aaa') %>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    <%= t('dataset_view.next_update') %>
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    <% if (dataset.datasetInfo?.update_frequency && dataset.datasetInfo?.update_frequency?.is_updated) { %>
-                        <%= locals.dateFormat(nextUpdate, 'd MMMM yyyy') %>
-                    <% } else { %>
-                        <%= t('dataset_view.next_update_missing') %>
-                    <% } %>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    <%= t('dataset_view.data_provider') %>
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    <% if (dataset.providers?.length > 0) { %>
-                        <ul class="govuk-list">
-                        <% for (const provider of dataset.providers.filter((item, i, ar) => ar.indexOf(item) === i)) { %>
-                            <li><%= provider.provider_name %></li>
-                        <% } %>
-                        </ul>
-                    <% } else { %>
-                        <%= t('dataset_view.not_selected') %>
-                    <% } %>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    <%= t('dataset_view.data_source') %>
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    <% if (dataset.providers?.length > 0) { %>
-                        <ul class="govuk-list">
-                            <% for (const provider of dataset.providers.filter((item, i, ar) => ar.indexOf(item) === i)) { %>
-                                <li><%= provider.provider_name %>: <%= provider.source_name %></li>
-                            <% } %>
-                        </ul>
-                    <% } else { %>
-                        <%= t('dataset_view.not_selected') %>
-                    <% } %>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    <%= t('dataset_view.designation') %>
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    <% if (dataset.datasetInfo.designation) { %>
-                        <%= t(`dataset_view.designations.${dataset.datasetInfo.designation}`) %>
-                    <% } else { %>
-                        <%= t('dataset_view.not_selected') %>
-                    <% } %>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    <%= t('dataset_view.time_covered') %>
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    <% if (dataset.start_date) { %>
-                        <%= locals.dateFormat(new Date(Date.parse(dataset.start_date)), 'd MMMM yyyy') %> -
-                        <%= locals.dateFormat(new Date(Date.parse(dataset.end_date)), 'd MMMM yyyy') %>
-                    <% } else { %>
-                        <%= t('dataset_view.period_cover_missing') %>
-                    <% } %>
-                </dd>
-            </div>
-        </dl>
+        <%- include("../partials/dataset/key-info", { keyInfo: preview.keyInfo }); %>
 
         <div class="govuk-tabs" data-module="govuk-tabs">
             <h2 class="govuk-tabs__title">
@@ -128,13 +30,13 @@
                 </li>
             </ul>
             <div class="govuk-tabs__panel" id="download">
-                <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview/csv`, i18n.language) %>" class="govuk-button">
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview/download`, i18n.language, { format: 'csv' }) %>" class="govuk-button">
                     <i class="fa-solid fa-file-csv"></i> <%= t('dataset_view.download_as.csv') %></a>
-                <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview/parquet`, i18n.language) %>" class="govuk-button">
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview/download`, i18n.language, { format: 'parquet' }) %>" class="govuk-button">
                     <i class="fa-solid fa-table"></i> <%= t('dataset_view.download_as.parquet') %></a>
-                <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview/excel`, i18n.language) %>" class="govuk-button">
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview/download`, i18n.language, { format: 'excel' }) %>" class="govuk-button">
                     <i class="fa-solid fa-file-excel"></i> <%= t('dataset_view.download_as.excel') %></a>
-                <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview/cube`, i18n.language) %>" class="govuk-button">
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview/download`, i18n.language, { format: 'duckdb' }) %>" class="govuk-button">
                     <i class="fa-solid fa-database"></i> <%= t('dataset_view.download_as.duckdb') %></a>
             </div>
             <div class="govuk-tabs__panel govuk-tabs__panel--hidden" id="preview">
@@ -212,79 +114,12 @@
             </div>
         </div>
 
-        <h2 class="govuk-heading-l">
-            <%= t('dataset_view.about_heading') %>
-        </h2>
+        <%- include("../partials/dataset/notes", { notes: preview.notes }); %>
 
-        <dl class="govuk-summary-list">
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    <%= t('dataset_view.summary') %>
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    <%- dataset.datasetInfo.description || t('dataset_view.not_entered') %>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    <%= t('dataset_view.data_collection') %>
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    <%- dataset.datasetInfo.collection || t('dataset_view.not_entered') %>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    <%= t('dataset_view.statistical_quality') %>
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    <%- dataset.datasetInfo.quality || t('dataset_view.not_entered') %>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    <%= t('dataset_view.related_reports') %>
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    <% if (dataset.datasetInfo.related_links?.length > 0) {%>
-                        <ul class="govuk-list">
-                            <% for(const link of dataset.datasetInfo.related_links) {%>
-                                <li><a href="<%= link.url %>" target="_blank"><%= link.title %></a></li>
-                            <% } %>
-                        </ul>
-                    <% } else { %>
-                        <%= t('dataset_view.not_entered') %>
-                    <% } %>
-                </dd>
-            </div>
-        </dl>
+        <%- include("../partials/dataset/about", { about: preview.about }); %>
 
-        <h2 class="govuk-heading-l">
-            <%= t('dataset_view.published_heading') %>
-        </h2>
+        <%- include("../partials/dataset/published", { published: preview.published }); %>
 
-        <dl class="govuk-summary-list">
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    <%= t('dataset_view.org') %>
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    <%= dataset.team?.organisation?.name || t('dataset_view.not_entered') %>
-                </dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">
-                    <%= t('dataset_view.contact') %>
-                </dt>
-                <dd class="govuk-summary-list__value">
-                    <% if (dataset.team?.email) { %>
-                        <a href="mailto:<%= dataset.team.email %>"><%= dataset.team.email %></a>
-                    <% } else { %>
-                        <%= t('dataset_view.not_entered') %>
-                    <% } %>
-                </dd>
-            </div>
-        </dl>
     </main>
 </div>
 
