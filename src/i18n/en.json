@@ -92,7 +92,8 @@
             "time_covered": "Time period covered",
             "time_period": "{{start}} to {{end}}",
             "update_missing": "Publish date not entered yet",
-            "next_update_missing": "Publish date and update frequency not entered yet"
+            "next_update_missing": "Publish date or update frequency not entered yet",
+            "not_updated": "This dataset will not be updated"
         },
         "downloads": {
             "heading": "Downloads"

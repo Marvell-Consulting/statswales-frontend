@@ -9,7 +9,7 @@
             <%= t('dataset_view.key_information.last_update') %>
         </dt>
         <dd class="govuk-summary-list__value">
-            <%= locals.dateFormat(keyInfo.updatedAt, 'd MMMM yyyy') %>
+            <%= keyInfo.updatedAt ? locals.dateFormat(keyInfo.updatedAt, 'd MMMM yyyy') : t('dataset_view.key_information.update_missing') %>
         </dd>
     </div>
 
@@ -18,7 +18,13 @@
             <%= t('dataset_view.key_information.next_update') %>
         </dt>
         <dd class="govuk-summary-list__value">
-          <%= (keyInfo.nextUpdateAt) ? locals.dateFormat(keyInfo.nextUpdateAt, 'MMMM yyyy') : t('dataset_view.key_information.next_update_missing') %>
+          <% if (keyInfo.nextUpdateAt) { %>
+            <%= locals.dateFormat(keyInfo.nextUpdateAt, 'MMMM yyyy') %>
+          <% } else if (keyInfo.nextUpdateAt === false) { %>
+            <%= t('dataset_view.key_information.not_updated') %>
+          <% } else { %>
+            <%= t('dataset_view.key_information.next_update_missing') %>
+          <% } %>
         </dd>
     </div>
 
