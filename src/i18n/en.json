@@ -46,12 +46,21 @@
         "heading": "Login",
         "buttons": {
             "entraid": "Microsoft",
-            "google": "Google"
+            "google": "Google",
+            "local": "Form"
         },
         "error": {
             "summary_title": "There is a problem",
             "generic": "You could not be logged in. Please try again later.",
             "expired": "Your session has expired. Please log in again."
+        },
+        "form": {
+            "notice": "This temporary login form is for demo purposes only, and will not be part of the final service.",
+            "username": {
+                "label": "Username",
+                "error": "Please enter your username"
+            },
+            "submit": "Login"
         }
     },
     "homepage": {

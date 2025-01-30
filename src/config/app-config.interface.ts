@@ -1,6 +1,7 @@
 import { Level } from 'pino';
 
 import { Locale } from '../enums/locale';
+import { AuthProvider } from '../enums/auth-providers';
 
 import { AppEnv } from './env.enum';
 import { SessionStore } from './session-store.enum';
@@ -37,6 +38,7 @@ export interface AppConfig {
         maxRequests: number;
     };
     auth: {
+        providers: AuthProvider[];
         jwt: {
             secret: string;
             cookieDomain: string;

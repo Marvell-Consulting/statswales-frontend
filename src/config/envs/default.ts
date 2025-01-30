@@ -40,6 +40,7 @@ export const getDefaultConfig = (): AppConfig => {
             maxRequests: 100
         },
         auth: {
+            providers: [],
             jwt: {
                 secret: process.env.JWT_SECRET!,
                 cookieDomain: process.env.JWT_COOKIE_DOMAIN!

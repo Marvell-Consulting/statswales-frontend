@@ -1,9 +1,10 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, urlencoded } from 'express';
 import JWT from 'jsonwebtoken';
 
 import { logger } from '../utils/logger';
 import { JWTPayloadWithUser } from '../interfaces/jwt-payload-with-user';
 import { appConfig } from '../config';
+import { ViewError } from '../dtos/view-error';
 
 export const auth = Router();
 
@@ -12,13 +13,36 @@ const cookieDomain = new URL(config.auth.jwt.cookieDomain).hostname;
 logger.debug(`JWT cookie domain is '${cookieDomain}'`);
 
 auth.get('/login', (req: Request, res: Response) => {
+    const providers = config.auth.providers;
+
     if (req.query.error && req.query.error === 'expired') {
         logger.error(`Authentication token has expired`);
         res.status(400);
-        res.render('auth/login', { errors: ['login.error.expired'] });
+        res.render('auth/login', { providers, errors: ['login.error.expired'] });
         return;
     }
-    res.render('auth/login');
+    res.render('auth/login', { providers });
+});
+
+// TODO: remove once EntraID is available for WG users
+auth.all('/local', urlencoded({ extended: false }), (req: Request, res: Response) => {
+    let errors: ViewError[] | undefined;
+
+    if (req.method === 'POST') {
+        const username = ((req.body.username as string) || '').trim();
+
+        if (!username) {
+            errors = [{ field: 'username', message: { key: 'login.form.username.error' } }];
+            res.render('auth/local', { errors });
+            return;
+        }
+
+        logger.debug('Sending user to backend for form login');
+        res.redirect(`${config.backend.url}/auth/local?username=${username}`);
+        return;
+    }
+
+    res.render('auth/local');
 });
 
 auth.get('/google', (req: Request, res: Response) => {
@@ -33,6 +57,7 @@ auth.get('/entraid', (req: Request, res: Response) => {
 
 auth.get('/callback', (req: Request, res: Response) => {
     logger.debug('returning from auth backend');
+    const providers = config.auth.providers;
 
     try {
         if (req.query.error) {
@@ -50,7 +75,7 @@ auth.get('/callback', (req: Request, res: Response) => {
     } catch (err) {
         logger.error(`problem authenticating user ${err}`);
         res.status(400);
-        res.render('auth/login', { errors: ['login.error.generic'] });
+        res.render('auth/login', { providers, errors: ['login.error.generic'] });
         return;
     }
 
