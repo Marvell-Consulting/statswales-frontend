@@ -1,4 +1,4 @@
-# Data preparation - New Datasets
+# Data preparation - New datasets
 
 Datasets consist of a set of statistics and their associated metadata. The dataset is built in SW3 as a data cube from a data table and reference, or lookup, data.
 
