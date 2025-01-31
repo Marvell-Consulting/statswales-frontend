@@ -272,6 +272,14 @@ All other notes about dimensions or the dataset should be provided in the most a
 
 Before you create a new dataset in SW3, you should prepare all the related metadata you need. You should provide this **all in the same language**. This should be whichever language you’ll use when using SW3, either English or Welsh. Translations of metadata into the other language are [processed with all other translations](Creating-a-new-dataset-in-SW3#translations).
 
+You can use bullet points to help present content (if needed), but you should:
+- use '* ' at the start of each bullet - this will be styled properly by the system
+- keep to one sentence per bullet
+- not end bullets with punctuation or conjuctions like 'or'
+- try to use a different word at the beginning of each bullet
+
+If you use a lead-in line to your bullet list (like in the bullet list above), each bullet should form a complete sentence with the lead-in line.
+
 The following is all the metadata you’ll need to provide.
 
 ### Title
