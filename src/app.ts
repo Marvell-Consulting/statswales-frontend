@@ -57,10 +57,10 @@ app.use('/assets', express.static(`${__dirname}/assets`));
 app.use('/healthcheck', rateLimiter, healthcheck);
 app.use('/:lang/auth', rateLimiter, auth);
 app.use('/:lang/published', rateLimiter, consumer);
+app.use('/:lang/guidance', rateLimiter, guidance);
 
 // authenticated routes
 app.use('/:lang/publish', rateLimiter, ensureAuthenticated, publish);
-app.use('/:lang/guidance', rateLimiter, ensureAuthenticated, guidance);
 app.use('/:lang/developer', rateLimiter, ensureAuthenticated, ensureDeveloper, developer);
 app.use('/:lang', rateLimiter, ensureAuthenticated, homepage);
 
