@@ -55,7 +55,8 @@
             "expired": "Your session has expired. Please log in again."
         },
         "form": {
-            "notice": "This temporary login form is for demo purposes only, and will not be part of the final service.",
+            "notice_1": "The username we've given you is temporary. You'll only be able to log in with it whilst we run this round of testing.",
+            "notice_2": "Do not upload any sensitive data or data that other StatsWales users should not have access to.",
             "username": {
                 "label": "Username",
                 "error": "Please enter your username"
