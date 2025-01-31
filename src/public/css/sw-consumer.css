@@ -10231,7 +10231,7 @@ dd {
   white-space: pre-line;
 }
 
-.govuk-button.secondary, a:visited {
+.govuk-button.secondary {
   background: #666666;
   color: #ffffff;
   font-size: 20px;
@@ -10470,8 +10470,8 @@ p.govuk-hint {
 }
 
 .govuk-file-upload, .govuk-hint {
-  font-family: Arial, Helvetica, sans-serif !important;
-  font-size: 18px !important;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px;
 }
 
 .govuk-button-group .govuk-link, a, a:visited, .govuk-task-list__link, .govuk-button-group .app-task-list__task-name > a {
@@ -10482,20 +10482,20 @@ p.govuk-hint {
 }
 
 .govuk-button-group:hover .govuk-link:hover, a:hover {
-  font-weight: bold !important;
+  font-weight: bold;
   text-decoration: none;
-  color: #3b7dc5 !important;
+  color: #3b7dc5;
 }
 
 .govuk-header__link:focus, .govuk-button-group:focus .govuk-link:focus, .govuk-button-group:focus .app-task-list__task-name > a:focus {
-  background-color: transparent !important;
-  box-shadow: none !important;
+  background-color: transparent;
+  box-shadow: none;
 }
 
 a:focus, .govuk-link:focus {
   outline: 3px solid transparent;
-  background-color: transparent !important;
-  box-shadow: none !important;
+  background-color: transparent;
+  box-shadow: none;
 }
 
 .govuk-tag--blue {
