@@ -12,11 +12,11 @@ export const getDefaultConfig = (): AppConfig => {
         env: AppEnv.Default, // MUST be overridden by other configs
         supportEmail: process.env.SUPPORT_EMAIL!,
         frontend: {
-            port: parseInt(process.env.FRONTEND_PORT!, 10),
+            port: parseInt(process.env.FRONTEND_PORT || '3000', 10),
             url: process.env.FRONTEND_URL!
         },
         backend: {
-            port: parseInt(process.env.BACKEND_PORT!, 10),
+            port: parseInt(process.env.BACKEND_PORT || '3000', 10),
             url: process.env.BACKEND_URL!
         },
         language: {
