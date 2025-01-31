@@ -13,7 +13,9 @@ export function getStagingConfig(): AppConfig {
         },
         auth: {
             jwt: {
-                cookieDomain: process.env.BACKEND_URL!.replace('statswales-develop-backend.', '')
+                cookieDomain: process.env.BACKEND_URL
+                    ? process.env.BACKEND_URL.replace('statswales-develop-backend.', '')
+                    : undefined
             }
         }
     });
