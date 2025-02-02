@@ -4,6 +4,7 @@
     "external_tag": "<span class=\"govuk-tag govuk-tag--orange govuk-phase-banner__content__tag\">External Page</span>",
     "yes": "Yes",
     "no": "No",
+    "toc": "Table of contents",
     "buttons": {
         "continue": "Continue",
         "back": "Back",
@@ -971,5 +972,9 @@
             "heading": "Find statistics and data from the Welsh Government",
             "total_datasets": "datasets"
         }
+    },
+    "cookie_statement": {
+        "heading": "Cookie Statement",
+        "statement": "This website uses one essential cookie to ensure its proper functionality and enhance your browsing experience. This cookie is necessary for the operation of our site and does not track personal information. It is used solely to maintain essential site functions, such as ensuring secure logins and session management. The cookie is stored locally on your device and is only active while you are visiting our site. No consent is required for this cookie, as it is critical to the website's operation."
     }
 }

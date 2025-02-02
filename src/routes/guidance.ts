@@ -1,54 +1,17 @@
 import * as fs from 'node:fs';
 import path from 'node:path';
-import * as readline from 'node:readline';
 
 import { NextFunction, Request, Response, Router } from 'express';
 import { JSDOM } from 'jsdom';
 import DOMPurify from 'dompurify';
-import { marked, Tokens } from 'marked';
-import { gfmHeadingId } from 'marked-gfm-heading-id';
+import { marked } from 'marked';
 
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { logger } from '../utils/logger';
+import { createToc, docRenderer, getTitle } from '../services/marked';
 
 export const guidance = Router();
 const docsPath = path.join(__dirname, '..', '..', 'docs', 'guidance');
-
-async function getTitle(pathToFile: string): Promise<string> {
-    const readable = fs.createReadStream(pathToFile);
-    const reader = readline.createInterface({ input: readable });
-    const line: string = await new Promise((resolve) => {
-        reader.on('line', (line) => {
-            if (line.startsWith('#')) {
-                reader.close();
-                resolve(line);
-            }
-        });
-    });
-    readable.close();
-    return line.split('#')[1].trim();
-}
-
-function createToc(mdText: string) {
-    const { window } = new JSDOM(`<!DOCTYPE html>`);
-    const document = window.document;
-    const stack = [document.createElement('ul')];
-    for (const heading of marked.lexer(mdText).filter((x) => x.type === 'heading') as Tokens.Heading[]) {
-        if (heading.depth < stack.length) {
-            stack.length = heading.depth;
-        } else {
-            while (heading.depth > stack.length) {
-                const ul = document.createElement('ul');
-                stack.at(-1)?.append(ul);
-                stack.push(ul);
-            }
-        }
-
-        const anchor = heading.text.replaceAll('.', '').replaceAll(' ', '-').toLowerCase();
-        stack.at(-1)?.insertAdjacentHTML('beforeend', `<li><a href="#guidance-${anchor}">${heading.text}</a></li>`);
-    }
-    return stack[0].outerHTML;
-}
 
 guidance.get('/', async (req: Request, res: Response, next: NextFunction) => {
     const documentList: string[] = [];
@@ -90,11 +53,7 @@ guidance.get('/:file', async (req: Request, res: Response, next: NextFunction) =
     const { window } = new JSDOM(`<!DOCTYPE html>`);
     const domPurify = DOMPurify(window);
     const toc = createToc(mardkwonFile);
-    const options = {
-        prefix: 'guidance-'
-    };
-
-    marked.use(gfmHeadingId(options));
+    marked.use({ renderer: docRenderer });
     const content = domPurify.sanitize(await marked.parse(mardkwonFile));
     res.render('guidance', { content, tableOfContents: toc, title });
 });
