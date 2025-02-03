@@ -5,7 +5,7 @@ import { fetchPublishedDataset } from '../middleware/fetch-dataset';
 
 export const consumer = Router();
 
-consumer.get('/list', listPublishedDatasets);
+consumer.get('/', listPublishedDatasets);
 
 consumer.get('/:datasetId', fetchPublishedDataset, viewPublishedDataset);
 
