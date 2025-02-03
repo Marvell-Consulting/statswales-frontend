@@ -1,3 +1,4 @@
+import { AuthProvider } from '../../enums/auth-providers';
 import { AppConfig } from '../app-config.interface';
 import { defineConfig } from '../define-config';
 import { AppEnv } from '../env.enum';
@@ -29,6 +30,7 @@ export function getLocalConfig(): AppConfig {
             windowMs: -1 // disable rate limiting in local
         },
         auth: {
+            providers: [AuthProvider.EntraId, AuthProvider.Google, AuthProvider.Local],
             jwt: {
                 secret: process.env.JWT_SECRET || 'jwtsecret',
                 cookieDomain: 'http://localhost'

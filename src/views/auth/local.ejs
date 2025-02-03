@@ -1,0 +1,36 @@
+<%- include("../partials/header"); %>
+
+<div class="govuk-width-container app-width-container">
+	<main class="govuk-main-wrapper" id="main-content" role="main">
+
+		<div class="govuk-grid-row">
+			<div class="govuk-grid-column-two-thirds">
+
+				<div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+					<div class="govuk-notification-banner__header">
+						<h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Important</h2>
+					</div>
+					<div class="govuk-notification-banner__content">
+						<p class="govuk-notification-banner__heading"><%= t('login.form.notice_1') %></p>
+						<p class="govuk-notification-banner__heading"><%= t('login.form.notice_2') %></p>
+					</div>
+				</div>
+
+				<form method="post">
+					<div class="govuk-form-group">
+							<label class="govuk-label govuk-label--m" for="username"><%= t('login.form.username.label') %></label>
+							<% if(locals.errors?.find(e => e.field === 'username')) { %>
+									<p id="quality-error" class="govuk-error-message"><%= t('login.form.username.error') %></p>
+							<% } %>
+							<input class="govuk-input <%= locals.errors?.find(e => e.field === 'username') ? 'govuk-input--error' : '' %>" id="username" name="username" type="text" value="<%= locals.username %>">
+					</div>
+					<button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
+				</form>
+
+			</div>
+		</div>
+
+	</main>
+</div>
+
+<%- include("../partials/footer"); %>

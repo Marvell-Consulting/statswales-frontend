@@ -46,12 +46,22 @@
         "heading": "Login",
         "buttons": {
             "entraid": "Microsoft",
-            "google": "Google"
+            "google": "Google",
+            "local": "Form"
         },
         "error": {
             "summary_title": "There is a problem",
             "generic": "You could not be logged in. Please try again later.",
             "expired": "Your session has expired. Please log in again."
+        },
+        "form": {
+            "notice_1": "The username we've given you is temporary. You'll only be able to log in with it whilst we run this round of testing.",
+            "notice_2": "Do not upload any sensitive data or data that other StatsWales users should not have access to.",
+            "username": {
+                "label": "Username",
+                "error": "Please enter your username"
+            },
+            "submit": "Login"
         }
     },
     "homepage": {

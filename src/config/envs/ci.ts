@@ -1,3 +1,4 @@
+import { AuthProvider } from '../../enums/auth-providers';
 import { AppConfig } from '../app-config.interface';
 import { defineConfig } from '../define-config';
 import { AppEnv } from '../env.enum';
@@ -29,6 +30,7 @@ export function getCIConfig(): AppConfig {
             secure: false
         },
         auth: {
+            providers: [AuthProvider.EntraId, AuthProvider.Google],
             jwt: {
                 secret: 'mysecret',
                 cookieDomain: 'http://localhost'
