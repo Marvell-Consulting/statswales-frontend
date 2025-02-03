@@ -1799,7 +1799,7 @@ export const provideOrganisation = async (req: Request, res: Response, next: Nex
         organisations = await req.pubapi.getAllOrganisations();
         teams = await req.pubapi.getAllTeams();
 
-        if (dataset.team.length > 0) {
+        if (dataset.team?.length > 0) {
             values = { organisation: dataset.team[0].organisation_id, team: dataset.team[0].id };
         }
 
@@ -1825,6 +1825,7 @@ export const provideOrganisation = async (req: Request, res: Response, next: Nex
             return;
         }
     } catch (err) {
+        logger.error(err, 'there was a problem saving the team and org');
         if (err instanceof ApiException) {
             errors = [{ field: 'api', message: { key: 'publish.organisation.error.saving' } }];
         }
