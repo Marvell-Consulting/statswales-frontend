@@ -282,7 +282,8 @@
                 "tax_month": "Tax Month",
                 "meteorological_year": "Meteorological Year",
                 "meteorological_quarter": "Meteorological Quarter",
-                "meteorological_month": "Meteorological Month"
+                "meteorological_month": "Meteorological Month",
+                "specific_day": "Specific point in time"
             }
         },
         "measure_preview": {
