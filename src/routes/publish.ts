@@ -42,7 +42,9 @@ import {
     downloadAsParquet,
     downloadAsExcel,
     downloadAsDuckDb,
-    overview
+    overview,
+    createNewUpdate,
+    updateDatatable
 } from '../controllers/publish';
 
 export const publish = Router();
@@ -162,3 +164,7 @@ publish.post('/:datasetId/translation/import', fetchDataset, upload.single('csv'
 /* Dataset Overview */
 publish.get('/:datasetId/overview', fetchDataset, overview);
 publish.post('/:datasetId/overview', fetchDataset, upload.none(), overview);
+
+publish.get('/:datasetId/update', fetchDataset, createNewUpdate);
+publish.get('/:datasetId/update-type', fetchDataset, updateDatatable);
+publish.post('/:datasetId/update-type', fetchDataset, updateDatatable);

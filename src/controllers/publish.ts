@@ -134,7 +134,18 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
             req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
             const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
             logger.debug('Sending file to backend.');
-            await req.swapi.uploadCSVToDataset(dataset.id, fileData, fileName);
+            if (req.session.updateType) {
+                logger.info('Performing an update to the dataset');
+                await req.swapi.uploadCSVToUpdateDataset(
+                    dataset.id,
+                    revision.id,
+                    fileData,
+                    fileName,
+                    req.session.updateType
+                );
+            } else {
+                await req.swapi.uploadCSVToDataset(dataset.id, fileData, fileName);
+            }
             res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
             return;
         } catch (err) {
@@ -171,10 +182,18 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
     if (req.method === 'POST') {
         try {
             if (req.body.confirm === 'true') {
-                await req.swapi.confirmFileImport(dataset.id, revision.id, dataTable.id);
-                res.redirect(req.buildUrl(`/publish/${dataset.id}/sources`, req.language));
+                if (req.session.updateType) {
+                    res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+                } else {
+                    await req.swapi.confirmFileImport(dataset.id, revision.id, dataTable.id);
+                    res.redirect(req.buildUrl(`/publish/${dataset.id}/sources`, req.language));
+                }
             } else {
-                res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
+                if (req.session.updateType) {
+                    res.redirect(req.buildUrl(`/publish/${dataset.id}/update-type`, req.language));
+                } else {
+                    res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
+                }
             }
             return;
         } catch (err: any) {
@@ -201,7 +220,9 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
 
 export const sources = async (req: Request, res: Response, next: NextFunction) => {
     const { dataset, revision } = res.locals;
-    const factTable = dataset.fact_table.sort((colA: FactTableColumnDto, colB: FactTableColumnDto) => colA.index - colB.index) as FactTableColumnDto[];
+    const factTable = dataset.fact_table.sort(
+        (colA: FactTableColumnDto, colB: FactTableColumnDto) => colA.index - colB.index
+    ) as FactTableColumnDto[];
     const revisit = factTable.filter((column: FactTableColumnDto) => column.type === SourceType.Unknown).length > 0;
     let error: ViewError | undefined;
     let errors: ViewError[] | undefined;
@@ -279,7 +300,7 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
 export const taskList = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     const revision = res.locals.revision;
-
+    logger.debug(`Current revision: ${JSON.stringify(revision, null, 2)}`);
     try {
         if (req.method === 'POST') {
             // TODO: for MVP there is no approval process, so we are jumping straight to approve
@@ -1972,4 +1993,23 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
         statusToColour,
         errors
     });
+};
+
+export const createNewUpdate = async (req: Request, res: Response, next: NextFunction) => {
+    const dataset = res.locals.dataset;
+    await req.swapi.createRevision(dataset.id);
+    res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+};
+
+export const updateDatatable = async (req: Request, res: Response, next: NextFunction) => {
+    const dataset = res.locals.dataset;
+    if (req.method === 'POST') {
+        if (req.body.updateType) {
+            req.session.updateType = req.body.updateType;
+            req.session.save();
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
+            return;
+        }
+    }
+    res.render('publish/update-type');
 };

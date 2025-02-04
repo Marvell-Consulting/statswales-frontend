@@ -7,7 +7,7 @@ import { SingleLanguageDataset } from '../dtos/single-language/dataset';
 
 export const getLatestRevision = (dataset: DatasetDTO | SingleLanguageDataset): RevisionDTO | undefined => {
     if (!dataset) return undefined;
-    return last(sortBy(dataset?.revisions, 'revision_index'));
+    return last(sortBy(dataset?.revisions, 'created_at'));
 };
 
 export const getDataTable = (revision: RevisionDTO): DataTableDto | undefined => {

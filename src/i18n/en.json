@@ -506,6 +506,13 @@
                 }
             }
         },
+        "update_type": {
+            "heading": "What do you need to do?",
+            "add": "Add new data only",
+            "add_revise": "Add new data and revise existing data",
+            "revise": "Revise existing data only",
+            "replace_all": "Replace all existing data"
+        },
         "providers": {
             "add": {
                 "heading": "Add a data provider",

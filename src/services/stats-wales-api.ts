@@ -24,6 +24,7 @@ import { DimensionDTO } from '../dtos/dimension';
 import { DimensionInfoDTO } from '../dtos/dimension-info';
 import { TranslationDTO } from '../dtos/translations';
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
+import { RevisionDTO } from '../dtos/revision';
 
 const config = appConfig();
 
@@ -109,6 +110,25 @@ export class StatsWalesApi {
         return this.fetch({ url: `dataset/${datasetId}/data`, method: HttpMethod.Post, body }).then(
             (response) => response.json() as unknown as DatasetDTO
         );
+    }
+
+    public uploadCSVToUpdateDataset(
+        datasetId: string,
+        revisionId: string,
+        file: Blob,
+        filename: string,
+        updateType: string
+    ): Promise<DatasetDTO> {
+        logger.debug(`Uploading file ${filename} to revision: ${revisionId}`);
+        const body = new FormData();
+        body.set('csv', file, filename);
+        body.set('update_action', updateType);
+
+        return this.fetch({
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/data-table`,
+            method: HttpMethod.Post,
+            body
+        }).then((response) => response.json() as unknown as DatasetDTO);
     }
 
     public uploadLookupTable(datasetId: string, dimensionId: string, file: Blob, filename: string): Promise<ViewDTO> {
@@ -522,5 +542,13 @@ export class StatsWalesApi {
             url: `dataset/${datasetId}/revision/by-id/${revisionId}/withdraw`,
             method: HttpMethod.Post
         }).then((response) => response.json() as unknown as DatasetDTO);
+    }
+
+    public async createRevision(datasetId: string): Promise<RevisionDTO> {
+        logger.debug(`Creating new revision for dataset: ${datasetId}`);
+        return this.fetch({
+            url: `dataset/${datasetId}/revision`,
+            method: HttpMethod.Post
+        }).then((response) => response.json() as unknown as RevisionDTO);
     }
 }
