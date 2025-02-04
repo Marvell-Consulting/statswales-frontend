@@ -1,0 +1,67 @@
+<%- include("../partials/header"); %>
+
+<div class="govuk-width-container app-width-container">
+    <!-- <a href="#" class="govuk-back-link">Back</a> -->
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+        <div class="top-links">
+            <div class="govuk-width-container">
+                <a href="javascript:history.back()" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+            </div>
+        </div>
+
+        <%- include("../partials/error-handler"); %>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <form method="post" role="continue" id="updateType">
+                    <div class="govuk-form-group">
+                        <fieldset class="govuk-fieldset">
+                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                <h2 class="govuk-fieldset__heading">
+                                    <%= t('publish.update_type.heading') %>
+                                </h2>
+                            </legend>
+                            <div class="govuk-radios" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="updateTypeAdd" name="updateType" type="radio" value="add">
+                                    <label class="govuk-label govuk-radios__label" for="updateTypeAdd">
+                                        <%= t('publish.update_type.add')%>
+                                    </label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="updateTypeAddRevise" name="updateType" type="radio" value="add_revise">
+                                    <label class="govuk-label govuk-radios__label" for="updateTypeAddRevise">
+                                        <%= t('publish.update_type.add_revise')%>
+                                    </label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="updateTypeRevise" name="updateType" type="radio" value="revise">
+                                    <label class="govuk-label govuk-radios__label" for="updateTypeRevise">
+                                        <%= t('publish.update_type.revise')%>
+                                    </label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input" id="updateTypeReplaceAll" name="updateType" type="radio" value="replace_all">
+                                    <label class="govuk-label govuk-radios__label" for="updateTypeReplaceAll">
+                                        <%= t('publish.update_type.replace_all')%>
+                                    </label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="govuk-button-group">
+                        <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                            <%= t('buttons.continue') %>
+                        </button>
+                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                            <%= t('buttons.cancel') %>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+
+<%- include("../partials/footer"); %>

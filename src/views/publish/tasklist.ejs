@@ -15,9 +15,15 @@
         <ul class="govuk-task-list">
           <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
-              <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/preview`, i18n.language) %>" aria-describedby="prepare-application-1-status">
-                <%= t('publish.tasklist.data.datatable') %>
-              </a>
+              <% if (locals.revision.revision_index === 0 && !locals.revision.data_table) { %>
+                <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/update-type`, i18n.language) %>" aria-describedby="prepare-application-1-status">
+                  <%= t('publish.tasklist.data.datatable') %>
+                </a>
+              <% } else { %>
+                <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/preview`, i18n.language) %>" aria-describedby="prepare-application-1-status">
+                  <%= t('publish.tasklist.data.datatable') %>
+                </a>
+              <% } %>
             </div>
             <div class="govuk-task-list__status">
               <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.datatable) %>">

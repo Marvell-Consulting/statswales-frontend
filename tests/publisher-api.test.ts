@@ -96,10 +96,10 @@ describe('PublisherApi', () => {
 
       mockResponse = Promise.resolve(new Response(stream));
 
-      const fileStream = await statsWalesApi.getOriginalUpload(datasetId, revisionId, importId);
+      const fileStream = await statsWalesApi.getOriginalUpload(datasetId, revisionId);
 
       expect(fetchSpy).toHaveBeenCalledWith(
-        `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${importId}/raw`,
+        `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/data-table/raw`,
         { method: HttpMethod.Get, headers }
       );
       expect(fileStream).toBe(stream);
@@ -115,10 +115,10 @@ describe('PublisherApi', () => {
 
       mockResponse = Promise.resolve(new Response(JSON.stringify(fileImport)));
 
-      const fileImportDTO = await statsWalesApi.confirmFileImport(datasetId, revisionId, importId);
+      const fileImportDTO = await statsWalesApi.confirmFileImport(datasetId, revisionId);
 
       expect(fetchSpy).toHaveBeenCalledWith(
-        `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${importId}/confirm`,
+        `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/data-table/confirm`,
         { method: HttpMethod.Patch, headers }
       );
       expect(fileImportDTO).toEqual(fileImport);
@@ -134,12 +134,12 @@ describe('PublisherApi', () => {
 
       mockResponse = Promise.resolve(new Response(JSON.stringify(fileImport)));
 
-      const fileImportDTO = await statsWalesApi.getSourcesForFileImport(datasetId, revisionId, importId);
+      const fileImportDTO = await statsWalesApi.getSourcesForDataset(datasetId);
 
-      expect(fetchSpy).toHaveBeenCalledWith(
-        `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${importId}`,
-        { method: HttpMethod.Get, headers }
-      );
+      expect(fetchSpy).toHaveBeenCalledWith(`${baseUrl}/dataset/${datasetId}/sources`, {
+        method: HttpMethod.Get,
+        headers
+      });
       expect(fileImportDTO).toEqual(fileImport);
     });
   });
@@ -148,17 +148,16 @@ describe('PublisherApi', () => {
     it('should return the updated DatasetDTO', async () => {
       const datasetId = randomUUID();
       const revisionId = randomUUID();
-      const importId = randomUUID();
       const dataset = { id: datasetId, title: 'Example Dataset' };
 
       mockResponse = Promise.resolve(new Response(JSON.stringify(dataset)));
 
-      const datasetDTO = await statsWalesApi.removeFileImport(datasetId, revisionId, importId);
+      const datasetDTO = await statsWalesApi.removeFileImport(datasetId, revisionId);
 
-      expect(fetchSpy).toHaveBeenCalledWith(
-        `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${importId}`,
-        { method: HttpMethod.Delete, headers }
-      );
+      expect(fetchSpy).toHaveBeenCalledWith(`${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/data-table`, {
+        method: HttpMethod.Delete,
+        headers
+      });
       expect(datasetDTO).toEqual(dataset);
     });
   });
@@ -220,10 +219,10 @@ describe('PublisherApi', () => {
 
       mockResponse = Promise.resolve(new Response(JSON.stringify(view)));
 
-      const viewDTO = await statsWalesApi.getImportPreview(datasetId, revisionId, importId, 1, 10);
+      const viewDTO = await statsWalesApi.getImportPreview(datasetId, revisionId, 1, 10);
 
       expect(fetchSpy).toHaveBeenCalledWith(
-        `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${importId}/preview?page_number=1&page_size=10`,
+        `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/data-table/preview?page_number=1&page_size=10`,
         {
           method: HttpMethod.Get,
           headers
@@ -235,11 +234,10 @@ describe('PublisherApi', () => {
     it('should throw an exception when the backend returns an error', async () => {
       const datasetId = randomUUID();
       const revisionId = randomUUID();
-      const importId = randomUUID();
 
       mockResponse = Promise.reject(new Response(null, { status: 400, statusText: 'Bad Request' }));
 
-      await expect(statsWalesApi.getImportPreview(datasetId, revisionId, importId, 1, 10)).rejects.toThrow();
+      await expect(statsWalesApi.getImportPreview(datasetId, revisionId, 1, 10)).rejects.toThrow();
     });
   });
 
@@ -306,17 +304,14 @@ describe('PublisherApi', () => {
 
       mockResponse = Promise.resolve(new Response(JSON.stringify(dataset)));
 
-      const datasetDTO = await statsWalesApi.assignSources(datasetId, revisionId, importId, sourceAssignment);
+      const datasetDTO = await statsWalesApi.assignSources(datasetId, sourceAssignment);
 
-      expect(fetchSpy).toHaveBeenCalledWith(
-        `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${importId}/sources`,
-        {
-          method: HttpMethod.Patch,
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          headers: { ...headers, 'Content-Type': 'application/json; charset=UTF-8' },
-          body: JSON.stringify(sourceAssignment)
-        }
-      );
+      expect(fetchSpy).toHaveBeenCalledWith(`${baseUrl}/dataset/${datasetId}/sources`, {
+        method: HttpMethod.Patch,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        headers: { ...headers, 'Content-Type': 'application/json; charset=UTF-8' },
+        body: JSON.stringify(sourceAssignment)
+      });
       expect(datasetDTO).toEqual(dataset);
     });
   });

@@ -3,7 +3,7 @@ import { ReadableStream } from 'node:stream/web';
 import { ViewDTO } from '../dtos/view-dto';
 import { DatasetDTO } from '../dtos/dataset';
 import { DatasetInfoDTO } from '../dtos/dataset-info';
-import { FactTableDTO } from '../dtos/fact-table';
+import { DataTableDto } from '../dtos/data-table';
 import { SourceAssignmentDTO } from '../dtos/source-assignment-dto';
 import { logger as parentLogger } from '../utils/logger';
 import { appConfig } from '../config';
@@ -25,6 +25,8 @@ import { DimensionInfoDTO } from '../dtos/dimension-info';
 import { TranslationDTO } from '../dtos/translations';
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
 import { FileFormat } from '../enums/file-format';
+import { FactTableColumnDto } from '../dtos/fact-table-column-dto';
+import { RevisionDTO } from '../dtos/revision';
 
 const config = appConfig();
 
@@ -112,6 +114,25 @@ export class PublisherApi {
         );
     }
 
+    public uploadCSVToUpdateDataset(
+        datasetId: string,
+        revisionId: string,
+        file: Blob,
+        filename: string,
+        updateType: string
+    ): Promise<DatasetDTO> {
+        logger.debug(`Uploading file ${filename} to revision: ${revisionId}`);
+        const body = new FormData();
+        body.set('csv', file, filename);
+        body.set('update_action', updateType);
+
+        return this.fetch({
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/data-table`,
+            method: HttpMethod.Post,
+            body
+        }).then((response) => response.json() as unknown as DatasetDTO);
+    }
+
     public uploadLookupTable(datasetId: string, dimensionId: string, file: Blob, filename: string): Promise<ViewDTO> {
         logger.debug(`Uploading file ${filename} to dataset: ${datasetId}`);
         const body = new FormData();
@@ -161,15 +182,11 @@ export class PublisherApi {
         );
     }
 
-    public async getOriginalUpload(
-        datasetId: string,
-        revisionId: string,
-        factTableId: string
-    ): Promise<ReadableStream> {
-        logger.debug(`Fetching raw file import: ${factTableId}...`);
+    public async getOriginalUpload(datasetId: string, revisionId: string): Promise<ReadableStream> {
+        logger.debug(`Fetching raw file import for revision: ${revisionId}...`);
 
         return this.fetch({
-            url: `dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${factTableId}/raw`
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/data-table/raw`
         }).then((response) => response.body as ReadableStream);
     }
 
@@ -184,32 +201,28 @@ export class PublisherApi {
         return this.fetch({ url }).then((response) => response.body as ReadableStream);
     }
 
-    public async confirmFileImport(datasetId: string, revisionId: string, factTableId: string): Promise<FactTableDTO> {
-        logger.debug(`Confirming file import: ${factTableId}`);
+    public async confirmFileImport(datasetId: string, revisionId: string): Promise<DataTableDto> {
+        logger.debug(`Confirming data table import for revision: ${revisionId}...`);
 
         return this.fetch({
-            url: `dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${factTableId}/confirm`,
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/data-table/confirm`,
             method: HttpMethod.Patch
-        }).then((response) => response.json() as unknown as FactTableDTO);
+        }).then((response) => response.json() as unknown as DataTableDto);
     }
 
-    public async getSourcesForFileImport(
-        datasetId: string,
-        revisionId: string,
-        factTableId: string
-    ): Promise<FactTableDTO> {
-        logger.debug(`Fetching sources for file import: ${factTableId}`);
+    public async getSourcesForDataset(datasetId: string): Promise<FactTableColumnDto[]> {
+        logger.debug(`Fetching sources for dataset: ${datasetId}...`);
 
         return this.fetch({
-            url: `dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${factTableId}`
-        }).then((response) => response.json() as unknown as FactTableDTO);
+            url: `dataset/${datasetId}/sources`
+        }).then((response) => response.json() as unknown as FactTableColumnDto[]);
     }
 
-    public async removeFileImport(datasetId: string, revisionId: string, factTableId: string): Promise<DatasetDTO> {
-        logger.debug(`Removing file import: ${factTableId}`);
+    public async removeFileImport(datasetId: string, revisionId: string): Promise<DatasetDTO> {
+        logger.debug(`Removing data table from revision: ${revisionId}`);
 
         return this.fetch({
-            url: `dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${factTableId}`,
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/data-table`,
             method: HttpMethod.Delete
         }).then((response) => response.json() as unknown as DatasetDTO);
     }
@@ -235,16 +248,15 @@ export class PublisherApi {
     public async getImportPreview(
         datasetId: string,
         revisionId: string,
-        factTableId: string,
         pageNumber: number,
         pageSize: number
     ): Promise<ViewDTO> {
         logger.debug(
-            `Fetching preview for dataset: ${datasetId}, revision: ${revisionId}, import: ${factTableId}, page: ${pageNumber}, pageSize: ${pageSize}`
+            `Fetching preview for dataset: ${datasetId}, revision: ${revisionId}, page: ${pageNumber}, pageSize: ${pageSize}`
         );
 
         return this.fetch({
-            url: `dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${factTableId}/preview?page_number=${pageNumber}&page_size=${pageSize}`
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/data-table/preview?page_number=${pageNumber}&page_size=${pageSize}`
         }).then((response) => response.json() as unknown as ViewDTO);
     }
 
@@ -263,16 +275,11 @@ export class PublisherApi {
         }).then((response) => response.json() as unknown as ViewDTO);
     }
 
-    public async assignSources(
-        datasetId: string,
-        revisionId: string,
-        factTableId: string,
-        sourceTypeAssignment: SourceAssignmentDTO[]
-    ): Promise<DatasetDTO> {
-        logger.debug(`Assigning source types for import: ${factTableId}`);
+    public async assignSources(datasetId: string, sourceTypeAssignment: SourceAssignmentDTO[]): Promise<DatasetDTO> {
+        logger.debug(`Assigning source types for dataset: ${datasetId}`);
 
         return this.fetch({
-            url: `dataset/${datasetId}/revision/by-id/${revisionId}/fact-table/by-id/${factTableId}/sources`,
+            url: `dataset/${datasetId}/sources`,
             method: HttpMethod.Patch,
             json: sourceTypeAssignment
         }).then((response) => response.json() as unknown as DatasetDTO);
@@ -488,17 +495,27 @@ export class PublisherApi {
         );
     }
 
-    public async approveForPublication(datasetId: string): Promise<DatasetDTO> {
+    public async approveForPublication(datasetId: string, revisionId: string): Promise<DatasetDTO> {
         logger.debug(`Attempting to approve dataset for publication: ${datasetId}`);
-        return this.fetch({ url: `dataset/${datasetId}/approve`, method: HttpMethod.Post }).then(
-            (response) => response.json() as unknown as DatasetDTO
-        );
+        return this.fetch({
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/approve`,
+            method: HttpMethod.Post
+        }).then((response) => response.json() as unknown as DatasetDTO);
     }
 
-    public async withdrawFromPublication(datasetId: string): Promise<DatasetDTO> {
+    public async withdrawFromPublication(datasetId: string, revisionId: string): Promise<DatasetDTO> {
         logger.debug(`Attempting to withdraw latest revision publication: ${datasetId}`);
-        return this.fetch({ url: `dataset/${datasetId}/withdraw`, method: HttpMethod.Post }).then(
-            (response) => response.json() as unknown as DatasetDTO
-        );
+        return this.fetch({
+            url: `dataset/${datasetId}/revision/by-id/${revisionId}/withdraw`,
+            method: HttpMethod.Post
+        }).then((response) => response.json() as unknown as DatasetDTO);
+    }
+
+    public async createRevision(datasetId: string): Promise<RevisionDTO> {
+        logger.debug(`Creating new revision for dataset: ${datasetId}`);
+        return this.fetch({
+            url: `dataset/${datasetId}/revision`,
+            method: HttpMethod.Post
+        }).then((response) => response.json() as unknown as RevisionDTO);
     }
 }

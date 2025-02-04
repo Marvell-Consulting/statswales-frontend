@@ -5,6 +5,7 @@ import { DatasetProviderDTO } from './dataset-provider';
 import { TopicDTO } from './topic';
 import { MeasureDTO } from './measure';
 import { TeamDTO } from './team';
+import { FactTableColumnDto } from './fact-table-column-dto';
 
 export interface DatasetDTO {
     id: string;
@@ -12,6 +13,7 @@ export interface DatasetDTO {
     created_by: string;
     live?: string;
     archive?: string;
+    fact_table: FactTableColumnDto[];
     measure?: MeasureDTO;
     dimensions?: DimensionDTO[];
     revisions: RevisionDTO[];

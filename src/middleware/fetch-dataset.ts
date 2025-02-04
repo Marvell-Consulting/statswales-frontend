@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { NotFoundException } from '../exceptions/not-found.exception';
-import { getLatestRevision, getLatestFactTable } from '../utils/latest';
+import { getLatestRevision, getDataTable } from '../utils/latest';
 import { logger } from '../utils/logger';
 import { hasError, datasetIdValidator } from '../validators';
 
@@ -19,7 +19,7 @@ export const fetchDataset = async (req: Request, res: Response, next: NextFuncti
         res.locals.datasetId = dataset.id;
         res.locals.dataset = dataset;
         res.locals.revision = getLatestRevision(dataset);
-        res.locals.factTable = getLatestFactTable(res.locals.revision);
+        res.locals.dataTable = getDataTable(res.locals.revision);
     } catch (err: any) {
         if (err.status === 401) {
             next(err);

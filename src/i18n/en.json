@@ -4,6 +4,7 @@
     "external_tag": "<span class=\"govuk-tag govuk-tag--orange govuk-phase-banner__content__tag\">External Page</span>",
     "yes": "Yes",
     "no": "No",
+    "toc": "Table of contents",
     "buttons": {
         "continue": "Continue",
         "back": "Back",
@@ -706,7 +707,7 @@
                 }
             },
             "buttons": {
-                "upload": "Upload CSV File"
+                "upload": "Continue"
             },
             "errors": {
                 "missing": "Select a data table",
@@ -842,6 +843,16 @@
             },
             "error": {
                 "withdraw": "Could not withdraw dataset from publication, please contact support"
+            }
+        },
+        "update_type": {
+            "heading": "What do you need to do?",
+            "add": "Add new data only",
+            "add_revise": "Add new data and revise existing data",
+            "revise": "Revise existing data only",
+            "replace_all": "Replace all existing data",
+            "errors": {
+                "missing": "You need to select the type of update you wish to make"
             }
         }
     },
