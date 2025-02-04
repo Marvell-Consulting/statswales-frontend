@@ -1972,6 +1972,8 @@ export const updateDatatable = async (req: Request, res: Response, next: NextFun
             req.session.save();
             res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
             return;
+        } else {
+            res.locals.errors = [{ field: 'updateType', message: { key: 'publish.update_type.errors.missing' } }];
         }
     }
     res.render('publish/update-type');

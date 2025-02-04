@@ -9,9 +9,12 @@
                 <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
             </div>
         </div>
+
+        <%- include("../partials/error-handler"); %>
+
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
-                <form method="post" role="continue">
+                <form method="post" role="continue" id="updateType">
                     <div class="govuk-form-group">
                         <fieldset class="govuk-fieldset">
                             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">

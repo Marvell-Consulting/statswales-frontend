@@ -850,7 +850,10 @@
             "add": "Add new data only",
             "add_revise": "Add new data and revise existing data",
             "revise": "Revise existing data only",
-            "replace_all": "Replace all existing data"
+            "replace_all": "Replace all existing data",
+            "errors": {
+                "missing": "You need to select the type of update you wish to make"
+            }
         }
     },
     "translations": {
