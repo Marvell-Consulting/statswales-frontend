@@ -1,4 +1,4 @@
-<%- include("partials/header", {developerPage: true}); %>
+<%- include("partials/header", {developerPage: false}); %>
 
 <div class="govuk-width-container app-width-container">
     <main class="govuk-main-wrapper" id="main-content" role="main">
@@ -7,6 +7,7 @@
                 <%- locals.content %>
             </div>
             <div class="govuk-grid-column-one-third">
+                <% if (locals.tableOfContents) { %><h2 class="govuk-heading-s"><%= t('toc') %></h2><% } %>
                 <%- locals.tableOfContents %>
             </div>
         </div>

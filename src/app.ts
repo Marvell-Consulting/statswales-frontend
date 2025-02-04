@@ -23,6 +23,7 @@ import { homepage } from './routes/homepage';
 import { notFound } from './routes/not-found';
 import { guidance } from './routes/guidance';
 import { consumer } from './routes/consumer';
+import { cookies } from './routes/cookie';
 
 const app: Application = express();
 const config = appConfig();
@@ -58,6 +59,7 @@ app.use('/healthcheck', rateLimiter, healthcheck);
 app.use('/:lang/auth', rateLimiter, auth);
 app.use('/:lang/published', rateLimiter, consumer);
 app.use('/:lang/guidance', rateLimiter, guidance);
+app.use('/:lang/cookies', rateLimiter, ensureAuthenticated, cookies);
 
 // authenticated routes
 app.use('/:lang/publish', rateLimiter, ensureAuthenticated, publish);

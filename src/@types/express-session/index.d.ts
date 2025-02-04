@@ -6,5 +6,6 @@ declare module 'express-session' {
     interface SessionData {
         errors: ViewError[] | undefined;
         dimensionPatch: DimensionPatchDTO | undefined;
+        updateType: string | undefined;
     }
 }

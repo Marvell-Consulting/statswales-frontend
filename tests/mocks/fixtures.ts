@@ -1,5 +1,5 @@
 import { DatasetDTO } from '../../src/dtos/dataset';
-import { FactTableDTO } from '../../src/dtos/fact-table';
+import { DataTableDto } from '../../src/dtos/data-table';
 import { TaskListState } from '../../src/dtos/task-list-state';
 import { ViewDTO } from '../../src/dtos/view-dto';
 import { TaskStatus } from '../../src/enums/task-status';
@@ -10,7 +10,8 @@ export const datasetWithTitle: DatasetDTO = {
   created_by: 'Test User',
   datasetInfo: [{ language: 'en-GB', title: 'Dataset with title' }],
   dimensions: [],
-  revisions: []
+  revisions: [],
+  fact_table: []
 };
 
 export const datasetWithImport: DatasetDTO = {
@@ -19,6 +20,38 @@ export const datasetWithImport: DatasetDTO = {
   created_by: 'Test User',
   datasetInfo: [{ language: 'en-GB', title: 'Dataset with import' }],
   dimensions: [],
+  fact_table: [
+    {
+      index: 0,
+      name: 'ID',
+      datatype: 'VARCHAR',
+      type: 'Ignore'
+    },
+    {
+      index: 1,
+      name: 'Values',
+      datatype: 'VARCHAR',
+      type: 'DataValues'
+    },
+    {
+      index: 2,
+      name: 'Notes',
+      datatype: 'VARCHAR',
+      type: 'NoteCodes'
+    },
+    {
+      index: 3,
+      name: 'Dimension 1',
+      datatype: 'VARCHAR',
+      type: 'Dimension'
+    },
+    {
+      index: 4,
+      name: 'Dimension 2',
+      datatype: 'VARCHAR',
+      type: 'Dimension'
+    }
+  ],
   revisions: [
     {
       id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
@@ -29,45 +62,48 @@ export const datasetWithImport: DatasetDTO = {
       publish_at: '',
       approved_at: '',
       created_by: 'Test User',
-      fact_tables: [
-        {
-          id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
-          revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
-          mime_type: 'text/csv',
-          filename: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953.csv',
-          hash: '9aa51a61d5796fbfa2ce82f62b1419d93432b1e606baf095a12daefc7c3273a5',
-          uploaded_at: '2024-09-05T10:05:03.871Z',
-          original_filename: 'testfile.csv',
-          file_type: 'csv',
-          fact_table_info: [
-            {
-              column_index: 0,
-              column_name: 'ID',
-              column_type: 'UNKNOWN'
-            },
-            {
-              column_index: 1,
-              column_name: 'Values',
-              column_type: 'UNKNOWN'
-            },
-            {
-              column_index: 2,
-              column_name: 'Notes',
-              column_type: 'UNKNOWN'
-            },
-            {
-              column_index: 3,
-              column_name: 'Dimension 1',
-              column_type: 'UNKNOWN'
-            },
-            {
-              column_index: 4,
-              column_name: 'Dimension 2',
-              column_type: 'UNKNOWN'
-            }
-          ]
-        }
-      ]
+      data_table: {
+        id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
+        revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
+        mime_type: 'text/csv',
+        filename: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953.csv',
+        hash: '9aa51a61d5796fbfa2ce82f62b1419d93432b1e606baf095a12daefc7c3273a5',
+        uploaded_at: '2024-09-05T10:05:03.871Z',
+        original_filename: 'testfile.csv',
+        file_type: 'csv',
+        descriptors: [
+          {
+            column_index: 0,
+            column_name: 'ID',
+            column_datatype: 'VARCHAR',
+            fact_table_column_name: 'ID'
+          },
+          {
+            column_index: 1,
+            column_name: 'Values',
+            column_datatype: 'VARCHAR',
+            fact_table_column_name: 'Values'
+          },
+          {
+            column_index: 2,
+            column_name: 'Notes',
+            column_datatype: 'VARCHAR',
+            fact_table_column_name: 'Notes'
+          },
+          {
+            column_index: 3,
+            column_name: 'Dimension 1',
+            column_datatype: 'VARCHAR',
+            fact_table_column_name: 'Dimension 1'
+          },
+          {
+            column_index: 4,
+            column_name: 'Dimension 2',
+            column_datatype: 'VARCHAR',
+            fact_table_column_name: 'Dimension 2'
+          }
+        ]
+      }
     }
   ]
 };
@@ -80,6 +116,7 @@ export const datasetRevWithNoImports: DatasetDTO = {
   archive: '',
   datasetInfo: [{ language: 'en-GB', title: 'Dataset revision with no import' }],
   dimensions: [],
+  fact_table: [],
   revisions: [
     {
       id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
@@ -88,8 +125,7 @@ export const datasetRevWithNoImports: DatasetDTO = {
       created_at: '2024-09-05T10:05:04.052Z',
       publish_at: '',
       approved_at: '',
-      created_by: 'Test User',
-      fact_tables: []
+      created_by: 'Test User'
     }
   ]
 };
@@ -102,6 +138,7 @@ export const completedDataset: DatasetDTO = {
   archive: '',
   datasetInfo: [{ language: 'en-GB', title: 'Completed dataset' }],
   dimensions: [],
+  fact_table: [],
   revisions: [
     {
       id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
@@ -112,45 +149,48 @@ export const completedDataset: DatasetDTO = {
       publish_at: '',
       approved_at: '',
       created_by: 'Test User',
-      fact_tables: [
-        {
-          id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
-          revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
-          mime_type: 'text/csv',
-          filename: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953.csv',
-          hash: '9aa51a61d5796fbfa2ce82f62b1419d93432b1e606baf095a12daefc7c3273a5',
-          uploaded_at: '2024-09-05T10:05:03.871Z',
-          original_filename: 'testfile.csv',
-          file_type: 'csv',
-          fact_table_info: [
-            {
-              column_index: 0,
-              column_name: 'ID',
-              column_type: 'IGNORE'
-            },
-            {
-              column_index: 1,
-              column_name: 'Values',
-              column_type: 'DATAVALUES'
-            },
-            {
-              column_index: 2,
-              column_name: 'Notes',
-              column_type: 'FOOTNOTES'
-            },
-            {
-              column_index: 3,
-              column_name: 'Dimension 1',
-              column_type: 'DIMENSION'
-            },
-            {
-              column_index: 4,
-              column_name: 'Dimension 2',
-              column_type: 'DIMENSION'
-            }
-          ]
-        }
-      ]
+      data_table: {
+        id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
+        revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
+        mime_type: 'text/csv',
+        filename: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953.csv',
+        hash: '9aa51a61d5796fbfa2ce82f62b1419d93432b1e606baf095a12daefc7c3273a5',
+        uploaded_at: '2024-09-05T10:05:03.871Z',
+        original_filename: 'testfile.csv',
+        file_type: 'csv',
+        descriptors: [
+          {
+            column_index: 0,
+            column_name: 'ID',
+            column_datatype: 'VARCHAR',
+            fact_table_column_name: 'ID'
+          },
+          {
+            column_index: 1,
+            column_name: 'Values',
+            column_datatype: 'VARCHAR',
+            fact_table_column_name: 'Values'
+          },
+          {
+            column_index: 2,
+            column_name: 'Notes',
+            column_datatype: 'VARCHAR',
+            fact_table_column_name: 'Notes'
+          },
+          {
+            column_index: 3,
+            column_name: 'Dimension 1',
+            column_datatype: 'VARCHAR',
+            fact_table_column_name: 'Dimension 1'
+          },
+          {
+            column_index: 4,
+            column_name: 'Dimension 2',
+            column_datatype: 'VARCHAR',
+            fact_table_column_name: 'Dimension 2'
+          }
+        ]
+      }
     }
   ]
 };
@@ -163,11 +203,12 @@ export const datasetView: ViewDTO = {
     created_by: 'Test User',
     live: '',
     archive: '',
+    fact_table: [],
     datasetInfo: [{ language: 'en-GB', title: 'Dataset with import' }],
     dimensions: [],
     revisions: []
   },
-  fact_table: {
+  data_table: {
     id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
     revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
     mime_type: 'text/csv',
@@ -176,7 +217,7 @@ export const datasetView: ViewDTO = {
     uploaded_at: '2024-09-05T10:05:03.871Z',
     original_filename: 'testfile.csv',
     file_type: 'csv',
-    fact_table_info: []
+    descriptors: []
   },
   current_page: 1,
   page_info: {
@@ -199,7 +240,7 @@ export const datasetView: ViewDTO = {
   ]
 };
 
-export const importWithDraftSources: FactTableDTO = {
+export const importWithDraftSources: DataTableDto = {
   id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
   revision_id: '09d1c9ac-4cea-482e-89c1-86997f3b6da6',
   mime_type: 'text/csv',
@@ -208,31 +249,36 @@ export const importWithDraftSources: FactTableDTO = {
   uploaded_at: '2024-09-05T10:05:03.871Z',
   original_filename: 'testfile.csv',
   file_type: 'csv',
-  fact_table_info: [
+  descriptors: [
     {
       column_index: 0,
       column_name: 'ID',
-      column_type: 'UNKNOWN'
+      column_datatype: 'VARCHAR',
+      fact_table_column_name: 'ID'
     },
     {
       column_index: 1,
       column_name: 'Values',
-      column_type: 'UNKNOWN'
+      column_datatype: 'VARCHAR',
+      fact_table_column_name: 'Values'
     },
     {
       column_index: 2,
       column_name: 'Notes',
-      column_type: 'UNKNOWN'
+      column_datatype: 'VARCHAR',
+      fact_table_column_name: 'Notes'
     },
     {
       column_index: 3,
       column_name: 'Dimension 1',
-      column_type: 'UNKNOWN'
+      column_datatype: 'VARCHAR',
+      fact_table_column_name: 'Dimension 1'
     },
     {
       column_index: 4,
       column_name: 'Dimension 2',
-      column_type: 'UNKNOWN'
+      column_datatype: 'VARCHAR',
+      fact_table_column_name: 'Dimension 2'
     }
   ]
 };

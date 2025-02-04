@@ -9,7 +9,7 @@ import { logger } from '../utils/logger';
 import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { hasError, factTableIdValidator } from '../validators';
 import { RevisionDTO } from '../dtos/revision';
-import { FactTableDTO } from '../dtos/fact-table';
+import { DataTableDto } from '../dtos/data-table';
 import { generateSequenceForNumber } from '../utils/pagination';
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
 
@@ -62,21 +62,21 @@ developer.get(
 
         try {
             const importId = req.params.factTableId;
-            let factTable: FactTableDTO | undefined;
+            let dataTable: DataTableDto | undefined;
 
             const revision = dataset.revisions?.find((rev: RevisionDTO) => {
-                factTable = rev.fact_tables?.find((file: FactTableDTO) => file.id === importId);
-                return Boolean(factTable);
+                dataTable = rev.data_table;
+                return Boolean(dataTable);
             });
 
-            if (!factTable) {
+            if (!dataTable) {
                 throw new Error('errors.import_missing');
             }
 
-            const fileStream = await req.pubapi.getOriginalUpload(dataset.id, revision.id, factTable.id);
+            const fileStream = await req.pubapi.getOriginalUpload(dataset.id, revision.id);
             res.status(200);
-            res.header('Content-Type', factTable.mime_type);
-            res.header(`Content-Disposition: attachment; filename="${factTable.filename}"`);
+            res.header('Content-Type', dataTable.mime_type);
+            res.header(`Content-Disposition: attachment; filename="${dataTable.filename}"`);
             const readable: Readable = Readable.from(fileStream);
             readable.pipe(res);
         } catch (err) {

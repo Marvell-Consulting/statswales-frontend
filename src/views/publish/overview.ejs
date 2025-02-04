@@ -36,13 +36,16 @@
 				<h2 class="govuk-heading-m"><%= t('publish.overview.scheduled.what_next') %></h2>
 
 				<div class="actions">
-					<% if (['published', 'update_scheduled'].includes(locals.publishingStatus)) { %>
-						<a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/published/${dataset.id}`, i18n.language) %>" target="_blank"><%= t('publish.overview.scheduled.buttons.view_published_dataset') %></a>
-					<% } %>
+					<ul class="govuk-list">
+						<% if (['published', 'update_scheduled'].includes(locals.publishingStatus)) { %>
+							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/published/${dataset.id}`, i18n.language) %>" target="_blank"><%= t('publish.overview.scheduled.buttons.view_published_dataset') %></a></li>
+							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/update`, i18n.language) %>">Update Dataset</a></li>
+						<% } %>
 
-					<% if (['scheduled', 'update_scheduled'].includes(locals.publishingStatus)) { %>
-						<a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language, { withdraw: 'true' }) %>"><%= t('publish.overview.scheduled.buttons.change_dataset') %></a>
-					<% } %>
+						<% if (['scheduled', 'update_scheduled'].includes(locals.publishingStatus)) { %>
+							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language, { withdraw: 'true' }) %>"><%= t('publish.overview.scheduled.buttons.change_dataset') %></a></li>
+						<% } %>
+					</ul>
 				</div>
 
 			</div>

@@ -36,14 +36,13 @@ import { ViewError } from '../dtos/view-error';
 import { logger } from '../utils/logger';
 import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
 import { SourceType } from '../enums/source-type';
-import { FactTableInfoDTO } from '../dtos/fact-table-info';
+import { DataTableDescriptionDto } from '../dtos/data-table-description-dto';
 import { SourceAssignmentDTO } from '../dtos/source-assignment-dto';
 import { UnknownException } from '../exceptions/unknown.exception';
 import { TaskListState } from '../dtos/task-list-state';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { statusToColour } from '../utils/status-to-colour';
 import { singleLangDataset } from '../utils/single-lang-dataset';
-import { updateSourceTypes } from '../utils/update-source-types';
 import { Designation } from '../enums/designation';
 import { DurationUnit } from '../enums/duration-unit';
 import { RelatedLinkDTO } from '../dtos/related-link';
@@ -68,6 +67,7 @@ import { getPublishingStatus, getDatasetStatus } from '../utils/dataset-status';
 import { getDatasetPreview } from '../utils/dataset-preview';
 import { FileFormat } from '../enums/file-format';
 import { getDownloadHeaders } from '../utils/download-headers';
+import { FactTableColumnDto } from '../dtos/fact-table-column-dto';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -113,7 +113,7 @@ export const provideTitle = async (req: Request, res: Response, next: NextFuncti
 };
 
 export const uploadFile = async (req: Request, res: Response, next: NextFunction) => {
-    const { dataset, revision, factTable } = res.locals;
+    const { dataset, revision, dataTable } = res.locals;
     let errors: ViewError[] = [];
     const revisit = dataset.dimensions?.length > 0;
 
@@ -126,16 +126,27 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
                 throw new Error();
             }
 
-            if (revisit && revision && factTable) {
+            if (revisit && revision && dataTable) {
                 // cleanup previous fact table
-                await req.pubapi.removeFileImport(dataset.id, revision.id, factTable.id);
+                await req.pubapi.removeFileImport(dataset.id, revision.id);
             }
 
             const fileName = req.file.originalname;
             req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
             const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
             logger.debug('Sending file to backend.');
-            await req.pubapi.uploadCSVToDataset(dataset.id, fileData, fileName);
+            if (req.session.updateType) {
+                logger.info('Performing an update to the dataset');
+                await req.pubapi.uploadCSVToUpdateDataset(
+                    dataset.id,
+                    revision.id,
+                    fileData,
+                    fileName,
+                    req.session.updateType
+                );
+            } else {
+                await req.pubapi.uploadCSVToDataset(dataset.id, fileData, fileName);
+            }
             res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
             return;
         } catch (err) {
@@ -150,28 +161,32 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
 };
 
 export const factTablePreview = async (req: Request, res: Response, next: NextFunction) => {
-    const { dataset, revision, factTable } = res.locals;
+    const { dataset, revision, dataTable } = res.locals;
     let errors: ViewError[] | undefined;
     let previewData: ViewDTO | undefined;
     let ignoredCount = 0;
     let pagination: (string | number)[] = [];
 
-    if (!dataset || !revision || !factTable) {
+    if (!dataset || !revision || !dataTable) {
         logger.error('Fact table not found');
         next(new UnknownException('errors.preview.import_missing'));
         return;
     }
 
     // if sources have previously been assigned a type, this is a revisit
-    const revisit =
-        factTable.fact_table_info?.filter((factTableInfo: FactTableInfoDTO) => Boolean(factTableInfo.column_type))
-            .length > 0;
+    const revisit = Boolean(dataset.factTable);
 
     if (req.method === 'POST') {
         try {
             if (req.body.confirm === 'true') {
-                await req.pubapi.confirmFileImport(dataset.id, revision.id, factTable.id);
-                res.redirect(req.buildUrl(`/publish/${dataset.id}/sources`, req.language));
+                if (req.session.updateType) {
+                    res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+                } else {
+                    await req.pubapi.confirmFileImport(dataset.id, revision.id);
+                    res.redirect(req.buildUrl(`/publish/${dataset.id}/sources`, req.language));
+                }
+            } else if (req.session.updateType) {
+                res.redirect(req.buildUrl(`/publish/${dataset.id}/update-type`, req.language));
             } else {
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
             }
@@ -185,7 +200,7 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
     try {
         const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
         const pageSize = Number.parseInt(req.query.page_size as string, 10) || 10;
-        previewData = await req.pubapi.getImportPreview(dataset.id, revision.id, factTable.id, pageNumber, pageSize);
+        previewData = await req.pubapi.getImportPreview(dataset.id, revision.id, pageNumber, pageSize);
         ignoredCount = previewData.headers.filter((header) => header.source_type === SourceType.Ignore).length;
         if (!previewData) {
             throw new Error('No preview data found.');
@@ -199,13 +214,13 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
 };
 
 export const sources = async (req: Request, res: Response, next: NextFunction) => {
-    const { dataset, revision, factTable } = res.locals;
-    const revisit =
-        factTable.fact_table_info?.filter((factTableInfo: FactTableInfoDTO) => Boolean(factTableInfo.column_type))
-            .length > 0;
+    const { dataset, revision } = res.locals;
+    const factTable = dataset.fact_table.sort(
+        (colA: FactTableColumnDto, colB: FactTableColumnDto) => colA.index - colB.index
+    ) as FactTableColumnDto[];
+    const revisit = factTable.filter((column: FactTableColumnDto) => column.type === SourceType.Unknown).length > 0;
     let error: ViewError | undefined;
     let errors: ViewError[] | undefined;
-    let currentImport = factTable;
 
     try {
         if (!dataset || !revision || !factTable) {
@@ -215,22 +230,24 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
 
         if (req.method === 'POST') {
             const counts = { unknown: 0, dataValues: 0, footnotes: 0, measure: 0 };
-            const sourceAssignment: SourceAssignmentDTO[] = factTable.fact_table_info.map(
-                (factTableInfo: FactTableInfoDTO) => {
-                    const sourceType = req.body[`column-${factTableInfo.column_index}`];
-                    if (sourceType === SourceType.Unknown) counts.unknown++;
-                    if (sourceType === SourceType.DataValues) counts.dataValues++;
-                    if (sourceType === SourceType.NoteCodes) counts.footnotes++;
-                    if (sourceType === SourceType.Measure) counts.measure++;
-                    return {
-                        column_index: factTableInfo.column_index,
-                        column_name: factTableInfo.column_name,
-                        column_type: sourceType
-                    };
-                }
-            );
+            const sourceAssignment: SourceAssignmentDTO[] = factTable.map((column: FactTableColumnDto) => {
+                const sourceType = req.body[`column-${column.index}`];
+                if (sourceType === SourceType.Unknown) counts.unknown++;
+                if (sourceType === SourceType.DataValues) counts.dataValues++;
+                if (sourceType === SourceType.NoteCodes) counts.footnotes++;
+                if (sourceType === SourceType.Measure) counts.measure++;
+                return {
+                    column_index: column.index,
+                    column_name: column.name,
+                    column_type: sourceType
+                };
+            });
 
-            currentImport = updateSourceTypes(factTable, sourceAssignment);
+            factTable.forEach((column: FactTableColumnDto) => {
+                column.type =
+                    sourceAssignment.find((assignment: SourceAssignmentDTO) => assignment.column_index === column.index)
+                        ?.column_type || SourceType.Unknown;
+            });
 
             if (counts.unknown > 0) {
                 logger.error('User failed to identify all sources');
@@ -256,7 +273,7 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
                 errors = [error];
                 res.status(400);
             } else {
-                await req.pubapi.assignSources(dataset.id, revision.id, factTable.id, sourceAssignment);
+                await req.pubapi.assignSources(dataset.id, sourceAssignment);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
                 return;
             }
@@ -268,7 +285,7 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
     }
 
     res.render('publish/sources', {
-        currentImport,
+        factTable,
         sourceTypes: Object.values(SourceType),
         revisit,
         errors
@@ -277,6 +294,7 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
 
 export const taskList = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
+    const revision = res.locals.revision;
 
     try {
         if (req.method === 'POST') {
@@ -284,7 +302,7 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
             // once we have approval process, there will be an interstitial status while the dataset is waiting to
             // be approved by a suitable member of the team
             logger.debug('submitting dataset for publication');
-            const scheduledDataset = await req.pubapi.approveForPublication(dataset.id);
+            const scheduledDataset = await req.pubapi.approveForPublication(dataset.id, revision.id);
 
             if (scheduledDataset) {
                 res.redirect(
@@ -1911,7 +1929,7 @@ export const importTranslations = async (req: Request, res: Response, next: Next
 
 export const overview = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const revision = getLatestRevision(res.locals.dataset);
+    const revision = res.locals.revision;
     const title = dataset.datasetInfo?.title;
     const datasetStatus = getDatasetStatus(dataset);
     const publishingStatus = getPublishingStatus(dataset);
@@ -1920,7 +1938,7 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
 
     if (req.query.withdraw) {
         try {
-            await req.pubapi.withdrawFromPublication(dataset.id);
+            await req.pubapi.withdrawFromPublication(dataset.id, revision.id);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
@@ -1938,4 +1956,23 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
         statusToColour,
         errors
     });
+};
+
+export const createNewUpdate = async (req: Request, res: Response, next: NextFunction) => {
+    const dataset = res.locals.dataset;
+    await req.pubapi.createRevision(dataset.id);
+    res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+};
+
+export const updateDatatable = async (req: Request, res: Response, next: NextFunction) => {
+    const dataset = res.locals.dataset;
+    if (req.method === 'POST') {
+        if (req.body.updateType) {
+            req.session.updateType = req.body.updateType;
+            req.session.save();
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
+            return;
+        }
+    }
+    res.render('publish/update-type');
 };

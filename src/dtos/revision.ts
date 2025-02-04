@@ -1,4 +1,4 @@
-import { FactTableDTO } from './fact-table';
+import { DataTableDto } from './data-table';
 
 export interface RevisionDTO {
     id: string;
@@ -10,6 +10,6 @@ export interface RevisionDTO {
     approved_at?: string;
     approved_by?: string;
     created_by: string;
-    fact_tables: FactTableDTO[];
+    data_table?: DataTableDto;
     dataset_id?: string;
 }
