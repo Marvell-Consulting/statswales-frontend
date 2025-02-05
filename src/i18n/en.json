@@ -825,8 +825,12 @@
                 "publish_at": "Publishing scheduled: <strong>{{publish_at}}</strong>",
                 "what_next": "What do you want to do?",
                 "buttons": {
-                    "change_dataset": "Change dataset before publication",
-                    "view_published_dataset": "View published dataset (opens in new tab)"
+                    "view_published_dataset": "View published dataset (opens in new tab)",
+                    "update_dataset": "Update this dataset",
+                    "withdraw_first_revision": "Change dataset before publication",
+                    "withdraw_update_revision": "Change update before publication",
+                    "continue_update": "Continue update",
+                    "continue": "Continue dataset"
                 }
             },
             "badge": {

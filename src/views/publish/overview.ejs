@@ -37,13 +37,28 @@
 
 				<div class="actions">
 					<ul class="govuk-list">
-						<% if (['published', 'update_scheduled'].includes(locals.publishingStatus)) { %>
+						<% if (locals.datasetStatus === 'live') { %>
 							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/published/${dataset.id}`, i18n.language) %>" target="_blank"><%= t('publish.overview.scheduled.buttons.view_published_dataset') %></a></li>
-							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/update`, i18n.language) %>">Update Dataset</a></li>
 						<% } %>
 
-						<% if (['scheduled', 'update_scheduled'].includes(locals.publishingStatus)) { %>
-							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language, { withdraw: 'true' }) %>"><%= t('publish.overview.scheduled.buttons.change_dataset') %></a></li>
+						<% if (locals.publishingStatus === 'published') { %>
+							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/update`, i18n.language) %>"><%= t('publish.overview.scheduled.buttons.update_dataset') %></a></li>
+						<% } %>
+
+						<% if (locals.publishingStatus === 'scheduled') { %>
+							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language, { withdraw: 'true' }) %>"><%= t('publish.overview.scheduled.buttons.withdraw_first_revision') %></a></li>
+						<% } %>
+
+						<% if (locals.publishingStatus === 'update_scheduled') { %>
+							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language, { withdraw: 'true' }) %>"><%= t('publish.overview.scheduled.buttons.withdraw_update_revision') %></a></li>
+						<% } %>
+
+						<% if (locals.publishingStatus === 'update_incomplete') { %>
+							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/tasklist`, i18n.language) %>"><%= t('publish.overview.scheduled.buttons.continue_update') %></a></li>
+						<% } %>
+
+						<% if (locals.publishingStatus === 'incomplete') { %>
+							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/tasklist`, i18n.language) %>"><%= t('publish.overview.scheduled.buttons.continue') %></a></li>
 						<% } %>
 					</ul>
 				</div>

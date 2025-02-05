@@ -8,7 +8,7 @@ import { appConfig } from '.';
 export const checkConfig = () => {
     const config = appConfig() as unknown as UnknownObject;
 
-    logger.info('Checking app config...');
+    logger.info(`Checking app config for '${config.env}' env...`);
 
     walkObject(config, ({ key, value, location, isLeaf }) => {
         if (isLeaf && !optionalProperties.includes(key) && value === undefined) {
