@@ -37,7 +37,7 @@
                 <% if (locals.uploadType) { %>
                     <a href="#" class="govuk-button govuk-button--secondary"><%= t('buttons.preview') %></a>
                 <% } %>
-                <% if (locals.revision.revision_index === 0) { %>
+                <% if (locals.revision?.revision_index === 0) { %>
                     <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
                         <%= t('buttons.cancel') %>
                     </a>
