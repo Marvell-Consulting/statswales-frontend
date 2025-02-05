@@ -147,6 +147,9 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
             } else {
                 await req.pubapi.uploadCSVToDataset(dataset.id, fileData, fileName);
             }
+            // eslint-disable-next-line require-atomic-updates
+            req.session.updateType = undefined;
+            req.session.save();
             res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
             return;
         } catch (err) {
@@ -175,17 +178,17 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
 
     // if sources have previously been assigned a type, this is a revisit
     const revisit = Boolean(dataset.factTable);
-
+    logger.debug(`User is confirming the fact table upload and source_type = ${req.session.updateType}`);
     if (req.method === 'POST') {
         try {
             if (req.body.confirm === 'true') {
-                if (req.session.updateType) {
+                if (revision.revision_index === 0) {
                     res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
                 } else {
                     await req.pubapi.confirmFileImport(dataset.id, revision.id);
                     res.redirect(req.buildUrl(`/publish/${dataset.id}/sources`, req.language));
                 }
-            } else if (req.session.updateType) {
+            } else if (revision.revision_index === 0) {
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/update-type`, req.language));
             } else {
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
