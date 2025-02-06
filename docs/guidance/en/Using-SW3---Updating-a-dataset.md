@@ -7,8 +7,11 @@ From your home screen, select the dataset you need to update. On the next screen
 Using your [prepared update data table](Data-preparation-‐-Updating-datasets), go through the following steps:
 
 1. Click ‘Data table’ from your dataset overview
-1. Select whether you’re adding new data only or replacing all existing data
-   - ‘Replacing all existing data’ can include adding new data as well
+1. Select whether you need to:
+   - Add new data only
+   - Add new data and revise existing data
+   - Revise existing data only
+   - Replace all existing data
 1. Upload and check your update data table
    - If there are any issues with your table, the system will explain the issue and what you need to do to fix it
 1. If you’re replacing existing data, you’ll need to add revision notes explaining in short, simple sentences:
@@ -39,4 +42,4 @@ You should follow the same process as for [translating a new dataset](Using-SW3-
 - New text (English)
 - New text (Welsh)
 
-The previous text columns will be populated with the bilingual entries in the most recently published version of the dataset. This will aid translators entering the new text in the translated language, as they won’t have to retranslate everything if there have only been minor changes to the text.
+The 'previous text' columns will be populated with the most recently published, bilingual entries for these fields. This will aid translators entering the new text in the translated language. They won’t have to retranslate everything if there have only been minor changes to the text.
