@@ -218,7 +218,7 @@
         },
         "lookup_table_review": {
             "heading": "Check the lookup table",
-            "showing": "Showing rows {{rows}} of {{total}} rows.",
+            "showing": "Showing a sample of {{rows}} of {{total}} rows.",
             "confirm": "By continuing, you confirm the lookup table is correct.",
             "go_back": "Choose a different lookup table",
             "column_headers": {
@@ -234,7 +234,7 @@
         },
         "measure_review": {
             "heading": "Check the measure table",
-            "showing": "Showing rows {{rows}} of {{total}} rows.",
+            "showing": "Showing a sample of {{rows}} of {{total}} rows.",
             "confirm": "By continuing, you confirm the measure table is correct.",
             "go_back": "Choose a different measure table",
             "column_headers": {
@@ -728,7 +728,6 @@
             "columns_rows": "$t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} })",
             "upload_summary": "There are $t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} }) in the data table. $t(publish.preview.columns, {\"count\": {{ignored}} }) in the CSV upload have been ignored.",
             "showing_rows": "Showing rows {{start}} – {{end}} of {{total}}",
-            "showing": "Showing rows",
             "unnamed_column": "column {{colNum}}",
             "confirm_correct": "By continuing, you confirm the data table is correct.",
             "buttons": {

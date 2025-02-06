@@ -36,7 +36,6 @@ import { ViewError } from '../dtos/view-error';
 import { logger } from '../utils/logger';
 import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
 import { SourceType } from '../enums/source-type';
-import { DataTableDescriptionDto } from '../dtos/data-table-description-dto';
 import { SourceAssignmentDTO } from '../dtos/source-assignment-dto';
 import { UnknownException } from '../exceptions/unknown.exception';
 import { TaskListState } from '../dtos/task-list-state';
@@ -62,7 +61,6 @@ import { DimensionInfoDTO } from '../dtos/dimension-info';
 import { YearType } from '../enums/year-type';
 import { addEditLinks } from '../utils/add-edit-links';
 import { TranslationDTO } from '../dtos/translations';
-import { getLatestRevision } from '../utils/latest';
 import { getPublishingStatus, getDatasetStatus } from '../utils/dataset-status';
 import { getDatasetPreview } from '../utils/dataset-preview';
 import { FileFormat } from '../enums/file-format';
@@ -717,11 +715,7 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
             req.session.errors = undefined;
             req.session.save();
             res.status(500);
-            res.render('publish/dimension-data-chooser', {
-                ...dataPreview,
-                dimension,
-                errors
-            });
+            res.render('publish/dimension-chooser', { ...dataPreview, dimension, errors });
         } else {
             res.render('publish/dimension-chooser', { ...dataPreview, dimension });
         }

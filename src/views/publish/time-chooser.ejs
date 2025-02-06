@@ -57,7 +57,7 @@
                         <% }); %>
                         </tbody>
                     </table>
-                    <p class="govuk-body govuk-hint"><%= t('publish.time_dimension_review.showing', {rows: locals.page_size, total: locals.page_info.total_records}) %></p>
+                    <p class="govuk-body govuk-hint"><%= t('publish.time_dimension_review.showing', { rows: (locals.page_size < locals.page_info.total_records) ? locals.page_size : locals.page_info.total_records, total: locals.page_info.total_records }) %></p>
                 </div>
             </div>
 
