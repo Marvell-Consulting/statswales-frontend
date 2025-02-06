@@ -986,7 +986,7 @@
             "no_csv_data": "No CSV data available"
         },
         "not_found": "Page not found",
-        "server_error": "An unknown error occcured, please try again later",
+        "server_error": "An unknown error occurred, please try again later",
         "forbidden": "You do not have permission to access this page",
         "dimension_reset": "Something went wrong trying to reset the dimension"
 	},
