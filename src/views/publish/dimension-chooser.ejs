@@ -22,9 +22,7 @@
                         <ul class="govuk-list govuk-error-summary__list">
                             <% locals.errors.errors.forEach(function(error) { %>
                                 <li>
-                                    <a href="#<%= error.field %>">
-                                        <%= t(error.tag.name) %>
-                                    </a>
+                                    <a href="#<%= error.field %>"><%= t(error.tag.name) %></a>
                                 </li>
                             <% }); %>
                         </ul>
@@ -69,6 +67,7 @@
                         <% }); %>
                         </tbody>
                     </table>
+                    <p class="govuk-body govuk-hint"><%= t('publish.lookup_table_review.showing', { rows: (locals.page_size < locals.page_info.total_records) ? locals.page_size : locals.page_info.total_records, total: locals.page_info.total_records }) %></p>
                 </div>
             </div>
 
