@@ -11,7 +11,7 @@ Essential cookies do things like remember your login details and save your progr
 | Name                 | Purpose                                                                                                                               | Expires |
 |:---------------------|:--------------------------------------------------------------------------------------------------------------------------------------|:--------|
 | `jwt`                | Tells us who you are and allows you to perform actions on this site                                                                   | 1 day   |
-| `lang`               | Tells us the languauge you have choosen to use                                                                                | 1 year  |
+| `lang`               | Tells us the language you have chosen to use                                                                                | 1 year  |
 | `statswales.backend` | Session cookies that stores information you've entered so you do not have to re-enter it every time | 1 day   |
 
 ## FontAwesome
