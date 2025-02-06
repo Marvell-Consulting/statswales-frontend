@@ -295,6 +295,8 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
 
 export const taskList = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
+    const datasetStatus = getDatasetStatus(dataset);
+    const publishingStatus = getPublishingStatus(dataset);
     const revision = res.locals.revision;
 
     try {
@@ -316,7 +318,14 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
         const datasetTitle = dataset.datasetInfo?.title;
         const dimensions = dataset.dimensions;
         const taskList: TaskListState = await req.pubapi.getTaskList(dataset.id);
-        res.render('publish/tasklist', { datasetTitle, taskList, dimensions, statusToColour });
+        res.render('publish/tasklist', {
+            datasetTitle,
+            taskList,
+            dimensions,
+            statusToColour,
+            datasetStatus,
+            publishingStatus
+        });
     } catch (err) {
         logger.error(err, `Failed to fetch the tasklist`);
         next(new NotFoundException());

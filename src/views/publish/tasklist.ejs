@@ -9,6 +9,14 @@
       </div>
     </div>
 
+    <div class="govuk-!-margin-bottom-8">
+      <strong class="govuk-tag govuk-tag--<%= statusToColour(datasetStatus) %>"><%= t(`badge.dataset_status.${datasetStatus}`) %></strong>
+
+      <% if (locals.publishingStatus) { %>
+        <strong class="govuk-tag govuk-tag--<%= statusToColour(publishingStatus) %>"><%= t(`badge.publishing_status.${publishingStatus}`) %></strong>
+      <% } %>
+    </div>
+
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         <h2 class="govuk-heading-m"><%= t('publish.tasklist.data.subheading') %></h2>
