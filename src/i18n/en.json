@@ -12,6 +12,19 @@
         "upload_csv": "Continue",
         "preview": "Preview (opens in new tab)"
     },
+    "badge": {
+        "dataset_status": {
+            "new": "New dataset",
+            "live": "Live dataset"
+        },
+        "publishing_status": {
+            "published": "Published",
+            "incomplete": "Incomplete",
+            "scheduled": "Scheduled",
+            "update_incomplete": "Update Incomplete",
+            "update_scheduled": "Update Scheduled"
+        }
+    },
     "pagination": {
         "previous": "Previous",
         "next": "Next",
@@ -830,19 +843,6 @@
                     "withdraw_update_revision": "Change update before publication",
                     "continue_update": "Continue update",
                     "continue": "Continue dataset"
-                }
-            },
-            "badge": {
-                "dataset_status": {
-                    "new": "New dataset",
-                    "live": "Live dataset"
-                },
-                "publishing_status": {
-                    "published": "Published",
-                    "incomplete": "Incomplete",
-                    "scheduled": "Scheduled",
-                    "update_incomplete": "Update Incomplete",
-                    "update_scheduled": "Update Scheduled"
                 }
             },
             "error": {

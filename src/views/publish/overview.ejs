@@ -20,10 +20,10 @@
 				<h1 class="govuk-heading-xl govuk-!-margin-bottom-2"><%= title %></h1>
 
 				<div class="govuk-!-margin-bottom-8">
-					<strong class="govuk-tag govuk-tag--<%= statusToColour(datasetStatus) %>"><%= t(`publish.overview.badge.dataset_status.${datasetStatus}`) %></strong>
+					<strong class="govuk-tag govuk-tag--<%= statusToColour(datasetStatus) %>"><%= t(`badge.dataset_status.${datasetStatus}`) %></strong>
 
 					<% if (locals.publishingStatus) { %>
-						<strong class="govuk-tag govuk-tag--<%= statusToColour(publishingStatus) %>"><%= t(`publish.overview.badge.publishing_status.${publishingStatus}`) %></strong>
+						<strong class="govuk-tag govuk-tag--<%= statusToColour(publishingStatus) %>"><%= t(`badge.publishing_status.${publishingStatus}`) %></strong>
 					<% } %>
 				</div>
 
