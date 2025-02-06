@@ -32,16 +32,16 @@ For dimensions containing dates, you’ll need to answer a set of questions abou
 
 ### Errors
 
-When you select the reference data or indicate the date formatting used, the system will automatically check it against the contents of your data table. If there are any issues at this point, the system will try to explain the issue and what you need to do to fix it.
+The system checks whether the reference data, or date formatting, matches the contents of your data table. If there are any issues, the system will try to explain them and what you need to do to fix them.
 
-For example, if you have used a geographic reference code in your data table that isn’t in the standardised geography lookup tables.
+For example, if you have used a reference code in your data table that isn’t in the lookup table you uploaded.
 
 ### Making changes
 
 From your dataset overview, if you click on ‘Data table’, you can:
 
 - upload a different data table - this will remove reference data from all dimensions
-- change what each column in the data table contains - this will remove reference data for any columns that contain dimensions that you change
+- change what each column in the data table contains - this may remove reference data from dimensions
 
 If you click on a dimension, you can either:
 

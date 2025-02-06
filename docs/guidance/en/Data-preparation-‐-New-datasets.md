@@ -47,13 +47,16 @@ You should include rows in your data table for any totals or averages you want t
 - correct [references codes](#guidance-reference-data) or [date formats](#guidance-date-formatting)
 - a [standard note code](#guidance-notes) indicating whether the data value is a total (t) or an average (a)
 
-In our council tax example, the AreaCode dimension refers to local authorities. If you wanted to include a total for the whole of Wales, you would need to include a row containing the total, the reference code for Wales [596] and a ‘t’ note code. If the value for Wales was an average, this would be an ‘a’ note code.
+In our council tax example, the AreaCode dimension refers to local authorities. If you wanted to include a total or average for the whole of Wales, you would need to include a row containing:
+- the total or average
+- the reference code for Wales [596] 
+- either a ‘t’ or 'a' note code
 
-If your data contains hierarchies with multiple layers - for example economic regions, which are groupings of local authorities - you can provide multiple totals or averages. For example, a total for each economic region and a total for Wales.
+If your data contains multiple hierarchies, you can provide multiple totals or averages. For example, a total for each economic region and a total for Wales.
 
 ### Column ordering
 
-The order of columns in your data table file will affect the ordering of the data table that consumers will download, based on the sort orders defined by each dimension's reference data. In our council tax example above, the data table would first be sorted by local authority (AreaCode), then year (YearCode), then council tax band (BandCode), then measure.
+The order of columns in your data table file will affect the ordering of the data table consumers will download. This ordering will be based on the sort orders defined by each dimension's reference data. In our council tax example above, the data table would first be sorted by local authority (AreaCode), then year (YearCode), then council tax band (BandCode), then measure.
 
 ## Reference data
 
@@ -61,9 +64,9 @@ When you build your dataset in SW3, you’ll need to select reference data for e
 
 ### Standardised reference data
 
-SW3 does not use lookup tables for dimensions containing dates, instead taking a [standardised approach to formatting](#guidance-date-formatting).
+SW3 does not use lookup tables for dimensions containing dates. Instead there is a [standardised approach to formatting](#guidance-date-formatting).
 
-In addition, in the near future SW3 will have standardised, centrally-managed lookup tables for:
+The aim is to also have standardised, centrally-managed lookup tables for:
 
 - age
 - ethnicity
@@ -77,13 +80,11 @@ Implementing this standardised reference data for these data types will:
 - standardise English and Welsh descriptions
 - improve usability for data consumers
 
-This guidance will be updated once this standardised reference data has been implemented.
+This guidance will be updated once this standardised reference data has been properly implemented.
 
 ### Date formatting
 
-SW3 can only accept certain date formats in your data table. When you [build your dataset](Using-SW3---Creating-a-new-dataset) in SW3, for dimensions containing dates [you’ll be asked about the date formats you’ve used](Using-SW3---Creating-a-new-dataset#guidance-date-formatting).
-
-The dates that will appear on the consumer website, that is the English and Welsh descriptions, are standardised and built into the system.
+When you [build your dataset](Using-SW3---Creating-a-new-dataset) in SW3, you’ll need to [indicate the date formats you’ve used](Using-SW3---Creating-a-new-dataset#guidance-date-formatting) in your data table. SW3 can only accept certain date formats.
 
 #### Periods of time
 
@@ -153,11 +154,11 @@ For example, specific dates when data values were collected.
 
 ### Lookup tables
 
-For dimensions not containing dates, you should prepare your own lookup tables, which you will upload to SW3.
+For dimensions not containing dates, you should prepare your own lookup tables. You will upload these to SW3.
 
 A lookup table tells the system what each of the reference codes used in a relevant dimension represents. It's important that the reference codes in the dimension in the data table **match exactly** with those in the lookup table.
 
-Your lookup table should be preferrably in [CSV format](#guidance-file-format) and in one of the following formats.
+Your lookup table should be preferably in [CSV format](#guidance-file-format) and in one of the following formats.
 
 #### 2-row format (preferred)
 
@@ -202,9 +203,18 @@ Example part of lookup table for tax band code:
 | C       |           | 4    | C              | C              |         |         |
 | D       |           | 5    | D              | D              |         |         |
 
-#### Headings and notes
+#### Column headings
 
 It is important **these specific column headings** are used.
+
+#### Descriptions
+
+Descriptions of all dimension values should be:
+- concise and clearly explain what the dimension value represents
+- in sentence case, except for proper nouns, for example 'Doses allocated to Wales'
+- unique and distinct from each other
+
+#### Notes
 
 Lookup table notes can be provided, but **are not currently shown in the consumer view** in SW3. If notes contain important information, you should ensure this information is also provided in the most appropriate [metadata section](#guidance-metadata).
 
@@ -221,7 +231,7 @@ Dimension names should be:
 
 A measure, or data type, indicates what the data value represents. You **must** include a column for this in your data table, even if there is only one type of measure in your dataset. Including measures helps consumers better understand the data in your dataset.
 
-For a dimension containing measures, you should prepare your own lookup table, which you will upload to SW3. It should be in the same format as other [lookup tables](#guidance-lookup-tables), with the following additional columns:
+For a dimension containing measures, you should prepare your own lookup table. You will upload this to SW3. It should be in the same format as other [lookup tables](#guidance-lookup-tables), with the following additional columns:
 
 | Heading | What the column contains                                                                                                                                                                                                                                                                                     |
 | :------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -260,7 +270,7 @@ SW3 uses shorthand note codes, with standardised explanations, closely following
 | x                                  | Missing data             | For example, where a data value is not collected in a region                                                                                                                                                                            |
 | z                                  | Not applicable           | For example, in tables of employment where people under 16 cannot legally be employed                                                                                                                                                   |
 
-If you need to provide any custom explanations to clarify any note codes used, these should be provided in the most appropriate [metadata section](#guidance-metadata).
+Any custom explanations you feel are needed to clarify any note codes, should be provided in the [metadata section](#guidance-metadata).
 
 If you need to add multiple note codes to a single data value, these should be comma separated, for example ‘p,f’.
 
@@ -272,31 +282,59 @@ All other notes about dimensions or the dataset should be provided in the most a
 
 Before you create a new dataset in SW3, you should prepare all the related metadata you need. You should provide this **all in the same language**. This should be whichever language you’ll use when using SW3, either English or Welsh. Translations of metadata into the other language are [processed with all other translations](Using-SW3---Creating-a-new-dataset#guidance-translations).
 
-You can use bullet points to help present content (if needed), but you should:
-- use an asterisk and a space at the start of each bullet - this will be styled properly by the system
-   - For example: '* text to appear as a bullet'
+### Bullet lists
+
+You can use bullet points to help present content, if needed.
+
+You should enter bullets with an asterisk and a space at the start. For example:
+
+'`* text to appear as a bullet`'
+
+The system will style these as lists with circular bullet points.
+
+You should:
 - keep to one sentence per bullet
 - not end bullets with punctuation or conjuctions like 'or'
 - try to use a different word at the beginning of each bullet
 
-If you use a lead-in line to your bullet list (like in the bullet list above), each bullet should form a complete sentence with the lead-in line.
+If you use a lead-in line to your bullet list, each bullet should form a complete sentence with the lead-in line. The bullet list above demonstrates this.
+
+### Links
+
+You should provide links to related reports in the dedicated [related reports section](#related-reports). You should only include a link in any of the text-based metadata sections if it's important for understanding the dataset better.
+
+If you need to include a link, ensure you use them appropriately.
+
+You should enter links with the link text in square brackets followed directly by the link URL in round brackets. For example:
+
+'`[Welsh Government](https://www.gov.wales)`'
+
+The system will style this as a clickable link, that is '[Welsh Government](https://www.gov.wales)'. The URL must start with either 'https://' or 'http://'.
+
+Link text should:
+- make it clear what the user will be getting from the link
+- avoid directions such as “click here” or “find out more”
+- be longer than 1 word, but not a full sentence
+- form part of a sentence, not be part of a list of links
+
+### Metadata sections
 
 The following is all the metadata you’ll need to provide.
 
-### Title
+#### Title
 
 - The title that will appear with the dataset on the StatsWales website
 - Should be short, descriptive and unique
 - The system will tell you if you enter a title that is already in use by a live, published dataset
 
-### Summary
+#### Summary
 
 - In short, simple sentences explain what this dataset is about and what it shows
 - Describe which dimensions have been used and, if needed, why they’ve been used
 - This should ideally not be more than 2-3 paragraphs long
 - Anything related to data collection or data quality should not be included, and be kept to their respective sections
 
-### Data collection or calculation
+#### Data collection or calculation
 
 In short, simple sentences explain either:
 
@@ -304,7 +342,7 @@ In short, simple sentences explain either:
 - the methodology used to calculate the data
 - both of the above
 
-### Statistical quality
+#### Statistical quality
 
 In short, simple sentences explain any issues or methodological changes related to the dataset including any:
 
@@ -313,24 +351,24 @@ In short, simple sentences explain any issues or methodological changes related 
 
 If available, you can include a **high-level summary** of the statistical quality report. You should add a link to the report in the ‘Related reports’ section, not as a link here.
 
-#### Rounding applied
+##### Rounding applied
 
-There is also a subsection within this section to indicate if any rounding has been applied, and if it has, explain it in short, simple sentences.
+There is also a subsection within the statistical quality section to indicate if any rounding has been applied. If it has, explain it in short, simple sentences.
 
-### Data sources
+#### Data sources
 
-This is split into data providers, such as ‘Office for National Statistics (ONS)’, and sources from those data providers, such as ‘2021 Census’. In some instances, you may only know the data provider and not a specific source from that provider, for example ‘Health Behaviours in School-aged Children (HBSC)’.
+This is split into data providers, such as ‘Office for National Statistics (ONS)’, and sources from those data providers, such as ‘2021 Census’. In some instances, you may only know the data provider and not a specific source from that provider. For example ‘Health Behaviours in School-aged Children (HBSC)’.
 
 You can add multiple sources if required.
 
-The [list of data providers and sources [link TBD]](#guidance-) is centrally managed. If you need to have a data provider or source added to the list, you need to:
+The [list of data providers and sources [link TBD]](#) is centrally managed. If you need to have a data provider or source added to the list, you need to:
 
 - email ... at ... [process TBD]
 - provide the name of the data provider and source in both English and Welsh
 
 You’ll be notified once the data provider and source have been added to the list. You’ll then be able to select them in SW3.
 
-### Related reports
+#### Related reports
 
 You should provide links to any related reports, which may include:
 
@@ -338,18 +376,18 @@ You should provide links to any related reports, which may include:
 - statistical quality reports
 - other related work
 
-You need to provide the URL of the report, and the link text that will appear on the webpage. The link text should be the title or a short description of the report, not the URL.
+You need to provide the URL of the report, and the link text that will appear on the webpage. The link text should be the title or a short description of the report, not the URL. The URL should start with either 'https://' or 'http://'.
 
 If there are different URLs for the report for different languages, you should provide both URLs. The link text should clearly state what language the linked report is in. For example you might add these two links:
 
 - GOV.WALES statistics and research releases (English)
 - GOV.WALES statistics and research releases (Welsh)
 
-### How often the dataset is updated
+#### How often the dataset is updated
 
 Indicate whether the dataset will be regularly updated or not - either because it’s one-off data or it’s stopped being updated. You have the option to provide the period between updates in days, weeks, months, quarters or years.
 
-### Designation
+#### Designation
 
 There are [different types of official statistics designations](https://uksa.statisticsauthority.gov.uk/about-the-authority/uk-statistical-system/types-of-official-statistics/). The definition of each of these are:
 
@@ -360,11 +398,11 @@ There are [different types of official statistics designations](https://uksa.sta
 | Official statistics in development (formerly experimental statistics) | Official statistics that are undergoing a development; they may be new or existing statistics, and will be tested with users, in line with the standards of trustworthiness, quality and value |
 | No designation                                                        | Any other statistics                                                                                                                                                                           |
 
-### Relevant topics
+#### Relevant topics
 
 There are 13 high-level topics, most of which have multiple secondary topics. A **single topic tag** consists of ‘high-level + secondary topic’. The only exceptions are the ‘Tourism’ and ‘Welsh language’ topic tags which are high level only.
 
-For example a healthcare related dataset may be tagged to a single topic tag ‘Environment, energy and agriculture: Farming’. Or it could also be tagged to a second topic tag of ‘Business, economy and labour market: Business’. You should select as many topics as are relevant to the dataset.
+For example a healthcare related dataset may be tagged to a single topic tag ‘Environment, energy and agriculture: Farming’. Or it could also be tagged to a second topic tag of ‘Business, economy and labour market: Business’. You should select as many topic tags as are relevant to the dataset.
 
 This selection will allow consumers to more easily locate and identify datasets of interest to them. It’s important to consider the different ways consumers may categorise what a dataset covers.
 

@@ -1,39 +1,22 @@
 # Cookies
 
-We sometimes place small data files on your computer. These are known as cookies. Most websites do this.
+Cookies are files saved on your phone, tablet or computer when you visit a website.
 
-They improve things by:
+We use cookies to remember your login details, your preferences and the information you've entered.
 
-- remembering settings, so you don’t have to keep re-entering them whenever you visit a new page
-- remembering information you’ve given so you don’t need to keep entering it
-- remembering who you are so you can perform action on this site
-- measuring how you use the website so we can make sure it meets your needs
+## Essential cookies
 
-Find out more about [how to manage cookies](https://ico.org.uk/for-the-public/online/cookies/). Or please read on to find out more about how and where we use cookies.
-
-## How we use cookies
-
-StatsWales use cookies in several places – we’ve listed each of them below with more details about why we use them and
-how long they will last.
-
-## Necessary cookies
-
-These essential cookies do things like remember your progress through a form. They always need to be on.
-
-Remembering if you’ve seen our introductory message
-
-On your first visit to a GOV.UK blog, you may be greeted by a pop-up message that welcomes you and provides information about the site. We’ll store a cookie so that your computer knows you’ve seen it and knows not to show it again (and again...).
+Essential cookies do things like remember your login details and save your progress through a form. These cookies always need to be on.
 
 | Name                 | Purpose                                                                                                                               | Expires |
 |:---------------------|:--------------------------------------------------------------------------------------------------------------------------------------|:--------|
 | `jwt`                | Tells us who you are and allows you to perform actions on this site                                                                   | 1 day   |
-| `lang`               | Tells us the current languauge you have choosen to use                                                                                | 1 year  |
-| `statswales.backend` | This is a session cookie.  It allows us to store on our servers information you've given us to save you have to reenter it every time | 1 day   |
+| `lang`               | Tells us the languauge you have choosen to use                                                                                | 1 year  |
+| `statswales.backend` | Session cookies that stores information you've entered so you do not have to re-enter it every time | 1 day   |
 
-## Font Awesome
+## FontAwesome
 
-We make use of the tool FontAwesome to display icons in various places around the site to make the site easier to use.
-This means we have some cookies that apply to the font answer domain.  These are:
+We use FontAwesome to display icons in various places around the site to make the site easier to use. FontAwesome uses the following cookies.
 
 | Name           | Purpose                                                                                                 | Expires   |
 |:---------------|:--------------------------------------------------------------------------------------------------------|:----------|
