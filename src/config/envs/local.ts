@@ -1,3 +1,5 @@
+import { Level } from 'pino';
+
 import { AuthProvider } from '../../enums/auth-providers';
 import { AppConfig } from '../app-config.interface';
 import { defineConfig } from '../define-config';
@@ -24,7 +26,7 @@ export function getLocalConfig(): AppConfig {
             redisUrl: process.env.REDIS_URL || 'redis://localhost:6380'
         },
         logger: {
-            level: 'debug'
+            level: (process.env.LOG_LEVEL as Level) || 'debug'
         },
         rateLimit: {
             windowMs: -1 // disable rate limiting in local

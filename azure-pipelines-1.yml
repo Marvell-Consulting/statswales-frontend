@@ -60,6 +60,7 @@ stages:
           imageToDeploy: '$(container_registry)/$(imageRepository):$(tag)'
           environmentVariables: >
             APP_ENV=$(app_env)
+            LOG_LEVEL=$(log_level)
             BACKEND_URL=$(backend_url)
             BACKEND_PORT=$(backend_port)
             FRONTEND_URL=$(frontend_url)
