@@ -99,9 +99,16 @@ export class PublisherApi {
         );
     }
 
-    public async getDataset(datasetId: string): Promise<DatasetDTO> {
-        logger.debug(`Fetching dataset: ${datasetId}`);
+    public async getFullDataset(datasetId: string): Promise<DatasetDTO> {
+        logger.debug(`Fetching full dataset: ${datasetId}`);
         return this.fetch({ url: `dataset/${datasetId}` }).then((response) => response.json() as unknown as DatasetDTO);
+    }
+
+    public async getLimitedDataset(datasetId: string): Promise<DatasetDTO> {
+        logger.debug(`Fetching limited dataset: ${datasetId}`);
+        return this.fetch({ url: `dataset/${datasetId}/limited` }).then(
+            (response) => response.json() as unknown as DatasetDTO
+        );
     }
 
     public uploadCSVToDataset(datasetId: string, file: Blob, filename: string): Promise<DatasetDTO> {

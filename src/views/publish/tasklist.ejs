@@ -23,7 +23,7 @@
         <ul class="govuk-task-list">
           <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
-              <% if (locals.revision.revision_index === 0 && !locals.revision.data_table) { %>
+              <% if (locals.revision?.revision_index === 0 && !locals.revision.data_table) { %>
                 <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/update-type`, i18n.language) %>" aria-describedby="prepare-application-1-status">
                   <%= t('publish.tasklist.data.datatable') %>
                 </a>
@@ -51,14 +51,13 @@
               </div>
             </li>
           <% } %>
-          <% taskList.dimensions.forEach(function(dimension) { %>
-            <% const dim = locals.dimensions.find((d) => d.dimensionInfo.name === dimension.name) %>
+          <% taskList.dimensions?.forEach(function(dimension) { %>
             <li class="govuk-task-list__item govuk-task-list__item--with-link">
                 <div class="govuk-task-list__name-and-hint">
                     <% if (dimension.type === 'time_period') { %>
-                      <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/time-period/${dim.id}`, i18n.language) %>"><%= dimension.name %></a>
+                      <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/time-period/${dimension.id}`, i18n.language) %>"><%= dimension.name %></a>
                     <% } else { %>
-                      <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/dimension-data-chooser/${dim.id}`, i18n.language) %>"><%= dimension.name %></a>
+                      <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/dimension-data-chooser/${dimension.id}`, i18n.language) %>"><%= dimension.name %></a>
                     <% } %>
                 </div>
                 <div class="govuk-task-list__status">

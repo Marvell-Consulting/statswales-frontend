@@ -169,7 +169,7 @@ describe('PublisherApi', () => {
 
       mockResponse = Promise.resolve(new Response(JSON.stringify(dataset)));
 
-      const datasetDTO = await statsWalesApi.getDataset(datasetId);
+      const datasetDTO = await statsWalesApi.getFullDataset(datasetId);
 
       expect(fetchSpy).toHaveBeenCalledWith(`${baseUrl}/dataset/${datasetId}`, {
         method: HttpMethod.Get,
