@@ -65,6 +65,7 @@ import { getDatasetPreview } from '../utils/dataset-preview';
 import { FileFormat } from '../enums/file-format';
 import { getDownloadHeaders } from '../utils/download-headers';
 import { FactTableColumnDto } from '../dtos/fact-table-column-dto';
+import { ProviderDTO } from '../dtos/provider';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -1484,13 +1485,20 @@ export const provideUpdateFrequency = async (req: Request, res: Response, next: 
 export const provideDataProviders = async (req: Request, res: Response, next: NextFunction) => {
     const deleteId = req.query.delete;
     const editId = req.query.edit;
+    let availableProviders: ProviderDTO[] = [];
+    let dataProviders: DatasetProviderDTO[] = [];
     let errors: ViewError[] | undefined;
 
-    // eslint-disable-next-line prefer-const
-    let [availableProviders, dataProviders] = await Promise.all([
-        req.pubapi.getAllProviders(),
-        req.pubapi.getDatasetProviders(res.locals.datasetId)
-    ]);
+    try {
+        // eslint-disable-next-line prefer-const
+        [availableProviders, dataProviders] = await Promise.all([
+            req.pubapi.getAllProviders(),
+            req.pubapi.getDatasetProviders(res.locals.datasetId)
+        ]);
+    } catch (err) {
+        next(err);
+        return;
+    }
 
     let dataset = { ...res.locals.dataset, providers: sortBy(dataProviders || [], 'created_at') };
     dataset = singleLangDataset(dataset, req.language);
