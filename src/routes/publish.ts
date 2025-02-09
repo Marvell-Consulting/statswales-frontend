@@ -116,8 +116,8 @@ publish.get('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchFullD
 publish.post('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchFullDataset, dimensionName);
 
 /* Metadata */
-publish.get('/:datasetId/change', fetchFullDataset, changeData);
-publish.post('/:datasetId/change', fetchFullDataset, upload.none(), changeData);
+publish.get('/:datasetId/change', fetchLimitedDataset, changeData);
+publish.post('/:datasetId/change', fetchLimitedDataset, upload.none(), changeData);
 
 publish.get('/:datasetId/summary', fetchLimitedDataset, provideSummary);
 publish.post('/:datasetId/summary', fetchLimitedDataset, upload.none(), provideSummary);
@@ -131,8 +131,8 @@ publish.post('/:datasetId/quality', fetchLimitedDataset, upload.none(), provideQ
 publish.get('/:datasetId/providers', fetchFullDataset, provideDataProviders);
 publish.post('/:datasetId/providers', fetchFullDataset, upload.none(), provideDataProviders);
 
-publish.get('/:datasetId/related', fetchFullDataset, provideRelatedLinks);
-publish.post('/:datasetId/related', fetchFullDataset, upload.none(), provideRelatedLinks);
+publish.get('/:datasetId/related', fetchLimitedDataset, provideRelatedLinks);
+publish.post('/:datasetId/related', fetchLimitedDataset, upload.none(), provideRelatedLinks);
 
 publish.get('/:datasetId/update-frequency', fetchLimitedDataset, provideUpdateFrequency);
 publish.post('/:datasetId/update-frequency', fetchLimitedDataset, upload.none(), provideUpdateFrequency);
@@ -151,15 +151,15 @@ publish.get('/:datasetId/organisation', fetchFullDataset, provideOrganisation);
 publish.post('/:datasetId/organisation', fetchFullDataset, upload.none(), provideOrganisation);
 
 /* Translations */
-publish.get('/:datasetId/translation/export', fetchFullDataset, exportTranslations);
-publish.get('/:datasetId/translation/import', fetchFullDataset, importTranslations);
-publish.post('/:datasetId/translation/import', fetchFullDataset, upload.single('csv'), importTranslations);
+publish.get('/:datasetId/translation/export', fetchLimitedDataset, exportTranslations);
+publish.get('/:datasetId/translation/import', fetchLimitedDataset, importTranslations);
+publish.post('/:datasetId/translation/import', fetchLimitedDataset, upload.single('csv'), importTranslations);
 
 /* Dataset Overview */
-publish.get('/:datasetId/overview', fetchFullDataset, overview);
-publish.post('/:datasetId/overview', fetchFullDataset, upload.none(), overview);
+publish.get('/:datasetId/overview', fetchLimitedDataset, overview);
+publish.post('/:datasetId/overview', fetchLimitedDataset, upload.none(), overview);
 
 /* Update Dataset */
-publish.get('/:datasetId/update', fetchFullDataset, createNewUpdate);
-publish.get('/:datasetId/update-type', fetchFullDataset, updateDatatable);
-publish.post('/:datasetId/update-type', fetchFullDataset, updateDatatable);
+publish.get('/:datasetId/update', fetchLimitedDataset, createNewUpdate);
+publish.get('/:datasetId/update-type', fetchLimitedDataset, updateDatatable);
+publish.post('/:datasetId/update-type', fetchLimitedDataset, updateDatatable);
