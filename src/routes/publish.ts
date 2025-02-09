@@ -140,8 +140,8 @@ publish.post('/:datasetId/update-frequency', fetchLimitedDataset, upload.none(),
 publish.get('/:datasetId/designation', fetchLimitedDataset, provideDesignation);
 publish.post('/:datasetId/designation', fetchLimitedDataset, upload.none(), provideDesignation);
 
-publish.get('/:datasetId/topics', fetchFullDataset, provideTopics);
-publish.post('/:datasetId/topics', fetchFullDataset, upload.none(), provideTopics);
+publish.get('/:datasetId/topics', fetchLimitedDataset, provideTopics);
+publish.post('/:datasetId/topics', fetchLimitedDataset, upload.none(), provideTopics);
 
 /* Publishing */
 publish.get('/:datasetId/schedule', fetchLimitedDataset, providePublishDate);

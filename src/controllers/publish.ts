@@ -47,11 +47,10 @@ import { DurationUnit } from '../enums/duration-unit';
 import { RelatedLinkDTO } from '../dtos/related-link';
 import { DatasetProviderDTO } from '../dtos/dataset-provider';
 import { ProviderSourceDTO } from '../dtos/provider-source';
-import { ProviderDTO } from '../dtos/provider';
 import { generateSequenceForNumber } from '../utils/pagination';
 import { fileMimeTypeHandler } from '../utils/file-mimetype-handler';
 import { TopicDTO } from '../dtos/topic';
-import { nestTopics } from '../utils/nested-topics';
+import { NestedTopic, nestTopics } from '../utils/nested-topics';
 import { OrganisationDTO } from '../dtos/organisation';
 import { TeamDTO } from '../dtos/team';
 import { DimensionType } from '../enums/dimension-type';
@@ -1720,14 +1719,20 @@ export const provideDesignation = async (req: Request, res: Response, next: Next
 };
 
 export const provideTopics = async (req: Request, res: Response, next: NextFunction) => {
-    let errors: ViewError[] | undefined;
     const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const availableTopics: TopicDTO[] = await req.pubapi.getAllTopics();
-    const nestedTopics = nestTopics(availableTopics);
-    const selectedTopics: number[] = dataset.topics?.map((topic: TopicDTO) => topic.id) || [];
+    let nestedTopics: NestedTopic[] = [];
+    let selectedTopics: number[] = [];
+    let errors: ViewError[] | undefined;
 
-    if (req.method === 'POST') {
-        try {
+    try {
+        const [availableTopics, topics] = await Promise.all([
+            req.pubapi.getAllTopics(),
+            req.pubapi.getDatasetTopics(dataset.id)
+        ]);
+        nestedTopics = nestTopics(availableTopics);
+        selectedTopics = topics?.map((topic: TopicDTO) => topic.id) || [];
+
+        if (req.method === 'POST') {
             errors = (await getErrors(topicIdValidator(), req)).map((error: FieldValidationError) => {
                 return { field: error.path, message: { key: `publish.topics.form.topics.error.missing` } };
             });
@@ -1741,10 +1746,10 @@ export const provideTopics = async (req: Request, res: Response, next: NextFunct
             await req.pubapi.updateDatasetTopics(dataset.id, topicIds);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
-        } catch (err) {
-            if (err instanceof ApiException) {
-                errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
-            }
+        }
+    } catch (err) {
+        if (err instanceof ApiException) {
+            errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
         }
     }
 

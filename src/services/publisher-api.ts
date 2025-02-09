@@ -435,8 +435,15 @@ export class PublisherApi {
         );
     }
 
+    public async getDatasetTopics(datasetId: string): Promise<TopicDTO[]> {
+        logger.debug('Fetching dataset topics...');
+        return this.fetch({ url: `dataset/${datasetId}/topics`, method: HttpMethod.Get }).then(
+            (response) => response.json() as unknown as TopicDTO[]
+        );
+    }
+
     public async getAllTopics(): Promise<TopicDTO[]> {
-        logger.debug('Fetching topics...');
+        logger.debug('Fetching all topics...');
         return this.fetch({ url: 'topic' }).then((response) => response.json() as unknown as TopicDTO[]);
     }
 
