@@ -1483,12 +1483,20 @@ export const provideUpdateFrequency = async (req: Request, res: Response, next: 
 };
 
 export const provideDataProviders = async (req: Request, res: Response, next: NextFunction) => {
-    let errors: ViewError[] | undefined;
-    const availableProviders: ProviderDTO[] = await req.pubapi.getAllProviders();
-    const dataset = singleLangDataset(res.locals.dataset, req.language);
     const deleteId = req.query.delete;
     const editId = req.query.edit;
-    let dataProviders: DatasetProviderDTO[] = sortBy(dataset?.providers || [], 'created_at');
+    let errors: ViewError[] | undefined;
+
+    // eslint-disable-next-line prefer-const
+    let [availableProviders, dataProviders] = await Promise.all([
+        req.pubapi.getAllProviders(),
+        req.pubapi.getDatasetProviders(res.locals.datasetId)
+    ]);
+
+    let dataset = { ...res.locals.dataset, providers: sortBy(dataProviders || [], 'created_at') };
+    dataset = singleLangDataset(dataset, req.language);
+    dataProviders = dataset.providers;
+
     let availableSources: ProviderSourceDTO[] = [];
     let dataProvider: DatasetProviderDTO | undefined;
 

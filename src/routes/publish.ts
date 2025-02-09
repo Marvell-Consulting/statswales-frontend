@@ -128,8 +128,8 @@ publish.post('/:datasetId/collection', fetchLimitedDataset, upload.none(), provi
 publish.get('/:datasetId/quality', fetchLimitedDataset, provideQuality);
 publish.post('/:datasetId/quality', fetchLimitedDataset, upload.none(), provideQuality);
 
-publish.get('/:datasetId/providers', fetchFullDataset, provideDataProviders);
-publish.post('/:datasetId/providers', fetchFullDataset, upload.none(), provideDataProviders);
+publish.get('/:datasetId/providers', fetchLimitedDataset, provideDataProviders);
+publish.post('/:datasetId/providers', fetchLimitedDataset, upload.none(), provideDataProviders);
 
 publish.get('/:datasetId/related', fetchLimitedDataset, provideRelatedLinks);
 publish.post('/:datasetId/related', fetchLimitedDataset, upload.none(), provideRelatedLinks);
