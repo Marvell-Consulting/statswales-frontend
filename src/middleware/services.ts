@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { format, parseISO } from 'date-fns';
+import { DateArg, format, parseISO } from 'date-fns';
+import { enGB, cy } from 'date-fns/locale';
 
 import { appConfig } from '../config';
 import { Locale } from '../enums/locale';
@@ -9,6 +10,14 @@ import { ConsumerApi } from '../services/consumer-api';
 import { localeUrl } from './language-switcher';
 
 const config = appConfig();
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+const dateFormat = (date: DateArg<Date> & {}, formatStr: string, options?: any): string => {
+    if (options?.locale) {
+        options.locale = options.locale.includes('cy') ? cy : enGB;
+    }
+    return format(date, formatStr, options);
+};
 
 // initialise any request-scoped services required by the app and store them on the request object for later use
 // see @types/express/index.d.ts for details
@@ -21,7 +30,7 @@ export const initServices = (req: Request, res: Response, next: NextFunction): v
         res.locals.url = req.originalUrl; // Allows the passing through of the URL
         res.locals.referrer = req.get('Referrer');
         res.locals.parseISO = parseISO;
-        res.locals.dateFormat = format;
+        res.locals.dateFormat = dateFormat;
         res.locals.supportEmail = config.supportEmail;
     }
     next();
