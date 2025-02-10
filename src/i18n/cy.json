@@ -12,6 +12,19 @@
     "upload_csv": "Parhau",
     "preview": "Rhagolwg (bydd yn agor mewn tab newydd)"
   },
+  "badge": {
+    "dataset_status": {
+        "new": "Set ddata newydd",
+        "live": "Set ddata fyw"
+    },
+    "publishing_status": {
+        "published": "Cyhoeddwyd",
+        "incomplete": "Anghyflawn",
+        "scheduled": "Wedi'i hamserlennu",
+        "update_incomplete": "Diweddariad yn Anghyflawn",
+        "update_scheduled": "Diweddariad wedi'i Amserlennu"
+    }
+  },
   "pagination": {
     "previous": "Blaenorol",
     "next": "Nesaf",
@@ -829,19 +842,6 @@
           "withdraw_update_revision": "Newid y diweddariad cyn ei gyhoeddi",
           "continue_update": "Parhau gyda'r diweddariad",
           "continue": "Parhau gyda'r set ddata"
-        }
-      },
-      "badge": {
-        "dataset_status": {
-          "new": "Set ddata newydd",
-          "live": "Set ddata fyw"
-        },
-        "publishing_status": {
-          "published": "Cyhoeddwyd",
-          "incomplete": "Anghyflawn",
-          "scheduled": "Wedi'i hamserlennu",
-          "update_incomplete": "Diweddariad yn Anghyflawn",
-          "update_scheduled": "Diweddariad wedi'i Amserlennu"
         }
       },
       "error": {
