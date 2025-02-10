@@ -1,11 +1,10 @@
 import { TaskStatus } from '../enums/task-status';
-
-import { DimensionState } from './dimension-state';
+import { DimensionStatus } from '../interfaces/dimension-status';
 
 export interface TaskListState {
     datatable: TaskStatus;
-    measure?: DimensionState;
-    dimensions: DimensionState[];
+    measure?: DimensionStatus;
+    dimensions?: DimensionStatus[];
 
     metadata: {
         title: TaskStatus;

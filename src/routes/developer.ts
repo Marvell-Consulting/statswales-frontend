@@ -3,7 +3,7 @@ import { Readable } from 'node:stream';
 import { Router, Request, Response, NextFunction } from 'express';
 
 import { ViewDTO } from '../dtos/view-dto';
-import { fetchDataset } from '../middleware/fetch-dataset';
+import { fetchFullDataset } from '../middleware/fetch-dataset';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { logger } from '../utils/logger';
 import { DatasetListItemDTO } from '../dtos/dataset-list-item';
@@ -24,7 +24,7 @@ developer.get('/', async (req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-developer.get('/:datasetId', fetchDataset, async (req: Request, res: Response, next: NextFunction) => {
+developer.get('/:datasetId', fetchFullDataset, async (req: Request, res: Response, next: NextFunction) => {
     const datasetId = res.locals.datasetId;
     const page: number = Number.parseInt(req.query.page_number as string, 10) || 1;
     const pageSize: number = Number.parseInt(req.query.page_size as string, 10) || 100;
@@ -49,7 +49,7 @@ developer.get('/:datasetId', fetchDataset, async (req: Request, res: Response, n
 
 developer.get(
     '/:datasetId/import/:factTableId',
-    fetchDataset,
+    fetchFullDataset,
     async (req: Request, res: Response, next: NextFunction) => {
         const dataset = res.locals.dataset;
         const importIdError = await hasError(factTableIdValidator(), req);
