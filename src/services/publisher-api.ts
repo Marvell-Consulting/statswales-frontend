@@ -324,18 +324,6 @@ export class PublisherApi {
         );
     }
 
-    public async addDatasetProvider(datasetId: string, provider: DatasetProviderDTO): Promise<DatasetDTO> {
-        return this.fetch({ url: `dataset/${datasetId}/providers`, method: HttpMethod.Post, json: provider }).then(
-            (response) => response.json() as unknown as DatasetDTO
-        );
-    }
-
-    public async updateDatasetProviders(datasetId: string, providers: DatasetProviderDTO[]): Promise<DatasetDTO> {
-        return this.fetch({ url: `dataset/${datasetId}/providers`, method: HttpMethod.Patch, json: providers }).then(
-            (response) => response.json() as unknown as DatasetDTO
-        );
-    }
-
     public async getTaskList(datasetId: string): Promise<TaskListState> {
         logger.debug(`Fetching tasklist for dataset: ${datasetId}`);
         return this.fetch({ url: `dataset/${datasetId}/tasklist` }).then(
@@ -416,8 +404,27 @@ export class PublisherApi {
             });
     }
 
+    public async addDatasetProvider(datasetId: string, provider: DatasetProviderDTO): Promise<DatasetDTO> {
+        return this.fetch({ url: `dataset/${datasetId}/providers`, method: HttpMethod.Post, json: provider }).then(
+            (response) => response.json() as unknown as DatasetDTO
+        );
+    }
+
+    public async updateDatasetProviders(datasetId: string, providers: DatasetProviderDTO[]): Promise<DatasetDTO> {
+        return this.fetch({ url: `dataset/${datasetId}/providers`, method: HttpMethod.Patch, json: providers }).then(
+            (response) => response.json() as unknown as DatasetDTO
+        );
+    }
+
+    public async getDatasetProviders(datasetId: string): Promise<DatasetProviderDTO[]> {
+        logger.debug('Fetching dataset providers...');
+        return this.fetch({ url: `dataset/${datasetId}/providers`, method: HttpMethod.Get }).then(
+            (response) => response.json() as unknown as DatasetProviderDTO[]
+        );
+    }
+
     public async getAllProviders(): Promise<ProviderDTO[]> {
-        logger.debug('Fetching data providers...');
+        logger.debug('Fetching all data providers...');
         return this.fetch({ url: 'provider' }).then((response) => response.json() as unknown as ProviderDTO[]);
     }
 
@@ -428,8 +435,15 @@ export class PublisherApi {
         );
     }
 
+    public async getDatasetTopics(datasetId: string): Promise<TopicDTO[]> {
+        logger.debug('Fetching dataset topics...');
+        return this.fetch({ url: `dataset/${datasetId}/topics`, method: HttpMethod.Get }).then(
+            (response) => response.json() as unknown as TopicDTO[]
+        );
+    }
+
     public async getAllTopics(): Promise<TopicDTO[]> {
-        logger.debug('Fetching topics...');
+        logger.debug('Fetching all topics...');
         return this.fetch({ url: 'topic' }).then((response) => response.json() as unknown as TopicDTO[]);
     }
 
