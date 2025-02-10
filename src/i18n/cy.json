@@ -95,13 +95,13 @@
       "last_update": "Diweddariad mwyaf diweddar",
       "next_update": "Disgwylir y diweddariad nesaf (dros dro)",
       "data_provider": "Darparwr data",
-      "data_providers": "Darparwr data {{mynegai}}",
+      "data_providers": "Darparwr data {{index}}",
       "data_source": "Ffynhonnell data",
-      "data_sources": "Ffynhonnell data {{mynegai}}",
+      "data_sources": "Ffynhonnell data {{index}}",
       "no_source": "Dim ffynhonnell benodol gan y darparwr data",
       "data_categories": "Categorïau data",
       "time_covered": "Cyfnod dan sylw",
-      "time_period": "{{cychwyn}} tan {{diwedd}}",
+      "time_period": "{{start}} tan {{end}}",
       "update_missing": "Dyddiad cyhoeddi heb ei nodi eto",
       "next_update_missing": "Dyddiad cyhoeddi neu amlder diweddaru heb ei nodi eto",
       "not_updated": "Ni chaiff y set ddata hon ei diweddaru"
@@ -206,7 +206,7 @@
     "time_dimension_chooser": {
       "heading": "Creu dimensiwn sy'n cynnwys dyddiadau",
       "subheading": "Dyddiadau",
-      "showing": "Sampl o {{rhes}} o {{cyfanswm}} rhes.",
+      "showing": "Sampl o {{rows}} o {{total}} rhes.",
       "question": "Pa fath o ddyddiadau y mae'r dimensiwn yn eu cynnwys?",
       "chooser": {
         "period": "Cyfnodau amser",
@@ -217,7 +217,7 @@
     },
     "lookup_table_review": {
       "heading": "Gwirio'r tabl am-edrych",
-      "showing": "Dangos sampl o {{rhes}} o {{cyfanswm}} rhes.",
+      "showing": "Dangos sampl o {{rows}} o {{total}} rhes.",
       "confirm": "Trwy barhau, rydych chi'n cadarnhau bod y tabl am-edrych yn gywir.",
       "go_back": "Dewis gwahanol dabl am-edrych",
       "column_headers": {
@@ -233,7 +233,7 @@
     },
     "measure_review": {
       "heading": "Gwirio'r tabl mesur",
-      "showing": "Dangos sampl o {{rhes}} o {{cyfanswm}} rhes.",
+      "showing": "Dangos sampl o {{rows}} o {{total}} rhes.",
       "confirm": "Trwy barhau, rydych chi'n cadarnhau bod y tabl mesur yn gywir.",
       "go_back": "Dewis tabl mesur gwahanol",
       "column_headers": {
@@ -256,7 +256,7 @@
     },
     "time_dimension_review": {
       "heading": "Cadarnhewch bod y dyddiadau'n gywir",
-      "showing": "Dangos sampl o {{rhes}} o {{cyfanswm}} rhes.",
+      "showing": "Dangos sampl o {{rows}} o {{total}} rhes.",
       "confirm": "Trwy barhau, rydych chi'n cadarnhau bod y dyddiadau'n gywir.",
       "go_back": "Newid fformat y dyddiad",
       "column_headers": {
@@ -314,30 +314,30 @@
     },
     "year_format": {
       "heading": "Pa fformat a ddefnyddir ar gyfer blynyddoedd yn y dimensiwn?",
-      "example": "Er enghraifft, {{enghraifft}}"
+      "example": "Er enghraifft, {{example}}"
     },
     "quarter_format": {
       "heading": "Pa fformat a ddefnyddir ar gyfer chwarteri yn y dimensiwn?",
       "heading-alt": "Pa fformat a ddefnyddir ar gyfer cyfansymiau chwarterol?",
-      "example": "Er enghraifft, {{enghraifft}}",
+      "example": "Er enghraifft, {{example}}",
       "fifth_quarter": "A ddefnyddir chwarter i gynrychioli cyfansymiau blynyddol?",
       "no_quarterly_totals": "Nid oes cyfansymiau chwarterol"
     },
     "month_format": {
       "heading": "Pa fformat a ddefnyddir ar gyfer misoedd yn y dimensiwn?",
-      "example": "Er enghraifft, {{enghraifft}}"
+      "example": "Er enghraifft, {{example}}"
     },
     "measure_match_failure": {
       "heading": "Ni ellir cyfateb data y tabl am-edrych mesur gyda'r tabl data",
-      "information": "Nid oes {{failureCount, nifer}} cyfeiriad yn y dimensiwn yn cyd-fynd â'r cyfeiriadau yn eich tabl am-edrych mesur.  Dylech wirio:",
+      "information": "Nid oes {{failureCount, number}} cyfeiriad yn y dimensiwn yn cyd-fynd â'r cyfeiriadau yn eich tabl am-edrych mesur.  Dylech wirio:",
       "formatting": "bod y codau cyfeirio a ddefnyddir yn y tabl data yn gywir",
       "choices": "eich bod wedi dewis y tabl am-edrych cywir ar gyfer eich mesur"
     },
     "dimension_match_failure": {
       "lookup_heading": "Ni ellir cyfateb data y tabl am-edrych gyda'r tabl data",
       "heading": "Ni ellir cyfateb y data cyfeirio gyda'r tabl data",
-      "lookup_information": "Nid oes {{failureCount, nifer}} cyfeiriad yn y dimensiwn yn cyd-fynd â'r cyfeiriadau yn eich tabl am-edrych.  Dylech wirio:",
-      "ref_information": "Nid oes {{failureCount, nifer}} cyfeiriad yn y dimensiwn yn cyd-fynd â chategori y data cyfeirio a ddewisoch.  Dylech wirio:",
+      "lookup_information": "Nid oes {{failureCount, number}} cyfeiriad yn y dimensiwn yn cyd-fynd â'r cyfeiriadau yn eich tabl am-edrych.  Dylech wirio:",
+      "ref_information": "Nid oes {{failureCount, number}} cyfeiriad yn y dimensiwn yn cyd-fynd â chategori y data cyfeirio a ddewisoch.  Dylech wirio:",
       "formatting": "bod y codau cyfeirio a ddefnyddiwyd yn y tabl data yn gywir",
       "choices": "eich bod wedi dewis y tabl am-edrych cywir",
       "subheading": "Ni ellir cyfateb y codau cyfeirio",
@@ -350,14 +350,14 @@
     },
     "period_match_failure": {
       "heading": "Ni ellir cyfateb fformat y dyddiad gyda'r dimensiwn",
-      "information": "Nid oes {{failureCount, nifer}} cod dyddiad yn y dimensiwn yn cyd-fynd â'r fformat dyddiadau a nodoch.  Dylech wirio:",
+      "information": "Nid oes {{failureCount, number}} cod dyddiad yn y dimensiwn yn cyd-fynd â'r fformat dyddiadau a nodoch.  Dylech wirio:",
       "formatting": "bod yr holl godau dyddiad yn y dimensiwn yn gywir",
       "choices": "eich bod wedi nodi'r fformat dyddiad cywir",
       "supplied_format": "Fformat dyddiad a nodwyd:",
-      "year_format": "Blwyddyn: {{fformat}}",
-      "quarter_format": "Chwarter: {{fformat}}",
-      "month_format": "Mis: {{fformat}}",
-      "date_format": "Dyddiad: {{fformat}}",
+      "year_format": "Blwyddyn: {{format}}",
+      "quarter_format": "Chwarter: {{format}}",
+      "month_format": "Mis: {{format}}",
+      "date_format": "Dyddiad: {{format}}",
       "subheading": "Codau dyddiad unigryw na ellir eu cyfateb",
       "actions": "Gweithredoedd",
       "upload_different_file": "Lanlwytho tabl data wedi'i gywiro neu dabl data gwahanol",
