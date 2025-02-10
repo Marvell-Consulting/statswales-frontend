@@ -56,8 +56,8 @@ publish.post('/title', upload.none(), provideTitle);
 
 publish.get('/:datasetId', redirectToTasklist);
 
-publish.get('/:datasetId/title', fetchFullDataset, provideTitle);
-publish.post('/:datasetId/title', fetchFullDataset, upload.none(), provideTitle);
+publish.get('/:datasetId/title', fetchLimitedDataset, provideTitle);
+publish.post('/:datasetId/title', fetchLimitedDataset, upload.none(), provideTitle);
 
 publish.get('/:datasetId/upload', fetchFullDataset, uploadFile);
 publish.post('/:datasetId/upload', fetchFullDataset, upload.single('csv'), uploadFile);
@@ -116,50 +116,50 @@ publish.get('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchFullD
 publish.post('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchFullDataset, dimensionName);
 
 /* Metadata */
-publish.get('/:datasetId/change', fetchFullDataset, changeData);
-publish.post('/:datasetId/change', fetchFullDataset, upload.none(), changeData);
+publish.get('/:datasetId/change', fetchLimitedDataset, changeData);
+publish.post('/:datasetId/change', fetchLimitedDataset, upload.none(), changeData);
 
-publish.get('/:datasetId/summary', fetchFullDataset, provideSummary);
-publish.post('/:datasetId/summary', fetchFullDataset, upload.none(), provideSummary);
+publish.get('/:datasetId/summary', fetchLimitedDataset, provideSummary);
+publish.post('/:datasetId/summary', fetchLimitedDataset, upload.none(), provideSummary);
 
-publish.get('/:datasetId/collection', fetchFullDataset, provideCollection);
-publish.post('/:datasetId/collection', fetchFullDataset, upload.none(), provideCollection);
+publish.get('/:datasetId/collection', fetchLimitedDataset, provideCollection);
+publish.post('/:datasetId/collection', fetchLimitedDataset, upload.none(), provideCollection);
 
-publish.get('/:datasetId/quality', fetchFullDataset, provideQuality);
-publish.post('/:datasetId/quality', fetchFullDataset, upload.none(), provideQuality);
+publish.get('/:datasetId/quality', fetchLimitedDataset, provideQuality);
+publish.post('/:datasetId/quality', fetchLimitedDataset, upload.none(), provideQuality);
 
 publish.get('/:datasetId/providers', fetchFullDataset, provideDataProviders);
 publish.post('/:datasetId/providers', fetchFullDataset, upload.none(), provideDataProviders);
 
-publish.get('/:datasetId/related', fetchFullDataset, provideRelatedLinks);
-publish.post('/:datasetId/related', fetchFullDataset, upload.none(), provideRelatedLinks);
+publish.get('/:datasetId/related', fetchLimitedDataset, provideRelatedLinks);
+publish.post('/:datasetId/related', fetchLimitedDataset, upload.none(), provideRelatedLinks);
 
-publish.get('/:datasetId/update-frequency', fetchFullDataset, provideUpdateFrequency);
-publish.post('/:datasetId/update-frequency', fetchFullDataset, upload.none(), provideUpdateFrequency);
+publish.get('/:datasetId/update-frequency', fetchLimitedDataset, provideUpdateFrequency);
+publish.post('/:datasetId/update-frequency', fetchLimitedDataset, upload.none(), provideUpdateFrequency);
 
-publish.get('/:datasetId/designation', fetchFullDataset, provideDesignation);
-publish.post('/:datasetId/designation', fetchFullDataset, upload.none(), provideDesignation);
+publish.get('/:datasetId/designation', fetchLimitedDataset, provideDesignation);
+publish.post('/:datasetId/designation', fetchLimitedDataset, upload.none(), provideDesignation);
 
 publish.get('/:datasetId/topics', fetchFullDataset, provideTopics);
 publish.post('/:datasetId/topics', fetchFullDataset, upload.none(), provideTopics);
 
 /* Publishing */
-publish.get('/:datasetId/schedule', fetchFullDataset, providePublishDate);
-publish.post('/:datasetId/schedule', fetchFullDataset, upload.none(), providePublishDate);
+publish.get('/:datasetId/schedule', fetchLimitedDataset, providePublishDate);
+publish.post('/:datasetId/schedule', fetchLimitedDataset, upload.none(), providePublishDate);
 
-publish.get('/:datasetId/organisation', fetchFullDataset, provideOrganisation);
-publish.post('/:datasetId/organisation', fetchFullDataset, upload.none(), provideOrganisation);
+publish.get('/:datasetId/organisation', fetchLimitedDataset, provideOrganisation);
+publish.post('/:datasetId/organisation', fetchLimitedDataset, upload.none(), provideOrganisation);
 
 /* Translations */
-publish.get('/:datasetId/translation/export', fetchFullDataset, exportTranslations);
-publish.get('/:datasetId/translation/import', fetchFullDataset, importTranslations);
-publish.post('/:datasetId/translation/import', fetchFullDataset, upload.single('csv'), importTranslations);
+publish.get('/:datasetId/translation/export', fetchLimitedDataset, exportTranslations);
+publish.get('/:datasetId/translation/import', fetchLimitedDataset, importTranslations);
+publish.post('/:datasetId/translation/import', fetchLimitedDataset, upload.single('csv'), importTranslations);
 
 /* Dataset Overview */
-publish.get('/:datasetId/overview', fetchFullDataset, overview);
-publish.post('/:datasetId/overview', fetchFullDataset, upload.none(), overview);
+publish.get('/:datasetId/overview', fetchLimitedDataset, overview);
+publish.post('/:datasetId/overview', fetchLimitedDataset, upload.none(), overview);
 
 /* Update Dataset */
-publish.get('/:datasetId/update', fetchFullDataset, createNewUpdate);
-publish.get('/:datasetId/update-type', fetchFullDataset, updateDatatable);
-publish.post('/:datasetId/update-type', fetchFullDataset, updateDatatable);
+publish.get('/:datasetId/update', fetchLimitedDataset, createNewUpdate);
+publish.get('/:datasetId/update-type', fetchLimitedDataset, updateDatatable);
+publish.post('/:datasetId/update-type', fetchLimitedDataset, updateDatatable);

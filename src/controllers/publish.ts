@@ -1823,8 +1823,9 @@ export const provideOrganisation = async (req: Request, res: Response, next: Nex
         organisations = await req.pubapi.getAllOrganisations();
         teams = await req.pubapi.getAllTeams();
 
-        if (dataset.team?.length > 0) {
-            values = { organisation: dataset.team[0].organisation_id, team: dataset.team[0].id };
+        if (dataset.team_id) {
+            const datasetTeam = teams.find((team) => team.id === dataset.team_id)!;
+            values = { organisation: datasetTeam.organisation_id!, team: datasetTeam.id };
         }
 
         if (req.method === 'POST') {
