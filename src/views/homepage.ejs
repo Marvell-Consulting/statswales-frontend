@@ -39,7 +39,7 @@
                                             <a href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language) %>" class="govuk-link"><%= dataset.title %></a>
                                         <% } %>
                                     </td>
-                                    <td class="govuk-table__cell date"><%= dateFormat(dataset.last_updated, 'd MMMM yyyy') %></td>
+                                    <td class="govuk-table__cell date"><%= dateFormat(dataset.last_updated, 'd MMMM yyyy', { locale: i18n.language }) %></td>
                                     <td class="govuk-table__cell status">
                                         <% if (dataset.status) { %>
                                             <strong class="govuk-tag govuk-tag--<%= statusToColour(dataset.status) %>">
