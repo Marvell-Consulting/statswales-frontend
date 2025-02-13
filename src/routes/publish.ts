@@ -92,7 +92,7 @@ publish.post('/:datasetId/lookup/:dimensionId', fetchFullDataset, upload.single(
 publish.get('/:datasetId/lookup/:dimensionId/review', fetchFullDataset, lookupReview);
 publish.post('/:datasetId/lookup/:dimensionId/review', fetchFullDataset, lookupReview);
 
-publish.get('/:datasetId/time-period/:dimensionId', fetchFullDataset, fetchTimeDimensionPreview);
+publish.get('/:datasetId/time-period/:dimensionId', fetchLimitedDataset, fetchTimeDimensionPreview);
 publish.post('/:datasetId/time-period/:dimensionId', fetchFullDataset, fetchTimeDimensionPreview);
 publish.get('/:datasetId/time-period/:dimensionId/point-in-time', fetchFullDataset, pointInTimeChooser);
 publish.post('/:datasetId/time-period/:dimensionId/point-in-time', fetchFullDataset, pointInTimeChooser);
