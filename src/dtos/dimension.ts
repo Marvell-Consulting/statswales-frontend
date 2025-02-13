@@ -1,4 +1,4 @@
-import { DimensionInfoDTO } from './dimension-info';
+import { DimensionMetadataDTO } from './dimension-metadata';
 import { LookupTableDTO } from './lookup-table';
 
 export interface DimensionDTO {
@@ -10,5 +10,5 @@ export interface DimensionDTO {
     factTableColumn: string; // <-- Tells you which column in the fact table you're joining to
     isSliceDimension: boolean;
     lookupTable?: LookupTableDTO;
-    dimensionInfo?: DimensionInfoDTO[];
+    metadata?: DimensionMetadataDTO[];
 }

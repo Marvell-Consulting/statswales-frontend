@@ -55,14 +55,14 @@
                                 <p class="govuk-body"><strong><%- t('developer.display.type') %>:</strong> <%= dim.type %></p>
                                 <p class="govuk-body"><strong><%- t('developer.display.start_revision') %>:</strong> <%= dim.start_revision_id %></p>
                                 <p class="govuk-body"><strong><%- t('developer.display.title') %>:</strong>
-                                    <% const info = dim.dimensionInfo.find((info) => info.language === i18n.language) || dim.dimensionInfo.find((info) => info.language === i18n.language.split('-')[0]) %>
-                                    <%= info.name %>
+                                    <% const meta = dim.metadata.find((meta) => meta.language === i18n.language) || dim.metadata.find((meta) => meta.language === i18n.language.split('-')[0]) %>
+                                    <%= meta.name %>
                                 </p>
                                 <p class="govuk-body-m"><strong><%- t('developer.display.description') %></strong>
-                                    <%= info.description %>
+                                    <%= meta.description %>
                                 </p>
                                 <p class="govuk-body-m"><strong><%- t('developer.display.notes') %></strong>
-                                    <%= info.notes %>
+                                    <%= meta.notes %>
                                 </p>
                                 <hr>
                             <% });%>

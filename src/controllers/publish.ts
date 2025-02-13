@@ -56,7 +56,7 @@ import { TeamDTO } from '../dtos/team';
 import { DimensionType } from '../enums/dimension-type';
 import { DimensionPatchDTO } from '../dtos/dimension-patch-dto';
 import { ApiException } from '../exceptions/api.exception';
-import { DimensionInfoDTO } from '../dtos/dimension-info';
+import { DimensionMetadataDTO } from '../dtos/dimension-metadata';
 import { YearType } from '../enums/year-type';
 import { addEditLinks } from '../utils/add-edit-links';
 import { TranslationDTO } from '../dtos/translations';
@@ -739,11 +739,10 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
 // reduce the questions we need to ask date identification.
 export const fetchTimeDimensionPreview = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const dimension = singleLangDataset(res.locals.dataset, req.language).dimensions?.find(
-            (dim) => dim.id === req.params.dimensionId
-        );
-        if (!dimension) {
-            logger.error('Failed to find dimension in dataset');
+        const dimensionId = req.params.dimensionId;
+
+        if (!dimensionId) {
+            logger.error('dimensionId is a required parameter');
             next(new NotFoundException());
             return;
         }
@@ -753,7 +752,7 @@ export const fetchTimeDimensionPreview = async (req: Request, res: Response, nex
                 case 'time_period':
                     res.redirect(
                         req.buildUrl(
-                            `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/period-of-time`,
+                            `/publish/${req.params.datasetId}/time-period/${dimensionId}/period-of-time`,
                             req.language
                         )
                     );
@@ -761,7 +760,7 @@ export const fetchTimeDimensionPreview = async (req: Request, res: Response, nex
                 case 'time_point':
                     res.redirect(
                         req.buildUrl(
-                            `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/point-in-time`,
+                            `/publish/${req.params.datasetId}/time-period/${dimensionId}/point-in-time`,
                             req.language
                         )
                     );
@@ -770,7 +769,9 @@ export const fetchTimeDimensionPreview = async (req: Request, res: Response, nex
             return;
         }
 
-        const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
+        const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimensionId);
+        const dimension = dataPreview.dataset?.dimensions?.find((dim) => dim.id === dimensionId);
+        // console.log(dataPreview);
         res.render('publish/time-chooser', { ...dataPreview, dimension });
     } catch (err) {
         logger.error('Failed to get dimension preview', err);
@@ -1122,7 +1123,7 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
             return;
         }
         let errors: ViewErrDTO | undefined;
-        const dimensionName = dimension.dimensionInfo?.name || '';
+        const dimensionName = dimension.metadata?.name || '';
         if (req.method === 'POST') {
             const updatedName = req.body.name;
             if (!updatedName) {
@@ -1196,12 +1197,9 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                 res.render('publish/dimension-name', { ...{ updatedName }, errors });
                 return;
             }
-            const info: DimensionInfoDTO = {
-                name: updatedName,
-                language: req.language
-            };
+            const metadata: DimensionMetadataDTO = { name: updatedName, language: req.language };
             try {
-                await req.pubapi.updateDimensionInfo(dataset.id, dimension.id, info);
+                await req.pubapi.updateDimensionMetadata(dataset.id, dimension.id, metadata);
                 res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/tasklist`, req.language));
                 return;
             } catch (err) {
@@ -1248,7 +1246,7 @@ export const pointInTimeChooser = async (req: Request, res: Response, next: Next
             date_type: YearType.PointInTime
         };
         try {
-            const previewData = await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
+            await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
             logger.debug('Matching complete for specific point in time... Redirecting to review.');
             res.redirect(
                 req.buildUrl(

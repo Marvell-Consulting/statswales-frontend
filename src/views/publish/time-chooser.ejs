@@ -26,7 +26,7 @@
                         <tr class="govuk-table__row">
                             <% locals.headers.forEach(function(cell, idx) { %>
                                 <th scope="col" class="govuk-table__header <%= cell.source_type === 'line_number' ? 'line-number' :'' %>">
-                                    <% if (locals.dimension.extractor) { %>
+                                    <% if (locals.dimension?.extractor) { %>
                                         <%= t(`publish.time_dimension_review.column_headers.${cell.name}`) %>
                                     <% } else { %>
                                         <%= cell.name %>
