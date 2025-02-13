@@ -885,7 +885,7 @@ export const periodType = async (req: Request, res: Response, next: NextFunction
             switch (req.body.periodType) {
                 case 'years':
                     try {
-                        const previewData = await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
+                        await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
                         logger.debug('Matching complete for year... Redirecting to review.');
                         res.redirect(
                             req.buildUrl(
