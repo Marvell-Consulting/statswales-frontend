@@ -718,7 +718,9 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
             }
             return;
         }
+
         const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
+
         if (req.session.errors) {
             const errors = req.session.errors;
             req.session.errors = undefined;
@@ -771,7 +773,6 @@ export const fetchTimeDimensionPreview = async (req: Request, res: Response, nex
 
         const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimensionId);
         const dimension = dataPreview.dataset?.dimensions?.find((dim) => dim.id === dimensionId);
-        // console.log(dataPreview);
         res.render('publish/time-chooser', { ...dataPreview, dimension });
     } catch (err) {
         logger.error('Failed to get dimension preview', err);
