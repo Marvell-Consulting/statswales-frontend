@@ -965,7 +965,7 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
                 patchRequest.fifth_quarter = true;
             }
             try {
-                const previewData = await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
+                await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
                 // eslint-disable-next-line require-atomic-updates
                 req.session.dimensionPatch = undefined;
                 req.session.save();
@@ -1026,7 +1026,7 @@ export const monthChooser = async (req: Request, res: Response, next: NextFuncti
             );
             req.session.save();
             try {
-                const previewData = await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
+                await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
                 // eslint-disable-next-line require-atomic-updates
                 req.session.dimensionPatch = undefined;
                 req.session.save();
