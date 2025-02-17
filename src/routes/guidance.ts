@@ -5,7 +5,6 @@ import { NextFunction, Request, Response, Router } from 'express';
 import { JSDOM } from 'jsdom';
 import DOMPurify from 'dompurify';
 import { marked } from 'marked';
-import { gfmHeadingId } from 'marked-gfm-heading-id';
 
 import { createToc, docRenderer, getTitle } from '../services/marked';
 import { NotFoundException } from '../exceptions/not-found.exception';
@@ -50,11 +49,12 @@ guidance.get('/:file', async (req: Request, res: Response, next: NextFunction) =
         return;
     }
     const title = await getTitle(normalizedFilePath);
-    const mardkwonFile: string = fs.readFileSync(normalizedFilePath, 'utf8');
+    const markdownFile: string = fs.readFileSync(normalizedFilePath, 'utf8');
     const { window } = new JSDOM(`<!DOCTYPE html>`);
     const domPurify = DOMPurify(window);
+    logger.debug('Generating html from markdown');
     marked.use({ renderer: docRenderer });
-    const toc = createToc(mardkwonFile);
-    const content = domPurify.sanitize(await marked.parse(mardkwonFile));
-    res.render('guidance', { content, tableOfContents: toc, title });
+    const tableOfContents = createToc(markdownFile);
+    const content = domPurify.sanitize(await marked.parse(markdownFile));
+    res.render('guidance', { content, tableOfContents, title });
 });
