@@ -9,7 +9,7 @@ export const singleLangDataset = (dataset: DatasetDTO, lang: string): SingleLang
         dimensions: dataset.dimensions?.map((dimension) => {
             return {
                 ...dimension,
-                dimensionInfo: dimension.dimensionInfo?.find((info) => info.language === lang)
+                metadata: dimension.metadata?.find((meta) => meta.language === lang)
             };
         }),
         providers: dataset.providers?.filter((provider) => provider.language === lang.toLowerCase())

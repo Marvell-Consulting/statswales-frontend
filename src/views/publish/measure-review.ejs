@@ -17,7 +17,7 @@
         <% if (locals?.data) { %>
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-full with-overflow">
-                    <table class="govuk-table" style="position: relative; border-collapse: collapse; width:100% !important;">
+                    <table class="govuk-table">
                         <thead class="govuk-table__head">
                             <tr class="govuk-table__row">
                                 <% locals.headers.forEach(function(cell, idx) { %>
@@ -56,7 +56,9 @@
                         <% }); %>
                         </tbody>
                     </table>
-                    <p class="govuk-body govuk-hint"><%= t('publish.measure_review.showing', {rows: locals.page_size, total: locals.page_info.total_records}) %></p>
+                    <% if (locals.page_info?.total_records > locals.page_size) { %>
+                        <p class="govuk-body govuk-hint"><%= t('publish.measure_review.showing', {rows: locals.page_size, total: locals.page_info.total_records}) %></p>
+                    <% } %>
                 </div>
             </div>
         <% } %>
@@ -86,20 +88,8 @@
 </main>
 
 <style>
-    table {
-        position: relative;
-        width: 30% !important;
-    }
     th {
         vertical-align: bottom !important;
-    }
-    .column_label {
-        white-space: nowrap;
-        color: #aa1111;
-        font-size: 14px;
-        letter-spacing: 0.08em;
-        line-height: 20px;
-        text-transform: uppercase;
     }
 </style>
 <%- include("../partials/footer"); %>

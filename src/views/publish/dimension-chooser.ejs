@@ -34,7 +34,7 @@
         <% if (locals?.data) { %>
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-full with-overflow">
-                    <table class="govuk-table" style="position: relative; border-collapse: collapse;">
+                    <table class="govuk-table">
                         <colgroup>
                             <% locals.headers.forEach(function(cell, idx) { %>
                                 <col class="<%= cell.type === 'ignore' ? 'ignore-column' : '' %>" />
@@ -140,12 +140,5 @@
 </div>
 
 <style>
-    table {
-        position: relative;
-        width: 30% !important;
-    }
-    .region-subhead {
-        display: none;
-    }
 </style>
 <%- include("../partials/footer"); %>

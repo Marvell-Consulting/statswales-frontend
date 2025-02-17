@@ -1,4 +1,4 @@
-export interface DimensionInfoDTO {
+export interface DimensionMetadataDTO {
     language?: string;
     name: string;
     description?: string;

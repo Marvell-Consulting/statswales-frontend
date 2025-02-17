@@ -21,12 +21,12 @@
         <% if (locals?.data) { %>
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-full with-overflow">
-                    <table class="govuk-table" style="position: relative; border-collapse: collapse; width:100% !important;">
+                    <table class="govuk-table">
                         <thead class="govuk-table__head">
                         <tr class="govuk-table__row">
                             <% locals.headers.forEach(function(cell, idx) { %>
                                 <th scope="col" class="govuk-table__header <%= cell.source_type === 'line_number' ? 'line-number' :'' %>">
-                                    <% if (locals.dimension.extractor) { %>
+                                    <% if (locals.dimension?.extractor) { %>
                                         <%= t(`publish.time_dimension_review.column_headers.${cell.name}`) %>
                                     <% } else { %>
                                         <%= cell.name %>
@@ -135,12 +135,5 @@
 </div>
 
 <style>
-    table {
-        position: relative;
-        width: 30% !important;
-    }
-    .region-subhead {
-        display: none;
-    }
 </style>
 <%- include("../partials/footer"); %>

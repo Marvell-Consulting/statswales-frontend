@@ -21,7 +21,7 @@ import { OrganisationDTO } from '../dtos/organisation';
 import { TeamDTO } from '../dtos/team';
 import { DimensionPatchDTO } from '../dtos/dimension-patch-dto';
 import { DimensionDTO } from '../dtos/dimension';
-import { DimensionInfoDTO } from '../dtos/dimension-info';
+import { DimensionMetadataDTO } from '../dtos/dimension-metadata';
 import { TranslationDTO } from '../dtos/translations';
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
 import { FileFormat } from '../enums/file-format';
@@ -306,15 +306,15 @@ export class PublisherApi {
         }).then((response) => response.json() as unknown as ViewDTO);
     }
 
-    public async updateDimensionInfo(
+    public async updateDimensionMetadata(
         datasetId: string,
         dimensionId: string,
-        dimensionInfo: DimensionInfoDTO
+        metadata: DimensionMetadataDTO
     ): Promise<DimensionDTO> {
         return this.fetch({
-            url: `dataset/${datasetId}/dimension/by-id/${dimensionId}/info`,
+            url: `dataset/${datasetId}/dimension/by-id/${dimensionId}/metadata`,
             method: HttpMethod.Patch,
-            json: dimensionInfo
+            json: metadata
         }).then((response) => response.json() as unknown as DimensionDTO);
     }
 
