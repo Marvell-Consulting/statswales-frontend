@@ -17,13 +17,13 @@ This means adding data values for data that is not currently in the dataset. For
 
 Example rows of update data table for council tax bands, adding new data for 2024/25:
 
-| AreaCode | YearCode | BandCode | NoteCodes | Measure or data type | Data    |
-| :------- | :------- | :------- | :-------- | :------------------- | :------ |
-| 512      | 2024/25  | A-       |           | 1                    | 1216.86 |
-| 512      | 2024/25  | A        |           | 1                    | 1014.05 |
-| 512      | 2024/25  | B        |           | 1                    | 1419.67 |
-| 512      | 2024/25  | C        |           | 1                    | 1622.48 |
-| 512      | 2024/25  | D        |           | 1                    | 1825.30 |
+| AreaCode  | YearCode | BandCode | NoteCodes | Measure or data type | Data    |
+| :-------- | :------- | :------- | :-------- | :------------------- | :------ |
+| W06000001 | 2024/25  | A-       |           | 1                    | 1216.86 |
+| W06000001 | 2024/25  | A        |           | 1                    | 1014.05 |
+| W06000001 | 2024/25  | B        |           | 1                    | 1419.67 |
+| W06000001 | 2024/25  | C        |           | 1                    | 1622.48 |
+| W06000001 | 2024/25  | D        |           | 1                    | 1825.30 |
 
 _Please note this example is for demonstration purposes only and is not a genuine update._
 
@@ -33,13 +33,13 @@ This means replacing data in the current dataset with revised values. This may b
 
 Example rows of update data table for council tax bands, revising data for 2022/23:
 
-| AreaCode | YearCode | BandCode | NoteCodes | Measure or data type | Data    |
-| :------- | :------- | :------- | :-------- | :------------------- | :------ |
-| 512      | 2022/23  | G        | r         | 1                    | 3042.10 |
-| 512      | 2022/23  | H        | r         | 1                    | 3650.60 |
-| 512      | 2022/23  | I        | r         | 1                    | 4259.03 |
-| 514      | 2022/23  | A-       | r         | 1                    | 1104.00 |
-| 514      | 2022/23  | A        | r         | 1                    | 1324.80 |
+| AreaCode  | YearCode | BandCode | NoteCodes | Measure or data type | Data    |
+| :-------- | :------- | :------- | :-------- | :------------------- | :------ |
+| W06000001 | 2022/23  | G        | r         | 1                    | 3042.10 |
+| W06000001 | 2022/23  | H        | r         | 1                    | 3650.60 |
+| W06000001 | 2022/23  | I        | r         | 1                    | 4259.03 |
+| W06000002 | 2022/23  | A-       | r         | 1                    | 1104.00 |
+| W06000002 | 2022/23  | A        | r         | 1                    | 1324.80 |
 
 _Please note this example is for demonstration purposes only and is not a genuine update._
 
@@ -70,13 +70,13 @@ Depending on the reason for removal, it may be necessary to add an explanation t
 
 Example rows of update data table for council tax bands, removing data for council tax band A- before 2001/02:
 
-| AreaCode | YearCode | BandCode | NoteCodes | Measure or data type | Data   |
-| :------- | :------- | :------- | :-------- | :------------------- | :----- |
-| 512      | 1996/97  | A-       | z,r       |                      |        |
-| 512      | 1997/98  | A-       | z,r       |                      |        |
-| 512      | 1998/99  | A-       | z,r       |                      |        |
-| 512      | 1999/00  | A-       | z,r       |                      |        |
-| 512      | 2000/01  | A-       | z,r       |                      |        |
+| AreaCode  | YearCode | BandCode | NoteCodes | Measure or data type | Data   |
+| :-------- | :------- | :------- | :-------- | :------------------- | :----- |
+| W06000001 | 1996/97  | A-       | z,r       |                      |        |
+| W06000001 | 1997/98  | A-       | z,r       |                      |        |
+| W06000001 | 1998/99  | A-       | z,r       |                      |        |
+| W06000001 | 1999/00  | A-       | z,r       |                      |        |
+| W06000001 | 2000/01  | A-       | z,r       |                      |        |
 
 _Please note this example is for demonstration purposes only and is not a genuine update._
 
