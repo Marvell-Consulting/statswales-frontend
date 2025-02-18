@@ -13,13 +13,13 @@ For new datasets you need to have a data table. The table should preferably be i
 
 In this guidance, we’ll be using the example scenario of data for council tax bands. Here are example rows of a data table for this scenario:
 
-| AreaCode | YearCode | BandCode | NoteCodes | Measure | Data   |
-| :------- | :------- | :------- | :-------- | :------ | :----- |
-| 512      | 202425   | A-       |           | 1       | 256.88 |
-| 512      | 202425   | A        | x         |         |        |
-| 512      | 202425   | B        |           | 1       | 359.64 |
-| 512      | 202425   | C        | e         | 1       | 411.01 |
-| 512      | 202425   | D        |           | 1       | 462.39 |
+| AreaCode  | YearCode | BandCode | NoteCodes | Measure | Data   |
+| :-------- | :------- | :------- | :-------- | :------ | :----- |
+| W06000001 | 202425   | A-       |           | 1       | 256.88 |
+| W06000001 | 202425   | A        | x         |         |        |
+| W06000001 | 202425   | B        |           | 1       | 359.64 |
+| W06000001 | 202425   | C        | e         | 1       | 411.01 |
+| W06000001 | 202425   | D        |           | 1       | 462.39 |
 
 ### File format
 
@@ -66,21 +66,15 @@ When you build your dataset in SW3, you’ll need to select reference data for e
 
 SW3 does not use lookup tables for dimensions containing dates. Instead there is a [standardised approach to formatting](#guidance-date-formatting).
 
-The aim is to also have standardised, centrally-managed lookup tables for:
+The system currently has standardised, centrally-managed reference data for geography only. This includes all commonly used geography reference codes.
 
-- age
-- ethnicity
-- geography
-- religion
-- sex and gender
-
-Implementing this standardised reference data for these data types will:
+The aim is to add more standardised reference data to the system in the future. Implementing this standardised reference data will:
 
 - ensure better consistency across StatsWales
 - standardise English and Welsh descriptions
 - improve usability for data consumers
 
-This guidance will be updated once this standardised reference data has been properly implemented.
+For any other dimension type, you should [prepare your own lookup table](#guidance-lookup-tables).
 
 ### Date formatting
 
@@ -154,7 +148,7 @@ For example, specific dates when data values were collected.
 
 ### Lookup tables
 
-For dimensions not containing dates, you should prepare your own lookup tables. You will upload these to SW3.
+For dimensions not containing dates or geography, you should prepare your own lookup tables. You will upload these to SW3.
 
 A lookup table tells the system what each of the reference codes used in a relevant dimension represents. It's important that the reference codes in the dimension in the data table **match exactly** with those in the lookup table.
 
@@ -173,13 +167,13 @@ Your lookup table should be preferably in [CSV format](#guidance-file-format) an
 
 Example part of lookup table for tax band code:
 
-| refcode | hierarchy | sort | description | lang | note |
-| :------ | :-------- | :--- | :---------- | :--- | :--- |
-| A-      |           | 1    | A-          | en   |      |
-| A-      |           | 1    | A-          | cy   |      |
-| A       |           | 2    | A           | en   |      |
-| A       |           | 2    | A           | cy   |      |
-| B       |           | 3    | B           | en   |      |
+| refcode | hierarchy | sort | description   | lang | note |
+| :------ | :-------- | :--- | :------------ | :--- | :--- |
+| A-      |           | 1    | Tax band A-   | en   |      |
+| A-      |           | 1    | Band treth A- | cy   |      |
+| A       |           | 2    | Tax band A    | en   |      |
+| A       |           | 2    | Band treth A  | cy   |      |
+| B       |           | 3    | Tax band B    | en   |      |
 
 #### Single row format
 
@@ -197,11 +191,11 @@ Example part of lookup table for tax band code:
 
 | refcode | hierarchy | sort | description_en | description_cy | note_en | note_cy |
 | :------ | :-------- | :--- | :------------- | :------------- | :------ | :------ |
-| A-      |           | 1    | A-             | A-             |         |         |
-| A       |           | 2    | A              | A              |         |         |
-| B       |           | 3    | B              | B              |         |         |
-| C       |           | 4    | C              | C              |         |         |
-| D       |           | 5    | D              | D              |         |         |
+| A-      |           | 1    | Tax band A-    | Band treth A-  |         |         |
+| A       |           | 2    | Tax band A     | Band treth A   |         |         |
+| B       |           | 3    | Tax band B     | Band treth B   |         |         |
+| C       |           | 4    | Tax band C     | Band treth C   |         |         |
+| D       |           | 5    | Tax band D     | Band treth D   |         |         |
 
 #### Column headings
 
@@ -294,7 +288,7 @@ The system will style these as lists with circular bullet points.
 
 You should:
 - keep to one sentence per bullet
-- not end bullets with punctuation or conjuctions like 'or'
+- not end bullets with punctuation or conjunctions like 'or'
 - try to use a different word at the beginning of each bullet
 
 If you use a lead-in line to your bullet list, each bullet should form a complete sentence with the lead-in line. The bullet list above demonstrates this.
