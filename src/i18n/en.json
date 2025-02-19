@@ -255,17 +255,33 @@
                 "lookup_table": "Lookup Table:",
                 "description_en": "Description (English)",
                 "description_cy": "Description (Welsh)",
+                "description": "Description",
+                "decimals": "Decimal Places",
+                "hierarchy": "Hierarchy",
+                "language": "Language",
+                "reference": "Reference Value",
                 "sort": "Sort Order",
                 "sort_order": "Sort Order",
+                "notes": "Notes",
                 "notes_en": "Notes (English)",
                 "notes_cy": "Notes (Welsh)",
-                "decimal": "Decimal Value",
                 "format": "Format",
                 "measure_type": "Value Type"
             },
             "column_values": {
-                "1": "Yes",
-                "0": "No"
+                "null": "No",
+                "cy-gb": "Welsh",
+                "en-gb": "English",
+                "float": "Floating Point Number",
+                "decimal": "Decimal Number",
+                "integer": "Whole Number",
+                "long": "Big Whole Number",
+                "percentage": "Percentage",
+                "string": "Plain Text",
+                "text": "Plain Text",
+                "date": "Date",
+                "datetime": "Date and Time",
+                "time": "Time"
             }
         },
         "time_dimension_review": {
