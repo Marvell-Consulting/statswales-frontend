@@ -5,7 +5,7 @@ import { SingleLanguageDataset } from '../dtos/single-language/dataset';
 import { DatasetStatus } from '../enums/dataset-status';
 import { PublishingStatus } from '../enums/publishing-status';
 
-import { getLatestRevision } from './latest';
+import { getLatestRevision } from './revision';
 
 export const getDatasetStatus = (dataset: DatasetDTO | SingleLanguageDataset): DatasetStatus => {
     return dataset.live && isBefore(dataset.live, new Date()) ? DatasetStatus.Live : DatasetStatus.New;
