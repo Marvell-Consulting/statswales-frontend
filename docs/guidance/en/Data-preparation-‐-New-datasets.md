@@ -1,4 +1,4 @@
-# Data preparation - New datasets
+# Data preparation ‐ New datasets
 
 Datasets consist of a set of statistics and their associated metadata. The dataset is built in SW3 as a data cube from a data table and reference, or lookup, data.
 
@@ -49,7 +49,7 @@ You should include rows in your data table for any totals or averages you want t
 
 In our council tax example, the AreaCode dimension refers to local authorities. If you wanted to include a total or average for the whole of Wales, you would need to include a row containing:
 - the total or average
-- the reference code for Wales [596] 
+- the reference code for Wales [W92000004]
 - either a ‘t’ or 'a' note code
 
 If your data contains multiple hierarchies, you can provide multiple totals or averages. For example, a total for each economic region and a total for Wales.
@@ -227,18 +227,19 @@ A measure, or data type, indicates what the data value represents. You **must** 
 
 For a dimension containing measures, you should prepare your own lookup table. You will upload this to SW3. It should be in the same format as other [lookup tables](#guidance-lookup-tables), with the following additional columns:
 
-| Heading | What the column contains                                                                                                                                                                                                                                                                                     |
-| :------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Heading | What the column contains |
+| :------ | :----------------------- |
 | type    | Any of the following:<ul><li>count</li><li>percentage</li><li>rate</li><li>rank</li><li>numerator</li><li>denominator</li><li>index value</li><li>mode</li><li>median</li><li>mean</li><li>standard deviation</li><li>variance</li><li>quartile</li><li>quintile</li><li>decile</li><li>percentile</li></ul> |
-| format  | Any of the following:<ul><li>decimal</li><li>float</li><li>integer</li><li>long</li><li>percentage</li><li>string</li><li>text</li><li>date</li><li>datetime</li><li>time</li></ul>                                                                                                                          |
-| decimal | Number of decimal places to show, if relevant                                                                                                                                                                                                                                                                |
+| format  | Any of the following:<ul><li>decimal</li><li>float</li><li>integer</li><li>long</li><li>percentage</li><li>string</li><li>text</li><li>date</li><li>datetime</li><li>time</li></ul> |
+| decimal | Number of decimal places to show, if relevant |
 
 Example measure lookup table for our council tax example:
-| refcode | type | format | sort | description_en | description_cy |
-| :- | :- | :- | :- | :- | :- |
-| 1 | count | decimal | 1 | Council tax in £ | Treth cyngor mewn £ |
-| 2 | percentage | percentage | 2 | % of median monthly salary | % o ganolrif cyflog misol |
-| 3 | rank | integer | 3 | Rank of council tax band | Safle band treth gyngor |
+
+| refcode | type       | format     | sort | description_en             | description_cy              |
+| :------ | :--------- | :--------- | :--- | :------------------------- | :-------------------------- |
+| 1       | count      | decimal    | 1    | Council tax in £           | Treth gyngor mewn £         |
+| 2       | percentage | percentage | 2    | % of median monthly salary | % y cyflog misol canolrifol |
+| 3       | rank       | integer    | 3    | Rank of council tax band   | Safle band treth gyngor     |
 
 _Please note this example is for demonstration purposes only and is not a genuine lookup table for council tax data._
 
@@ -248,21 +249,21 @@ _Please note this example is for demonstration purposes only and is not a genuin
 
 You should only add a note to a specific data value if it's necessary to understand the data. However, **you must include a column for note codes** in your data table, even if you do not have any note codes to include.
 
-SW3 uses shorthand note codes, with standardised explanations, closely following [public sector standards](https://analysisfunction.civilservice.gov.uk/policy-store/symbols-in-tables-definitions-and-help/). These are as follows:
+SW3 uses shorthand note codes, with standardised explanations, closely following [public sector standards](https://analysisfunction.civilservice.gov.uk/policy-store/symbols-in-tables-definitions-and-help/). The codes are not case sensitive.
 
-| Shorthand <br>(Not case sensitive) | Meaning                  | Use                                                                                                                                                                                                                                     |
-| :--------------------------------- | :----------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| a                                  | Average                  | When a data value is an average of other values                                                                                                                                                                                         |
-| c                                  | Confidential information | For example, if a data value has been suppressed because you could identify details about specific people from the data.<br><br>_Note that there is no way in SW3 to mask or suppress values, so this must be done in your data table._ |
-| e                                  | Estimated                | When a data value is an estimated value                                                                                                                                                                                                 |
-| f                                  | Forecast                 | When a data value is a calculated future value instead of an observed value                                                                                                                                                             |
-| k                                  | Low figure               | A low figure that appears as a zero when rounded                                                                                                                                                                                        |
-| p                                  | Provisional              | When a data value is yet to be finalised, or is expected to be revised                                                                                                                                                                  |
-| r                                  | Revised                  | When a data value has been revised since it was first published                                                                                                                                                                         |
-| t                                  | Total                    | When a data value is a total of other values                                                                                                                                                                                            |
-| u                                  | Low reliability          | When a data value is of low statistical quality                                                                                                                                                                                         |
-| x                                  | Missing data             | For example, where a data value is not collected in a region                                                                                                                                                                            |
-| z                                  | Not applicable           | For example, in tables of employment where people under 16 cannot legally be employed                                                                                                                                                   |
+| Shorthand                          | Meaning                  | Use |
+| :--------------------------------- | :----------------------- | :-- |
+| a                                  | Average                  | When a data value is an average of other values |
+| c                                  | Confidential information | For example, if a data value has been suppressed because you could identify details about specific people from the data. Note that there is no way in SW3 to mask or suppress values, so this must be done in your data table. |
+| e                                  | Estimated                | When a data value is an estimated value |
+| f                                  | Forecast                 | When a data value is a calculated future value instead of an observed value |
+| k                                  | Low figure               | A low figure that appears as a zero when rounded |
+| p                                  | Provisional              | When a data value is yet to be finalised, or is expected to be revised |
+| r                                  | Revised                  | When a data value has been revised since it was first published |
+| t                                  | Total                    | When a data value is a total of other values |
+| u                                  | Low reliability          | When a data value is of low statistical quality |
+| x                                  | Missing data             | For example, where a data value is not collected in a region |
+| z                                  | Not applicable           | For example, in tables of employment where people under 16 cannot legally be employed |
 
 Any custom explanations you feel are needed to clarify any note codes, should be provided in the [metadata section](#guidance-metadata).
 
