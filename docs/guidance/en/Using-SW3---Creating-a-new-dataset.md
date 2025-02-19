@@ -1,4 +1,4 @@
-# Using SW3 - Creating a new dataset
+# Using SW3 ‐ Creating a new dataset
 
 ## Data
 
@@ -95,10 +95,9 @@ Once you select a team, this will generate the ID for your dataset. The ID consi
 
 ### When the dataset should be published
 
-Indicate what date and time the dataset should be published.
+Indicate what date and time the dataset should be published. Consider how long the dataset will take to be approved once you've submitted it. Set the publishing date far enough in the future to allow for this.
 
-- Date must be at least X days from when you create the dataset in SW3
-- Time is 9:30am by default - only change this if a different time is absolutely necessary
+The publishing time is 9:30am by default. You should only change this if a different time is absolutely necessary.
 
 ### Submit
 
