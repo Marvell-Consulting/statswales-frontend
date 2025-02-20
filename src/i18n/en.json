@@ -350,7 +350,8 @@
             "heading": "What format is used for quarters in the dimension?",
             "heading-alt": "What format is used for quarterly totals?",
             "example": "For example, {{example}}",
-            "fifth_quarter": "Is a quarter used to represent yearly totals?\n",
+            "fifth_quarter": "Is a fifth quarter used to represent yearly totals?",
+            "fifth_example": "For example, 2024Q5 to represent the total for 2024",
             "no_quarterly_totals": "There are no quarterly totals"
         },
         "month_format": {
