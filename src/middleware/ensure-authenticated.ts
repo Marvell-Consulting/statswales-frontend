@@ -8,7 +8,7 @@ import { appConfig } from '../config';
 const config = appConfig();
 
 export const ensureAuthenticated = (req: Request, res: Response, next: NextFunction) => {
-    logger.debug(`checking if user is authenticated for route ${req.originalUrl}...`);
+    logger.debug(`Checking if user is authenticated for route ${req.originalUrl}...`);
 
     try {
         if (!req.cookies.jwt) {

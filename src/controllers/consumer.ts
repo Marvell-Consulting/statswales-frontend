@@ -30,7 +30,7 @@ export const listPublishedDatasets = async (req: Request, res: Response, next: N
 
 export const viewPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const revision = getLatestPublishedRevision(dataset);
+    const revision = dataset.published_revision;
 
     if (!dataset.live || !revision) {
         next(new NotFoundException('no published revision found'));

@@ -22,7 +22,7 @@ export const getLatestPublishedRevision = (dataset: DatasetDTO | SingleLanguageD
     return first(dataset.revisions?.filter(isPublished).sort(createdAtDesc));
 };
 
-export const getDataTable = (revision: RevisionDTO): DataTableDto | undefined => {
+export const getDataTable = (revision?: RevisionDTO): DataTableDto | undefined => {
     if (!revision) return undefined;
     return revision.data_table;
 };
