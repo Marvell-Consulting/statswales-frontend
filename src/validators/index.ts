@@ -52,7 +52,7 @@ export const titleValidator = () =>
         .isLength({ max: 1000 })
         .withMessage('too_long');
 
-export const descriptionValidator = () => body('description').trim().notEmpty();
+export const summaryValidator = () => body('summary').trim().notEmpty();
 export const collectionValidator = () => body('collection').trim().notEmpty();
 
 export const qualityValidator = () => body('quality').trim().notEmpty();
