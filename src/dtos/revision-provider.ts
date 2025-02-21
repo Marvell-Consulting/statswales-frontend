@@ -1,6 +1,6 @@
-export class DatasetProviderDTO {
+export class RevisionProviderDTO {
     id?: string;
-    dataset_id: string;
+    revision_id: string;
     language: string;
     provider_id: string;
     provider_name?: string;
