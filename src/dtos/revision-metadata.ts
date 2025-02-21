@@ -3,10 +3,10 @@ import { Designation } from '../enums/designation';
 import { UpdateFrequencyDTO } from './update-frequency';
 import { RelatedLinkDTO } from './related-link';
 
-export interface DatasetInfoDTO {
+export interface RevisionMetadataDTO {
     language?: string;
     title?: string;
-    description?: string;
+    summary?: string;
     collection?: string;
     quality?: string;
     rounding_applied?: boolean;
