@@ -21,8 +21,8 @@
             "published": "Published",
             "incomplete": "Incomplete",
             "scheduled": "Scheduled",
-            "update_incomplete": "Update Incomplete",
-            "update_scheduled": "Update Scheduled"
+            "update_incomplete": "Update incomplete",
+            "update_scheduled": "Update scheduled"
         }
     },
     "pagination": {
@@ -93,9 +93,9 @@
         },
         "publishing_status": {
             "incomplete": "Incomplete",
-            "update_incomplete": "Update Incomplete",
+            "update_incomplete": "Update incomplete",
             "scheduled": "Scheduled",
-            "update_scheduled": "Update Scheduled",
+            "update_scheduled": "Update scheduled",
             "published": "Published"
         },
         "buttons": {
