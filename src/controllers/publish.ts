@@ -1687,14 +1687,21 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
         // eslint-disable-next-line prefer-const
         [availableProviders, dataProviders] = await Promise.all([
             req.pubapi.getAllProviders(),
-            req.pubapi.getDatasetProviders(res.locals.datasetId)
+            req.pubapi.getAssignedProviders(res.locals.datasetId)
         ]);
     } catch (err) {
         next(err);
         return;
     }
 
-    let dataset = { ...res.locals.dataset, providers: sortBy(dataProviders || [], 'created_at') };
+    let dataset = {
+        ...res.locals.dataset,
+        draft_revision: {
+            ...res.locals.dataset.draft_revision,
+            providers: sortBy(dataProviders || [], 'created_at')
+        }
+    };
+
     dataset = singleLangDataset(dataset, req.language);
     dataProviders = dataset.draft_revision.providers;
 
@@ -1704,11 +1711,11 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
     if (deleteId) {
         try {
             dataProviders = dataProviders.filter((dp) => dp.id !== deleteId);
-            await req.pubapi.updateDatasetProviders(dataset.id, dataProviders);
+            await req.pubapi.updateAssignedProviders(dataset.id, dataProviders);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/providers`, req.language));
             return;
         } catch (err) {
-            next(new UnknownException());
+            next(err);
             return;
         }
     }
@@ -1718,7 +1725,7 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
             dataProvider = dataProviders.find((dp) => dp.id === editId)!;
             availableSources = await req.pubapi.getSourcesByProvider(dataProvider.provider_id);
         } catch (err) {
-            next(new UnknownException());
+            next(err);
             return;
         }
     }
@@ -1770,7 +1777,7 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
 
                 const providerIdx = dataProviders.findIndex((dp) => dp.id === editId);
                 dataProviders[providerIdx].source_id = source_id;
-                await req.pubapi.updateDatasetProviders(dataset.id, dataProviders);
+                await req.pubapi.updateAssignedProviders(dataset.id, dataProviders);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/providers`, req.language));
                 return;
             }
@@ -1778,7 +1785,7 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
             logger.debug('Adding a new data provider');
 
             // create a new data provider - generate id on the frontend so we can redirect the user to add sources
-            dataProvider = { id: uuid(), revision_id: dataset.id, provider_id, language: req.language };
+            dataProvider = { id: uuid(), revision_id: dataset.draft_revision.id, provider_id, language: req.language };
 
             await req.pubapi.addDatasetProvider(dataset.id, dataProvider);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/providers?edit=${dataProvider.id}`, req.language));
