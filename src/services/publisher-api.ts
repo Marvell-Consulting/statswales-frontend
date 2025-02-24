@@ -406,14 +406,14 @@ export class PublisherApi {
         );
     }
 
-    public async updateDatasetProviders(datasetId: string, providers: RevisionProviderDTO[]): Promise<DatasetDTO> {
+    public async updateAssignedProviders(datasetId: string, providers: RevisionProviderDTO[]): Promise<DatasetDTO> {
         return this.fetch({ url: `dataset/${datasetId}/providers`, method: HttpMethod.Patch, json: providers }).then(
             (response) => response.json() as unknown as DatasetDTO
         );
     }
 
-    public async getDatasetProviders(datasetId: string): Promise<RevisionProviderDTO[]> {
-        logger.debug('Fetching dataset providers...');
+    public async getAssignedProviders(datasetId: string): Promise<RevisionProviderDTO[]> {
+        logger.debug('Fetching assigned data providers...');
         return this.fetch({ url: `dataset/${datasetId}/providers`, method: HttpMethod.Get }).then(
             (response) => response.json() as unknown as RevisionProviderDTO[]
         );

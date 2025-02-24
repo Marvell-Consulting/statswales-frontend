@@ -9,7 +9,7 @@ export const singleLangRevision = (revision?: RevisionDTO, lang?: string): Singl
     return {
         ...revision,
         metadata: revision.metadata?.find((meta) => meta.language === lang),
-        providers: revision.providers?.filter((provider) => provider.language === lang?.toLowerCase())
+        providers: (revision.providers || []).filter((provider) => provider.language === lang?.toLowerCase())
     };
 };
 
