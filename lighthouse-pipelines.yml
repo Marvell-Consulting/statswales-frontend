@@ -1,0 +1,30 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  REPORT_FOLDER: 'lighthouse-report'
+  REPORT_FILE: 'lighthouse-report.html'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '22.x'
+  displayName: 'Use Node.js 22.x'
+
+- script: |
+    mkdir -p $(REPORT_FOLDER)
+    npm install -g lighthouse
+    lighthouse $(WEBSITE_URL) \
+      --output html --output-path $(REPORT_FOLDER)/$(REPORT_FILE) \
+      --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
+      --preset=desktop
+  displayName: 'Run Lighthouse Test'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(REPORT_FOLDER)'
+    artifactName: 'LighthouseReport'
+  displayName: 'Publish Lighthouse Report'
