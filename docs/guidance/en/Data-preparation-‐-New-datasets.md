@@ -254,14 +254,20 @@ SW3 uses shorthand note codes, with standardised explanations, closely following
 | Shorthand                          | Meaning                  | Use |
 | :--------------------------------- | :----------------------- | :-- |
 | a                                  | Average                  | When a data value is an average of other values |
+| b                                  | Break in time series     | When there is a break in a data series that means that data before the break cannot be directly compared with data after the break |
 | c                                  | Confidential information | For example, if a data value has been suppressed because you could identify details about specific people from the data. Note that there is no way in SW3 to mask or suppress values, so this must be done in your data table. |
 | e                                  | Estimated                | When a data value is an estimated value |
 | f                                  | Forecast                 | When a data value is a calculated future value instead of an observed value |
 | k                                  | Low figure               | A low figure that appears as a zero when rounded |
+| ns                                 | Not statistically significant | When it's not possible to determine if a data value is reliable or not |
 | p                                  | Provisional              | When a data value is yet to be finalised, or is expected to be revised |
 | r                                  | Revised                  | When a data value has been revised since it was first published |
+| s                                  | Statistically significant at 0.05 or 5% level | When there's a less than 5% chance a data value is unreliable |
+| ss                                  | Statistically significant at 0.01 or 1% level | When there's a less than 1% chance a data value is unreliable |
+| sss                                  | Statistically significant at 0.001 or 0.1% level | When there's a less than 0.1% chance a data value is unreliable |
 | t                                  | Total                    | When a data value is a total of other values |
 | u                                  | Low reliability          | When a data value is of low statistical quality |
+| w                                  | None recorded in survey  | When no people are estimated to be in a category |
 | x                                  | Missing data             | For example, where a data value is not collected in a region |
 | z                                  | Not applicable           | For example, in tables of employment where people under 16 cannot legally be employed |
 
