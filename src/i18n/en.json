@@ -234,9 +234,12 @@
             "showing": "Showing a sample of {{rows}} of {{total}} rows.",
             "confirm": "By continuing, you confirm the lookup table is correct.",
             "go_back": "Choose a different lookup table",
+            "change_lookup_table": "Replace lookup table",
+            "change_dimension_type": "Change dimension type",
             "column_headers": {
                 "fact_table": "Fact Table:",
                 "lookup_table": "Lookup Table:",
+                "description": "Description",
                 "description_en": "Description (English)",
                 "description_cy": "Description (Welsh)",
                 "sort_order": "Sort Order",
@@ -286,9 +289,13 @@
         },
         "time_dimension_review": {
             "heading": "Confirm the dates are correct",
+            "unknown_name": "Unnamed Dimension",
+            "actions": "Actions",
             "showing": "Showing a sample of {{rows}} of {{total}} rows.",
             "confirm": "By continuing, you confirm the dates are correct.",
             "go_back": "Change date format",
+            "change_format": "Change date representation",
+            "change_name": "Change dimension name",
             "column_headers": {
                 "date_code": "Date code",
                 "description": "Description",

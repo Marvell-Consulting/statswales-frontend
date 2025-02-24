@@ -603,7 +603,13 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
         }
     }
 
-    res.render('publish/upload', { revisit, errors, uploadType: 'lookup' });
+    res.render('publish/upload', {
+        revisit,
+        errors,
+        uploadType: 'lookup',
+        dimension,
+        changeLookup: Boolean(dimension.type === 'lookup_table')
+    });
 };
 
 export const lookupReview = async (req: Request, res: Response, next: NextFunction) => {
@@ -744,20 +750,30 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
                                 field: 'dimensionTypeGeography',
                                 message: { key: 'errors.dimension.dimension_type_required' }
                             }
-                        ]
+                        ],
+                        changeType: Boolean(req.path.indexOf('change') > -1)
                     });
             }
             return;
         }
 
-        if (req.session.errors) {
-            const errors = req.session.errors;
+        const errors = req.session.errors;
+        if (errors) {
             req.session.errors = undefined;
             req.session.save();
             res.status(500);
             res.render('publish/dimension-chooser', { ...dataPreview, dimension, errors });
+            return;
+        }
+
+        if (dimension && dimension.extractor && req.path.indexOf('change') === -1) {
+            res.render('publish/dimension-revisit', { ...dataPreview, dimension });
         } else {
-            res.render('publish/dimension-chooser', { ...dataPreview, dimension });
+            res.render('publish/dimension-chooser', {
+                ...dataPreview,
+                dimension,
+                changeType: Boolean(req.path.indexOf('change') > -1)
+            });
         }
     } catch (err) {
         logger.error('Failed to get dimension preview', err);
@@ -816,8 +832,11 @@ export const fetchTimeDimensionPreview = async (req: Request, res: Response, nex
             }
             return;
         }
-
-        res.render('publish/time-chooser', { ...dataPreview, dimension });
+        if (dimension && dimension.extractor && req.path.indexOf('change') === -1) {
+            res.render('publish/time-revisit', { ...dataPreview, dimension });
+        } else {
+            res.render('publish/time-chooser', { ...dataPreview, dimension });
+        }
     } catch (err) {
         logger.error('Failed to get dimension preview', err);
         next(new NotFoundException());
@@ -1278,7 +1297,11 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                     dataset_id: req.params.datasetId
                 };
                 res.status(400);
-                res.render('publish/dimension-name', { ...{ updatedName }, errors });
+                res.render('publish/dimension-name', {
+                    ...{ updatedName, id: dimension.id, type: dimension.type },
+                    errors,
+                    changeName: Boolean(req.path.indexOf('change') > -1)
+                });
                 return;
             }
             if (updatedName.length > 256) {
@@ -1296,7 +1319,11 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                     dataset_id: req.params.datasetId
                 };
                 res.status(400);
-                res.render('publish/dimension-name', { ...{ updatedName }, errors });
+                res.render('publish/dimension-name', {
+                    ...{ updatedName, id: dimension.id, type: dimension.type },
+                    errors,
+                    changeName: Boolean(req.path.indexOf('change') > -1)
+                });
                 return;
             } else if (updatedName.length < 1) {
                 logger.error(`Dimension name is too short.`);
@@ -1313,7 +1340,11 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                     dataset_id: req.params.datasetId
                 };
                 res.status(400);
-                res.render('publish/dimension-name', { ...{ updatedName }, errors });
+                res.render('publish/dimension-name', {
+                    ...{ updatedName, id: dimension.id, type: dimension.type },
+                    errors,
+                    changeName: Boolean(req.path.indexOf('change') > -1)
+                });
                 return;
             } else if (!dimensionColumnNameRegex.test(updatedName)) {
                 logger.error(`Dimension name contains characters which aren't allowed.`);
@@ -1330,7 +1361,11 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                     dataset_id: req.params.datasetId
                 };
                 res.status(400);
-                res.render('publish/dimension-name', { ...{ updatedName }, errors });
+                res.render('publish/dimension-name', {
+                    ...{ updatedName, id: dimension.id, type: dimension.type },
+                    errors,
+                    changeName: Boolean(req.path.indexOf('change') > -1)
+                });
                 return;
             }
             const metadata: DimensionMetadataDTO = { name: updatedName, language: req.language };
@@ -1354,12 +1389,19 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                     dataset_id: req.params.datasetId
                 };
                 res.status(500);
-                res.render('publish/dimension-name', { ...{ dimensionName }, errors });
+                res.render('publish/dimension-name', {
+                    ...{ dimensionName, id: dimension.id, type: dimension.type },
+                    errors,
+                    changeName: Boolean(req.path.indexOf('change') > -1)
+                });
                 return;
             }
         }
 
-        res.render('publish/dimension-name', { ...{ dimensionName } });
+        res.render('publish/dimension-name', {
+            ...{ dimensionName, id: dimension.id, type: dimension.type },
+            changeName: Boolean(req.path.indexOf('change') > -1)
+        });
     } catch (err) {
         logger.error(`Failed to get dimension name with the following error: ${err}`);
         next(new NotFoundException());

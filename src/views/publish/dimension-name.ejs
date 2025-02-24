@@ -9,6 +9,7 @@
             </div>
         </div>
 
+        <p class="govuk-body-l region-subhead govuk-!-font-weight-bold"><%= locals.dimensionName %></p>
         <h1 class="govuk-heading-xl"><%= t('publish.dimension_name.heading') %></h1>
 
         <%- include("../partials/error-handler"); %>
@@ -23,9 +24,22 @@
             <div class="govuk-form-group">
                 <input class="govuk-input" id="name" name="name" type="text" value="<%= locals.dimensionName %>">
             </div>
-            <button type="submit" class="govuk-button" data-module="govuk-button">
-                <%= t('buttons.continue') %>
-            </button>
+            <div class="govuk-button-group">
+                <button type="submit" class="govuk-button" data-module="govuk-button">
+                    <%= t('buttons.continue') %>
+                </button>
+                <% if (locals.changeName) { %>
+                    <% if (locals.type === 'time_period' || locals.type === 'time_point') { %>
+                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/time-period/${locals.id}`, i18n.language) %>" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                            <%= t('buttons.cancel') %>
+                        </a>
+                    <% } else { %>
+                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/dimension-data-chooser/${locals.id}`, i18n.language) %>" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                            <%= t('buttons.cancel') %>
+                        </a>
+                    <% } %>
+                <% } %>
+            </div>
         </form>
     </main>
 </div>
