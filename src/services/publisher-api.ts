@@ -31,7 +31,7 @@ import { DatasetInclude } from '../enums/dataset-include';
 
 const config = appConfig();
 
-const logger = parentLogger.child({ service: 'sw-api' });
+const logger = parentLogger.child({ service: 'publisher-api' });
 
 interface fetchParams {
     url: string;
@@ -65,7 +65,7 @@ export class PublisherApi {
         // if json is passed, then body will be ignored
         const data = json ? JSON.stringify(json) : body;
 
-        logger.debug(`Fetching /${url}`);
+        logger.debug(`API: ${method} /${url}`);
 
         return fetch(`${this.backendUrl}/${url}`, { method, headers: head, body: data })
             .then(async (response: Response) => {
