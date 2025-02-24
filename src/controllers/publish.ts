@@ -66,6 +66,7 @@ import { FileFormat } from '../enums/file-format';
 import { getDownloadHeaders } from '../utils/download-headers';
 import { FactTableColumnDto } from '../dtos/fact-table-column-dto';
 import { ProviderDTO } from '../dtos/provider';
+import { Locale } from '../enums/locale';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -1591,8 +1592,6 @@ export const provideQuality = async (req: Request, res: Response, next: NextFunc
         rounding_description: revision?.metadata?.rounding_description
     };
 
-    console.log(metadata);
-
     if (req.method === 'POST') {
         try {
             metadata = {
@@ -1806,7 +1805,7 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
 
     let errors: ViewError[] | undefined;
     let related_links = sortBy(revision?.related_links || [], 'created_at');
-    let link: RelatedLinkDTO = { id: nanoid(4), url: '', label: '', created_at: now };
+    let link: RelatedLinkDTO = { id: nanoid(4), url: '', label_en: '', label_cy: '', created_at: now };
 
     if (deleteId) {
         try {
@@ -1843,7 +1842,13 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
         }
 
         // redisplay the form with submitted values if there are errors
-        link = { id: link_id, url: link_url, label: link_label, created_at: link.created_at };
+        link = {
+            id: link_id,
+            url: link_url,
+            label_en: req.language.includes(Locale.English) ? link_label : link.label_en,
+            label_cy: req.language.includes(Locale.Welsh) ? link_label : link.label_cy,
+            created_at: link.created_at
+        };
 
         try {
             if (add_another === 'true' && !add_link) {
@@ -1871,7 +1876,13 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
             }
 
             const { link_id, link_url, link_label } = matchedData(req);
-            link = { id: link_id, url: link_url, label: link_label, created_at: link.created_at };
+            link = {
+                id: link_id,
+                url: link_url,
+                label_en: req.language.includes(Locale.English) ? link_label : link.label_en,
+                label_cy: req.language.includes(Locale.Welsh) ? link_label : link.label_cy,
+                created_at: link.created_at
+            };
 
             // if the link already exists, replace it, otherwise add it, then sort
             related_links = sortBy([...related_links.filter((rl) => rl.id !== link.id), link], 'created_at');
