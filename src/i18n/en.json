@@ -995,10 +995,18 @@
         "dimension": {
             "name_to_short": "The Dimension name is to short or missing",
             "name_to_long": "Dimension name is limited to 1024 characters",
-            "naming_failed": "Something went wrong trying to set the name.  Please try again"
+            "naming_failed": "Something went wrong trying to set the name.  Please try again",
+            "dimension_period_type_required": "You must select the kind of data this dimension contains",
+            "dimension_type_required": "You must select the kind of data this dimension contains",
+            "year_type_required": "You must select the type of year in this dimension",
+            "year_format_required": "You must select the format of years in this dimension",
+            "shortest_period_required": "You must select the shortest period of time for this dimension",
+            "quarter_type_required": "You must select the format which represents quarters in this dimension",
+            "quarter_total_type_required": "You must select how yearly totals are represented in this dimension",
+            "month_type_required": "You must select the format for months in this dimension"
         },
         "upload": {
-            "no_csv": "No CSV data provided",
+            "no_csv": "No file selected to upload to the server",
             "no_csv_data": "No CSV data available"
         },
         "not_found": "Page not found",

@@ -24,7 +24,7 @@
                         <fieldset class="govuk-fieldset">
                             <div class="govuk-radios" data-module="govuk-radios">
                                 <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="quarter-format-2" name="quarterType" type="radio" value="QX">
+                                    <input class="govuk-radios__input" id="quarter-format-2" name="quarterType" type="radio" <% if (locals.quarterType === 'QX') { %>checked <% } %>value="QX">
                                     <label class="govuk-label govuk-radios__label" for="quarter-format-2">
                                         Qx
                                     </label>
@@ -33,7 +33,7 @@
                                     </div>
                                 </div>
                                 <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="quarter-format-3" name="quarterType" type="radio" value="_QX">
+                                    <input class="govuk-radios__input" id="quarter-format-3" name="quarterType" type="radio"  <% if (locals.quarterType === '_QX') { %>checked <% } %>value="_QX">
                                     <label class="govuk-label govuk-radios__label" for="quarter-format-3">
                                         _Qx
                                     </label>
@@ -42,7 +42,7 @@
                                     </div>
                                 </div>
                                 <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="quarter-format-4" name="quarterType" type="radio" value="-QX">
+                                    <input class="govuk-radios__input" id="quarter-format-4" name="quarterType" type="radio" <% if (locals.quarterType === '-QX') { %>checked <% } %>value="-QX">
                                     <label class="govuk-label govuk-radios__label" for="quarter-format-4">
                                         -Qx
                                     </label>
@@ -51,7 +51,7 @@
                                     </div>
                                 </div>
                                 <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="quarter-format-5" name="quarterType" type="radio" value="X">
+                                    <input class="govuk-radios__input" id="quarter-format-5" name="quarterType" type="radio" <% if (locals.quarterType === 'X') { %>checked <% } %>value="X">
                                     <label class="govuk-label govuk-radios__label" for="quarter-format-5">
                                         x
                                     </label>
@@ -60,7 +60,7 @@
                                     </div>
                                 </div>
                                 <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="quarter-format-6" name="quarterType" type="radio" value="_X">
+                                    <input class="govuk-radios__input" id="quarter-format-6" name="quarterType" type="radio" <% if (locals.quarterType === '_X') { %>checked <% } %>value="_X">
                                     <label class="govuk-label govuk-radios__label" for="quarter-format-6">
                                         _x
                                     </label>
@@ -69,7 +69,7 @@
                                     </div>
                                 </div>
                                 <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="quarter-format-7" name="quarterType" type="radio" value="-X">
+                                    <input class="govuk-radios__input" id="quarter-format-7" name="quarterType" type="radio" <% if (locals.quarterType === '-X') { %>checked <% } %>value="-X">
                                     <label class="govuk-label govuk-radios__label" for="quarter-format-6">
                                         -x
                                     </label>
@@ -100,13 +100,13 @@
                             <p class="govuk-hint"><%- t('publish.quarter_format.fifth_example')%></p>
                             <div class="govuk-radios" data-module="govuk-radios">
                                 <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="fifth-quater-yes" name="fifthQuater" type="radio" value="yes">
+                                    <input class="govuk-radios__input" id="fifth-quater-yes" name="fifthQuater" type="radio" <% if (locals.fifthQuater === 'yes') { %>checked <% } %>value="yes">
                                     <label class="govuk-label govuk-radios__label" for="fifth-quater-yes">
                                         <%= t('yes') %>
                                     </label>
                                 </div>
                                 <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="fifth-quater-no" name="fifthQuater" type="radio" value="no">
+                                    <input class="govuk-radios__input" id="fifth-quater-no" name="fifthQuater" type="radio" <% if (locals.fifthQuater === 'no') { %>checked <% } %>value="no">
                                     <label class="govuk-label govuk-radios__label" for="fifth-quater-no">
                                         <%= t('no') %>
                                     </label>

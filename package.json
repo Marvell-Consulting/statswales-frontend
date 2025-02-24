@@ -18,7 +18,7 @@
     "check": "npm-run-all prettier:fix lint:fix test build",
     "dev:check": "npm-run-all check dev",
     "predev": "bash -c 'f() { if [ $(command -v podman) ]; then podman compose up -d redis; else docker compose up -d redis; fi }; f'",
-    "dev": "nodemon --watch src -e ts,ejs --exec npm run start",
+    "dev": "nodemon --watch src -e ts,ejs,json --exec npm run start",
     "start": "npm run build && node dist/server.js | pino-colada",
     "start:container": "node dist/server.js"
   },
