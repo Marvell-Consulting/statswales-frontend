@@ -7,7 +7,7 @@ import { ResultsetWithCount } from '../interfaces/resultset-with-count';
 import { getPaginationProps } from '../utils/pagination';
 import { singleLangDataset } from '../utils/single-lang-dataset';
 import { getDatasetPreview } from '../utils/dataset-preview';
-import { getLatestPublishedRevision } from '../utils/latest';
+import { getLatestPublishedRevision } from '../utils/revision';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { FileFormat } from '../enums/file-format';
 import { getDownloadHeaders } from '../utils/download-headers';

@@ -1,10 +1,9 @@
-import { isBefore } from 'date-fns';
-
 import { RevisionDTO } from '../dtos/revision';
 import { SingleLanguageDataset } from '../dtos/single-language/dataset';
 
 import { nextUpdateAt } from './next-update-at';
 import { markdownToSafeHTML } from './markdown-to-html';
+import { createdAtDesc, isPublished } from './revision';
 
 // TODO: once we move metadata to the revision, we should not need the dataset param
 export const getDatasetPreview = async (dataset: SingleLanguageDataset, revision: RevisionDTO) => {
@@ -26,9 +25,7 @@ export const getDatasetPreview = async (dataset: SingleLanguageDataset, revision
         notes: {
             roundingApplied: rounding_applied,
             roundingDescription: await markdownToSafeHTML(rounding_description),
-            publishedRevisions: dataset.revisions.filter(
-                (rev) => rev.approved_at && rev.publish_at && isBefore(rev.publish_at, new Date())
-            )
+            publishedRevisions: dataset.revisions.filter(isPublished).sort(createdAtDesc)
         },
         about: {
             summary: await markdownToSafeHTML(description),

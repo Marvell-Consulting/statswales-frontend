@@ -21,8 +21,8 @@
             "published": "Published",
             "incomplete": "Incomplete",
             "scheduled": "Scheduled",
-            "update_incomplete": "Update Incomplete",
-            "update_scheduled": "Update Scheduled"
+            "update_incomplete": "Update incomplete",
+            "update_scheduled": "Update scheduled"
         }
     },
     "pagination": {
@@ -93,9 +93,9 @@
         },
         "publishing_status": {
             "incomplete": "Incomplete",
-            "update_incomplete": "Update Incomplete",
+            "update_incomplete": "Update incomplete",
             "scheduled": "Scheduled",
-            "update_scheduled": "Update Scheduled",
+            "update_scheduled": "Update scheduled",
             "published": "Published"
         },
         "buttons": {
@@ -255,17 +255,33 @@
                 "lookup_table": "Lookup Table:",
                 "description_en": "Description (English)",
                 "description_cy": "Description (Welsh)",
+                "description": "Description",
+                "decimals": "Decimal Places",
+                "hierarchy": "Hierarchy",
+                "language": "Language",
+                "reference": "Reference Value",
                 "sort": "Sort Order",
                 "sort_order": "Sort Order",
+                "notes": "Notes",
                 "notes_en": "Notes (English)",
                 "notes_cy": "Notes (Welsh)",
-                "decimal": "Decimal Value",
                 "format": "Format",
                 "measure_type": "Value Type"
             },
             "column_values": {
-                "1": "Yes",
-                "0": "No"
+                "null": "No",
+                "cy-gb": "Welsh",
+                "en-gb": "English",
+                "float": "Floating Point Number",
+                "decimal": "Decimal Number",
+                "integer": "Whole Number",
+                "long": "Big Whole Number",
+                "percentage": "Percentage",
+                "string": "Plain Text",
+                "text": "Plain Text",
+                "date": "Date",
+                "datetime": "Date and Time",
+                "time": "Time"
             }
         },
         "time_dimension_review": {
@@ -334,7 +350,8 @@
             "heading": "What format is used for quarters in the dimension?",
             "heading-alt": "What format is used for quarterly totals?",
             "example": "For example, {{example}}",
-            "fifth_quarter": "Is a quarter used to represent yearly totals?\n",
+            "fifth_quarter": "Is a fifth quarter used to represent yearly totals?",
+            "fifth_example": "For example, 2024Q5 to represent the total for 2024",
             "no_quarterly_totals": "There are no quarterly totals"
         },
         "month_format": {

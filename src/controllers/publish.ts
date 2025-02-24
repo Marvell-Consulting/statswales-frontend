@@ -457,6 +457,11 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
             }
         }
 
+        let langCol = -1;
+        if (dataPreview.headers.find((header) => header.name.toLowerCase().indexOf('lang') > -1)) {
+            langCol = dataPreview.headers.findIndex((header) => header.name.toLowerCase().indexOf('lang') > -1);
+        }
+
         if (req.session.errors) {
             const errors = req.session.errors;
             req.session.errors = undefined;
@@ -464,11 +469,12 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
             res.status(500);
             res.render('publish/measure-preview', {
                 ...dataPreview,
+                langCol,
                 measure,
                 errors
             });
         } else {
-            res.render('publish/measure-preview', { ...dataPreview, measure });
+            res.render('publish/measure-preview', { ...dataPreview, langCol, measure });
         }
     } catch (err) {
         logger.error('Failed to get dimension preview', err);

@@ -27,10 +27,10 @@
                         <tr class="govuk-table__row">
                             <% locals.headers.forEach(function(cell, idx) { %>
                                 <th scope="col" class="govuk-table__header">
-                                    <% if (i18n.exists(`publish.lookup_table_review.column_headers.${cell.name.toLowerCase()}`)) { %>
-                                        <%= t(`publish.lookup_table_review.column_headers.${cell.name.toLowerCase()}`) %>
-                                    <% } else { %>
+                                    <% if (t(`publish.measure_review.column_headers.${cell.name.toLowerCase()}`) === `publish.measure_review.column_headers.${cell.name.toLowerCase()}`) { %>
                                         <%= cell.name %>
+                                    <% } else { %>
+                                        <%= t(`publish.measure_review.column_headers.${cell.name.toLowerCase()}`) %>
                                     <% } %>
                                 </th>
                             <% }); %>
@@ -38,13 +38,28 @@
                         </thead>
                         <tbody>
                         <% locals.data.forEach(function(row) { %>
+                            <% if (locals.langCol > -1 && row[locals.langCol] !== i18n.language.toLowerCase() ) return; %>
                             <tr>
                                 <% row.forEach(function(cell, index) { %>
-                                    <% if (locals.headers[index].source_type === 'line_number') { %>
-                                        <td class="govuk-table__cell line-number"><span class="linespan"><%= cell %></span></td>
-                                    <% } else { %>
-                                        <td class="govuk-table__cell"><%= cell %></td>
-                                    <% } %>
+                                    <td class="govuk-table__cell">
+                                        <% switch (locals.headers[index].name.toLowerCase()) {
+                                            case 'start_date':
+                                        case 'end_date': %>
+                                        <%= locals.dateFormat(locals.parseISO(cell.split('T')[0]), 'do MMMM yyyy') %>
+                                        <% break;
+                                        case 'date_type': %>
+                                        <%= t(`publish.measure_review.year_type.${cell}`) %>
+                                        <% break;
+                                        default: %>
+                                        <% if (cell) { %>
+                                            <% if (t(`publish.measure_review.column_values.${cell.toString().toLowerCase()}`) === `publish.measure_review.column_values.${cell.toString().toLowerCase()}`) { %>
+                                                <%= cell %>
+                                            <% } else { %>
+                                                <%= t(`publish.measure_review.column_values.${cell.toString().toLowerCase()}`) %>
+                                            <% } %>
+                                        <% } %>
+                                        <% } %>
+                                    </td>
                                 <% }); %>
                             </tr>
                         <% }); %>

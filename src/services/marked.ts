@@ -165,7 +165,7 @@ function createNestedList(document: Document, treeData: TreeNode[]) {
     for (const node of treeData) {
         const li = document.createElement('li');
         const anchor = node.text.replaceAll('.', '').replaceAll(' ', '-').toLowerCase();
-        li.innerHTML = `<a href="#guidance-${anchor}">${node.text}</a>`;
+        li.innerHTML = `<a class="govuk-link" href="#guidance-${anchor}">${node.text}</a>`;
 
         if (node.children && node.children.length > 0) {
             const childUl = createNestedList(document, node.children);

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { NotFoundException } from '../exceptions/not-found.exception';
-import { getLatestRevision, getDataTable } from '../utils/latest';
+import { getLatestRevision, getDataTable } from '../utils/revision';
 import { logger } from '../utils/logger';
 import { hasError, datasetIdValidator } from '../validators';
 
