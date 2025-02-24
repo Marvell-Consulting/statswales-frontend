@@ -12,24 +12,7 @@
 
         <h1 class="govuk-heading-xl"><%= t('publish.dimension_type_chooser.heading') %></h1>
 
-        <% if (locals?.errors) { %>
-            <div class="govuk-error-summary" data-module="govuk-error-summary">
-                <div role="alert">
-                    <h2 class="govuk-error-summary__title">
-                        <%= t('errors.problem') %>
-                    </h2>
-                    <div class="govuk-error-summary__body">
-                        <ul class="govuk-list govuk-error-summary__list">
-                            <% locals.errors.errors.forEach(function(error) { %>
-                                <li>
-                                    <a href="#<%= error.field %>"><%= t(error.tag.name) %></a>
-                                </li>
-                            <% }); %>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        <% } %>
+        <%- include("../partials/error-handler"); %>
 
         <% if (locals?.data) { %>
             <div class="govuk-grid-row">
@@ -84,39 +67,43 @@
                                     </h2>
                                 </legend>
                                 <div class="govuk-radios" data-module="govuk-radios">
-                                    <div class="govuk-radios__item">
-                                        <input class="govuk-radios__input" id="dimensionTypeAge" name="dimensionType" type="radio" value="Age">
-                                        <label class="govuk-label govuk-radios__label" for="dimensionTypeAge">
-                                            <%= t('publish.dimension_type_chooser.chooser.age')%>
-                                        </label>
-                                    </div>
-                                    <div class="govuk-radios__item">
-                                        <input class="govuk-radios__input" id="dimensionTypeEthnicity" name="dimensionType" type="radio" value="Eth">
-                                        <label class="govuk-label govuk-radios__label" for="dimensionTypeEthnicity">
-                                            <%= t('publish.dimension_type_chooser.chooser.ethnicity')%>
-                                        </label>
-                                    </div>
+                                    <% if (false) { %> <!-- Disabled for private beta while a decision is made on reference data -->
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="dimensionTypeAge" name="dimensionType" type="radio" value="Age" disabled>
+                                            <label class="govuk-label govuk-radios__label" for="dimensionTypeAge">
+                                                <%= t('publish.dimension_type_chooser.chooser.age')%>
+                                            </label>
+                                        </div>
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="dimensionTypeEthnicity" name="dimensionType" type="radio" value="Eth"  disabled>
+                                            <label class="govuk-label govuk-radios__label" for="dimensionTypeEthnicity">
+                                                <%= t('publish.dimension_type_chooser.chooser.ethnicity')%>
+                                            </label>
+                                        </div>
+                                    <% } %>
                                     <div class="govuk-radios__item">
                                         <input class="govuk-radios__input" id="dimensionTypeGeography" name="dimensionType" type="radio" value="Geog">
                                         <label class="govuk-label govuk-radios__label" for="dimensionTypeGeography">
                                             <%= t('publish.dimension_type_chooser.chooser.geography')%>
                                         </label>
                                     </div>
-                                    <div class="govuk-radios__item">
-                                        <input class="govuk-radios__input" id="dimensionTypeReligion" name="dimensionType" type="radio" value="Rlgn">
-                                        <label class="govuk-label govuk-radios__label" for="dimensionTypeReligion">
-                                            <%= t('publish.dimension_type_chooser.chooser.religion')%>
-                                        </label>
-                                    </div>
-                                    <div class="govuk-radios__item">
-                                        <input class="govuk-radios__input" id="dimensionTypeSexGender" name="dimensionType" type="radio" value="Gen">
-                                        <label class="govuk-label govuk-radios__label" for="dimensionTypeSexGender">
-                                            <%= t('publish.dimension_type_chooser.chooser.sex_gender')%>
-                                        </label>
-                                    </div>
+                                    <% if (false) { %> <!-- Disabled for private beta while a decision is made on reference data -->
+                                            <div class="govuk-radios__item">
+                                                <input class="govuk-radios__input" id="dimensionTypeReligion" name="dimensionType" type="radio" value="Rlgn" disabled>
+                                                <label class="govuk-label govuk-radios__label" for="dimensionTypeReligion">
+                                                    <%= t('publish.dimension_type_chooser.chooser.religion')%>
+                                                </label>
+                                            </div>
+                                            <div class="govuk-radios__item">
+                                                <input class="govuk-radios__input" id="dimensionTypeSexGender" name="dimensionType" type="radio" value="Gen" disabled>
+                                                <label class="govuk-label govuk-radios__label" for="dimensionTypeSexGender">
+                                                    <%= t('publish.dimension_type_chooser.chooser.sex_gender')%>
+                                                </label>
+                                            </div>
+                                    <% } %>
                                     <div class="govuk-radios__divider">or</div>
                                     <div class="govuk-radios__item">
-                                        <input class="govuk-radios__input" id="dimensionTypeTimeLookup" name="dimensionType" type="radio" checked value="lookup">
+                                        <input class="govuk-radios__input" id="dimensionTypeTimeLookup" name="dimensionType" type="radio" value="lookup">
                                         <label class="govuk-label govuk-radios__label" for="dimensionTypeTimeLookup">
                                             <%= t('publish.dimension_type_chooser.chooser.lookup')%>
                                         </label>

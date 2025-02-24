@@ -402,14 +402,26 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
             next(new UnknownException('errors.preview.measure_not_found'));
             return;
         }
+        const dataPreview = await req.pubapi.getMeasurePreview(res.locals.dataset.id);
 
         if (req.method === 'POST') {
             logger.debug('User is uploading a measure lookup table..');
+            if (!req.file) {
+                logger.error('No file attached to request');
+                const errors: ViewError[] = [
+                    {
+                        field: 'csv',
+                        message: {
+                            key: 'errors.upload.no_csv'
+                        }
+                    }
+                ];
+                res.status(400);
+                res.render('publish/measure-preview', { ...dataPreview, measure, errors });
+                return;
+            }
+
             try {
-                if (!req.file) {
-                    logger.error('No file is present in the request');
-                    throw new Error('errors.csv.invalid');
-                }
                 const fileName = req.file.originalname;
                 req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
                 const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
@@ -445,7 +457,6 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
             }
         }
 
-        const dataPreview = await req.pubapi.getMeasurePreview(res.locals.dataset.id);
         if (req.session.errors) {
             const errors = req.session.errors;
             req.session.errors = undefined;
@@ -657,6 +668,8 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
             return;
         }
 
+        const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
+
         if (req.method === 'POST') {
             switch (req.body.dimensionType) {
                 case 'lookup':
@@ -715,11 +728,21 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
                         return;
                     }
                     break;
+                default:
+                    res.status(400);
+                    res.render('publish/dimension-chooser', {
+                        ...dataPreview,
+                        dimension,
+                        errors: [
+                            {
+                                field: 'dimensionTypeGeography',
+                                message: { key: 'errors.dimension.dimension_type_required' }
+                            }
+                        ]
+                    });
             }
             return;
         }
-
-        const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
 
         if (req.session.errors) {
             const errors = req.session.errors;
@@ -749,6 +772,8 @@ export const fetchTimeDimensionPreview = async (req: Request, res: Response, nex
             return;
         }
 
+        const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimensionId);
+        const dimension = dataPreview.dataset?.dimensions?.find((dim) => dim.id === dimensionId);
         if (req.method === 'POST') {
             switch (req.body.dimensionType) {
                 case 'time_period':
@@ -767,12 +792,25 @@ export const fetchTimeDimensionPreview = async (req: Request, res: Response, nex
                         )
                     );
                     break;
+                default:
+                    logger.error('User failed to select an option for time dimension type');
+                    res.status(400);
+                    res.render('publish/time-chooser', {
+                        ...dataPreview,
+                        dimension,
+                        errors: [
+                            {
+                                field: 'dimensionTypePeriod',
+                                message: {
+                                    key: 'errors.dimension.dimension_period_type_required'
+                                }
+                            }
+                        ]
+                    });
             }
             return;
         }
 
-        const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimensionId);
-        const dimension = dataPreview.dataset?.dimensions?.find((dim) => dim.id === dimensionId);
         res.render('publish/time-chooser', { ...dataPreview, dimension });
     } catch (err) {
         logger.error('Failed to get dimension preview', err);
@@ -791,6 +829,21 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
         }
 
         if (req.method === 'POST') {
+            if (!req.body.yearType) {
+                logger.error('User failed to select an option for year type');
+                res.status(400);
+                res.render('publish/year-type', {
+                    errors: [
+                        {
+                            field: 'yearTypeCalendar',
+                            message: {
+                                key: 'errors.dimension.year_type_required'
+                            }
+                        }
+                    ]
+                });
+                return;
+            }
             if (req.body.yearType === 'calendar') {
                 req.session.dimensionPatch = {
                     dimension_type: DimensionType.TimePeriod,
@@ -843,6 +896,21 @@ export const yearFormat = async (req: Request, res: Response, next: NextFunction
             if (!req.session.dimensionPatch) {
                 logger.error('Failed to find patch information in the session.');
                 throw new Error('Year type not set in previous step');
+            }
+            if (!req.body.yearType) {
+                logger.error('User failed to select an option for year format');
+                res.status(400);
+                res.render('publish/year-format', {
+                    errors: [
+                        {
+                            field: 'year-format-1',
+                            message: {
+                                key: 'errors.dimension.year_format_required'
+                            }
+                        }
+                    ]
+                });
+                return;
             }
             req.session.dimensionPatch.year_format = req.body.yearType;
             req.session.save();
@@ -930,6 +998,20 @@ export const periodType = async (req: Request, res: Response, next: NextFunction
                         )
                     );
                     return;
+                default:
+                    logger.error('User failed to select an option for the shortest period of time');
+                    res.status(400);
+                    res.render('publish/period-type', {
+                        errors: [
+                            {
+                                field: 'periodTypeChooserYears',
+                                message: {
+                                    key: 'errors.dimension.shortest_period_required'
+                                }
+                            }
+                        ]
+                    });
+                    return;
             }
         }
         res.render('publish/period-type');
@@ -960,6 +1042,38 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
                 res.redirect(`/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}`);
                 return;
             }
+
+            const errors: ViewError[] = [];
+            if (!req.body.quarterType) {
+                logger.error('User failed to select an option for quarter type');
+                errors.push({
+                    field: 'quarter-format-2',
+                    message: {
+                        key: 'errors.dimension.quarter_type_required'
+                    }
+                });
+            }
+
+            if (!req.body.fifthQuater) {
+                logger.error('User failed to select how quarterly totals is represented');
+                errors.push({
+                    field: 'fifth-quater-yes',
+                    message: {
+                        key: 'errors.dimension.quarter_total_type_required'
+                    }
+                });
+            }
+
+            if (errors.length > 0) {
+                res.status(400);
+                res.render('publish/quarter-format', {
+                    errors,
+                    quarterType: req.body.quarterType,
+                    fifthQuater: req.body.fifthQuater
+                });
+                return;
+            }
+
             patchRequest.quarter_format = req.body.quarterType;
             if (req.body.fifthQuater === 'yes') {
                 patchRequest.fifth_quarter = true;
@@ -1017,6 +1131,21 @@ export const monthChooser = async (req: Request, res: Response, next: NextFuncti
             if (!patchRequest) {
                 logger.error('Failed to find dimension in dataset in session');
                 res.redirect(`/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}`);
+                return;
+            }
+            if (!req.body.monthType) {
+                logger.error('User failed to select an option for month type');
+                res.status(400);
+                res.render('publish/month-format', {
+                    errors: [
+                        {
+                            field: 'month-format-1',
+                            message: {
+                                key: 'errors.dimension.month_type_required'
+                            }
+                        }
+                    ]
+                });
                 return;
             }
             patchRequest.month_format = req.body.monthFormat;
