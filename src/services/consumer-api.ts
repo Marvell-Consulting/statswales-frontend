@@ -12,7 +12,7 @@ import { FileFormat } from '../enums/file-format';
 
 const config = appConfig();
 
-const logger = parentLogger.child({ service: 'sw-api' });
+const logger = parentLogger.child({ service: 'consumer-api' });
 
 interface fetchParams {
     url: string;

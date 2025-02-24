@@ -554,6 +554,7 @@
                     "action_edit": "Change",
                     "action_delete": "Remove"
                 },
+                "not_translated": "Not yet translated",
                 "form": {
                     "add_another": {
                         "heading": "Do you need to add a link to another report?",
