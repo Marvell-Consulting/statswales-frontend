@@ -78,10 +78,10 @@ publish.get('/:datasetId/cube-preview', fetchDataset(), cubePreview);
 publish.get('/:datasetId/cube-preview/download', fetchDataset(), downloadDataset);
 
 /* Measure creation */
-publish.get('/:datasetId/measure', fetchDataset(), measurePreview);
-publish.post('/:datasetId/measure', fetchDataset(), upload.single('csv'), measurePreview);
-publish.get('/:datasetId/measure/review', fetchDataset(), measureReview);
-publish.post('/:datasetId/measure/review', fetchDataset(), measureReview);
+publish.get('/:datasetId/measure', fetchDataset(Include.DataTable), measurePreview);
+publish.post('/:datasetId/measure', fetchDataset(Include.DataTable), upload.single('csv'), measurePreview);
+publish.get('/:datasetId/measure/review', fetchDataset(Include.DataTable), measureReview);
+publish.post('/:datasetId/measure/review', fetchDataset(Include.DataTable), measureReview);
 
 /* Dimension creation */
 publish.get('/:datasetId/dimension-data-chooser/:dimensionId', fetchDataset(), fetchDimensionPreview);
