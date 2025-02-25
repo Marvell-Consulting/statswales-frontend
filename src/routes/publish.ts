@@ -57,98 +57,123 @@ publish.post('/title', upload.none(), provideTitle);
 
 publish.get('/:datasetId', redirectToTasklist);
 
-publish.get('/:datasetId/title', fetchDataset(Include.Metadata), provideTitle);
-publish.post('/:datasetId/title', fetchDataset(Include.Metadata), upload.none(), provideTitle);
+publish.get('/:datasetId/title', fetchDataset(Include.Meta), provideTitle);
+publish.post('/:datasetId/title', fetchDataset(Include.Meta), upload.none(), provideTitle);
 
-publish.get('/:datasetId/upload', fetchDataset(Include.DataTable), uploadDataTable);
-publish.post('/:datasetId/upload', fetchDataset(Include.DataTable), upload.single('csv'), uploadDataTable);
+publish.get('/:datasetId/upload', fetchDataset(Include.Data), uploadDataTable);
+publish.post('/:datasetId/upload', fetchDataset(Include.Data), upload.single('csv'), uploadDataTable);
 
-publish.get('/:datasetId/preview', fetchDataset(Include.DataTable), factTablePreview);
-publish.post('/:datasetId/preview', fetchDataset(Include.DataTable), upload.none(), factTablePreview);
+publish.get('/:datasetId/preview', fetchDataset(Include.Data), factTablePreview);
+publish.post('/:datasetId/preview', fetchDataset(Include.Data), upload.none(), factTablePreview);
 
-publish.get('/:datasetId/sources', fetchDataset(Include.DataTable), sources);
-publish.post('/:datasetId/sources', fetchDataset(Include.DataTable), upload.none(), sources);
+publish.get('/:datasetId/sources', fetchDataset(Include.Data), sources);
+publish.post('/:datasetId/sources', fetchDataset(Include.Data), upload.none(), sources);
 
 /* Tasklist */
-publish.get('/:datasetId/tasklist', fetchDataset(Include.Metadata), taskList);
-publish.post('/:datasetId/tasklist', fetchDataset(Include.Metadata), upload.none(), taskList);
+publish.get('/:datasetId/tasklist', fetchDataset(Include.Meta), taskList);
+publish.post('/:datasetId/tasklist', fetchDataset(Include.Meta), upload.none(), taskList);
 
 /* Cube Preview */
-publish.get('/:datasetId/cube-preview', fetchDataset(), cubePreview);
-publish.get('/:datasetId/cube-preview/download', fetchDataset(), downloadDataset);
+publish.get('/:datasetId/cube-preview', fetchDataset(Include.All), cubePreview);
+publish.get('/:datasetId/cube-preview/download', fetchDataset(Include.All), downloadDataset);
 
 /* Measure creation */
-publish.get('/:datasetId/measure', fetchDataset(Include.DataTable), measurePreview);
-publish.post('/:datasetId/measure', fetchDataset(Include.DataTable), upload.single('csv'), measurePreview);
-publish.get('/:datasetId/measure/review', fetchDataset(Include.DataTable), measureReview);
-publish.post('/:datasetId/measure/review', fetchDataset(Include.DataTable), measureReview);
+publish.get('/:datasetId/measure', fetchDataset(Include.Data), measurePreview);
+publish.post('/:datasetId/measure', fetchDataset(Include.Data), upload.single('csv'), measurePreview);
+publish.get('/:datasetId/measure/review', fetchDataset(Include.Data), measureReview);
+publish.post('/:datasetId/measure/review', fetchDataset(Include.Data), measureReview);
 
 /* Dimension creation */
-publish.get('/:datasetId/dimension-data-chooser/:dimensionId', fetchDataset(), fetchDimensionPreview);
-publish.post('/:datasetId/dimension-data-chooser/:dimensionId', fetchDataset(), fetchDimensionPreview);
-publish.get('/:datasetId/dimension-data-chooser/:dimensionId/change-type', fetchDataset(), fetchDimensionPreview);
-publish.post('/:datasetId/dimension-data-chooser/:dimensionId/change-type', fetchDataset(), fetchDimensionPreview);
+publish.get('/:datasetId/dimension-data-chooser/:dimensionId', fetchDataset(Include.Data), fetchDimensionPreview);
+publish.post('/:datasetId/dimension-data-chooser/:dimensionId', fetchDataset(Include.Data), fetchDimensionPreview);
+publish.get(
+    '/:datasetId/dimension-data-chooser/:dimensionId/change-type',
+    fetchDataset(Include.Data),
+    fetchDimensionPreview
+);
+publish.post(
+    '/:datasetId/dimension-data-chooser/:dimensionId/change-type',
+    fetchDataset(Include.Data),
+    fetchDimensionPreview
+);
 
 /* lookup table handlers */
-publish.get('/:datasetId/lookup/:dimensionId', fetchDataset(), uploadLookupTable);
-publish.post('/:datasetId/lookup/:dimensionId', fetchDataset(), upload.single('csv'), uploadLookupTable);
-publish.get('/:datasetId/lookup/:dimensionId/review', fetchDataset(), lookupReview);
-publish.post('/:datasetId/lookup/:dimensionId/review', fetchDataset(), lookupReview);
+publish.get('/:datasetId/lookup/:dimensionId', fetchDataset(Include.Data), uploadLookupTable);
+publish.post('/:datasetId/lookup/:dimensionId', fetchDataset(Include.Data), upload.single('csv'), uploadLookupTable);
+publish.get('/:datasetId/lookup/:dimensionId/review', fetchDataset(Include.Data), lookupReview);
+publish.post('/:datasetId/lookup/:dimensionId/review', fetchDataset(Include.Data), lookupReview);
 
-publish.get('/:datasetId/time-period/:dimensionId', fetchDataset(), fetchTimeDimensionPreview);
-publish.post('/:datasetId/time-period/:dimensionId', fetchDataset(), fetchTimeDimensionPreview);
-publish.get('/:datasetId/time-period/:dimensionId/change-format', fetchDataset(), fetchTimeDimensionPreview);
-publish.post('/:datasetId/time-period/:dimensionId/change-format', fetchDataset(), fetchTimeDimensionPreview);
-publish.get('/:datasetId/time-period/:dimensionId/point-in-time', fetchDataset(), pointInTimeChooser);
-publish.post('/:datasetId/time-period/:dimensionId/point-in-time', fetchDataset(), pointInTimeChooser);
+publish.get('/:datasetId/time-period/:dimensionId', fetchDataset(Include.Data), fetchTimeDimensionPreview);
+publish.post('/:datasetId/time-period/:dimensionId', fetchDataset(Include.Data), fetchTimeDimensionPreview);
+publish.get(
+    '/:datasetId/time-period/:dimensionId/change-format',
+    fetchDataset(Include.Data),
+    fetchTimeDimensionPreview
+);
+publish.post(
+    '/:datasetId/time-period/:dimensionId/change-format',
+    fetchDataset(Include.Data),
+    fetchTimeDimensionPreview
+);
+publish.get('/:datasetId/time-period/:dimensionId/point-in-time', fetchDataset(Include.Data), pointInTimeChooser);
+publish.post('/:datasetId/time-period/:dimensionId/point-in-time', fetchDataset(Include.Data), pointInTimeChooser);
 
 /* Period of time flow */
-publish.get('/:datasetId/time-period/:dimensionId/period-of-time', fetchDataset(), yearTypeChooser);
-publish.post('/:datasetId/time-period/:dimensionId/period-of-time', fetchDataset(), yearTypeChooser);
-publish.get('/:datasetId/time-period/:dimensionId/period-of-time/year-format', fetchDataset(), yearFormat);
-publish.post('/:datasetId/time-period/:dimensionId/period-of-time/year-format', fetchDataset(), yearFormat);
-publish.get('/:datasetId/time-period/:dimensionId/period-of-time/period-type', fetchDataset(), periodType);
-publish.post('/:datasetId/time-period/:dimensionId/period-of-time/period-type', fetchDataset(), periodType);
-publish.get('/:datasetId/time-period/:dimensionId/period-of-time/quarters', fetchDataset(), quarterChooser);
-publish.post('/:datasetId/time-period/:dimensionId/period-of-time/quarters', fetchDataset(), quarterChooser);
-publish.get('/:datasetId/time-period/:dimensionId/period-of-time/months', fetchDataset(), monthChooser);
-publish.post('/:datasetId/time-period/:dimensionId/period-of-time/months', fetchDataset(), monthChooser);
-publish.get('/:datasetId/time-period/:dimensionId/review', fetchDataset(), periodReview);
-publish.post('/:datasetId/time-period/:dimensionId/review', fetchDataset(), periodReview);
+publish.get('/:datasetId/time-period/:dimensionId/period-of-time', fetchDataset(Include.Data), yearTypeChooser);
+publish.post('/:datasetId/time-period/:dimensionId/period-of-time', fetchDataset(Include.Data), yearTypeChooser);
+publish.get('/:datasetId/time-period/:dimensionId/period-of-time/year-format', fetchDataset(Include.Data), yearFormat);
+publish.post('/:datasetId/time-period/:dimensionId/period-of-time/year-format', fetchDataset(Include.Data), yearFormat);
+publish.get('/:datasetId/time-period/:dimensionId/period-of-time/period-type', fetchDataset(Include.Data), periodType);
+publish.post('/:datasetId/time-period/:dimensionId/period-of-time/period-type', fetchDataset(Include.Data), periodType);
+publish.get('/:datasetId/time-period/:dimensionId/period-of-time/quarters', fetchDataset(Include.Data), quarterChooser);
+publish.post(
+    '/:datasetId/time-period/:dimensionId/period-of-time/quarters',
+    fetchDataset(Include.Data),
+    quarterChooser
+);
+publish.get('/:datasetId/time-period/:dimensionId/period-of-time/months', fetchDataset(Include.Data), monthChooser);
+publish.post('/:datasetId/time-period/:dimensionId/period-of-time/months', fetchDataset(Include.Data), monthChooser);
+publish.get('/:datasetId/time-period/:dimensionId/review', fetchDataset(Include.Data), periodReview);
+publish.post('/:datasetId/time-period/:dimensionId/review', fetchDataset(Include.Data), periodReview);
 
 /* Applies to all dimensions */
-publish.get('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchDataset(), dimensionName);
-publish.post('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchDataset(), dimensionName);
-publish.get('/:datasetId/dimension/:dimensionId/change-name', upload.none(), fetchDataset(), dimensionName);
-publish.post('/:datasetId/dimension/:dimensionId/change-name', upload.none(), fetchDataset(), dimensionName);
+publish.get('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchDataset(Include.Data), dimensionName);
+publish.post('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchDataset(Include.Data), dimensionName);
+publish.get('/:datasetId/dimension/:dimensionId/change-name', upload.none(), fetchDataset(Include.Data), dimensionName);
+publish.post(
+    '/:datasetId/dimension/:dimensionId/change-name',
+    upload.none(),
+    fetchDataset(Include.Data),
+    dimensionName
+);
 
 /* Metadata */
 publish.get('/:datasetId/change', fetchDataset(), changeData);
 publish.post('/:datasetId/change', fetchDataset(), upload.none(), changeData);
 
-publish.get('/:datasetId/summary', fetchDataset(Include.Metadata), provideSummary);
-publish.post('/:datasetId/summary', fetchDataset(Include.Metadata), upload.none(), provideSummary);
+publish.get('/:datasetId/summary', fetchDataset(Include.Meta), provideSummary);
+publish.post('/:datasetId/summary', fetchDataset(Include.Meta), upload.none(), provideSummary);
 
-publish.get('/:datasetId/collection', fetchDataset(Include.Metadata), provideCollection);
-publish.post('/:datasetId/collection', fetchDataset(Include.Metadata), upload.none(), provideCollection);
+publish.get('/:datasetId/collection', fetchDataset(Include.Meta), provideCollection);
+publish.post('/:datasetId/collection', fetchDataset(Include.Meta), upload.none(), provideCollection);
 
-publish.get('/:datasetId/quality', fetchDataset(Include.Metadata), provideQuality);
-publish.post('/:datasetId/quality', fetchDataset(Include.Metadata), upload.none(), provideQuality);
+publish.get('/:datasetId/quality', fetchDataset(Include.Meta), provideQuality);
+publish.post('/:datasetId/quality', fetchDataset(Include.Meta), upload.none(), provideQuality);
 
-publish.get('/:datasetId/providers', fetchDataset(Include.Metadata), provideDataProviders);
-publish.post('/:datasetId/providers', fetchDataset(Include.Metadata), upload.none(), provideDataProviders);
+publish.get('/:datasetId/providers', fetchDataset(Include.Meta), provideDataProviders);
+publish.post('/:datasetId/providers', fetchDataset(Include.Meta), upload.none(), provideDataProviders);
 
-publish.get('/:datasetId/related', fetchDataset(Include.Metadata), provideRelatedLinks);
-publish.post('/:datasetId/related', fetchDataset(Include.Metadata), upload.none(), provideRelatedLinks);
+publish.get('/:datasetId/related', fetchDataset(Include.Meta), provideRelatedLinks);
+publish.post('/:datasetId/related', fetchDataset(Include.Meta), upload.none(), provideRelatedLinks);
 
-publish.get('/:datasetId/update-frequency', fetchDataset(Include.Metadata), provideUpdateFrequency);
-publish.post('/:datasetId/update-frequency', fetchDataset(Include.Metadata), upload.none(), provideUpdateFrequency);
+publish.get('/:datasetId/update-frequency', fetchDataset(Include.Meta), provideUpdateFrequency);
+publish.post('/:datasetId/update-frequency', fetchDataset(Include.Meta), upload.none(), provideUpdateFrequency);
 
-publish.get('/:datasetId/designation', fetchDataset(Include.Metadata), provideDesignation);
-publish.post('/:datasetId/designation', fetchDataset(Include.Metadata), upload.none(), provideDesignation);
+publish.get('/:datasetId/designation', fetchDataset(Include.Meta), provideDesignation);
+publish.post('/:datasetId/designation', fetchDataset(Include.Meta), upload.none(), provideDesignation);
 
-publish.get('/:datasetId/topics', fetchDataset(Include.Metadata), provideTopics);
-publish.post('/:datasetId/topics', fetchDataset(Include.Metadata), upload.none(), provideTopics);
+publish.get('/:datasetId/topics', fetchDataset(Include.Meta), provideTopics);
+publish.post('/:datasetId/topics', fetchDataset(Include.Meta), upload.none(), provideTopics);
 
 /* Publishing */
 publish.get('/:datasetId/schedule', fetchDataset(), providePublishDate);
