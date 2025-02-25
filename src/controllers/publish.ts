@@ -751,7 +751,7 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
                                 message: { key: 'errors.dimension.dimension_type_required' }
                             }
                         ],
-                        changeType: Boolean(req.path.indexOf('change') > -1)
+                        showCancelButton: Boolean(req.path.indexOf('change') > -1)
                     });
             }
             return;
@@ -772,7 +772,7 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
             res.render('publish/dimension-chooser', {
                 ...dataPreview,
                 dimension,
-                changeType: Boolean(req.path.indexOf('change') > -1)
+                showCancelButton: Boolean(req.path.indexOf('change') > -1)
             });
         }
     } catch (err) {
@@ -1280,6 +1280,8 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
         let errors: ViewErrDTO | undefined;
         const dimensionName = dimension.metadata?.name || '';
         if (req.method === 'POST') {
+            // TODO Replace validation if statements with an Express Validator
+            //  See https://github.com/Marvell-Consulting/statswales-frontend/pull/138
             const updatedName = req.body.name;
             if (!updatedName) {
                 logger.error('User failed to submit a name');
@@ -1298,9 +1300,9 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                 };
                 res.status(400);
                 res.render('publish/dimension-name', {
-                    ...{ updatedName, id: dimension.id, type: dimension.type },
+                    ...{ updatedName, id: dimension.id, dimensionType: dimension.type },
                     errors,
-                    changeName: Boolean(req.path.indexOf('change') > -1)
+                    showCancelButton: Boolean(req.path.indexOf('change') > -1)
                 });
                 return;
             }
@@ -1320,9 +1322,9 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                 };
                 res.status(400);
                 res.render('publish/dimension-name', {
-                    ...{ updatedName, id: dimension.id, type: dimension.type },
+                    ...{ updatedName, id: dimension.id, dimensionType: dimension.type },
                     errors,
-                    changeName: Boolean(req.path.indexOf('change') > -1)
+                    showCancelButton: Boolean(req.path.indexOf('change') > -1)
                 });
                 return;
             } else if (updatedName.length < 1) {
@@ -1341,9 +1343,9 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                 };
                 res.status(400);
                 res.render('publish/dimension-name', {
-                    ...{ updatedName, id: dimension.id, type: dimension.type },
+                    ...{ updatedName, id: dimension.id, dimensionType: dimension.type },
                     errors,
-                    changeName: Boolean(req.path.indexOf('change') > -1)
+                    showCancelButton: Boolean(req.path.indexOf('change') > -1)
                 });
                 return;
             } else if (!dimensionColumnNameRegex.test(updatedName)) {
@@ -1362,9 +1364,9 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                 };
                 res.status(400);
                 res.render('publish/dimension-name', {
-                    ...{ updatedName, id: dimension.id, type: dimension.type },
+                    ...{ updatedName, id: dimension.id, dimensionType: dimension.type },
                     errors,
-                    changeName: Boolean(req.path.indexOf('change') > -1)
+                    showCancelButton: Boolean(req.path.indexOf('change') > -1)
                 });
                 return;
             }
@@ -1390,17 +1392,17 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                 };
                 res.status(500);
                 res.render('publish/dimension-name', {
-                    ...{ dimensionName, id: dimension.id, type: dimension.type },
+                    ...{ dimensionName, id: dimension.id, dimensionType: dimension.type },
                     errors,
-                    changeName: Boolean(req.path.indexOf('change') > -1)
+                    showCancelButton: Boolean(req.path.indexOf('change') > -1)
                 });
                 return;
             }
         }
 
         res.render('publish/dimension-name', {
-            ...{ dimensionName, id: dimension.id, type: dimension.type },
-            changeName: Boolean(req.path.indexOf('change') > -1)
+            ...{ dimensionName, id: dimension.id, dimensionType: dimension.type },
+            showCancelButton: Boolean(req.path.indexOf('change') > -1)
         });
     } catch (err) {
         logger.error(`Failed to get dimension name with the following error: ${err}`);
