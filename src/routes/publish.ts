@@ -85,6 +85,8 @@ publish.post('/:datasetId/measure/review', fetchFullDataset, measureReview);
 /* Dimension creation */
 publish.get('/:datasetId/dimension-data-chooser/:dimensionId', fetchFullDataset, fetchDimensionPreview);
 publish.post('/:datasetId/dimension-data-chooser/:dimensionId', fetchFullDataset, fetchDimensionPreview);
+publish.get('/:datasetId/dimension-data-chooser/:dimensionId/change-type', fetchFullDataset, fetchDimensionPreview);
+publish.post('/:datasetId/dimension-data-chooser/:dimensionId/change-type', fetchFullDataset, fetchDimensionPreview);
 
 /* lookup table handlers */
 publish.get('/:datasetId/lookup/:dimensionId', fetchFullDataset, uploadLookupTable);
@@ -94,6 +96,8 @@ publish.post('/:datasetId/lookup/:dimensionId/review', fetchFullDataset, lookupR
 
 publish.get('/:datasetId/time-period/:dimensionId', fetchLimitedDataset, fetchTimeDimensionPreview);
 publish.post('/:datasetId/time-period/:dimensionId', fetchFullDataset, fetchTimeDimensionPreview);
+publish.get('/:datasetId/time-period/:dimensionId/change-format', fetchLimitedDataset, fetchTimeDimensionPreview);
+publish.post('/:datasetId/time-period/:dimensionId/change-format', fetchFullDataset, fetchTimeDimensionPreview);
 publish.get('/:datasetId/time-period/:dimensionId/point-in-time', fetchFullDataset, pointInTimeChooser);
 publish.post('/:datasetId/time-period/:dimensionId/point-in-time', fetchFullDataset, pointInTimeChooser);
 
@@ -114,6 +118,8 @@ publish.post('/:datasetId/time-period/:dimensionId/review', fetchFullDataset, pe
 /* Applies to all dimensions */
 publish.get('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchFullDataset, dimensionName);
 publish.post('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchFullDataset, dimensionName);
+publish.get('/:datasetId/dimension/:dimensionId/change-name', upload.none(), fetchFullDataset, dimensionName);
+publish.post('/:datasetId/dimension/:dimensionId/change-name', upload.none(), fetchFullDataset, dimensionName);
 
 /* Metadata */
 publish.get('/:datasetId/change', fetchLimitedDataset, changeData);
