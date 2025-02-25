@@ -12,12 +12,6 @@
         </div>
 
         <div class="govuk-width-container">
-            <p>
-                dataProviders count: <%= locals.dataProviders?.length %>
-                <br />
-                editId: <%= locals.editId %>
-            </p>
-
             <% if (locals.dataProviders?.length === 0 || locals.editId === 'new') { %>
                 <!-- Add provider form is displayed whenever we're adding a "new" provider, or if there aren't any saved currently -->
                 <div class="govuk-grid-row">
