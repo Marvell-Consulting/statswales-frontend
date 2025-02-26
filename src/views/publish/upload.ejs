@@ -31,17 +31,23 @@
                     </label>
                     <input class="govuk-file-upload" id="csv" name="csv" type="file" placeholder="Upload file" accept=".csv,.parquet,.json,.xls,.xlsx,.gz,text/csv,application/vnd.apache.parquet,application/parquet,application/json,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/msexcel,application/gzip">
                 </div>
-                <button type="submit" class="govuk-button" data-module="govuk-button">
-                    <%= t('publish.upload.buttons.upload') %>
-                </button>
-                <% if (locals.uploadType) { %>
-                    <a href="#" class="govuk-button govuk-button--secondary"><%= t('buttons.preview') %></a>
-                <% } %>
-                <% if (locals.revision?.revision_index === 0) { %>
-                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
-                        <%= t('buttons.cancel') %>
-                    </a>
-                <% } %>
+                <div class="govuk-button-group">
+                    <button type="submit" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                        <%= t('publish.upload.buttons.upload') %>
+                    </button>
+                    <% if (locals.revision?.revision_index === 0) { %>
+                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                            <%= t('buttons.cancel') %>
+                        </a>
+                    <% } else if (locals.changeLookup) { %>
+                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/dimension-data-chooser/${locals.dimension.id}`, i18n.language) %>" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                            <%= t('buttons.cancel') %>
+                        </a>
+                    <% } %>
+                    <% if (locals.uploadType) { %>
+                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview`, i18n.language) %>" class="govuk-button govuk-button--secondary" style="vertical-align: unset;" data-prevent-double-click="true"><%= t('buttons.preview') %></a>
+                    <% } %>
+                </div>
             </form>
         </main>
     </div>
