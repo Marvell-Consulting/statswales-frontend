@@ -1307,7 +1307,7 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                 return;
             }
             if (updatedName.length > 256) {
-                logger.error(`Dimension name is too long... Dimension name is ${req.body.name.length} characters long.`);
+                logger.error(`Dimension name is too long... length: ${req.body.name.length}`);
                 errors = {
                     status: 400,
                     errors: [
