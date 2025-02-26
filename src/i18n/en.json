@@ -900,12 +900,13 @@
             },
             "field": {
                 "title": "Title",
-                "description": "Summary",
+                "summary": "Summary",
                 "collection": "Data collection",
                 "quality": "Statistical quality",
                 "roundingDescription": "Rounding applied"
             },
             "dimension": "{{key}} dimension name",
+            "link": "Related report",
             "buttons": {
                 "export": "Export CSV",
                 "change": "Change"
