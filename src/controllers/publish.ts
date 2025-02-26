@@ -1981,7 +1981,8 @@ export const provideTopics = async (req: Request, res: Response, next: NextFunct
 };
 
 export const providePublishDate = async (req: Request, res: Response, next: NextFunction) => {
-    const { dataset, revision } = res.locals;
+    const dataset = res.locals.dataset;
+    const revision = dataset.draft_revision;
     let errors: ViewError[] = [];
     let dateError;
     let timeError;
