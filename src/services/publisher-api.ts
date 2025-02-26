@@ -221,14 +221,14 @@ export class PublisherApi {
         }).then((response) => response.json() as unknown as FactTableColumnDto[]);
     }
 
-    public async removeFileImport(datasetId: string, revisionId: string): Promise<DatasetDTO> {
-        logger.debug(`Removing data table from revision: ${revisionId}`);
+    // public async removeFileImport(datasetId: string, revisionId: string): Promise<DatasetDTO> {
+    //     logger.debug(`Removing data table from revision: ${revisionId}`);
 
-        return this.fetch({
-            url: `dataset/${datasetId}/revision/by-id/${revisionId}/data-table`,
-            method: HttpMethod.Delete
-        }).then((response) => response.json() as unknown as DatasetDTO);
-    }
+    //     return this.fetch({
+    //         url: `dataset/${datasetId}/revision/by-id/${revisionId}/data-table`,
+    //         method: HttpMethod.Delete
+    //     }).then((response) => response.json() as unknown as DatasetDTO);
+    // }
 
     public async resetDimension(datasetId: string, dimensionId: string): Promise<DimensionDTO> {
         logger.debug(`Resetting dimension: ${dimensionId}`);
