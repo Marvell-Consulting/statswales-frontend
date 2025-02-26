@@ -763,7 +763,7 @@
             "row_number": "Row",
             "preview_summary": "There are $t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} }) in your upload.",
             "columns_rows": "$t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} })",
-            "upload_summary": "There are $t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} }) in the data table. $t(publish.preview.columns, {\"count\": {{ignored}} }) in the upload file have been ignored.",
+            "upload_summary": "There are $t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} }) in the data table. $t(publish.preview.columns, {\"count\": {{ignored}} }) in the uploaded file have been ignored.",
             "showing_rows": "Showing rows {{start}} – {{end}} of {{total}}",
             "unnamed_column": "column {{colNum}}",
             "confirm_correct": "By continuing, you confirm the data table is correct.",
