@@ -49,7 +49,7 @@
         "top_of_page": "Back to top",
         "contact_us": "Contact us",
         "accessibility": "Accessibility",
-        "copyright_statement": "Copyright Statement",
+        "copyright_statement": "Copyright statement",
         "cookies": "Cookies",
         "privacy": "Privacy",
         "terms_conditions": "Terms and conditions",
@@ -65,15 +65,15 @@
         },
         "error": {
             "summary_title": "There is a problem",
-            "generic": "You could not be logged in. Please try again later.",
-            "expired": "Your session has expired. Please log in again."
+            "generic": "You could not be logged in. Try again later.",
+            "expired": "Your session has expired. You need to sign in again."
         },
         "form": {
             "notice_1": "The username we've given you is temporary. You'll only be able to log in with it whilst we run this round of testing.",
             "notice_2": "Do not upload any sensitive data or data that other StatsWales users should not have access to.",
             "username": {
                 "label": "Username",
-                "error": "Please enter your username"
+                "error": "Enter your username"
             },
             "submit": "Login"
         }
@@ -173,11 +173,11 @@
             "excel": "Download as Excel",
             "duckdb": "Download as DuckDB"
         },
-        "table_preview": "Table Preview",
+        "table_preview": "Table preview [Publisher use only]",
         "table_note": "This is not shown in the consumer view",
         "not_entered": "Not entered yet",
         "not_selected": "Not selected yet",
-        "not_available": "Not Available",
+        "not_available": "Not available",
         "categories_missing": "Reference data not selected yet",
         "period_cover_missing": "Date information not entered yet"
     },
@@ -235,11 +235,11 @@
             "confirm": "By continuing, you confirm the lookup table is correct.",
             "go_back": "Choose a different lookup table",
             "column_headers": {
-                "fact_table": "Fact Table:",
-                "lookup_table": "Lookup Table:",
+                "fact_table": "Fact table:",
+                "lookup_table": "Lookup table:",
                 "description_en": "Description (English)",
                 "description_cy": "Description (Welsh)",
-                "sort_order": "Sort Order",
+                "sort_order": "Sort order",
                 "hierarchy": "Hierarchy",
                 "notes_en": "Notes (English)",
                 "notes_cy": "Notes (Welsh)"
@@ -256,31 +256,31 @@
                 "description_en": "Description (English)",
                 "description_cy": "Description (Welsh)",
                 "description": "Description",
-                "decimals": "Decimal Places",
+                "decimals": "Decimal places",
                 "hierarchy": "Hierarchy",
                 "language": "Language",
-                "reference": "Reference Value",
-                "sort": "Sort Order",
-                "sort_order": "Sort Order",
+                "reference": "Reference value",
+                "sort": "Sort order",
+                "sort_order": "Sort order",
                 "notes": "Notes",
                 "notes_en": "Notes (English)",
                 "notes_cy": "Notes (Welsh)",
                 "format": "Format",
-                "measure_type": "Value Type"
+                "measure_type": "Value type"
             },
             "column_values": {
                 "null": "No",
                 "cy-gb": "Welsh",
                 "en-gb": "English",
-                "float": "Floating Point Number",
-                "decimal": "Decimal Number",
-                "integer": "Whole Number",
-                "long": "Big Whole Number",
+                "float": "Floating point number",
+                "decimal": "Decimal number",
+                "integer": "Whole number",
+                "long": "Big whole number",
                 "percentage": "Percentage",
-                "string": "Plain Text",
-                "text": "Plain Text",
+                "string": "Plain text",
+                "text": "Plain text",
                 "date": "Date",
-                "datetime": "Date and Time",
+                "datetime": "Date and time",
                 "time": "Time"
             }
         },
@@ -297,21 +297,21 @@
                 "date_type": "Date type"
             },
             "year_type": {
-                "calendar_year": "Calendar Year",
-                "calendar_quarter": "Calendar Quarter",
-                "calendar_month": "Calendar Month",
-                "financial_year": "Financial Year",
-                "financial_quarter": "Financial Quarter",
-                "financial_month": "Financial Month",
-                "academic_year": "Academic Year",
-                "academic_quarter": "Academic Quarter",
-                "academic_month": "Academic Month",
-                "tax_year": "Tax Year",
-                "tax_quarter": "Tax Quarter",
-                "tax_month": "Tax Month",
-                "meteorological_year": "Meteorological Year",
-                "meteorological_quarter": "Meteorological Quarter",
-                "meteorological_month": "Meteorological Month",
+                "calendar_year": "Calendar year",
+                "calendar_quarter": "Calendar quarter",
+                "calendar_month": "Calendar month",
+                "financial_year": "Financial year",
+                "financial_quarter": "Financial quarter",
+                "financial_month": "Financial month",
+                "academic_year": "Academic year",
+                "academic_quarter": "Academic quarter",
+                "academic_month": "Academic month",
+                "tax_year": "Tax year",
+                "tax_quarter": "Tax quarter",
+                "tax_month": "Tax month",
+                "meteorological_year": "Meteorological year",
+                "meteorological_quarter": "Meteorological quarter",
+                "meteorological_month": "Meteorological month",
                 "specific_day": "Specific point in time"
             }
         },
@@ -706,7 +706,7 @@
                 }
             },
             "error": {
-                "saving": "Could not save the publish date, please try later"
+                "saving": "Publish date could not be saved. Try again later."
             }
         },
         "organisation": {
@@ -725,7 +725,7 @@
                 }
             },
             "error": {
-                "saving": "Could not save the team, please try later"
+                "saving": "Team could not be saved. Try again later."
             }
         },
         "upload": {
@@ -742,7 +742,7 @@
             },
             "errors": {
                 "missing": "Select a data table",
-                "api": "The selected file could not be uploaded – try again"
+                "api": "The selected file could not be uploaded. Try again."
             }
         },
         "preview": {
@@ -756,7 +756,7 @@
             "row_number": "Row",
             "preview_summary": "There are $t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} }) in your upload.",
             "columns_rows": "$t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} })",
-            "upload_summary": "There are $t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} }) in the data table. $t(publish.preview.columns, {\"count\": {{ignored}} }) in the CSV upload have been ignored.",
+            "upload_summary": "There are $t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} }) in the data table. $t(publish.preview.columns, {\"count\": {{ignored}} }) in the upload file have been ignored.",
             "showing_rows": "Showing rows {{start}} – {{end}} of {{total}}",
             "unnamed_column": "column {{colNum}}",
             "confirm_correct": "By continuing, you confirm the data table is correct.",
@@ -782,12 +782,12 @@
                 "measure" : "Measure or data types",
                 "dimension": "Dimension",
                 "time": "Dimension containing dates",
-                "ignore": "Ignored",
+                "ignore": "This column can be ignored",
                 "unknown": "Select"
             }
         },
         "tasklist": {
-            "no_title": "No Title Available",
+            "no_title": "No title available",
             "preview": "Preview (opens in new tab)",
             "status": {
                 "cannot_start": "Cannot start yet",
@@ -831,7 +831,7 @@
         },
         "change_data": {
             "title": "What do you need to do?",
-            "note": "The file should be in a CSV format",
+            "note": "The file should be in CSV, JSON or Parquet format",
             "change_table": {
                 "label": "Upload a different data table",
                 "description": "This will remove reference data from all dimensions"
@@ -863,7 +863,7 @@
                 }
             },
             "error": {
-                "withdraw": "Could not withdraw dataset from publication, please contact support"
+                "withdraw": "Could not withdraw dataset from publication. You should contact support."
             }
         },
         "update_type": {
@@ -930,7 +930,7 @@
             "details": "Details",
             "tasklist": "Task List",
             "error": {
-                "no_datasets": "No datasets are currently listed in the database.  If you need help please reach out to a member of the development team."
+                "no_datasets": "No datasets are currently listed in the database. If you need help, contact a member of the development team."
             }
         },
         "display": {
@@ -967,50 +967,50 @@
             "missing": "You need to confirm or reject the uploaded file using the buttons at the end of the preview"
         },
         "session": {
-            "current_dataset_missing": "Current data set is missing from the session",
-            "current_revision_missing": "Current revision is missing from the session",
-            "current_import_missing": "Current import is missing from the session",
-            "no_sources_on_import": "Current import has no sources present on it, was the CSV empty?"
+            "current_dataset_missing": "A data table cannot be found. Try uploading a data table.",
+            "current_revision_missing": "A data table cannot be found. Try uploading a data table.",
+            "current_import_missing": "A data table cannot be found. Try uploading a data table.",
+            "no_sources_on_import": "The selected data table does not contain any dimensions. Check the data table is correct."
         },
         "sources": {
-            "unknowns_found": "You need to tell us what each column contains",
-            "multiple_datavalues": "You can only specify one column as containing data values",
-            "multiple_footnotes": "You can only specify one column as containing notes",
-            "dimension_creation_failed": "Something went wrong trying to create the dimensions.  Please try again."
+            "unknowns_found": "Select what each column in the data table contains",
+            "multiple_datavalues": "There should only be one column in the data table for data values. Check you've selected the correct options or check the data table is correct.",
+            "multiple_footnotes": "There should only be one column in the data table for note codes. Check you've selected the correct options or check the data table is correct.",
+            "dimension_creation_failed": "Dimensions could not be created. Check you've selected the correct options or check the data table is correct."
         },
         "preview": {
-            "failed_to_get_preview": "We were unable to generate a preview of the uploaded CSV.  Is this a valid CSV?",
-            "remove_error": "We were unable to remove your uploadded file from the server.  Something went wrong.  Please try again",
-            "confirm_error":  "You need to confirm or reject the uploaded file using the buttons at the end of the preview",
+            "failed_to_get_preview": "Table preview could not be generated. Check you've added reference data to all dimensions or the data table is correct.",
+            "remove_error": "Uploaded file could not be removed from the server. Try again or contact support.",
+            "confirm_error":  "Confirm or reject the uploaded file",
             "revision_missing": "A revision is missing from this dataset",
             "import_missing": "An import is missing from this dataset",
-            "invalid_download_format": "Specify a valid file format (csv, excel, parquet, duckdb)"
+            "invalid_download_format": "Select whether to download dataset as CSV, Parquet, Excel or DuckDB"
         },
-        "datalake_error": "Unable to connect to Datalake",
+        "datalake_error": "Unable to connect to Data Lake",
         "blob_storage_errror": "Unable to connect to Blob Storage Service",
 		"problem": "There is a problem",
-        "try_later": "Please try later",
-        "name_missing": "Dataset Name Missing",
+        "try_later": "Try again later",
+        "name_missing": "Dataset name missing",
         "dataset_missing": "No dataset found with this ID",
         "dimension": {
-            "name_to_short": "The Dimension name is to short or missing",
-            "name_to_long": "Dimension name is limited to 1024 characters",
-            "naming_failed": "Something went wrong trying to set the name.  Please try again",
-            "dimension_period_type_required": "You must select the kind of data this dimension contains",
-            "dimension_type_required": "You must select the kind of data this dimension contains",
-            "year_type_required": "You must select the type of year in this dimension",
-            "year_format_required": "You must select the format of years in this dimension",
-            "shortest_period_required": "You must select the shortest period of time for this dimension",
-            "quarter_type_required": "You must select the format which represents quarters in this dimension",
-            "quarter_total_type_required": "You must select how yearly totals are represented in this dimension",
-            "month_type_required": "You must select the format for months in this dimension"
+            "name_too_short": "Enter what this dimension should be called on the StatsWales website",
+            "name_too_long": "Dimension name must be 256 characters or less",
+            "naming_failed": "Dimension name could not be added. Try again.",
+            "dimension_period_type_required": "Select whether the dimension contains periods of time or specific points in time",
+            "dimension_type_required": "Select the kind of data this dimension contains",
+            "year_type_required": "Select the type of year the dimension represents",
+            "year_format_required": "Select the format used for years in the dimension",
+            "shortest_period_required": "Select what the shortest periods of time in the dimension are",
+            "quarter_type_required": "Select the format used for quarters in the dimension",
+            "quarter_total_type_required": "Select whether a fifth quarter is used to represent yearly totals",
+            "month_type_required": "Select the format used for months in the dimension"
         },
         "upload": {
-            "no_csv": "No file selected to upload to the server",
-            "no_csv_data": "No CSV data available"
+            "no_csv": "Select a lookup table",
+            "no_csv_data": "Select a lookup table"
         },
         "not_found": "Page not found",
-        "server_error": "An unknown error occurred, please try again later",
+        "server_error": "An unknown error occurred, try again later",
         "forbidden": "You do not have permission to access this page",
         "dimension_reset": "Something went wrong trying to reset the dimension"
 	},

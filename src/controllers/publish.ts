@@ -1282,14 +1282,14 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                 return;
             }
             if (updatedName.length > 256) {
-                logger.error(`Dimension name is to long... Dimension name is ${req.body.name.length} characters long.`);
+                logger.error(`Dimension name is too long... Dimension name is ${req.body.name.length} characters long.`);
                 errors = {
                     status: 400,
                     errors: [
                         {
                             field: 'name',
                             message: {
-                                key: 'errors.dimension.name_to_long'
+                                key: 'errors.dimension.name_too_long'
                             }
                         }
                     ],
@@ -1306,7 +1306,7 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                         {
                             field: 'name',
                             message: {
-                                key: 'errors.dimension.name_to_short'
+                                key: 'errors.dimension.name_too_short'
                             }
                         }
                     ],
