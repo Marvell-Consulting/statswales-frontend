@@ -176,8 +176,8 @@ publish.get('/:datasetId/topics', fetchDataset(Include.Meta), provideTopics);
 publish.post('/:datasetId/topics', fetchDataset(Include.Meta), upload.none(), provideTopics);
 
 /* Publishing */
-publish.get('/:datasetId/schedule', fetchDataset(), providePublishDate);
-publish.post('/:datasetId/schedule', fetchDataset(), upload.none(), providePublishDate);
+publish.get('/:datasetId/schedule', fetchDataset(Include.Meta), providePublishDate);
+publish.post('/:datasetId/schedule', fetchDataset(Include.Meta), upload.none(), providePublishDate);
 
 publish.get('/:datasetId/organisation', fetchDataset(), provideOrganisation);
 publish.post('/:datasetId/organisation', fetchDataset(), upload.none(), provideOrganisation);
