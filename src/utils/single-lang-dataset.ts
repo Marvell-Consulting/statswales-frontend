@@ -20,6 +20,7 @@ export const singleLangDataset = (dataset: DatasetDTO, lang: string): SingleLang
         end_revision: singleLangRevision(dataset.end_revision, lang),
         draft_revision: singleLangRevision(dataset.draft_revision, lang),
         published_revision: singleLangRevision(dataset.published_revision, lang),
+        revisions: dataset.revisions?.map((rev) => singleLangRevision(rev)!),
         team: dataset.team?.find((team) => team.language === lang),
         dimensions: dataset.dimensions?.map((dimension) => {
             return {
