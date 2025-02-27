@@ -1,4 +1,3 @@
-import { RevisionDTO } from '../revision';
 import { MeasureDTO } from '../measure';
 import { TeamDTO } from '../team';
 
@@ -13,7 +12,7 @@ export interface SingleLanguageDataset {
     archive?: string;
     measure?: MeasureDTO;
     dimensions?: SingleLanguageDimension[];
-    revisions: RevisionDTO[];
+    revisions?: SingleLanguageRevision[];
     start_revision?: SingleLanguageRevision;
     end_revision?: SingleLanguageRevision;
     draft_revision?: SingleLanguageRevision;

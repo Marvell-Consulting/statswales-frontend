@@ -188,8 +188,8 @@ publish.get('/:datasetId/translation/import', fetchDataset(), importTranslations
 publish.post('/:datasetId/translation/import', fetchDataset(), upload.single('csv'), importTranslations);
 
 /* Dataset Overview */
-publish.get('/:datasetId/overview', fetchDataset(Include.All), overview);
-publish.post('/:datasetId/overview', fetchDataset(Include.All), upload.none(), overview);
+publish.get('/:datasetId/overview', fetchDataset(), overview);
+publish.post('/:datasetId/overview', fetchDataset(), upload.none(), overview);
 
 /* Update Dataset */
 publish.get('/:datasetId/update', fetchDataset(), createNewUpdate);

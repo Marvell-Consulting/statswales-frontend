@@ -5,7 +5,6 @@ import { SingleLanguageRevision } from '../dtos/single-language/revision';
 
 import { nextUpdateAt } from './next-update-at';
 import { markdownToSafeHTML } from './markdown-to-html';
-import { createdAtDesc, isPublished } from './revision';
 
 export const getDatasetPreview = async (dataset: SingleLanguageDataset, revision: SingleLanguageRevision) => {
     if (!revision || !revision.metadata) {
@@ -26,7 +25,7 @@ export const getDatasetPreview = async (dataset: SingleLanguageDataset, revision
         notes: {
             roundingApplied: rounding_applied,
             roundingDescription: await markdownToSafeHTML(rounding_description),
-            publishedRevisions: dataset.revisions.filter(isPublished).sort(createdAtDesc)
+            publishedRevisions: dataset.revisions
         },
         about: {
             summary: await markdownToSafeHTML(summary),

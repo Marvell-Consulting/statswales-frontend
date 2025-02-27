@@ -7,7 +7,6 @@ import { ResultsetWithCount } from '../interfaces/resultset-with-count';
 import { getPaginationProps } from '../utils/pagination';
 import { singleLangDataset } from '../utils/single-lang-dataset';
 import { getDatasetPreview } from '../utils/dataset-preview';
-import { getLatestPublishedRevision } from '../utils/revision';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { FileFormat } from '../enums/file-format';
 import { getDownloadHeaders } from '../utils/download-headers';
@@ -45,7 +44,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
 export const downloadPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
     logger.debug('downloading published dataset');
     const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const revision = getLatestPublishedRevision(dataset);
+    const revision = dataset.published_revision;
 
     try {
         if (!dataset.live || !revision) {
@@ -53,7 +52,7 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
         }
 
         const format = req.query.format as FileFormat;
-        const headers = getDownloadHeaders(format, revision);
+        const headers = getDownloadHeaders(format, revision.id);
 
         if (!headers) {
             throw new NotFoundException('invalid file format');

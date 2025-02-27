@@ -1,17 +1,16 @@
 import { isBefore } from 'date-fns';
 
 import { DatasetDTO } from '../dtos/dataset';
-import { SingleLanguageDataset } from '../dtos/single-language/dataset';
 import { DatasetStatus } from '../enums/dataset-status';
 import { PublishingStatus } from '../enums/publishing-status';
 
 import { getLatestRevision } from './revision';
 
-export const getDatasetStatus = (dataset: DatasetDTO | SingleLanguageDataset): DatasetStatus => {
+export const getDatasetStatus = (dataset: DatasetDTO): DatasetStatus => {
     return dataset.live && isBefore(dataset.live, new Date()) ? DatasetStatus.Live : DatasetStatus.New;
 };
 
-export const getPublishingStatus = (dataset: DatasetDTO | SingleLanguageDataset): PublishingStatus => {
+export const getPublishingStatus = (dataset: DatasetDTO): PublishingStatus => {
     const revision = getLatestRevision(dataset);
 
     if (getDatasetStatus(dataset) === DatasetStatus.New) {
