@@ -134,7 +134,7 @@ export const uploadDataTable = async (req: Request, res: Response, next: NextFun
             const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
 
             logger.debug('Sending file to backend.');
-            await req.pubapi.uploadCSVToDataset(dataset.id, fileData, fileName);
+            await req.pubapi.uploadDataToDataset(dataset.id, fileData, fileName);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
             return;
         } catch (err) {
@@ -314,7 +314,6 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
             // TODO: for MVP there is no approval process, so we are jumping straight to approve
             // once we have approval process, there will be an interstitial status while the dataset is waiting to
             // be approved by a suitable member of the team
-            logger.debug('submitting dataset for publication');
             const scheduledDataset = await req.pubapi.approveForPublication(dataset.id, revision.id);
 
             if (scheduledDataset) {
