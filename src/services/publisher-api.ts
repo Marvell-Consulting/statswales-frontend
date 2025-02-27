@@ -107,7 +107,7 @@ export class PublisherApi {
         return this.fetch({ url }).then((response) => response.json() as unknown as DatasetDTO);
     }
 
-    public uploadCSVToDataset(datasetId: string, file: Blob, filename: string): Promise<DatasetDTO> {
+    public uploadDataToDataset(datasetId: string, file: Blob, filename: string): Promise<DatasetDTO> {
         logger.debug(`Uploading file ${filename} to dataset: ${datasetId}`);
         const body = new FormData();
         body.set('csv', file, filename);
@@ -168,14 +168,6 @@ export class PublisherApi {
         );
     }
 
-    public async getDatasetCubeView(datasetId: string, pageNumber: number, pageSize: number): Promise<ViewDTO> {
-        logger.debug(`Fetching view for dataset: ${datasetId}, page: ${pageNumber}, pageSize: ${pageSize}`);
-
-        return this.fetch({ url: `dataset/${datasetId}/view?page_number=${pageNumber}&page_size=${pageSize}` }).then(
-            (response) => response.json() as unknown as ViewDTO
-        );
-    }
-
     public async getDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {
         logger.debug(`Fetching active dataset list...`);
         const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
@@ -220,15 +212,6 @@ export class PublisherApi {
             url: `dataset/${datasetId}/sources`
         }).then((response) => response.json() as unknown as FactTableColumnDto[]);
     }
-
-    // public async removeFileImport(datasetId: string, revisionId: string): Promise<DatasetDTO> {
-    //     logger.debug(`Removing data table from revision: ${revisionId}`);
-
-    //     return this.fetch({
-    //         url: `dataset/${datasetId}/revision/by-id/${revisionId}/data-table`,
-    //         method: HttpMethod.Delete
-    //     }).then((response) => response.json() as unknown as DatasetDTO);
-    // }
 
     public async resetDimension(datasetId: string, dimensionId: string): Promise<DimensionDTO> {
         logger.debug(`Resetting dimension: ${dimensionId}`);
@@ -513,7 +496,7 @@ export class PublisherApi {
     }
 
     public async approveForPublication(datasetId: string, revisionId: string): Promise<DatasetDTO> {
-        logger.debug(`Attempting to approve dataset for publication: ${datasetId}`);
+        logger.debug(`Attempting to approve draft revision for publication`);
         return this.fetch({
             url: `dataset/${datasetId}/revision/by-id/${revisionId}/approve`,
             method: HttpMethod.Post
@@ -521,7 +504,7 @@ export class PublisherApi {
     }
 
     public async withdrawFromPublication(datasetId: string, revisionId: string): Promise<DatasetDTO> {
-        logger.debug(`Attempting to withdraw latest revision publication: ${datasetId}`);
+        logger.debug(`Attempting to withdraw scheduled revision from publication`);
         return this.fetch({
             url: `dataset/${datasetId}/revision/by-id/${revisionId}/withdraw`,
             method: HttpMethod.Post
