@@ -41,7 +41,7 @@ import { UnknownException } from '../exceptions/unknown.exception';
 import { TaskListState } from '../dtos/task-list-state';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { statusToColour } from '../utils/status-to-colour';
-import { singleLangDataset } from '../utils/single-lang-dataset';
+import { singleLangDataset, singleLangRevision } from '../utils/single-lang-dataset';
 import { Designation } from '../enums/designation';
 import { DurationUnit } from '../enums/duration-unit';
 import { RelatedLinkDTO } from '../dtos/related-link';
@@ -67,6 +67,8 @@ import { getDownloadHeaders } from '../utils/download-headers';
 import { FactTableColumnDto } from '../dtos/fact-table-column-dto';
 import { ProviderDTO } from '../dtos/provider';
 import { Locale } from '../enums/locale';
+import { getLatestRevision } from '../utils/revision';
+import { DatasetInclude } from '../enums/dataset-include';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -307,8 +309,8 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
 export const taskList = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     const revision = dataset.draft_revision!;
-    const datasetStatus = getDatasetStatus(dataset);
-    const publishingStatus = getPublishingStatus(dataset);
+    const datasetStatus = getDatasetStatus(res.locals.dataset);
+    const publishingStatus = getPublishingStatus(res.locals.dataset);
 
     try {
         if (req.method === 'POST') {
@@ -385,7 +387,7 @@ export const downloadDataset = async (req: Request, res: Response, next: NextFun
         }
 
         const format = req.query.format as FileFormat;
-        const headers = getDownloadHeaders(format, revision);
+        const headers = getDownloadHeaders(format, revision.id);
 
         if (!headers) {
             throw new NotFoundException('errors.preview.invalid_download_format');
@@ -2170,11 +2172,11 @@ export const importTranslations = async (req: Request, res: Response, next: Next
 };
 
 export const overview = async (req: Request, res: Response, next: NextFunction) => {
-    const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const revision = dataset.draft_revision!;
-    const title = revision.metadata?.title;
+    const dataset = await req.pubapi.getDataset(res.locals.datasetId, DatasetInclude.All);
     const datasetStatus = getDatasetStatus(dataset);
     const publishingStatus = getPublishingStatus(dataset);
+    const revision = singleLangRevision(getLatestRevision(dataset), req.language)!;
+    const title = revision.metadata?.title;
     const justScheduled = req.query?.scheduled === 'true';
     let errors: ViewError[] = [];
 
