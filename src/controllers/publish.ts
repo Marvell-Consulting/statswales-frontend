@@ -2206,8 +2206,14 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
 
 export const createNewUpdate = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = res.locals.dataset;
-    await req.pubapi.createRevision(dataset.id);
-    res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+
+    try {
+        await req.pubapi.createRevision(dataset.id);
+        res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+    } catch (err) {
+        logger.error(err, `Could not create dataset update`);
+        res.redirect(req.buildUrl(`/publish/${dataset.id}/overview`, req.language));
+    }
 };
 
 export const updateDatatable = async (req: Request, res: Response, next: NextFunction) => {
