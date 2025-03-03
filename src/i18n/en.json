@@ -767,6 +767,11 @@
             "showing_rows": "Showing rows {{start}} – {{end}} of {{total}}",
             "unnamed_column": "column {{colNum}}",
             "confirm_correct": "By continuing, you confirm the data table is correct.",
+            "revisit_question": "What do you need to do?",
+            "upload_different": "Upload a different data table",
+            "upload_different_hint": "Warning: This will reset and remove all measures and dimensions",
+            "change_source": "Change the definition of what each column in the data table contains",
+            "change_source_hint": "Warning: This will reset and remove all measures and dimensions",
             "buttons": {
                 "choose_different": "Choose a different data table",
                 "change_datatable": "Change the data table"
