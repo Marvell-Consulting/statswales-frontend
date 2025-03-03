@@ -24,6 +24,6 @@ export interface SingleLanguageRevision {
     update_frequency?: UpdateFrequencyDTO;
     designation?: Designation;
     related_links?: RelatedLinkDTO[];
-    providers: RevisionProviderDTO[];
-    topics: TopicDTO[];
+    providers?: RevisionProviderDTO[];
+    topics?: TopicDTO[];
 }

@@ -69,6 +69,7 @@ import { ProviderDTO } from '../dtos/provider';
 import { Locale } from '../enums/locale';
 import { getLatestRevision } from '../utils/revision';
 import { DatasetInclude } from '../enums/dataset-include';
+import { RevisionDTO } from '../dtos/revision';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
@@ -346,16 +347,15 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
 
 export const cubePreview = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const revision = dataset.draft_revision;
-
+    let revision = dataset.draft_revision;
     let errors: ViewError[] | undefined;
     let previewData: ViewDTO | undefined;
     let pagination: (string | number)[] = [];
 
-    if (!dataset || !revision) {
-        logger.error('Dataset or Revision not found');
-        next(new UnknownException('errors.preview.revision_not_found'));
-        return;
+    if (!revision) {
+        const revisionId = getLatestRevision(res.locals.dataset)?.id!;
+        const revWithMeta = await req.pubapi.getRevision(dataset.id, revisionId);
+        revision = singleLangRevision(revWithMeta, req.language)!;
     }
 
     try {
@@ -366,14 +366,12 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
             throw new Error('No preview data found.');
         }
         pagination = generateSequenceForNumber(previewData.current_page, previewData.total_pages);
+        const preview = await getDatasetPreview(dataset, revision);
+        res.render('publish/cube-preview', { ...previewData, dataset, preview, pagination, errors });
     } catch (err: any) {
         res.status(400);
         errors = [{ field: 'preview', message: { key: 'errors.preview.failed_to_get_preview' } }];
     }
-
-    const preview = await getDatasetPreview(dataset, revision);
-
-    res.render('publish/cube-preview', { ...previewData, dataset, preview, pagination, errors });
 };
 
 export const downloadDataset = async (req: Request, res: Response, next: NextFunction) => {

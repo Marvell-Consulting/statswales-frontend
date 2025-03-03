@@ -73,8 +73,8 @@ describe('PublisherApi', () => {
     });
   });
 
-  describe('getActiveDatasetList', () => {
-    it('should return an array of FileDescriptions', async () => {
+  describe('getDatasetList', () => {
+    it('should return an array of DatasetListItemDTO', async () => {
       const list: DatasetListItemDTO[] = [
         { id: randomUUID(), title: 'Example 1' },
         { id: randomUUID(), title: 'Example 2' }
@@ -82,7 +82,7 @@ describe('PublisherApi', () => {
 
       mockResponse = Promise.resolve(new Response(JSON.stringify({ files: list })));
 
-      const fileList = await statsWalesApi.getActiveDatasetList();
+      const fileList = await statsWalesApi.getDatasetList();
       expect(fileList).toEqual({ files: list });
     });
   });
@@ -106,59 +106,41 @@ describe('PublisherApi', () => {
     });
   });
 
-  describe('confirmFileImport', () => {
-    it('should return a FileImportDTO', async () => {
+  describe('confirmDataTable', () => {
+    it('should return a DataTableDTO', async () => {
       const datasetId = randomUUID();
       const revisionId = randomUUID();
       const importId = randomUUID();
-      const fileImport = { dataset_id: datasetId, revision_id: revisionId, import_id: importId };
+      const dataTable = { dataset_id: datasetId, revision_id: revisionId, import_id: importId };
 
-      mockResponse = Promise.resolve(new Response(JSON.stringify(fileImport)));
+      mockResponse = Promise.resolve(new Response(JSON.stringify(dataTable)));
 
-      const fileImportDTO = await statsWalesApi.confirmFileImport(datasetId, revisionId);
+      const dataTableDTO = await statsWalesApi.confirmDataTable(datasetId, revisionId);
 
       expect(fetchSpy).toHaveBeenCalledWith(
         `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/data-table/confirm`,
         { method: HttpMethod.Patch, headers }
       );
-      expect(fileImportDTO).toEqual(fileImport);
+      expect(dataTableDTO).toEqual(dataTable);
     });
   });
 
-  describe('getSourcesForFileImport', () => {
-    it('should return a FileImportDTO', async () => {
+  describe('getSourcesForDataset', () => {
+    it('should return an array of FactTableColumnDto', async () => {
       const datasetId = randomUUID();
       const revisionId = randomUUID();
       const importId = randomUUID();
-      const fileImport = { dataset_id: datasetId, revision_id: revisionId, import_id: importId };
+      const dataTable = { dataset_id: datasetId, revision_id: revisionId, import_id: importId };
 
-      mockResponse = Promise.resolve(new Response(JSON.stringify(fileImport)));
+      mockResponse = Promise.resolve(new Response(JSON.stringify(dataTable)));
 
-      const fileImportDTO = await statsWalesApi.getSourcesForDataset(datasetId);
+      const factTableColumnDto = await statsWalesApi.getSourcesForDataset(datasetId);
 
       expect(fetchSpy).toHaveBeenCalledWith(`${baseUrl}/dataset/${datasetId}/sources`, {
         method: HttpMethod.Get,
         headers
       });
-      expect(fileImportDTO).toEqual(fileImport);
-    });
-  });
-
-  describe('removeFileImport', () => {
-    it('should return the updated DatasetDTO', async () => {
-      const datasetId = randomUUID();
-      const revisionId = randomUUID();
-      const dataset = { id: datasetId, title: 'Example Dataset' };
-
-      mockResponse = Promise.resolve(new Response(JSON.stringify(dataset)));
-
-      const datasetDTO = await statsWalesApi.removeFileImport(datasetId, revisionId);
-
-      expect(fetchSpy).toHaveBeenCalledWith(`${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/data-table`, {
-        method: HttpMethod.Delete,
-        headers
-      });
-      expect(datasetDTO).toEqual(dataset);
+      expect(factTableColumnDto).toEqual(dataTable);
     });
   });
 
@@ -169,7 +151,7 @@ describe('PublisherApi', () => {
 
       mockResponse = Promise.resolve(new Response(JSON.stringify(dataset)));
 
-      const datasetDTO = await statsWalesApi.getFullDataset(datasetId);
+      const datasetDTO = await statsWalesApi.getDataset(datasetId);
 
       expect(fetchSpy).toHaveBeenCalledWith(`${baseUrl}/dataset/${datasetId}`, {
         method: HttpMethod.Get,

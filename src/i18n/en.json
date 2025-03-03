@@ -880,7 +880,8 @@
                     "withdraw_first_revision": "Change dataset before publication",
                     "withdraw_update_revision": "Change update before publication",
                     "continue_update": "Continue update",
-                    "continue": "Continue dataset"
+                    "continue": "Continue dataset",
+                    "preview": "View dataset preview"
                 }
             },
             "error": {
