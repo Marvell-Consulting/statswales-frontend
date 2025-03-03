@@ -246,6 +246,14 @@ export class PublisherApi {
         }).then((response) => response.json() as unknown as ViewDTO);
     }
 
+    public async getRevision(datasetId: string, revisionId: string): Promise<RevisionDTO> {
+        logger.debug(`Fetching revision: ${revisionId}`);
+
+        return this.fetch({ url: `dataset/${datasetId}/revision/by-id/${revisionId}` }).then(
+            (response) => response.json() as unknown as RevisionDTO
+        );
+    }
+
     public async getRevisionPreview(
         datasetId: string,
         revisionId: string,

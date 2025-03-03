@@ -34,7 +34,7 @@ describe('Error handling', () => {
   afterAll(() => mockBackend.close());
 
   test('should delete the jwt cookie and redirect to login page after logout', async () => {
-    mockBackend.use(http.get('http://localhost:3001/dataset/active', () => new HttpResponse(null, { status: 401 })));
+    mockBackend.use(http.get('http://localhost:3001/dataset', () => new HttpResponse(null, { status: 401 })));
 
     const res = await request(app).get('/en-GB');
     const jwtCookie = parseCookies(res.headers['set-cookie']).find((cookie) => cookie.name === 'jwt');
@@ -51,14 +51,14 @@ describe('Error handling', () => {
   });
 
   test('should render the error page for 500s', async () => {
-    mockBackend.use(http.get('http://localhost:3001/dataset/active', () => new HttpResponse(null, { status: 500 })));
+    mockBackend.use(http.get('http://localhost:3001/dataset', () => new HttpResponse(null, { status: 500 })));
     const res = await request(app).get('/en-GB');
     expect(res.status).toBe(500);
     expect(res.text).toContain(t('errors.server_error', { lng: Locale.English }));
   });
 
   test('should render the error page for everything else', async () => {
-    mockBackend.use(http.get('http://localhost:3001/dataset/active', () => HttpResponse.error()));
+    mockBackend.use(http.get('http://localhost:3001/dataset', () => HttpResponse.error()));
     const res = await request(app).get('/en-GB');
     expect(res.status).toBe(500);
     expect(res.text).toContain(t('errors.server_error', { lng: Locale.English }));
