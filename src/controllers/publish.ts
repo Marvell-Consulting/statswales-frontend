@@ -175,23 +175,37 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
     }
 
     // if sources have previously been assigned a type, this is a revisit
-    const revisit = Boolean(dataset.factTable);
+    const revisit = Boolean(!dataset.fact_table.find((col: FactTableColumnDto) => col.type === 'unknown'));
     logger.debug(`User is confirming the fact table upload and source_type = ${req.session.updateType}`);
     if (req.method === 'POST') {
         try {
-            if (req.body.confirm === 'true') {
-                if (revision.revision_index === 0) {
-                    res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
-                } else {
-                    await req.pubapi.confirmFileImport(dataset.id, revision.id);
-                    res.redirect(req.buildUrl(`/publish/${dataset.id}/sources`, req.language));
+            if (revisit) {
+                switch (req.body.actionChooser) {
+                    case 'replace-table':
+                        res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
+                        return;
+                    case 'replace-sources':
+                        res.redirect(req.buildUrl(`/publish/${dataset.id}/sources`, req.language));
+                        return;
+                    default:
+                        res.status(400);
+                        errors = [{ field: 'actionChooserTable', message: { key: 'errors.preview.select_action' } }];
                 }
-            } else if (revision.revision_index === 0) {
-                res.redirect(req.buildUrl(`/publish/${dataset.id}/update-type`, req.language));
             } else {
-                res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
+                if (req.body.confirm === 'true') {
+                    if (revision.revision_index === 0) {
+                        res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+                    } else {
+                        await req.pubapi.confirmFileImport(dataset.id, revision.id);
+                        res.redirect(req.buildUrl(`/publish/${dataset.id}/sources`, req.language));
+                    }
+                } else if (revision.revision_index === 0) {
+                    res.redirect(req.buildUrl(`/publish/${dataset.id}/update-type`, req.language));
+                } else {
+                    res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
+                }
+                return;
             }
-            return;
         } catch (err: any) {
             res.status(500);
             errors = [{ field: 'confirm', message: { key: 'errors.preview.confirm_error' } }];

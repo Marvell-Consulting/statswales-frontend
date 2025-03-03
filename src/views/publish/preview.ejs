@@ -1,12 +1,11 @@
 <%- include("../partials/header", t); %>
 
 <div class="govuk-width-container app-width-container">
-    <!-- <a href="#" class="govuk-back-link">Back</a> -->
     <main class="govuk-main-wrapper" id="main-content" role="main">
         <% if (locals.revisit) { %>
             <div class="top-links">
                 <div class="govuk-width-container">
-                    <a href="javascript:history.back()" class="govuk-back-link"><%= t('buttons.back') %></a>
+                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
                     <% if (locals.datasetId) { %>
                         <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
                     <% } %>
@@ -94,27 +93,71 @@
 
             <%- include("../partials/pagination"); %>
 
-            <div class="govuk-grid-row">
-                <div class="govuk-grid-column-full">
-                    <form method="post" role="continue">
-                        <fieldset class="govuk-fieldset">
-                            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                <h2 class="govuk-fieldset__heading">
-                                    <%= t('publish.preview.confirm_correct') %>
-                                </h2>
-                            </legend>
-                            <div class="govuk-button-group">
-                                <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
-                                    <%= t('buttons.continue') %>
-                                </button>
-                                <button type="submit" name="confirm" value="false" class="govuk-button govuk-button--secondary govuk-!-display-inline" data-module="govuk-button">
-                                    <%= t('publish.preview.buttons.choose_different') %>
-                                </button>
-                            </div>
-                        </fieldset>
-                    </form>
+            <% if (locals.revisit) { %>
+                    <div class="govuk-grid-row">
+                        <div class="govuk-grid-column-full">
+                            <form method="post" role="continue">
+                                <fieldset class="govuk-fieldset">
+                                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                        <h2 class="govuk-fieldset__heading">
+                                            <%= t('publish.preview.revisit_question') %>
+                                        </h2>
+                                    </legend>
+                                    <div class="govuk-radios govuk-body govuk-!-margin-bottom-3" data-module="govuk-radios">
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="actionChooserTable" name="actionChooser" type="radio" value="replace-table">
+                                            <label class="govuk-label govuk-radios__label" for="actionChooserTable">
+                                                <%= t('publish.preview.upload_different')%>
+                                            </label>
+                                            <div id="actionChooserTable-hint" class="govuk-hint govuk-radios__hint">
+                                                <%- t('publish.preview.upload_different_hint')%>
+                                            </div>
+                                        </div>
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="actionChooserSources" name="actionChooser" type="radio" value="replace-sources">
+                                            <label class="govuk-label govuk-radios__label" for="actionChooserSources">
+                                                <%= t('publish.preview.change_source')%>
+                                            </label>
+                                            <div id="actionChooserSources-hint" class="govuk-hint govuk-radios__hint">
+                                                <%- t('publish.preview.change_source_hint')%>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="govuk-button-group">
+                                        <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                                            <%= t('buttons.continue') %>
+                                        </button>
+                                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link govuk-button govuk-button--secondary govuk-!-display-inline" data-module="govuk-button">
+                                            <%= t('buttons.cancel') %>
+                                        </a>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+            <% } else { %>
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-full">
+                        <form method="post" role="continue">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                    <h2 class="govuk-fieldset__heading">
+                                        <%= t('publish.preview.confirm_correct') %>
+                                    </h2>
+                                </legend>
+                                <div class="govuk-button-group">
+                                    <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                                        <%= t('buttons.continue') %>
+                                    </button>
+                                    <button type="submit" name="confirm" value="false" class="govuk-button govuk-button--secondary govuk-!-display-inline" data-module="govuk-button">
+                                        <%= t('publish.preview.buttons.choose_different') %>
+                                    </button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            <% } %>
         <% } %> <!-- Do I have data? -->
     </main>
 </div>
