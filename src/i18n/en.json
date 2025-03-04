@@ -36,12 +36,14 @@
         "beta": "Beta",
         "feedback": "You’re viewing a new version of StatsWales. Get support at <a class=\"govuk-link\" href=\"mailto:{{support_email}}\">{{support_email}}</a>.",
         "navigation": {
+            "home": "Home",
             "menu": "Menu",
             "skip_to_content": "Skip to main content",
             "publish_dataset": "Publish a dataset",
             "guidance": "Guidance",
             "list_datasets": "List datasets",
-            "logout": "Logout",
+            "logout": "Sign out",
+            "login": "Sign in",
             "developer": "Developer"
         }
     },
