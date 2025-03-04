@@ -104,7 +104,7 @@
     },
     "dataset_view": {
         "key_information": {
-            "heading": "Key information",
+            "heading": "Main information",
             "last_update": "Most recent update",
             "next_update": "Next update expected (provisional)",
             "data_provider": "Data provider",
@@ -183,12 +183,12 @@
     },
     "publish": {
         "header": {
-            "overview": "Return to dataset overview",
+            "overview": "Return to dataset tasklist",
             "back": "Back"
         },
         "cube_preview": {
             "panel": "This is a preview of this dataset.",
-            "heading": "Key information"
+            "heading": "Main information"
 
         },
         "start": {
@@ -223,9 +223,9 @@
             "showing": "A sample of {{rows}} of {{total}} rows.",
             "question": "What kind of dates does the dimension contain?",
             "chooser": {
-                "period": "Periods of time",
+                "period": "Periods",
                 "period-hint": "For example, months or years for which data values apply to",
-                "point": "Specific points in time",
+                "point": "Specific points",
                 "point-hint": "For example, specific dates when data values were collected"
             }
         },
@@ -235,7 +235,7 @@
             "confirm": "By continuing, you confirm the lookup table is correct.",
             "go_back": "Choose a different lookup table",
             "change_lookup_table": "Replace lookup table",
-            "change_dimension_type": "Change dimension type",
+            "change_dimension_type": "Change what kind of data this dimension contains",
             "column_headers": {
                 "fact_table": "Fact table:",
                 "lookup_table": "Lookup table:",
@@ -326,7 +326,7 @@
             "heading": "Upload a measure lookup table"
         },
         "period-type-chooser": {
-            "heading": "What are the shortest periods of time in the dimension?",
+            "heading": "What are the shortest periods in the dimension?",
             "subheading": "Dates",
             "chooser": {
                 "years": "Years",
@@ -1008,11 +1008,11 @@
             "name_too_short": "Enter what this dimension should be called on the StatsWales website",
             "name_too_long": "Dimension name must be 256 characters or less",
             "naming_failed": "Dimension name could not be added. Try again.",
-            "dimension_period_type_required": "Select whether the dimension contains periods of time or specific points in time",
+            "dimension_period_type_required": "Select whether the dimension contains periods or specific points",
             "dimension_type_required": "Select the kind of data this dimension contains",
             "year_type_required": "Select the type of year the dimension represents",
             "year_format_required": "Select the format used for years in the dimension",
-            "shortest_period_required": "Select what the shortest periods of time in the dimension are",
+            "shortest_period_required": "Select what the shortest periods in the dimension are",
             "quarter_type_required": "Select the format used for quarters in the dimension",
             "quarter_total_type_required": "Select whether a fifth quarter is used to represent yearly totals",
             "month_type_required": "Select the format used for months in the dimension"
