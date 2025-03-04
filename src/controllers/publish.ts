@@ -334,6 +334,7 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
         res.render('publish/tasklist', {
             datasetTitle,
             taskList,
+            revision,
             dimensions,
             statusToColour,
             datasetStatus,
