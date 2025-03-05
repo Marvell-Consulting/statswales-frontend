@@ -1,7 +1,6 @@
-import { RevisionDTO } from '../dtos/revision';
 import { FileFormat } from '../enums/file-format';
 
-export const getDownloadHeaders = (format: FileFormat | undefined, revision: RevisionDTO) => {
+export const getDownloadHeaders = (format: FileFormat | undefined, revisionId: string) => {
     if (!format) return undefined;
 
     const formats = {
@@ -20,7 +19,7 @@ export const getDownloadHeaders = (format: FileFormat | undefined, revision: Rev
     return {
         /* eslint-disable @typescript-eslint/naming-convention */
         'Content-Type': opts.contentType,
-        'Content-disposition': `attachment;filename=${revision.id}.${opts.ext}`
+        'Content-disposition': `attachment;filename=${revisionId}.${opts.ext}`
         /* eslint-enable @typescript-eslint/naming-convention */
     };
 };

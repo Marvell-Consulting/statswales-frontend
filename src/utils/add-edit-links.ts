@@ -12,6 +12,11 @@ export const addEditLinks = (translations: TranslationDTO[], datasetId: string, 
             return translation;
         }
 
+        if (translation.type === 'link') {
+            translation.edit_link = req.buildUrl(`/publish/${datasetId}/related`, req.language);
+            return translation;
+        }
+
         switch (translation.key) {
             case 'description':
                 translation.edit_link = req.buildUrl(`/publish/${datasetId}/summary`, req.language);

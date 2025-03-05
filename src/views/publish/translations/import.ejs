@@ -24,7 +24,13 @@
 					<tbody class="govuk-table__body">
 						<% translations.forEach(function(translation) { %>
 							<tr class="govuk-table__row">
-								<td class="govuk-table__cell"><%= translation.type === 'metadata' ? t(`translations.export.field.${translation.key}`) : t(`translations.export.dimension`, { key: translation.key }) %></td>
+								<% if (translation.type === 'dimension') { %>
+									<td class="govuk-table__cell"><%= t(`translations.export.dimension`, { key: translation.key }) %></td>
+								<% } else if (translation.type === 'metadata') { %>
+									<td class="govuk-table__cell"><%= t(`translations.export.field.${translation.key}`) %></td>
+								<% } else if (translation.type === 'link') { %>
+									<td class="govuk-table__cell"><%= t(`translations.export.link`, { key: translation.key }) %></td>
+								<% } %>
 								<td class="govuk-table__cell"><%= translation.english %></td>
 								<td class="govuk-table__cell"><%= translation.cymraeg %></td>
 							</tr>

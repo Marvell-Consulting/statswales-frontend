@@ -46,10 +46,12 @@
 						<% } %>
 
 						<% if (locals.publishingStatus === 'scheduled') { %>
+							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/cube-preview`, i18n.language) %>"><%= t('publish.overview.scheduled.buttons.preview') %></a></li>
 							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language, { withdraw: 'true' }) %>"><%= t('publish.overview.scheduled.buttons.withdraw_first_revision') %></a></li>
 						<% } %>
 
 						<% if (locals.publishingStatus === 'update_scheduled') { %>
+							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/cube-preview`, i18n.language) %>"><%= t('publish.overview.scheduled.buttons.preview') %></a></li>
 							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language, { withdraw: 'true' }) %>"><%= t('publish.overview.scheduled.buttons.withdraw_update_revision') %></a></li>
 						<% } %>
 
