@@ -6,10 +6,11 @@ export const statusToColour = (status: TaskStatus | DatasetStatus | PublishingSt
     switch (status) {
         case TaskStatus.Completed:
         case TaskStatus.Available:
+        case TaskStatus.Updated:
         case DatasetStatus.New:
             return 'green';
 
-        case TaskStatus.NotImplemented:
+        case TaskStatus.Unchanged:
             return 'red';
 
         case PublishingStatus.Scheduled:
