@@ -81,13 +81,14 @@
         }
     },
     "homepage": {
-        "title": "StatsWales datasets",
+        "heading": "StatsWales datasets",
         "table": {
             "id": "ID",
             "title": "Title",
             "last_updated": "Last updated",
             "dataset_status": "Dataset status",
-            "publish_status": "Publishing status"
+            "publish_status": "Publishing status",
+            "not_translated":"Not yet translated"
         },
         "status": {
             "new": "New",

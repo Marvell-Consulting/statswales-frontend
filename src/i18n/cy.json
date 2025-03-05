@@ -79,7 +79,7 @@
     }
   },
   "homepage": {
-    "title": "Setiau data StatsCymru",
+    "heading": "Setiau data StatsCymru",
     "table": {
       "id": "Cod adnabod",
       "title": "Teitl",
