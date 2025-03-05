@@ -70,6 +70,9 @@
                 <ul aria-hidden="true">
                     <li><a href="<%= buildUrl('/', i18n.language) %>"><%= t('header.navigation.home') %></a></li>
                     <li><a href="<%= buildUrl('/guidance', i18n.language) %>"><%= t('header.navigation.guidance') %></a></li>
+                    <% if (locals?.isDeveloper) { %>
+                        <li><a href="<%= buildUrl('/developer', i18n.language) %>"><%= t('header.navigation.developer') %></a></li>
+                    <% } %>
                 </ul>
             </div>
         </div>
