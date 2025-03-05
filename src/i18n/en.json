@@ -819,7 +819,8 @@
                 "completed": "Completed",
                 "not_started": "Not yet started",
                 "incomplete": "Incomplete",
-                "not_implemented": "Not Implemented"
+                "unchanged": "Unchanged",
+                "updated": "Updated"
             },
             "data": {
                 "subheading": "Data",
