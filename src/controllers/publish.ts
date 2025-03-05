@@ -69,7 +69,6 @@ import { ProviderDTO } from '../dtos/provider';
 import { Locale } from '../enums/locale';
 import { getLatestRevision } from '../utils/revision';
 import { DatasetInclude } from '../enums/dataset-include';
-import { RevisionDTO } from '../dtos/revision';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
