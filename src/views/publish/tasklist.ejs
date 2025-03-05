@@ -106,8 +106,8 @@
               </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.data_collection) %>">
-                <%= t(`publish.tasklist.status.${taskList.metadata.data_collection}`) %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.collection) %>">
+                <%= t(`publish.tasklist.status.${taskList.metadata.collection}`) %>
               </strong>
             </div>
           </li>
@@ -118,8 +118,8 @@
               </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.statistical_quality) %>">
-                <%= t(`publish.tasklist.status.${taskList.metadata.statistical_quality}`) %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.quality) %>">
+                <%= t(`publish.tasklist.status.${taskList.metadata.quality}`) %>
               </strong>
             </div>
           </li>
@@ -130,8 +130,8 @@
               </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.data_sources) %>">
-                <%= t(`publish.tasklist.status.${taskList.metadata.data_sources}`) %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.sources) %>">
+                <%= t(`publish.tasklist.status.${taskList.metadata.sources}`) %>
               </strong>
             </div>
           </li>
@@ -142,8 +142,8 @@
               </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.related_reports) %>">
-                <%= t(`publish.tasklist.status.${taskList.metadata.related_reports}`) %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.related) %>">
+                <%= t(`publish.tasklist.status.${taskList.metadata.related}`) %>
               </strong>
             </div>
           </li>
@@ -154,8 +154,8 @@
               </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.update_frequency) %>">
-                <%= t(`publish.tasklist.status.${taskList.metadata.update_frequency}`) %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.frequency) %>">
+                <%= t(`publish.tasklist.status.${taskList.metadata.frequency}`) %>
               </strong>
             </div>
           </li>
@@ -178,8 +178,8 @@
               </a>
             </div>
             <div class="govuk-task-list__status">
-              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.relevant_topics) %>">
-                <%= t(`publish.tasklist.status.${taskList.metadata.relevant_topics}`) %>
+              <strong class="govuk-tag govuk-tag--<%= statusToColour(taskList.metadata.topics) %>">
+                <%= t(`publish.tasklist.status.${taskList.metadata.topics}`) %>
               </strong>
             </div>
           </li>
