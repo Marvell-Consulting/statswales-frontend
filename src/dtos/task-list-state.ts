@@ -9,13 +9,13 @@ export interface TaskListState {
     metadata: {
         title: TaskStatus;
         summary: TaskStatus;
-        statistical_quality: TaskStatus;
-        data_sources: TaskStatus;
-        related_reports: TaskStatus;
-        update_frequency: TaskStatus;
+        quality: TaskStatus;
+        collection: TaskStatus;
+        frequency: TaskStatus;
         designation: TaskStatus;
-        data_collection: TaskStatus;
-        relevant_topics: TaskStatus;
+        related: TaskStatus;
+        sources: TaskStatus;
+        topics: TaskStatus;
     };
 
     translation: {
