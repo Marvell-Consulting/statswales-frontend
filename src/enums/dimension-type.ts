@@ -5,7 +5,7 @@ export enum DimensionType {
     Symbol = 'symbol',
     ReferenceData = 'reference_data',
     LookupTable = 'lookup_table',
-    TimePeriod = 'time_period',
-    TimePoint = 'time_point',
+    DatePeriod = 'date_period',
+    Date = 'date',
     FootNote = 'footnote'
 }

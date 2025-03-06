@@ -366,25 +366,32 @@
             "example": "For example, {{example}}"
         },
         "measure_match_failure": {
-            "heading": "Measure lookup table data cannot be matched to the data table",
-            "information": "{{failureCount, number}} references in the dimension do not match the references in your measure lookup table. You should check:",
-            "formatting": "the reference codes used in the data table are correct",
-            "choices": "you selected the correct lookup table for your measure"
+            "heading": "Measure lookup table cannot be matched to the data table",
+            "measure_subheading": "Reference codes in the measure lookup table that cannot be matched",
+            "information": "{{failureCount, number}} instances of reference codes in the data table cannot be found in the measure lookup table.",
+            "things_to_check": "You should check you selected the correct data table and measure lookup table and that they both:",
+            "formatting": "contain the correct reference codes",
+            "choices": "do not contain any trailing spaces after any values",
+            "upload_different_measure": "Upload corrected or different measure lookup table"
         },
         "dimension_match_failure": {
             "lookup_heading": "Lookup table data cannot be matched to the data table",
             "heading": "Reference data cannot be matched to the data table",
-            "lookup_information": "{{failureCount, number}} references in the dimension do not match the references in your lookup table. You should check:",
+            "lookup_information": "{{failureCount, number}} instances of reference codes in the data table could not be found in the uploaded lookup table.",
+            "you_should_check": "You should check you selected the correct data table and lookup table and that they both:",
             "ref_information": "{{failureCount, number}} references in the dimension do not match the the category of reference data you selected. You should check:",
-            "formatting": "the reference codes used in the data table are correct",
-            "choices": "you selected the correct lookup table",
-            "subheading": "Reference codes that cannot be matched",
+            "formatting": "contains the correct reference codes",
+            "choices": "does not contain any trailing spaces after any values",
+            "fact_table_subheading": "Reference codes in the data table that cannot be matched",
             "ref_choices": "you selected the correct reference data category",
             "actions": "Actions",
             "upload_different_file": "Upload corrected or different data table",
-            "upload_different_file_warning": "(This will remove reference data from all dimensions)",
-            "try_different_format": "Select a different lookup table",
-            "no_matches": "None of the dates matched the format supplied"
+            "upload_different_file_warning": "Warning: This will remove all reference data from all dimensions",
+            "try_different_format": "Select different reference data",
+            "try_different_lookup": "Upload different or corrected lookup table",
+            "no_matches": "None of the dates matched the format supplied",
+            "missing_data_table_values": "Reference codes in the data table that cannot be matched",
+            "missing_lookup_table_values": "Reference codes in the lookup table that cannot be matched"
         },
         "period_match_failure": {
             "heading": "Date formatting cannot be matched to the dimension",
@@ -396,7 +403,7 @@
             "quarter_format": "Quarters: {{format}}",
             "month_format": "Months: {{format}}",
             "date_format": "Date: {{format}}",
-            "subheading": "Unique date codes that cannot be matched",
+            "fact_table_subheading": "Reference codes in the data table that cannot be matched",
             "actions": "Actions",
             "upload_different_file": "Upload corrected or different data table",
             "upload_different_file_warning": "(This will remove reference data from all dimensions)",

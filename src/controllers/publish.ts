@@ -244,6 +244,7 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
         }
 
         if (req.method === 'POST') {
+            logger.debug('Validating the source definition');
             const counts = { unknown: 0, dataValues: 0, footnotes: 0, measure: 0 };
             const sourceAssignment: SourceAssignmentDTO[] = factTable.map((column: FactTableColumnDto) => {
                 const sourceType = req.body[`column-${column.index}`];
@@ -285,9 +286,11 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
             }
 
             if (error) {
+                logger.error('There were errors validating the fact table');
                 errors = [error];
                 res.status(400);
             } else {
+                logger.debug('Sending request to the backend.');
                 await req.pubapi.assignSources(dataset.id, sourceAssignment);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
                 return;
@@ -579,8 +582,6 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
                 await req.pubapi.uploadLookupTable(dataset.id, dimension.id, fileData, fileName);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/review`, req.language));
             } catch (err) {
-                req.session.dimensionPatch = undefined;
-                req.session.save();
                 const error = err as ApiException;
                 logger.debug(`Error is: ${JSON.stringify(error, null, 2)}`);
                 if (error.status === 400) {
@@ -697,11 +698,9 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
         const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
 
         if (req.method === 'POST') {
+            let dimensionPatch: DimensionPatchDTO;
             switch (req.body.dimensionType) {
                 case 'lookup':
-                    req.session.dimensionPatch = {
-                        dimension_type: DimensionType.LookupTable
-                    };
                     res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}`, req.language));
                     return;
                 case 'Geog':
@@ -709,22 +708,17 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
                 case 'Eth':
                 case 'Gen':
                 case 'Rlgn':
-                    req.session.dimensionPatch = {
+                    dimensionPatch = {
+                        dimension_id: dimension.id,
                         dimension_type: DimensionType.ReferenceData,
                         reference_type: req.body.dimensionType
                     };
                     try {
-                        await req.pubapi.patchDimension(
-                            res.locals.dataset.id,
-                            dimension.id,
-                            req.session.dimensionPatch
-                        );
+                        await req.pubapi.patchDimension(res.locals.dataset.id, dimension.id, dimensionPatch);
                         res.redirect(
                             req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/review`, req.language)
                         );
                     } catch (err) {
-                        req.session.dimensionPatch = undefined;
-                        req.session.save();
                         const error = err as ApiException;
                         logger.debug(`Error is: ${JSON.stringify(error, null, 2)}`);
                         if (error.status === 400) {
@@ -733,7 +727,7 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
                             const failurePreview = JSON.parse(error.body as string) as ViewErrDTO;
                             res.render('publish/dimension-match-failure', {
                                 ...failurePreview,
-                                patchRequest: { dimension_type: DimensionType.LookupTable },
+                                patchRequest: dimensionPatch,
                                 dimension
                             });
                             return;
@@ -885,7 +879,8 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
             }
             if (req.body.yearType === 'calendar') {
                 req.session.dimensionPatch = {
-                    dimension_type: DimensionType.TimePeriod,
+                    dimension_id: req.params.dimensionId,
+                    dimension_type: DimensionType.DatePeriod,
                     date_type: req.body.yearType,
                     year_format: 'YYYY'
                 };
@@ -899,7 +894,8 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
                 return;
             } else {
                 req.session.dimensionPatch = {
-                    dimension_type: DimensionType.TimePeriod,
+                    dimension_id: req.params.dimensionId,
+                    dimension_type: DimensionType.Date,
                     date_type: req.body.yearType
                 };
                 req.session.save();
@@ -932,7 +928,7 @@ export const yearFormat = async (req: Request, res: Response, next: NextFunction
         }
 
         if (req.method === 'POST') {
-            if (!req.session.dimensionPatch) {
+            if (!req.session.dimensionPatch || req.session.dimensionPatch.dimension_id !== dimension.id) {
                 logger.error('Failed to find patch information in the session.');
                 throw new Error('Year type not set in previous step');
             }
@@ -1435,8 +1431,9 @@ export const pointInTimeChooser = async (req: Request, res: Response, next: Next
 
     if (req.method === 'POST') {
         const patchRequest: DimensionPatchDTO = {
+            dimension_id: req.params.dimensionId,
             date_format: req.body.dateFormat,
-            dimension_type: DimensionType.TimePoint,
+            dimension_type: DimensionType.Date,
             date_type: YearType.PointInTime
         };
         try {

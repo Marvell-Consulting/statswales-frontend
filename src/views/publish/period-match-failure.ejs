@@ -9,6 +9,7 @@
             </div>
         </div>
 
+        <p class="govuk-heading-s region-subhead"><%= dimension.metadata.name %></p>
         <h1 class="govuk-heading-xl"><%= t('publish.period_match_failure.heading') %></h1>
 
         <p class="govuk-body"><%= t('publish.period_match_failure.information', {failureCount: locals.extension.totalNonMatching}) %></p>
@@ -59,3 +60,10 @@
 </div>
 
 <%- include("../partials/footer"); %>
+
+<style>
+    .mid-dot {
+        color: #ffffff;
+        font-weight: 600;
+    }
+</style>
