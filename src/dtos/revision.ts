@@ -19,6 +19,7 @@ export interface RevisionDTO {
     approved_at?: string;
     approved_by?: string;
     created_by: string;
+    data_table_id?: string;
     data_table?: DataTableDto;
     metadata?: RevisionMetadataDTO[];
     rounding_applied?: boolean;
