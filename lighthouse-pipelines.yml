@@ -4,27 +4,126 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  REPORT_FOLDER: 'lighthouse-report'
-  REPORT_FILE: 'lighthouse-report.html'
-
 steps:
+# Install Node.js
 - task: NodeTool@0
   inputs:
     versionSpec: '22.x'
   displayName: 'Use Node.js 22.x'
 
+# Install jq for JSON parsing
 - script: |
-    mkdir -p $(REPORT_FOLDER)
-    npm install -g lighthouse
-    lighthouse $(WEBSITE_URL) \
-      --output html --output-path $(REPORT_FOLDER)/$(REPORT_FILE) \
-      --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
-      --preset=desktop
-  displayName: 'Run Lighthouse Test'
+    sudo apt-get update && sudo apt-get install -y jq
+  displayName: 'Install jq'
 
+# Run Lighthouse CI and generate reports
+- script: |
+    npm install -g @lhci/cli
+    lhci autorun
+  displayName: 'Run Lighthouse CI (Generate Reports + Enforce Thresholds)'
+
+# Publish all Lighthouse reports as an artifact
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(REPORT_FOLDER)'
-    artifactName: 'LighthouseReport'
-  displayName: 'Publish Lighthouse Report'
+    targetPath: 'lhci-reports'
+    artifactName: 'LighthouseReports'
+  condition: always()
+  displayName: 'Publish Lighthouse Reports'
+
+# ✅ Generate an HTML Summary Report from manifest.json
+- script: |
+    echo "Generating HTML summary from Lighthouse manifest.json..."
+
+    MANIFEST_PATH="lhci-reports/manifest.json"
+    OUTPUT_DIR="$(Build.ArtifactStagingDirectory)"
+    
+    if [[ -f "$MANIFEST_PATH" ]]; then
+      echo "✅ Found manifest.json, generating HTML report..."
+      npx lhci upload --target=filesystem --outputDir="$OUTPUT_DIR"
+
+      # Find the generated HTML report dynamically
+      REPORT_FILE=$(find "$OUTPUT_DIR" -name "*.html" | head -n 1)
+      
+      if [[ -z "$REPORT_FILE" ]]; then
+        echo "❌ No HTML report found!"
+        exit 1
+      fi
+
+      echo "✅ Found generated report: $REPORT_FILE"
+      mv "$REPORT_FILE" "$OUTPUT_DIR/lhci-summary.html"
+    else
+      echo "❌ manifest.json not found! Skipping HTML report generation."
+      exit 1
+    fi
+  displayName: 'Generate Lighthouse Summary HTML Report'
+  condition: always()
+
+# ✅ Publish the Lighthouse HTML Summary as a Pipeline Artifact
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/lhci-summary.html'
+    artifactName: 'Lighthouse Summary Report'
+  condition: always()
+  displayName: 'Publish Lighthouse Summary HTML Report'
+
+# ✅ Generate Markdown Summary with Correct Link to the HTML Report
+- script: |
+    echo "Checking for Lighthouse JSON reports..."
+    REPORT_PATH=$(find lhci-reports -name "*.report.json" | head -n 1)
+
+    if [[ ! -f "$REPORT_PATH" ]]; then
+      echo "❌ No JSON report found!"
+      exit 1
+    fi
+
+    echo "✅ Found report: $REPORT_PATH"
+    jq '.' "$REPORT_PATH" > $(Build.ArtifactStagingDirectory)/lhci-debug.json  # Save JSON for debugging
+
+    PERFORMANCE=$(jq '.categories.performance.score * 100 | floor' "$REPORT_PATH" || echo "N/A")
+    ACCESSIBILITY=$(jq '.categories.accessibility.score * 100 | floor' "$REPORT_PATH" || echo "N/A")
+    BEST_PRACTICES=$(jq '.categories["best-practices"].score * 100 | floor' "$REPORT_PATH" || echo "N/A")
+    SEO=$(jq '.categories.seo.score * 100 | floor' "$REPORT_PATH" || echo "N/A")
+    PWA=$(jq '.categories.pwa.score * 100 | floor' "$REPORT_PATH" || echo "N/A")
+
+    # ✅ Generate the correct artifact URL
+    ORG="MarvellConsulting"
+    PROJECT="StatsWales"
+    BUILD_ID=$(Build.BuildId)
+    ARTIFACT_NAME="Lighthouse%20Summary%20Report"
+    REPORT_URL="https://dev.azure.com/$ORG/$PROJECT/_apis/build/builds/$BUILD_ID/artifacts?artifactName=$ARTIFACT_NAME&api-version=6.0"
+
+    echo "## 🔎 Lighthouse Report" > $(Build.ArtifactStagingDirectory)/lhci-summary.md
+    echo "" >> $(Build.ArtifactStagingDirectory)/lhci-summary.md
+    echo "| Category        | Score |" >> $(Build.ArtifactStagingDirectory)/lhci-summary.md
+    echo "|---------------|------|" >> $(Build.ArtifactStagingDirectory)/lhci-summary.md
+    echo "| 📈 Performance    | ${PERFORMANCE} |" >> $(Build.ArtifactStagingDirectory)/lhci-summary.md
+    echo "| ♿ Accessibility  | ${ACCESSIBILITY} |" >> $(Build.ArtifactStagingDirectory)/lhci-summary.md
+    echo "| ✅ Best Practices | ${BEST_PRACTICES} |" >> $(Build.ArtifactStagingDirectory)/lhci-summary.md
+    echo "| 🔍 SEO           | ${SEO} |" >> $(Build.ArtifactStagingDirectory)/lhci-summary.md
+    echo "| 🏗 PWA           | ${PWA} |" >> $(Build.ArtifactStagingDirectory)/lhci-summary.md
+    echo "" >> $(Build.ArtifactStagingDirectory)/lhci-summary.md
+    echo "[📄 View Full Report]($REPORT_URL)" >> $(Build.ArtifactStagingDirectory)/lhci-summary.md
+  condition: always()
+  displayName: 'Generate Lighthouse Markdown Summary'
+
+# ✅ Upload Markdown Summary to Pipeline UI
+- script: |
+    echo "##vso[task.uploadsummary]$(Build.ArtifactStagingDirectory)/lhci-summary.md"
+  condition: always()
+  displayName: 'Upload Lighthouse Summary to Pipeline UI'
+
+# Publish Debug JSON for Troubleshooting
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/lhci-debug.json'
+    artifactName: 'Lighthouse Debug JSON'
+  condition: always()
+  displayName: 'Publish Debug JSON (For Troubleshooting)'
+
+# Publish Lighthouse Markdown Summary Artifact
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/lhci-summary.md'
+    artifactName: 'Lighthouse Summary'
+  condition: always()
+  displayName: 'Publish Lighthouse Report Summary Artifact'
