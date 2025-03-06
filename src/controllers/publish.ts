@@ -11,7 +11,7 @@ import { parse } from 'csv-parse';
 import {
     collectionValidator,
     dayValidator,
-    descriptionValidator,
+    summaryValidator,
     designationValidator,
     frequencyUnitValidator,
     frequencyValueValidator,
@@ -41,11 +41,11 @@ import { UnknownException } from '../exceptions/unknown.exception';
 import { TaskListState } from '../dtos/task-list-state';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { statusToColour } from '../utils/status-to-colour';
-import { singleLangDataset } from '../utils/single-lang-dataset';
+import { singleLangDataset, singleLangRevision } from '../utils/single-lang-dataset';
 import { Designation } from '../enums/designation';
 import { DurationUnit } from '../enums/duration-unit';
 import { RelatedLinkDTO } from '../dtos/related-link';
-import { DatasetProviderDTO } from '../dtos/dataset-provider';
+import { RevisionProviderDTO } from '../dtos/revision-provider';
 import { ProviderSourceDTO } from '../dtos/provider-source';
 import { generateSequenceForNumber } from '../utils/pagination';
 import { fileMimeTypeHandler } from '../utils/file-mimetype-handler';
@@ -66,8 +66,15 @@ import { FileFormat } from '../enums/file-format';
 import { getDownloadHeaders } from '../utils/download-headers';
 import { FactTableColumnDto } from '../dtos/fact-table-column-dto';
 import { ProviderDTO } from '../dtos/provider';
+import { Locale } from '../enums/locale';
+import { getLatestRevision } from '../utils/revision';
+import { DatasetInclude } from '../enums/dataset-include';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
+    req.session.errors = undefined;
+    req.session.dimensionPatch = undefined;
+    req.session.updateType = undefined;
+    req.session.save();
     res.render('publish/start');
 };
 
@@ -75,9 +82,10 @@ export const dimensionColumnNameRegex = /^[a-zA-ZÀ-ž()\-_ ]+$/;
 
 export const provideTitle = async (req: Request, res: Response, next: NextFunction) => {
     let errors: ViewError[] = [];
-    const existingDataset = res.locals.dataset; // dataset does not exist the first time through
-    let title = existingDataset ? singleLangDataset(existingDataset, req.language)?.datasetInfo?.title : undefined;
-    const revisit = Boolean(existingDataset);
+
+    const existingDataset = res.locals.dataset ? singleLangDataset(res.locals.dataset, req.language) : undefined;
+    const revisit = Boolean(existingDataset); // dataset will not exist the first time through
+    let title = existingDataset?.draft_revision?.metadata?.title;
 
     if (req.method === 'POST') {
         try {
@@ -93,7 +101,7 @@ export const provideTitle = async (req: Request, res: Response, next: NextFuncti
             }
 
             if (existingDataset) {
-                await req.pubapi.updateDatasetInfo(existingDataset.id, { title, language: req.language });
+                await req.pubapi.updateMetadata(existingDataset.id, { title, language: req.language });
                 res.redirect(req.buildUrl(`/publish/${existingDataset.id}/tasklist`, req.language));
             } else {
                 const dataset = await req.pubapi.createDataset(title, req.language);
@@ -110,10 +118,11 @@ export const provideTitle = async (req: Request, res: Response, next: NextFuncti
     res.render('publish/title', { title, revisit, errors });
 };
 
-export const uploadFile = async (req: Request, res: Response, next: NextFunction) => {
-    const { dataset, revision, dataTable } = res.locals;
-    let errors: ViewError[] = [];
+export const uploadDataTable = async (req: Request, res: Response, next: NextFunction) => {
+    const dataset = res.locals.dataset;
+    const revision = dataset.draft_revision;
     const revisit = dataset.dimensions?.length > 0;
+    let errors: ViewError[] = [];
 
     if (req.method === 'POST') {
         logger.debug('User is uploading a fact table.');
@@ -124,15 +133,11 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
                 throw new Error();
             }
 
-            if (revisit && revision && dataTable) {
-                // cleanup previous fact table
-                await req.pubapi.removeFileImport(dataset.id, revision.id);
-            }
-
             const fileName = req.file.originalname;
             req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
             const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
-            logger.debug('Sending file to backend.');
+            logger.debug('Sending file to backend');
+
             if (req.session.updateType) {
                 logger.info('Performing an update to the dataset');
                 await req.pubapi.uploadCSVToUpdateDataset(
@@ -143,7 +148,7 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
                     req.session.updateType
                 );
             } else {
-                await req.pubapi.uploadCSVToDataset(dataset.id, fileData, fileName);
+                await req.pubapi.uploadDataToDataset(dataset.id, fileData, fileName);
             }
             // eslint-disable-next-line require-atomic-updates
             req.session.updateType = undefined;
@@ -162,7 +167,13 @@ export const uploadFile = async (req: Request, res: Response, next: NextFunction
 };
 
 export const factTablePreview = async (req: Request, res: Response, next: NextFunction) => {
-    const { dataset, revision, dataTable } = res.locals;
+    const dataset = res.locals.dataset;
+    const revision = dataset.draft_revision;
+    const dataTable = revision?.data_table;
+    const hasUnknownColumns = dataset.fact_table.some((col: FactTableColumnDto) => col.type === 'unknown');
+    const isUpdate = Boolean(revision.previous_revision_id);
+    const revisit = !isUpdate && !hasUnknownColumns;
+
     let errors: ViewError[] | undefined;
     let previewData: ViewDTO | undefined;
     let ignoredCount = 0;
@@ -174,10 +185,9 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
         return;
     }
 
-    // if sources have previously been assigned a type, this is a revisit
-    const revisit = Boolean(!dataset.fact_table.find((col: FactTableColumnDto) => col.type === 'unknown'));
-    logger.debug(`User is confirming the fact table upload and source_type = ${req.session.updateType}`);
     if (req.method === 'POST') {
+        logger.debug(`User is confirming the fact table upload and source_type = ${req.session.updateType}`);
+
         try {
             if (revisit) {
                 switch (req.body.actionChooser) {
@@ -196,7 +206,7 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
                     if (revision.revision_index === 0) {
                         res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
                     } else {
-                        await req.pubapi.confirmFileImport(dataset.id, revision.id);
+                        await req.pubapi.confirmDataTable(dataset.id, revision.id);
                         res.redirect(req.buildUrl(`/publish/${dataset.id}/sources`, req.language));
                     }
                 } else if (revision.revision_index === 0) {
@@ -229,26 +239,32 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
 };
 
 export const sources = async (req: Request, res: Response, next: NextFunction) => {
-    const { dataset, revision } = res.locals;
+    const dataset = res.locals.dataset;
+    const revision = dataset.draft_revision;
+
     const factTable = dataset.fact_table.sort(
         (colA: FactTableColumnDto, colB: FactTableColumnDto) => colA.index - colB.index
     ) as FactTableColumnDto[];
+
     const revisit = factTable.filter((column: FactTableColumnDto) => column.type === SourceType.Unknown).length > 0;
+
     let error: ViewError | undefined;
     let errors: ViewError[] | undefined;
 
-    try {
-        if (!dataset || !revision || !factTable) {
-            logger.error('Fact table not found');
-            throw new Error('errors.preview.import_missing');
-        }
+    if (!dataset || !revision || !factTable) {
+        logger.error('Fact table not found');
+        next(new UnknownException('errors.preview.import_missing'));
+        return;
+    }
 
+    try {
         if (req.method === 'POST') {
             logger.debug('Validating the source definition');
-            const counts = { unknown: 0, dataValues: 0, footnotes: 0, measure: 0 };
+            const counts = { unknown: 0, dataValues: 0, footnotes: 0, measure: 0, time: 0 };
             const sourceAssignment: SourceAssignmentDTO[] = factTable.map((column: FactTableColumnDto) => {
                 const sourceType = req.body[`column-${column.index}`];
                 if (sourceType === SourceType.Unknown) counts.unknown++;
+                if (sourceType === SourceType.Time) counts.time++;
                 if (sourceType === SourceType.DataValues) counts.dataValues++;
                 if (sourceType === SourceType.NoteCodes) counts.footnotes++;
                 if (sourceType === SourceType.Measure) counts.measure++;
@@ -312,16 +328,15 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
 
 export const taskList = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const datasetStatus = getDatasetStatus(dataset);
-    const publishingStatus = getPublishingStatus(dataset);
-    const revision = res.locals.revision;
+    const revision = dataset.draft_revision!;
+    const datasetStatus = getDatasetStatus(res.locals.dataset);
+    const publishingStatus = getPublishingStatus(res.locals.dataset);
 
     try {
         if (req.method === 'POST') {
             // TODO: for MVP there is no approval process, so we are jumping straight to approve
             // once we have approval process, there will be an interstitial status while the dataset is waiting to
             // be approved by a suitable member of the team
-            logger.debug('submitting dataset for publication');
             const scheduledDataset = await req.pubapi.approveForPublication(dataset.id, revision.id);
 
             if (scheduledDataset) {
@@ -332,12 +347,13 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
             }
         }
 
-        const datasetTitle = dataset.datasetInfo?.title;
+        const datasetTitle = revision.metadata?.title;
         const dimensions = dataset.dimensions;
         const taskList: TaskListState = await req.pubapi.getTaskList(dataset.id);
         res.render('publish/tasklist', {
             datasetTitle,
             taskList,
+            revision,
             dimensions,
             statusToColour,
             datasetStatus,
@@ -351,16 +367,15 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
 
 export const cubePreview = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const revision = res.locals.revision;
-
+    let revision = dataset.draft_revision;
     let errors: ViewError[] | undefined;
     let previewData: ViewDTO | undefined;
     let pagination: (string | number)[] = [];
 
-    if (!dataset || !revision) {
-        logger.error('Dataset or Revision not found');
-        next(new UnknownException('errors.preview.revision_not_found'));
-        return;
+    if (!revision) {
+        const revisionId = getLatestRevision(res.locals.dataset)?.id!;
+        const revWithMeta = await req.pubapi.getRevision(dataset.id, revisionId);
+        revision = singleLangRevision(revWithMeta, req.language)!;
     }
 
     try {
@@ -371,14 +386,12 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
             throw new Error('No preview data found.');
         }
         pagination = generateSequenceForNumber(previewData.current_page, previewData.total_pages);
+        const preview = await getDatasetPreview(dataset, revision);
+        res.render('publish/cube-preview', { ...previewData, dataset, preview, pagination, errors });
     } catch (err: any) {
         res.status(400);
         errors = [{ field: 'preview', message: { key: 'errors.preview.failed_to_get_preview' } }];
     }
-
-    const preview = await getDatasetPreview(dataset, revision);
-
-    res.render('publish/cube-preview', { ...previewData, dataset, preview, pagination, errors });
 };
 
 export const downloadDataset = async (req: Request, res: Response, next: NextFunction) => {
@@ -391,7 +404,7 @@ export const downloadDataset = async (req: Request, res: Response, next: NextFun
         }
 
         const format = req.query.format as FileFormat;
-        const headers = getDownloadHeaders(format, revision);
+        const headers = getDownloadHeaders(format, revision.id);
 
         if (!headers) {
             throw new NotFoundException('errors.preview.invalid_download_format');
@@ -1527,13 +1540,14 @@ export const changeData = async (req: Request, res: Response, next: NextFunction
 export const provideSummary = async (req: Request, res: Response, next: NextFunction) => {
     let errors: ViewError[] | undefined;
     const dataset = singleLangDataset(res.locals.dataset, req.language);
-    let description = dataset?.datasetInfo?.description;
+    const revision = dataset.draft_revision;
+    let summary = revision?.metadata?.summary;
 
     if (req.method === 'POST') {
         try {
-            description = req.body.description;
+            summary = req.body.summary;
 
-            errors = (await getErrors(descriptionValidator(), req)).map((error: FieldValidationError) => {
+            errors = (await getErrors(summaryValidator(), req)).map((error: FieldValidationError) => {
                 return { field: error.path, message: { key: `publish.summary.form.description.error.missing` } };
             });
 
@@ -1542,7 +1556,7 @@ export const provideSummary = async (req: Request, res: Response, next: NextFunc
                 throw new Error();
             }
 
-            await req.pubapi.updateDatasetInfo(dataset.id, { description, language: req.language });
+            await req.pubapi.updateMetadata(dataset.id, { summary, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
@@ -1552,13 +1566,14 @@ export const provideSummary = async (req: Request, res: Response, next: NextFunc
         }
     }
 
-    res.render('publish/summary', { description, errors });
+    res.render('publish/summary', { summary, errors });
 };
 
 export const provideCollection = async (req: Request, res: Response, next: NextFunction) => {
     let errors: ViewError[] | undefined;
     const dataset = singleLangDataset(res.locals.dataset, req.language);
-    let collection = dataset?.datasetInfo?.collection;
+    const revision = dataset.draft_revision;
+    let collection = revision?.metadata?.collection;
 
     if (req.method === 'POST') {
         try {
@@ -1573,7 +1588,7 @@ export const provideCollection = async (req: Request, res: Response, next: NextF
                 throw new Error();
             }
 
-            await req.pubapi.updateDatasetInfo(dataset.id, { collection, language: req.language });
+            await req.pubapi.updateMetadata(dataset.id, { collection, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
@@ -1589,11 +1604,16 @@ export const provideCollection = async (req: Request, res: Response, next: NextF
 export const provideQuality = async (req: Request, res: Response, next: NextFunction) => {
     let errors: ViewError[] | undefined;
     const dataset = singleLangDataset(res.locals.dataset, req.language);
-    let datasetInfo = dataset?.datasetInfo!;
+    const revision = dataset.draft_revision;
+    let metadata = {
+        quality: revision?.metadata?.quality,
+        rounding_applied: revision?.rounding_applied,
+        rounding_description: revision?.metadata?.rounding_description
+    };
 
     if (req.method === 'POST') {
         try {
-            datasetInfo = {
+            metadata = {
                 quality: req.body.quality,
                 rounding_applied: req.body.rounding_applied ? req.body.rounding_applied === 'true' : undefined,
                 rounding_description: req.body.rounding_applied === 'true' ? req.body.rounding_description : ''
@@ -1610,7 +1630,7 @@ export const provideQuality = async (req: Request, res: Response, next: NextFunc
                 throw new Error();
             }
 
-            await req.pubapi.updateDatasetInfo(dataset.id, { ...datasetInfo, language: req.language });
+            await req.pubapi.updateMetadata(dataset.id, { ...metadata, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err: any) {
@@ -1620,13 +1640,14 @@ export const provideQuality = async (req: Request, res: Response, next: NextFunc
         }
     }
 
-    res.render('publish/quality', { ...datasetInfo, errors });
+    res.render('publish/quality', { ...metadata, errors });
 };
 
 export const provideUpdateFrequency = async (req: Request, res: Response, next: NextFunction) => {
     let errors: ViewError[] | undefined;
     const dataset = singleLangDataset(res.locals.dataset, req.language);
-    let update_frequency = dataset?.datasetInfo!.update_frequency;
+    const revision = dataset.draft_revision;
+    let update_frequency = revision?.update_frequency;
 
     if (req.method === 'POST') {
         update_frequency = {
@@ -1658,7 +1679,7 @@ export const provideUpdateFrequency = async (req: Request, res: Response, next: 
                 frequency_value: is_updated ? frequency_value : undefined
             };
 
-            await req.pubapi.updateDatasetInfo(dataset.id, { update_frequency, language: req.language });
+            await req.pubapi.updateMetadata(dataset.id, { update_frequency, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
@@ -1675,35 +1696,42 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
     const deleteId = req.query.delete;
     const editId = req.query.edit;
     let availableProviders: ProviderDTO[] = [];
-    let dataProviders: DatasetProviderDTO[] = [];
+    let dataProviders: RevisionProviderDTO[] = [];
     let errors: ViewError[] | undefined;
 
     try {
         // eslint-disable-next-line prefer-const
         [availableProviders, dataProviders] = await Promise.all([
             req.pubapi.getAllProviders(),
-            req.pubapi.getDatasetProviders(res.locals.datasetId)
+            req.pubapi.getAssignedProviders(res.locals.datasetId)
         ]);
     } catch (err) {
         next(err);
         return;
     }
 
-    let dataset = { ...res.locals.dataset, providers: sortBy(dataProviders || [], 'created_at') };
+    let dataset = {
+        ...res.locals.dataset,
+        draft_revision: {
+            ...res.locals.dataset.draft_revision,
+            providers: sortBy(dataProviders || [], 'created_at')
+        }
+    };
+
     dataset = singleLangDataset(dataset, req.language);
-    dataProviders = dataset.providers;
+    dataProviders = dataset.draft_revision.providers;
 
     let availableSources: ProviderSourceDTO[] = [];
-    let dataProvider: DatasetProviderDTO | undefined;
+    let dataProvider: RevisionProviderDTO | undefined;
 
     if (deleteId) {
         try {
             dataProviders = dataProviders.filter((dp) => dp.id !== deleteId);
-            await req.pubapi.updateDatasetProviders(dataset.id, dataProviders);
+            await req.pubapi.updateAssignedProviders(dataset.id, dataProviders);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/providers`, req.language));
             return;
         } catch (err) {
-            next(new UnknownException());
+            next(err);
             return;
         }
     }
@@ -1713,7 +1741,7 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
             dataProvider = dataProviders.find((dp) => dp.id === editId)!;
             availableSources = await req.pubapi.getSourcesByProvider(dataProvider.provider_id);
         } catch (err) {
-            next(new UnknownException());
+            next(err);
             return;
         }
     }
@@ -1765,7 +1793,7 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
 
                 const providerIdx = dataProviders.findIndex((dp) => dp.id === editId);
                 dataProviders[providerIdx].source_id = source_id;
-                await req.pubapi.updateDatasetProviders(dataset.id, dataProviders);
+                await req.pubapi.updateAssignedProviders(dataset.id, dataProviders);
                 res.redirect(req.buildUrl(`/publish/${dataset.id}/providers`, req.language));
                 return;
             }
@@ -1773,7 +1801,7 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
             logger.debug('Adding a new data provider');
 
             // create a new data provider - generate id on the frontend so we can redirect the user to add sources
-            dataProvider = { id: uuid(), dataset_id: dataset.id, provider_id, language: req.language };
+            dataProvider = { id: uuid(), revision_id: dataset.draft_revision.id, provider_id, language: req.language };
 
             await req.pubapi.addDatasetProvider(dataset.id, dataProvider);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/providers?edit=${dataProvider.id}`, req.language));
@@ -1796,17 +1824,19 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
 
 export const provideRelatedLinks = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
-    let errors: ViewError[] | undefined;
-    let related_links = sortBy(dataset?.datasetInfo?.related_links || [], 'created_at');
+    const revision = dataset.draft_revision;
     const deleteId = req.query.delete;
     const editId = req.query.edit;
     const now = new Date().toISOString();
-    let link: RelatedLinkDTO = { id: nanoid(4), url: '', label: '', created_at: now };
+
+    let errors: ViewError[] | undefined;
+    let related_links = sortBy(revision?.related_links || [], 'created_at');
+    let link: RelatedLinkDTO = { id: nanoid(4), url: '', label_en: '', label_cy: '', created_at: now };
 
     if (deleteId) {
         try {
             related_links = related_links.filter((rl) => rl.id !== deleteId);
-            await req.pubapi.updateDatasetInfo(dataset.id, { related_links, language: req.language });
+            await req.pubapi.updateMetadata(dataset.id, { related_links, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/related`, req.language));
             return;
         } catch (err) {
@@ -1838,7 +1868,13 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
         }
 
         // redisplay the form with submitted values if there are errors
-        link = { id: link_id, url: link_url, label: link_label, created_at: link.created_at };
+        link = {
+            id: link_id,
+            url: link_url,
+            label_en: req.language.includes(Locale.English) ? link_label : link.label_en,
+            label_cy: req.language.includes(Locale.Welsh) ? link_label : link.label_cy,
+            created_at: link.created_at
+        };
 
         try {
             if (add_another === 'true' && !add_link) {
@@ -1866,12 +1902,18 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
             }
 
             const { link_id, link_url, link_label } = matchedData(req);
-            link = { id: link_id, url: link_url, label: link_label, created_at: link.created_at };
+            link = {
+                id: link_id,
+                url: link_url,
+                label_en: req.language.includes(Locale.English) ? link_label : link.label_en,
+                label_cy: req.language.includes(Locale.Welsh) ? link_label : link.label_cy,
+                created_at: link.created_at
+            };
 
             // if the link already exists, replace it, otherwise add it, then sort
             related_links = sortBy([...related_links.filter((rl) => rl.id !== link.id), link], 'created_at');
 
-            await req.pubapi.updateDatasetInfo(dataset.id, { related_links, language: req.language });
+            await req.pubapi.updateMetadata(dataset.id, { related_links, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/related`, req.language));
             return;
         } catch (err) {
@@ -1887,7 +1929,8 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
 export const provideDesignation = async (req: Request, res: Response, next: NextFunction) => {
     let errors: ViewError[] | undefined;
     const dataset = singleLangDataset(res.locals.dataset, req.language);
-    let designation = dataset?.datasetInfo?.designation;
+    const revision = dataset.draft_revision;
+    let designation = revision?.designation;
 
     if (req.method === 'POST') {
         try {
@@ -1902,7 +1945,7 @@ export const provideDesignation = async (req: Request, res: Response, next: Next
                 throw new Error();
             }
 
-            await req.pubapi.updateDatasetInfo(dataset.id, { designation, language: req.language });
+            await req.pubapi.updateMetadata(dataset.id, { designation, language: req.language });
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
             return;
         } catch (err) {
@@ -1954,7 +1997,8 @@ export const provideTopics = async (req: Request, res: Response, next: NextFunct
 };
 
 export const providePublishDate = async (req: Request, res: Response, next: NextFunction) => {
-    const { dataset, revision } = res.locals;
+    const dataset = res.locals.dataset;
+    const revision = dataset.draft_revision;
     let errors: ViewError[] = [];
     let dateError;
     let timeError;
@@ -2145,11 +2189,11 @@ export const importTranslations = async (req: Request, res: Response, next: Next
 };
 
 export const overview = async (req: Request, res: Response, next: NextFunction) => {
-    const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const revision = res.locals.revision;
-    const title = dataset.datasetInfo?.title;
+    const dataset = await req.pubapi.getDataset(res.locals.datasetId, DatasetInclude.All);
     const datasetStatus = getDatasetStatus(dataset);
     const publishingStatus = getPublishingStatus(dataset);
+    const revision = singleLangRevision(getLatestRevision(dataset), req.language)!;
+    const title = revision.metadata?.title;
     const justScheduled = req.query?.scheduled === 'true';
     let errors: ViewError[] = [];
 
@@ -2177,8 +2221,14 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
 
 export const createNewUpdate = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = res.locals.dataset;
-    await req.pubapi.createRevision(dataset.id);
-    res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+
+    try {
+        await req.pubapi.createRevision(dataset.id);
+        res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+    } catch (err) {
+        logger.error(err, `Could not create dataset update`);
+        res.redirect(req.buildUrl(`/publish/${dataset.id}/overview`, req.language));
+    }
 };
 
 export const updateDatatable = async (req: Request, res: Response, next: NextFunction) => {

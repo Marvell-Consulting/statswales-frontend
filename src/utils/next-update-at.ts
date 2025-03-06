@@ -1,13 +1,12 @@
 import { add } from 'date-fns';
 
-import { DatasetInfoDTO } from '../dtos/dataset-info';
 import { RevisionDTO } from '../dtos/revision';
+import { SingleLanguageRevision } from '../dtos/single-language/revision';
 
 export const nextUpdateAt = (
-    revision: RevisionDTO | undefined,
-    metadata: DatasetInfoDTO
+    revision: RevisionDTO | SingleLanguageRevision | undefined
 ): Date | boolean | undefined => {
-    const update = metadata.update_frequency;
+    const update = revision?.update_frequency;
 
     if (!update) return undefined;
 

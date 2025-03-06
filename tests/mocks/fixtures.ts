@@ -8,7 +8,6 @@ export const datasetWithTitle: DatasetDTO = {
   id: '5caeb8ed-ea64-4a58-8cf0-b728308833e5',
   created_at: '2024-09-05T10:05:03.871Z',
   created_by: 'Test User',
-  datasetInfo: [{ language: 'en-GB', title: 'Dataset with title' }],
   dimensions: [],
   revisions: [],
   fact_table: []
@@ -18,7 +17,6 @@ export const datasetWithImport: DatasetDTO = {
   id: '7d3d49c0-9fc9-4ce2-ba48-5c466f30946c',
   created_at: '2024-09-05T10:05:03.871Z',
   created_by: 'Test User',
-  datasetInfo: [{ language: 'en-GB', title: 'Dataset with import' }],
   dimensions: [],
   fact_table: [
     {
@@ -61,6 +59,7 @@ export const datasetWithImport: DatasetDTO = {
       online_cube_filename: undefined,
       publish_at: '',
       approved_at: '',
+      updated_at: '',
       created_by: 'Test User',
       data_table: {
         id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
@@ -114,7 +113,6 @@ export const datasetRevWithNoImports: DatasetDTO = {
   created_by: 'Test User',
   live: '',
   archive: '',
-  datasetInfo: [{ language: 'en-GB', title: 'Dataset revision with no import' }],
   dimensions: [],
   fact_table: [],
   revisions: [
@@ -125,6 +123,7 @@ export const datasetRevWithNoImports: DatasetDTO = {
       created_at: '2024-09-05T10:05:04.052Z',
       publish_at: '',
       approved_at: '',
+      updated_at: '',
       created_by: 'Test User'
     }
   ]
@@ -136,7 +135,6 @@ export const completedDataset: DatasetDTO = {
   created_by: 'Test User',
   live: '',
   archive: '',
-  datasetInfo: [{ language: 'en-GB', title: 'Completed dataset' }],
   dimensions: [],
   fact_table: [],
   revisions: [
@@ -148,6 +146,7 @@ export const completedDataset: DatasetDTO = {
       online_cube_filename: undefined,
       publish_at: '',
       approved_at: '',
+      updated_at: '',
       created_by: 'Test User',
       data_table: {
         id: '6a8b56ea-2fc5-4413-9dc3-4d31cbe4c953',
@@ -204,7 +203,6 @@ export const datasetView: ViewDTO = {
     live: '',
     archive: '',
     fact_table: [],
-    datasetInfo: [{ language: 'en-GB', title: 'Dataset with import' }],
     dimensions: [],
     revisions: []
   },

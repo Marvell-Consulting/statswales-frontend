@@ -562,6 +562,7 @@
                     "action_edit": "Change",
                     "action_delete": "Remove"
                 },
+                "not_translated": "Not yet translated",
                 "form": {
                     "add_another": {
                         "heading": "Do you need to add a link to another report?",
@@ -879,7 +880,8 @@
                     "withdraw_first_revision": "Change dataset before publication",
                     "withdraw_update_revision": "Change update before publication",
                     "continue_update": "Continue update",
-                    "continue": "Continue dataset"
+                    "continue": "Continue dataset",
+                    "preview": "View dataset preview"
                 }
             },
             "error": {
@@ -907,12 +909,13 @@
             },
             "field": {
                 "title": "Title",
-                "description": "Summary",
+                "summary": "Summary",
                 "collection": "Data collection",
                 "quality": "Statistical quality",
                 "roundingDescription": "Rounding applied"
             },
             "dimension": "{{key}} dimension name",
+            "link": "Related report",
             "buttons": {
                 "export": "Export CSV",
                 "change": "Change"

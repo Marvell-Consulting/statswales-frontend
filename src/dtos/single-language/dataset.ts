@@ -1,11 +1,8 @@
-import { RevisionDTO } from '../revision';
-import { DatasetInfoDTO } from '../dataset-info';
-import { DatasetProviderDTO } from '../dataset-provider';
-import { TopicDTO } from '../topic';
 import { MeasureDTO } from '../measure';
 import { TeamDTO } from '../team';
 
 import { SingleLanguageDimension } from './dimension';
+import { SingleLanguageRevision } from './revision';
 
 export interface SingleLanguageDataset {
     id: string;
@@ -15,10 +12,11 @@ export interface SingleLanguageDataset {
     archive?: string;
     measure?: MeasureDTO;
     dimensions?: SingleLanguageDimension[];
-    revisions: RevisionDTO[];
-    datasetInfo?: DatasetInfoDTO;
-    providers?: DatasetProviderDTO[];
-    topics?: TopicDTO[];
+    revisions?: SingleLanguageRevision[];
+    start_revision?: SingleLanguageRevision;
+    end_revision?: SingleLanguageRevision;
+    draft_revision?: SingleLanguageRevision;
+    published_revision?: SingleLanguageRevision;
     team?: TeamDTO;
     start_date?: string;
     end_date?: string;

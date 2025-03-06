@@ -2,7 +2,7 @@ import { ReadableStream } from 'node:stream/web';
 
 import { ViewDTO } from '../dtos/view-dto';
 import { DatasetDTO } from '../dtos/dataset';
-import { DatasetInfoDTO } from '../dtos/dataset-info';
+import { RevisionMetadataDTO } from '../dtos/revision-metadata';
 import { DataTableDto } from '../dtos/data-table';
 import { SourceAssignmentDTO } from '../dtos/source-assignment-dto';
 import { logger as parentLogger } from '../utils/logger';
@@ -13,7 +13,7 @@ import { ViewException } from '../exceptions/view.exception';
 import { Locale } from '../enums/locale';
 import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { TaskListState } from '../dtos/task-list-state';
-import { DatasetProviderDTO } from '../dtos/dataset-provider';
+import { RevisionProviderDTO } from '../dtos/revision-provider';
 import { ProviderDTO } from '../dtos/provider';
 import { ProviderSourceDTO } from '../dtos/provider-source';
 import { TopicDTO } from '../dtos/topic';
@@ -27,10 +27,11 @@ import { ResultsetWithCount } from '../interfaces/resultset-with-count';
 import { FileFormat } from '../enums/file-format';
 import { FactTableColumnDto } from '../dtos/fact-table-column-dto';
 import { RevisionDTO } from '../dtos/revision';
+import { DatasetInclude } from '../enums/dataset-include';
 
 const config = appConfig();
 
-const logger = parentLogger.child({ service: 'sw-api' });
+const logger = parentLogger.child({ service: 'publisher-api' });
 
 interface fetchParams {
     url: string;
@@ -64,6 +65,8 @@ export class PublisherApi {
         // if json is passed, then body will be ignored
         const data = json ? JSON.stringify(json) : body;
 
+        logger.debug(`API: ${method} /${url}`);
+
         return fetch(`${this.backendUrl}/${url}`, { method, headers: head, body: data })
             .then(async (response: Response) => {
                 if (!response.ok) {
@@ -91,27 +94,20 @@ export class PublisherApi {
     }
 
     public async createDataset(title?: string, language?: string): Promise<DatasetDTO> {
-        logger.debug(`Creating dataset...`);
-        const json: DatasetInfoDTO = { title, language };
+        logger.debug(`Creating new dataset...`);
+        const json: RevisionMetadataDTO = { title, language };
 
         return this.fetch({ url: 'dataset', method: HttpMethod.Post, json }).then(
             (response) => response.json() as unknown as DatasetDTO
         );
     }
 
-    public async getFullDataset(datasetId: string): Promise<DatasetDTO> {
-        logger.debug(`Fetching full dataset: ${datasetId}`);
-        return this.fetch({ url: `dataset/${datasetId}` }).then((response) => response.json() as unknown as DatasetDTO);
+    public async getDataset(datasetId: string, include?: DatasetInclude): Promise<DatasetDTO> {
+        const url = include ? `dataset/${datasetId}/${include}` : `dataset/${datasetId}`;
+        return this.fetch({ url }).then((response) => response.json() as unknown as DatasetDTO);
     }
 
-    public async getLimitedDataset(datasetId: string): Promise<DatasetDTO> {
-        logger.debug(`Fetching limited dataset: ${datasetId}`);
-        return this.fetch({ url: `dataset/${datasetId}/limited` }).then(
-            (response) => response.json() as unknown as DatasetDTO
-        );
-    }
-
-    public uploadCSVToDataset(datasetId: string, file: Blob, filename: string): Promise<DatasetDTO> {
+    public uploadDataToDataset(datasetId: string, file: Blob, filename: string): Promise<DatasetDTO> {
         logger.debug(`Uploading file ${filename} to dataset: ${datasetId}`);
         const body = new FormData();
         body.set('csv', file, filename);
@@ -172,19 +168,11 @@ export class PublisherApi {
         );
     }
 
-    public async getDatasetCubeView(datasetId: string, pageNumber: number, pageSize: number): Promise<ViewDTO> {
-        logger.debug(`Fetching view for dataset: ${datasetId}, page: ${pageNumber}, pageSize: ${pageSize}`);
-
-        return this.fetch({ url: `dataset/${datasetId}/view?page_number=${pageNumber}&page_size=${pageSize}` }).then(
-            (response) => response.json() as unknown as ViewDTO
-        );
-    }
-
-    public async getActiveDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {
+    public async getDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {
         logger.debug(`Fetching active dataset list...`);
         const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
 
-        return this.fetch({ url: `dataset/active?${qs}` }).then(
+        return this.fetch({ url: `dataset?${qs}` }).then(
             (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
         );
     }
@@ -208,7 +196,7 @@ export class PublisherApi {
         return this.fetch({ url }).then((response) => response.body as ReadableStream);
     }
 
-    public async confirmFileImport(datasetId: string, revisionId: string): Promise<DataTableDto> {
+    public async confirmDataTable(datasetId: string, revisionId: string): Promise<DataTableDto> {
         logger.debug(`Confirming data table import for revision: ${revisionId}...`);
 
         return this.fetch({
@@ -223,15 +211,6 @@ export class PublisherApi {
         return this.fetch({
             url: `dataset/${datasetId}/sources`
         }).then((response) => response.json() as unknown as FactTableColumnDto[]);
-    }
-
-    public async removeFileImport(datasetId: string, revisionId: string): Promise<DatasetDTO> {
-        logger.debug(`Removing data table from revision: ${revisionId}`);
-
-        return this.fetch({
-            url: `dataset/${datasetId}/revision/by-id/${revisionId}/data-table`,
-            method: HttpMethod.Delete
-        }).then((response) => response.json() as unknown as DatasetDTO);
     }
 
     public async resetDimension(datasetId: string, dimensionId: string): Promise<DimensionDTO> {
@@ -265,6 +244,14 @@ export class PublisherApi {
         return this.fetch({
             url: `dataset/${datasetId}/revision/by-id/${revisionId}/data-table/preview?page_number=${pageNumber}&page_size=${pageSize}`
         }).then((response) => response.json() as unknown as ViewDTO);
+    }
+
+    public async getRevision(datasetId: string, revisionId: string): Promise<RevisionDTO> {
+        logger.debug(`Fetching revision: ${revisionId}`);
+
+        return this.fetch({ url: `dataset/${datasetId}/revision/by-id/${revisionId}` }).then(
+            (response) => response.json() as unknown as RevisionDTO
+        );
     }
 
     public async getRevisionPreview(
@@ -318,8 +305,8 @@ export class PublisherApi {
         }).then((response) => response.json() as unknown as DimensionDTO);
     }
 
-    public async updateDatasetInfo(datasetId: string, datasetInfo: DatasetInfoDTO): Promise<DatasetDTO> {
-        return this.fetch({ url: `dataset/${datasetId}/info`, method: HttpMethod.Patch, json: datasetInfo }).then(
+    public async updateMetadata(datasetId: string, metadata: RevisionMetadataDTO): Promise<DatasetDTO> {
+        return this.fetch({ url: `dataset/${datasetId}/metadata`, method: HttpMethod.Patch, json: metadata }).then(
             (response) => response.json() as unknown as DatasetDTO
         );
     }
@@ -404,22 +391,22 @@ export class PublisherApi {
             });
     }
 
-    public async addDatasetProvider(datasetId: string, provider: DatasetProviderDTO): Promise<DatasetDTO> {
+    public async addDatasetProvider(datasetId: string, provider: RevisionProviderDTO): Promise<DatasetDTO> {
         return this.fetch({ url: `dataset/${datasetId}/providers`, method: HttpMethod.Post, json: provider }).then(
             (response) => response.json() as unknown as DatasetDTO
         );
     }
 
-    public async updateDatasetProviders(datasetId: string, providers: DatasetProviderDTO[]): Promise<DatasetDTO> {
+    public async updateAssignedProviders(datasetId: string, providers: RevisionProviderDTO[]): Promise<DatasetDTO> {
         return this.fetch({ url: `dataset/${datasetId}/providers`, method: HttpMethod.Patch, json: providers }).then(
             (response) => response.json() as unknown as DatasetDTO
         );
     }
 
-    public async getDatasetProviders(datasetId: string): Promise<DatasetProviderDTO[]> {
-        logger.debug('Fetching dataset providers...');
+    public async getAssignedProviders(datasetId: string): Promise<RevisionProviderDTO[]> {
+        logger.debug('Fetching assigned data providers...');
         return this.fetch({ url: `dataset/${datasetId}/providers`, method: HttpMethod.Get }).then(
-            (response) => response.json() as unknown as DatasetProviderDTO[]
+            (response) => response.json() as unknown as RevisionProviderDTO[]
         );
     }
 
@@ -517,7 +504,7 @@ export class PublisherApi {
     }
 
     public async approveForPublication(datasetId: string, revisionId: string): Promise<DatasetDTO> {
-        logger.debug(`Attempting to approve dataset for publication: ${datasetId}`);
+        logger.debug(`Attempting to approve draft revision for publication`);
         return this.fetch({
             url: `dataset/${datasetId}/revision/by-id/${revisionId}/approve`,
             method: HttpMethod.Post
@@ -525,7 +512,7 @@ export class PublisherApi {
     }
 
     public async withdrawFromPublication(datasetId: string, revisionId: string): Promise<DatasetDTO> {
-        logger.debug(`Attempting to withdraw latest revision publication: ${datasetId}`);
+        logger.debug(`Attempting to withdraw scheduled revision from publication`);
         return this.fetch({
             url: `dataset/${datasetId}/revision/by-id/${revisionId}/withdraw`,
             method: HttpMethod.Post

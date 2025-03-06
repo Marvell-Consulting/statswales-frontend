@@ -3,7 +3,7 @@ import { Readable } from 'node:stream';
 import { Router, Request, Response, NextFunction } from 'express';
 
 import { ViewDTO } from '../dtos/view-dto';
-import { fetchFullDataset } from '../middleware/fetch-dataset';
+import { fetchDataset } from '../middleware/fetch-dataset';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { logger } from '../utils/logger';
 import { DatasetListItemDTO } from '../dtos/dataset-list-item';
@@ -17,14 +17,14 @@ export const developer = Router();
 
 developer.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const results: ResultsetWithCount<DatasetListItemDTO> = await req.pubapi.getActiveDatasetList();
+        const results: ResultsetWithCount<DatasetListItemDTO> = await req.pubapi.getDatasetList();
         res.render('developer/list', { datasets: results.data });
     } catch (err) {
         next(err);
     }
 });
 
-developer.get('/:datasetId', fetchFullDataset, async (req: Request, res: Response, next: NextFunction) => {
+developer.get('/:datasetId', fetchDataset, async (req: Request, res: Response, next: NextFunction) => {
     const datasetId = res.locals.datasetId;
     const page: number = Number.parseInt(req.query.page_number as string, 10) || 1;
     const pageSize: number = Number.parseInt(req.query.page_size as string, 10) || 100;
@@ -49,7 +49,7 @@ developer.get('/:datasetId', fetchFullDataset, async (req: Request, res: Respons
 
 developer.get(
     '/:datasetId/import/:factTableId',
-    fetchFullDataset,
+    fetchDataset,
     async (req: Request, res: Response, next: NextFunction) => {
         const dataset = res.locals.dataset;
         const importIdError = await hasError(factTableIdValidator(), req);
