@@ -118,6 +118,7 @@ export const provideTitle = async (req: Request, res: Response, next: NextFuncti
 
 export const uploadDataTable = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = res.locals.dataset;
+    const revision = dataset.draft_revision;
     const revisit = dataset.dimensions?.length > 0;
     let errors: ViewError[] = [];
 
@@ -133,9 +134,23 @@ export const uploadDataTable = async (req: Request, res: Response, next: NextFun
             const fileName = req.file.originalname;
             req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
             const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
+            logger.debug('Sending file to backend');
 
-            logger.debug('Sending file to backend.');
-            await req.pubapi.uploadDataToDataset(dataset.id, fileData, fileName);
+            if (req.session.updateType) {
+                logger.info('Performing an update to the dataset');
+                await req.pubapi.uploadCSVToUpdateDataset(
+                    dataset.id,
+                    revision.id,
+                    fileData,
+                    fileName,
+                    req.session.updateType
+                );
+            } else {
+                await req.pubapi.uploadDataToDataset(dataset.id, fileData, fileName);
+            }
+            // eslint-disable-next-line require-atomic-updates
+            req.session.updateType = undefined;
+            req.session.save();
             res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
             return;
         } catch (err) {
@@ -166,9 +181,9 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
         return;
     }
 
-    logger.debug(`User is confirming the fact table upload and source_type = ${req.session.updateType}`);
     if (req.method === 'POST') {
         logger.debug(`User is confirming the fact table upload and source_type = ${req.session.updateType}`);
+
         try {
             if (revisit) {
                 switch (req.body.actionChooser) {

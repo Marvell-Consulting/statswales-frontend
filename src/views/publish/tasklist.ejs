@@ -23,12 +23,12 @@
         <ul class="govuk-task-list">
           <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
-              <% if (!locals.revision.data_table) { %>
-                <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/upload`, i18n.language) %>" aria-describedby="prepare-application-1-status">
+              <% if (locals.revision?.revision_index === 0 && !locals.revision.data_table) { %>
+                <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/update-type`, i18n.language) %>" aria-describedby="prepare-application-1-status">
                   <%= t('publish.tasklist.data.datatable') %>
                 </a>
-              <% } else if (locals.revision?.revision_index === 0 && !locals.revision.data_table) { %>
-                <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/update-type`, i18n.language) %>" aria-describedby="prepare-application-1-status">
+              <% } else if (!locals.revision.data_table) { %>
+                <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/upload`, i18n.language) %>" aria-describedby="prepare-application-1-status">
                   <%= t('publish.tasklist.data.datatable') %>
                 </a>
               <% } else { %>
