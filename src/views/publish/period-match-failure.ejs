@@ -9,6 +9,7 @@
             </div>
         </div>
 
+        <p class="govuk-heading-s region-subhead"><%= dimension.metadata.name %></p>
         <h1 class="govuk-heading-xl"><%= t('publish.period_match_failure.heading') %></h1>
 
         <p class="govuk-body"><%= t('publish.period_match_failure.information', {failureCount: locals.extension.totalNonMatching}) %></p>
@@ -48,14 +49,21 @@
 
         <h2 class="govuk-heading-l"><%= t('publish.period_match_failure.actions') %></h2>
 
+        <p class="govuk-body"><a href="<%= buildUrl(`/publish/${locals.datasetId}/time-period/${locals.dimension.id}/`, i18n.language) %>" class="govuk-link">
+                <%= t('publish.period_match_failure.try_different_format')%></a></p>
+
         <p class="govuk-body"><a href="<%= buildUrl(`/publish/${locals.dataset.id}/upload`, i18n.language) %>" class="govuk-link">
                 <%= t('publish.period_match_failure.upload_different_file')%>
             </a><br>
             <%= t('publish.period_match_failure.upload_different_file_warning')%></p>
-
-        <p class="govuk-body"><a href="<%= buildUrl(`/publish/${locals.datasetId}/time-period/${locals.dimension.id}/`, i18n.language) %>" class="govuk-link">
-                <%= t('publish.period_match_failure.try_different_format')%></a></p>
     </main>
 </div>
 
 <%- include("../partials/footer"); %>
+
+<style>
+    .mid-dot {
+        color: #ffffff;
+        font-weight: 600;
+    }
+</style>

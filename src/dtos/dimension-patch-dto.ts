@@ -2,6 +2,7 @@ import { DimensionType } from '../enums/dimension-type';
 import { YearType } from '../enums/year-type';
 
 export interface DimensionPatchDTO {
+    dimension_id: string;
     dimension_type: DimensionType;
     dimension_title?: string;
     lookup_join_column?: string;
