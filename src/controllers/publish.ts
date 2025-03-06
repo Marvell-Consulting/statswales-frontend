@@ -69,9 +69,12 @@ import { ProviderDTO } from '../dtos/provider';
 import { Locale } from '../enums/locale';
 import { getLatestRevision } from '../utils/revision';
 import { DatasetInclude } from '../enums/dataset-include';
-import { RevisionDTO } from '../dtos/revision';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
+    req.session.errors = undefined;
+    req.session.dimensionPatch = undefined;
+    req.session.updateType = undefined;
+    req.session.save();
     res.render('publish/start');
 };
 
@@ -80,9 +83,8 @@ export const dimensionColumnNameRegex = /^[a-zA-ZÀ-ž()\-_ ]+$/;
 export const provideTitle = async (req: Request, res: Response, next: NextFunction) => {
     let errors: ViewError[] = [];
 
-    // dataset will not exist the first time through
     const existingDataset = res.locals.dataset ? singleLangDataset(res.locals.dataset, req.language) : undefined;
-    const revisit = Boolean(existingDataset);
+    const revisit = Boolean(existingDataset); // dataset will not exist the first time through
     let title = existingDataset?.draft_revision?.metadata?.title;
 
     if (req.method === 'POST') {
@@ -168,7 +170,9 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
     const dataset = res.locals.dataset;
     const revision = dataset.draft_revision;
     const dataTable = revision?.data_table;
-    const revisit = Boolean(!dataset.fact_table.find((col: FactTableColumnDto) => col.type === 'unknown'));
+    const hasUnknownColumns = dataset.fact_table.some((col: FactTableColumnDto) => col.type === 'unknown');
+    const isUpdate = Boolean(revision.previous_revision_id);
+    const revisit = !isUpdate && !hasUnknownColumns;
 
     let errors: ViewError[] | undefined;
     let previewData: ViewDTO | undefined;
