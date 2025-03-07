@@ -817,6 +817,7 @@
                 "cannot_start": "Cannot start yet",
                 "available": "Available",
                 "completed": "Completed",
+                "not_required": "Not required",
                 "not_started": "Not yet started",
                 "incomplete": "Incomplete",
                 "unchanged": "Unchanged",
