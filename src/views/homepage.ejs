@@ -5,7 +5,7 @@
 
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
-                <h1 class="govuk-heading-xl"><%= t('homepage.heading') %></h1>
+                <h1 class="govuk-heading-l"><%= t('homepage.heading') %></h1>
             </div>
         </div>
 
@@ -21,7 +21,6 @@
                     <table class="govuk-table">
                         <thead class="govuk-table__head">
                         <tr class="govuk-table__row">
-                            <th scope="col" class="govuk-table__header"><%= t('homepage.table.id') %></th>
                             <th scope="col" class="govuk-table__header"><%= t('homepage.table.title') %></th>
                             <th scope="col" class="govuk-table__header" style="width:15%"><%= t('homepage.table.last_updated') %></th>
                             <th scope="col" class="govuk-table__header"><%= t('homepage.table.dataset_status') %></th>
@@ -31,7 +30,6 @@
                         <tbody class="govuk-table__body">
                             <% for (const dataset of locals.data) { %>
                                 <tr class="govuk-table__row">
-                                    <td class="govuk-table__cell"><%= dataset.code %></td>
                                     <td class="govuk-table__cell">
                                         <% if (dataset.publishing_status === 'incomplete') { %>
                                             <a href="<%= buildUrl(`/publish/${dataset.id}/tasklist`, i18n.language) %>" class="govuk-link"><%= dataset.title || `${dataset.title_alt} [${t('homepage.table.not_translated')}]` %></a>
