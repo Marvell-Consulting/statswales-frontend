@@ -287,13 +287,13 @@ export const tasklistInProgress: TaskListState = {
   metadata: {
     title: TaskStatus.NotStarted,
     summary: TaskStatus.NotStarted,
-    statistical_quality: TaskStatus.NotStarted,
-    data_sources: TaskStatus.NotStarted,
-    related_reports: TaskStatus.NotStarted,
-    update_frequency: TaskStatus.NotStarted,
+    quality: TaskStatus.NotStarted,
+    sources: TaskStatus.NotStarted,
+    related: TaskStatus.NotStarted,
+    frequency: TaskStatus.NotStarted,
     designation: TaskStatus.NotStarted,
-    data_collection: TaskStatus.NotStarted,
-    relevant_topics: TaskStatus.NotStarted
+    collection: TaskStatus.NotStarted,
+    topics: TaskStatus.NotStarted
   },
   translation: {
     export: TaskStatus.NotStarted,
