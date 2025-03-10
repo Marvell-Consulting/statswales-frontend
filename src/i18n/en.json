@@ -848,6 +848,7 @@
                 "subheading": "Publishing",
                 "organisation": "Publisher organisation and contact",
                 "when": "When this dataset should be published",
+                "when_update": "When this update should be published",
                 "submit": "Submit for approval"
             },
             "submit": {
