@@ -817,9 +817,11 @@
                 "cannot_start": "Cannot start yet",
                 "available": "Available",
                 "completed": "Completed",
+                "not_required": "Not required",
                 "not_started": "Not yet started",
                 "incomplete": "Incomplete",
-                "not_implemented": "Not Implemented"
+                "unchanged": "Unchanged",
+                "updated": "Updated"
             },
             "data": {
                 "subheading": "Data",
@@ -846,6 +848,7 @@
                 "subheading": "Publishing",
                 "organisation": "Publisher organisation and contact",
                 "when": "When this dataset should be published",
+                "when_update": "When this update should be published",
                 "submit": "Submit for approval"
             },
             "submit": {
