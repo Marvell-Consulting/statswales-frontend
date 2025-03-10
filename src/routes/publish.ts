@@ -41,7 +41,8 @@ import {
     overview,
     downloadDataset,
     createNewUpdate,
-    updateDatatable
+    updateDatatable,
+    measureName
 } from '../controllers/publish';
 import { DatasetInclude as Include } from '../enums/dataset-include';
 
@@ -82,6 +83,12 @@ publish.get('/:datasetId/measure', fetchDataset(Include.Data), measurePreview);
 publish.post('/:datasetId/measure', fetchDataset(Include.Data), upload.single('csv'), measurePreview);
 publish.get('/:datasetId/measure/review', fetchDataset(Include.Data), measureReview);
 publish.post('/:datasetId/measure/review', fetchDataset(Include.Data), measureReview);
+publish.get('/:datasetId/measure/name', fetchDataset(Include.Data), measureName);
+publish.get('/:datasetId/measure/change-lookup', fetchDataset(Include.Data), measurePreview);
+publish.post('/:datasetId/measure/change-lookup', fetchDataset(Include.Data), upload.single('csv'), measurePreview);
+publish.get('/:datasetId/measure/change-name', fetchDataset(Include.Data), measureName);
+publish.post('/:datasetId/measure/name', upload.none(), fetchDataset(Include.Data), measureName);
+publish.post('/:datasetId/measure/change-name', upload.none(), fetchDataset(Include.Data), measureName);
 
 /* Dimension creation */
 publish.get('/:datasetId/dimension-data-chooser/:dimensionId', fetchDataset(Include.Data), fetchDimensionPreview);
@@ -103,38 +110,26 @@ publish.post('/:datasetId/lookup/:dimensionId', fetchDataset(Include.Data), uplo
 publish.get('/:datasetId/lookup/:dimensionId/review', fetchDataset(Include.Data), lookupReview);
 publish.post('/:datasetId/lookup/:dimensionId/review', fetchDataset(Include.Data), lookupReview);
 
-publish.get('/:datasetId/time-period/:dimensionId', fetchDataset(Include.Data), fetchTimeDimensionPreview);
-publish.post('/:datasetId/time-period/:dimensionId', fetchDataset(Include.Data), fetchTimeDimensionPreview);
-publish.get(
-    '/:datasetId/time-period/:dimensionId/change-format',
-    fetchDataset(Include.Data),
-    fetchTimeDimensionPreview
-);
-publish.post(
-    '/:datasetId/time-period/:dimensionId/change-format',
-    fetchDataset(Include.Data),
-    fetchTimeDimensionPreview
-);
-publish.get('/:datasetId/time-period/:dimensionId/point-in-time', fetchDataset(Include.Data), pointInTimeChooser);
-publish.post('/:datasetId/time-period/:dimensionId/point-in-time', fetchDataset(Include.Data), pointInTimeChooser);
+publish.get('/:datasetId/dates/:dimensionId', fetchDataset(Include.Data), fetchTimeDimensionPreview);
+publish.post('/:datasetId/dates/:dimensionId', fetchDataset(Include.Data), fetchTimeDimensionPreview);
+publish.get('/:datasetId/dates/:dimensionId/change-format', fetchDataset(Include.Data), fetchTimeDimensionPreview);
+publish.post('/:datasetId/dates/:dimensionId/change-format', fetchDataset(Include.Data), fetchTimeDimensionPreview);
+publish.get('/:datasetId/dates/:dimensionId/point-in-time', fetchDataset(Include.Data), pointInTimeChooser);
+publish.post('/:datasetId/dates/:dimensionId/point-in-time', fetchDataset(Include.Data), pointInTimeChooser);
 
-/* Period of time flow */
-publish.get('/:datasetId/time-period/:dimensionId/period-of-time', fetchDataset(Include.Data), yearTypeChooser);
-publish.post('/:datasetId/time-period/:dimensionId/period-of-time', fetchDataset(Include.Data), yearTypeChooser);
-publish.get('/:datasetId/time-period/:dimensionId/period-of-time/year-format', fetchDataset(Include.Data), yearFormat);
-publish.post('/:datasetId/time-period/:dimensionId/period-of-time/year-format', fetchDataset(Include.Data), yearFormat);
-publish.get('/:datasetId/time-period/:dimensionId/period-of-time/period-type', fetchDataset(Include.Data), periodType);
-publish.post('/:datasetId/time-period/:dimensionId/period-of-time/period-type', fetchDataset(Include.Data), periodType);
-publish.get('/:datasetId/time-period/:dimensionId/period-of-time/quarters', fetchDataset(Include.Data), quarterChooser);
-publish.post(
-    '/:datasetId/time-period/:dimensionId/period-of-time/quarters',
-    fetchDataset(Include.Data),
-    quarterChooser
-);
-publish.get('/:datasetId/time-period/:dimensionId/period-of-time/months', fetchDataset(Include.Data), monthChooser);
-publish.post('/:datasetId/time-period/:dimensionId/period-of-time/months', fetchDataset(Include.Data), monthChooser);
-publish.get('/:datasetId/time-period/:dimensionId/review', fetchDataset(Include.Data), periodReview);
-publish.post('/:datasetId/time-period/:dimensionId/review', fetchDataset(Include.Data), periodReview);
+/* date period flow */
+publish.get('/:datasetId/dates/:dimensionId/period', fetchDataset(Include.Data), yearTypeChooser);
+publish.post('/:datasetId/dates/:dimensionId/period', fetchDataset(Include.Data), yearTypeChooser);
+publish.get('/:datasetId/dates/:dimensionId/period/year-format', fetchDataset(Include.Data), yearFormat);
+publish.post('/:datasetId/dates/:dimensionId/period/year-format', fetchDataset(Include.Data), yearFormat);
+publish.get('/:datasetId/dates/:dimensionId/period/type', fetchDataset(Include.Data), periodType);
+publish.post('/:datasetId/dates/:dimensionId/period/type', fetchDataset(Include.Data), periodType);
+publish.get('/:datasetId/dates/:dimensionId/period/quarters', fetchDataset(Include.Data), quarterChooser);
+publish.post('/:datasetId/dates/:dimensionId/period/quarters', fetchDataset(Include.Data), quarterChooser);
+publish.get('/:datasetId/dates/:dimensionId/period/months', fetchDataset(Include.Data), monthChooser);
+publish.post('/:datasetId/dates/:dimensionId/period/months', fetchDataset(Include.Data), monthChooser);
+publish.get('/:datasetId/dates/:dimensionId/review', fetchDataset(Include.Data), periodReview);
+publish.post('/:datasetId/dates/:dimensionId/review', fetchDataset(Include.Data), periodReview);
 
 /* Applies to all dimensions */
 publish.get('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchDataset(Include.Data), dimensionName);

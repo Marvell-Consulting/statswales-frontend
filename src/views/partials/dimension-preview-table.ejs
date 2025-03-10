@@ -1,0 +1,42 @@
+<table class="govuk-table">
+    <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+            <% headers.forEach(function(cell, idx) { %>
+                <th scope="col" class="govuk-table__header <%= cell.source_type === 'line_number' ? 'line-number' :'' %>">
+                    <% if (i18n.exists(`publish.time_dimension_review.column_headers.${cell.name.toLowerCase()}`)) { %>
+                        <%= t(`publish.time_dimension_review.column_headers.${cell.name.toLowerCase()}`) %>
+                    <% } else if (cell.name === dimension.factTableColumn) { %>
+                        <%= dimension.metadata.name ? dimension.metadata.name : cell.name  %>
+                    <% } else { %>
+                        <%= cell.name %>
+                    <% } %>
+                </th>
+            <% }); %>
+        </tr>
+    </thead>
+    <tbody>
+    <% data.forEach(function(row) { %>
+        <tr>
+            <% row.forEach(function(cell, index) { %>
+                <% if (headers[index].source_type === 'line_number') { %>
+                    <td class="govuk-table__cell line-number"><span class="linespan"><%= cell %></span></td>
+                <% } else { %>
+                    <td class="govuk-table__cell">
+                        <% switch (headers[index].name) {
+                            case 'start_date':
+                        case 'end_date': %>
+                        <%= locals.dateFormat(locals.parseISO(cell.split('T')[0]), 'do MMMM yyyy') %>
+                        <% break;
+                        case 'date_type': %>
+                        <%= t(`publish.time_dimension_review.year_type.${cell}`) %>
+                        <% break;
+                        default: %>
+                        <%= cell %>
+                        <% } %>
+                    </td>
+                <% } %>
+            <% }); %>
+        </tr>
+    <% }); %>
+    </tbody>
+</table>

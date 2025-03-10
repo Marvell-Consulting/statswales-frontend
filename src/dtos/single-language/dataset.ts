@@ -3,6 +3,7 @@ import { TeamDTO } from '../team';
 
 import { SingleLanguageDimension } from './dimension';
 import { SingleLanguageRevision } from './revision';
+import { SingleLanguageMeasure } from './measure';
 
 export interface SingleLanguageDataset {
     id: string;
@@ -10,7 +11,7 @@ export interface SingleLanguageDataset {
     created_by: string;
     live?: string;
     archive?: string;
-    measure?: MeasureDTO;
+    measure?: SingleLanguageMeasure;
     dimensions?: SingleLanguageDimension[];
     revisions?: SingleLanguageRevision[];
     start_revision?: SingleLanguageRevision;

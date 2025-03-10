@@ -69,6 +69,7 @@ import { ProviderDTO } from '../dtos/provider';
 import { Locale } from '../enums/locale';
 import { getLatestRevision } from '../utils/revision';
 import { DatasetInclude } from '../enums/dataset-include';
+import { DimensionDTO } from '../dtos/dimension';
 
 export const start = (req: Request, res: Response, next: NextFunction) => {
     req.session.errors = undefined;
@@ -78,7 +79,7 @@ export const start = (req: Request, res: Response, next: NextFunction) => {
     res.render('publish/start');
 };
 
-export const dimensionColumnNameRegex = /^[a-zA-ZÀ-ž()\-_ ]+$/;
+export const dimensionColumnNameRegex = /^[a-zA-ZÀ-ž()\-_ £¢€$%+]+$/;
 
 export const provideTitle = async (req: Request, res: Response, next: NextFunction) => {
     let errors: ViewError[] = [];
@@ -260,11 +261,10 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
     try {
         if (req.method === 'POST') {
             logger.debug('Validating the source definition');
-            const counts = { unknown: 0, dataValues: 0, footnotes: 0, measure: 0, time: 0 };
+            const counts = { unknown: 0, dataValues: 0, footnotes: 0, measure: 0 };
             const sourceAssignment: SourceAssignmentDTO[] = factTable.map((column: FactTableColumnDto) => {
                 const sourceType = req.body[`column-${column.index}`];
                 if (sourceType === SourceType.Unknown) counts.unknown++;
-                if (sourceType === SourceType.Time) counts.time++;
                 if (sourceType === SourceType.DataValues) counts.dataValues++;
                 if (sourceType === SourceType.NoteCodes) counts.footnotes++;
                 if (sourceType === SourceType.Measure) counts.measure++;
@@ -396,11 +396,13 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
 
 export const downloadDataset = async (req: Request, res: Response, next: NextFunction) => {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const revision = res.locals.revision;
+    let revision = dataset.draft_revision;
 
     try {
         if (!revision) {
-            throw new NotFoundException('errors.preview.revision_missing');
+            const revisionId = getLatestRevision(res.locals.dataset)?.id!;
+            const revWithMeta = await req.pubapi.getRevision(dataset.id, revisionId);
+            revision = singleLangRevision(revWithMeta, req.language)!;
         }
 
         const format = req.query.format as FileFormat;
@@ -409,7 +411,7 @@ export const downloadDataset = async (req: Request, res: Response, next: NextFun
         if (!headers) {
             throw new NotFoundException('errors.preview.invalid_download_format');
         }
-
+        logger.debug(`Getting file from backend...`);
         const fileStream = await req.pubapi.getCubeFileStream(dataset.id, revision.id, format);
         res.writeHead(200, headers);
         const readable: Readable = Readable.from(fileStream);
@@ -432,6 +434,7 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
             next(new UnknownException('errors.preview.measure_not_found'));
             return;
         }
+
         const dataPreview = await req.pubapi.getMeasurePreview(res.locals.dataset.id);
 
         if (req.method === 'POST') {
@@ -492,19 +495,24 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
             langCol = dataPreview.headers.findIndex((header) => header.name.toLowerCase().indexOf('lang') > -1);
         }
 
+        const revisit = Boolean(measure.measure_table && measure.measure_table.length > 0);
+        let page = 'publish/measure-preview';
+        if (req.path.indexOf('change') > -1) page = 'publish/measure-preview';
+        else if (revisit) page = 'publish/measure-revisit';
+
         if (req.session.errors) {
             const errors = req.session.errors;
             req.session.errors = undefined;
             req.session.save();
             res.status(500);
-            res.render('publish/measure-preview', {
+            res.render(page, {
                 ...dataPreview,
                 langCol,
                 measure,
                 errors
             });
         } else {
-            res.render('publish/measure-preview', { ...dataPreview, langCol, measure });
+            res.render(page, { ...dataPreview, langCol, measure });
         }
     } catch (err) {
         logger.error('Failed to get dimension preview', err);
@@ -527,7 +535,7 @@ export const measureReview = async (req: Request, res: Response, next: NextFunct
             logger.debug(`User has reviewed measure lookup table.`);
             switch (req.body.confirm) {
                 case 'continue':
-                    res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+                    res.redirect(req.buildUrl(`/publish/${dataset.id}/measure/name`, req.language));
                     break;
                 case 'cancel':
                     try {
@@ -579,13 +587,28 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
     }
     let errors: ViewError[] | undefined;
     const revisit = dataset.dimensions?.length > 0;
-
+    const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
     if (req.method === 'POST') {
         logger.debug('User submitted a look up table');
         try {
             if (!req.file) {
-                logger.error('No file attached to request');
-                throw new Error('errors.csv.invalid');
+                res.status(400);
+                res.render('publish/upload-lookup', {
+                    ...dataPreview,
+                    revisit,
+                    errors: [
+                        {
+                            field: 'csv',
+                            message: {
+                                key: 'errors.upload.no_csv'
+                            }
+                        }
+                    ],
+                    uploadType: 'lookup',
+                    dimension,
+                    changeLookup: Boolean(dimension.type === 'lookup_table')
+                });
+                return;
             }
             const fileName = req.file.originalname;
             req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
@@ -610,28 +633,35 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
                 }
                 logger.error('Something went wrong other than not matching');
                 logger.error(`Full error JSON: ${JSON.stringify(error, null, 2)}`);
-                req.session.errors = [
-                    {
-                        field: 'unknown',
-                        message: {
-                            key: 'errors.csv.unknown'
+                res.status(500);
+                res.render('publish/upload-lookup', {
+                    ...dataPreview,
+                    revisit,
+                    errors: [
+                        {
+                            field: 'unknown',
+                            message: {
+                                key: 'errors.csv.unknown'
+                            }
                         }
-                    }
-                ];
-                res.redirect(
-                    req.buildUrl(`/publish/${dataset.id}/dimension-data-chooser/${dimension.id}/`, req.language)
-                );
+                    ],
+                    uploadType: 'lookup',
+                    dimension,
+                    changeLookup: Boolean(dimension.type === 'lookup_table')
+                });
                 return;
             }
 
             return;
         } catch (err) {
-            res.status(400);
+            logger.error(err, 'Seems some other error happened and we ended up here.');
+            res.status(500);
             errors = [{ field: 'csv', message: { key: 'errors.upload.no_csv_data' } }];
         }
     }
 
-    res.render('publish/upload', {
+    res.render('publish/upload-lookup', {
+        ...dataPreview,
         revisit,
         errors,
         uploadType: 'lookup',
@@ -650,11 +680,19 @@ export const lookupReview = async (req: Request, res: Response, next: NextFuncti
             return;
         }
         let errors: ViewErrDTO | undefined;
+        const revisit = Boolean(dimension.factTableColumn !== dimension.metadata?.name);
 
         if (req.method === 'POST') {
             switch (req.body.confirm) {
                 case 'true':
-                    res.redirect(req.buildUrl(`/publish/${dataset.id}/dimension/${dimension.id}/name`, req.language));
+                    if (revisit)
+                        res.redirect(
+                            req.buildUrl(`/publish/${dataset.id}/dimension-data-chooser/${dimension.id}`, req.language)
+                        );
+                    else
+                        res.redirect(
+                            req.buildUrl(`/publish/${dataset.id}/dimension/${dimension.id}/name`, req.language)
+                        );
                     break;
                 case 'goback':
                     try {
@@ -715,6 +753,23 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
             switch (req.body.dimensionType) {
                 case 'lookup':
                     res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}`, req.language));
+                    return;
+                case 'Date':
+                    if (dimension.extractor && req.path.indexOf('change') >= 0) {
+                        res.redirect(
+                            req.buildUrl(`/publish/${dataset.id}/dates/${dimension.id}/change-format`, req.language)
+                        );
+                    } else {
+                        res.redirect(req.buildUrl(`/publish/${dataset.id}/dates/${dimension.id}`, req.language));
+                    }
+                    return;
+                case 'Text':
+                    dimensionPatch = {
+                        dimension_id: dimension.id,
+                        dimension_type: DimensionType.Text
+                    };
+                    await req.pubapi.patchDimension(res.locals.dataset.id, dimension.id, dimensionPatch);
+                    res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/review`, req.language));
                     return;
                 case 'Geog':
                 case 'Age':
@@ -807,30 +862,27 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
 // reduce the questions we need to ask date identification.
 export const fetchTimeDimensionPreview = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const dimensionId = req.params.dimensionId;
-
-        if (!dimensionId) {
+        const dimension = singleLangDataset(res.locals.dataset, req.language).dimensions?.find(
+            (dim) => dim.id === req.params.dimensionId
+        );
+        if (!dimension) {
             logger.error('dimensionId is a required parameter');
             next(new NotFoundException());
             return;
         }
 
-        const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimensionId);
-        const dimension = dataPreview.dataset?.dimensions?.find((dim) => dim.id === dimensionId);
+        const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
         if (req.method === 'POST') {
             switch (req.body.dimensionType) {
                 case 'time_period':
                     res.redirect(
-                        req.buildUrl(
-                            `/publish/${req.params.datasetId}/time-period/${dimensionId}/period-of-time`,
-                            req.language
-                        )
+                        req.buildUrl(`/publish/${req.params.datasetId}/dates/${dimension.id}/period`, req.language)
                     );
                     break;
                 case 'time_point':
                     res.redirect(
                         req.buildUrl(
-                            `/publish/${req.params.datasetId}/time-period/${dimensionId}/point-in-time`,
+                            `/publish/${req.params.datasetId}/dates/${dimension.id}/point-in-time`,
                             req.language
                         )
                     );
@@ -838,7 +890,7 @@ export const fetchTimeDimensionPreview = async (req: Request, res: Response, nex
                 default:
                     logger.error('User failed to select an option for time dimension type');
                     res.status(400);
-                    res.render('publish/time-chooser', {
+                    res.render('publish/date-chooser', {
                         ...dataPreview,
                         dimension,
                         errors: [
@@ -853,10 +905,11 @@ export const fetchTimeDimensionPreview = async (req: Request, res: Response, nex
             }
             return;
         }
+        logger.debug(JSON.stringify(dimension, null, 2));
         if (dimension && dimension.extractor && req.path.indexOf('change') === -1) {
-            res.render('publish/time-revisit', { ...dataPreview, dimension });
+            res.render('publish/date-revisit', { ...dataPreview, dimension });
         } else {
-            res.render('publish/time-chooser', { ...dataPreview, dimension });
+            res.render('publish/date-chooser', { ...dataPreview, dimension });
         }
     } catch (err) {
         logger.error('Failed to get dimension preview', err);
@@ -879,6 +932,7 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
                 logger.error('User failed to select an option for year type');
                 res.status(400);
                 res.render('publish/year-type', {
+                    dimension,
                     errors: [
                         {
                             field: 'yearTypeCalendar',
@@ -900,7 +954,7 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
                 req.session.save();
                 res.redirect(
                     req.buildUrl(
-                        `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/period-of-time/period-type`,
+                        `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/period/type`,
                         req.language
                     )
                 );
@@ -914,7 +968,7 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
                 req.session.save();
                 res.redirect(
                     req.buildUrl(
-                        `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/period-of-time/year-format`,
+                        `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/period/year-format`,
                         req.language
                     )
                 );
@@ -922,7 +976,7 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
             }
         }
 
-        res.render('publish/year-type');
+        res.render('publish/year-type', { dimension });
     } catch (err) {
         logger.error('Failed to get dimension preview', err);
         next(new NotFoundException());
@@ -949,6 +1003,7 @@ export const yearFormat = async (req: Request, res: Response, next: NextFunction
                 logger.error('User failed to select an option for year format');
                 res.status(400);
                 res.render('publish/year-format', {
+                    dimension,
                     errors: [
                         {
                             field: 'year-format-1',
@@ -964,14 +1019,14 @@ export const yearFormat = async (req: Request, res: Response, next: NextFunction
             req.session.save();
             res.redirect(
                 req.buildUrl(
-                    `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/period-of-time/period-type`,
+                    `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/period/type`,
                     req.language
                 )
             );
             return;
         }
 
-        res.render('publish/year-format');
+        res.render('publish/year-format', { dimension });
     } catch (err) {
         logger.error('Failed to get dimension preview', err);
         next(new NotFoundException());
@@ -991,10 +1046,7 @@ export const periodType = async (req: Request, res: Response, next: NextFunction
         const patchRequest = req.session.dimensionPatch;
         if (!patchRequest) {
             logger.error('Failed to find patch information in the session');
-            req.buildUrl(
-                `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/period-of-time/`,
-                req.language
-            );
+            req.buildUrl(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/period/`, req.language);
             return;
         }
 
@@ -1006,7 +1058,7 @@ export const periodType = async (req: Request, res: Response, next: NextFunction
                         logger.debug('Matching complete for year... Redirecting to review.');
                         res.redirect(
                             req.buildUrl(
-                                `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/review`,
+                                `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`,
                                 req.language
                             )
                         );
@@ -1024,7 +1076,7 @@ export const periodType = async (req: Request, res: Response, next: NextFunction
                         logger.error('Something went wrong other than not matching');
                         res.redirect(
                             req.buildUrl(
-                                `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/period-of-time/`,
+                                `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/period/`,
                                 req.language
                             )
                         );
@@ -1033,7 +1085,7 @@ export const periodType = async (req: Request, res: Response, next: NextFunction
                 case 'quarters':
                     res.redirect(
                         req.buildUrl(
-                            `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/period-of-time/quarters`,
+                            `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/period/quarters`,
                             req.language
                         )
                     );
@@ -1041,7 +1093,7 @@ export const periodType = async (req: Request, res: Response, next: NextFunction
                 case 'months':
                     res.redirect(
                         req.buildUrl(
-                            `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/period-of-time/months`,
+                            `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/period/months`,
                             req.language
                         )
                     );
@@ -1050,6 +1102,7 @@ export const periodType = async (req: Request, res: Response, next: NextFunction
                     logger.error('User failed to select an option for the shortest period of time');
                     res.status(400);
                     res.render('publish/period-type', {
+                        dimension,
                         errors: [
                             {
                                 field: 'periodTypeChooserYears',
@@ -1062,7 +1115,7 @@ export const periodType = async (req: Request, res: Response, next: NextFunction
                     return;
             }
         }
-        res.render('publish/period-type');
+        res.render('publish/period-type', { dimension });
     } catch (err) {
         logger.error('Failed to get dimension preview', err);
         next(new NotFoundException());
@@ -1087,7 +1140,7 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
         if (req.method === 'POST') {
             const patchRequest = req.session.dimensionPatch;
             if (!patchRequest) {
-                res.redirect(`/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}`);
+                res.redirect(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}`);
                 return;
             }
 
@@ -1115,6 +1168,7 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
             if (errors.length > 0) {
                 res.status(400);
                 res.render('publish/quarter-format', {
+                    dimension,
                     errors,
                     quarterType: req.body.quarterType,
                     fifthQuater: req.body.fifthQuater
@@ -1131,7 +1185,7 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
                 // eslint-disable-next-line require-atomic-updates
                 req.session.dimensionPatch = undefined;
                 req.session.save();
-                res.redirect(`/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/review`);
+                res.redirect(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`);
                 return;
             } catch (err) {
                 req.session.dimensionPatch = undefined;
@@ -1149,7 +1203,7 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
                 logger.error(`Full error JSON: ${JSON.stringify(error, null, 2)}`);
                 res.redirect(
                     req.buildUrl(
-                        `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/period-of-time/`,
+                        `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/period/`,
                         req.language
                     )
                 );
@@ -1157,7 +1211,7 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
             }
         }
         logger.debug(`Session dimensionPatch = ${JSON.stringify(req.session.dimensionPatch, null, 2)}`);
-        res.render('publish/quarter-format', { quarterTotals });
+        res.render('publish/quarter-format', { quarterTotals, dimension });
     } catch (err) {
         logger.error('Failed to get dimension preview', err);
         next(new NotFoundException());
@@ -1178,13 +1232,14 @@ export const monthChooser = async (req: Request, res: Response, next: NextFuncti
             const patchRequest = req.session.dimensionPatch;
             if (!patchRequest) {
                 logger.error('Failed to find dimension in dataset in session');
-                res.redirect(`/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}`);
+                res.redirect(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}`);
                 return;
             }
             if (!req.body.monthType) {
                 logger.error('User failed to select an option for month type');
                 res.status(400);
                 res.render('publish/month-format', {
+                    dimension,
                     errors: [
                         {
                             field: 'month-format-1',
@@ -1207,18 +1262,16 @@ export const monthChooser = async (req: Request, res: Response, next: NextFuncti
                 // eslint-disable-next-line require-atomic-updates
                 req.session.dimensionPatch = undefined;
                 req.session.save();
-                res.redirect(`/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/review`);
+                res.redirect(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`);
                 return;
             } catch (err) {
                 logger.debug(`There were rows which didn't match.  Lets ask the user about quarterly totals.`);
-                res.redirect(
-                    `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/period-of-time/quarters`
-                );
+                res.redirect(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/period/quarters`);
                 return;
             }
         }
         const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
-        res.render('publish/month-format', { ...dataPreview });
+        res.render('publish/month-format', { ...dataPreview, dimension });
     } catch (err) {
         logger.error('Failed to get dimension preview', err);
         next(new NotFoundException());
@@ -1251,7 +1304,7 @@ export const periodReview = async (req: Request, res: Response, next: NextFuncti
                         await req.pubapi.resetDimension(dataset.id, dimension.id);
                         res.redirect(
                             req.buildUrl(
-                                `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/`,
+                                `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/`,
                                 req.language
                             )
                         );
@@ -1281,9 +1334,9 @@ export const periodReview = async (req: Request, res: Response, next: NextFuncti
         const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
         if (errors) {
             res.status(errors.status || 500);
-            res.render('publish/time-chooser', { ...dataPreview, review: true, dimension, errors });
+            res.render('publish/date-chooser', { ...dataPreview, review: true, dimension, errors });
         } else {
-            res.render('publish/time-chooser', { ...dataPreview, review: true, dimension });
+            res.render('publish/date-chooser', { ...dataPreview, review: true, dimension });
         }
     } catch (err) {
         logger.error('Failed to get dimension preview', err);
@@ -1291,17 +1344,18 @@ export const periodReview = async (req: Request, res: Response, next: NextFuncti
     }
 };
 
-export const dimensionName = async (req: Request, res: Response, next: NextFunction) => {
+export const measureName = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const dataset = singleLangDataset(res.locals.dataset, req.language);
-        const dimension = dataset.dimensions?.find((dim) => dim.id === req.params.dimensionId);
-        if (!dimension) {
-            logger.error('Failed to find dimension in dataset');
+        const measure = dataset.measure;
+        if (!measure) {
+            logger.error('Failed to find measure in dataset');
             next(new NotFoundException());
             return;
         }
         let errors: ViewErrDTO | undefined;
-        const dimensionName = dimension.metadata?.name || '';
+        const revisit = Boolean(req.path.indexOf('change') > -1);
+        const measureName = revisit ? measure.metadata?.name : '';
         if (req.method === 'POST') {
             // TODO Replace validation if statements with an Express Validator
             //  See https://github.com/Marvell-Consulting/statswales-frontend/pull/138
@@ -1323,14 +1377,14 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                 };
                 res.status(400);
                 res.render('publish/dimension-name', {
-                    ...{ updatedName, id: dimension.id, dimensionType: dimension.type },
+                    ...{ updatedName, id: measure.id, dimensionType: DimensionType.Measure },
                     errors,
-                    showCancelButton: Boolean(req.path.indexOf('change') > -1)
+                    revisit
                 });
                 return;
             }
             if (updatedName.length > 256) {
-                logger.error(`Dimension name is too long... length: ${req.body.name.length}`);
+                logger.error(`Measure name is too long... length: ${req.body.name.length}`);
                 errors = {
                     status: 400,
                     errors: [
@@ -1345,13 +1399,13 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                 };
                 res.status(400);
                 res.render('publish/dimension-name', {
-                    ...{ updatedName, id: dimension.id, dimensionType: dimension.type },
+                    ...{ updatedName, id: measure.id, dimensionType: DimensionType.Measure },
                     errors,
-                    showCancelButton: Boolean(req.path.indexOf('change') > -1)
+                    revisit
                 });
                 return;
             } else if (updatedName.length < 1) {
-                logger.error(`Dimension name is too short.`);
+                logger.error(`Measure name is too short.`);
                 errors = {
                     status: 400,
                     errors: [
@@ -1366,13 +1420,13 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                 };
                 res.status(400);
                 res.render('publish/dimension-name', {
-                    ...{ updatedName, id: dimension.id, dimensionType: dimension.type },
+                    ...{ updatedName, id: measure.id, dimensionType: DimensionType.Measure },
                     errors,
-                    showCancelButton: Boolean(req.path.indexOf('change') > -1)
+                    revisit
                 });
                 return;
             } else if (!dimensionColumnNameRegex.test(updatedName)) {
-                logger.error(`Dimension name contains characters which aren't allowed.`);
+                logger.error(`Measure name contains characters which aren't allowed.`);
                 errors = {
                     status: 400,
                     errors: [
@@ -1387,15 +1441,15 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                 };
                 res.status(400);
                 res.render('publish/dimension-name', {
-                    ...{ updatedName, id: dimension.id, dimensionType: dimension.type },
+                    ...{ updatedName, id: measure.id, dimensionType: DimensionType.Measure },
                     errors,
-                    showCancelButton: Boolean(req.path.indexOf('change') > -1)
+                    revisit
                 });
                 return;
             }
             const metadata: DimensionMetadataDTO = { name: updatedName, language: req.language };
             try {
-                await req.pubapi.updateDimensionMetadata(dataset.id, dimension.id, metadata);
+                await req.pubapi.updateMeasureMetadata(dataset.id, metadata);
                 res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/tasklist`, req.language));
                 return;
             } catch (err) {
@@ -1415,9 +1469,110 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
                 };
                 res.status(500);
                 res.render('publish/dimension-name', {
-                    ...{ dimensionName, id: dimension.id, dimensionType: dimension.type },
+                    ...{ updatedName, id: measure.id, dimensionType: DimensionType.Measure },
                     errors,
-                    showCancelButton: Boolean(req.path.indexOf('change') > -1)
+                    revisit
+                });
+                return;
+            }
+        }
+
+        res.render('publish/dimension-name', {
+            ...{ dimensionName: measureName, id: measure.id, dimensionType: DimensionType.Measure },
+            revisit
+        });
+    } catch (err) {
+        logger.error(`Failed to get dimension name with the following error: ${err}`);
+        next(new NotFoundException());
+    }
+};
+
+export const dimensionName = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const dataset = singleLangDataset(res.locals.dataset, req.language);
+        const dimension = dataset.dimensions?.find((dim) => dim.id === req.params.dimensionId);
+        if (!dimension) {
+            logger.error('Failed to find dimension in dataset');
+            next(new NotFoundException());
+            return;
+        }
+        let errors: ViewErrDTO | undefined;
+        const revisit = Boolean(req.path.indexOf('change') > -1);
+        const dimensionName = revisit ? dimension.metadata?.name : '';
+        if (req.method === 'POST') {
+            // TODO Replace validation if statements with an Express Validator
+            //  See https://github.com/Marvell-Consulting/statswales-frontend/pull/138
+            const updatedName = req.body.name;
+            if (!updatedName || updatedName.trim().length < 1) {
+                logger.error('User failed to submit a name');
+                res.status(400);
+                res.render('publish/dimension-name', {
+                    ...{ updatedName, id: dimension.id, dimensionType: dimension.type },
+                    errors: [
+                        {
+                            field: 'name',
+                            message: {
+                                key: 'errors.dimension.name_missing'
+                            }
+                        }
+                    ],
+                    revisit
+                });
+                return;
+            }
+            if (updatedName.length > 256) {
+                logger.error(`Dimension name is too long... length: ${req.body.name.length}`);
+                res.status(400);
+                res.render('publish/dimension-name', {
+                    ...{ updatedName, id: dimension.id, dimensionType: dimension.type },
+                    errors: [
+                        {
+                            field: 'name',
+                            message: {
+                                key: 'errors.dimension.name_too_long'
+                            }
+                        }
+                    ],
+                    revisit
+                });
+                return;
+            } else if (!dimensionColumnNameRegex.test(updatedName)) {
+                logger.error(`Dimension name contains characters which aren't allowed.`);
+                res.status(400);
+                res.render('publish/dimension-name', {
+                    ...{ updatedName, id: dimension.id, dimensionType: dimension.type },
+                    errors: [
+                        {
+                            field: 'name',
+                            message: {
+                                key: 'errors.dimension.illegal_characters'
+                            }
+                        }
+                    ],
+                    revisit
+                });
+                return;
+            }
+            const metadata: DimensionMetadataDTO = { name: updatedName, language: req.language };
+            try {
+                await req.pubapi.updateDimensionMetadata(dataset.id, dimension.id, metadata);
+                res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/tasklist`, req.language));
+                return;
+            } catch (err) {
+                const error = err as ApiException;
+                logger.error(`Something went wrong trying to name the dimension with the following error: ${err}`);
+                res.status(500);
+                res.render('publish/dimension-name', {
+                    ...{ dimensionName, id: dimension.id, dimensionType: dimension.type },
+                    errors: [
+                        {
+                            field: '',
+                            message: {
+                                key: 'errors.dimension.naming_failed'
+                            }
+                        }
+                    ],
+                    revisit
                 });
                 return;
             }
@@ -1425,6 +1580,7 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
 
         res.render('publish/dimension-name', {
             ...{ dimensionName, id: dimension.id, dimensionType: dimension.type },
+            revisit,
             showCancelButton: Boolean(req.path.indexOf('change') > -1)
         });
     } catch (err) {
@@ -1453,10 +1609,7 @@ export const pointInTimeChooser = async (req: Request, res: Response, next: Next
             await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
             logger.debug('Matching complete for specific point in time... Redirecting to review.');
             res.redirect(
-                req.buildUrl(
-                    `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/review`,
-                    req.language
-                )
+                req.buildUrl(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`, req.language)
             );
             return;
         } catch (err) {
@@ -1472,14 +1625,14 @@ export const pointInTimeChooser = async (req: Request, res: Response, next: Next
             logger.error('Something went wrong other than not matching');
             res.redirect(
                 req.buildUrl(
-                    `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/point-in-time/`,
+                    `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/point-in-time/`,
                     req.language
                 )
             );
             return;
         }
     }
-    res.render('publish/point-in-time-chooser');
+    res.render('publish/specific-date-chooser', { dimension });
 };
 
 export const periodOfTimeChooser = async (req: Request, res: Response, next: NextFunction) => {
@@ -1497,7 +1650,7 @@ export const periodOfTimeChooser = async (req: Request, res: Response, next: Nex
             case 'years':
                 res.redirect(
                     req.buildUrl(
-                        `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/point-in-time/years`,
+                        `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/point-in-time/years`,
                         req.language
                     )
                 );
@@ -1505,7 +1658,7 @@ export const periodOfTimeChooser = async (req: Request, res: Response, next: Nex
             case 'quarters':
                 res.redirect(
                     req.buildUrl(
-                        `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/point-in-time/quarters`,
+                        `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/point-in-time/quarters`,
                         req.language
                     )
                 );
@@ -1513,14 +1666,14 @@ export const periodOfTimeChooser = async (req: Request, res: Response, next: Nex
             case 'months':
                 res.redirect(
                     req.buildUrl(
-                        `/publish/${req.params.datasetId}/time-period/${req.params.dimensionId}/point-in-time/months`,
+                        `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/point-in-time/months`,
                         req.language
                     )
                 );
         }
     }
 
-    res.render('publish/period-of-time-type');
+    res.render('publish/period-type');
 };
 
 export const changeData = async (req: Request, res: Response, next: NextFunction) => {

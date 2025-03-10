@@ -10,6 +10,7 @@
             </div>
         </div>
 
+        <p class="govuk-heading-s region-subhead"><%= dimension.metadata.name %></p>
         <% if (locals.review) { %>
             <h1 class="govuk-heading-xl"><%= t('publish.time_dimension_review.heading') %></h1>
         <% } else { %>
@@ -26,8 +27,10 @@
                         <tr class="govuk-table__row">
                             <% locals.headers.forEach(function(cell, idx) { %>
                                 <th scope="col" class="govuk-table__header <%= cell.source_type === 'line_number' ? 'line-number' :'' %>">
-                                    <% if (locals.dimension?.extractor) { %>
+                                    <% if (locals.dimension?.extractor && t(`publish.time_dimension_review.column_headers.${cell.name}`) !== `publish.time_dimension_review.column_headers.${cell.name}` ) { %>
                                         <%= t(`publish.time_dimension_review.column_headers.${cell.name}`) %>
+                                    <% } else if (cell.name === locals.dimension.factTableColumn) { %>
+                                        <%= locals.dimension.metadata.name %>
                                     <% } else { %>
                                         <%= cell.name %>
                                     <% } %>

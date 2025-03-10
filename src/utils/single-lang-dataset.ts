@@ -32,6 +32,13 @@ export const singleLangDataset = (dataset: DatasetDTO, lang: string): SingleLang
                 ...dimension,
                 metadata: dimension.metadata?.find((meta) => meta.language === lang)
             };
-        })
+        }),
+        measure: dataset.measure
+            ? {
+                  ...dataset.measure,
+                  metadata: dataset.measure.metadata?.find((meta) => meta.language === lang),
+                  measure_table: dataset.measure.measure_table?.filter((row) => row.language === lang.toLowerCase())
+              }
+            : undefined
     };
 };

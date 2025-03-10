@@ -10,6 +10,7 @@
             </div>
         </div>
 
+        <p class="govuk-heading-s region-subhead"><%= dimension.metadata.name %></p>
         <h1 class="govuk-heading-xl"><%= t('publish.dimension_type_chooser.heading') %></h1>
 
         <%- include("../partials/error-handler"); %>
@@ -17,39 +18,7 @@
         <% if (locals?.data) { %>
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-full with-overflow">
-                    <table class="govuk-table">
-                        <colgroup>
-                            <% locals.headers.forEach(function(cell, idx) { %>
-                                <col class="<%= cell.type === 'ignore' ? 'ignore-column' : '' %>" />
-                            <% }); %>
-                        </colgroup>
-                        <thead class="govuk-table__head">
-                        <tr class="govuk-table__row">
-                            <% locals.headers.forEach(function(cell, idx) { %>
-                                <th scope="col" class="govuk-table__header">
-                                    <% if (i18n.exists(`publish.lookup_table_review.column_headers.${cell.name.toLowerCase()}`)) { %>
-                                        <%= t(`publish.lookup_table_review.column_headers.${cell.name.toLowerCase()}`) %>
-                                    <% } else { %>
-                                        <%= cell.name %>
-                                    <% } %>
-                                </th>
-                            <% }); %>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <% locals.data.forEach(function(row) { %>
-                            <tr>
-                                <% row.forEach(function(cell, index) { %>
-                                    <% if (locals.headers[index].source_type === 'line_number') { %>
-                                        <td class="govuk-table__cell line-number"><span class="linespan"><%= cell %></span></td>
-                                    <% } else { %>
-                                        <td class="govuk-table__cell"><%= cell %></td>
-                                    <% } %>
-                                <% }); %>
-                            </tr>
-                        <% }); %>
-                        </tbody>
-                    </table>
+                    <%- include("../partials/dimension-preview-table.ejs", { dimension: locals.dimension, headers: locals.headers, data: locals.data }) %>
                     <% if (locals.page_info?.total_records > locals.page_size) { %>
                         <p class="govuk-body govuk-hint"><%= t('publish.lookup_table_review.showing', { rows: locals.page_size, total: locals.page_info.total_records }) %></p>
                     <% } %>
@@ -82,9 +51,21 @@
                                         </div>
                                     <% } %>
                                     <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="dimensionTypeDate" name="dimensionType" type="radio" value="Date">
+                                        <label class="govuk-label govuk-radios__label" for="dimensionTypeDate">
+                                            <%= t('publish.dimension_type_chooser.chooser.date')%>
+                                        </label>
+                                    </div>
+                                    <div class="govuk-radios__item">
                                         <input class="govuk-radios__input" id="dimensionTypeGeography" name="dimensionType" type="radio" value="Geog">
                                         <label class="govuk-label govuk-radios__label" for="dimensionTypeGeography">
                                             <%= t('publish.dimension_type_chooser.chooser.geography')%>
+                                        </label>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="dimensionTypeText" name="dimensionType" type="radio" value="Text">
+                                        <label class="govuk-label govuk-radios__label" for="dimensionTypeText">
+                                            <%= t('publish.dimension_type_chooser.chooser.text')%>
                                         </label>
                                     </div>
                                     <% if (false) { %> <!-- Disabled for private beta while a decision is made on reference data -->

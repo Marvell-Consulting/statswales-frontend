@@ -199,7 +199,8 @@
             "metadata": "metadata about this dataset, in the language in which you're viewing this service"
         },
         "dimension_name": {
-            "heading": "What should this dimension be called on the StatsWales website?",
+            "dimension_heading": "What should this dimension be called on the StatsWales website?",
+            "measure_heading": "What should this measure be called on the StatsWales website?",
             "hint": "This should be:",
             "concise": "concise and clearly explain what the dimension contains",
             "language": "entered in the language in which you're viewing this service"
@@ -210,10 +211,14 @@
             "question": "What kind of data does this dimension contain?",
             "chooser": {
                 "age": "Age",
+                "date": "Dates",
                 "ethnicity": "Ethnicity",
                 "geography": "Geography",
+                "number": "Number",
                 "religion": "Religion",
                 "sex_gender": "Sex and gender",
+                "text": "Plain text",
+                "time": "Times",
                 "lookup": "Something else"
             }
         },
@@ -235,6 +240,7 @@
             "confirm": "By continuing, you confirm the lookup table is correct.",
             "go_back": "Choose a different lookup table",
             "change_lookup_table": "Replace lookup table",
+            "change_date_format": "Change the date formats",
             "change_dimension_type": "Change what kind of data this dimension contains",
             "column_headers": {
                 "fact_table": "Fact table:",
@@ -296,12 +302,38 @@
             "go_back": "Change date format",
             "change_format": "Change date representation",
             "change_name": "Change dimension name",
+            "change_measure_name": "Change measure name",
             "column_headers": {
                 "date_code": "Date code",
-                "description": "Description",
                 "start_date": "Start",
                 "end_date": "End",
-                "date_type": "Date type"
+                "date_type": "Date type",
+                "description": "Description",
+                "description_en": "Description (English)",
+                "description_cy": "Description (Welsh)",
+                "descriptionen": "Description (English)",
+                "descriptioncy": "Description (Welsh)",
+                "descriptionenglish": "Description (English)",
+                "descriptionwelsh": "Description (Welsh)",
+                "descriptioncymraeg": "Description (Welsh)",
+                "description_english": "Description (English)",
+                "description_welsh": "Description (Welsh)",
+                "description_cymraeg": "Description (Welsh)",
+                "notes": "Notes",
+                "notesen": "Notes (English)",
+                "notescy": "Notes (Welsh)",
+                "notesenglish": "Notes (English)",
+                "noteswelsh": "Notes (Welsh)",
+                "notescymraeg": "Notes (Welsh)",
+                "notes_english": "Notes (English)",
+                "notes_welsh": "Notes (Welsh)",
+                "notes_cymraeg": "Notes (Welsh)",
+                "language": "Language",
+                "lang": "Language",
+                "sortorder": "Sort Order",
+                "sort": "Sort Order",
+                "sort_order": "Sort Order",
+                "hierarchy": "Hierarchy"
             },
             "year_type": {
                 "calendar_year": "Calendar year",
@@ -1016,9 +1048,10 @@
         "name_missing": "Dataset name missing",
         "dataset_missing": "No dataset found with this ID",
         "dimension": {
-            "name_too_short": "Enter what this dimension should be called on the StatsWales website",
+            "name_missing": "Enter what this dimension should be called on the StatsWales website",
             "name_too_long": "Dimension name must be 256 characters or less",
             "naming_failed": "Dimension name could not be added. Try again.",
+            "illegal_characters": "Dimension names can only contain letters and the characters \"£ $ € ¢ % ( ) _ - +\"",
             "dimension_period_type_required": "Select whether the dimension contains periods or specific points",
             "dimension_type_required": "Select the kind of data this dimension contains",
             "year_type_required": "Select the type of year the dimension represents",
