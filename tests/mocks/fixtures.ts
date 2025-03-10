@@ -303,7 +303,8 @@ export const tasklistInProgress: TaskListState = {
     when: TaskStatus.NotStarted,
     organisation: TaskStatus.NotStarted
   },
-  canPublish: false
+  canPublish: false,
+  isUpdate: false
 };
 
 export const datasets: DatasetDTO[] = [datasetWithTitle, datasetWithImport, completedDataset, datasetRevWithNoImports];
