@@ -20,7 +20,7 @@ export function getLocalConfig(): AppConfig {
             url: process.env.BACKEND_URL || 'http://localhost:3001'
         },
         session: {
-            store: SessionStore.Redis,
+            store: (process.env.SESSION_STORE! as SessionStore) || SessionStore.Redis,
             secret: process.env.SESSION_SECRET || 'mysecret',
             secure: false,
             redisUrl: process.env.REDIS_URL || 'redis://localhost:6380'

@@ -6,6 +6,7 @@
 
 -   Node 20+
 -   An Instance of the StatsWales backend Service
+-   Docker or Podman (if you want to use Redis for sessions)
 
 ### Windows
 
@@ -22,6 +23,13 @@ To start the app in development mode:
 ```bash
 npm install
 npm run dev
+```
+
+or, if you don't have Docker:
+
+```bash
+npm install
+npm run local
 ```
 
 The service should now be available on port 3000.
