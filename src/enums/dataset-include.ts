@@ -1,5 +1,5 @@
 export enum DatasetInclude {
-    All = 'all',
-    Meta = 'metadata',
-    Data = 'data'
+  All = 'all',
+  Meta = 'metadata',
+  Data = 'data'
 }

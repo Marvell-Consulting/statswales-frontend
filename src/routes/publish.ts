@@ -3,46 +3,46 @@ import multer from 'multer';
 
 import { fetchDataset } from '../middleware/fetch-dataset';
 import {
-    start,
-    provideTitle,
-    uploadDataTable,
-    factTablePreview,
-    sources,
-    taskList,
-    changeData,
-    redirectToTasklist,
-    provideSummary,
-    provideCollection,
-    provideQuality,
-    provideDataProviders,
-    provideRelatedLinks,
-    provideUpdateFrequency,
-    provideDesignation,
-    provideTopics,
-    providePublishDate,
-    provideOrganisation,
-    fetchDimensionPreview,
-    fetchTimeDimensionPreview,
-    pointInTimeChooser,
-    yearFormat,
-    quarterChooser,
-    monthChooser,
-    yearTypeChooser,
-    periodType,
-    periodReview,
-    dimensionName,
-    uploadLookupTable,
-    lookupReview,
-    exportTranslations,
-    importTranslations,
-    cubePreview,
-    measurePreview,
-    measureReview,
-    overview,
-    downloadDataset,
-    createNewUpdate,
-    updateDatatable,
-    measureName
+  start,
+  provideTitle,
+  uploadDataTable,
+  factTablePreview,
+  sources,
+  taskList,
+  changeData,
+  redirectToTasklist,
+  provideSummary,
+  provideCollection,
+  provideQuality,
+  provideDataProviders,
+  provideRelatedLinks,
+  provideUpdateFrequency,
+  provideDesignation,
+  provideTopics,
+  providePublishDate,
+  provideOrganisation,
+  fetchDimensionPreview,
+  fetchTimeDimensionPreview,
+  pointInTimeChooser,
+  yearFormat,
+  quarterChooser,
+  monthChooser,
+  yearTypeChooser,
+  periodType,
+  periodReview,
+  dimensionName,
+  uploadLookupTable,
+  lookupReview,
+  exportTranslations,
+  importTranslations,
+  cubePreview,
+  measurePreview,
+  measureReview,
+  overview,
+  downloadDataset,
+  createNewUpdate,
+  updateDatatable,
+  measureName
 } from '../controllers/publish';
 import { DatasetInclude as Include } from '../enums/dataset-include';
 
@@ -94,14 +94,14 @@ publish.post('/:datasetId/measure/change-name', upload.none(), fetchDataset(Incl
 publish.get('/:datasetId/dimension-data-chooser/:dimensionId', fetchDataset(Include.Data), fetchDimensionPreview);
 publish.post('/:datasetId/dimension-data-chooser/:dimensionId', fetchDataset(Include.Data), fetchDimensionPreview);
 publish.get(
-    '/:datasetId/dimension-data-chooser/:dimensionId/change-type',
-    fetchDataset(Include.Data),
-    fetchDimensionPreview
+  '/:datasetId/dimension-data-chooser/:dimensionId/change-type',
+  fetchDataset(Include.Data),
+  fetchDimensionPreview
 );
 publish.post(
-    '/:datasetId/dimension-data-chooser/:dimensionId/change-type',
-    fetchDataset(Include.Data),
-    fetchDimensionPreview
+  '/:datasetId/dimension-data-chooser/:dimensionId/change-type',
+  fetchDataset(Include.Data),
+  fetchDimensionPreview
 );
 
 /* lookup table handlers */
@@ -136,10 +136,10 @@ publish.get('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchDatas
 publish.post('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchDataset(Include.Data), dimensionName);
 publish.get('/:datasetId/dimension/:dimensionId/change-name', upload.none(), fetchDataset(Include.Data), dimensionName);
 publish.post(
-    '/:datasetId/dimension/:dimensionId/change-name',
-    upload.none(),
-    fetchDataset(Include.Data),
-    dimensionName
+  '/:datasetId/dimension/:dimensionId/change-name',
+  upload.none(),
+  fetchDataset(Include.Data),
+  dimensionName
 );
 
 /* Metadata */

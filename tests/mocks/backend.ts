@@ -30,11 +30,11 @@ export const mockBackend = setupServer(
     return HttpResponse.json(datasets.find((dataset) => dataset.id === req.params.datasetId));
   }),
 
-  http.patch(`http://example.com:3001/dataset/${completedDataset.id}/info`, (req) => {
+  http.patch(`http://example.com:3001/dataset/${completedDataset.id}/info`, () => {
     return HttpResponse.json(completedDataset);
   }),
 
-  http.get(`http://example.com:3001/dataset/${completedDataset.id}/tasklist`, (req) => {
+  http.get(`http://example.com:3001/dataset/${completedDataset.id}/tasklist`, () => {
     return HttpResponse.json(tasklistInProgress);
   }),
 
@@ -56,11 +56,11 @@ export const mockBackend = setupServer(
     }
   ),
 
-  http.post('http://example.com:3001/dataset', async (req) => {
+  http.post('http://example.com:3001/dataset', async () => {
     return HttpResponse.json(datasetWithTitle);
   }),
 
-  http.post('http://example.com:3001/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/data', async (req) => {
+  http.post('http://example.com:3001/dataset/5caeb8ed-ea64-4a58-8cf0-b728308833e5/data', async () => {
     return HttpResponse.json(datasetWithTitle);
   }),
 

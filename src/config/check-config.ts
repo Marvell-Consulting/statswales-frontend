@@ -6,14 +6,14 @@ import { optionalProperties } from './app-config.interface';
 import { appConfig } from '.';
 
 export const checkConfig = () => {
-    const config = appConfig() as unknown as UnknownObject;
+  const config = appConfig() as unknown as UnknownObject;
 
-    logger.info(`Checking app config for '${config.env}' env...`);
+  logger.info(`Checking app config for '${config.env}' env...`);
 
-    walkObject(config, ({ key, value, location, isLeaf }) => {
-        if (isLeaf && !optionalProperties.includes(key) && value === undefined) {
-            const configPath = location.join('.');
-            throw new Error(`${configPath} is invalid or missing, stopping server`);
-        }
-    });
+  walkObject(config, ({ key, value, location, isLeaf }) => {
+    if (isLeaf && !optionalProperties.includes(key) && value === undefined) {
+      const configPath = location.join('.');
+      throw new Error(`${configPath} is invalid or missing, stopping server`);
+    }
+  });
 };

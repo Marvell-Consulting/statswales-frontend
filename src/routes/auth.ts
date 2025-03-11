@@ -13,78 +13,78 @@ const cookieDomain = new URL(config.auth.jwt.cookieDomain).hostname;
 logger.debug(`JWT cookie domain is '${cookieDomain}'`);
 
 auth.get('/login', (req: Request, res: Response) => {
-    const providers = config.auth.providers;
+  const providers = config.auth.providers;
 
-    if (req.query.error && req.query.error === 'expired') {
-        logger.error(`Authentication token has expired`);
-        res.status(400);
-        res.render('auth/login', { providers, errors: ['login.error.expired'] });
-        return;
-    }
-    res.render('auth/login', { providers });
+  if (req.query.error && req.query.error === 'expired') {
+    logger.error(`Authentication token has expired`);
+    res.status(400);
+    res.render('auth/login', { providers, errors: ['login.error.expired'] });
+    return;
+  }
+  res.render('auth/login', { providers });
 });
 
 // TODO: remove once EntraID is available for WG users
 auth.all('/local', urlencoded({ extended: false }), (req: Request, res: Response) => {
-    let errors: ViewError[] | undefined;
+  let errors: ViewError[] | undefined;
 
-    if (req.method === 'POST') {
-        const username = ((req.body.username as string) || '').trim();
+  if (req.method === 'POST') {
+    const username = ((req.body.username as string) || '').trim();
 
-        if (!username) {
-            errors = [{ field: 'username', message: { key: 'login.form.username.error' } }];
-            res.render('auth/local', { errors });
-            return;
-        }
-
-        logger.debug('Sending user to backend for form login');
-        res.redirect(`${config.backend.url}/auth/local?username=${username}`);
-        return;
+    if (!username) {
+      errors = [{ field: 'username', message: { key: 'login.form.username.error' } }];
+      res.render('auth/local', { errors });
+      return;
     }
 
-    res.render('auth/local');
+    logger.debug('Sending user to backend for form login');
+    res.redirect(`${config.backend.url}/auth/local?username=${username}`);
+    return;
+  }
+
+  res.render('auth/local');
 });
 
 auth.get('/google', (req: Request, res: Response) => {
-    logger.debug('Sending user to backend for google authentication');
-    res.redirect(`${config.backend.url}/auth/google?lang=${req.language}`);
+  logger.debug('Sending user to backend for google authentication');
+  res.redirect(`${config.backend.url}/auth/google?lang=${req.language}`);
 });
 
 auth.get('/entraid', (req: Request, res: Response) => {
-    logger.debug('Sending user to backend for entraid authentication');
-    res.redirect(`${config.backend.url}/auth/entraid?lang=${req.language}`);
+  logger.debug('Sending user to backend for entraid authentication');
+  res.redirect(`${config.backend.url}/auth/entraid?lang=${req.language}`);
 });
 
 auth.get('/callback', (req: Request, res: Response) => {
-    logger.debug('returning from auth backend');
-    const providers = config.auth.providers;
+  logger.debug('returning from auth backend');
+  const providers = config.auth.providers;
 
-    try {
-        if (req.query.error) {
-            throw new Error(`auth backend returned an error: ${req.query.error}`);
-        }
-
-        // the backend stores the JWT token in a cookie before retuning the user to the frontend
-        if (!req.cookies.jwt) {
-            throw new Error('JWT cookie not found');
-        }
-
-        const secret = config.auth.jwt.secret;
-        const decoded = JWT.verify(req.cookies.jwt, secret) as JWTPayloadWithUser;
-        req.user = decoded.user;
-    } catch (err) {
-        logger.error(`problem authenticating user ${err}`);
-        res.status(400);
-        res.render('auth/login', { providers, errors: ['login.error.generic'] });
-        return;
+  try {
+    if (req.query.error) {
+      throw new Error(`auth backend returned an error: ${req.query.error}`);
     }
 
-    logger.debug('User successfully logged in');
-    res.redirect(req.buildUrl('/', req.language));
+    // the backend stores the JWT token in a cookie before retuning the user to the frontend
+    if (!req.cookies.jwt) {
+      throw new Error('JWT cookie not found');
+    }
+
+    const secret = config.auth.jwt.secret;
+    const decoded = JWT.verify(req.cookies.jwt, secret) as JWTPayloadWithUser;
+    req.user = decoded.user;
+  } catch (err) {
+    logger.error(`problem authenticating user ${err}`);
+    res.status(400);
+    res.render('auth/login', { providers, errors: ['login.error.generic'] });
+    return;
+  }
+
+  logger.debug('User successfully logged in');
+  res.redirect(req.buildUrl('/', req.language));
 });
 
 auth.get('/logout', (req: Request, res: Response) => {
-    logger.debug('logging out user');
-    res.clearCookie('jwt', { domain: cookieDomain });
-    res.redirect(req.buildUrl(`/auth/login`, req.language));
+  logger.debug('logging out user');
+  res.clearCookie('jwt', { domain: cookieDomain });
+  res.redirect(req.buildUrl(`/auth/login`, req.language));
 });

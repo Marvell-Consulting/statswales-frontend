@@ -43,10 +43,10 @@ test.describe('Sources page', () => {
       ).toBeVisible();
     });
 
-    test.fixme('Displays an error if no sources are selected', async ({ page }) => {});
-    test.fixme('Displays an error if not all sources are selected', async ({ page }) => {});
-    test.fixme('Displays an error if more than one value source is selected', async ({ page }) => {});
-    test.fixme('Displays an error if more than one notes source is selected', async ({ page }) => {});
-    test.fixme('Displays an error if more than one measure source is selected', async ({ page }) => {});
+    test.fixme('Displays an error if no sources are selected', async () => {});
+    test.fixme('Displays an error if not all sources are selected', async () => {});
+    test.fixme('Displays an error if more than one value source is selected', async () => {});
+    test.fixme('Displays an error if more than one notes source is selected', async () => {});
+    test.fixme('Displays an error if more than one measure source is selected', async () => {});
   });
 });

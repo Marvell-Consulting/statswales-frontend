@@ -1,4 +1,4 @@
 export interface Healthcheck {
-    status: string;
-    notes: string;
+  status: string;
+  notes: string;
 }

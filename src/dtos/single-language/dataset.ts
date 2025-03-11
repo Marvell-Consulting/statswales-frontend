@@ -1,4 +1,3 @@
-import { MeasureDTO } from '../measure';
 import { TeamDTO } from '../team';
 
 import { SingleLanguageDimension } from './dimension';
