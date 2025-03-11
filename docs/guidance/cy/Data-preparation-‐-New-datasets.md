@@ -1,0 +1,537 @@
+# Paratoi data ‐ Setiau data newydd 
+
+Mae setiau data yn cynnwys set o ystadegau a’u metadata cysylltiedig.  Caiff y set ddata ei hadeiladu yn SW3 fel ciwb data o dabl data a data cyfeirio neu am-edrych.
+
+## Tablau data 
+
+Ar gyfer setiau data newydd, bydd angen i chi gael tabl data.  Yn ddelfrydol, dylai’r tabl fod mewn [ffurf CSV](#guidance-fformat-y-ffeil) ac mae’n rhaid iddo gynnwys colofnau ar gyfer:
+
+- gwerthoedd data (gan gynnwys rhesi ar gyfer unrhyw [gyfansymiau neu gyfartaleddau](#guidance-cyfansymiau-a-chyfartaleddau) wedi’u cyfrifo yr ydych yn dymuno eu cynnwys)  
+- yr holl ddimensiynau a’r [codau cyfeirio](#guidance-data-cyfeirio) perthnasol  
+- [mathau data neu fesur](#guidance-mathau-data-neu-fesur)   
+- codau nodiadau [llaw-fer safonol](#guidance-nodiadau) er mwyn labelu gwerthoedd data penodol - **rhaid i chi gynnwys y golofn hon**, hyd yn oed os nad oes gennych chi unrhyw godau nodiadau i’w cynnwys 
+
+Yn y canllaw hwn, byddwn yn defnyddio sefyllfa enghreifftiol data ar gyfer bandiau treth gyngor.  Dyma resi enghreifftiol tabl data ar gyfer y sefyllfa hon:
+
+| CodArdal  | CodBlwyddyn  | CodBand | CodNodiadau  | Mesur  | Data |
+| :---- | :---- | :---- | :---- | :---- | :---- |
+| W06000001 | 202425 | A- |  | 1 | 256.88 |
+| W06000001 | 202425 | A | x |  |  |
+| W06000001 | 202425 | B |  | 1 | 359.64 |
+| W06000001 | 202425 | C | e | 1 | 411.01 |
+| W06000001 | 202425 | D |  | 1 | 462.39 |
+
+### Fformat y ffeil 
+
+Y fformat a ffefrir ar gyfer ffeil yw CSV gyda:
+
+- gwerthoedd wedi’u gwahanu gyda chomas   
+- penawdau yn y rhes gyntaf   
+- " " yn cael eu defnyddio ar gyfer dyfynodau, yn ôl yr angen   
+- colofnau mewn unrhyw drefn  
+- gwerthoedd data fel gwerthoedd rhifol yn unig 
+
+Y fformat a ffefrir ar gyfer CSVs yw UTF-8, gan bod hwn yn gweithio’n well gydag unrhyw nodau arbennig a ddefnyddir.  Dylai’r fformat hwn fod yn ddewis yn y feddalwedd yr ydych chi’n ei defnyddio er mwyn creu CSVs, ac fe allai fod dan ‘amgodio testun’ neu rywbeth tebyg.  Yn Excel, mae 'CSV UTF-8' dan fformatau cyffredin yn newis 'Save as'.
+
+Er mai CSVs yw’r fformat a argymhellir, gall y system dderbyn fformatau JSON a Parquet hefyd.
+
+### Penawdau 
+
+Dylai enwau penawdau colofnau fod yn ystyrlon, fel eich bod yn gwybod yr hyn y mae pob colofn yn ei gynnwys.  Bydd hyn yn bwysig wrth [lanlwytho eich CSV](Using-SW3---Creating-a-new-dataset) i SW3.  Gallant gynnwys bylchau rhwng geiriau yn ôl y gofyn.
+
+### Cyfansymiau a chyfartaleddau 
+
+Dylech gynnwys rhesi yn eich tabl data ar gyfer unrhyw gyfansymiau neu gyfartaleddau yr hoffech eu cynnwys gyda’r set ddata.  Dylai’r rhesi gynnwys:
+
+- cyfansymiau neu gyfartaleddau   
+- [codau cyfeirio](#guidance-data-cyfeirio) neu [fformatau dyddiad](#guidance-fformatio-dyddiadau) cywir  
+- [cod nodiadau safonol](#guidance-nodiadau) sy’n dynodi a yw’r gwerth data yn gyfanswm (t) neu’n gyfartaledd (a) 
+
+Yn ein henghraifft am dreth gyngor, mae’r dimensiwn CodArdal yn cyfeirio at awdurdodau lleol.  Pe byddech yn dymuno cynnwys cyfanswm neu gyfartaledd ar gyfer Cymru gyfan, byddai angen i chi gynnwys rhes a fyddai’n cynnwys:
+
+- y cyfanswm neu’r cyfartaledd   
+- y cod cyfeirio i Gymru [W92000004]  
+- cod nodiadau ‘t’ neu 'a' 
+
+Os yw eich data yn cynnwys hierarchaethau lluosog, gallwch ddarparu cyfansymiau neu gyfartaleddau lluosog.  Er enghraifft, cyfanswm ar gyfer pob rhanbarth economaidd a chyfanswm i Gymru. 
+
+### Rhoi colofnau mewn trefn 
+
+Bydd trefn y colofnau yn eich ffeil tabl data yn effeithio ar drefn y tabl data y bydd defnyddwyr yn ei lawrlwytho.  Bydd y drefn hon yn seiliedig ar y drefn ddidoli a ddiffinnir gan ddata cyfeirio pob dimensiwn.  Yn ein henghraifft uchod gan ddefnyddio treth gyngor, byddai’r tabl data yn cael ei ddidoli yn gyntaf fesul awdurdod lleol (CodArdal), yna blwyddyn (CodBlwyddyn), yna band treth gyngor (CodBand), yna mesur.
+
+## Data cyfeirio 
+
+Pan fyddwch yn creu eich set ddata yn SW3, bydd angen i chi ddewis data cyfeirio ar gyfer pob dimensiwn yn eich tabl data.  Yn ein tabl enghreifftiol, byddai hyn yn golygu dewis tablau am-edrych ar gyfer ‘CodArdal’ ac ar gyfer ‘CodBand’, a chadarnhau fformatau dyddiad ar gyfer ‘CodBlwyddyn’.  Nid oes angen i chi ychwanegu tablau am-edrych ar gyfer [nodiadau gwerthoedd data](#guidance-nodiadau).
+
+### Data cyfeirio safonol 
+
+Nid yw SW3 yn defnyddio tablau am-edrych ar gyfer dimensiynau sy’n cynnwys dyddiadau.  Yn hytrach, ceir [dull gweithredu safonol tuag at fformatio](#guidance-fformatio-dyddiadau).
+
+Ar hyn o bryd, mae gan y system ddata cyfeirio safonol a reolir yn ganolog ar gyfer daearyddiaeth yn unig.  Mae hyn yn cynnwys yr holl godau cyfeirio daearyddiaeth cyffredin a ddefnyddir.
+
+Y nod yw ychwanegu mwy o ddata cyfeirio safonol i’r system yn y dyfodol.  Bydd gweithredu’r data cyfeirio safonol hwn yn:
+
+- sicrhau gwell cysondeb ar draws StatsCymru   
+- safoni disgrifiadau Cymraeg a Saesneg   
+- gwella defnyddioldeb i ddefnyddwyr data 
+
+Ar gyfer unrhyw fath dimensiwn arall, dylech [baratoi eich tabl am-edrych eich hun](#guidance-tablau-am-edrych).
+
+### Fformatio dyddiadau 
+
+Pan fyddwch yn creu eich set ddata yn SW3, bydd angen i chi [nodi’r fformatau dyddiadau yr ydych chi wedi’u defnyddio](Using-SW3---Creating-a-new-dataset#guidance-cwestiynau-am-ffurf-y-dyddiadau) yn eich tabl data.  Dim ond fformatau dyddiadau penodol y gall SW3 eu derbyn.
+
+#### Cyfnodau amser 
+
+Er enghraifft, misoedd, chwarteri neu flynyddoedd y mae gwerthoedd data yn berthnasol iddynt.
+
+##### Fformatau blwyddyn 
+
+| Fformat yn y tabl data  | Enghraifft  | Sut y bydd yn ymddangos ar y wefan  |
+| :---- | :---- | :---- |
+| YYYYYYYY | 20222023 | 2022-23 |
+| YYYY-YYYY | 2022-2023 | 2022-23 |
+| YYYY/YYYY | 2022/2023 | 2022/23 |
+| YYYYYY | 202223 | 2022-23 |
+| YYYY-YY | 2022-23 | 2022-23 |
+| YYYY/YY | 2022/23 | 2022/23 |
+| YYYY | 2022 | 2022 |
+
+##### Fformatau chwarter 
+
+Unrhyw rai o’r fformatau blwyddyn, wedi’u dilyn gan god chwarter.
+
+| Fformat chwarter yn y tabl data  | Enghraifft  | Sut y bydd yn ymddangos ar y wefan  |
+| :---- | :---- | :---- |
+| Qx | 2022Ch1 | Ch1 2022 |
+| \_Qx | 2022\_Ch1 | Ch1 2022 |
+| \-Qx | 2022-Ch1 | Ch1 2022 |
+| x | 20221 | Ch1 2022 |
+| \_x | 2022\_1 | Ch1 2022 |
+| \-x | 2022-1 | Ch1 2022 |
+
+##### Fformatau mis
+
+Unrhyw rai o’r fformatau blwyddyn, wedi’u dilyn gan god mis.
+
+| Fformat mis yn y tabl data  | Enghraifft | Sut y bydd yn ymddangos ar y wefan  |
+| :---- | :---- | :---- |
+| MMM | 2022Jan | Ionawr 2022 |
+| mMM | 2022m01 | Ionawr 2022 |
+| MM | 202201 | Ionawr 2022 |
+
+##### Math blwyddyn 
+
+Bydd angen i chi wybod y math o flwyddyn y mae’r dimensiwn yn ei gynnwys hefyd, naill ai:
+
+- Calendr (1 Ionawr i 31 Rhagfyr)  
+- Meteorolegol (1 Mawrth i 28 neu 29 Chwefror)  
+- Ariannol (1 Ebrill i 31 Mawrth)  
+- Treth (6 Ebrill i 5 Ebrill)  
+- Academaidd (1 Medi i 31 Awst)
+
+##### Cyfnodau lluosog yn yr un set ddata 
+
+Gall eich set ddata gynnwys data ar gyfer cyfnodau amser lluosog.  Er enghraifft, gwerthoedd misol gyda chyfansymiau chwarterol a blynyddol.
+
+**Rhaid i chi ddefnyddio fformatio blwyddyn cyson** ar gyfer yr holl gyfnodau amser sy’n bresennol yn y set ddata.  Er enghraifft, os ydych chi’n defnyddio ‘YYYY’ ar gyfer blynyddoedd, gallech ddefnyddio ‘YYYYQx’ ar gyfer chwarteri a 'YYYYMM' ar gyfer misoedd.
+
+#### Pwyntiau penodol mewn amser 
+
+Er enghraifft, dyddiadau penodol pan gasglwyd gwerthoedd data.
+
+| Fformat yn y tabl data  | Enghraifft  | Sut y bydd yn ymddangos ar y wefan  |
+| :---- | :---- | :---- |
+| DD/MM/YYYY | 01/01/2022 | 1 Ionawr 2022 |
+| DD-MM-YYYY | 01-01-2022 | 1 Ionawr 2022 |
+| YYYY-MM-DD | 2022-01-01 | 1 Ionawr 2022 |
+| YYYYMMDD | 20220101 | 1 Ionawr 2022 |
+
+### Tablau am-edrych 
+
+Ar gyfer dimensiynau nad ydynt yn cynnwys dyddiadau neu ddaearyddiaeth, dylech baratoi eich tablau am-edrych eich hun.  Byddwch yn lanlwytho’r rhain i SW3.
+
+Mae tabl am-edrych yn dweud wrth y system yr hyn y mae pob un o’r codau cyfeirio a ddefnyddir mewn dimensiwn perthnasol yn ei gynrychioli.  Mae’n bwysig bod y codau cyfeirio yn y dimensiwn yn y tabl data yn **cyfateb yn union** â’r rhai yn y tabl am-edrych.
+
+Yn ddelfrydol, dylai eich tabl am-edrych fod mewn [fformat CSV](#guidance-fformat-y-ffeil) ac yn un o’r fformatau canlynol.
+
+#### Fformat 2-rhes (a ffefrir)
+
+| Pennawd | Yr hyn y mae’r golofn yn ei gynnwys  |
+| :---- | :---- |
+| codcyf  | Codau cyfeirio  |
+| hierarchaeth  | Dynodi os yw gwerth yn gysylltiedig â gwerthoedd eraill mewn ffordd hierarchaidd  |
+| trefn | Trefn ddidoli  |
+| disgrifiad  | Disgrifiad  |
+| iaith  | Iaith a ddefnyddir, naill ai 'en' neu 'cy' |
+| nodyn  | Nodiadau |
+
+Enghraifft o rhan o dabl am-edrych ar gyfer cod band treth:
+
+| codcyf  | hierarchaeth | trefn  | disgrifiad  | iaith  | nodyn  |
+| :---- | :---- | :---- | :---- | :---- | :---- |
+| A- |  | 1 | Tax band A- | en |  |
+| A- |  | 1 | Band treth A- | cy |  |
+| A |  | 2 | Tax band A | en |  |
+| A |  | 2 | Band treth A | cy |  |
+| B |  | 3 | Tax band B | en |  |
+
+#### Fformat rhes unigol 
+
+| Pennawd | Yr hyn y mae’r golofn yn ei chynnwys  |
+| :---- | :---- |
+| codcyf | Codau cyfeirio |
+| hierarchaeth | Dynodi os yw gwerth yn gysylltiedig â gwerthoedd eraill mewn ffordd hierarchaidd  |
+| trefn | Trefn ddidoli  |
+| disgrifiad\_en | Disgrifiad (Saesneg) |
+| disgrifiad\_cy | Disgrifiad (Cymraeg) |
+| nodyn\_en | Nodiadau (Saesneg) |
+| nodyn\_cy | Nodiadau (Cymraeg) |
+
+Enghraifft o rhan o dabl am-edrych ar gyfer cod band treth:
+
+| codcyf  | hierarchaeth | trefn | disgrifiad\_en | disgrifiad \_cy | nodyn\_en | nodyn\_cy |
+| :---- | :---- | :---- | :---- | :---- | :---- | :---- |
+| A- |  | 1 | Tax band A- | Band treth A- |  |  |
+| A |  | 2 | Tax band A | Band treth A |  |  |
+| B |  | 3 | Tax band B | Band treth B |  |  |
+| C |  | 4 | Tax band C | Band treth C |  |  |
+| D |  | 5 | Tax band D | Band treth D |  |  |
+
+#### Penawdau colofnau 
+
+Mae’n bwysig bod y **penawdau colofnau penodol hyn** yn cael eu defnyddio.
+
+#### Disgrifiadau 
+
+Dylai disgrifiadau o’r holl werthoedd dimensiwn fod yn:
+
+- gryno ac esbonio’n glir yr hyn y mae’r gwerth dimensiwn yn ei gynrychioli   
+- mewn llythrennau ar ffurf brawddeg, ac eithrio enwau priod, er enghraifft ‘Dosau a neilltuwyd i Gymru'  
+- unigryw ac yn wahanol i’w gilydd 
+
+#### Nodiadau tabl am-edrych
+
+Gellir darparu nodiadau tabl am-edrych, ond **nid ydynt yn cael eu dangos yn yr hyn y mae’r defnyddiwr yn ei weld ar hyn o bryd** yn SW3.  Os yw nodiadau yn cynnwys gwybodaeth bwysig, dylech sicrhau bod y wybodaeth hon yn cael ei darparu yn yr [adran metadata](#guidance-metadata) mwyaf priodol hefyd.
+
+### Enwau dimensiynau 
+
+Pan fyddwch yn ychwanegu data cyfeirio yn SW3, bydd angen i chi ychwanegu’r hyn yr ydych yn dymuno i’r dimensiwn gael ei alw ar yr ochr i ddefnyddwyr.
+
+Dylai enwau dimensiynau fod yn:
+
+- gryno ac esbonio’n glir yr hyn y mae’r dimensiwn yn ei gynnwys   
+- mewn llythrennau ar ffurf brawddeg, ac eithrio enwau priod, er enghraifft ‘Awdurdodau lleol’ 
+
+## Mathau data neu fesur 
+
+Mae mesur, neu fath data, yn dynodi’r hyn y mae’r gwerth data yn ei gynrychioli.  **Rhaid** i chi gynnwys colofn ar gyfer hyn yn eich tabl data, hyd yn oed os yw eich set ddata yn cynnwys un math o fesur yn unig.  Mae cynnwys mesurau yn helpu defnyddwyr i ddeall y data yn eich set ddata yn well.
+
+Ar gyfer dimensiwn sy’n cynnwys mesurau, dylech baratoi eich tabl am-edrych eich hun.  Byddwch yn lanlwytho hwn i SW3.  Dylai fod yn yr un fformat â [thablau am-edrych](#guidance-tablau-am-edrych) eraill, gyda’r colofnau ychwanegol canlynol:
+
+| Pennawd | Yr hyn y mae’r golofn yn ei gynnwys  |
+| :---- | :---- |
+| math | Unrhyw rai o’r canlynol: <ul><li>cyfrif</li><li>canran</li><li>cyfradd</li><li>safle</li><li>rhifiadur</li><li>enwadur</li><li>gwerth mynegai</li><li>modd</li><li>canolrif</li><li>cymedr</li><li>gwyriad safonol</li><li>amrywiant</li><li>chwartel</li><li>cwintel</li><li>degradd</li><li>canradd</li></ul> |
+| fformat | Unrhyw rai o’r canlynol: <ul><li>degol</li><li>arnawf</li><li>cyfanrif</li><li>hir</li><li>canran</li><li>llinyn</li><li>testun</li><li>dyddiad</li><li>dyddiadamser</li><li>amser</li></ul> |
+| degol | Nifer y lleoedd degol i’w dangos, os yn berthnasol |
+
+Tabl am-edrych mesur enghreifftiol ar gyfer ein henghraifft treth gyngor:
+
+| codcyf | math | fformat | trefn | disgrifiad\_en | disgrifiad\_cy |
+| :---- | :---- | :---- | :---- | :---- | :---- |
+| 1 | cyfrif | degol | 1 | Council tax in £ | Treth gyngor mewn £ |
+| 2 | canran | canran | 2 | % of median monthly salary | % y cyflog misol canolrifol |
+| 3 | safle | cyfanrif | 3 | Rank of council tax band | Safle band treth gyngor |
+
+*Sylwer mai enghraifft yw hon at ddibenion arddangos, ac nad yw’n dabl am-edrych go iawn ar gyfer data treth gyngor.*
+
+## Nodiadau 
+
+### Nodiadau gwerthoedd data (troednodiadau a data coll yn flaenorol)
+
+Dim ond os bydd angen gwneud hynny er mwyn deall y data y dylech chi ychwanegu nodyn i werth data penodol.  Fodd bynnag, **rhaid i chi gynnwys colofn ar gyfer codau nodiadau** yn eich tabl data, hyd yn oed os nad oes gennych chi unrhyw godau nodiadau i’w cynnwys.
+
+Mae SW3 yn defnyddio codau nodiadau llaw-fer, gydag esboniadau safonol, sy’n dilyn [safonau’r sector cyhoeddus](https://analysisfunction.civilservice.gov.uk/policy-store/symbols-in-tables-definitions-and-help/) yn agos.  Nid yw’r codau yn gwahaniaethu rhwng priflythrennau a llythrennau bach.
+
+| Llaw-fer | Ystyr  | Defnydd  |
+| :---- | :---- | :---- |
+| a | Cyfartaledd  | Pan fydd gwerth data yn gyfartaledd gwerthoedd eraill  |
+| b | Cyfres toriad amser  | Pan fydd toriad mewn cyfres data sy’n golygu na ellir cymharu data cyn y toriad gyda data ar ôl y toriad yn uniongyrchol |
+| c | Gwybodaeth gyfrinachol  | Er enghraifft, os bydd gwerth data wedi cael ei atal oherwydd y gallech chi adnabod manylion am bobl penodol o’r data. Sylwer nad oes unrhyw ffordd yn SW3 i guddio nac atal gwerthoedd, felly rhaid gwneud hyn yn eich tabl data. |
+| e | Amcangyfrifedig | Pan fydd gwerth data yn werth amcangyfrifedig  |
+| f | Rhagolwg | Pan fydd gwerth data yn werth yn y dyfodol wedi’i gyfrifo yn hytrach na gwerth wedi’i arsylwi |
+| k | Ffigwr isel | Ffigwr isel sy’n ymddangos fel sero ar ôl talgrynnu |
+| ns | Ddim yn arwyddocaol yn ystadegol | Pan na ellir pennu a yw gwerth data yn ddibynadwy neu beidio |
+| p | Dros dro  | Pan na fydd gwerth data wedi cael ei gwblhau eto, neu disgwylir iddo gael ei newid |
+| r | Diwygiedig  | Pan fydd gwerth data wedi cael ei ddiwygio ers y cafodd ei gyhoeddi yn gyntaf |
+| s | Yn arwyddocaol yn ystadegol ar lefel 5% neu 0.05 | Pan fydd y siawns bod gwerth data yn annibynadwy yn llai na 5% |
+| ss | Yn arwyddocaol yn ystadegol ar lefel 1% neu 0.01 | Pan fydd y siawns bod gwerth data yn annibynadwy yn llai nag 1% |
+| sss | Yn arwyddocaol yn ystadegol ar lefel 0.1% neu 0.001 | Pan fydd y siawns bod gwerth data yn annibynadwy yn llai na 0.1% |
+| t | Cyfanswm | Pan fydd gwerth data yn gyfanswm gwerthoedd eraill |
+| u | Dibynadwyedd isel  | Pan fydd ansawdd ystadegol isel i werth data |
+| x | Data coll  | Er enghraifft, pan na chaiff gwerth data ei gasglu mewn rhanbarth |
+| z | Amherthnasol | Er enghraifft, mewn tablau cyflogaeth pan na ellir cyflogi pobl dan 16 oed yn gyfreithlon |
+
+Dylid darparu unrhyw esboniadau wedi’u haddasu yr ydych chi’n teimlo eu bod yn angenrheidiol er mwyn egluro unrhyw godau nodiadau, yn yr [adran metadata](#guidance-metadata).
+
+Os bydd angen i chi ychwanegu codau nodiadau lluosog i un gwerth data, dylid gwahanu’r rhain gan ddefnyddio coma, er enghraifft ‘p,f’.
+
+### Nodiadau eraill
+
+Dylid darparu’r holl nodiadau eraill am ddimensiynau neu’r set ddata yn yr [adran metadata](#guidance-metadata) mwyaf priodol.
+
+## Metadata
+
+Cyn i chi greu set ddata newydd yn SW3, dylech baratoi’r holl fetadata cysylltiedig y bydd ei angen arnoch.  Dylech ddarparu hwn **i gyd yn yr un iaith**.  Dylai hyn fod ym mha bynnag iaith y byddwch yn ei defnyddio pan fyddwch yn defnyddio SW3, sef Cymraeg neu Saesneg.  Caiff cyfieithiadau metadata i’r iaith arall eu [prosesu gyda’r holl gyfieithiadau eraill](Using-SW3---Creating-a-new-dataset#guidance-cyfieithiadau).
+
+### Rhestrau bwled 
+
+Gallwch ddefnyddio pwyntiau bwled er mwyn helpu i gyflwyno cynnwys, yn ôl yr angen.
+
+Dylech nodi seren wrth bwyntiau bwled a bwlch ar y dechrau.  Er enghraifft:
+
+'`* testun i ymddangos fel pwynt bwled`'
+
+Bydd y system yn creu rhestrau o’r rhain a fydd yn defnyddio pwyntiau bwled cylchol.
+
+Dylech:
+
+- gadw at un frawddeg fesul bwled   
+- peidio gorffen pwyntiau bwled gydag atalnodau neu gysyllteiriau fel ‘neu’    
+- ceisio defnyddio gair gwahanol ar ddechrau pob pwynt bwled 
+
+Os ydych chi’n defnyddio llinell arweiniol i’ch rhestr pwyntiau bwled, dylai pob pwynt bwled ffurfio brawddeg gyflawn gyda’r linell arweiniol.  Mae’r rhestr pwyntiau bwled uchod yn dangos hyn.
+
+### Dolenni 
+
+Dylech ddarparu dolenni i adroddiadau cysylltiedig yn yr [adran adroddiadau cysylltiedig](#guidance-adroddiadau-cysylltiedig) pwrpasol.  Dim ond yw hynny’n bwysig er mwyn deall y set ddata yn well y dylid cynnwys dolen mewn unrhyw rai o’r adrannau metadata sy’n seiliedig ar destun.
+
+Os bydd angen i chi gynnwys dolen, dylech sicrhau eich bod yn eu defnyddio mewn ffordd briodol.
+
+Dylech nodi dolenni gyda thestun y ddolen mewn cromfachau sgwâr, a ddilynir yn uniongyrchol gan URL y ddolen mewn cromfachau crwn.  Er enghraifft:
+
+'`[Llywodraeth Cymru](https://www.llyw.cymru)`'
+
+Bydd y system yn creu dolen y bydd modd clicio arni, sef '[Llywodraeth Cymru](https://www.gov.wales)'.  Rhaid i’r URL gychwyn gyda naill ai 'https://' neu 'http://'.
+
+Dylai’r testun yn y ddolen:
+
+- nodi’n glir yr hyn y bydd y defnyddiwr yn ei gael o’r ddolen  
+- osgoi cyfarwyddiadau fel “cliciwch yma” neu “i ddarganfod mwy”  
+- bod yn hirach nag 1 gair, ond nid yn frawddeg lawn  
+- ffurfio rhan o frawddeg, nid bod yn rhan o restr dolenni
+
+### Adrannau metadata 
+
+Mae’r canlynol yn cynrychioli’r holl fetadata y bydd angen i chi ei ddarparu.
+
+#### Teitl 
+
+- Y teitl a fydd yn ymddangos gyda’r set ddata ar wefan StatsCymru   
+- Dylai fod yn fyr, yn ddisgrifiadol ac yn unigryw   
+- Bydd y system yn dweud wrthych os byddwch yn nodi teitl sydd eisoes yn cael ei ddefnyddio gan set ddata fyw, wedi’i chyhoeddi
+
+#### Crynodeb 
+
+- Mewn brawddegau byr a syml, esboniwch yr hyn y mae’r set ddata hon amdano a’r hyn y mae’n dangos  
+- Disgrifiwch pa ddimensiynau a ddefnyddiwyd ac os oes angen, pam eu bod wedi cael eu defnyddio  
+- Yn ddelfrydol, ni ddylai hwn fod yn hirach na 2-3 paragraff  
+- Ni ddylid cynnwys unrhyw beth sy’n ymwneud â chasglu data neu ansawdd data, a dylid cadw hyn i’w hadrannau perthnasol
+
+#### Cyfrifo neu gasglu data 
+
+Mewn brawddegau byr a syml, esboniwch naill ai:
+
+- y fethodoleg a ddefnyddiwyd i gasglu’r data  
+- y fethodoleg a ddefnyddiwyd i gyfrifo’r data  
+- y ddau uchod 
+
+#### Ansawdd ystadegol 
+
+Mewn brawddegau byr a syml, esboniwch unrhyw faterion neu newidiadau methodolegol sy’n ymwneud a’r set ddata, gan gynnwys unrhyw:
+
+- nodiadau sy’n berthnasol i’r holl werthoedd data yn y set ddata   
+- esboniadau wedi’u haddasu sy’n angenrheidiol er mwyn egluro unrhyw godau nodiadau gwerthoedd data a ddefnyddiwyd
+
+Os yw ar gael, gallwch gynnwys **crynodeb lefel uchel** o’r adroddiad ansawdd ystadegol.  Dylech ychwanegu dolen i’r adroddiad yn yr adran ‘Adroddiadau cysylltiedig’, nid fel dolen yma.
+
+##### Talgrynnu wedi’i wneud 
+
+Mae’r adran ansawdd ystadegol yn cynnwys is-adran hefyd er mwyn dynodi a oes unrhyw waith talgrynnu wedi cael ei wneud.  Os oes, esboniwch hynny mewn brawddegau byr a syml.
+
+#### Ffynonellau data 
+
+Rhennir hwn yn ddarparwyr data, megis y ‘Swyddfa Ystadegau Gwladol (SYG)’, a ffynonellau gan y darparwyr hynny, megis ‘Cyfrifiad 2021’.  Mewn rhai achosion, efallai y byddwch yn gwybod darparwr y data yn unig, ac nid ffynhonnell benodol gan y darparwr hwnnw.  Er enghraifft, ‘Ymddygiad Iechyd mewn Plant Oedran Ysgol (HBSC)’.
+
+Gallwch ychwanegu ffynonellau lluosog yn ôl y gofyn.
+
+Caiff [rhestr y darparwyr data a’r ffynonellau \[link TBD\]](#) ei rheoli yn ganolog.  Os bydd angen i chi ychwanegu darparwr data neu ffynhonnell i’r rhestr, bydd angen i chi:
+
+- anfon e-bost at ... yn ... \[process TBD\]  
+- nodi enw’r darparwr data a’r ffynhonnell yn Gymraeg ac yn Saesneg 
+
+Byddwch yn cael eich hysbysu ar ôl i’r darparwr data a’r ffynhonnell gael eu hychwanegu i’r rhestr.  Yna, byddwch yn gallu eu dewis yn SW3.
+
+#### Adroddiadau cysylltiedig 
+
+Dylech ddarparu dolenni i unrhyw adroddiadau cysylltiedig, y gallent gynnwys:
+
+- ystadegau a datganiadau i’r wasg LLYW.CYMRU   
+- adroddiadau ansawdd ystadegol   
+- gwaith cysylltiedig arall 
+
+Bydd angen i chi ddarparu URL yr adroddiad, a thestun y ddolen a fydd yn ymddangos ar y dudalen we.  Dylai testun y ddolen fod yn deitl neu’n ddisgrifiad byr o’r adroddiad, nid yr URL.  Dylai’r URL ddechrau gyda naill ai 'https://' or 'http://'.
+
+Os oes gwahanol URLs ar gyfer yr adroddiad mewn gwahanol ieithoedd, dylech ddarparu’r ddau URL.  Dylai testun y ddolen nodi’n glir ym mha iaith y mae adroddiad y ddolen ynddi.  Er enghraifft, efallai y byddwch yn ychwanegu’r ddwy ddolen hon:
+
+- GOV.WALES statistics and research releases (English)  
+- ystadegau a datganiadau ymchwil LLYW.CYMRU (Cymraeg)
+
+#### Pa mor aml y caiff y set ddata ei diweddaru 
+
+Nodwch a fydd y set ddata yn cael ei diweddaru’n rheolaidd neu beidio \- naill ai oherwydd ei fod yn ddata untro neu os yw’r gwaith o’i ddiweddaru wedi stopio.  Gallwch nodi’r cyfnod rhwng diweddariadau mewn diwrnodau, wythnosau, misoedd, chwarteri neu flynyddoedd. 
+
+#### Dynodiad 
+
+Ceir [gwahanol fathau o ddynodiadau ystadegau swyddogol](https://uksa.statisticsauthority.gov.uk/about-the-authority/uk-statistical-system/types-of-official-statistics/).  Mae diffiniadau’r rhain fel a ganlyn:
+
+| Dynodiad | Yr hyn y mae’n ei olygu  |
+| :---- | :---- |
+| Ystadegau swyddogol  | Ystadegau sy’n cael eu creu gan gyrff y Goron a sefydliadau eraill a restrir mewn Gorchymyn Ystadegau Swyddogol, ar ran llywodraeth y DU neu weinyddiaethau datganoledig |
+| Ystadegau swyddogol achrededig (Ystadegau Gwladol yn flaenorol) | Ystadegau swyddogol y mae’r Swyddfa Rheoleiddio Ystadegau (OSR) wedi eu hadolygu’n annibynnol a chadarnhau eu bod yn cydymffurfio â safonau dibynadwyedd, ansawdd a gwerth |
+| Ystadegau swyddogol mewn datblygiad (ystadegau arbrofol yn flaenorol) | Ystadegau swyddogol sy’n cael eu datblygu;  efallai eu bod yn ystadegau newydd neu sy’n bodoli eisoes, a byddant yn cael eu profi gyda defnyddwyr, yn unol â safonau dibynadwyedd, ansawdd a gwerth |
+| Dim dynodiad | Unrhyw ystadegau eraill  |
+
+#### Pynciau perthnasol 
+
+Ceir 13 pwnc lefel uchel, y mae gan y rhan fwyaf ohonynt bynciau eilaidd.  Mae **tag pwnc unigol** yn cynnwys ‘lefel uchel \+ pwnc eilaidd’.  Yr unig eithriadau yw tagiau pwnc ‘Twristiaeth’ a’r ‘Iaith Gymraeg’, sy’n rhai lefel uchel yn unig.
+
+Er enghraifft, gallai set ddata sy’n ymwneud â gofal iechyd fod wedi cael ei thagio â thag pwnc unigol ‘Yr amgylchedd, ynni ac amaethyddiaeth:  Ffermio’.  Neu fe allai fod wedi cael ei thagio ag ail dag pwnc fel ‘Busnes, yr economi a’r farchnad lafur:  Busnes’.  Dylech ddewis cymaint o dagiau pwnc ag sy’n berthnasol i’r set ddata.
+
+Bydd y detholiad hwn yn caniatáu i ddefnyddwyr leoli a nodi setiau data sydd o ddiddordeb iddynt yn haws.  Mae’n bwysig ystyried y gwahanol ffyrdd y gall defnyddwyr gategoreiddio’r hyn y mae set ddata yn ei chynnwys.
+
+**Busnes, yr economi a’r farchnad lafur** 
+
+- Busnes   
+- Mynegeion economaidd   
+- Cyflogaeth   
+- Incwm gwario gros aelwydydd   
+- Gwerth ychwanegol gros   
+- Ymchwil a datblygu 
+
+**Trosedd, tân ac achub** 
+
+- Trosedd a chyfiawnder   
+- Digwyddiadau tân ac achub   
+- Gwasanaethau tân   
+- Yr Heddlu 
+
+**Addysg a hyfforddiant** 
+
+- Prentisiaethau   
+- Addysg bellach   
+- Addysg uwch   
+- Dysgu gydol oes   
+- Disgyblion   
+- Ysgolion   
+- Cymorth i fyfyrwyr   
+- Athrawon a staff cymorth   
+- Gwaith ieuenctid 
+
+**Yr amgylchedd, ynni ac amaethyddiaeth** 
+
+- Ansawdd aer   
+- Ynni   
+- Ffermio   
+- Llifogydd   
+- Tipio anghyfreithlon  
+- Nwyon tŷ gwydr   
+- Tir   
+- Rheoli gwastraff 
+
+**Cyllid a threth** 
+
+- Cyfalaf   
+- Treth gyngor   
+- Treth trafodiadau tir   
+- Treth gwarediadau tirlenwi   
+- Ardrethi annomestig (ardrethi busnes)   
+- Refeniw   
+- Setliad 
+
+**Iechyd a gofal cymdeithasol** 
+
+- Gwasanaethau ambiwlans   
+- Plant   
+- Coronafeirws (COVID-19)  
+- Gwasanaethau deintyddol   
+- Cyllid iechyd   
+- Gweithgarwch ysbytai a lleoliadau gofal eraill   
+- Meddygaeth deulu   
+- Mamolaeth, genedigaethau a beichiogi   
+- Iechyd meddwl   
+- Perfformiad ac amseroedd aros   
+- Gofal sylfaenol a gwasanaethau cymunedol   
+- Staff  
+- Gofal cymdeithasol a gofal dydd   
+- Gwasanaethau cymdeithasol   
+- Camddefnyddio sylweddau 
+
+**Tai** 
+
+- Tai fforddiadwy   
+- Dymchweliadau   
+- Grantiau cyfleusterau i’r anabl   
+- Peryglon, trwyddedau ac ansawdd tai   
+- Help i brynu   
+- Digartrefedd   
+- Niferoedd aelwydydd   
+- Gwella tai   
+- Stoc tai a’r angen   
+- Adeiladu tai newydd   
+- Meddiannau a throi allan   
+- Rhenti yn y sector preifat   
+- Tai cymdeithasol   
+- Cyfrif carafannau teithwyr 
+
+**Pobl, hunaniaeth a chydraddoldeb** 
+
+- Oedran  
+- Anabledd   
+  Ethnigrwydd   
+- Hunaniaeth rhywedd   
+- Iaith   
+- Statws priodasol   
+- Mudo   
+- Hunaniaeth genedlaethol   
+- Poblogaeth   
+- Beichiogrwydd a mamolaeth   
+- Crefydd   
+- Rhyw   
+- Cyfeiriadedd rhywiol   
+- Statws cymdeithasol-economaidd 
+
+**Tlodi** 
+
+- Cymunedau yn Gyntaf   
+- Amdddifadedd   
+- Cronfa cymorth dewisol   
+- Tlodi incwm 
+
+**Twristiaeth** 
+
+**Trafnidiaeth** 
+
+- Awyr   
+- Rheilffyrdd  
+- Ffyrdd  
+- Môr
+
+**Llywodraeth leol a Chymru** 
+
+- Cofrestr etholiadol   
+- Gweithlu’r llywodraeth   
+- Perfformiad awdurdod lleol   
+- Etholaethau’r Senedd 
+
+**Yr Iaith Gymraeg** 

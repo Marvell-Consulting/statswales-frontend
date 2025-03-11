@@ -9,55 +9,64 @@ From your home screen, click ‘Create new dataset’. Using your [prepared data
 1. Indicate what each column in the data table contains, either:
    - data values
    - a dimension
-   - a dimension containing dates
    - measure or data types
    - note codes
-1. Add reference data for each dimension
-   - For dimensions containing dates, answer the questions about date formatting
-   - Name the dimensions
-   - For measure or data types, upload the [appropriate lookup table](Data-preparation-‐-New-datasets#guidance-measure-or-data-types)
 
-### Date formatting
+You'll then be taken to your dataset tasklist. It will list all the dimensions you indicated, except note codes as these are standardised. 
 
-For dimensions containing dates, you’ll need to answer a set of questions about the date format used.
+Clicking on each dimension will let you add the appropriate reference data. For each dimension you'll need to:
+- select what kind of data the dimension contains, either:
+   - dates - you'll then answer questions about the date formatting used
+   - geography - the system will then add the standardised reference data
+   - something else - you'll then need to upload your own lookup table
+- enter a name for the dimension to be called on the StatsWales website
 
-1. Whether the values in them represent either:
-   - periods of time - for example, months or years for which data values apply to
-   - specific points in time - for example, specific dates when data values were collected
-1. For periods of time you’ll be asked:
-   - whether the periods of time are months, quarters or years
-   - [the date format used](Data-preparation-‐-New-datasets#guidance-date-formatting) for months, quarters or years (as appropriate)
-1. For specific points in times you’ll just be asked for the date format used
-1. Lastly you’ll need to select [the type of year](Data-preparation-‐-New-datasets#guidance-year-type) the dimension covers.
+If you have a dimension for measure or data types, when you click on it from your dataset tasklist, you'll then need to upload the [appropriate lookup table](Data-preparation-‐-New-datasets#guidance-measure-or-data-types).
+
+### Date formatting questions
+
+For [dimensions containing dates](Data-preparation-‐-New-datasets#guidance-date-formatting), you’ll be asked whether the dimension contains either:
+- periods - for example, months or years for which data values apply to
+- specific points - for example, specific dates when data values were collected
+
+For periods you’ll be asked:
+- the type of year the dimension represents
+- the date format used for years
+- whether the shortest period in the dimension are months, quarters or years
+- the date format used for months or quarters (if relevant)
+
+For specific points you’ll just be asked for the date format used.
 
 ### Errors
 
-The system checks whether the reference data, or date formatting, matches the contents of your data table. If there are any issues, the system will try to explain them and what you need to do to fix them.
+The system will check whether the selected or uploaded reference data, or the indicated date formatting, match the contents of your data table. If there are any issues, the system will try to explain them and what you need to do to fix them.
 
 For example, if you have used a reference code in your data table that isn’t in the lookup table you uploaded.
 
 ### Making changes
 
-From your dataset overview, if you click on ‘Data table’, you can:
+From your dataset tasklist, if you click on ‘Data table’, you can:
 
-- upload a different data table - this will remove reference data from all dimensions
-- change what each column in the data table contains - this may remove reference data from dimensions
+- upload a different data table
+- change what each column in the data table contains
+
+Be advised, both of these actions will remove all reference data from all dimensions.
 
 If you click on a dimension, you can either:
 
-- select different reference data
-- change the date formatting (as applicable)
-- change the dimension name (as applicable)
+- replace the uploaded lookup table (as applicable)
+- change what kind of data the dimension contains
+- change the name of the dimension
 
 ## Metadata
 
-You should add all [prepared metadata](Data-preparation-‐-New-datasets#guidance-metadata) to the appropriate sections. This can be done in any order. You can go back to any section by clicking on it from your dataset overview.
+You should add all [prepared metadata](Data-preparation-‐-New-datasets#guidance-metadata) to the appropriate sections. This can be done in any order. You can go back to any section by clicking on it from your dataset tasklist.
 
 ## Translations
 
 Once you’ve completed all text entry fields, you’ll be able to export all the text into a single CSV file. This CSV will be used to input all required translations of either Welsh or English, depending on which language you’ve completed all fields in.
 
-1. From your dataset overview, click ‘Export text fields for translation’
+1. From your dataset tasklist, click ‘Export text fields for translation’
 1. You’ll be shown all relevant text and will be able to make any final changes, if needed
 1. In summary, all possible text fields are:
    - dimension names
@@ -73,10 +82,15 @@ Once you’ve completed all text entry fields, you’ll be able to export all th
    - Text (Welsh)
 1. The column for whichever language you’ve been using will be populated
 1. You should send this CSV to your translator to enter the required translations, or enter the translations yourself if you have them
-1. Once you have the completed CSV, select ‘Import translations’ from your dataset overview
-1. Upload the CSV and check the translations have uploaded correctly
-1. Clicking ‘Continue’ will populate all fields appropriately
-1. You can now preview your dataset fully in both English and Welsh
+
+When opening the exported translation CSV in software such as Excel, text fields with multiple paragraphs may split across multiple cells. If this happens, you should ensure that all text for a specific section, in one language, is in a single cell.
+
+Once you have the completed CSV: 
+1. select ‘Import translations’ from your dataset tasklist
+1. upload the CSV and check the translations have uploaded correctly
+1. click ‘Continue’ to populate all fields appropriately
+
+You can now preview your dataset fully in both English and Welsh.
 
 ## Publishing
 

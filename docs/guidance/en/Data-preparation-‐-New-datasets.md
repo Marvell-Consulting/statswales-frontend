@@ -78,7 +78,7 @@ For any other dimension type, you should [prepare your own lookup table](#guidan
 
 ### Date formatting
 
-When you [build your dataset](Using-SW3---Creating-a-new-dataset) in SW3, you’ll need to [indicate the date formats you’ve used](Using-SW3---Creating-a-new-dataset#guidance-date-formatting) in your data table. SW3 can only accept certain date formats.
+When you build your dataset in SW3, you’ll need to [indicate the date formats you’ve used](Using-SW3---Creating-a-new-dataset#guidance-date-formatting-questions) in your data table. SW3 can only accept certain date formats.
 
 #### Periods of time
 
@@ -208,7 +208,7 @@ Descriptions of all dimension values should be:
 - in sentence case, except for proper nouns, for example 'Doses allocated to Wales'
 - unique and distinct from each other
 
-#### Notes
+#### Lookup table notes
 
 Lookup table notes can be provided, but **are not currently shown in the consumer view** in SW3. If notes contain important information, you should ensure this information is also provided in the most appropriate [metadata section](#guidance-metadata).
 
@@ -302,7 +302,7 @@ If you use a lead-in line to your bullet list, each bullet should form a complet
 
 ### Links
 
-You should provide links to related reports in the dedicated [related reports section](#related-reports). You should only include a link in any of the text-based metadata sections if it's important for understanding the dataset better.
+You should provide links to related reports in the dedicated [related reports section](#guidance-related-reports). You should only include a link in any of the text-based metadata sections if it's important for understanding the dataset better.
 
 If you need to include a link, ensure you use them appropriately.
 
