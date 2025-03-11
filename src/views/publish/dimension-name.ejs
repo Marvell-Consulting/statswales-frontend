@@ -4,13 +4,37 @@
     <main class="govuk-main-wrapper" id="main-content" role="main">
         <div class="top-links">
             <div class="govuk-width-container">
-                <a href="<%= locals.referrer %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <% if (locals.revisit) { %>
+                    <% if (locals.dimensionType ==='measure') { %>
+                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/measure`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                    <% } else { %>
+                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/dimension-data-chooser/${locals.id}`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                    <% } %>
+                <% } else { %>
+                    <% switch (locals.dimensionType) {
+                        case 'measure': %>
+                            <a href="<%= buildUrl(`/publish/${locals.datasetId}/measure/review`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                        <% break;
+                        case 'date_period':
+                        case 'date': %>
+                            <a href="<%= buildUrl(`/publish/${locals.datasetId}/date/${locals.id}/review`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                        <% break;
+                            default: %>
+                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/lookup/${locals.id}/review`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                    <% } %>
+                <% } %>
                 <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
             </div>
         </div>
 
         <p class="govuk-body-l region-subhead govuk-!-font-weight-bold"><%= locals.dimensionName %></p>
-        <h1 class="govuk-heading-xl"><%= t('publish.dimension_name.heading') %></h1>
+        <h1 class="govuk-heading-xl">
+            <% if (locals.dimensionType === 'measure') { %>
+                <%= t('publish.dimension_name.measure_heading') %>
+            <% } else { %>
+                <%= t('publish.dimension_name.dimension_heading') %>
+            <% } %>
+        </h1>
 
         <%- include("../partials/error-handler"); %>
 
@@ -28,9 +52,13 @@
                 <button type="submit" class="govuk-button" data-module="govuk-button">
                     <%= t('buttons.continue') %>
                 </button>
-                <% if (locals.showCancelButton) { %>
+                <% if (locals.revisit) { %>
                     <% if (locals.dimensionType === 'time_period' || locals.dimensionType === 'time_point') { %>
                         <a href="<%= buildUrl(`/publish/${locals.datasetId}/time-period/${locals.id}`, i18n.language) %>" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                            <%= t('buttons.cancel') %>
+                        </a>
+                    <% } else if (locals.dimensionType === 'measure') { %>
+                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/measure`, i18n.language) %>" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
                             <%= t('buttons.cancel') %>
                         </a>
                     <% } else { %>

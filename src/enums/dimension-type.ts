@@ -7,5 +7,6 @@ export enum DimensionType {
     LookupTable = 'lookup_table',
     DatePeriod = 'date_period',
     Date = 'date',
-    FootNote = 'footnote'
+    FootNote = 'footnote',
+    Measure = 'measure'
 }

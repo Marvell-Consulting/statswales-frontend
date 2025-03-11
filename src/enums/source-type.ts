@@ -5,7 +5,6 @@
 export enum SourceType {
     Unknown = 'unknown',
     Dimension = 'dimension',
-    Time = 'time',
     Measure = 'measure',
     DataValues = 'data_values',
     NoteCodes = 'note_codes',

@@ -28,6 +28,7 @@ import { FileFormat } from '../enums/file-format';
 import { FactTableColumnDto } from '../dtos/fact-table-column-dto';
 import { RevisionDTO } from '../dtos/revision';
 import { DatasetInclude } from '../enums/dataset-include';
+import { MeasureDTO } from '../dtos/measure';
 
 const config = appConfig();
 
@@ -303,6 +304,17 @@ export class PublisherApi {
             method: HttpMethod.Patch,
             json: metadata
         }).then((response) => response.json() as unknown as DimensionDTO);
+    }
+
+    public async updateMeasureMetadata(
+        datasetId: string,
+        metadata: DimensionMetadataDTO
+    ): Promise<DimensionMetadataDTO> {
+        return this.fetch({
+            url: `dataset/${datasetId}/measure/metadata`,
+            method: HttpMethod.Patch,
+            json: metadata
+        }).then((response) => response.json() as unknown as DimensionMetadataDTO);
     }
 
     public async updateMetadata(datasetId: string, metadata: RevisionMetadataDTO): Promise<DatasetDTO> {

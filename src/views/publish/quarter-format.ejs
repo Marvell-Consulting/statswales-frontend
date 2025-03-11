@@ -4,11 +4,16 @@
     <main class="govuk-main-wrapper" id="main-content" role="main">
         <div class="top-links">
             <div class="govuk-width-container">
-                <a href="<%= locals.referrer %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <% if (locals.quarterTotals) { %>
+                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/dates/${dimension.id}/period/months`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <% } else { %>
+                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/dates/${dimension.id}/period/type`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <% } %>
                 <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
             </div>
         </div>
 
+        <p class="govuk-heading-s region-subhead"><%= dimension.metadata.name %></p>
         <% if (locals.quarterTotals) { %>
             <h1 class="govuk-heading-xl"><%= t('publish.quarter_format.heading-alt') %></h1>
         <% } else { %>

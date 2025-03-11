@@ -10,7 +10,7 @@
             </div>
         </div>
 
-        <h1 class="govuk-heading-xl"><%= locals.dimension.metadata.find((data) => data.language === i18n.language)?.name || t('publish.time_dimension_review.unknown_name') %></h1>
+        <h1 class="govuk-heading-xl"><%= locals.dimension.metadata.name || t('publish.time_dimension_review.unknown_name') %></h1>
 
         <%- include("../partials/error-handler"); %>
 
@@ -22,8 +22,10 @@
                         <tr class="govuk-table__row">
                             <% locals.headers.forEach(function(cell, idx) { %>
                                 <th scope="col" class="govuk-table__header <%= cell.source_type === 'line_number' ? 'line-number' :'' %>">
-                                    <% if (locals.dimension?.extractor) { %>
+                                    <% if (locals.dimension?.extractor && t(`publish.time_dimension_review.column_headers.${cell.name}`) !== `publish.time_dimension_review.column_headers.${cell.name}` ) { %>
                                         <%= t(`publish.time_dimension_review.column_headers.${cell.name}`) %>
+                                    <% } else if (cell.name === locals.dimension.factTableColumn) { %>
+                                        <%= locals.dimension.metadata.name %>
                                     <% } else { %>
                                         <%= cell.name %>
                                     <% } %>
@@ -65,7 +67,7 @@
                         <%= t('publish.time_dimension_review.actions') %>
                     </h2>
                     <ul class="govuk-list">
-                        <li><a href="<%= buildUrl(`/publish/${locals.datasetId}/time-period/${locals.dimension.id}/change-format`, i18n.language) %>" class="govuk-link"><%= t('publish.time_dimension_review.change_format') %></li>
+                        <li><a href="<%= buildUrl(`/publish/${locals.datasetId}/dates/${locals.dimension.id}/change-format`, i18n.language) %>" class="govuk-link"><%= t('publish.time_dimension_review.change_format') %></li>
                         <li><a href="<%= buildUrl(`/publish/${locals.datasetId}/dimension/${locals.dimension.id}/change-name`, i18n.language) %>" class="govuk-link"><%= t('publish.time_dimension_review.change_name') %></a></li>
                     </ul>
                 </div>
