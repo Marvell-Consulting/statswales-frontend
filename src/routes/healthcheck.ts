@@ -7,14 +7,14 @@ import { logger } from '../utils/logger';
 export const healthcheck = Router();
 
 healthcheck.get('/', async (req: Request, res: Response, next: NextFunction) => {
-    const lang = req.language as Locale;
-    let backend = false;
-    logger.info(`Healthcheck requested in ${lang}`);
+  const lang = req.language as Locale;
+  let backend = false;
+  logger.info(`Healthcheck requested in ${lang}`);
 
-    try {
-        backend = await new PublisherApi(lang).ping();
-    } catch (err: any) {
-        next(err);
-    }
-    res.json({ status: 200, lang: req.language, services: { backend } });
+  try {
+    backend = await new PublisherApi(lang).ping();
+  } catch (err) {
+    next(err);
+  }
+  res.json({ status: 200, lang: req.language, services: { backend } });
 });

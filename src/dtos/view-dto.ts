@@ -5,32 +5,32 @@ import { DatasetDTO } from './dataset';
 import { DataTableDto } from './data-table';
 
 export interface CSVHeader {
-    index: number;
-    name: string;
-    source_type?: SourceType;
+  index: number;
+  name: string;
+  source_type?: SourceType;
 }
 
 export interface PageInfo {
-    total_records: number | undefined;
-    start_record: number | undefined;
-    end_record: number | undefined;
+  total_records: number | undefined;
+  start_record: number | undefined;
+  end_record: number | undefined;
 }
 
 export interface ViewErrDTO {
-    status: number;
-    errors: ViewError[];
-    dataset_id: string | undefined;
+  status: number;
+  errors: ViewError[];
+  dataset_id: string | undefined;
 }
 
 export interface ViewDTO {
-    status: number;
-    dataset: DatasetDTO;
-    data_table: DataTableDto;
-    current_page: number;
-    page_info: PageInfo;
-    pages: (string | number)[];
-    page_size: number;
-    total_pages: number;
-    headers: CSVHeader[];
-    data: string[][];
+  status: number;
+  dataset: DatasetDTO;
+  data_table: DataTableDto;
+  current_page: number;
+  page_info: PageInfo;
+  pages: (string | number)[];
+  page_size: number;
+  total_pages: number;
+  headers: CSVHeader[];
+  data: string[][];
 }

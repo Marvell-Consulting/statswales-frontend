@@ -1,6 +1,6 @@
 export interface DimensionMetadataDTO {
-    language?: string;
-    name: string;
-    description?: string;
-    notes?: string;
+  language?: string;
+  name: string;
+  description?: string;
+  notes?: string;
 }

@@ -7,19 +7,19 @@ import { PublishingStatus } from '../enums/publishing-status';
 import { getLatestRevision } from './revision';
 
 export const getDatasetStatus = (dataset: DatasetDTO): DatasetStatus => {
-    return dataset.live && isBefore(dataset.live, new Date()) ? DatasetStatus.Live : DatasetStatus.New;
+  return dataset.live && isBefore(dataset.live, new Date()) ? DatasetStatus.Live : DatasetStatus.New;
 };
 
 export const getPublishingStatus = (dataset: DatasetDTO): PublishingStatus => {
-    const revision = getLatestRevision(dataset);
+  const revision = getLatestRevision(dataset);
 
-    if (getDatasetStatus(dataset) === DatasetStatus.New) {
-        return revision?.approved_at ? PublishingStatus.Scheduled : PublishingStatus.Incomplete;
-    }
+  if (getDatasetStatus(dataset) === DatasetStatus.New) {
+    return revision?.approved_at ? PublishingStatus.Scheduled : PublishingStatus.Incomplete;
+  }
 
-    if (revision?.approved_at && revision.publish_at && isBefore(revision.publish_at, new Date())) {
-        return PublishingStatus.Published;
-    }
+  if (revision?.approved_at && revision.publish_at && isBefore(revision.publish_at, new Date())) {
+    return PublishingStatus.Published;
+  }
 
-    return revision?.approved_at ? PublishingStatus.UpdateScheduled : PublishingStatus.UpdateIncomplete;
+  return revision?.approved_at ? PublishingStatus.UpdateScheduled : PublishingStatus.UpdateIncomplete;
 };

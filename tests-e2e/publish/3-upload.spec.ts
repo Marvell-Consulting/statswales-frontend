@@ -6,18 +6,15 @@ import { publisherContext } from '../../playwright/.auth/contexts';
 import { appConfig } from '../../src/config';
 import { upload as dataset } from '../fixtures/datasets';
 
-import { TitlePage } from './pages/title-page';
 import { UploadPage } from './pages/upload-page';
 
 const config = appConfig();
 const baseUrl = config.frontend.url;
 
 test.describe('Upload page', () => {
-  let titlePage: TitlePage;
   let uploadPage: UploadPage;
 
   test.beforeEach(async ({ page }) => {
-    titlePage = new TitlePage(page);
     uploadPage = new UploadPage(page);
   });
 

@@ -20,7 +20,7 @@ describe('Error handling', () => {
 
   beforeAll(() => {
     mockBackend.listen({
-      onUnhandledRequest: ({ headers, method, url }, print) => {
+      onUnhandledRequest: ({ url }, print) => {
         if (!url.includes(config.backend.url)) return;
         print.error();
       }

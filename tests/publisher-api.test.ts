@@ -91,7 +91,6 @@ describe('PublisherApi', () => {
     it('should return a ReadableStream', async () => {
       const datasetId = randomUUID();
       const revisionId = randomUUID();
-      const importId = randomUUID();
       const stream = new ReadableStream();
 
       mockResponse = Promise.resolve(new Response(stream));
@@ -274,8 +273,6 @@ describe('PublisherApi', () => {
   describe('sendCreateDimensionRequest', () => {
     it('should return a DatasetDTO', async () => {
       const datasetId = randomUUID();
-      const revisionId = randomUUID();
-      const importId = randomUUID();
 
       const sourceAssignment: SourceAssignmentDTO[] = [
         { column_index: 0, column_name: randomUUID(), column_type: SourceType.Dimension },
@@ -359,7 +356,7 @@ describe('PublisherApi', () => {
     it('should throw an exception when the backend is unreachable', async () => {
       mockResponse = Promise.reject(new Error('Service Unavailable'));
 
-      const ping = await expect(statsWalesApi.ping()).rejects.toThrow(
+      await expect(statsWalesApi.ping()).rejects.toThrow(
         new ApiException('Service Unavailable', undefined)
       );
 

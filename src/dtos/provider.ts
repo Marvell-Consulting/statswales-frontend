@@ -1,5 +1,5 @@
 export class ProviderDTO {
-    id: string;
-    language: string;
-    name: string;
+  id: string;
+  language: string;
+  name: string;
 }
