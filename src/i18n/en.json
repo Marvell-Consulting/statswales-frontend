@@ -237,6 +237,19 @@
                 "point-hint": "For example, specific dates when data values were collected"
             }
         },
+      "number_chooser": {
+        "heading": "Set up dimension containing numbers",
+        "review_heading": "Check the dimension",
+        "subheading": "Numbers",
+        "showing": "A sample of {{rows}} of {{total}} rows.",
+        "question": "What kind of numbers does this dimension contain?",
+        "chooser": {
+          "integer": "Whole Numbers",
+          "decimal": "Decimal Numbers",
+          "decimal_places": "How many decimal places should be displayed?"
+        },
+        "confirm": "By continuing, you confirm the dimension is correct."
+      },
         "lookup_table_review": {
             "heading": "Check the lookup table",
             "showing": "Showing a sample of {{rows}} of {{total}} rows.",
@@ -1057,7 +1070,7 @@
             "name_missing": "Enter what this dimension should be called on the StatsWales website",
             "name_too_long": "Dimension name must be 256 characters or less",
             "naming_failed": "Dimension name could not be added. Try again.",
-            "illegal_characters": "Dimension names can only contain letters and the characters \"£ $ € ¢ % ( ) _ - +\"",
+            "illegal_characters": "Dimension name can only contain letters, numbers and the characters \"£ $ € ¢ % ( ) _ - +\"",
             "dimension_period_type_required": "Select whether the dimension contains periods or specific points",
             "dimension_type_required": "Select the kind of data this dimension contains",
             "year_type_required": "Select the type of year the dimension represents",

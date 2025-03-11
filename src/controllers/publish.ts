@@ -78,7 +78,7 @@ export const start = (req: Request, res: Response) => {
   res.render('publish/start');
 };
 
-export const dimensionColumnNameRegex = /^[a-zA-ZÀ-ž()\-_ £¢€$%+]+$/;
+export const dimensionColumnNameRegex = /^[a-zA-ZÀ-ž0-9()\-_ £¢€$%+]+$/;
 
 export const provideTitle = async (req: Request, res: Response) => {
   let errors: ViewError[] = [];
@@ -716,6 +716,49 @@ export const lookupReview = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
+export const setupNumberDimension = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const dataset = singleLangDataset(res.locals.dataset, req.language);
+    const dimension = singleLangDataset(res.locals.dataset, req.language).dimensions?.find(
+      (dim) => dim.id === req.params.dimensionId
+    );
+    if (!dimension) {
+      logger.error('Failed to find dimension in dataset');
+      next(new NotFoundException());
+      return;
+    }
+
+    const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
+
+    if (req.method === 'POST') {
+      let dimensionPatch: DimensionPatchDTO;
+
+    }
+
+    const errors = req.session.errors;
+    if (errors) {
+      req.session.errors = undefined;
+      req.session.save();
+      res.status(500);
+      res.render('publish/number-chooser', { ...dataPreview, dimension, errors });
+      return;
+    }
+
+    if (dimension && dimension.extractor && req.path.indexOf('change') === -1) {
+      res.render('publish/number-chooser', { ...dataPreview, dimension });
+    } else {
+      res.render('publish/number-chooser', {
+        ...dataPreview,
+        dimension,
+        showCancelButton: Boolean(req.path.indexOf('change') > -1)
+      });
+    }
+  } catch (err) {
+    logger.error('Failed to get dimension preview', err);
+    next(new NotFoundException());
+  }
+};
+
 export const fetchDimensionPreview = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
@@ -742,6 +785,9 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
           } else {
             res.redirect(req.buildUrl(`/publish/${dataset.id}/dates/${dimension.id}`, req.language));
           }
+          return;
+        case 'Number':
+          res.redirect(req.buildUrl(`/publish/${dataset.id}/numbers/${dimension.id}`, req.language));
           return;
         case 'Text':
           dimensionPatch = {
