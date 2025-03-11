@@ -1,0 +1,121 @@
+# Defnyddio SW3 ‐ Creu set ddata newydd 
+
+## Data
+
+O’ch sgrin hafan, cliciwch ‘Creu set ddata newydd’. Gan ddefnyddio eich [data a baratowyd](Data-preparation-‐-New-datasets#guidance-tablau-data), byddwch yn mynd trwy’r camau canlynol:
+
+1. Ychwanegu teitl  
+2. Lanlwytho eich tabl data   
+3. Nodi’r hyn y mae pob colofn yn y tabl data yn ei gynnwys, naill ai:  
+   * gwerthoedd data   
+   * dimensiwn   
+   * mesur neu fathau data   
+   * codau nodiadau 
+
+Yna, byddwch yn cael eich tywys i’ch rhestr dasgau ar gyfer eich set ddata. Bydd hon yn rhestru’r holl ddimensiynau a nodoch, ac eithrio codau nodiadau gan bod y rhain wedi cael eu safoni.  
+Bydd clicio ar bob dimensiwn yn caniatáu i chi ychwanegu’r data cyfeirio priodol. Ar gyfer pob dimensiwn, bydd angen i chi:
+
+* ddewis pa fath o ddata y mae’r dimensiwn yn ei gynnwys, naill ai:  
+  * dyddiadau – yna byddwch yn ateb cwestiynau am ffurf y dyddiadau a ddefnyddir   
+  * daearyddiaeth – yna bydd y system yn ychwanegu’r data cyfeirio wedi’i safoni   
+  * rhywbeth arall – yna bydd angen i chi lanlwytho eich tabl am-edrych eich hun   
+* nodi enw ar gyfer y dimensiwn ar wefan StatsCymru 
+
+Os oes gennych chi ddimensiwn ar gyfer mesur neu fathau data, pan fyddwch yn clicio arno o’ch rhestr dasgau ar gyfer eich set ddata, bydd angen i chi lanlwytho’r [tabl am-edrych briodol](Data-preparation-‐-New-datasets#guidance-mathau-data-neu-fesur).
+
+### Cwestiynau am ffurf y dyddiadau 
+
+Ar gyfer [dimensiynau sy’n cynnwys dyddiadau](Data-preparation-‐-New-datasets#guidance-fformatio-dyddiadau), gofynnir i chi a yw’r dimensiwn yn cynnwys:
+
+* cyfnodau – er enghraifft, misoedd neu flynyddoedd y mae gwerthoedd data yn berthnasol iddynt   
+* pwyntiau penodol – er enghraifft, dyddiadau penodol pan gasglwyd gwerthoedd data 
+
+Ar gyfer cyfnodau, gofynnir i chi nodi:
+
+* y math o flwyddyn y mae’r dimensiwn yn ei chynrychioli   
+* ffurf y dyddiad a ddefnyddir ar gyfer blynyddoedd
+* a yw’r cyfnod byrraf yn y dimensiwn yn fisoedd, yn chwarteri neu’n flynyddoedd  
+* ffurf y dyddiad a ddefnyddir ar gyfer misoedd neu chwarteri (pan fo hynny’n berthnasol)
+
+Ar gyfer pwyntiau penodol, gofynnir i chi am ffurf y dyddiad a ddefnyddir yn unig.
+
+### Camgymeriadau 
+
+Bydd y system yn gwirio a yw’r data a ddewiswyd neu’r data cyfeirio a lanlwythwyd, neu’r ffurf a ddynodwyd ar gyfer y dyddiadau, yn cyfateb â chynnwys eich tabl data. Os bydd unrhyw broblemau, bydd y system yn ceisio eu hesbonio, gan nodi’r hyn y bydd angen i chi ei wneud i’w trwsio.
+
+Er enghraifft, os byddwch wedi defnyddio cod cyfeirio yn eich tabl data nad yw yn y tabl am-edrych a lanlwythwyd gennych.
+
+### Gwneud newidiadau 
+
+O’r rhestr dasgau ar gyfer eich set ddata, os byddwch yn clicio ar ‘Tabl data’, gallwch:
+
+* lanlwytho tabl data gwahanol   
+* newid yr hyn y mae pob colofn yn y tabl data yn ei gynnwys 
+
+Sylwer, bydd y ddwy weithred hon yn gwaredu’r holl ddata cyfeirio o bob dimensiwn.  
+Os byddwch yn clicio ar ddimensiwn, gallwch:
+
+* ddisodli’r tabl am-edrych a lanlwythwyd (pan fo hynny’n berthnasol)   
+* newid pa fath o ddata sydd yn y dimensiwn   
+* newid enw y dimensiwn 
+
+## Metadata
+
+Dylech ychwanegu’r holl [fetadata a baratowyd](Data-preparation-‐-New-datasets#guidance-metadata) i’r adrannau priodol. Gellir gwneud hyn mewn unrhyw drefn. Gallwch ddychwelyd at unrhyw adran trwy glicio arni o’r rhestr dasgau ar gyfer eich set ddata.
+
+## Cyfieithiadau 
+
+Ar ôl i chi lenwi’r holl feysydd cofnodi testun, byddwch yn gallu allgludo’r holl destun i un ffeil CSV. Defnyddir y CSV hon i fewnbynnu’r holl gyfieithiadau gofynnol yn Gymraeg neu yn Saesneg, gan ddibynnu ar ba iaith a ddefnyddioch i lenwi’r holl feysydd.
+
+1. O’ch rhestr dasgau ar gyfer eich set ddata, cliciwch ‘allgludo meysydd testun i’w cyfieithu’  
+2. Dangosir yr holl destun perthnasol i chi a byddwch yn gallu gwneud unrhyw newidiadau terfynol, yn ôl yr angen  
+3. I grynhoi, mae’r holl feysydd testun posibl fel a ganlyn:  
+   * enwau dimensiwn   
+   * teitl  
+   * crynodeb   
+   * casglu data   
+   * ansawdd ystadegol   
+   * wedi’u talgrynnu   
+   * testun(au) cyswllt adroddiad cysylltiedig   
+4. Cliciwch ‘Allgludo CSV’ er mwyn lawrlwytho tabl sy’n cynnwys colofnau ar gyfer:  
+   * Enw maes testun   
+   * Testun (Saesneg)   
+   * Testun (Cymraeg)  
+5. Llenwir y golofn ar gyfer pa bynnag iaith yr ydych chi wedi bod yn ei defnyddio  
+6. Dylech anfon y CSV hon at eich cyfieithydd er mwyn iddynt nodi’r cyfieithiadau gofynnol, neu gofnodi’r cyfieithiadau eich hun os oes gennych chi nhw
+
+Wrth agor y CSV cyfieithiadau a allgludwyd mewn meddalwedd fel Excel, efallai y bydd meysydd testun sy’n cynnwys paragraffau lluosog yn rhannu ar draws celloedd lluosog. Os bydd hyn yn digwydd, dylech sicrhau bod yr holl destun ar gyfer adran benodol, mewn un iaith, mewn un cell.
+
+Ar ôl i chi gwblhau’r CSV:
+
+1. dewiswch ‘Mewngludo cyfieithiadau’ o’r rhestr dasgau ar gyfer eich set ddata   
+2. lanlwythwch y CSV a gwiriwch bod y cyfieithiadau wedi lanlwytho’n gywir   
+3. cliciwch ‘Parhau’ i lenwi’r holl feysydd mewn ffordd briodol
+
+Gallwch weld rhagolwg o’ch set ddata lawn nawr yn Gymraeg ac yn Saesneg.
+
+## Cyhoeddi 
+
+### Tîm a sefydliad cyhoeddi 
+
+Dewiswch eich tîm a’ch sefydliad. Mae gan dimau gyfeiriad e-bost cysylltu penodedig sy’n gysylltiedig â nhw.
+
+Caiff \[rhestr y timau a’r cyfeiriadau e-bost cysylltiedig [link TBD](#)\] ei rheoli’n ganolog. Os bydd angen i chi ychwanegu tîm i’r rhestr neu newid tîm yn y rhestr, bydd angen i chi:
+
+- anfon e-bost at ... yn ... \[process TBD\]  
+- nodi enw’r tîm a’i gyfeiriad e-bost yn Gymraeg ac yn Saesneg 
+
+#### Cod adnabod set ddata 
+
+Ar ôl i chi ddewis tîm, bydd hyn yn creu’r cod adnabod ar gyfer eich set ddata. Mae’r cod adnabod yn cynnwys cyfuniad unigryw o’r cod 4 llythyren ar gyfer eich tîm a 4 rhif. Er enghraifft.   
+TRAN2001 ar gyfer set ddata ‘Trafnidiaeth’.
+
+### Pryd y dylid cyhoeddi’r set ddata 
+
+Nodwch y dyddiad a’r amser pan ddylid cyhoeddi’r set ddata. Ystyriwch pa mor hir y bydd hi’n cymryd i gymeradwyo’r set ddata ar ôl i chi ei chyflwyno. Dylech osod y dyddiad cyhoeddi yn ddigon pell yn y dyfodol er mwyn caniatáu hyn.
+
+Yr amser cyhoeddi diofyn yw 9:30am. Dim ond os yw amser gwahanol yn hollol angenrheidiol y dylech chi newid hwn.
+
+### Cyflwyno 
+
+Cyflwynwch y set ddata i’w chyhoeddi ar y dyddiad cyhoeddi a ddewiswyd.

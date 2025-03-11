@@ -6,7 +6,7 @@ From your home screen, select the dataset you need to update. On the next screen
 
 Using your [prepared update data table](Data-preparation-‐-Updating-datasets), go through the following steps:
 
-1. Click ‘Data table’ from your dataset overview
+1. Click ‘Data table’ from your dataset tasklist
 1. Select whether you need to:
    - Add new data only
    - Add new data and revise existing data
@@ -21,7 +21,8 @@ Using your [prepared update data table](Data-preparation-‐-Updating-datasets),
 
 ## Metadata
 
-To update any metadata, click on the relevant section from your dataset overview.
+To update any metadata, click on the relevant section from your dataset tasklist.
+
 If a dataset has stopped being regularly updated, you will need to set the answer to ‘Will this dataset be regularly updated?’ to ‘No’.
 
 ## Publishing
