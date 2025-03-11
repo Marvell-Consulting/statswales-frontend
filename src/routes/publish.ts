@@ -42,7 +42,7 @@ import {
   downloadDataset,
   createNewUpdate,
   updateDatatable,
-  measureName
+  measureName, setupNumberDimension
 } from '../controllers/publish';
 import { DatasetInclude as Include } from '../enums/dataset-include';
 
@@ -103,6 +103,8 @@ publish.post(
   fetchDataset(Include.Data),
   fetchDimensionPreview
 );
+publish.get('/:datasetId/numbers/:dimensionId', fetchDataset(Include.Data), setupNumberDimension);
+publish.post('/:datasetId/numbers/:dimensionId', fetchDataset(Include.Data), upload.none(), setupNumberDimension);
 
 /* lookup table handlers */
 publish.get('/:datasetId/lookup/:dimensionId', fetchDataset(Include.Data), uploadLookupTable);
