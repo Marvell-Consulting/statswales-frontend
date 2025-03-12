@@ -56,6 +56,10 @@ export class ConsumerApi {
       });
   }
 
+  public async ping(): Promise<boolean> {
+    return this.fetch({ url: 'healthcheck' }).then(() => true);
+  }
+
   public async getPublishedDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {
     logger.debug(`Fetching published dataset list...`);
     const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
