@@ -393,13 +393,14 @@ Nodwch a fydd y set ddata yn cael ei diweddaru’n rheolaidd neu beidio \- naill
 
 #### Dynodiad 
 
-Ceir [gwahanol fathau o ddynodiadau ystadegau swyddogol](https://uksa.statisticsauthority.gov.uk/about-the-authority/uk-statistical-system/types-of-official-statistics/).  Mae diffiniadau’r rhain fel a ganlyn:
+Ceir [gwahanol fathau o ddynodiadau ystadegau](https://uksa.statisticsauthority.gov.uk/about-the-authority/uk-statistical-system/types-of-official-statistics/).  Mae diffiniadau’r rhain fel a ganlyn:
 
 | Dynodiad | Yr hyn y mae’n ei olygu  |
 | :---- | :---- |
 | Ystadegau swyddogol  | Ystadegau sy’n cael eu creu gan gyrff y Goron a sefydliadau eraill a restrir mewn Gorchymyn Ystadegau Swyddogol, ar ran llywodraeth y DU neu weinyddiaethau datganoledig |
 | Ystadegau swyddogol achrededig (Ystadegau Gwladol yn flaenorol) | Ystadegau swyddogol y mae’r Swyddfa Rheoleiddio Ystadegau (OSR) wedi eu hadolygu’n annibynnol a chadarnhau eu bod yn cydymffurfio â safonau dibynadwyedd, ansawdd a gwerth |
 | Ystadegau swyddogol mewn datblygiad (ystadegau arbrofol yn flaenorol) | Ystadegau swyddogol sy’n cael eu datblygu;  efallai eu bod yn ystadegau newydd neu sy’n bodoli eisoes, a byddant yn cael eu profi gyda defnyddwyr, yn unol â safonau dibynadwyedd, ansawdd a gwerth |
+| Gwybodaeth reolaethol | Data gweithredol sy'n cynnig tryloywder am weithgarwch sefydliad |
 | Dim dynodiad | Unrhyw ystadegau eraill  |
 
 #### Pynciau perthnasol 

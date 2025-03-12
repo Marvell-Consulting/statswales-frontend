@@ -390,14 +390,15 @@ Indicate whether the dataset will be regularly updated or not - either because i
 
 #### Designation
 
-There are [different types of official statistics designations](https://uksa.statisticsauthority.gov.uk/about-the-authority/uk-statistical-system/types-of-official-statistics/). The definition of each of these are:
+There are [different types of statistics designations](https://uksa.statisticsauthority.gov.uk/about-the-authority/uk-statistical-system/types-of-official-statistics/). The definition of each of these are:
 
 | Designation                                                           | What it means                                                                                                                                                                                  |
 | :-------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Official statistics                                                   | Statistics produced by Crown bodies and other organisations listed within an Official Statistics Order, on behalf of the UK government or devolved administrations                             |
 | Accredited official statistics (formerly National Statistics)         | Official statistics that the Office for Statistics Regulation (OSR) has independently reviewed and confirmed comply with the standards of trustworthiness, quality and value                   |
 | Official statistics in development (formerly experimental statistics) | Official statistics that are undergoing a development; they may be new or existing statistics, and will be tested with users, in line with the standards of trustworthiness, quality and value |
-| No designation                                                        | Any other statistics                                                                                                                                                                           |
+| Management information                                                | Operational data that provides transparency about an organisation’s activity |
+| No designation                                                        | Any other statistics |
 
 #### Relevant topics
 

@@ -150,6 +150,7 @@
         "official": "Ystadegau swyddogol",
         "accredited": "Ystadegau swyddogol achrededig",
         "in_development": "Ystadegau swyddogol sy'n cael eu datblygu",
+        "management": "Gwybodaeth reolaethol",
         "none": "Dim dynodiad"
       },
       "related_reports": "Adroddiadau cysylltiedig"
@@ -627,6 +628,9 @@
             },
             "in_development": {
               "label": "Ystadegau swyddogol sy'n cael eu datblygu"
+            },
+            "management": {
+              "label": "Gwybodaeth reolaethol"
             },
             "none": {
               "label": "Dim dynodiad"
