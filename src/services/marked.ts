@@ -162,6 +162,8 @@ interface TreeNode {
 function createNestedList(document: Document, treeData: TreeNode[]) {
   const ul = document.createElement('ul');
 
+  ul.className = 'govuk-list govuk-list--bullet govuk-!-margin-bottom-0';
+
   for (const node of treeData) {
     const li = document.createElement('li');
     const anchor = node.text.replaceAll('.', '').replaceAll(' ', '-').toLowerCase();

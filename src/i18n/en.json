@@ -4,7 +4,7 @@
     "external_tag": "<span class=\"govuk-tag govuk-tag--orange govuk-phase-banner__content__tag\">External Page</span>",
     "yes": "Yes",
     "no": "No",
-    "toc": "Table of contents",
+    "toc": "Contents",
     "buttons": {
         "continue": "Continue",
         "back": "Back",
@@ -153,6 +153,7 @@
                 "official": "Official statistics",
                 "accredited": "Accredited official statistics",
                 "in_development": "Official statistics in development",
+                "management": "Management information",
                 "none": "No designation"
             },
             "related_reports": "Related reports"
@@ -696,6 +697,9 @@
                         },
                         "in_development": {
                             "label": "Official statistics in development"
+                        },
+                        "management": {
+                            "label": "Management information"
                         },
                         "none": {
                             "label": "No designation"
