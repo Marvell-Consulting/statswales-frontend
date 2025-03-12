@@ -42,7 +42,8 @@ import {
   downloadDataset,
   createNewUpdate,
   updateDatatable,
-  measureName, setupNumberDimension
+  measureName,
+  setupNumberDimension
 } from '../controllers/publish';
 import { DatasetInclude as Include } from '../enums/dataset-include';
 

@@ -682,7 +682,11 @@ export const lookupReview = async (req: Request, res: Response, next: NextFuncti
         case 'goback':
           try {
             await req.pubapi.resetDimension(dataset.id, dimension.id);
-            res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/`, req.language));
+            if (dimension.type === DimensionType.LookupTable) {
+              res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/`, req.language));
+            } else {
+              res.redirect(req.buildUrl(`/publish/${dataset.id}/dimension-data-chooser/${dimension.id}`, req.language));
+            }
           } catch (err) {
             const error = err as ApiException;
             logger.error(`Something went wrong trying to reset the dimension with the following error: ${err}`);
@@ -741,7 +745,7 @@ export const setupNumberDimension = async (req: Request, res: Response, next: Ne
             {
               field: 'numberTypeInteger',
               message: {
-                key: 'errors.number_type.required'
+                key: 'errors.dimension.number_type_required'
               }
             }
           ],
@@ -767,8 +771,8 @@ export const setupNumberDimension = async (req: Request, res: Response, next: Ne
           res.status(400);
           res.render('publish/number-match-failure', {
             ...failurePreview,
-            dimension,
-          })
+            dimension
+          });
         } else {
           res.status(500);
           res.render('publish/number-chooser', {
@@ -781,7 +785,7 @@ export const setupNumberDimension = async (req: Request, res: Response, next: Ne
                 }
               }
             ]
-          })
+          });
         }
       }
       return;
