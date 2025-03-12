@@ -11,7 +11,6 @@ import { parse } from 'csv-parse';
 import {
   collectionValidator,
   dayValidator,
-  summaryValidator,
   designationValidator,
   frequencyUnitValidator,
   frequencyValueValidator,
@@ -27,6 +26,7 @@ import {
   qualityValidator,
   roundingAppliedValidator,
   roundingDescriptionValidator,
+  summaryValidator,
   teamIdValidator,
   titleValidator,
   topicIdValidator,
@@ -60,7 +60,7 @@ import { DimensionMetadataDTO } from '../dtos/dimension-metadata';
 import { YearType } from '../enums/year-type';
 import { addEditLinks } from '../utils/add-edit-links';
 import { TranslationDTO } from '../dtos/translations';
-import { getPublishingStatus, getDatasetStatus } from '../utils/dataset-status';
+import { getDatasetStatus, getPublishingStatus } from '../utils/dataset-status';
 import { getDatasetPreview } from '../utils/dataset-preview';
 import { FileFormat } from '../enums/file-format';
 import { getDownloadHeaders } from '../utils/download-headers';
@@ -69,6 +69,7 @@ import { ProviderDTO } from '../dtos/provider';
 import { Locale } from '../enums/locale';
 import { getLatestRevision } from '../utils/revision';
 import { DatasetInclude } from '../enums/dataset-include';
+import { NumberType } from '../enums/number-type';
 
 export const start = (req: Request, res: Response) => {
   req.session.errors = undefined;
@@ -731,8 +732,59 @@ export const setupNumberDimension = async (req: Request, res: Response, next: Ne
     const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
 
     if (req.method === 'POST') {
-      let dimensionPatch: DimensionPatchDTO;
-
+      if (!req.body.numberType) {
+        logger.error('No number type selected');
+        res.status(400);
+        res.render('publish/number-chooser', {
+          ...dataPreview,
+          errors: [
+            {
+              field: 'numberTypeInteger',
+              message: {
+                key: 'errors.number_type.required'
+              }
+            }
+          ],
+          dimension
+        });
+        return;
+      }
+      const dimensionPatch: DimensionPatchDTO = {
+        dimension_id: dimension.id,
+        dimension_type: DimensionType.Numeric,
+        number_format: req.body.numberType as NumberType,
+        decimal_places: (req.body.numberType as NumberType) === NumberType.Decimal ? req.body.decimalPlaces : 0
+      };
+      try {
+        await req.pubapi.patchDimension(res.locals.dataset.id, dimension.id, dimensionPatch);
+        res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/review`, req.language));
+      } catch (error) {
+        const errorObj = error as ApiException;
+        logger.error(`Error is: ${JSON.stringify(errorObj, null, 2)}`);
+        if (errorObj.status === 400) {
+          logger.error(error, 'Failed to setup number dimension.');
+          const failurePreview = JSON.parse(errorObj.body as string) as ViewErrDTO;
+          res.status(400);
+          res.render('publish/number-match-failure', {
+            ...failurePreview,
+            dimension,
+          })
+        } else {
+          res.status(500);
+          res.render('publish/number-chooser', {
+            ...dataPreview,
+            errors: [
+              {
+                field: 'unknown',
+                message: {
+                  key: 'errors.csv.unknown'
+                }
+              }
+            ]
+          })
+        }
+      }
+      return;
     }
 
     const errors = req.session.errors;

@@ -1,5 +1,6 @@
 import { DimensionType } from '../enums/dimension-type';
 import { YearType } from '../enums/year-type';
+import { NumberType } from '../enums/number-type';
 
 export interface DimensionPatchDTO {
   dimension_id: string;
@@ -13,4 +14,6 @@ export interface DimensionPatchDTO {
   month_format?: string;
   date_format?: string;
   fifth_quarter?: boolean;
+  number_format?: NumberType;
+  decimal_places?: number;
 }
