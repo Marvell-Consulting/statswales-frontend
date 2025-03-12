@@ -1,20 +1,35 @@
-import { Router, Request, Response, NextFunction } from 'express';
-
-import { PublisherApi } from '../services/publisher-api';
-import { Locale } from '../enums/locale';
-import { logger } from '../utils/logger';
+import { Router, Request, Response } from 'express';
 
 export const healthcheck = Router();
 
-healthcheck.get('/', async (req: Request, res: Response, next: NextFunction) => {
-  const lang = req.language as Locale;
+healthcheck.get('/', async (req: Request, res: Response) => {
   let backend = false;
-  logger.info(`Healthcheck requested in ${lang}`);
 
   try {
-    backend = await new PublisherApi(lang).ping();
-  } catch (err) {
-    next(err);
+    backend = await req.conapi.ping();
+  } catch (_err) {
+    // do nothing
   }
+
   res.json({ status: 200, lang: req.language, services: { backend } });
 });
+
+const stillAlive = async (req: Request, res: Response) => {
+  let backend = false;
+
+  try {
+    backend = await req.conapi.ping();
+    if (backend === false) {
+      throw new Error('Backend unreachable');
+    }
+  } catch (_err) {
+    res.status(500);
+    res.json({ status: 500, error: 'Backend unreachable' });
+    return;
+  }
+
+  res.json({ status: 200, lang: req.language, services: { backend } });
+};
+
+healthcheck.get('/ready', stillAlive);
+healthcheck.get('/live', stillAlive);
