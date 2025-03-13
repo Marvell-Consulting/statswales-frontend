@@ -218,7 +218,7 @@
                 "date": "Dates",
                 "ethnicity": "Ethnicity",
                 "geography": "Geography",
-                "number": "Number",
+                "number": "Numbers",
                 "religion": "Religion",
                 "sex_gender": "Sex and gender",
                 "text": "Plain text",
@@ -238,11 +238,27 @@
                 "point-hint": "For example, specific dates when data values were collected"
             }
         },
+      "number_chooser": {
+        "heading": "Set up dimension containing numbers",
+        "review_heading": "Check the dimension",
+        "subheading": "Numbers",
+        "showing": "A sample of {{rows}} of {{total}} rows.",
+        "question": "What kind of numbers does this dimension contain?",
+        "chooser": {
+          "integer": "Whole Numbers",
+          "decimal": "Decimal Numbers",
+          "decimal_places": "How many decimal places should be displayed?"
+        },
+        "confirm": "By continuing, you confirm the dimension is correct."
+      },
         "lookup_table_review": {
             "heading": "Check the lookup table",
+            "dimension_heading": "Check the dimensions contents",
             "showing": "Showing a sample of {{rows}} of {{total}} rows.",
             "confirm": "By continuing, you confirm the lookup table is correct.",
+            "dimension_confirm": "By continuing, you confirm the dimension is displayed correctly.",
             "go_back": "Choose a different lookup table",
+            "choose_different": "Choose a different reference data",
             "change_lookup_table": "Replace lookup table",
             "change_date_format": "Change the date formats",
             "change_dimension_type": "Change what kind of data this dimension contains",
@@ -1061,7 +1077,7 @@
             "name_missing": "Enter what this dimension should be called on the StatsWales website",
             "name_too_long": "Dimension name must be 256 characters or less",
             "naming_failed": "Dimension name could not be added. Try again.",
-            "illegal_characters": "Dimension names can only contain letters and the characters \"£ $ € ¢ % ( ) _ - +\"",
+            "illegal_characters": "Dimension name can only contain letters, numbers and the characters \"£ $ € ¢ % ( ) _ - +\"",
             "dimension_period_type_required": "Select whether the dimension contains periods or specific points",
             "dimension_type_required": "Select the kind of data this dimension contains",
             "year_type_required": "Select the type of year the dimension represents",
@@ -1069,7 +1085,8 @@
             "shortest_period_required": "Select what the shortest periods in the dimension are",
             "quarter_type_required": "Select the format used for quarters in the dimension",
             "quarter_total_type_required": "Select whether a fifth quarter is used to represent yearly totals",
-            "month_type_required": "Select the format used for months in the dimension"
+            "month_type_required": "Select the format used for months in the dimension",
+            "number_type_required": "You need to choose what type of number is in this dimension"
         },
         "upload": {
             "no_csv": "Select a lookup table",

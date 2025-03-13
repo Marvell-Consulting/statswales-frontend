@@ -11,7 +11,6 @@ import { parse } from 'csv-parse';
 import {
   collectionValidator,
   dayValidator,
-  summaryValidator,
   designationValidator,
   frequencyUnitValidator,
   frequencyValueValidator,
@@ -27,6 +26,7 @@ import {
   qualityValidator,
   roundingAppliedValidator,
   roundingDescriptionValidator,
+  summaryValidator,
   teamIdValidator,
   titleValidator,
   topicIdValidator,
@@ -60,7 +60,7 @@ import { DimensionMetadataDTO } from '../dtos/dimension-metadata';
 import { YearType } from '../enums/year-type';
 import { addEditLinks } from '../utils/add-edit-links';
 import { TranslationDTO } from '../dtos/translations';
-import { getPublishingStatus, getDatasetStatus } from '../utils/dataset-status';
+import { getDatasetStatus, getPublishingStatus } from '../utils/dataset-status';
 import { getDatasetPreview } from '../utils/dataset-preview';
 import { FileFormat } from '../enums/file-format';
 import { getDownloadHeaders } from '../utils/download-headers';
@@ -69,6 +69,7 @@ import { ProviderDTO } from '../dtos/provider';
 import { Locale } from '../enums/locale';
 import { getLatestRevision } from '../utils/revision';
 import { DatasetInclude } from '../enums/dataset-include';
+import { NumberType } from '../enums/number-type';
 
 export const start = (req: Request, res: Response) => {
   req.session.errors = undefined;
@@ -78,7 +79,7 @@ export const start = (req: Request, res: Response) => {
   res.render('publish/start');
 };
 
-export const dimensionColumnNameRegex = /^[a-zA-ZÀ-ž()\-_ £¢€$%+]+$/;
+export const dimensionColumnNameRegex = /^[a-zA-ZÀ-ž0-9()\-_ £¢€$%+]+$/;
 
 export const provideTitle = async (req: Request, res: Response) => {
   let errors: ViewError[] = [];
@@ -681,7 +682,11 @@ export const lookupReview = async (req: Request, res: Response, next: NextFuncti
         case 'goback':
           try {
             await req.pubapi.resetDimension(dataset.id, dimension.id);
-            res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/`, req.language));
+            if (dimension.type === DimensionType.LookupTable) {
+              res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/`, req.language));
+            } else {
+              res.redirect(req.buildUrl(`/publish/${dataset.id}/dimension-data-chooser/${dimension.id}`, req.language));
+            }
           } catch (err) {
             const error = err as ApiException;
             logger.error(`Something went wrong trying to reset the dimension with the following error: ${err}`);
@@ -716,6 +721,100 @@ export const lookupReview = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
+export const setupNumberDimension = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const dataset = singleLangDataset(res.locals.dataset, req.language);
+    const dimension = singleLangDataset(res.locals.dataset, req.language).dimensions?.find(
+      (dim) => dim.id === req.params.dimensionId
+    );
+    if (!dimension) {
+      logger.error('Failed to find dimension in dataset');
+      next(new NotFoundException());
+      return;
+    }
+
+    const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
+
+    if (req.method === 'POST') {
+      if (!req.body.numberType) {
+        logger.error('No number type selected');
+        res.status(400);
+        res.render('publish/number-chooser', {
+          ...dataPreview,
+          errors: [
+            {
+              field: 'numberTypeInteger',
+              message: {
+                key: 'errors.dimension.number_type_required'
+              }
+            }
+          ],
+          dimension
+        });
+        return;
+      }
+      const dimensionPatch: DimensionPatchDTO = {
+        dimension_id: dimension.id,
+        dimension_type: DimensionType.Numeric,
+        number_format: req.body.numberType as NumberType,
+        decimal_places: (req.body.numberType as NumberType) === NumberType.Decimal ? req.body.decimalPlaces : 0
+      };
+      try {
+        await req.pubapi.patchDimension(res.locals.dataset.id, dimension.id, dimensionPatch);
+        res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/review`, req.language));
+      } catch (error) {
+        const errorObj = error as ApiException;
+        logger.error(`Error is: ${JSON.stringify(errorObj, null, 2)}`);
+        if (errorObj.status === 400) {
+          logger.error(error, 'Failed to setup number dimension.');
+          const failurePreview = JSON.parse(errorObj.body as string) as ViewErrDTO;
+          res.status(400);
+          res.render('publish/number-match-failure', {
+            ...failurePreview,
+            dimension
+          });
+        } else {
+          res.status(500);
+          res.render('publish/number-chooser', {
+            ...dataPreview,
+            errors: [
+              {
+                field: 'unknown',
+                message: {
+                  key: 'errors.csv.unknown'
+                }
+              }
+            ]
+          });
+        }
+      }
+      return;
+    }
+
+    const errors = req.session.errors;
+    if (errors) {
+      req.session.errors = undefined;
+      req.session.save();
+      res.status(500);
+      res.render('publish/number-chooser', { ...dataPreview, dimension, errors });
+      return;
+    }
+
+    if (dimension && dimension.extractor && req.path.indexOf('change') === -1) {
+      res.render('publish/number-chooser', { ...dataPreview, dimension });
+    } else {
+      res.render('publish/number-chooser', {
+        ...dataPreview,
+        dimension,
+        showCancelButton: Boolean(req.path.indexOf('change') > -1)
+      });
+    }
+  } catch (err) {
+    logger.error('Failed to get dimension preview', err);
+    next(new NotFoundException());
+  }
+};
+
 export const fetchDimensionPreview = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
@@ -742,6 +841,9 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
           } else {
             res.redirect(req.buildUrl(`/publish/${dataset.id}/dates/${dimension.id}`, req.language));
           }
+          return;
+        case 'Number':
+          res.redirect(req.buildUrl(`/publish/${dataset.id}/numbers/${dimension.id}`, req.language));
           return;
         case 'Text':
           dimensionPatch = {
