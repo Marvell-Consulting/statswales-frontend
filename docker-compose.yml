@@ -15,6 +15,7 @@ services:
 
   backend:
     image: ghcr.io/marvell-consulting/statswales-backend:latest
+    pull_policy: always
     ports:
       - "3001:3001"
     depends_on:
@@ -22,4 +23,5 @@ services:
     environment:
       APP_ENV: 'ci'
       LOG_LEVEL: 'debug'
-      TEST_DB_PORT: 3002
+      TEST_DB_HOST: 'db'
+      TEST_DB_PORT: 5432

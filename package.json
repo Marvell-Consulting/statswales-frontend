@@ -21,7 +21,8 @@
     "predev": "bash -c 'f() { if [ $(command -v podman) ]; then podman compose up -d redis; else docker compose up -d redis; fi }; f'",
     "dev": "nodemon --watch src -e ts,ejs,json,scss --exec npm run start",
     "prelocal": "bash -c 'f() { if [ $(command -v podman) ]; then podman compose up -d db backend; else docker compose up -d db backend; fi }; f'",
-    "local": "nodemon --watch src -e ts,ejs,json,scss --exec npm run start",
+    "local": "trap 'exit 0' SIGINT; nodemon --watch src -e ts,ejs,json,scss --exec npm run start",
+    "postlocal": "bash -c 'f() { if [ $(command -v podman) ]; then podman compose stop db backend; else docker compose stop db backend; fi }; f'",
     "start": "npm run build && node dist/server.js | pino-colada",
     "start:container": "node dist/server.js"
   },
