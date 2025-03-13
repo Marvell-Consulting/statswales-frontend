@@ -75,7 +75,7 @@ Y nod yw ychwanegu mwy o ddata cyfeirio safonol i’r system yn y dyfodol.  Bydd
 - safoni disgrifiadau Cymraeg a Saesneg   
 - gwella defnyddioldeb i ddefnyddwyr data 
 
-Ar gyfer unrhyw fath dimensiwn arall, dylech [baratoi eich tabl am-edrych eich hun](#guidance-tablau-am-edrych).
+Ar gyfer unrhyw fath dimensiwn arall, dylech [baratoi eich tabl am-edrych eich hun](#guidance-tablau-am-edrych), gydag eithriadau posibl ar gyfer rhai [dimensiynau sy&#39;n cynnwys testun neu rifau](#guidance-dimensiynau-sy'n-cynnwys-testun-neu-rifau-lle-nad-oes-gofyn-cael-tabl-am-edrych).
 
 ### Fformatio dyddiadau 
 
@@ -213,6 +213,16 @@ Dylai disgrifiadau o’r holl werthoedd dimensiwn fod yn:
 #### Nodiadau tabl am-edrych
 
 Gellir darparu nodiadau tabl am-edrych, ond **nid ydynt yn cael eu dangos yn yr hyn y mae’r defnyddiwr yn ei weld ar hyn o bryd** yn SW3.  Os yw nodiadau yn cynnwys gwybodaeth bwysig, dylech sicrhau bod y wybodaeth hon yn cael ei darparu yn yr [adran metadata](#guidance-metadata) mwyaf priodol hefyd.
+
+### Dimensiynau sy'n cynnwys testun neu rifau lle nad oes gofyn cael tabl am-edrych
+
+Nid oes gofyn cael tabl am-edrych os gellir defnyddio'r gwerthoedd dimensiwn a ddefnyddir yn y tabl data fel disgrifiadau yn uniongyrchol.  Mae hyn yn wir dim ond:
+
+- os yw gwerthoedd dimensiwn yn cynnwys llythrennau, rhifau neu symbolau sydd yr un fath yn Gymraeg ac yn Saesneg
+- os nad oes angen nodi trefn ddidoli
+- os nad oes angen nodiadau
+
+Er enghraifft, yn ein henghraifft treth gyngor, os mai dim ond 'A', 'B' ac ati yr oedd angen i'r disgrifiadau fod, yn hytrach na 'Band treth A', 'Band treth B' ac ati.  Neu fel enghraifft arall, os defnyddir yr oedran mewn blynyddoedd fel gwerthoedd dimensiwn, megis '18', '19' ac ati.
 
 ### Enwau dimensiynau 
 

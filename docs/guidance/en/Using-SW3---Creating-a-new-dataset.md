@@ -103,10 +103,6 @@ The [list of teams and associated emails [link TBD](#)] is centrally managed. If
 - email ... at ... [process TBD]
 - provide the team and its email address in both English and Welsh
 
-#### Dataset ID
-
-Once you select a team, this will generate the ID for your dataset. The ID consists of a unique combination of the 4 letter code for your team and 4 numbers. For example, TRAN2001 for a ‘Transport’ dataset.
-
 ### When the dataset should be published
 
 Indicate what date and time the dataset should be published. Consider how long the dataset will take to be approved once you've submitted it. Set the publishing date far enough in the future to allow for this.

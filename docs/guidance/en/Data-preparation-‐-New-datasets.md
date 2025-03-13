@@ -74,7 +74,7 @@ The aim is to add more standardised reference data to the system in the future. 
 - standardise English and Welsh descriptions
 - improve usability for data consumers
 
-For any other dimension type, you should [prepare your own lookup table](#guidance-lookup-tables).
+For any other dimension type, you should [prepare your own lookup table](#guidance-lookup-tables), with possible exceptions for some [dimensions containing text or numbers](#guidance-dimensions-containing-text-or-numbers-where-no-lookup-table-is-required).
 
 ### Date formatting
 
@@ -211,6 +211,15 @@ Descriptions of all dimension values should be:
 #### Lookup table notes
 
 Lookup table notes can be provided, but **are not currently shown in the consumer view** in SW3. If notes contain important information, you should ensure this information is also provided in the most appropriate [metadata section](#guidance-metadata).
+
+### Dimensions containing text or numbers where no lookup table is required
+
+No lookup table is required if the dimension values used in the data table can be used directly as descriptions. This is only the case if: 
+- dimension values consist of letters, numbers or symbols that are the same in English and Welsh
+- a sort order does not need to be stated
+- no notes are needed
+
+For example, in our council tax example if the descriptions only needed to be 'A', 'B' etc, instead of 'Tax band A', 'Tax band B' etc. Or as another example, if age in years was used as dimension values, such as '18', '19' etc.
 
 ### Dimension names
 

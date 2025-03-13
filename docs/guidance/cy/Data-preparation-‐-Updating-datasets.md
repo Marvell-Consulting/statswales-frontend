@@ -13,7 +13,7 @@ Gallwch archwilio’r fformatio a cholofnau’r tabl data a lanlwythwyd yn wreid
 
 ## Ychwanegu data newydd yn unig 
 
-Mae hyn yn golygu ychwanegu gwerthoedd ar gyfer data nad yw yn y set ddata ar hyn o bryd.  Er enghraifft, gwerthoedd data ar gyfer y flwyddyn ddiweddaraf.  Dylai tabl data y diweddariad gynnwys **y gwerthoedd data newydd yr ydych chi’n eu hychwanegu yn unig.**
+Mae hyn yn golygu ychwanegu gwerthoedd ar gyfer data nad yw yn y set ddata ar hyn o bryd.  Er enghraifft, gwerthoedd data ar gyfer y flwyddyn ddiweddaraf.  Dylai tabl data y diweddariad gynnwys **y gwerthoedd data newydd yr ydych chi’n eu hychwanegu yn unig**.
 
 Rhesi enghreifftiol tabl data diweddariad ar gyfer bandiau treth gyngor, gan ychwanegu data newydd ar gyfer 2024/25:
 
@@ -29,7 +29,7 @@ Rhesi enghreifftiol tabl data diweddariad ar gyfer bandiau treth gyngor, gan ych
 
 ## Diwygio data
 
-Mae hyn yn golygu disodli data yn y set ddata bresennol gyda gwerthoedd diwygiedig.  Gallai hyn fod oherwydd yr arferai’r gwerthoedd fod yn rhai dros dro, neu mae angen eu cywiro.  Dylai tabl data y diweddariad gynnwys **y gwerthoedd data yr ydych chi’n eu diwygio yn unig**
+Mae hyn yn golygu disodli data yn y set ddata bresennol gyda gwerthoedd diwygiedig.  Gallai hyn fod oherwydd yr arferai’r gwerthoedd fod yn rhai dros dro, neu mae angen eu cywiro.  Dylai tabl data y diweddariad gynnwys **y gwerthoedd data yr ydych chi’n eu diwygio yn unig**.
 
 Rhesi enghreifftiol tabl data diweddariad ar gyfer bandiau treth gyngor, gan ddiwygio data ar gyfer 2022/23:
 
