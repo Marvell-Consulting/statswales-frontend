@@ -29,7 +29,7 @@ _Please note this example is for demonstration purposes only and is not a genuin
 
 ## Revising data
 
-This means replacing data in the current dataset with revised values. This may be because values used to be provisional, or need correcting. The update data table should contain **only the data values you’re revising**
+This means replacing data in the current dataset with revised values. This may be because values used to be provisional, or need correcting. The update data table should contain **only the data values you’re revising**.
 
 Example rows of update data table for council tax bands, revising data for 2022/23:
 

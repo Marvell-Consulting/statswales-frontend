@@ -13,6 +13,7 @@ O’ch sgrin hafan, cliciwch ‘Creu set ddata newydd’. Gan ddefnyddio eich [d
    * codau nodiadau 
 
 Yna, byddwch yn cael eich tywys i’ch rhestr dasgau ar gyfer eich set ddata. Bydd hon yn rhestru’r holl ddimensiynau a nodoch, ac eithrio codau nodiadau gan bod y rhain wedi cael eu safoni.  
+
 Bydd clicio ar bob dimensiwn yn caniatáu i chi ychwanegu’r data cyfeirio priodol. Ar gyfer pob dimensiwn, bydd angen i chi:
 
 * ddewis pa fath o ddata y mae’r dimensiwn yn ei gynnwys, naill ai:  
@@ -53,6 +54,7 @@ O’r rhestr dasgau ar gyfer eich set ddata, os byddwch yn clicio ar ‘Tabl dat
 * newid yr hyn y mae pob colofn yn y tabl data yn ei gynnwys 
 
 Sylwer, bydd y ddwy weithred hon yn gwaredu’r holl ddata cyfeirio o bob dimensiwn.  
+
 Os byddwch yn clicio ar ddimensiwn, gallwch:
 
 * ddisodli’r tabl am-edrych a lanlwythwyd (pan fo hynny’n berthnasol)   
@@ -103,12 +105,7 @@ Dewiswch eich tîm a’ch sefydliad. Mae gan dimau gyfeiriad e-bost cysylltu pen
 Caiff \[rhestr y timau a’r cyfeiriadau e-bost cysylltiedig [link TBD](#)\] ei rheoli’n ganolog. Os bydd angen i chi ychwanegu tîm i’r rhestr neu newid tîm yn y rhestr, bydd angen i chi:
 
 - anfon e-bost at ... yn ... \[process TBD\]  
-- nodi enw’r tîm a’i gyfeiriad e-bost yn Gymraeg ac yn Saesneg 
-
-#### Cod adnabod set ddata 
-
-Ar ôl i chi ddewis tîm, bydd hyn yn creu’r cod adnabod ar gyfer eich set ddata. Mae’r cod adnabod yn cynnwys cyfuniad unigryw o’r cod 4 llythyren ar gyfer eich tîm a 4 rhif. Er enghraifft.   
-TRAN2001 ar gyfer set ddata ‘Trafnidiaeth’.
+- nodi enw’r tîm a’i gyfeiriad e-bost yn Gymraeg ac yn Saesneg
 
 ### Pryd y dylid cyhoeddi’r set ddata 
 

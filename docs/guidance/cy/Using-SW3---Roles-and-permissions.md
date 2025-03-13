@@ -24,7 +24,7 @@ Gallwch gael mwy nag un rôl o fewn grŵp, a gwahanol rolau ar draws grwpiau.  E
 | Gweld rhestr o’r holl grwpiau ar draws y gwasanaeth | <strong class="govuk-tag govuk-tag--red">Nac oes</strong> | <strong class="govuk-tag govuk-tag--red">Nac oes</strong> | <strong class="govuk-tag govuk-tag--green">Oes</strong> |
 | Creu grwpiau | <strong class="govuk-tag govuk-tag--red">Nac oes</strong> | <strong class="govuk-tag govuk-tag--red">Nac oes</strong> | <strong class="govuk-tag govuk-tag--green">Oes</strong> |
 | Diweddaru grwpiau, er enghraifft newid enw grŵp | <strong class="govuk-tag govuk-tag--red">Nac oes</strong> | <strong class="govuk-tag govuk-tag--red">Nac oes</strong> | <strong class="govuk-tag govuk-tag--green">Oes</strong> |
-| Gwaredu grwpiau | <strong class="govuk-tag govuk-tag--red">Nac oes</strong> | <strong class="govuk-tag govuk-tag--red">Nac oes</strong> | <strong class="govuk-tag govuk-tag--green">Oes</strong> |
+| Gwaredu grwpiau | <strong class="govuk-tag govuk-tag--red">Nac oes</strong> | <strong class="govuk-tag govuk-tag--red">Nac oes</strong> | <strong class="govuk-tag govuk-tag--red">Nac oes</strong> |
 
 ## Setiau data
 

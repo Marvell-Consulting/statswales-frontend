@@ -24,7 +24,7 @@ You can have more than one role within a group, and different roles across group
 | View a list of all groups across the service | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
 | Create groups | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
 | Update groups, for example changing a group's name | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
-| Remove groups | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
+| Remove groups | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> |
 
 ## Datasets
 
