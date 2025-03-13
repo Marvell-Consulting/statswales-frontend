@@ -7,34 +7,34 @@ import { SessionStore } from '../session-store.enum';
 // anything that is not a secret can go in here, get the rest from env
 
 export function getCIConfig(): AppConfig {
-    return defineConfig({
-        env: AppEnv.Ci,
-        supportEmail: 'support@example.com',
-        logger: {
-            level: 'silent'
-        },
-        frontend: {
-            port: 3000,
-            url: 'http://localhost:3000'
-        },
-        backend: {
-            port: 3001,
-            url: 'http://localhost:3001'
-        },
-        rateLimit: {
-            windowMs: -1 // disable rate limiting in CI
-        },
-        session: {
-            store: SessionStore.Memory,
-            secret: 'mysecret',
-            secure: false
-        },
-        auth: {
-            providers: [AuthProvider.EntraId, AuthProvider.Google],
-            jwt: {
-                secret: 'mysecret',
-                cookieDomain: 'http://localhost'
-            }
-        }
-    });
+  return defineConfig({
+    env: AppEnv.Ci,
+    supportEmail: 'support@example.com',
+    logger: {
+      level: 'silent'
+    },
+    frontend: {
+      port: 3000,
+      url: 'http://localhost:3000'
+    },
+    backend: {
+      port: 3001,
+      url: 'http://localhost:3001'
+    },
+    rateLimit: {
+      windowMs: -1 // disable rate limiting in CI
+    },
+    session: {
+      store: SessionStore.Memory,
+      secret: 'mysecret',
+      secure: false
+    },
+    auth: {
+      providers: [AuthProvider.EntraId, AuthProvider.Google],
+      jwt: {
+        secret: 'mysecret',
+        cookieDomain: 'http://localhost'
+      }
+    }
+  });
 }

@@ -7,5 +7,5 @@ import { logger } from './utils/logger';
 const PORT = appConfig().frontend.port;
 
 app.listen(PORT, () => {
-    logger.info(`Server is running on port ${PORT}`);
+  logger.info(`Server is running on port ${PORT}`);
 });
