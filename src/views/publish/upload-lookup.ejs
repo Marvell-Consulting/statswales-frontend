@@ -40,12 +40,6 @@
                                     <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
                                         <%= t('buttons.upload_csv') %>
                                     </button>
-                                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/dimension-data-chooser/${dimension.id}`, i18n.language) %>" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
-                                        <%= t('buttons.cancel') %>
-                                    </a>
-                                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview`, i18n.language) %>" target="_blank" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
-                                        <%= t('buttons.preview') %>
-                                    </a>
                                 </div>
                             </div>
                         </fieldset>

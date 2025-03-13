@@ -47,15 +47,6 @@
                                 <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
                                     <%= t('buttons.continue') %>
                                 </button>
-                                <% if (dimension.type === 'lookup_table') { %>
-                                    <button type="submit" name="confirm" value="goback" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
-                                        <%= t('publish.lookup_table_review.go_back') %>
-                                    </button>
-                                <% } else { %>
-                                    <button type="submit" name="confirm" value="goback" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
-                                        <%= t('publish.lookup_table_review.choose_different') %>
-                                    </button>
-                                <% } %>
                             </div>
                         </fieldset>
                     </form>
