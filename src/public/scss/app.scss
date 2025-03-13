@@ -1,11 +1,7 @@
 @use 'wg';
-@use 'all';
+@use 'autocomplete';
 
 .wg {
-
-  h1, h2, h3, h4, p, ol, ul, a, table, .govuk-header__link, .govuk-task-list__status, .govuk-tag, .govuk-input, .govuk-label, .govuk-button, .govuk-select, dl, .govuk-accordion__section-heading-text, span {
-    font-family: Arial, Helvetica, sans-serif;
-  }
 
   .govuk-header__link:hover {
     border: none;
