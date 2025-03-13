@@ -9,6 +9,7 @@ import { Locale } from '../enums/locale';
 import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
 import { FileFormat } from '../enums/file-format';
+import { AuthProvider } from '../enums/auth-providers';
 
 const config = appConfig();
 
@@ -58,6 +59,12 @@ export class ConsumerApi {
 
   public async ping(): Promise<boolean> {
     return this.fetch({ url: 'healthcheck' }).then(() => true);
+  }
+
+  public async getEnabledAuthProviders(): Promise<AuthProvider[]> {
+    return this.fetch({ url: 'auth/providers' })
+      .then((response) => response.json())
+      .then((body) => body.enabled as unknown as AuthProvider[]);
   }
 
   public async getPublishedDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {

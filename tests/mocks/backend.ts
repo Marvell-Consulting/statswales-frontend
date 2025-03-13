@@ -2,6 +2,7 @@ import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
 
 import { DatasetListItemDTO } from '../../src/dtos/dataset-list-item';
+import { appConfig } from '../../src/config';
 
 import {
   datasets,
@@ -127,5 +128,10 @@ export const mockBackend = setupServer(
 
   http.get('http://example.com:3001/healthcheck', () => {
     return HttpResponse.json({ message: 'success' });
+  }),
+
+  http.get('http://localhost:3001/auth/providers', () => {
+    const enabled = appConfig().auth.providers;
+    return HttpResponse.json({ enabled });
   })
 );

@@ -12,8 +12,15 @@ const config = appConfig();
 const cookieDomain = new URL(config.auth.jwt.cookieDomain).hostname;
 logger.debug(`JWT cookie domain is '${cookieDomain}'`);
 
-auth.get('/login', (req: Request, res: Response) => {
-  const providers = config.auth.providers;
+auth.get('/login', async (req: Request, res: Response) => {
+  let providers;
+
+  try {
+    providers = await req.conapi.getEnabledAuthProviders();
+  } catch (err) {
+    logger.error(err, 'Could not fetch auth providers from backend');
+    providers = config.auth.providers;
+  }
 
   if (req.query.error && req.query.error === 'expired') {
     logger.error(`Authentication token has expired`);
