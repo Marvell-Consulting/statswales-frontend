@@ -43,8 +43,8 @@ $whitepurple: #eed5e3;
     line-height: 24px;
   }
 
-  h1, h2, h3, h4, h5, h6, p, ol, ul, a, table, .govuk-header__link, govuk-task-list__status, .govuk-tag, .govuk-input, .govuk-label, .govuk-button, .govuk-select, dl, .govuk-accordion__section-heading-text, span, .govuk-inset-text {
-    Arial, Helvetica, "Nimbus Sans L", sans-serif;
+  h1, h2, h3, h4, h5, h6, p, ol, ul, a, table, .govuk-header__link, .govuk-task-list__status, .govuk-tag, .govuk-input, .govuk-label, .govuk-button, .govuk-select, dl, .govuk-accordion__section-heading-text, span, .govuk-inset-text {
+    font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif;
   }
 
   ul.li,
@@ -69,7 +69,7 @@ $whitepurple: #eed5e3;
 
   tr {
     color: $black;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 20px;
     border-bottom: 1px solid $lightgrey_semi;
     padding: 15px 10px 15px 0;
@@ -101,16 +101,16 @@ $whitepurple: #eed5e3;
     }
 
     &:focus {
-      border-color: $brightred;
+      border-color: inherit;
       outline: none;
       box-shadow: none;
 
-      &:not(:active):not(:hover) {
-        border-color: $brightred;
-        color: $white;
-        background-color: $brightred;
-        box-shadow: 0 2px 0 #0b0c0c;
-      }
+      // &:not(:active):not(:hover) {
+      //   border-color: inherit;
+      //   color: inherit;
+      //   background-color: inherit;
+      //   box-shadow: none;
+      // }
     }
 
     &:hover, &[disabled]:hover {
@@ -118,7 +118,7 @@ $whitepurple: #eed5e3;
       color: $white;
     }
 
-    &--secondary {
+    .govuk-button--secondary {
       background: $darkgrey;
       color: $white;
       font-size: 20px;
@@ -618,7 +618,7 @@ $whitepurple: #eed5e3;
   }
 
   .govuk-radios__label {
-    padding: 2px 0 0 10px
+    padding: 2px 0 0 10px;
     font-size: 18px;
   }
 
@@ -1043,7 +1043,7 @@ $whitepurple: #eed5e3;
     padding-left: 1.2em;
   }
 
-  .govuk-back-link:link, 
+  .govuk-back-link:link,
   .govuk-back-link:visited {
     color: $blue;
 }
@@ -1271,7 +1271,7 @@ $whitepurple: #eed5e3;
       letter-spacing: -0.04167rem;
       line-height: 38px;
     }
-  
+
     .govuk-heading-l,
     .govuk-fieldset__legend--l {
       color: $black;
@@ -1280,7 +1280,7 @@ $whitepurple: #eed5e3;
       letter-spacing: -0.03333rem;
       line-height: 32px;
     }
-  
+
     .govuk-heading-m {
       color: $black;
       font-size: 24px;
@@ -1288,7 +1288,7 @@ $whitepurple: #eed5e3;
       letter-spacing: -0.025rem;
       line-height: 28px;
     }
-  
+
     .govuk-heading-s,
     .govuk-table__caption--s {
       color: $black;
@@ -1297,7 +1297,7 @@ $whitepurple: #eed5e3;
       letter-spacing: -0.02083rem;
       line-height: 24px;
     }
-  
+
     .govuk-heading-xs {
       color: $black;
       font-size: 18px;
@@ -1305,7 +1305,7 @@ $whitepurple: #eed5e3;
       letter-spacing: -0.01875rem;
       line-height: 22px;
     }
-  
+
     .govuk-heading-xxs {
       color: $black;
       font-size: 14px;
@@ -1593,7 +1593,6 @@ $whitepurple: #eed5e3;
       font-family: inherit;
       font-size: 100%;
       margin: 0;
-      max-width: 100%;
       -webkit-box-sizing: border-box;
       box-sizing: border-box;
       border-radius: 0;
@@ -1613,7 +1612,7 @@ $whitepurple: #eed5e3;
 
     label {
       display: block;
-      margin: 0 0 20px;
+      margin: 0;
     }
 
     .header__components .components__form form .form-item label {
@@ -2255,11 +2254,6 @@ $whitepurple: #eed5e3;
     border-right: 1px solid $midgrey;
   }
 
-  th,
-  td {
-    min-width: 150px;
-  }
-
   @media (min-width: 1020px) {
     .container-fluid {
       max-width: 1000px;
@@ -2332,7 +2326,7 @@ $whitepurple: #eed5e3;
     color: $charcoal;
     background-color: transparent;
     border: 1px solid $midgrey;
-    padding: 10px 20px 10px 35px
+    padding: 10px 20px 10px 35px;
     font-size: 14px;
     margin-bottom: 0px;
   }
@@ -2369,4 +2363,3 @@ $whitepurple: #eed5e3;
 
 
 }
-
