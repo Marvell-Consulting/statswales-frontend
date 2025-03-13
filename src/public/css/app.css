@@ -6,43 +6,7 @@
   /*! CSS Used from: https://www.gov.wales/sites/default/files/css/css_lTn9Sj73KcbXUKHef4_YMuiuhY8GIlMQA2hwhzm00os.css?delta=0&language=en&theme=govwales&include=eJxtjUsOwyAMRC9E4R7d9gCRCS7QOjGyIVFu3whF6UfdjD3PM3LkZQVCHTSBYBhG5mfGfcxVmNy3NfFM59rpPUcnsOBsuh67blpxch4Uz4qLxB5oVP1Fjw9SwRNeb_8fVWbyIBet234yBQSiQEnqgrQCZN_Etrk0T1kTBrNkXNV1tROHRvgCRbBhfA ; media=all */
   /*! CSS Used from: https://www.gov.wales/sites/default/files/css/css_ue5WElbp3ni7qv6hfj7Vy59C7mTeU7Vq4aryglWjd7w.css?delta=1&language=en&theme=govwales&include=eJxtjUsOwyAMRC9E4R7d9gCRCS7QOjGyIVFu3whF6UfdjD3PM3LkZQVCHTSBYBhG5mfGfcxVmNy3NfFM59rpPUcnsOBsuh67blpxch4Uz4qLxB5oVP1Fjw9SwRNeb_8fVWbyIBet234yBQSiQEnqgrQCZN_Etrk0T1kTBrNkXNV1tROHRvgCRbBhfA ; media=all */
 }
-.wg h1 {
-  font-size: 48px;
-  font-weight: bold;
-  letter-spacing: -0.0542rem;
-  line-height: 52px;
-}
-.wg h2 {
-  font-size: 36px;
-  font-weight: bold;
-  letter-spacing: -0.0375rem;
-  line-height: 40px;
-}
-.wg h3 {
-  font-size: 28px;
-  font-weight: bold;
-  letter-spacing: -0.0292rem;
-  line-height: 32px;
-}
-.wg h4 {
-  font-size: 24px;
-  font-weight: bold;
-  letter-spacing: -0.025rem;
-  line-height: 28px;
-}
-.wg h5 {
-  font-size: 22px;
-  font-weight: bold;
-  letter-spacing: -0.01875rem;
-  line-height: 26px;
-}
-.wg h6,
-.wg .govuk-label--s {
-  font-size: 18px;
-  font-weight: bold;
-  letter-spacing: -0.01458rem;
-  line-height: 24px;
-}
+
 .wg p {
   font-size: 18px;
   line-height: 24px;
@@ -60,7 +24,7 @@
 }
 .wg tr {
   color: #1f1f1f;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 20px;
   border-bottom: 1px solid #e5e5e5;
   padding: 15px 10px 15px 0;
@@ -88,15 +52,15 @@
   color: #ffffff;
 }
 .wg .govuk-button:focus {
-  border-color: #d81f1f;
+  border-color: inherit;
   outline: none;
   box-shadow: none;
 }
 .wg .govuk-button:focus:not(:active):not(:hover) {
-  border-color: #d81f1f;
-  color: #ffffff;
-  background-color: #d81f1f;
-  box-shadow: 0 2px 0 #0b0c0c;
+  border-color: inherit;
+  color: inherit;
+  background-color: inherit;
+  box-shadow: none;
 }
 .wg .govuk-button:hover, .wg .govuk-button[disabled]:hover {
   background: #d81f1f;
@@ -104,8 +68,8 @@
 }
 .wg .govuk-button--secondary {
   background: #666666;
-  color: #ffffff;
-  font-size: 20px;
+  color: #ffffff !important;
+  font-size: 20px !important;
   font-weight: bold;
   padding: 15px 20px 15px 20px;
   margin-bottom: 15px;
@@ -1007,20 +971,7 @@
 .wg dt {
   font-size: 18px;
 }
-.wg .govuk-heading-l,
-.wg .govuk-fieldset__legend--l {
-  font-size: 48px;
-}
-.wg .govuk-heading-m {
-  font-size: 36px;
-}
-.wg .govuk-heading-s,
-.wg .govuk-table__caption--s {
-  font-size: 28px;
-}
-.wg .govuk-heading-xs {
-  font-size: 24px;
-}
+
 .wg .checkbox-level-2 {
   margin-left: 50px;
 }
@@ -1253,7 +1204,7 @@
     font-family: inherit;
     font-size: 100%;
     margin: 0;
-    max-width: 100%;
+    //max-width: 100%;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     border-radius: 0;
@@ -1270,7 +1221,7 @@
   }
   .wg label {
     display: block;
-    margin: 0 0 20px;
+    margin: 0;
   }
   .wg .header__components .components__form form .form-item label {
     border: 0;
@@ -1813,10 +1764,7 @@
 .wg .table-border {
   border-right: 1px solid #999999;
 }
-.wg th,
-.wg td {
-  min-width: 150px;
-}
+
 @media (min-width: 1020px) {
   .wg .container-fluid {
     max-width: 1000px;
@@ -2019,9 +1967,6 @@
   z-index: 0;
 }
 
-.wg h1, .wg h2, .wg h3, .wg h4, .wg p, .wg ol, .wg ul, .wg a, .wg table, .wg .govuk-header__link, .wg .govuk-task-list__status, .wg .govuk-tag, .wg .govuk-input, .wg .govuk-label, .wg .govuk-button, .wg .govuk-select, .wg dl, .wg .govuk-accordion__section-heading-text, .wg span {
-  font-family: Arial, Helvetica, sans-serif;
-}
 .wg .govuk-header__link:hover {
   border: none;
 }
