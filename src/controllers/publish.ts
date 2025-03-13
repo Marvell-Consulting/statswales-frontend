@@ -1542,6 +1542,7 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
       return;
     }
     const revisit = Boolean(req.path.indexOf('change') > -1);
+    const columnName = revisit ? dimension.metadata?.name : dimension.factTableColumn;
     const dimensionName = revisit ? dimension.metadata?.name : '';
     if (req.method === 'POST') {
       // TODO Replace validation if statements with an Express Validator
@@ -1551,7 +1552,7 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
         logger.error('User failed to submit a name');
         res.status(400);
         res.render('publish/dimension-name', {
-          ...{ updatedName, id: dimension.id, dimensionType: dimension.type },
+          ...{ columnName, updatedName, id: dimension.id, dimensionType: dimension.type },
           errors: [
             {
               field: 'name',
@@ -1568,7 +1569,7 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
         logger.error(`Dimension name is too long... length: ${req.body.name.length}`);
         res.status(400);
         res.render('publish/dimension-name', {
-          ...{ updatedName, id: dimension.id, dimensionType: dimension.type },
+          ...{ columnName, updatedName, id: dimension.id, dimensionType: dimension.type },
           errors: [
             {
               field: 'name',
@@ -1584,7 +1585,7 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
         logger.error(`Dimension name contains characters which aren't allowed.`);
         res.status(400);
         res.render('publish/dimension-name', {
-          ...{ updatedName, id: dimension.id, dimensionType: dimension.type },
+          ...{ columnName, updatedName, id: dimension.id, dimensionType: dimension.type },
           errors: [
             {
               field: 'name',
@@ -1606,7 +1607,7 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
         logger.error(`Something went wrong trying to name the dimension with the following error: ${err}`);
         res.status(500);
         res.render('publish/dimension-name', {
-          ...{ dimensionName, id: dimension.id, dimensionType: dimension.type },
+          ...{ columnName, dimensionName, id: dimension.id, dimensionType: dimension.type },
           errors: [
             {
               field: '',
@@ -1622,7 +1623,7 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
     }
 
     res.render('publish/dimension-name', {
-      ...{ dimensionName, id: dimension.id, dimensionType: dimension.type },
+      ...{ columnName, dimensionName, id: dimension.id, dimensionType: dimension.type },
       revisit,
       showCancelButton: Boolean(req.path.indexOf('change') > -1)
     });
