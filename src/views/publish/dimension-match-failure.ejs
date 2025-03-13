@@ -24,8 +24,9 @@
             </ul>
         <% } else { %>
             <p class="govuk-body"><%= t('publish.dimension_match_failure.ref_information', {failureCount: locals.extension.totalNonMatching}) %></p>
+            <p class="govuk-body"><%= t('publish.dimension_match_failure.you_should_check_ref') %></p>
             <ul class="govuk-list govuk-list--bullet">
-                <li class="govuk-list--bullet"><%= t('publish.dimension_match_failure.formatting') %></li>
+                <li class="govuk-list--bullet"><%= t('publish.dimension_match_failure.ref_formatting') %></li>
                 <li class="govuk-list--bullet"><%= t('publish.dimension_match_failure.ref_choices') %></li>
             </ul>
         <% } %>
