@@ -104,13 +104,6 @@ $whitepurple: #eed5e3;
       border-color: inherit;
       outline: none;
       box-shadow: none;
-
-      // &:not(:active):not(:hover) {
-      //   border-color: inherit;
-      //   color: inherit;
-      //   background-color: inherit;
-      //   box-shadow: none;
-      // }
     }
 
     &:hover, &[disabled]:hover {
@@ -118,8 +111,8 @@ $whitepurple: #eed5e3;
       color: $white;
     }
 
-    .govuk-button--secondary {
-      background: $darkgrey !important;
+    &.govuk-button--secondary {
+      background: $darkgrey;
       color: $white;
       font-size: 20px;
       font-weight: bold;
@@ -130,11 +123,11 @@ $whitepurple: #eed5e3;
       border-color: rgba(0, 0, 0, 0);
 
       &:focus {
-        background: $midgrey !important;
+        background: $midgrey;
       }
 
       &:hover {
-        background: $charcoal !important;
+        background: $charcoal;
       }
     }
   }
