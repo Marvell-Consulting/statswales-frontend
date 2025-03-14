@@ -25,3 +25,6 @@ services:
       LOG_LEVEL: 'debug'
       TEST_DB_HOST: 'db'
       TEST_DB_PORT: 5432
+    post_start:
+      - command: npm run seed:required
+      - command: npm run seed:ci
