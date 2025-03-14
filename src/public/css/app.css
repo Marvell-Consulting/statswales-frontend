@@ -41,7 +41,7 @@
 }
 .wg th {
   color: #1f1f1f;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   border-bottom: 2px solid #e5e5e5;
 }
@@ -70,7 +70,7 @@
   background: #d81f1f;
   color: #ffffff;
 }
-.wg .govuk-button .govuk-button--secondary {
+.wg .govuk-button.govuk-button--secondary {
   background: #666666;
   color: #ffffff;
   font-size: 20px;
@@ -81,10 +81,10 @@
   outline: #999999;
   border-color: rgba(0, 0, 0, 0);
 }
-.wg .govuk-button .govuk-button--secondary:focus {
+.wg .govuk-button.govuk-button--secondary:focus {
   background: #999999;
 }
-.wg .govuk-button .govuk-button--secondary:hover {
+.wg .govuk-button.govuk-button--secondary:hover {
   background: #323232;
 }
 .wg .govuk-button-lang {
@@ -450,7 +450,7 @@
   border-left: 10px solid #019e1e;
   display: block;
   font-size: 18px;
-  padding: 10px 0px;
+  padding: 10px 0px 15px 0px;
 }
 .wg h3.govuk-notification-banner__heading {
   font-size: 18px;
@@ -464,6 +464,9 @@
   color: #1f1f1f;
   font-size: 28px;
 }
+.wg .govuk-notification-banner:focus {
+  outline: none;
+}
 .wg .govuk-error-summary {
   background-color: #ffe4e5;
   border-left: 10px solid #aa1111;
@@ -472,12 +475,26 @@
   border-bottom: none;
   padding: 25px 20px 25px 20px;
 }
+.wg .govuk-error-summary:focus {
+  outline: none;
+}
 .wg h2.govuk-error-summary__title {
   font-size: 24px;
 }
 .wg ul.govuk-list.govuk-error-summary__list li a {
   color: black;
   font-weight: normal;
+}
+.wg .govuk-form-group--error {
+  padding-left: 0;
+  border-left: none;
+}
+.wg .govuk-error-message {
+  font-weight: normal;
+  color: #1f1f1f;
+  border-left: solid #aa1111 3px;
+  padding: 25px 20px;
+  background-color: #ffe4e5;
 }
 .wg .header-select {
   vertical-align: middle;
@@ -546,6 +563,8 @@
   background-color: #ffffff;
   margin-top: -40px;
   margin-bottom: 40px;
+  margin-left: -100%;
+  margin-right: -100%;
 }
 .wg .return-link {
   margin-top: 15px;
@@ -605,6 +624,7 @@
 .wg .govuk-checkboxes__label {
   max-width: calc(100% - 30px);
   padding: 0px;
+  margin-top: 2px;
 }
 .wg .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before {
   background-color: #ffffff;

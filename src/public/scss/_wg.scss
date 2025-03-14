@@ -77,7 +77,7 @@ $whitepurple: #eed5e3;
 
   th {
     color: $black;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     border-bottom: 2px solid $lightgrey_semi;
   }
@@ -104,13 +104,6 @@ $whitepurple: #eed5e3;
       border-color: inherit;
       outline: none;
       box-shadow: none;
-
-      // &:not(:active):not(:hover) {
-      //   border-color: inherit;
-      //   color: inherit;
-      //   background-color: inherit;
-      //   box-shadow: none;
-      // }
     }
 
     &:hover, &[disabled]:hover {
@@ -118,7 +111,7 @@ $whitepurple: #eed5e3;
       color: $white;
     }
 
-    .govuk-button--secondary {
+    &.govuk-button--secondary {
       background: $darkgrey;
       color: $white;
       font-size: 20px;
@@ -568,7 +561,7 @@ $whitepurple: #eed5e3;
     border-left: 10px solid $green;
     display: block;
     font-size: 18px;
-    padding: 10px 0px;
+    padding: 10px 0px 15px 0px;
   }
 
   h3.govuk-notification-banner__heading {
@@ -586,6 +579,10 @@ $whitepurple: #eed5e3;
     font-size: 28px;
   }
 
+  .govuk-notification-banner:focus {
+    outline: none;
+  }
+
   .govuk-error-summary {
     background-color: $whitered;
     border-left: 10px solid $red;
@@ -593,6 +590,10 @@ $whitepurple: #eed5e3;
     border-top: none;
     border-bottom: none;
     padding: 25px 20px 25px 20px;
+  }
+
+  .govuk-error-summary:focus {
+    outline: none;
   }
 
   h2.govuk-error-summary__title {
@@ -603,6 +604,19 @@ $whitepurple: #eed5e3;
     color: black;
     font-weight: normal;
   }
+
+  .govuk-form-group--error {
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .govuk-error-message {
+    font-weight: normal;
+    color: $black;
+    border-left: solid $red 3px;
+    padding: 25px 20px;
+    background-color: $whitered;
+}
 
   .header-select {
     vertical-align: middle;
@@ -685,6 +699,8 @@ $whitepurple: #eed5e3;
     background-color: $white;
     margin-top: -40px;
     margin-bottom: 40px;
+    margin-left: -100%;
+    margin-right: -100%;
   }
 
   .return-link {
@@ -750,6 +766,7 @@ $whitepurple: #eed5e3;
   .govuk-checkboxes__label {
     max-width: calc(100% - 30px);
     padding: 0px;
+    margin-top: 2px;
   }
 
   .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before {
