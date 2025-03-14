@@ -21,6 +21,8 @@ jobs:
     if: ${{ (github.event.workflow_run.conclusion == 'success') || (github.ref == 'refs/heads/main') }}
     runs-on: ubuntu-latest
     steps:
+      - name: Get Short Commit SHA
+        run: echo "SHORT_SHA=$(git rev-parse --short $GITHUB_SHA)" >> $GITHUB_ENV
       - name: Trigger Azure DevOps Pipeline (Terraform)
         run: |
           curl -u ":${{ secrets.AZURE_DEVOPS_PAT }}" \
@@ -28,7 +30,7 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{
               "definition": { "id": 8 },
-              "parameters": "{\"FRONTEND_APP_IMAGE\":\"${{ github.event.inputs.imageTag }}\"}",
+              "parameters": "{\"FRONTEND_APP_IMAGE\":\"${{ env.SHORT_SHA }}\"}",
               "reason": "Manual",
               "sourceBranch": "refs/heads/main"
             }'
