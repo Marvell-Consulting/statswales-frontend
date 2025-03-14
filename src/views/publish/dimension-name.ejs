@@ -52,21 +52,6 @@
                 <button type="submit" class="govuk-button" data-module="govuk-button">
                     <%= t('buttons.continue') %>
                 </button>
-                <% if (locals.revisit) { %>
-                    <% if (locals.dimensionType === 'time_period' || locals.dimensionType === 'time_point') { %>
-                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/time-period/${locals.id}`, i18n.language) %>" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
-                            <%= t('buttons.cancel') %>
-                        </a>
-                    <% } else if (locals.dimensionType === 'measure') { %>
-                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/measure`, i18n.language) %>" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
-                            <%= t('buttons.cancel') %>
-                        </a>
-                    <% } else { %>
-                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/dimension-data-chooser/${locals.id}`, i18n.language) %>" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
-                            <%= t('buttons.cancel') %>
-                        </a>
-                    <% } %>
-                <% } %>
             </div>
         </form>
     </main>

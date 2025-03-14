@@ -8,9 +8,7 @@
   "buttons": {
     "continue": "Parhau",
     "back": "Yn ôl",
-    "cancel": "Canslo",
-    "upload_csv": "Parhau",
-    "preview": "Rhagolwg (bydd yn agor mewn tab newydd)"
+    "upload_csv": "Parhau"
   },
   "badge": {
     "dataset_status": {
@@ -746,10 +744,6 @@
       "showing_rows": "Yn dangos rhesi {{start}} – {{end}} o {{total}}",
       "unnamed_column": "colofn {{colNum}}",
       "confirm_correct": "Trwy barhau, rydych chi'n cadarnhau bod y tabl data yn gywir.",
-      "buttons": {
-        "choose_different": "Dewis tabl data gwahanol",
-        "change_datatable": "Newid y tabl data"
-      },
       "source_type": {
         "data_values": "Gwerthoedd data",
         "note_codes": "Codau nodiadau",

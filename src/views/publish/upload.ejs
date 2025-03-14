@@ -35,18 +35,6 @@
                     <button type="submit" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
                         <%= t('publish.upload.buttons.upload') %>
                     </button>
-                    <% if (locals.revision?.revision_index === 0) { %>
-                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
-                            <%= t('buttons.cancel') %>
-                        </a>
-                    <% } else if (locals.changeLookup) { %>
-                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/dimension-data-chooser/${locals.dimension.id}`, i18n.language) %>" class="govuk-button govuk-button--secondary" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
-                            <%= t('buttons.cancel') %>
-                        </a>
-                    <% } %>
-                    <% if (locals.uploadType) { %>
-                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview`, i18n.language) %>" class="govuk-button govuk-button--secondary" style="vertical-align: unset;" data-prevent-double-click="true"><%= t('buttons.preview') %></a>
-                    <% } %>
                 </div>
             </form>
         </main>

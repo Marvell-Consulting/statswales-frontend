@@ -8,7 +8,6 @@
     "buttons": {
         "continue": "Continue",
         "back": "Back",
-        "cancel": "Cancel",
         "upload_csv": "Continue",
         "preview": "Preview (opens in new tab)"
     },
@@ -838,10 +837,6 @@
             "upload_different_hint": "Warning: This will remove all reference data from all dimensions",
             "change_source": "Change the definition of what each column in the data table contains",
             "change_source_hint": "Warning: This will remove all reference data from all dimensions",
-            "buttons": {
-                "choose_different": "Choose a different data table",
-                "change_datatable": "Change the data table"
-            },
             "source_type": {
                 "data_values": "Data values",
                 "note_codes": "Note codes",
