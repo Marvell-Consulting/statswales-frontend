@@ -1,0 +1,34 @@
+name: Deploy Frontend
+
+on:
+  workflow_dispatch:
+    inputs:
+      imageTag:
+        description: 'Docker Image Tag'
+        required: true
+
+  workflow_run:
+    workflows: ['Docker Build and Push']
+    types:
+      - completed
+
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    if: ${{ (github.event.workflow_run.conclusion == 'success') || (github.ref == 'refs/heads/main') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Azure DevOps Pipeline (Terraform)
+        run: |
+          curl -u ":${{ secrets.AZURE_DEVOPS_PAT }}" \
+            -X POST "https://dev.azure.com/MarvellConsulting/StatsWales/_apis/build/builds?api-version=6.0" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "definition": { "id": 8 },
+              "parameters": "{\"FRONTEND_APP_IMAGE\":\"${{ github.event.inputs.imageTag }}\"}",
+              "reason": "Manual",
+              "sourceBranch": "refs/heads/main"
+            }'
