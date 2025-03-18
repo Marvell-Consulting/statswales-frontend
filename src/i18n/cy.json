@@ -8,19 +8,21 @@
   "buttons": {
     "continue": "Parhau",
     "back": "Yn ôl",
-    "upload_csv": "Parhau"
+    "cancel": "Canslo",
+    "upload_csv": "Parhau",
+    "preview": "Rhagolwg (bydd yn agor mewn tab newydd)"
   },
   "badge": {
     "dataset_status": {
-        "new": "Set ddata newydd",
-        "live": "Set ddata fyw"
+      "new": "Set ddata newydd",
+      "live": "Set ddata fyw"
     },
     "publishing_status": {
-        "published": "Cyhoeddwyd",
-        "incomplete": "Anghyflawn",
-        "scheduled": "Wedi'i hamserlennu",
-        "update_incomplete": "Diweddariad yn Anghyflawn",
-        "update_scheduled": "Diweddariad wedi'i Amserlennu"
+      "published": "Cyhoeddwyd",
+      "incomplete": "Anghyflawn",
+      "scheduled": "Wedi'i hamserlennu",
+      "update_incomplete": "Diweddariad yn Anghyflawn",
+      "update_scheduled": "Diweddariad wedi'i Amserlennu"
     }
   },
   "pagination": {
@@ -40,7 +42,9 @@
       "guidance": "Canllawiau",
       "list_datasets": "Rhestru setiau data",
       "logout": "Allgofnodi",
-      "developer": "Datblygwr"
+      "developer": "Datblygwr",
+      "home": "Hafan",
+      "login": "Mewngofnodi"
     }
   },
   "footer": {
@@ -83,7 +87,8 @@
       "title": "Teitl",
       "last_updated": "Diweddarwyd ddiwethaf",
       "dataset_status": "Statws set ddata",
-      "publish_status": "Statws cyhoeddi"
+      "publish_status": "Statws cyhoeddi",
+      "not_translated": "Heb ei gyfieithu eto"
     },
     "status": {
       "new": "Newydd",
@@ -148,7 +153,6 @@
         "official": "Ystadegau swyddogol",
         "accredited": "Ystadegau swyddogol achrededig",
         "in_development": "Ystadegau swyddogol sy'n cael eu datblygu",
-        "management": "Gwybodaeth reolaethol",
         "none": "Dim dynodiad"
       },
       "related_reports": "Adroddiadau cysylltiedig"
@@ -200,7 +204,9 @@
       "heading": "Beth ddylai enw'r dimensiwn hwn fod ar wefan StatsCymru?",
       "hint": "Dylai hwn:",
       "concise": "fod yn gryno, gan esbonio'r hyn y mae'r dimensiwn yn ei gynnwys yn glir",
-      "language": "cael ei nodi yn yr iaith yr ydych chi'n gweld y gwasanaeth hwn"
+      "language": "cael ei nodi yn yr iaith yr ydych chi'n gweld y gwasanaeth hwn",
+      "dimension_heading": "Beth ddylid galw'r dimensiwn hwn ar wefan StatsCymru?",
+      "measure_heading": "Beth ddylid galw'r mesur hwn ar wefan StatsCymru?"
     },
     "dimension_type_chooser": {
       "heading": "Ychwanegu data cyfeirio",
@@ -212,7 +218,11 @@
         "geography": "Daearyddiaeth",
         "religion": "Crefydd",
         "sex_gender": "Rhyw a rhywedd",
-        "lookup": "Rhywbeth arall"
+        "lookup": "Rhywbeth arall",
+        "date": "Dyddiadau",
+        "number": "Nifer",
+        "text": "Testun plaen",
+        "time": "Amseroedd"
       }
     },
     "time_dimension_chooser": {
@@ -240,8 +250,12 @@
         "sort_order": "Trefn Ddidoli",
         "hierarchy": "Hierarchiaeth",
         "notes_en": "Nodiadau (Saesneg)",
-        "notes_cy": "Nodiadau (Cymraeg)"
-      }
+        "notes_cy": "Nodiadau (Cymraeg)",
+        "description": "Disgrifiad"
+      },
+      "change_lookup_table": "Disodli tabl am-edrych",
+      "change_date_format": "Newid ffurf y dyddiadau",
+      "change_dimension_type": "Newid y math o ddata yn y dimensiwn hwn"
     },
     "measure_review": {
       "heading": "Gwirio'r tabl mesur",
@@ -259,12 +273,18 @@
         "notes_cy": "Nodiadau (Cymraeg)",
         "decimal": "Gwerth Degol",
         "format": "Fformat",
-        "measure_type": "Math o Werth"
+        "measure_type": "Math o Werth",
+        "description": "Disgrifiad",
+        "decimals": "Lle degol",
+        "hierarchy": "Hierarchiaeth",
+        "language": "Iaith",
+        "reference": "Gwerth cyfeirio",
+        "notes": "Nodiadau"
       },
-      "column_values": {
-        "0": "No (awaiting feedback from Alex on this)",
-        "1": "Yes (awaiting feedback from Alex on this)"
-      }
+      "column_values": [
+        "No (awaiting feedback from Alex on this)",
+        "Yes (awaiting feedback from Alex on this)"
+      ]
     },
     "time_dimension_review": {
       "heading": "Cadarnhewch bod y dyddiadau'n gywir",
@@ -276,7 +296,32 @@
         "description": "Disgrifiad",
         "start_date": "Dechrau",
         "end_date": "Gorffen",
-        "date_type": "Math o ddyddiad"
+        "date_type": "Math o ddyddiad",
+        "description_en": "Disgrifiad (Saesneg)",
+        "description_cy": "Disgrifiad (Cymraeg)",
+        "descriptionen": "Disgrifiad (Saesneg)",
+        "descriptioncy": "Disgrifiad (Cymraeg)",
+        "descriptionenglish": "Disgrifiad (Saesneg)",
+        "descriptionwelsh": "Disgrifiad (Cymraeg)",
+        "descriptioncymraeg": "Disgrifiad (Cymraeg)",
+        "description_english": "Disgrifiad (Saesneg)",
+        "description_welsh": "Disgrifiad (Cymraeg)",
+        "description_cymraeg": "Disgrifiad (Cymraeg)",
+        "notes": "Nodiadau",
+        "notesen": "Nodiadau (Saesneg)",
+        "notescy": "Nodiadau (Cymraeg)",
+        "notesenglish": "Nodiadau (Saesneg)",
+        "noteswelsh": "Nodiadau (Cymraeg)",
+        "notescymraeg": "Nodiadau (Cymraeg)",
+        "notes_english": "Nodiadau (Saesneg)",
+        "notes_welsh": "Nodiadau (Cymraeg)",
+        "notes_cymraeg": "Nodiadau (Cymraeg)",
+        "language": "Iaith",
+        "lang": "Iaith",
+        "sortorder": "Trefn Ddidoli",
+        "sort": "Trefn Ddidoli",
+        "sort_order": "Trefn Ddidoli",
+        "hierarchy": "Hierarchiaeth"
       },
       "year_type": {
         "calendar_year": "Blwyddyn Galendr",
@@ -295,7 +340,12 @@
         "meteorological_quarter": "Chwarter Meteorolegol",
         "meteorological_month": "Mis Meteorolegol",
         "specific_day": "Pwynt penodol mewn amser"
-      }
+      },
+      "unknown_name": "Dimensiwn Heb Enw",
+      "actions": "Gweithredoedd",
+      "change_format": "Newid gosodiad dyddiad",
+      "change_name": "Newid enw dimensiwn",
+      "change_measure_name": "Newid enw mesur"
     },
     "measure_preview": {
       "heading": "Lanlwytho tabl am-edrych mesur"
@@ -333,7 +383,8 @@
       "heading-alt": "Pa fformat a ddefnyddir ar gyfer cyfansymiau chwarterol?",
       "example": "Er enghraifft, {{example}}",
       "fifth_quarter": "A ddefnyddir chwarter i gynrychioli cyfansymiau blynyddol?",
-      "no_quarterly_totals": "Nid oes cyfansymiau chwarterol"
+      "no_quarterly_totals": "Nid oes cyfansymiau chwarterol",
+      "fifth_example": "Er enghraifft, 2025Q5 i gynrychioli'r cyfanswm ar gyfer 2024"
     },
     "month_format": {
       "heading": "Pa fformat a ddefnyddir ar gyfer misoedd yn y dimensiwn?",
@@ -343,7 +394,10 @@
       "heading": "Ni ellir cyfateb data y tabl am-edrych mesur gyda'r tabl data",
       "information": "Nid oes {{failureCount, number}} cyfeiriad yn y dimensiwn yn cyd-fynd â'r cyfeiriadau yn eich tabl am-edrych mesur.  Dylech wirio:",
       "formatting": "bod y codau cyfeirio a ddefnyddir yn y tabl data yn gywir",
-      "choices": "eich bod wedi dewis y tabl am-edrych cywir ar gyfer eich mesur"
+      "choices": "eich bod wedi dewis y tabl am-edrych cywir ar gyfer eich mesur",
+      "measure_subheading": "Codau cyfeirio yn nhabl am-edrych y mesur na ellir eu cyfateb",
+      "things_to_check": "Dylech wirio eich bod wedi dewis y tabl data cywir a'r tabl am-edrych mesur a bod y ddau ohonynt:",
+      "upload_different_measure": "Lanlwytho tabl am-edrych mesur gwahanol neu wedi'i gywiro"
     },
     "dimension_match_failure": {
       "lookup_heading": "Ni ellir cyfateb data y tabl am-edrych gyda'r tabl data",
@@ -358,7 +412,12 @@
       "upload_different_file": "Lanlwytho tabl data wedi'i gywiro neu dabl data gwahanol",
       "upload_different_file_warning": "(Bydd hyn yn gwaredu data cyfeirio o bob dimensiwn)",
       "try_different_format": "Dewis gwahanol dabl am-edrych",
-      "no_matches": "Nid oes unrhyw rai o'r dyddiadau yn cyd-fynd â'r fformat a ddarparwyd"
+      "no_matches": "Nid oes unrhyw rai o'r dyddiadau yn cyd-fynd â'r fformat a ddarparwyd",
+      "you_should_check": "Dylech wirio eich bod wedi dewis y tabl data a'r tabl am-edrych cywir a bod y ddau ohonynt:",
+      "fact_table_subheading": "Codau cyfeirio yn y tabl data na ellir eu cyfateb",
+      "try_different_lookup": "Lanlwytho tabl am-edrych gwahanol neu wedi'i gywiro",
+      "missing_data_table_values": "Codau cyfeirio yn y tabl data na ellir eu cyfateb",
+      "missing_lookup_table_values": "Codau cyfeirio yn y tabl am-edrych na ellir eu cyfateb"
     },
     "period_match_failure": {
       "heading": "Ni ellir cyfateb fformat y dyddiad gyda'r dimensiwn",
@@ -375,7 +434,8 @@
       "upload_different_file": "Lanlwytho tabl data wedi'i gywiro neu dabl data gwahanol",
       "upload_different_file_warning": "(Bydd hyn yn gwaredu data cyfeirio o bob dimensiwn)",
       "try_different_format": "Nodi fformat dyddiad gwahanol",
-      "no_matches": "Nid oes unrhyw rai o'r dyddiadau yn cyd-fynd â'r fformat a ddarparwyd"
+      "no_matches": "Nid oes unrhyw rai o'r dyddiadau yn cyd-fynd â'r fformat a ddarparwyd",
+      "fact_table_subheading": "Codau cyfeirio yn y tabl data na ellir eu cyfateb"
     },
     "title": {
       "heading": "Beth yw teitl y set ddata hon?",
@@ -543,7 +603,8 @@
               "missing": "Dewiswch oes os bydd angen i chi ychwanegu dolen i adroddiad arall"
             }
           }
-        }
+        },
+        "not_translated": "Heb ei gyfieithu eto"
       }
     },
     "providers": {
@@ -626,9 +687,6 @@
             },
             "in_development": {
               "label": "Ystadegau swyddogol sy'n cael eu datblygu"
-            },
-            "management": {
-              "label": "Gwybodaeth reolaethol"
             },
             "none": {
               "label": "Dim dynodiad"
@@ -744,6 +802,10 @@
       "showing_rows": "Yn dangos rhesi {{start}} – {{end}} o {{total}}",
       "unnamed_column": "colofn {{colNum}}",
       "confirm_correct": "Trwy barhau, rydych chi'n cadarnhau bod y tabl data yn gywir.",
+      "buttons": {
+        "choose_different": "Dewis tabl data gwahanol",
+        "change_datatable": "Newid y tabl data"
+      },
       "source_type": {
         "data_values": "Gwerthoedd data",
         "note_codes": "Codau nodiadau",
@@ -752,7 +814,12 @@
         "time": "Dimensiwn sy'n cynnwys dyddiadau",
         "ignore": "Gellir anwybyddu'r golofn hon",
         "unknown": "Anhysbys"
-      }
+      },
+      "revisit_question": "Beth mae angen i chi ei wneud?",
+      "upload_different": "Lanlwytho tabl data gwahanol",
+      "upload_different_hint": "Rhybudd: Bydd hyn yn ailosod ac yn gwaredu'r holl fesurau a dimensiynau",
+      "change_source": "Newid y diffiniad o'r hyn y mae pob colofn yn y tabl data yn ei gynnwys",
+      "change_source_hint": "Rhybudd: Bydd hyn yn ailosod ac yn gwaredu'r holl fesurau a dimensiynau"
     },
     "sources": {
       "heading": "Beth mae pob colofn yn y tabl data yn ei gynnwys?",
@@ -775,7 +842,10 @@
         "completed": "Wedi'i gwblhau",
         "not_started": "Heb gychwyn eto",
         "incomplete": "Anghyflawn",
-        "not_implemented": "Heb ei Weithredu"
+        "not_implemented": "Heb ei Weithredu",
+        "not_required": "Nid yw'n ofynnol",
+        "unchanged": "Nid yw wedi newid",
+        "updated": "Wedi'i ddiweddaru"
       },
       "data": {
         "subheading": "Data",
@@ -802,7 +872,8 @@
         "subheading": "Cyhoeddi",
         "organisation": "Sefydliad sy'n cyhoeddi a manylion cyswllt",
         "when": "Pryd ddylid cyhoeddi'r set ddata hon",
-        "submit": "Cyflwyno i'w chymeradwyo"
+        "submit": "Cyflwyno i'w chymeradwyo",
+        "when_update": "Pryd y dylid cyhoeddi'r diweddariad hwn"
       },
       "submit": {
         "subheading": "Trwy barhau, rydych chi'n cadarnhau bod yr holl ddata a'r metadata wedi cael ei wirio a'i fod yn gywir.",
@@ -839,7 +910,8 @@
           "withdraw_first_revision": "Newid y set ddata cyn ei chyhoeddi",
           "withdraw_update_revision": "Newid y diweddariad cyn ei gyhoeddi",
           "continue_update": "Parhau gyda'r diweddariad",
-          "continue": "Parhau gyda'r set ddata"
+          "continue": "Parhau gyda'r set ddata",
+          "preview": "Gweld rhagolwg o'r set ddata"
         }
       },
       "error": {
@@ -855,6 +927,19 @@
       "errors": {
         "missing": "Bydd angen i chi ddewis y math o ddiweddariad yr hoffech ei wneud"
       }
+    },
+    "number_chooser": {
+      "heading": "Gosod dimensiwn sy'n cynnwys rhifau",
+      "review_heading": "Gwirio'r dimensiwn",
+      "subheading": "Rhifau",
+      "showing": "Sampl o {{rhes}} o {{cyfanswm}} rhes.",
+      "question": "Pa fath o rifau y mae'r dimensiwn hwn yn eu cynnwys?",
+      "chooser": {
+        "integer": "Rhifau Cyfan",
+        "decimal": "Rhifau Degol",
+        "decimal_places": "Sawl lle degol y dylid eu dangos?"
+      },
+      "confirm": "Trwy barhau, rydych chi'n cadarnhau bod y dimensiwn yn gywir."
     }
   },
   "translations": {
@@ -870,13 +955,15 @@
         "description": "Crynodeb",
         "collection": "Casglu data",
         "quality": "Ansawdd ystadegol",
-        "roundingDescription": "Wedi'i dalgrynnu"
+        "roundingDescription": "Wedi'i dalgrynnu",
+        "summary": "Crynodeb"
       },
       "dimension": "{{key}} enw dimensiwn",
       "buttons": {
         "export": "Allgludo CSV",
         "change": "Newid"
-      }
+      },
+      "link": "Adroddiad cysylltiedig"
     },
     "import": {
       "heading": "Mewngludo ffeil cyfieithiad",
@@ -975,7 +1062,18 @@
     "dimension": {
       "name_to_short": "Mae enw'r Dimensiwn yn rhy fyr neu ar goll",
       "name_to_long": "Mae enw Dimensiwn wedi'i gyfyngu i 1024 nod",
-      "naming_failed": "Aeth rhywbeth o'i le wrth geisio gosod yr enw.  Rhowch gynnig arall ar hyn"
+      "naming_failed": "Aeth rhywbeth o'i le wrth geisio gosod yr enw.  Rhowch gynnig arall ar hyn",
+      "name_missing": "Nodwch yr hyn y dylid galw'r dimensiwn hwn ar wefan StatsCymru",
+      "name_too_long": "Rhaid i enw'r dimensiwn fod yn 256 nod neu'n llai",
+      "illegal_characters": "Dim ond llythrennau, rhifau a nodau \"£ $ € ¢ % ( ) _ - +\" y gall enw'r dimensiwn ei gynnwys",
+      "dimension_period_type_required": "Dewiswch a yw'r dimensiwn yn cynnwys cyfnodau neu bwyntiau penodol",
+      "dimension_type_required": "Dewiswch y math o ddata y mae'r dimensiwn hwn yn ei gynnwys",
+      "year_type_required": "Dewiswch y math o flwyddyn y mae'r dimensiwn yn ei gynrychioli",
+      "year_format_required": "Dewiswch y ffurf a ddefnyddir ar gyfer blynyddoedd yn y dimensiwn",
+      "shortest_period_required": "Dewiswch beth yw'r cyfnodau byrraf yn y dimensiwn",
+      "quarter_type_required": "Dewiswch y ffurf a ddefnyddir ar gyfer chwarteri yn y dimensiwn",
+      "quarter_total_type_required": "Dewiswch a ddefnyddir pumed chwarter i gynrychioli cyfansymiau blynyddol",
+      "month_type_required": "Dewiswch y ffurf a ddefnyddir ar gyfer misoedd yn y dimensiwn"
     },
     "upload": {
       "no_csv": "Ni ddarparwyd data CSV",
