@@ -5,6 +5,8 @@ on:
     workflows: [Docker]
     types:
       - completed
+    branches:
+      - main
 jobs:
   on-success:
     runs-on: ubuntu-latest
