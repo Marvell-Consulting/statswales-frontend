@@ -887,7 +887,6 @@
           "label": "Rhaid i'r ffeil fod mewn fformat CSV",
           "error": {
             "missing": "Dewiswch y ffeil cyfieithiad wedi'i llenwi i'w lanlwytho",
-            "invalid": "Rhaid i'r ffeil a ddewisir gyd-fynd â'r fformat gofynnol",
             "values": "Rhaid i'r ffeil cyfieithiad fod wedi'i llenwi ar gyfer y ddwy iaith"
           }
         }
