@@ -5,7 +5,7 @@
 
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-l" style="margin-bottom: 15px;"><%= datasetTitle %></h1>
+        <h1 class="govuk-heading-xl" style="margin-bottom: 15px;"><%= datasetTitle %></h1>
       </div>
     </div>
 
@@ -13,7 +13,7 @@
 
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
-        <h2 class="govuk-heading-m"><%= t('publish.tasklist.data.subheading') %></h2>
+        <h2 class="govuk-heading-l"><%= t('publish.tasklist.data.subheading') %></h2>
         <ul class="govuk-task-list">
           <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
@@ -55,7 +55,7 @@
           <% }); %>
         </ul>
 
-        <h2 class="govuk-heading-m govuk-!-margin-top-5"><%= t('publish.tasklist.metadata.subheading') %></h2>
+        <h2 class="govuk-heading-l govuk-!-margin-top-5"><%= t('publish.tasklist.metadata.subheading') %></h2>
         <ul class="govuk-task-list">
           <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
@@ -131,7 +131,7 @@
           </li>
         </ul>
 
-        <h2 class="govuk-heading-m govuk-!-margin-top-5"><%= t('publish.tasklist.translation.subheading') %></h2>
+        <h2 class="govuk-heading-l govuk-!-margin-top-5"><%= t('publish.tasklist.translation.subheading') %></h2>
         <ul class="govuk-task-list">
           <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
@@ -159,7 +159,7 @@
           </li>
         </ul>
 
-        <h2 class="govuk-heading-m govuk-!-margin-top-5"><%= t('publish.tasklist.publishing.subheading') %></h2>
+        <h2 class="govuk-heading-l govuk-!-margin-top-5"><%= t('publish.tasklist.publishing.subheading') %></h2>
         <ul class="govuk-task-list">
           <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
@@ -180,7 +180,7 @@
         </ul>
         <% if (taskList.canPublish) { %>
           <div>
-            <h2 class="govuk-heading-m govuk-!-margin-top-5"><%= t('publish.tasklist.submit.subheading') %></h2>
+            <h2 class="govuk-heading-l govuk-!-margin-top-5"><%= t('publish.tasklist.submit.subheading') %></h2>
             <form enctype="multipart/form-data" method="post">
               <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('publish.tasklist.submit.button') %></button>
             </form>
