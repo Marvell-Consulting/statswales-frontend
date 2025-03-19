@@ -15,8 +15,7 @@ services:
 
   blobstorage:
     image: mcr.microsoft.com/azure-storage/azurite
-    container_name: 'azurite'
-    # command: azurite --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0 --debug=/tmp/debug.log
+    command: azurite --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0 --debug=/tmp/debug.log
     ports:
       - "10000:10000"
       - "10001:10001"
@@ -36,6 +35,6 @@ services:
       LOG_LEVEL: 'debug'
       TEST_DB_HOST: 'db'
       TEST_DB_PORT: 5432
+      AZURE_BLOB_STORAGE_URL: 'http://blobstorage:10000/devstoreaccount1'
     post_start:
-      - command: npm run seed:required
-      - command: npm run seed:ci
+      - command: sh -c "npm run seed:required && npm run seed:ci"

@@ -18,18 +18,18 @@ Copy the [.env-example](.env-example) file to `.env` and provide the missing val
 
 ## Running the service
 
-To start the app in development mode:
+To start the app in development mode (connects to external services):
 
 ```bash
 npm install
 npm run dev
 ```
 
-or, if you don't have Docker:
+or, start the app in localstack mode (runs all required services in docker):
 
 ```bash
 npm install
-npm run local
+npm run localstack
 ```
 
 The service should now be available on port 3000.
