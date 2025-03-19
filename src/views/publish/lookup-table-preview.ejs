@@ -10,7 +10,7 @@
             </div>
         </div>
 
-        <p class="govuk-heading-s region-subhead"><%= dimension.metadata.name %></p>
+        <span class="region-subhead"><%= dimension.metadata.name %></span>
         <% if (dimension.type === 'lookup_table') { %>
             <h1 class="govuk-heading-xl"><%= t('publish.lookup_table_review.heading') %></h1>
         <% } else { %>
