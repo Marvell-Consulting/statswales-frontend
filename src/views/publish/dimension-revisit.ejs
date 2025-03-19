@@ -9,7 +9,7 @@
             </div>
         </div>
 
-        <p class="govuk-heading-s region-subhead"><%= locals.dimension.metadata.name %></p>
+        <span class="region-subhead"><%= locals.dimension.metadata.name %></span>
         <h1 class="govuk-heading-xl"><%= locals.dimension.metadata?.name || t('publish.time_dimension_review.unknown_name') %></h1>
 
         <%- include("../partials/error-handler"); %>
