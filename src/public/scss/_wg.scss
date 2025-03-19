@@ -29,6 +29,7 @@ $lightgrey_offwhite: #f1f1f1;
 $brightred: #d81f1f;
 $lightblue: #3b7dc5;
 $lightgreen: #01b723;
+$lightred: #ffaaaa;
 $purple: #a82b71;
 $whitepurple: #eed5e3;
 
@@ -570,8 +571,8 @@ $whitepurple: #eed5e3;
   }
 
   .govuk-notification-banner__content {
-    background-color: transparent;
-    padding: 0px 20px;
+    background-color: #fff;
+    padding: 20px 20px;
   }
 
   .govuk-notification-banner--success h2 {
@@ -2378,5 +2379,18 @@ $whitepurple: #eed5e3;
     overflow-x: auto;
   }
 
+  .alert-warning {
+    border-left: 10px solid #aa1111;
+    padding-left: 120px;
+    background-image: URL('/assets/images/warning-sign.svg');
+    background-repeat: no-repeat;
+    background-position: 30px 20px;
+    background-size: 54px;
+  }
+
+  .warning-background {
+    background-color: #ffe4e5;
+    padding: 20px;
+  }
 
 }

@@ -1,4 +1,5 @@
 {
+  "app_title": "StatsCymru",
   "developer_warning": "<strong class=\"govuk-tag govuk-tag--red govuk-phase-banner__content__tag\">Warning</strong> Tudalen y datblygwr yw hon ac nid yw wedi bod trwy waith ymchwil gyda defnyddwyr",
   "developer_tag": "<span class=\"govuk-tag govuk-tag--yellow govuk-phase-banner__content__tag\">Developer Page</span>",
   "external_tag": "<span class=\"govuk-tag govuk-tag--orange govuk-phase-banner__content__tag\">External Page</span>",

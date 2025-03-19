@@ -457,8 +457,8 @@
   font-weight: normal;
 }
 .wg .govuk-notification-banner__content {
-  background-color: transparent;
-  padding: 0px 20px;
+  background-color: #fff;
+  padding: 20px 20px;
 }
 .wg .govuk-notification-banner--success h2 {
   color: #1f1f1f;
@@ -1978,6 +1978,18 @@
 .wg .with-overflow {
   overflow-x: auto;
 }
+.wg .alert-warning {
+  border-left: 10px solid #aa1111;
+  padding-left: 120px;
+  background-image: URL("/assets/images/warning-sign.svg");
+  background-repeat: no-repeat;
+  background-position: 30px 20px;
+  background-size: 54px;
+}
+.wg .warning-background {
+  background-color: #ffe4e5;
+  padding: 20px;
+}
 
 .wg .autocomplete__wrapper {
   position: relative;
@@ -2164,6 +2176,12 @@
 }
 .wg .govuk-pagination__item--current {
   background-color: #ffffff;
+}
+.wg .tasklist-no-border:first-child {
+  border-top: none;
+}
+.wg .tasklist-no-border {
+  border-bottom: none;
 }
 
 /*# sourceMappingURL=app.css.map */

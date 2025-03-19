@@ -188,11 +188,24 @@
         <% } %>
       </div>
       <div class="govuk-grid-column-one-third">
-        <p class="govuk-heading-s">
-          <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview`, i18n.language) %>" target="_blank">
-            <%= t('publish.tasklist.preview') %>
-          </a>
-        </p>
+        <ul class="govuk-task-list border-top">
+          <li class="govuk-task-list__item govuk-task-list__item--with-link tasklist-no-border">
+            <div class="govuk-task-list__name-and-hint">
+              <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview`, i18n.language) %>" target="_blank">
+                <%= t('publish.tasklist.preview') %>
+              </a>
+            </div>
+          </li>
+          <% if (datasetStatus === 'new') { %>
+          <li class="govuk-task-list__item govuk-task-list__item--with-link tasklist-no-border">
+            <div class="govuk-task-list__name-and-hint">
+              <a href="<%= buildUrl(`/publish/${locals.datasetId}/delete`, i18n.language) %>" target="_blank">
+                <%= t('publish.tasklist.delete') %>
+              </a>
+            </div>
+          </li>
+          <% } %>
+        </ul>
       </div>
     </div>
   </main>

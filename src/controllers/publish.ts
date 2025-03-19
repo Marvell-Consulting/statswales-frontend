@@ -357,6 +357,41 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
   }
 };
 
+export const deleteDraftDataset = async (req: Request, res: Response) => {
+  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const datasetStatus = getDatasetStatus(res.locals.dataset);
+  const publishingStatus = getPublishingStatus(res.locals.dataset);
+  const revision = dataset.draft_revision!;
+  const datasetTitle = revision.metadata?.title;
+  const errors: ViewError[] = [];
+  if (req.method === 'POST') {
+    try {
+      await req.pubapi.deleteDraftDataset(dataset.id);
+      req.session.flash = ['flash.dataset.draft_deleted'];
+      req.session.save();
+      res.redirect(req.buildUrl(`/`, req.language));
+      return;
+    } catch (error) {
+      logger.error(error, `Failed to delete draft dataset`);
+      errors.push({
+        field: 'unknown',
+        message: {
+          key: 'errors.dataset.delete_failed'
+        }
+      });
+      res.status(500);
+    }
+  }
+
+  res.render('publish/delete-draft', {
+    datasetTitle,
+    datasetStatus,
+    statusToColour,
+    errors: errors.length > 0 ? errors : undefined,
+    publishingStatus
+  });
+};
+
 export const cubePreview = async (req: Request, res: Response) => {
   const dataset = singleLangDataset(res.locals.dataset, req.language);
   let revision = dataset.draft_revision;

@@ -14,8 +14,13 @@ homepage.get('/', async (req: Request, res: Response, next: NextFunction) => {
     const results: ResultsetWithCount<DatasetListItemDTO> = await req.pubapi.getDatasetList(page, limit);
     const { data, count } = results;
     const pagination = getPaginationProps(page, limit, count);
-
-    res.render('homepage', { data, ...pagination, statusToColour });
+    let flash: string[] = [];
+    if (req.session.flash) {
+      flash = req.session.flash;
+      req.session.flash = undefined;
+      req.session.save();
+    }
+    res.render('homepage', { data, ...pagination, statusToColour, flash: flash.length > 0 ? flash : undefined });
   } catch (err) {
     next(err);
   }

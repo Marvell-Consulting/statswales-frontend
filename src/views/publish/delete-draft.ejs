@@ -1,0 +1,41 @@
+<%- include("../partials/header"); %>
+
+<div class="govuk-width-container">
+    <main class="govuk-main-wrapper " id="main-content" role="main">
+
+        <div class="top-links">
+            <div class="govuk-width-container">
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+            </div>
+        </div>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <h1 class="govuk-heading-xl govuk-!-margin-bottom-2"><%= datasetTitle %></h1>
+            </div>
+        </div>
+
+        <%- include("../partials/dataset/status", { datasetStatus, publishingStatus }); %>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <div class="warning-background">
+                    <div class="govuk-error-message alert-warning">
+                        <form method="post">
+                            <fieldset class="govuk-fieldset" role="group">
+                                <h2 class="govuk-heading-l">By continuing, you confirm this dataset should be deleted</h2>
+
+                                <p class="govuk-heading-s">All data for this dataset will be removed permanently. This cannot be undone.</p>
+
+                                <button class="govuk-button govuk-button--warning" data-module="govuk-button">Delete dataset</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<%- include("../partials/footer"); %>
