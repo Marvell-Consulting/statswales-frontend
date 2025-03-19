@@ -985,7 +985,7 @@
                     "label": "The file must be in CSV format",
                     "error": {
                         "missing": "Select the populated translation file to upload",
-                        "invalid": "The selected file must match the required format",
+                        "invalid": "The selected file could not be uploaded. Check you have used the exported translation file for this dataset, with the correct entries in the key column.",
                         "values": "The translation file must be fully populated for both languages"
                     }
                 }
