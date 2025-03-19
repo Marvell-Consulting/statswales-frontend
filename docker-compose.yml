@@ -3,3 +3,38 @@ services:
     image: redis:latest
     ports:
       - "6380:6379"
+
+  db:
+    image: postgres:17
+    ports:
+      - "3002:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: statswales-backend-test
+
+  blobstorage:
+    image: mcr.microsoft.com/azure-storage/azurite
+    command: azurite --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0 --debug=/tmp/debug.log
+    ports:
+      - "10000:10000"
+      - "10001:10001"
+      - "10002:10002"
+
+  backend:
+    image: ghcr.io/marvell-consulting/statswales-backend:latest
+    pull_policy: always
+    ports:
+      - "3001:3001"
+    depends_on:
+      - redis
+      - db
+      - blobstorage
+    environment:
+      APP_ENV: 'ci'
+      LOG_LEVEL: 'debug'
+      TEST_DB_HOST: 'db'
+      TEST_DB_PORT: 5432
+      AZURE_BLOB_STORAGE_URL: 'http://blobstorage:10000/devstoreaccount1'
+    post_start:
+      - command: sh -c "npm run seed:required && npm run seed:ci"

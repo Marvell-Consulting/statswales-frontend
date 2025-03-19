@@ -20,7 +20,9 @@
     "dev:check": "npm-run-all check dev",
     "predev": "bash -c 'f() { if [ $(command -v podman) ]; then podman compose up -d redis; else docker compose up -d redis; fi }; f'",
     "dev": "nodemon --watch src -e ts,ejs,json,scss --exec npm run start",
-    "local": "nodemon --watch src -e ts,ejs,json,scss --exec npm run start",
+    "prelocalstack": "bash -c 'f() { if [ $(command -v podman) ]; then podman compose up -d redis db blobstorage backend; else docker compose up -d redis db blobstorage backend; fi }; f'",
+    "localstack": "trap 'exit 0' SIGINT; nodemon --watch src -e ts,ejs,json,scss --exec npm run start",
+    "postlocalstack": "bash -c 'f() { if [ $(command -v podman) ]; then podman compose stop redis db blobstorage backend; else docker compose stop redis db blobstorage backend; fi }; f'",
     "start": "npm run build && node dist/server.js | pino-colada",
     "start:container": "node dist/server.js"
   },
