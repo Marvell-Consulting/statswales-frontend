@@ -4,8 +4,12 @@ import { SingleLanguageRevision } from '../dtos/single-language/revision';
 import { nextUpdateAt } from './next-update-at';
 import { markdownToSafeHTML } from './markdown-to-html';
 import { isPublished } from './revision';
+import { PreviewMetadata } from '../interfaces/preview-metadata';
 
-export const getDatasetPreview = async (dataset: SingleLanguageDataset, revision: SingleLanguageRevision) => {
+export const getDatasetPreview = async (
+  dataset: SingleLanguageDataset,
+  revision: SingleLanguageRevision
+): Promise<PreviewMetadata> => {
   if (!revision || !revision.metadata) {
     throw new Error('preview requires access to the revision and metadata');
   }
@@ -13,7 +17,7 @@ export const getDatasetPreview = async (dataset: SingleLanguageDataset, revision
   const { summary, quality, collection, rounding_description } = revision.metadata;
   const { rounding_applied, designation, related_links } = revision;
 
-  const preview = {
+  const preview: PreviewMetadata = {
     title: revision.metadata.title,
     keyInfo: {
       updatedAt: revision?.publish_at,

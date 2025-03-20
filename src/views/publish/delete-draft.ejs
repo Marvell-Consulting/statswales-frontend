@@ -24,11 +24,11 @@
                     <div class="govuk-error-message alert-warning">
                         <form method="post">
                             <fieldset class="govuk-fieldset" role="group">
-                                <h2 class="govuk-heading-l">By continuing, you confirm this dataset should be deleted</h2>
+                                <h2 class="govuk-heading-l"><%= t('publish.delete_dataset.heading') %></h2>
 
-                                <p class="govuk-heading-s">All data for this dataset will be removed permanently. This cannot be undone.</p>
+                                <p class="govuk-heading-s"><%= t('publish.delete_dataset.message') %></p>
 
-                                <button class="govuk-button govuk-button--warning" data-module="govuk-button">Delete dataset</button>
+                                <button class="govuk-button govuk-button--warning" data-module="govuk-button"><%= t('publish.delete_dataset.button') %></button>
                             </fieldset>
                         </form>
                     </div>
