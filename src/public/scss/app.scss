@@ -46,4 +46,12 @@
     background-color: wg.$white;
   }
 
+  .tasklist-no-border:first-child {
+    border-top: none;
+  }
+
+  .tasklist-no-border {
+    border-bottom: none;
+  }
+
 }

@@ -43,7 +43,8 @@ import {
   createNewUpdate,
   updateDatatable,
   measureName,
-  setupNumberDimension
+  setupNumberDimension,
+  deleteDraftDataset
 } from '../controllers/publish';
 import { DatasetInclude as Include } from '../enums/dataset-include';
 
@@ -74,6 +75,9 @@ publish.post('/:datasetId/sources', fetchDataset(Include.Data), upload.none(), s
 /* Tasklist */
 publish.get('/:datasetId/tasklist', fetchDataset(Include.Meta), taskList);
 publish.post('/:datasetId/tasklist', fetchDataset(Include.Meta), upload.none(), taskList);
+
+publish.get('/:datasetId/delete', fetchDataset(Include.Meta), deleteDraftDataset);
+publish.post('/:datasetId/delete', fetchDataset(Include.Meta), deleteDraftDataset);
 
 /* Cube Preview */
 publish.get('/:datasetId/cube-preview', fetchDataset(Include.All), cubePreview);

@@ -570,8 +570,8 @@ $whitepurple: #eed5e3;
   }
 
   .govuk-notification-banner__content {
-    background-color: transparent;
-    padding: 0px 20px;
+    background-color: #fff;
+    padding: 20px 20px;
   }
 
   .govuk-notification-banner--success h2 {
@@ -2378,5 +2378,18 @@ $whitepurple: #eed5e3;
     overflow-x: auto;
   }
 
+  .alert-warning {
+    border-left: 10px solid $red;
+    padding-left: 120px;
+    background-image: URL('/assets/images/warning-sign.svg');
+    background-repeat: no-repeat;
+    background-position: 30px 20px;
+    background-size: 54px;
+  }
+
+  .warning-background {
+    background-color: $whitered;
+    padding: 20px;
+  }
 
 }

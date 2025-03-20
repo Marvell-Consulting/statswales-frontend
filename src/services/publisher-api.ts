@@ -517,6 +517,19 @@ export class PublisherApi {
     }).then((response) => response.json() as unknown as DatasetDTO);
   }
 
+  public async deleteDraftDataset(datasetId: string): Promise<boolean> {
+    logger.debug(`Deleting draft dataset: ${datasetId}`);
+    return this.fetch({
+      url: `dataset/${datasetId}`,
+      method: HttpMethod.Delete
+    }).then((response) => {
+      if (response.status === 202) {
+        return Promise.resolve(true);
+      }
+      throw new Error('Failed to delete dataset');
+    });
+  }
+
   public async withdrawFromPublication(datasetId: string, revisionId: string): Promise<DatasetDTO> {
     logger.debug(`Attempting to withdraw scheduled revision from publication`);
     return this.fetch({

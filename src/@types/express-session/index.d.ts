@@ -7,5 +7,6 @@ declare module 'express-session' {
     errors: ViewError[] | undefined;
     dimensionPatch: DimensionPatchDTO | undefined;
     updateType: string | undefined;
+    flash: string[] | undefined;
   }
 }

@@ -3,6 +3,8 @@
 <div class="govuk-width-container app-width-container">
     <main class="govuk-main-wrapper" id="main-content" role="main">
 
+        <%- include("partials/flash-messages", locals.flash); %>
+
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
                 <h1 class="govuk-heading-l"><%= t('homepage.heading') %></h1>
