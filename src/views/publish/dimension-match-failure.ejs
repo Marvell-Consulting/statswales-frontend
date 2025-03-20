@@ -61,13 +61,10 @@
 
         <h2 class="govuk-heading-l"><%= t('publish.dimension_match_failure.actions') %></h2>
         <pre><%= JSON.stringify(locals.dimensionPatch, null, 2)%></pre>
-        <% if (locals.patchRequest.dimension_type === 'reference_data') { %>
-            <p class="govuk-body"><a href="<%= buildUrl(`/publish/${locals.datasetId}/dimension-data-chooser/${locals.dimension.id}/`, i18n.language) %>" class="govuk-link">
-                    <%= t('publish.dimension_match_failure.try_different_format')%></a></p>
-        <% } else { %>
-            <p class="govuk-body"><a href="<%= buildUrl(`/publish/${locals.datasetId}/dimension-data-chooser/${locals.dimension.id}/`, i18n.language) %>" class="govuk-link">
-                    <%= t('publish.dimension_match_failure.try_different_format')%></a></p>
 
+        <p class="govuk-body"><a href="<%= buildUrl(`/publish/${locals.datasetId}/dimension/${locals.dimension.id}/`, i18n.language) %>" class="govuk-link">
+                <%= t('publish.dimension_match_failure.try_different_format')%></a></p>
+        <% if (locals.patchRequest.dimension_type !== 'reference_data') { %>
             <p class="govuk-body"><a href="<%= buildUrl(`/publish/${locals.datasetId}/lookup/${locals.dimension.id}/`, i18n.language) %>" class="govuk-link">
                     <%= t('publish.dimension_match_failure.try_different_lookup')%></a></p>
         <% } %>

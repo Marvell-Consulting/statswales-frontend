@@ -744,8 +744,7 @@ export const lookupReview = async (req: Request, res: Response, next: NextFuncti
     if (req.method === 'POST') {
       switch (req.body.confirm) {
         case 'true':
-          if (revisit)
-            res.redirect(req.buildUrl(`/publish/${dataset.id}/dimension-data-chooser/${dimension.id}`, req.language));
+          if (revisit) res.redirect(req.buildUrl(`/publish/${dataset.id}/dimension/${dimension.id}`, req.language));
           else res.redirect(req.buildUrl(`/publish/${dataset.id}/dimension/${dimension.id}/name`, req.language));
           break;
         case 'goback':
@@ -754,7 +753,7 @@ export const lookupReview = async (req: Request, res: Response, next: NextFuncti
             if (dimension.type === DimensionType.LookupTable) {
               res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/`, req.language));
             } else {
-              res.redirect(req.buildUrl(`/publish/${dataset.id}/dimension-data-chooser/${dimension.id}`, req.language));
+              res.redirect(req.buildUrl(`/publish/${dataset.id}/dimension/${dimension.id}`, req.language));
             }
           } catch (err) {
             const error = err as ApiException;
@@ -959,7 +958,7 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
                 }
               }
             ];
-            res.redirect(req.buildUrl(`/publish/${dataset.id}/dimension-data-chooser/${dimension.id}/`, req.language));
+            res.redirect(req.buildUrl(`/publish/${dataset.id}/dimension/${dimension.id}/`, req.language));
             return;
           }
           break;
@@ -1049,7 +1048,7 @@ export const fetchTimeDimensionPreview = async (req: Request, res: Response, nex
     }
     logger.debug(JSON.stringify(dimension, null, 2));
     if (dimension && dimension.extractor && req.path.indexOf('change') === -1) {
-      res.render('publish/date-revisit', { ...dataPreview, dimension });
+      res.render('publish/dimension-revisit', { ...dataPreview, dimension });
     } else {
       res.render('publish/date-chooser', { ...dataPreview, dimension });
     }

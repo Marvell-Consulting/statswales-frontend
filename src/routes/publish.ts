@@ -96,18 +96,11 @@ publish.post('/:datasetId/measure/name', upload.none(), fetchDataset(Include.Dat
 publish.post('/:datasetId/measure/change-name', upload.none(), fetchDataset(Include.Data), measureName);
 
 /* Dimension creation */
-publish.get('/:datasetId/dimension-data-chooser/:dimensionId', fetchDataset(Include.Data), fetchDimensionPreview);
-publish.post('/:datasetId/dimension-data-chooser/:dimensionId', fetchDataset(Include.Data), fetchDimensionPreview);
-publish.get(
-  '/:datasetId/dimension-data-chooser/:dimensionId/change-type',
-  fetchDataset(Include.Data),
-  fetchDimensionPreview
-);
-publish.post(
-  '/:datasetId/dimension-data-chooser/:dimensionId/change-type',
-  fetchDataset(Include.Data),
-  fetchDimensionPreview
-);
+publish.get('/:datasetId/dimension/:dimensionId', fetchDataset(Include.Data), fetchDimensionPreview);
+publish.post('/:datasetId/dimension/:dimensionId', fetchDataset(Include.Data), fetchDimensionPreview);
+publish.get('/:datasetId/dimension/:dimensionId/change-type', fetchDataset(Include.Data), fetchDimensionPreview);
+publish.post('/:datasetId/dimension/:dimensionId/change-type', fetchDataset(Include.Data), fetchDimensionPreview);
+
 publish.get('/:datasetId/numbers/:dimensionId', fetchDataset(Include.Data), setupNumberDimension);
 publish.post('/:datasetId/numbers/:dimensionId', fetchDataset(Include.Data), upload.none(), setupNumberDimension);
 

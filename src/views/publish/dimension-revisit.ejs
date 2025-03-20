@@ -32,10 +32,10 @@
                     <ul class="govuk-list">
                         <% if (dimension.type === 'lookup_table') { %>
                             <li><a href="<%= buildUrl(`/publish/${locals.datasetId}/lookup/${locals.dimension.id}/`, i18n.language) %>" class="govuk-link"><%= t('publish.lookup_table_review.change_lookup_table') %></li>
-                        <% } else if (dimension.type === 'date') { %>
+                        <% } else if (dimension.type === 'date_period' || dimension.type === 'date') { %>
                             <li><a href="<%= buildUrl(`/publish/${locals.datasetId}/dates/${locals.dimension.id}/change-format`, i18n.language) %>" class="govuk-link"><%= t('publish.lookup_table_review.change_date_format') %></li>
                         <% } %>
-                        <li><a href="<%= buildUrl(`/publish/${locals.datasetId}/dimension-data-chooser/${locals.dimension.id}/change-type`, i18n.language) %>" class="govuk-link"><%= t('publish.lookup_table_review.change_dimension_type') %></li>
+                        <li><a href="<%= buildUrl(`/publish/${locals.datasetId}/dimension/${locals.dimension.id}/change-type`, i18n.language) %>" class="govuk-link"><%= t('publish.lookup_table_review.change_dimension_type') %></li>
                         <li><a href="<%= buildUrl(`/publish/${locals.datasetId}/dimension/${locals.dimension.id}/change-name`, i18n.language) %>" class="govuk-link"><%= t('publish.time_dimension_review.change_name') %></a></li>
                     </ul>
                 </div>

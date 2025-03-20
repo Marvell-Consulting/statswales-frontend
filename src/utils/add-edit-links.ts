@@ -5,10 +5,7 @@ import { TranslationDTO } from '../dtos/translations';
 export const addEditLinks = (translations: TranslationDTO[], datasetId: string, req: Request) => {
   return translations.map((translation) => {
     if (translation.type === 'dimension') {
-      translation.edit_link = req.buildUrl(
-        `/publish/${datasetId}/dimension-data-chooser/${translation.id}`,
-        req.language
-      );
+      translation.edit_link = req.buildUrl(`/publish/${datasetId}/dimension/${translation.id}`, req.language);
       return translation;
     }
 

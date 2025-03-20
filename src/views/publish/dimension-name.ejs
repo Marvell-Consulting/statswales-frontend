@@ -8,7 +8,7 @@
                     <% if (locals.dimensionType ==='measure') { %>
                         <a href="<%= buildUrl(`/publish/${locals.datasetId}/measure`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
                     <% } else { %>
-                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/dimension-data-chooser/${locals.id}`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/dimension/${locals.id}`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
                     <% } %>
                 <% } else { %>
                     <% switch (locals.dimensionType) {
