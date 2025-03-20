@@ -3,7 +3,13 @@
 <div class="govuk-width-container app-width-container">
     <main class="govuk-main-wrapper" id="main-content" role="main">
 
-        <%- include("../partials/error-handler"); %>
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <h1 class="govuk-heading-xl govuk-!-margin-bottom-2"><%= datasetTitle %></h1>
+            </div>
+        </div>
+
+        <%- include("../partials/dataset/status", { datasetStatus, publishingStatus }); %>
 
         <div class="govuk-panel">
             <p class="govuk-panel__title-m">
@@ -11,10 +17,8 @@
             </p>
         </div>
 
-        <h1 class="govuk-heading-xl"><%= preview.title %></h1>
-
         <%- include("../partials/dataset/key-info", { keyInfo: preview.keyInfo }); %>
-
+        <% if (locals?.data) { %>
         <div class="govuk-tabs" data-module="govuk-tabs">
             <h2 class="govuk-tabs__title">
                 <%= t('dataset_view.contents') %>
@@ -69,52 +73,67 @@
                         </form>
                     </div>
                 </div>
-                <% if (locals?.data) { %>
-                    <div class="govuk-grid-row">
-                        <div class="table-display govuk-grid-column-full with-overflow">
-                            <table class="govuk-table" style="position: relative; border-collapse: collapse;">
-                                <colgroup>
-                                    <% locals.headers.forEach(function(cell, idx) { %>
-                                        <col class="<%= cell.type === 'ignore' ? 'ignore-column' : '' %>" />
-                                    <% }); %>
-                                </colgroup>
-                                <thead class="govuk-table__head">
-                                <tr class="govuk-table__row">
-                                    <% locals.headers.forEach(function(cell, idx) { %>
-                                        <% if (cell.source_type === 'line_number') { %>
-                                            <th scope="col" class="govuk-table__header">
-                                                <span class="govuk-visually-hidden"><%= t('publish.preview.row_number') %></span>
-                                            </th>
-                                        <% } else { %>
-                                            <th scope="col" class="govuk-table__header">
-                                                <% if (cell.source_type && cell.source_type !== 'unknown' && cell.source_type !== 'line_number') { %>
-                                                    <span class="region-subhead"><%= t(`publish.preview.source_type.${cell.source_type}`) %></span><br />
-                                                <% } %>
-                                                <%= cell.name || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %>
-                                            </th>
-                                        <% } %>
+                <div class="govuk-grid-row">
+                    <div class="table-display govuk-grid-column-full with-overflow">
+                        <table class="govuk-table" style="position: relative; border-collapse: collapse;">
+                            <colgroup>
+                                <% locals.headers.forEach(function(cell, idx) { %>
+                                    <col class="<%= cell.type === 'ignore' ? 'ignore-column' : '' %>" />
+                                <% }); %>
+                            </colgroup>
+                            <thead class="govuk-table__head">
+                            <tr class="govuk-table__row">
+                                <% locals.headers.forEach(function(cell, idx) { %>
+                                    <% if (cell.source_type === 'line_number') { %>
+                                        <th scope="col" class="govuk-table__header">
+                                            <span class="govuk-visually-hidden"><%= t('publish.preview.row_number') %></span>
+                                        </th>
+                                    <% } else { %>
+                                        <th scope="col" class="govuk-table__header">
+                                            <% if (cell.source_type && cell.source_type !== 'unknown' && cell.source_type !== 'line_number') { %>
+                                                <span class="region-subhead"><%= t(`publish.preview.source_type.${cell.source_type}`) %></span><br />
+                                            <% } %>
+                                            <%= cell.name || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %>
+                                        </th>
+                                    <% } %>
+                                <% }); %>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <% locals.data.forEach(function(row) { %>
+                                <tr>
+                                    <% row.forEach(function(cell, index) { %>
+                                        <td class="govuk-table__cell <%= locals.headers[index].source_type %>">
+                                            <%= cell %>
+                                        </td>
                                     <% }); %>
                                 </tr>
-                                </thead>
-                                <tbody>
-                                <% locals.data.forEach(function(row) { %>
-                                    <tr>
-                                        <% row.forEach(function(cell, index) { %>
-                                            <td class="govuk-table__cell <%= locals.headers[index].source_type %>">
-                                                <%= cell %>
-                                            </td>
-                                        <% }); %>
-                                    </tr>
-                                <% }); %>
-                                </tbody>
-                            </table>
-                        </div>
+                            <% }); %>
+                            </tbody>
+                        </table>
                     </div>
-                    <% locals.anchor = 'preview' %>
-                    <%- include("../partials/pagination", locals.anchor, t, locals.current_page, locals.total_records, locals.pagaination); %>
-                <% } %>
+                </div>
+                <% locals.anchor = 'preview' %>
+                <%- include("../partials/pagination", locals.anchor, t, locals.current_page, locals.total_records, locals.pagaination); %>
             </div>
         </div>
+        <% } else { %>
+        <div class="govuk-error-summary" data-module="govuk-error-summary">
+            <div class="govuk-error-summary__title">
+                <h2 class="govuk-heading-s"><%= t('errors.preview_failure.generation_fail') %></h2>
+            </div>
+            <div class="govuk-error-summary__body">
+                <p>
+                    <%= t('errors.preview_failure.no_preview') %>
+                </p>
+                <p>
+                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview`, i18n.language, undefined, 'preview') %>" class="govuk-link">
+                        <%= t('errors.preview_failure.try_again') %>
+                    </a>
+                </p>
+            </div>
+        </div>
+        <% } %>
 
         <%- include("../partials/dataset/notes", { notes: preview.notes }); %>
 

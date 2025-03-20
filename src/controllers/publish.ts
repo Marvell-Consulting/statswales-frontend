@@ -397,7 +397,7 @@ export const cubePreview = async (req: Request, res: Response) => {
   const dataset = singleLangDataset(res.locals.dataset, req.language);
   let revision = dataset.draft_revision;
   let errors: ViewError[] | undefined;
-  let previewData: ViewDTO | undefined;
+  let previewData: ViewDTO | ViewErrDTO | undefined;
   let pagination: (string | number)[] = [];
   let previewMetadata: PreviewMetadata | undefined;
   let status = 200;
@@ -428,24 +428,27 @@ export const cubePreview = async (req: Request, res: Response) => {
     logger.error(error, `Failed to get preview metadata for revision ${revision.id}`);
     status = 500;
   }
-
   res.status(status);
-  if (previewData && previewMetadata) {
-    logger.debug('Rendering cube preview');
-    res.render('publish/cube-preview', { ...previewData, dataset, preview: previewMetadata, pagination, errors });
-    return;
-  }
-
   if (previewMetadata) {
-    logger.debug('Rendering cube preview with no preview data');
     errors = [{ field: 'preview', message: { key: 'errors.preview.failed_to_get_preview' } }];
-    const preview: ViewErrDTO = {
-      status: 500,
+    if (!previewData) {
+      previewData = {
+        status: 500,
+        errors,
+        dataset_id: dataset.id
+      };
+    }
+    res.render('publish/cube-preview', {
+      ...previewData,
+      preview: previewMetadata,
+      dataset,
+      pagination,
       errors,
-      dataset_id: dataset.id
-    };
-    logger.debug('Rendering cube failure page');
-    res.render('publish/cube-preview', { ...preview, preview: previewMetadata, dataset, pagination, errors });
+      datasetStatus,
+      publishingStatus,
+      statusToColour,
+      datasetTitle
+    });
     return;
   }
 

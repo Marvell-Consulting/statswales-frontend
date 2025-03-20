@@ -195,6 +195,11 @@
             "heading": "Main information"
 
         },
+        "delete_dataset": {
+          "heading": "By continuing, you confirm this dataset should be deleted",
+          "message": "All data for this dataset will be removed permanently. This cannot be undone.",
+          "button": "Delete dataset"
+        },
         "start": {
             "title": "Create a new dataset",
             "p1": "To create a new dataset, you'll need:",
@@ -1078,7 +1083,10 @@
         "preview_failure": {
           "heading": "Filed to generate dataset preview for {{datasetTitle}}",
           "message": "Something went wrong trying to generate preview",
-          "error": "We were unable to generate a preview of the dataset due to an unexpected server error."
+          "error": "We were unable to generate a preview of the dataset due to an unexpected server error.",
+          "generation_fail": "Cube generation failed",
+          "no_preview": "Table preview and download options could not be generated. Check you've added reference data to all dimensions or the data table is correct.",
+          "try_again": "Try Again"
         },
         "datalake_error": "Unable to connect to Data Lake",
         "blob_storage_errror": "Unable to connect to Blob Storage Service",

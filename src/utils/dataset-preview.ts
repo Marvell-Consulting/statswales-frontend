@@ -6,7 +6,10 @@ import { markdownToSafeHTML } from './markdown-to-html';
 import { isPublished } from './revision';
 import { PreviewMetadata } from '../interfaces/preview-metadata';
 
-export const getDatasetPreview = async (dataset: SingleLanguageDataset, revision: SingleLanguageRevision): Promise<PreviewMetadata> => {
+export const getDatasetPreview = async (
+  dataset: SingleLanguageDataset,
+  revision: SingleLanguageRevision
+): Promise<PreviewMetadata> => {
   if (!revision || !revision.metadata) {
     throw new Error('preview requires access to the revision and metadata');
   }
