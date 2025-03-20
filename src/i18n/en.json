@@ -1085,8 +1085,8 @@
           "message": "Something went wrong trying to generate preview",
           "error": "We were unable to generate a preview of the dataset due to an unexpected server error.",
           "generation_fail": "Cube generation failed",
-          "no_preview": "Table preview and download options could not be generated. Check you've added reference data to all dimensions or the data table is correct.",
-          "try_again": "Try Again"
+          "no_preview": "Cube could not be generated, so table preview and download options are not available. Check you've added reference data to all dimensions or the data table is correct.",
+          "try_again": "Reload the page"
         },
         "datalake_error": "Unable to connect to Data Lake",
         "blob_storage_errror": "Unable to connect to Blob Storage Service",
