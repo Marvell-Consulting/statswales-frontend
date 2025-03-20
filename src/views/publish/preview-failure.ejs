@@ -1,0 +1,28 @@
+<%- include("../partials/header"); %>
+
+<div class="govuk-width-container">
+    <main class="govuk-main-wrapper " id="main-content" role="main">
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <h1 class="govuk-heading-xl govuk-!-margin-bottom-2"><%= t('errors.preview_failure.heading', { datasetTitle }) %></h1>
+            </div>
+        </div>
+
+        <%- include("../partials/dataset/status", { datasetStatus, publishingStatus }); %>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <div class="warning-background">
+                    <div class="govuk-error-message alert-warning">
+                        <h2 class="govuk-heading-l"><%= t('errors.preview_failure.message') %></h2>
+
+                        <p class="govuk-heading-s"><%= t('errors.preview_failure.error') %></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<%- include("../partials/footer"); %>

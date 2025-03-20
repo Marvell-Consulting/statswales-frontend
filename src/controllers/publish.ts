@@ -70,6 +70,7 @@ import { Locale } from '../enums/locale';
 import { getLatestRevision } from '../utils/revision';
 import { DatasetInclude } from '../enums/dataset-include';
 import { NumberType } from '../enums/number-type';
+import { PreviewMetadata } from '../interfaces/preview-metadata';
 
 export const start = (req: Request, res: Response) => {
   req.session.errors = undefined;
@@ -398,6 +399,8 @@ export const cubePreview = async (req: Request, res: Response) => {
   let errors: ViewError[] | undefined;
   let previewData: ViewDTO | undefined;
   let pagination: (string | number)[] = [];
+  let previewMetadata: PreviewMetadata | undefined;
+  let status = 200;
 
   if (!revision) {
     const revisionId = getLatestRevision(res.locals.dataset)?.id;
@@ -405,20 +408,48 @@ export const cubePreview = async (req: Request, res: Response) => {
     revision = singleLangRevision(revWithMeta, req.language)!;
   }
 
+  const datasetStatus = getDatasetStatus(res.locals.dataset);
+  const publishingStatus = getPublishingStatus(res.locals.dataset);
+  const datasetTitle = revision.metadata?.title;
+
   try {
     const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
     const pageSize = Number.parseInt(req.query.page_size as string, 10) || 10;
     previewData = await req.pubapi.getRevisionPreview(dataset.id, revision.id, pageNumber, pageSize);
-    if (!previewData) {
-      throw new Error('No preview data found.');
-    }
     pagination = generateSequenceForNumber(previewData.current_page, previewData.total_pages);
-    const preview = await getDatasetPreview(dataset, revision);
-    res.render('publish/cube-preview', { ...previewData, dataset, preview, pagination, errors });
-  } catch (_err) {
-    res.status(400);
-    errors = [{ field: 'preview', message: { key: 'errors.preview.failed_to_get_preview' } }];
+  } catch (error) {
+    logger.error(error, `Failed to get preview data for revision ${revision.id}`);
+    status = 500;
   }
+
+  try {
+    previewMetadata = await getDatasetPreview(dataset, revision);
+  } catch (error) {
+    logger.error(error, `Failed to get preview metadata for revision ${revision.id}`);
+    status = 500;
+  }
+
+  res.status(status);
+  if (previewData && previewMetadata) {
+    logger.debug('Rendering cube preview');
+    res.render('publish/cube-preview', { ...previewData, dataset, preview: previewMetadata, pagination, errors });
+    return;
+  }
+
+  if (previewMetadata) {
+    logger.debug('Rendering cube preview with no preview data');
+    errors = [{ field: 'preview', message: { key: 'errors.preview.failed_to_get_preview' } }];
+    const preview: ViewErrDTO = {
+      status: 500,
+      errors,
+      dataset_id: dataset.id
+    };
+    logger.debug('Rendering cube failure page');
+    res.render('publish/cube-preview', { ...preview, preview: previewMetadata, dataset, pagination, errors });
+    return;
+  }
+
+  res.render('publish/preview-failure', { datasetStatus, publishingStatus, statusToColour, datasetTitle });
 };
 
 export const downloadDataset = async (req: Request, res: Response, next: NextFunction) => {
