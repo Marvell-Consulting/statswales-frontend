@@ -14,6 +14,7 @@ export const getDatasetPreview = async (dataset: SingleLanguageDataset, revision
   const { rounding_applied, designation, related_links } = revision;
 
   const preview = {
+    title: revision.metadata.title,
     keyInfo: {
       updatedAt: revision?.publish_at,
       nextUpdateAt: nextUpdateAt(revision),
