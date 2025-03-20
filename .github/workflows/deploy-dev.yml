@@ -27,7 +27,7 @@ jobs:
         env:
           AZURE_DEVOPS_PAT: ${{ secrets.AZURE_DEVOPS_PAT }}
           IMAGE_TAG: ${{ env.IMAGE_TAG }}
-          DEVOPS_PROJECT_ID: ${{ secrets.AZURE_PROJECT_ID }}
+          DEVOPS_PROJECT_ID: ${{ secrets.DEVOPS_PROJECT_ID }}
         run: |
           # Construct the JSON payload using a heredoc
           PAYLOAD=$(cat <<EOF
