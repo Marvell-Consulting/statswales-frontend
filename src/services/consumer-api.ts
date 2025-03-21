@@ -81,11 +81,11 @@ export class ConsumerApi {
     return this.fetch({ url: `published/${datasetId}` }).then((response) => response.json() as unknown as DatasetDTO);
   }
 
-  public async getCubeFileStream(datasetId: string, revisionId: string, format: FileFormat): Promise<ReadableStream> {
-    logger.debug(`Fetching ${format} stream for revision: ${revisionId}...`);
+  public async getCubeFileStream(datasetId: string, format: FileFormat): Promise<ReadableStream> {
+    logger.debug(`Fetching ${format} stream for dataset: ${datasetId}...`);
 
     return this.fetch({
-      url: `published/${datasetId}/revision/${revisionId}/download/${format}`
+      url: `published/${datasetId}/download/${format}`
     }).then((response) => response.body as ReadableStream);
   }
 }

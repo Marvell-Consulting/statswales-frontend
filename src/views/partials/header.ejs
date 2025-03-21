@@ -5,7 +5,6 @@
     <meta charset="utf-8">
     <title><%= t('app_title') %> <%= t('beta') %><%= locals.title ? ` - ${locals.title}` : '' %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="blue">
     <link rel="icon" type="image/ico"  href="/assets/images/favicon.ico" >
     <link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon-precomposed" sizes="180x180" href="/assets/images/apple-touch-icon-180x180-precomposed.png">
@@ -26,6 +25,12 @@
     <link rel="stylesheet" href="/css/accessible-autocomplete.min.css">
     <link rel="stylesheet" href="/css/app.css">
     <meta property="og:image" content="/images/govuk-opengraph-image.png">
+    <meta name="theme-color" content="#323232">
+    <meta name="theme-color" content="#323232" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#323232" media="(prefers-color-scheme: dark)">
+    <meta name="msapplication-navbutton-color" content="#323232">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#323232">
 </head>
 
 <body class="govuk-template__body app-body-class" data-test="My value" data-other="report:details">

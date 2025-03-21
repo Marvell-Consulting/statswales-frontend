@@ -71,6 +71,7 @@ import { getLatestRevision } from '../utils/revision';
 import { DatasetInclude } from '../enums/dataset-include';
 import { NumberType } from '../enums/number-type';
 import { PreviewMetadata } from '../interfaces/preview-metadata';
+import slugify from 'slugify';
 
 export const start = (req: Request, res: Response) => {
   req.session.errors = undefined;
@@ -466,8 +467,15 @@ export const downloadDataset = async (req: Request, res: Response, next: NextFun
       revision = singleLangRevision(revWithMeta, req.language)!;
     }
 
+    let attachmentName: string;
+    if (revision.metadata?.title) {
+      attachmentName = `${slugify(revision.metadata?.title, { lower: true })}-${revision.revision_index > 0 ? `v${revision.revision_index}` : 'draft'}`;
+    } else {
+      attachmentName = `${dataset.id}-${revision.revision_index > 0 ? `v${revision.revision_index}` : 'draft'}`;
+    }
+
     const format = req.query.format as FileFormat;
-    const headers = getDownloadHeaders(format, revision.id);
+    const headers = getDownloadHeaders(format, attachmentName);
 
     if (!headers) {
       throw new NotFoundException('errors.preview.invalid_download_format');
