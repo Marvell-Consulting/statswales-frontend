@@ -44,11 +44,7 @@
           <% taskList.dimensions?.forEach(function(dimension) { %>
             <li class="govuk-task-list__item govuk-task-list__item--with-link">
                 <div class="govuk-task-list__name-and-hint">
-                    <% if (dimension.type === 'date_period') { %>
-                      <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/date/${dimension.id}`, i18n.language) %>"><%= dimension.name %></a>
-                    <% } else { %>
-                      <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/dimension-data-chooser/${dimension.id}`, i18n.language) %>"><%= dimension.name %></a>
-                    <% } %>
+                  <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/dimension/${dimension.id}`, i18n.language) %>"><%= dimension.name %></a>
                 </div>
                 <%- include("../partials/tasklist-status", { status: dimension.status }) %>
               </li>
