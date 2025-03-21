@@ -195,7 +195,7 @@
           <% if (datasetStatus === 'new') { %>
           <li class="govuk-task-list__item govuk-task-list__item--with-link tasklist-no-border">
             <div class="govuk-task-list__name-and-hint">
-              <a href="<%= buildUrl(`/publish/${locals.datasetId}/delete`, i18n.language) %>" target="_blank">
+              <a href="<%= buildUrl(`/publish/${locals.datasetId}/delete`, i18n.language) %>">
                 <%= t('publish.tasklist.delete') %>
               </a>
             </div>
