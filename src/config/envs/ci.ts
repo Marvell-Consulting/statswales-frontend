@@ -11,7 +11,7 @@ export function getCIConfig(): AppConfig {
     env: AppEnv.Ci,
     supportEmail: 'support@example.com',
     logger: {
-      level: 'silent'
+      level: 'debug'
     },
     frontend: {
       port: 3000,
