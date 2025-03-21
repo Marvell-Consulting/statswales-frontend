@@ -11,7 +11,6 @@ import { ensureAuthenticated } from './middleware/ensure-authenticated';
 import { ensureDeveloper } from './middleware/ensure-developer';
 import { rateLimiter } from './middleware/rate-limiter';
 import { i18next, i18nextMiddleware } from './middleware/translation';
-import { skipMap } from './middleware/skip-map';
 import { languageSwitcher } from './middleware/language-switcher';
 import { initServices } from './middleware/services';
 import { auth } from './routes/auth';
@@ -24,6 +23,7 @@ import { notFound } from './routes/not-found';
 import { guidance } from './routes/guidance';
 import { consumer } from './routes/consumer';
 import { cookies } from './routes/cookie';
+import { handleAsset404 } from './middleware/asset-404';
 
 const app: Application = express();
 const config = appConfig();
@@ -34,6 +34,12 @@ logger.info(`App config loaded for '${config.env}' env`);
 app.disable('x-powered-by');
 app.set('trust proxy', 1);
 
+// asset routes (bypass middleware)
+app.use('/public', express.static(`${__dirname}/public`));
+app.use('/css', express.static(`${__dirname}/css`));
+app.use('/assets', express.static(`${__dirname}/assets`));
+app.use(handleAsset404);
+
 // enable middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -41,18 +47,12 @@ app.use(httpLogger);
 app.use(cookieParser());
 app.use(session);
 app.use(i18nextMiddleware.handle(i18next));
-app.use(skipMap);
 app.use(languageSwitcher);
 app.use(initServices);
 
 // configure the view engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
-// asset routes
-app.use('/public', express.static(`${__dirname}/public`));
-app.use('/css', express.static(`${__dirname}/css`));
-app.use('/assets', express.static(`${__dirname}/assets`));
 
 // public routes
 app.use('/healthcheck', rateLimiter, healthcheck);
