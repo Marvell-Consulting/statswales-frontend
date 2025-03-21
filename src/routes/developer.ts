@@ -15,6 +15,11 @@ import { ResultsetWithCount } from '../interfaces/resultset-with-count';
 
 export const developer = Router();
 
+developer.use((req: Request, res: Response, next: NextFunction) => {
+  res.locals.activePage = 'developer';
+  next();
+});
+
 developer.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const results: ResultsetWithCount<DatasetListItemDTO> = await req.pubapi.getDatasetList();

@@ -82,10 +82,14 @@
         <div class="nav__content">
             <div class="govuk-width-container">
                 <ul aria-hidden="true">
-                    <li><a href="<%= buildUrl('/', i18n.language) %>"><%= t('header.navigation.home') %></a></li>
-                    <li><a href="<%= buildUrl('/guidance', i18n.language) %>"><%= t('header.navigation.guidance') %></a></li>
+                    <li>
+                        <a href="<%= buildUrl('/', i18n.language) %>" <% if (locals.activePage === 'home') { %>class="is-active" aria-current="page" <% } %>><%= t('header.navigation.home') %></a>
+                    </li>
+                    <li>
+                        <a href="<%= buildUrl('/guidance', i18n.language) %>" <% if (locals.activePage === 'guidance') { %>class="is-active" aria-current="page" <% } %>><%= t('header.navigation.guidance') %></a>
+                    </li>
                     <% if (locals?.isDeveloper) { %>
-                        <li><a href="<%= buildUrl('/developer', i18n.language) %>"><%= t('header.navigation.developer') %></a></li>
+                        <li><a href="<%= buildUrl('/developer', i18n.language) %>" <% if (locals.activePage === 'developer') { %>class="is-active" aria-current="page" <% } %>><%= t('header.navigation.developer') %></a></li>
                     <% } %>
                 </ul>
             </div>

@@ -13,6 +13,11 @@ import { logger } from '../utils/logger';
 export const guidance = Router();
 const docsPath = path.join(__dirname, '..', '..', 'docs', 'guidance');
 
+guidance.use((req: Request, res: Response, next: NextFunction) => {
+  res.locals.activePage = 'guidance';
+  next();
+});
+
 guidance.get('/', async (req: Request, res: Response) => {
   const documentList: string[] = [];
   let fullDocsPath = path.join(docsPath, 'en');
