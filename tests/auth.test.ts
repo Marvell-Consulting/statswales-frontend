@@ -29,7 +29,7 @@ describe('Authentication', () => {
   afterAll(() => mockBackend.close());
 
   describe('Ensure authenticated', () => {
-    test.only('should redirect to login page when not authenticated', async () => {
+    test('should redirect to login page when not authenticated', async () => {
       const res = await request(app).get('/en-GB');
       expect(res.status).toBe(302);
       expect(res.header.location).toBe('/en-GB/auth/login');
