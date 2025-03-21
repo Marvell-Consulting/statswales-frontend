@@ -1,6 +1,9 @@
 export enum FileFormat {
   Csv = 'csv',
   Parquet = 'parquet',
-  Excel = 'excel',
-  DuckDb = 'duckdb'
+  Xlsx = 'xlsx',
+  DuckDb = 'duckdb',
+  Json = 'json',
+  Odf = 'odf',
+  Sqlite = 'sqlite'
 }

@@ -1,6 +1,7 @@
 import { Readable } from 'node:stream';
 
 import { Request, Response, NextFunction } from 'express';
+import slugify from 'slugify';
 
 import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
@@ -51,14 +52,21 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
       throw new NotFoundException('no published revision found');
     }
 
+    let attachmentName: string;
+    if (revision.metadata?.title) {
+      attachmentName = `${slugify(revision.metadata?.title, { lower: true })}-${revision.revision_index > 0 ? `v${revision.revision_index}` : 'draft'}`;
+    } else {
+      attachmentName = `${dataset.id}-${revision.revision_index > 0 ? `v${revision.revision_index}` : 'draft'}`;
+    }
+
     const format = req.query.format as FileFormat;
-    const headers = getDownloadHeaders(format, revision.id);
+    const headers = getDownloadHeaders(format, attachmentName);
 
     if (!headers) {
       throw new NotFoundException('invalid file format');
     }
 
-    const fileStream = await req.conapi.getCubeFileStream(dataset.id, revision.id, format);
+    const fileStream = await req.conapi.getCubeFileStream(dataset.id, format);
     res.writeHead(200, headers);
     const readable: Readable = Readable.from(fileStream);
     readable.pipe(res);

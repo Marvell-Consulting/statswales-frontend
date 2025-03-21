@@ -3,8 +3,8 @@
       <i class="fa-solid fa-file-csv"></i> <%= t('dataset_view.download_as.csv') %></a>
   <a href="<%= buildUrl(`/published/${dataset.id}/download`, i18n.language, { format: 'parquet' }) %>" class="govuk-button">
       <i class="fa-solid fa-table"></i> <%= t('dataset_view.download_as.parquet') %></a>
-  <a href="<%= buildUrl(`/published/${dataset.id}/download`, i18n.language, { format: 'excel' }) %>" class="govuk-button">
+  <a href="<%= buildUrl(`/published/${dataset.id}/download`, i18n.language, { format: 'xlsx' }) %>" class="govuk-button">
       <i class="fa-solid fa-file-excel"></i> <%= t('dataset_view.download_as.excel') %></a>
-  <a href="<%= buildUrl(`/published/${dataset.id}/download`, i18n.language, { format: 'cube' }) %>" class="govuk-button">
+  <a href="<%= buildUrl(`/published/${dataset.id}/download`, i18n.language, { format: 'duckdb' }) %>" class="govuk-button">
       <i class="fa-solid fa-database"></i> <%= t('dataset_view.download_as.duckdb') %></a>
 </div>
