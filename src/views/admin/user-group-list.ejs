@@ -1,0 +1,36 @@
+<%- include("../partials/header"); %>
+
+<div class="govuk-width-container app-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+        <h1 class="govuk-heading-xl"><%= t('admin.group.list.heading') %></h1>
+
+        <a href="<%= buildUrl(`/admin/group/create`, i18n.language) %>" class="govuk-button"><%= t('admin.group.list.buttons.add') %></a>
+
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-full">
+            <% if (locals?.groups && locals?.groups.length > 0) {%>
+              <table class="govuk-table">
+                <thead class="govuk-table__head">
+                  <tr class="govuk-table__row">
+                    <th class="govuk-table__header"><%= t('admin.group.list.table.name') %></th>
+                    <th class="govuk-table__header"><%= t('admin.group.list.table.user_count') %></th>
+                    <th class="govuk-table__header"><%= t('admin.group.list.table.dataset_count') %></th>
+                  </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                  <% locals?.groups.forEach(function(group) { %>
+                    <tr class="govuk-table__row">
+                      <td class="govuk-table__cell"><a href="<%= buildUrl(`/admin/group/${group.id}`, i18n.language) %>" class="govuk-link"><%= group.name %></a></td>
+                      <td class="govuk-table__cell"><%= group.user_count %></td>
+                      <td class="govuk-table__cell"><%= group.dataset_count %></td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            <% } %>
+          </div>
+        </div>
+    </main>
+</div>
+
+<%- include("../partials/footer"); %>

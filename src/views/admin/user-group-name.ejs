@@ -1,0 +1,44 @@
+<%- include("../partials/header"); %>
+
+  <div class="govuk-width-container app-width-container">
+      <main class="govuk-main-wrapper" id="main-content" role="main">
+
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl"><%= t('admin.group.name.heading') %></h1>
+
+            <%- include("../partials/error-handler"); %>
+
+            <form enctype="multipart/form-data" method="post">
+              <div class="govuk-form-group">
+                <label class="govuk-label" for="name_cy"><%= t('admin.group.name.form.name_cy.label') %></label>
+                <% var nameCyError = locals.errors?.find(e => e.field === 'name_cy') %>
+                <% if (nameCyError) { %>
+                  <p id="name-cy-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span> <%= t(nameCyError.message.key) %>
+                  </p>
+                <% } %>
+                <input class="govuk-input <%= nameCyError ? 'govuk-input--error' : '' %>" id="name_cy" name="name_cy" type="text" value="<%= locals.values.name_cy %>">
+              </div>
+              <div class="govuk-form-group">
+                  <label class="govuk-label" for="name_en"><%= t('admin.group.name.form.name_en.label') %></label>
+                  <% var nameEnError = locals.errors?.find(e => e.field === 'name_en') %>
+                  <% if (nameEnError) { %>
+                    <p id="name-en-error" class="govuk-error-message">
+                      <span class="govuk-visually-hidden">Error:</span> <%= t(nameEnError.message.key) %>
+                    </p>
+                  <% } %>
+                  <input class="govuk-input <%= nameEnError ? 'govuk-input--error' : '' %>" id="name_en" name="name_en" type="text" value="<%= locals.values.name_en %>">
+              </div>
+
+              <button type="submit" class="govuk-button" data-module="govuk-button">
+                  <%= t('buttons.continue') %>
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </main>
+  </div>
+
+<%- include("../partials/footer"); %>

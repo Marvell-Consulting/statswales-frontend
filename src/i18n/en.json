@@ -45,7 +45,7 @@
       "logout": "Sign out",
       "login": "Sign in",
       "developer": "Developer",
-      "admin": "Admin"
+      "admin": "Groups"
     }
   },
   "footer": {
@@ -1179,6 +1179,54 @@
     "sources": "sources",
     "source_confirmation": "source-confirmation",
     "tasklist": "tasklist"
+  },
+  "admin": {
+    "group": {
+      "list": {
+        "heading": "User groups",
+        "table": {
+          "name": "Name",
+          "user_count": "Users",
+          "dataset_count": "Datasets"
+        },
+        "buttons": {
+          "add": "Add group"
+        }
+      },
+      "name": {
+        "heading": "What is the name of the group?",
+        "form": {
+          "name_en": {
+            "label": "Enter the name in English",
+            "error": {
+              "missing": "Enter a name for the group in English"
+            }
+          },
+          "name_cy": {
+            "label": "Enter the name in Welsh",
+            "error": {
+              "missing": "Enter a name for the group in Welsh"
+            }
+          }
+        },
+        "buttons": {
+          "create": "Create group"
+        }
+      },
+      "organisation": {
+        "heading": "Which organisation does this group belong to?",
+        "form": {
+          "organisation_id": {
+            "label": "Organisation",
+            "placeholder": "Select organisation",
+            "error": "Select an organisation"
+          }
+        },
+        "error": {
+          "saving": "Organisation could not be saved. Try again later."
+        }
+      }
+    }
   },
   "consumer": {
     "global": {

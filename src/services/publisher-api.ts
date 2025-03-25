@@ -28,6 +28,7 @@ import { FileFormat } from '../enums/file-format';
 import { FactTableColumnDto } from '../dtos/fact-table-column-dto';
 import { RevisionDTO } from '../dtos/revision';
 import { DatasetInclude } from '../enums/dataset-include';
+import { UserGroupDTO } from '../dtos/user/user-group';
 
 const config = appConfig();
 
@@ -544,5 +545,33 @@ export class PublisherApi {
       url: `dataset/${datasetId}/revision`,
       method: HttpMethod.Post
     }).then((response) => response.json() as unknown as RevisionDTO);
+  }
+
+  public async getUserGroups(page = 1, limit = 20): Promise<ResultsetWithCount<UserGroupDTO>> {
+    logger.debug(`Fetching user group list...`);
+    const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
+
+    return this.fetch({ url: `admin/group?${qs}` }).then(
+      (response) => response.json() as unknown as ResultsetWithCount<UserGroupDTO>
+    );
+  }
+
+  public async getUserGroup(groupId: string): Promise<UserGroupDTO> {
+    logger.debug(`Fetching user group...`);
+    return this.fetch({ url: `admin/group/${groupId}` }).then((response) => response.json() as unknown as UserGroupDTO);
+  }
+
+  public async createUserGroup(values: UserGroupDTO): Promise<UserGroupDTO> {
+    logger.debug(`Creating new user group`);
+    return this.fetch({ url: `admin/group`, method: HttpMethod.Post, json: values }).then(
+      (response) => response.json() as unknown as UserGroupDTO
+    );
+  }
+
+  public async updateUserGroup(groupId: string, values: UserGroupDTO): Promise<UserGroupDTO> {
+    logger.debug(`Updating user group`);
+    return this.fetch({ url: `admin/group/${groupId}`, method: HttpMethod.Patch, json: values }).then(
+      (response) => response.json() as unknown as UserGroupDTO
+    );
   }
 }

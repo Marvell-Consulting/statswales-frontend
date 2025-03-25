@@ -1,0 +1,35 @@
+<%- include("../partials/header"); %>
+<div class="govuk-width-container app-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+
+        <div class="govuk-width-container">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h1 class="govuk-heading-xl"><%= t('admin.group.organisation.heading') %></h1>
+
+                    <%- include("../partials/error-handler"); %>
+
+                    <form enctype="multipart/form-data" method="post">
+                        <div class="govuk-form-group <%= locals.errors?.find(e => e.field === 'organisation_id') ? 'govuk-input--error' : '' %>">
+                            <h2 class="govuk-heading-s"><%= t('admin.group.organisation.form.organisation_id.label') %></h2>
+                            <% if (locals.errors?.find(e => e.field === 'organisation_id')) { %>
+                                <p id="organisation-id-error" class="govuk-error-message">
+                                  <span class="govuk-visually-hidden">Error:</span> <%= t('admin.group.organisation.form.organisation_id.error') %>
+                                </p>
+                            <% } %>
+                            <select id="organisation-id" name="organisation_id" class="govuk-select" aria-describedby="source-hint">
+                                <option value="" selected disabled><%= t('admin.group.organisation.form.organisation_id.placeholder') %></option>
+                                <% for (let organisation of locals.organisations) { %>
+                                    <option value="<%= organisation.id %>" <%= locals.values?.organisation === organisation.id ? 'selected' : '' %>><%= organisation.name %></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<%- include("../partials/footer"); %>
