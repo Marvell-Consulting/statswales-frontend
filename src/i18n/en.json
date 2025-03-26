@@ -1232,7 +1232,8 @@
           }
         },
         "buttons": {
-          "create": "Create group"
+          "create": "Create group",
+          "continue": "Continue"
         }
       },
       "organisation": {
