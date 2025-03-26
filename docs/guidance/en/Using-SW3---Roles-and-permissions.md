@@ -24,7 +24,6 @@ You can have more than one role within a group, and different roles across group
 | View a list of all groups across the service | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
 | Create groups | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
 | Update groups, for example changing a group's name | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
-| Remove groups | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> |
 
 ## Datasets
 
@@ -36,11 +35,12 @@ These permissions only apply to the datasets in a specific group.
 | View unpublished datasets | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> |
 | Create new datasets | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> |
 | Edit or update existing datasets | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> |
-| Move datasets to different groups you're an editor in | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> |
 | Submit datasets for approval | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> |
 | Approve datasets for publishing on scheduled dates | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> |
-| Temporarily unpublish datasets while they're being fixed | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
-| Label datasets as archived | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
+| Request datasets be temporarily unpublished while they're being fixed | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> |
+| Temporarily unpublish datasets while they're being fixed | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> |
+| Request datasets be labelled as archived | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> |
+| Label datasets as archived | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> |
 
 ## User management
 

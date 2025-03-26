@@ -210,8 +210,9 @@
         "dimension_name": {
             "dimension_heading": "What should this dimension be called on the StatsWales website?",
             "measure_heading": "What should this measure be called on the StatsWales website?",
-            "hint": "This should be:",
+            "hint": "The dimension name should be:",
             "concise": "concise and clearly explain what the dimension contains",
+            "unique": "different to other dimension names in this dataset",
             "language": "entered in the language in which you're viewing this service"
         },
         "dimension_type_chooser": {
@@ -1069,6 +1070,7 @@
             "unknowns_found": "Select what each column in the data table contains",
             "multiple_datavalues": "There should only be one column in the data table for data values. Check you've selected the correct options or check the data table is correct.",
             "multiple_footnotes": "There should only be one column in the data table for note codes. Check you've selected the correct options or check the data table is correct.",
+            "multiple_measures": "There should only be one column in the data table for measure or data types. Check you've selected the correct options or check the data table is correct.",
             "dimension_creation_failed": "Dimensions could not be created. Check you've selected the correct options or check the data table is correct."
         },
         "preview": {
