@@ -1,0 +1,43 @@
+<%- include("../partials/header"); %>
+
+  <div class="govuk-width-container app-width-container">
+      <main class="govuk-main-wrapper" id="main-content" role="main">
+
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl"><%= locals.group?.name %></h1>
+
+            <a href="<%= buildUrl(`/admin/group/${locals.group.id}/name`, i18n.language) %>" class="govuk-link"><%= t('admin.group.view.buttons.edit') %></a>
+
+            <h3><%= t('admin.group.view.organisation.heading') %></h3>
+            <p><%= locals.group?.organisation || t('admin.group.view.organisation.not_set') %></p>
+
+            <h3><%= t('admin.group.view.email.heading') %></h3>
+            <p><%= locals.group?.email || t('admin.group.view.email.not_set') %></p>
+          </div>
+        </div>
+
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-two-thirds">
+            <h2><%= t('admin.group.view.users.heading') %></h2>
+            <% if (!locals.group?.users || locals.group.users.length === 0) { %>
+              <p><%= t('admin.group.view.users.none') %></p>
+            <% } else { %>
+            <% } %>
+          </div>
+        </div>
+
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-two-thirds">
+            <h2><%= t('admin.group.view.datasets.heading') %></h2>
+            <% if (!locals.group?.users || locals.group.users.length === 0) { %>
+              <p><%= t('admin.group.view.datasets.none') %></p>
+            <% } else { %>
+            <% } %>
+          </div>
+        </div>
+
+      </main>
+  </div>
+
+<%- include("../partials/footer"); %>

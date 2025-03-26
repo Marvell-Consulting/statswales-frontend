@@ -1,7 +1,14 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import multer from 'multer';
 
-import { listUserGroups, provideGroupName, provideOrganisation, provideEmail } from '../controllers/admin';
+import {
+  listUserGroups,
+  provideGroupName,
+  provideOrganisation,
+  provideEmail,
+  fetchUserGroup,
+  viewGroup
+} from '../controllers/admin';
 
 export const admin = Router();
 
@@ -16,11 +23,14 @@ admin.get('/group', listUserGroups);
 
 admin.get('/group/create', provideGroupName);
 admin.post('/group/create', upload.none(), provideGroupName);
-admin.get('/group/:groupId/name', provideGroupName);
-admin.post('/group/:groupId/name', upload.none(), provideGroupName);
 
-admin.get('/group/:groupId/organisation', provideOrganisation);
-admin.post('/group/:groupId/organisation', upload.none(), provideOrganisation);
+admin.get('/group/:userGroupId', fetchUserGroup, viewGroup);
 
-admin.get('/group/:groupId/email', provideEmail);
-admin.post('/group/:groupId/email', upload.none(), provideEmail);
+admin.get('/group/:userGroupId/name', fetchUserGroup, provideGroupName);
+admin.post('/group/:userGroupId/name', fetchUserGroup, upload.none(), provideGroupName);
+
+admin.get('/group/:userGroupId/organisation', fetchUserGroup, provideOrganisation);
+admin.post('/group/:userGroupId/organisation', fetchUserGroup, upload.none(), provideOrganisation);
+
+admin.get('/group/:userGroupId/email', fetchUserGroup, provideEmail);
+admin.post('/group/:userGroupId/email', fetchUserGroup, upload.none(), provideEmail);

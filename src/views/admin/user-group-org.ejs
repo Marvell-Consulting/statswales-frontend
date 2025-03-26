@@ -11,18 +11,21 @@
 
                     <form enctype="multipart/form-data" method="post">
                         <div class="govuk-form-group <%= locals.errors?.find(e => e.field === 'organisation_id') ? 'govuk-input--error' : '' %>">
-                            <h2 class="govuk-heading-s"><%= t('admin.group.organisation.form.organisation_id.label') %></h2>
-                            <% if (locals.errors?.find(e => e.field === 'organisation_id')) { %>
-                                <p id="organisation-id-error" class="govuk-error-message">
-                                  <span class="govuk-visually-hidden">Error:</span> <%= t('admin.group.organisation.form.organisation_id.error') %>
-                                </p>
-                            <% } %>
-                            <select id="organisation-id" name="organisation_id" class="govuk-select" aria-describedby="source-hint">
-                                <option value="" selected disabled><%= t('admin.group.organisation.form.organisation_id.placeholder') %></option>
-                                <% for (let organisation of locals.organisations) { %>
-                                    <option value="<%= organisation.id %>" <%= locals.values?.organisation === organisation.id ? 'selected' : '' %>><%= organisation.name %></option>
+                            <fieldset class="govuk-fieldset" aria-describedby="designation">
+                                <% if (locals.errors?.find(e => e.field === 'organisation_id')) { %>
+                                    <p id="organisation-id-error" class="govuk-error-message">
+                                      <span class="govuk-visually-hidden">Error:</span> <%= t('admin.group.organisation.form.organisation_id.error') %>
+                                    </p>
                                 <% } %>
-                            </select>
+                                <div class="govuk-radios" data-module="govuk-radios">
+                                    <% locals.organisations.forEach(org => { %>
+                                        <div class="govuk-radios__item">
+                                            <input class="govuk-radios__input" id="<%= `organisation_${org.id}` %>" name="organisation_id" type="radio" value="<%= org.id %>" <%= locals.values.organisation_id === org.id ? 'checked' : '' %> />
+                                            <label class="govuk-label govuk-radios__label" for="<%= `organisation_${org.id}` %>"><%= org.name %></label>
+                                        </div>
+                                    <% }) %>
+                                </div>
+                            </fieldset>
                         </div>
                         <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
                     </form>

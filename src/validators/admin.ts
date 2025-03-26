@@ -1,4 +1,6 @@
-import { body } from 'express-validator';
+import { body, param } from 'express-validator';
+
+export const userGroupIdValidator = () => param('userGroupId').trim().notEmpty().isUUID(4);
 
 export const nameEnValidator = () =>
   body('name_en')
@@ -25,3 +27,9 @@ export const nameCyValidator = () =>
     .withMessage('too_long');
 
 export const organisationIdValidator = () => body('organisation_id').trim().notEmpty().isUUID(4);
+
+export const emailEnValidator = () =>
+  body('email_en').trim().notEmpty().withMessage('missing').bail().isEmail().withMessage('invalid');
+
+export const emailCyValidator = () =>
+  body('email_cy').trim().notEmpty().withMessage('missing').bail().isEmail().withMessage('invalid');

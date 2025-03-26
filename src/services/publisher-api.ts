@@ -29,6 +29,8 @@ import { FactTableColumnDto } from '../dtos/fact-table-column-dto';
 import { RevisionDTO } from '../dtos/revision';
 import { DatasetInclude } from '../enums/dataset-include';
 import { UserGroupDTO } from '../dtos/user/user-group';
+import { UserGroupMetadataDTO } from '../dtos/user/user-group-metadata-dto';
+import { UserGroupListItemDTO } from '../dtos/user/user-group-list-item-dto';
 
 const config = appConfig();
 
@@ -547,12 +549,12 @@ export class PublisherApi {
     }).then((response) => response.json() as unknown as RevisionDTO);
   }
 
-  public async getUserGroups(page = 1, limit = 20): Promise<ResultsetWithCount<UserGroupDTO>> {
+  public async listUserGroups(page = 1, limit = 20): Promise<ResultsetWithCount<UserGroupListItemDTO>> {
     logger.debug(`Fetching user group list...`);
     const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
 
     return this.fetch({ url: `admin/group?${qs}` }).then(
-      (response) => response.json() as unknown as ResultsetWithCount<UserGroupDTO>
+      (response) => response.json() as unknown as ResultsetWithCount<UserGroupListItemDTO>
     );
   }
 
@@ -561,16 +563,16 @@ export class PublisherApi {
     return this.fetch({ url: `admin/group/${groupId}` }).then((response) => response.json() as unknown as UserGroupDTO);
   }
 
-  public async createUserGroup(values: UserGroupDTO): Promise<UserGroupDTO> {
+  public async createUserGroup(meta: UserGroupMetadataDTO[]): Promise<UserGroupDTO> {
     logger.debug(`Creating new user group`);
-    return this.fetch({ url: `admin/group`, method: HttpMethod.Post, json: values }).then(
+    return this.fetch({ url: `admin/group`, method: HttpMethod.Post, json: meta }).then(
       (response) => response.json() as unknown as UserGroupDTO
     );
   }
 
-  public async updateUserGroup(groupId: string, values: UserGroupDTO): Promise<UserGroupDTO> {
+  public async updateUserGroup(group: UserGroupDTO): Promise<UserGroupDTO> {
     logger.debug(`Updating user group`);
-    return this.fetch({ url: `admin/group/${groupId}`, method: HttpMethod.Patch, json: values }).then(
+    return this.fetch({ url: `admin/group/${group.id}`, method: HttpMethod.Patch, json: group }).then(
       (response) => response.json() as unknown as UserGroupDTO
     );
   }

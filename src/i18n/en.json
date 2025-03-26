@@ -1186,11 +1186,33 @@
         "heading": "User groups",
         "table": {
           "name": "Name",
+          "email": "Contact",
           "user_count": "Users",
           "dataset_count": "Datasets"
         },
         "buttons": {
           "add": "Add group"
+        }
+      },
+      "view": {
+        "organisation": {
+          "heading": "Organisation",
+          "not_set": "Not set"
+        },
+        "email": {
+          "heading": "Contact email",
+          "not_set": "Not set"
+        },
+        "users": {
+          "heading": "Users",
+          "none": "No users assigned to this group"
+        },
+        "datasets": {
+          "heading": "Datasets",
+          "none": "No datasets assigned to this group"
+        },
+        "buttons": {
+          "edit": "Change group details"
         }
       },
       "name": {
@@ -1224,6 +1246,25 @@
         },
         "error": {
           "saving": "Organisation could not be saved. Try again later."
+        }
+      },
+      "email": {
+        "heading": "What is the public facing email address for datasets in this group?",
+        "form": {
+          "email_en": {
+            "label": "Enter the email in English",
+            "error": {
+              "missing": "Enter an email for the group in English",
+              "invalid": "Enter a valid email for the group in English"
+            }
+          },
+          "email_cy": {
+            "label": "Enter the email in Welsh",
+            "error": {
+              "missing": "Enter an email for the group in Welsh",
+              "invalid": "Enter a valid email for the group in Welsh"
+            }
+          }
         }
       }
     }

@@ -1,6 +1,6 @@
 import { UserGroupDTO } from './user-group';
 
-export class UserDto {
+export interface UserDTO {
   id: string;
   provider: string;
   email: string;
