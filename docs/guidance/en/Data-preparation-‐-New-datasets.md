@@ -201,12 +201,31 @@ Example part of lookup table for tax band code:
 
 It is important **these specific column headings** are used.
 
+#### Hierarchies
+
+Use the 'hierarchy' column to indicate whether a dimension value is hierarchically below another value. For example, if tax bands were divided into sub-bands such as 'A1', 'A2' and 'A3', the 'hierarchy' column for each of these sub-bands would have an 'A' in it. The 'hierarchy' column should only contain reference codes used in the 'refcode' column.
+
+Example part of lookup table for tax bands codes with a 3-level hierarchy: 
+
+| refcode | hierarchy | sort | description_en | description_cy | note_en | note_cy |
+| :------ | :-------- | :--- | :------------- | :------------- | :------ | :------ |
+| A       |           | 14   | Tax band A     | Band treth A   |         |         |
+| A1      | A         | 15   | Tax band A1    | Band treth A1  |         |         |
+| A1a     | A1        | 16   | Tax band A1a   | Band treth A1a |         |         |
+| A1b     | A1        | 17   | Tax band A1b   | Band treth A1b |         |         |
+| A1c     | A1        | 18   | Tax band A1c   | Band treth A1c |         |         |
+
+There is no limit to how many levels a hierarchy can have. However, a dimension value can only relate to a single value above it in the hierarchy. For example, sub-band 'A1' could not sit below both 'A' and 'A-'.
+
+If you have a hierarchy you don't know how to implement, email richard.davies3@gov.wales for support.
+
 #### Descriptions
 
 Descriptions of all dimension values should be:
 - concise and clearly explain what the dimension value represents
 - in sentence case, except for proper nouns, for example 'Doses allocated to Wales'
 - unique and distinct from each other
+- provided in both English and Welsh
 
 #### Lookup table notes
 
