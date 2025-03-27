@@ -20,7 +20,6 @@ import {
   provideDesignation,
   provideTopics,
   providePublishDate,
-  provideOrganisation,
   fetchDimensionPreview,
   fetchTimeDimensionPreview,
   pointInTimeChooser,
@@ -173,9 +172,6 @@ publish.post('/:datasetId/topics', fetchDataset(Include.Meta), upload.none(), pr
 /* Publishing */
 publish.get('/:datasetId/schedule', fetchDataset(Include.Meta), providePublishDate);
 publish.post('/:datasetId/schedule', fetchDataset(Include.Meta), upload.none(), providePublishDate);
-
-publish.get('/:datasetId/organisation', fetchDataset(), provideOrganisation);
-publish.post('/:datasetId/organisation', fetchDataset(), upload.none(), provideOrganisation);
 
 /* Translations */
 publish.get('/:datasetId/translation/export', fetchDataset(), exportTranslations);

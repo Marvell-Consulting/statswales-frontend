@@ -8,7 +8,7 @@
             <%= t('dataset_view.published.org') %>
         </dt>
         <dd class="govuk-summary-list__value">
-            <%= published.team?.organisation?.name || t('dataset_view.not_entered') %>
+            <%= published.organisation?.name || t('dataset_view.not_entered') %>
         </dd>
     </div>
     <div class="govuk-summary-list__row">
@@ -16,11 +16,6 @@
             <%= t('dataset_view.published.contact') %>
         </dt>
         <dd class="govuk-summary-list__value">
-            <% if (published.team?.email) { %>
-                <a class="govuk-link govuk-link--no-underline" href="mailto:<%= published.team.email %>"><%= published.team.email %></a>
-            <% } else { %>
-                <%= t('dataset_view.not_entered') %>
-            <% } %>
         </dd>
     </div>
   </dl>

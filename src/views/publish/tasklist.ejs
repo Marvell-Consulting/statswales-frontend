@@ -159,14 +159,6 @@
         <ul class="govuk-task-list">
           <li class="govuk-task-list__item govuk-task-list__item--with-link">
             <div class="govuk-task-list__name-and-hint">
-              <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/organisation`, i18n.language) %>" aria-describedby="prepare-application-5-status">
-                <%= t('publish.tasklist.publishing.organisation') %>
-              </a>
-            </div>
-            <%- include("../partials/tasklist-status", { status: taskList.publishing.organisation }) %>
-          </li>
-          <li class="govuk-task-list__item govuk-task-list__item--with-link">
-            <div class="govuk-task-list__name-and-hint">
               <a class="govuk-link govuk-task-list__link" href="<%= buildUrl(`/publish/${locals.datasetId}/schedule`, i18n.language) %>" aria-describedby="prepare-application-5-status">
                 <%= t(`publish.tasklist.publishing.${ taskList.isUpdate ? 'when_update' : 'when'}`) %>
               </a>

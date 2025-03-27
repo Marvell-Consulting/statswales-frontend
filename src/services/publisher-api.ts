@@ -18,7 +18,6 @@ import { ProviderDTO } from '../dtos/provider';
 import { ProviderSourceDTO } from '../dtos/provider-source';
 import { TopicDTO } from '../dtos/topic';
 import { OrganisationDTO } from '../dtos/organisation';
-import { TeamDTO } from '../dtos/team';
 import { DimensionPatchDTO } from '../dtos/dimension-patch-dto';
 import { DimensionDTO } from '../dtos/dimension';
 import { DimensionMetadataDTO } from '../dtos/dimension-metadata';
@@ -462,24 +461,6 @@ export class PublisherApi {
   public async getAllOrganisations(): Promise<OrganisationDTO[]> {
     logger.debug('Fetching organisations...');
     return this.fetch({ url: 'organisation' }).then((response) => response.json() as unknown as OrganisationDTO[]);
-  }
-
-  public async getAllTeams(): Promise<TeamDTO[]> {
-    logger.debug('Fetching teams...');
-    return this.fetch({ url: 'team' }).then((response) => response.json() as unknown as TeamDTO[]);
-  }
-
-  public async getTeam(teamId: string): Promise<TeamDTO> {
-    logger.debug('Fetching team...');
-    return this.fetch({ url: `team/${teamId}` }).then((response) => response.json() as unknown as TeamDTO);
-  }
-
-  public async updateDatasetTeam(datasetId: string, teamId: string): Promise<DatasetDTO> {
-    logger.debug('Updating dataset team...');
-    const data = { team_id: teamId };
-    return this.fetch({ url: `dataset/${datasetId}/team`, method: HttpMethod.Patch, json: data }).then(
-      (response) => response.json() as unknown as DatasetDTO
-    );
   }
 
   public async getTranslationPreview(datasetId: string): Promise<TranslationDTO[]> {

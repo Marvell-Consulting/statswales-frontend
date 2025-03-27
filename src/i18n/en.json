@@ -788,25 +788,6 @@
         "saving": "Publish date could not be saved. Try again later."
       }
     },
-    "organisation": {
-      "heading": "Publisher organisation and team",
-      "form": {
-        "organisation": {
-          "label": "Organisation",
-          "placeholder": "Select organisation",
-          "error": "Select an organisation"
-        },
-        "team": {
-          "label": "Team",
-          "note": "If you cannot find your team in the list, or your team name has changed, you can <a class=\"govuk-link\" href=\"{{request_team}}\">request a team be added or changed</a>.",
-          "placeholder": "Select team",
-          "error": "Select a team"
-        }
-      },
-      "error": {
-        "saving": "Team could not be saved. Try again later."
-      }
-    },
     "upload": {
       "title": "Upload the data table",
       "lookup_heading": "Upload a lookup table",
