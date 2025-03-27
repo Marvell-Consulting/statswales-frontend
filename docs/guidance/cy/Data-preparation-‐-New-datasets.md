@@ -202,6 +202,25 @@ Enghraifft o rhan o dabl am-edrych ar gyfer cod band treth:
 
 Mae’n bwysig bod y **penawdau colofnau penodol hyn** yn cael eu defnyddio.
 
+#### Hierarchaethau
+
+Defnyddiwch y golofn 'hierarchaeth' i ddynodi a yw gwerth dimensiwn yn is na gwerth arall mewn ffordd hierarchaidd.  Er enghraifft, pe bai bandiau treth yn cael eu rhannu i is-fandiau megis 'A1', 'A2' ac 'A3', byddai'r golofn 'hierarchaeth' ar gyfer pob un o'r is-fandiau hyn yn cynnwys 'A'.  Dim ond codau cyfeirio a ddefnyddir yng ngholofn 'codcyfeirio' y dylai'r golofn 'hierarchaeth' eu cynnwys.
+
+Rhan enghreifftiol o dabl am-edrych am godau bandiau treth sydd â hierarchaeth 3-lefel:
+
+| codcyf  | hierarchaeth | trefn | disgrifiad\_en | disgrifiad \_cy | nodyn\_en | nodyn\_cy |
+| :------ | :-------- | :--- | :------------- | :------------- | :------ | :------ |
+| A       |           | 14   | Tax band A     | Band treth A   |         |         |
+| A1      | A         | 15   | Tax band A1    | Band treth A1  |         |         |
+| A1a     | A1        | 16   | Tax band A1a   | Band treth A1a |         |         |
+| A1b     | A1        | 17   | Tax band A1b   | Band treth A1b |         |         |
+| A1c     | A1        | 18   | Tax band A1c   | Band treth A1c |         |         |
+
+Nid oes cyfyngiad o ran sawl lefel y gall hierarchaeth eu cynnwys.  Fodd bynnag, dim ond at un gwerth uwch ei ben yn yr hierarchaeth y gall gwerth dimensiwn ymwneud ag ef.  Er enghraifft, ni fyddai modd i is-fand 'A1' eistedd dan 'A' ac 'A-'.
+
+Os oes gennych chi hierarchaeth nad ydych yn gwybod sut i'w gweithredu, anfonwch e-bost at richard.davies3@gov.wales i ofyn am gymorth.
+
+
 #### Disgrifiadau 
 
 Dylai disgrifiadau o’r holl werthoedd dimensiwn fod yn:
@@ -209,6 +228,7 @@ Dylai disgrifiadau o’r holl werthoedd dimensiwn fod yn:
 - gryno ac esbonio’n glir yr hyn y mae’r gwerth dimensiwn yn ei gynrychioli   
 - mewn llythrennau ar ffurf brawddeg, ac eithrio enwau priod, er enghraifft ‘Dosau a neilltuwyd i Gymru'  
 - unigryw ac yn wahanol i’w gilydd 
+- darparir yn Gymraeg ac yn Saesneg
 
 #### Nodiadau tabl am-edrych
 
