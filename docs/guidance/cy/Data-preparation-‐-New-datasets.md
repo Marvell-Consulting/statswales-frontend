@@ -33,7 +33,7 @@ Y fformat a ffefrir ar gyfer ffeil yw CSV gyda:
 
 Y fformat a ffefrir ar gyfer CSVs yw UTF-8, gan bod hwn yn gweithio’n well gydag unrhyw nodau arbennig a ddefnyddir.  Dylai’r fformat hwn fod yn ddewis yn y feddalwedd yr ydych chi’n ei defnyddio er mwyn creu CSVs, ac fe allai fod dan ‘amgodio testun’ neu rywbeth tebyg.  Yn Excel, mae 'CSV UTF-8' dan fformatau cyffredin yn newis 'Save as'.
 
-Er mai CSVs yw’r fformat a argymhellir, gall y system dderbyn fformatau JSON a Parquet hefyd.
+Er mai CSVs yw’r fformat a argymhellir, gall y system dderbyn fformatau JSON, Parquet a Excel XLSX hefyd.
 
 ### Penawdau 
 
@@ -240,7 +240,7 @@ Nid oes gofyn cael tabl am-edrych os gellir defnyddio'r gwerthoedd dimensiwn a d
 
 - os yw gwerthoedd dimensiwn yn cynnwys llythrennau, rhifau neu symbolau sydd yr un fath yn Gymraeg ac yn Saesneg
 - os nad oes angen nodi trefn ddidoli
-- os nad oes angen nodiadau
+- os nad oes angen hierarchaethau a nodiadau
 
 Er enghraifft, yn ein henghraifft treth gyngor, os mai dim ond 'A', 'B' ac ati yr oedd angen i'r disgrifiadau fod, yn hytrach na 'Band treth A', 'Band treth B' ac ati.  Neu fel enghraifft arall, os defnyddir yr oedran mewn blynyddoedd fel gwerthoedd dimensiwn, megis '18', '19' ac ati.
 

@@ -33,7 +33,7 @@ The preferred file format is a CSV with:
 
 The preferred format for CSVs is UTF-8, as this works better with any special characters used. This format should be an option in the software you use to generate CSVs, and may be under 'text encoding' or similar. In Excel, 'CSV UTF-8' is under common formats in the 'Save as' options.
 
-Whilst CSVs are the recommended format, the system can also accept JSON and Parquet formats as well.
+Whilst CSVs are the recommended format, the system can also accept JSON, Parquet and Excel XLSX formats as well.
 
 ### Headings
 
@@ -236,7 +236,7 @@ Lookup table notes can be provided, but **are not currently shown in the consume
 No lookup table is required if the dimension values used in the data table can be used directly as descriptions. This is only the case if: 
 - dimension values consist of letters, numbers or symbols that are the same in English and Welsh
 - a sort order does not need to be stated
-- no notes are needed
+- no hierarchies and notes are needed
 
 For example, in our council tax example if the descriptions only needed to be 'A', 'B' etc, instead of 'Tax band A', 'Tax band B' etc. Or as another example, if age in years was used as dimension values, such as '18', '19' etc.
 
