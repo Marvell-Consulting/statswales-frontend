@@ -14,14 +14,19 @@ From your home screen, click ‘Create new dataset’. Using your [prepared data
 
 You'll then be taken to your dataset tasklist. It will list all the dimensions you indicated, except note codes as these are standardised. 
 
-Clicking on each dimension will let you add the appropriate reference data. For each dimension you'll need to:
-- select what kind of data the dimension contains, either:
-   - dates - you'll then answer questions about the date formatting used
-   - geography - the system will then add the standardised reference data
-   - something else - you'll then need to upload your own lookup table
-- enter a name for the dimension to be called on the StatsWales website
+Clicking on each dimension will let you select what kind of data the dimension contains. This will be either:
+- dates - you'll then answer questions about the date formatting used
+- geography - the system will then add the standardised reference data
+- text, [where no lookup table is needed](Data-preparation-‐-New-datasets#guidance-dimensions-containing-text-or-numbers-where-no-lookup-table-is-required) 
+- numbers, [where no lookup table is needed](Data-preparation-‐-New-datasets#guidance-dimensions-containing-text-or-numbers-where-no-lookup-table-is-required) - you'll then need to indicate the kind of numbers used
+   - For this option, the dimension must only contain numbers, with no symbols or letters
+- something else - you'll then need to upload your own lookup table
 
-If you have a dimension for measure or data types, when you click on it from your dataset tasklist, you'll then need to upload the [appropriate lookup table](Data-preparation-‐-New-datasets#guidance-measure-or-data-types).
+For each option you'll be asked to enter a name for the dimension to be called on the StatsWales website. The name should be:
+- concise and clearly explain what the dimension contains
+- different to other dimension names in the dataset
+
+For a dimension containing measure or data types, when you click on it from your dataset tasklist, you'll then need to upload the [appropriate lookup table](Data-preparation-‐-New-datasets#guidance-measure-or-data-types).
 
 ### Date formatting questions
 
