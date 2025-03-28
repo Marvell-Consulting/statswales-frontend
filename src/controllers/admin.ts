@@ -177,7 +177,7 @@ export const provideEmail = async (req: Request, res: Response) => {
   } catch (err) {
     logger.error(err, 'there was a problem saving the user group');
     if (err instanceof ApiException) {
-      errors = [{ field: 'api', message: { key: 'admin.group.name.error.saving' } }];
+      errors = [{ field: 'api', message: { key: 'admin.group.email.error.saving' } }];
     }
   }
 
