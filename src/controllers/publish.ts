@@ -72,6 +72,7 @@ import { DatasetInclude } from '../enums/dataset-include';
 import { NumberType } from '../enums/number-type';
 import { PreviewMetadata } from '../interfaces/preview-metadata';
 import slugify from 'slugify';
+import { DuckDBSupportFileFormats } from '../enums/support-fileformats';
 
 export const start = (req: Request, res: Response) => {
   req.session.errors = undefined;
@@ -126,7 +127,7 @@ export const uploadDataTable = async (req: Request, res: Response) => {
   const revision = dataset.draft_revision;
   const revisit = dataset.dimensions?.length > 0;
   let errors: ViewError[] = [];
-
+  const supportedFormats = Object.values(DuckDBSupportFileFormats).map((format) => format.toLowerCase());
   if (req.method === 'POST') {
     logger.debug('User is uploading a fact table.');
     try {
@@ -160,7 +161,7 @@ export const uploadDataTable = async (req: Request, res: Response) => {
     }
   }
 
-  res.render('publish/upload', { revisit, errors, uploadType: false });
+  res.render('publish/upload', { revisit, supportedFormats: supportedFormats.join(', '), uploadType: false });
 };
 
 export const factTablePreview = async (req: Request, res: Response, next: NextFunction) => {
@@ -505,7 +506,7 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
     }
 
     const dataPreview = await req.pubapi.getMeasurePreview(res.locals.dataset.id);
-
+    const supportedFormats = Object.values(DuckDBSupportFileFormats).map((format) => format.toLowerCase());
     if (req.method === 'POST') {
       logger.debug('User is uploading a measure lookup table..');
       if (!req.file) {
@@ -535,10 +536,15 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
         const error = err as ApiException;
         const viewErr = JSON.parse((error.body as string) || '{}') as ViewErrDTO;
         logger.debug(`Error is: ${JSON.stringify(viewErr, null, 2)}`);
-        if (viewErr.status === 400) {
+        if (error.status === 400) {
           res.status(400);
           if (!(viewErr.extension as { mismatch: boolean }).mismatch) {
-            res.render('publish/measure-preview', { ...dataPreview, measure, errors: viewErr.errors });
+            res.render('publish/measure-preview', {
+              ...dataPreview,
+              supportedFormats: supportedFormats.join(','),
+              measure,
+              errors: viewErr.errors
+            });
             return;
           }
           logger.error('Measure lookup table did not match data in the fact table.', err);
@@ -551,7 +557,12 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
         }
         logger.error('Something went wrong other than not matching');
         logger.debug(`Full error JSON: ${JSON.stringify(error, null, 2)}`);
-        res.render('publish/measure-preview', { ...dataPreview, measure, errors: viewErr.errors });
+        res.render('publish/measure-preview', {
+          ...dataPreview,
+          supportedFormats: supportedFormats.join(','),
+          measure,
+          errors: viewErr.errors
+        });
         return;
       }
     }
@@ -578,7 +589,7 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
         errors
       });
     } else {
-      res.render(page, { ...dataPreview, langCol, measure });
+      res.render(page, { ...dataPreview, supportedFormats: supportedFormats.join(','), langCol, measure });
     }
   } catch (err) {
     logger.error('Failed to get dimension preview', err);
@@ -652,6 +663,7 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
   let errors: ViewError[] | undefined;
   const revisit = dataset.dimensions?.length > 0;
   const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
+  const supportedFormats = Object.values(DuckDBSupportFileFormats).map((format) => format.toLowerCase());
   if (req.method === 'POST') {
     logger.debug('User submitted a look up table');
     try {
@@ -659,6 +671,7 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
         res.status(400);
         res.render('publish/upload-lookup', {
           ...dataPreview,
+          supportedFormats: supportedFormats.join(','),
           revisit,
           errors: [
             {
@@ -700,6 +713,7 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
         res.status(500);
         res.render('publish/upload-lookup', {
           ...dataPreview,
+          supportedFormats: supportedFormats.join(','),
           revisit,
           errors: [
             {
@@ -728,6 +742,7 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
     ...dataPreview,
     revisit,
     errors,
+    supportedFormats: supportedFormats.join(','),
     uploadType: 'lookup',
     dimension,
     changeLookup: Boolean(dimension.type === 'lookup_table')
