@@ -20,6 +20,9 @@ export interface ViewErrDTO {
   status: number;
   errors: ViewError[];
   dataset_id: string | undefined;
+  headers?: CSVHeader[];
+  data?: string[][];
+  extension?: object;
 }
 
 export interface ViewDTO {
