@@ -1,7 +1,7 @@
 import { Readable } from 'node:stream';
 
 import { NextFunction, Request, Response } from 'express';
-import { sortBy, uniqBy } from 'lodash';
+import { sortBy } from 'lodash';
 import { FieldValidationError, matchedData } from 'express-validator';
 import { nanoid } from 'nanoid';
 import { v4 as uuid } from 'uuid';
@@ -22,12 +22,10 @@ import {
   linkUrlValidator,
   minuteValidator,
   monthValidator,
-  organisationIdValidator,
   qualityValidator,
   roundingAppliedValidator,
   roundingDescriptionValidator,
   summaryValidator,
-  teamIdValidator,
   titleValidator,
   topicIdValidator,
   yearValidator
@@ -51,8 +49,6 @@ import { generateSequenceForNumber } from '../utils/pagination';
 import { fileMimeTypeHandler } from '../utils/file-mimetype-handler';
 import { TopicDTO } from '../dtos/topic';
 import { NestedTopic, nestTopics } from '../utils/nested-topics';
-import { OrganisationDTO } from '../dtos/organisation';
-import { TeamDTO } from '../dtos/team';
 import { DimensionType } from '../enums/dimension-type';
 import { DimensionPatchDTO } from '../dtos/dimension-patch-dto';
 import { ApiException } from '../exceptions/api.exception';
@@ -2350,53 +2346,6 @@ export const providePublishDate = async (req: Request, res: Response) => {
   }
 
   res.render('publish/schedule', { values, errors, dateError, timeError });
-};
-
-export const provideOrganisation = async (req: Request, res: Response) => {
-  const { dataset } = res.locals;
-  let organisations: OrganisationDTO[] = [];
-  let teams: TeamDTO[] = [];
-  let errors: ViewError[] = [];
-  let values = { organisation: '', team: '' };
-
-  try {
-    organisations = await req.pubapi.getAllOrganisations();
-    teams = await req.pubapi.getAllTeams();
-
-    if (dataset.team_id) {
-      const datasetTeam = teams.find((team) => team.id === dataset.team_id)!;
-      values = { organisation: datasetTeam.organisation_id!, team: datasetTeam.id };
-    }
-
-    if (req.method === 'POST') {
-      values = req.body;
-      const validators = [organisationIdValidator(), teamIdValidator()];
-
-      errors = (await getErrors(validators, req)).map((error: FieldValidationError) => {
-        return { field: error.path, message: { key: `publish.organisation.form.${error.path}.error` } };
-      });
-
-      const selectedTeam = teams.find((team) => team.id === values.team);
-
-      if (!selectedTeam) {
-        errors.push({ field: 'team', message: { key: 'publish.organisation.form.team.error' } });
-      }
-
-      errors = uniqBy(errors, 'field');
-      if (errors.length > 0) throw errors;
-
-      await req.pubapi.updateDatasetTeam(dataset.id, values.team);
-      res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
-      return;
-    }
-  } catch (err) {
-    logger.error(err, 'there was a problem saving the team and org');
-    if (err instanceof ApiException) {
-      errors = [{ field: 'api', message: { key: 'publish.organisation.error.saving' } }];
-    }
-  }
-
-  res.render('publish/organisation', { values, organisations, teams, errors });
 };
 
 export const exportTranslations = async (req: Request, res: Response, next: NextFunction) => {

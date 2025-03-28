@@ -24,6 +24,7 @@ import { guidance } from './routes/guidance';
 import { consumer } from './routes/consumer';
 import { cookies } from './routes/cookie';
 import { handleAsset404 } from './middleware/asset-404';
+import { admin } from './routes/admin';
 
 const app: Application = express();
 const config = appConfig();
@@ -64,6 +65,7 @@ app.use('/:lang/cookies', rateLimiter, ensureAuthenticated, cookies);
 // authenticated routes
 app.use('/:lang/publish', rateLimiter, ensureAuthenticated, publish);
 app.use('/:lang/developer', rateLimiter, ensureAuthenticated, ensureDeveloper, developer);
+app.use('/:lang/admin', rateLimiter, ensureAuthenticated, admin);
 app.use('/:lang', rateLimiter, ensureAuthenticated, homepage);
 
 // handle 404s

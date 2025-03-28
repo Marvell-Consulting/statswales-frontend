@@ -1,1199 +1,1270 @@
 {
-    "app_title": "StatsWales",
-    "developer_warning": "<strong class=\"govuk-tag govuk-tag--red govuk-phase-banner__content__tag\">Warning</strong> This is a developer page and has not been through user research",
-    "developer_tag": "<span class=\"govuk-tag govuk-tag--yellow govuk-phase-banner__content__tag\">Developer Page</span>",
-    "external_tag": "<span class=\"govuk-tag govuk-tag--orange govuk-phase-banner__content__tag\">External Page</span>",
-    "yes": "Yes",
-    "no": "No",
-    "toc": "Contents",
+  "app_title": "StatsWales",
+  "developer_warning": "<strong class=\"govuk-tag govuk-tag--red govuk-phase-banner__content__tag\">Warning</strong> This is a developer page and has not been through user research",
+  "developer_tag": "<span class=\"govuk-tag govuk-tag--yellow govuk-phase-banner__content__tag\">Developer Page</span>",
+  "external_tag": "<span class=\"govuk-tag govuk-tag--orange govuk-phase-banner__content__tag\">External Page</span>",
+  "yes": "Yes",
+  "no": "No",
+  "toc": "Contents",
+  "buttons": {
+    "continue": "Continue",
+    "back": "Back",
+    "upload_csv": "Continue",
+    "preview": "Preview (opens in new tab)"
+  },
+  "badge": {
+    "dataset_status": {
+      "new": "New dataset",
+      "live": "Live dataset"
+    },
+    "publishing_status": {
+      "published": "Published",
+      "incomplete": "Incomplete",
+      "scheduled": "Scheduled",
+      "update_incomplete": "Update incomplete",
+      "update_scheduled": "Update scheduled"
+    }
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "update": "Update",
+    "page_size": "Page size"
+  },
+  "header": {
+    "product_name": "StatsWales V3.0",
+    "beta": "Beta",
+    "feedback": "You’re viewing a new version of StatsWales. Get support at <a class=\"govuk-link\" href=\"mailto:{{support_email}}\">{{support_email}}</a>.",
+    "navigation": {
+      "home": "Home",
+      "menu": "Menu",
+      "skip_to_content": "Skip to main content",
+      "publish_dataset": "Publish a dataset",
+      "guidance": "Guidance",
+      "list_datasets": "List datasets",
+      "logout": "Sign out",
+      "login": "Sign in",
+      "developer": "Developer",
+      "admin": "Groups"
+    }
+  },
+  "footer": {
+    "top_of_page": "Back to top",
+    "contact_us": "Contact us",
+    "accessibility": "Accessibility",
+    "copyright_statement": "Copyright statement",
+    "cookies": "Cookies",
+    "privacy": "Privacy",
+    "terms_conditions": "Terms and conditions",
+    "modern_slavery": "Modern slavery statement",
+    "welsh_gov": "Welsh Government"
+  },
+  "login": {
+    "heading": "Login",
     "buttons": {
-        "continue": "Continue",
-        "back": "Back",
-        "upload_csv": "Continue",
-        "preview": "Preview (opens in new tab)"
+      "entraid": "Microsoft",
+      "google": "Google",
+      "local": "Form"
     },
-    "badge": {
-        "dataset_status": {
-            "new": "New dataset",
-            "live": "Live dataset"
-        },
-        "publishing_status": {
-            "published": "Published",
-            "incomplete": "Incomplete",
-            "scheduled": "Scheduled",
-            "update_incomplete": "Update incomplete",
-            "update_scheduled": "Update scheduled"
-        }
+    "error": {
+      "summary_title": "There is a problem",
+      "generic": "You could not be logged in. Try again later.",
+      "expired": "Your session has expired. You need to sign in again."
     },
-    "pagination": {
-        "previous": "Previous",
-        "next": "Next",
-        "update": "Update",
-        "page_size": "Page size"
+    "form": {
+      "notice_1": "The username we've given you is temporary. You'll only be able to log in with it whilst we run this round of testing.",
+      "notice_2": "Do not upload any sensitive data or data that other StatsWales users should not have access to.",
+      "username": {
+        "label": "Username",
+        "error": "Enter your username"
+      },
+      "submit": "Login"
+    }
+  },
+  "homepage": {
+    "heading": "StatsWales datasets",
+    "table": {
+      "id": "ID",
+      "title": "Title",
+      "last_updated": "Last updated",
+      "dataset_status": "Dataset status",
+      "publish_status": "Publishing status",
+      "not_translated": "Not yet translated"
     },
+    "status": {
+      "new": "New",
+      "live": "Live"
+    },
+    "publishing_status": {
+      "incomplete": "Incomplete",
+      "update_incomplete": "Update incomplete",
+      "scheduled": "Scheduled",
+      "update_scheduled": "Update scheduled",
+      "published": "Published"
+    },
+    "buttons": {
+      "create": "Create new dataset"
+    }
+  },
+  "dataset_view": {
+    "key_information": {
+      "heading": "Main information",
+      "last_update": "Most recent update",
+      "next_update": "Next update expected (provisional)",
+      "data_provider": "Data provider",
+      "data_providers": "Data provider {{index}}",
+      "data_source": "Data source",
+      "data_sources": "Data source {{index}}",
+      "no_source": "No specific source from data provider",
+      "data_categories": "Data categories",
+      "time_covered": "Time period covered",
+      "time_period": "{{start}} to {{end}}",
+      "update_missing": "Publish date not entered yet",
+      "next_update_missing": "Publish date or update frequency not entered yet",
+      "not_updated": "This dataset will not be updated"
+    },
+    "downloads": {
+      "heading": "Downloads"
+    },
+    "notes": {
+      "heading": "Data notes",
+      "revisions": "Revisions",
+      "data_value_shorthand": "Data value shorthand",
+      "rounding": "Rounding applied",
+      "no_rounding": "None applied",
+      "a": "Average",
+      "c": "Confidential information",
+      "e": "Estimated",
+      "f": "Forecast",
+      "k": "Low figure",
+      "p": "Provisional",
+      "r": "Revised",
+      "t": "Total",
+      "u": "Low reliability",
+      "x": "Missing data",
+      "z": "Not applicable"
+    },
+    "about": {
+      "heading": "About this dataset",
+      "summary": "Summary",
+      "data_collection": "Data collection and calculation",
+      "statistical_quality": "Statistical quality",
+      "designation": "Designation",
+      "designations": {
+        "official": "Official statistics",
+        "accredited": "Accredited official statistics",
+        "in_development": "Official statistics in development",
+        "management": "Management information",
+        "none": "No designation"
+      },
+      "related_reports": "Related reports"
+    },
+    "published": {
+      "heading": "Published by",
+      "org": "Organisation",
+      "contact": "Contact email"
+    },
+    "buttons": {
+      "csv": "Download as CSV",
+      "excel": "Download as Excel",
+      "json": "Download as JSON",
+      "duckdb": "Download as DuckDB"
+    },
+    "contents": "Contents",
+    "download": "Download",
+    "download_as": {
+      "csv": "Download as CSV",
+      "parquet": "Download as Parquet",
+      "excel": "Download as Excel",
+      "duckdb": "Download as DuckDB"
+    },
+    "table_preview": "Table preview [Publisher use only]",
+    "table_note": "This is not shown in the consumer view",
+    "not_entered": "Not entered yet",
+    "not_selected": "Not selected yet",
+    "not_available": "Not available",
+    "categories_missing": "Reference data not selected yet",
+    "period_cover_missing": "Date information not entered yet"
+  },
+  "publish": {
     "header": {
-        "product_name": "StatsWales V3.0",
-        "beta": "Beta",
-        "feedback": "You’re viewing a new version of StatsWales. Get support at <a class=\"govuk-link\" href=\"mailto:{{support_email}}\">{{support_email}}</a>.",
-        "navigation": {
-            "home": "Home",
-            "menu": "Menu",
-            "skip_to_content": "Skip to main content",
-            "publish_dataset": "Publish a dataset",
-            "guidance": "Guidance",
-            "list_datasets": "List datasets",
-            "logout": "Sign out",
-            "login": "Sign in",
-            "developer": "Developer"
+      "overview": "Return to dataset tasklist",
+      "back": "Back"
+    },
+    "cube_preview": {
+      "panel": "This is a preview of this dataset.",
+      "heading": "Main information"
+    },
+    "delete_dataset": {
+      "heading": "By continuing, you confirm this dataset should be deleted",
+      "message": "All data for this dataset will be removed permanently. This cannot be undone.",
+      "button": "Delete dataset"
+    },
+    "start": {
+      "title": "Create a new dataset",
+      "p1": "To create a new dataset, you'll need:",
+      "data_table": "a data table containing data values and references to all relevant dimensions",
+      "lookup_table": "any user-generated lookup tables you need to include (if relevant)",
+      "metadata": "metadata about this dataset, in the language in which you're viewing this service"
+    },
+    "dimension_name": {
+      "dimension_heading": "What should this dimension be called on the StatsWales website?",
+      "measure_heading": "What should this measure be called on the StatsWales website?",
+      "hint": "The dimension name should be:",
+      "concise": "concise and clearly explain what the dimension contains",
+      "unique": "different to other dimension names in this dataset",
+      "language": "entered in the language in which you're viewing this service"
+    },
+    "dimension_type_chooser": {
+      "heading": "Add reference data",
+      "subheading": "Dimension",
+      "question": "What kind of data does this dimension contain?",
+      "chooser": {
+        "age": "Age",
+        "date": "Dates",
+        "ethnicity": "Ethnicity",
+        "geography": "Geography",
+        "number": "Numbers (no lookup table needed)",
+        "religion": "Religion",
+        "sex_gender": "Sex and gender",
+        "text": "Text (no lookup table needed)",
+        "time": "Times",
+        "lookup": "Something else"
+      }
+    },
+    "time_dimension_chooser": {
+      "heading": "Set up dimension containing dates",
+      "subheading": "Dates",
+      "showing": "A sample of {{rows}} of {{total}} rows.",
+      "question": "What kind of dates does the dimension contain?",
+      "chooser": {
+        "period": "Periods",
+        "period-hint": "For example, months or years for which data values apply to",
+        "point": "Specific points",
+        "point-hint": "For example, specific dates when data values were collected"
+      }
+    },
+    "number_chooser": {
+      "heading": "Set up dimension containing numbers",
+      "review_heading": "Check the dimension",
+      "subheading": "Numbers",
+      "showing": "A sample of {{rows}} of {{total}} rows.",
+      "question": "What kind of numbers does this dimension contain?",
+      "chooser": {
+        "integer": "Whole numbers",
+        "decimal": "Decimal numbers",
+        "decimal_places": "How many decimal places should be displayed?"
+      },
+      "confirm": "By continuing, you confirm the dimension is correct."
+    },
+    "lookup_table_review": {
+      "heading": "Check the lookup table",
+      "dimension_heading": "Check the dimension",
+      "showing": "Showing a sample of {{rows}} of {{total}} rows.",
+      "confirm": "By continuing, you confirm the lookup table is correct.",
+      "dimension_confirm": "By continuing, you confirm the dimension is displaying correctly.",
+      "go_back": "Choose a different lookup table",
+      "choose_different": "Choose a different reference data",
+      "change_lookup_table": "Replace lookup table",
+      "change_date_format": "Change the date formats",
+      "change_dimension_type": "Change what kind of data this dimension contains",
+      "column_headers": {
+        "fact_table": "Fact table:",
+        "lookup_table": "Lookup table:",
+        "description": "Description",
+        "description_en": "Description (English)",
+        "description_cy": "Description (Welsh)",
+        "sort_order": "Sort order",
+        "hierarchy": "Hierarchy",
+        "notes_en": "Notes (English)",
+        "notes_cy": "Notes (Welsh)"
+      }
+    },
+    "measure_review": {
+      "heading": "Check the measure table",
+      "showing": "Showing a sample of {{rows}} of {{total}} rows.",
+      "confirm": "By continuing, you confirm the measure table is correct.",
+      "go_back": "Choose a different measure table",
+      "column_headers": {
+        "fact_table": "Fact Table:",
+        "lookup_table": "Lookup Table:",
+        "description_en": "Description (English)",
+        "description_cy": "Description (Welsh)",
+        "description": "Description",
+        "decimals": "Decimal places",
+        "hierarchy": "Hierarchy",
+        "language": "Language",
+        "reference": "Reference value",
+        "sort": "Sort order",
+        "sort_order": "Sort order",
+        "notes": "Notes",
+        "notes_en": "Notes (English)",
+        "notes_cy": "Notes (Welsh)",
+        "format": "Format",
+        "measure_type": "Value type"
+      },
+      "column_values": {
+        "null": "No",
+        "cy-gb": "Welsh",
+        "en-gb": "English",
+        "float": "Floating point number",
+        "decimal": "Decimal number",
+        "integer": "Whole number",
+        "long": "Big whole number",
+        "percentage": "Percentage",
+        "string": "Plain text",
+        "text": "Plain text",
+        "date": "Date",
+        "datetime": "Date and time",
+        "time": "Time"
+      }
+    },
+    "time_dimension_review": {
+      "heading": "Confirm the dates are correct",
+      "unknown_name": "Unnamed Dimension",
+      "actions": "Actions",
+      "showing": "Showing a sample of {{rows}} of {{total}} rows.",
+      "confirm": "By continuing, you confirm the dates are correct.",
+      "go_back": "Change date format",
+      "change_format": "Change date representation",
+      "change_name": "Change dimension name",
+      "change_measure_name": "Change measure name",
+      "column_headers": {
+        "date_code": "Date code",
+        "start_date": "Start",
+        "end_date": "End",
+        "date_type": "Date type",
+        "description": "Description",
+        "description_en": "Description (English)",
+        "description_cy": "Description (Welsh)",
+        "descriptionen": "Description (English)",
+        "descriptioncy": "Description (Welsh)",
+        "descriptionenglish": "Description (English)",
+        "descriptionwelsh": "Description (Welsh)",
+        "descriptioncymraeg": "Description (Welsh)",
+        "description_english": "Description (English)",
+        "description_welsh": "Description (Welsh)",
+        "description_cymraeg": "Description (Welsh)",
+        "notes": "Notes",
+        "notesen": "Notes (English)",
+        "notescy": "Notes (Welsh)",
+        "notesenglish": "Notes (English)",
+        "noteswelsh": "Notes (Welsh)",
+        "notescymraeg": "Notes (Welsh)",
+        "notes_english": "Notes (English)",
+        "notes_welsh": "Notes (Welsh)",
+        "notes_cymraeg": "Notes (Welsh)",
+        "language": "Language",
+        "lang": "Language",
+        "sortorder": "Sort Order",
+        "sort": "Sort Order",
+        "sort_order": "Sort Order",
+        "hierarchy": "Hierarchy"
+      },
+      "year_type": {
+        "calendar_year": "Calendar year",
+        "calendar_quarter": "Calendar quarter",
+        "calendar_month": "Calendar month",
+        "financial_year": "Financial year",
+        "financial_quarter": "Financial quarter",
+        "financial_month": "Financial month",
+        "academic_year": "Academic year",
+        "academic_quarter": "Academic quarter",
+        "academic_month": "Academic month",
+        "tax_year": "Tax year",
+        "tax_quarter": "Tax quarter",
+        "tax_month": "Tax month",
+        "meteorological_year": "Meteorological year",
+        "meteorological_quarter": "Meteorological quarter",
+        "meteorological_month": "Meteorological month",
+        "specific_day": "Specific point in time"
+      }
+    },
+    "measure_preview": {
+      "heading": "Upload a measure lookup table"
+    },
+    "period-type-chooser": {
+      "heading": "What are the shortest periods in the dimension?",
+      "subheading": "Dates",
+      "chooser": {
+        "years": "Years",
+        "quarters": "Quarters",
+        "months": "Months"
+      }
+    },
+    "year_type": {
+      "heading": "What type of year does the dimension represent?",
+      "chooser": {
+        "calendar": "Calendar",
+        "calendar-hint": "1 January to 31 December",
+        "financial": "Financial",
+        "financial-hint": "1 April to 31 March",
+        "tax": "Tax",
+        "tax-hint": "6 April to 5 April",
+        "academic": "Academic",
+        "academic-hint": "1 September to 31 August",
+        "meteorological": "Meteorological",
+        "meteorological-hint": "1 March to 28 or 29 February"
+      }
+    },
+    "year_format": {
+      "heading": "What format is used for years in the dimension?",
+      "example": "For example, {{example}}"
+    },
+    "quarter_format": {
+      "heading": "What format is used for quarters in the dimension?",
+      "heading-alt": "What format is used for quarterly totals?",
+      "example": "For example, {{example}}",
+      "fifth_quarter": "Is a fifth quarter used to represent yearly totals?",
+      "fifth_example": "For example, 2024Q5 to represent the total for 2024",
+      "no_quarterly_totals": "There are no quarterly totals"
+    },
+    "month_format": {
+      "heading": "What format is used for months in the dimension?",
+      "example": "For example, {{example}}"
+    },
+    "measure_match_failure": {
+      "heading": "Measure lookup table cannot be matched to the data table",
+      "measure_subheading": "Reference codes in the measure lookup table that cannot be matched",
+      "information": "{{failureCount, number}} instances of reference codes in the data table cannot be found in the measure lookup table.",
+      "things_to_check": "You should check you selected the correct data table and measure lookup table and that they both:",
+      "formatting": "contain the correct reference codes",
+      "choices": "do not contain any trailing spaces after any values",
+      "upload_different_measure": "Upload corrected or different measure lookup table"
+    },
+    "dimension_match_failure": {
+      "lookup_heading": "Lookup table data cannot be matched to the data table",
+      "heading": "Reference data cannot be matched to the data table",
+      "lookup_information": "{{failureCount, number}} instances of reference codes in the data table could not be found in the uploaded lookup table.",
+      "you_should_check": "You should check you selected the correct data table and lookup table and that they both:",
+      "ref_information": "{{failureCount, number}} instances of reference codes in the data table could not be found in the selected standardised reference data.",
+      "you_should_check_ref": "You should check you selected the correct data table and reference data. You should also check the data table:",
+      "formatting": "contain the correct reference codes",
+      "choices": "do not contain any trailing spaces after any values",
+      "ref_formatting": "contains the correct reference codes",
+      "ref_choices": "does not contain any trailing spaces after any values",
+      "fact_table_subheading": "Reference codes in the data table that cannot be matched",
+      "actions": "Actions",
+      "upload_different_file": "Upload corrected or different data table",
+      "upload_different_file_warning": "Warning: This will remove all reference data from all dimensions",
+      "try_different_format": "Select different reference data",
+      "try_different_lookup": "Upload corrected or different lookup table",
+      "no_matches": "None of the dates matched the format supplied",
+      "missing_data_table_values": "Reference codes in the data table that cannot be matched",
+      "missing_lookup_table_values": "Reference codes in the lookup table that cannot be matched"
+    },
+    "period_match_failure": {
+      "heading": "Date formatting cannot be matched to the dimension",
+      "information": "{{failureCount, number}} instances of date codes in the dimension do not match the date formatting you have indicated. You should check:",
+      "formatting": "all date codes in the dimension are correct and do not contain any trailing spaces",
+      "choices": "you indicated the correct date formatting",
+      "supplied_format": "Indicated date formatting:",
+      "year_format": "Years: {{format}}",
+      "quarter_format": "Quarters: {{format}}",
+      "month_format": "Months: {{format}}",
+      "date_format": "Date: {{format}}",
+      "subheading": "Date codes in the data table that cannot be matched",
+      "fact_table_subheading": "Reference codes in the data table that cannot be matched",
+      "actions": "Actions",
+      "upload_different_file": "Upload corrected or different data table",
+      "upload_different_file_warning": "Warning: This will remove all reference data from all dimensions",
+      "try_different_format": "Indicate different date formatting",
+      "no_matches": "None of the dates matched the format supplied"
+    },
+    "title": {
+      "heading": "What is the title of this dataset?",
+      "appear": "This is the title that will appear on the StatsWales website",
+      "descriptive": "It should be short, descriptive and unique",
+      "form": {
+        "title": {
+          "hint": "This should be entered in the language in which you're viewing this service.",
+          "error": {
+            "missing": "Enter the title of this dataset",
+            "too_long": "The title of this dataset must be 1,000 characters or less",
+            "too_short": "The title of this dataset must be 3 characters or more",
+            "unique": "The entered title is already in use for a currently published dataset. Enter a unique title for this dataset."
+          }
         }
+      }
     },
-    "footer": {
-        "top_of_page": "Back to top",
-        "contact_us": "Contact us",
-        "accessibility": "Accessibility",
-        "copyright_statement": "Copyright statement",
-        "cookies": "Cookies",
-        "privacy": "Privacy",
-        "terms_conditions": "Terms and conditions",
-        "modern_slavery": "Modern slavery statement",
-        "welsh_gov": "Welsh Government"
+    "summary": {
+      "heading": "What is the summary of this dataset?",
+      "explain": "In short, simple sentences explain:",
+      "explain_1": "what this dataset is about and what it shows",
+      "explain_2": "this dataset's dimensions and why they've been used, if needed",
+      "language": "This should be entered in the language in which you're viewing this service.",
+      "form": {
+        "description": {
+          "error": {
+            "missing": "Enter the summary of this dataset"
+          }
+        }
+      }
     },
-    "login": {
-        "heading": "Login",
-        "buttons": {
-            "entraid": "Microsoft",
-            "google": "Google",
-            "local": "Form"
+    "collection": {
+      "heading": "How was the data collected or calculated?",
+      "explain": "In short, simple sentences explain either:",
+      "explain_1": "the methodology used to collect the data",
+      "explain_2": "the methodology used to calculate the data",
+      "explain_3": "both of the above",
+      "language": "This should be entered in the language in which you're viewing this service.",
+      "form": {
+        "collection": {
+          "error": {
+            "missing": "Enter how the data was collected or calculated"
+          }
+        }
+      }
+    },
+    "quality": {
+      "heading": "What is the statistical quality of this dataset?",
+      "explain": "In short, simple sentences explain:",
+      "explain_1": "any issues or methodological changes related to this dataset including any:",
+      "explain_1a": "notes relevant to all data values in this dataset",
+      "explain_1b": "custom explanations needed to clarify any note codes used",
+      "explain_2": "a high-level summary of the statistical quality report, if available",
+      "language": "This should be entered in the language in which you're viewing this service.",
+      "form": {
+        "quality": {
+          "error": {
+            "missing": "Enter the statistical quality of this dataset"
+          }
         },
-        "error": {
-            "summary_title": "There is a problem",
-            "generic": "You could not be logged in. Try again later.",
-            "expired": "Your session has expired. You need to sign in again."
+        "rounding_applied": {
+          "heading": "Has rounding been applied to the data values?",
+          "options": {
+            "yes": {
+              "label": "Yes",
+              "note": "In short, simple sentences explain what rounding has been applied."
+            },
+            "no": {
+              "label": "No"
+            }
+          },
+          "error": {
+            "missing": "Select whether any rounding has been applied to the data values"
+          }
+        },
+        "rounding_description": {
+          "label": "In short, simple sentences explain what rounding has been applied",
+          "error": {
+            "missing": "Enter what rounding has been applied to the data values"
+          }
+        }
+      }
+    },
+    "update_frequency": {
+      "heading": "Will this dataset be regularly updated?",
+      "form": {
+        "is_updated": {
+          "options": {
+            "yes": {
+              "label": "Yes"
+            },
+            "no": {
+              "label": "No"
+            }
+          },
+          "error": {
+            "missing": "Select if this dataset will be regularly updated or not"
+          }
+        },
+        "frequency_value": {
+          "label": "Enter the period between updates. For example, 1 year.",
+          "error": {
+            "missing": "Enter the number of weeks, months or years for the period between updates"
+          }
+        },
+        "frequency_unit": {
+          "options": {
+            "select": "Select",
+            "day": "days",
+            "week": "weeks",
+            "month": "months",
+            "year": "years"
+          },
+          "error": {
+            "missing": "Select whether the period between updates is in weeks, months or years"
+          }
+        }
+      }
+    },
+    "related": {
+      "add": {
+        "heading": "Add a link to a report",
+        "explain": "This may include reports for:",
+        "explain_1": "GOV.WALES statistics and research",
+        "explain_2": "statistical quality",
+        "explain_3": "other related work",
+        "form": {
+          "link_url": {
+            "label": "Link URL",
+            "hint": "This should start with either 'https://' or 'http://'",
+            "error": {
+              "missing": "Enter the link URL for a related report",
+              "invalid": "Enter the link URL in the correct format"
+            }
+          },
+          "link_label": {
+            "label": "Link text to appear on the webpage",
+            "hint": "This should be entered in the language in which you're viewing this service.",
+            "error": {
+              "missing": "Enter the link text to appear on the webpage for a related report"
+            }
+          }
+        }
+      },
+      "list": {
+        "heading": "Report links added",
+        "table": {
+          "link": "Report link",
+          "action_header": "Action",
+          "action_edit": "Change",
+          "action_delete": "Remove"
+        },
+        "not_translated": "Not yet translated",
+        "form": {
+          "add_another": {
+            "heading": "Do you need to add a link to another report?",
+            "options": {
+              "yes": {
+                "label": "Yes"
+              },
+              "no": {
+                "label": "No"
+              }
+            },
+            "error": {
+              "missing": "Select yes if you need to add a link to another report"
+            }
+          }
+        }
+      }
+    },
+    "providers": {
+      "add": {
+        "heading": "Add a data provider",
+        "explain": "If you cannot find the data provider in the list, you can <a class=\"govuk-link\" href=\"{{request_data_provider_url}}\">request a data provider be added</a>.",
+        "form": {
+          "provider": {
+            "hint": "Start typing or select from the list",
+            "error": {
+              "missing": "Select a data provider from the list of data providers"
+            }
+          }
+        }
+      },
+      "add_source": {
+        "heading": "Add a data source from the selected data provider",
+        "selected_provider": "Selected data provider",
+        "form": {
+          "has_source": {
+            "options": {
+              "yes": {
+                "label": "Select source"
+              },
+              "no": {
+                "label": "No specific source from data provider"
+              }
+            },
+            "error": {
+              "missing": "Select whether to select a source or indicate there is no specific source from the data provider"
+            }
+          },
+          "source": {
+            "note": "If you cannot find the source in the list, you can <a class=\"govuk-link\" href=\"{{request_data_source_url}}\">request a data source be added</a>.",
+            "hint": "Start typing or select from the list",
+            "error": {
+              "missing": "Select a source from the list of sources for the selected data provider"
+            }
+          }
+        }
+      },
+      "list": {
+        "heading": "Sources added",
+        "table": {
+          "provider": "Provider",
+          "source": "Source",
+          "action_header": "Action",
+          "action_edit": "Change",
+          "action_delete": "Remove",
+          "no_source": "No specific source from data provider"
         },
         "form": {
-            "notice_1": "The username we've given you is temporary. You'll only be able to log in with it whilst we run this round of testing.",
-            "notice_2": "Do not upload any sensitive data or data that other StatsWales users should not have access to.",
-            "username": {
-                "label": "Username",
-                "error": "Enter your username"
+          "add_another": {
+            "heading": "Do you need to add another source?",
+            "options": {
+              "yes": {
+                "label": "Yes"
+              },
+              "no": {
+                "label": "No"
+              }
             },
-            "submit": "Login"
+            "error": {
+              "missing": "Select yes if you need to add another source"
+            }
+          }
         }
+      }
     },
-    "homepage": {
-        "heading": "StatsWales datasets",
-        "table": {
-            "id": "ID",
-            "title": "Title",
-            "last_updated": "Last updated",
-            "dataset_status": "Dataset status",
-            "publish_status": "Publishing status",
-            "not_translated":"Not yet translated"
-        },
-        "status": {
-            "new": "New",
-            "live": "Live"
-        },
-        "publishing_status": {
-            "incomplete": "Incomplete",
-            "update_incomplete": "Update incomplete",
-            "scheduled": "Scheduled",
-            "update_scheduled": "Update scheduled",
-            "published": "Published"
-        },
-        "buttons": {
-            "create": "Create new dataset"
-        }
-    },
-    "dataset_view": {
-        "key_information": {
-            "heading": "Main information",
-            "last_update": "Most recent update",
-            "next_update": "Next update expected (provisional)",
-            "data_provider": "Data provider",
-            "data_providers": "Data provider {{index}}",
-            "data_source": "Data source",
-            "data_sources": "Data source {{index}}",
-            "no_source": "No specific source from data provider",
-            "data_categories": "Data categories",
-            "time_covered": "Time period covered",
-            "time_period": "{{start}} to {{end}}",
-            "update_missing": "Publish date not entered yet",
-            "next_update_missing": "Publish date or update frequency not entered yet",
-            "not_updated": "This dataset will not be updated"
-        },
-        "downloads": {
-            "heading": "Downloads"
-        },
-        "notes": {
-            "heading": "Data notes",
-            "revisions": "Revisions",
-            "data_value_shorthand": "Data value shorthand",
-            "rounding": "Rounding applied",
-            "no_rounding": "None applied",
-            "a": "Average",
-            "c": "Confidential information",
-            "e": "Estimated",
-            "f": "Forecast",
-            "k": "Low figure",
-            "p": "Provisional",
-            "r": "Revised",
-            "t": "Total",
-            "u": "Low reliability",
-            "x": "Missing data",
-            "z": "Not applicable"
-        },
-        "about": {
-            "heading": "About this dataset",
-            "summary": "Summary",
-            "data_collection": "Data collection and calculation",
-            "statistical_quality": "Statistical quality",
-            "designation": "Designation",
-            "designations": {
-                "official": "Official statistics",
-                "accredited": "Accredited official statistics",
-                "in_development": "Official statistics in development",
-                "management": "Management information",
-                "none": "No designation"
-            },
-            "related_reports": "Related reports"
-        },
-        "published": {
-            "heading": "Published by",
-            "org": "Organisation",
-            "contact": "Contact email"
-        },
-        "buttons": {
-            "csv": "Download as CSV",
-            "excel": "Download as Excel",
-            "json": "Download as JSON",
-            "duckdb": "Download as DuckDB"
-        },
-        "contents": "Contents",
-        "download": "Download",
-        "download_as": {
-            "csv": "Download as CSV",
-            "parquet": "Download as Parquet",
-            "excel": "Download as Excel",
-            "duckdb": "Download as DuckDB"
-        },
-        "table_preview": "Table preview [Publisher use only]",
-        "table_note": "This is not shown in the consumer view",
-        "not_entered": "Not entered yet",
-        "not_selected": "Not selected yet",
-        "not_available": "Not available",
-        "categories_missing": "Reference data not selected yet",
-        "period_cover_missing": "Date information not entered yet"
-    },
-    "publish": {
-        "header": {
-            "overview": "Return to dataset tasklist",
-            "back": "Back"
-        },
-        "cube_preview": {
-            "panel": "This is a preview of this dataset.",
-            "heading": "Main information"
-
-        },
-        "delete_dataset": {
-          "heading": "By continuing, you confirm this dataset should be deleted",
-          "message": "All data for this dataset will be removed permanently. This cannot be undone.",
-          "button": "Delete dataset"
-        },
-        "start": {
-            "title": "Create a new dataset",
-            "p1": "To create a new dataset, you'll need:",
-            "data_table": "a data table containing data values and references to all relevant dimensions",
-            "lookup_table": "any user-generated lookup tables you need to include (if relevant)",
-            "metadata": "metadata about this dataset, in the language in which you're viewing this service"
-        },
-        "dimension_name": {
-            "dimension_heading": "What should this dimension be called on the StatsWales website?",
-            "measure_heading": "What should this measure be called on the StatsWales website?",
-            "hint": "The dimension name should be:",
-            "concise": "concise and clearly explain what the dimension contains",
-            "unique": "different to other dimension names in this dataset",
-            "language": "entered in the language in which you're viewing this service"
-        },
-        "dimension_type_chooser": {
-            "heading": "Add reference data",
-            "subheading": "Dimension",
-            "question": "What kind of data does this dimension contain?",
-            "chooser": {
-                "age": "Age",
-                "date": "Dates",
-                "ethnicity": "Ethnicity",
-                "geography": "Geography",
-                "number": "Numbers (no lookup table needed)",
-                "religion": "Religion",
-                "sex_gender": "Sex and gender",
-                "text": "Text (no lookup table needed)",
-                "time": "Times",
-                "lookup": "Something else"
-            }
-        },
-        "time_dimension_chooser": {
-            "heading": "Set up dimension containing dates",
-            "subheading": "Dates",
-            "showing": "A sample of {{rows}} of {{total}} rows.",
-            "question": "What kind of dates does the dimension contain?",
-            "chooser": {
-                "period": "Periods",
-                "period-hint": "For example, months or years for which data values apply to",
-                "point": "Specific points",
-                "point-hint": "For example, specific dates when data values were collected"
-            }
-        },
-      "number_chooser": {
-        "heading": "Set up dimension containing numbers",
-        "review_heading": "Check the dimension",
-        "subheading": "Numbers",
-        "showing": "A sample of {{rows}} of {{total}} rows.",
-        "question": "What kind of numbers does this dimension contain?",
-        "chooser": {
-          "integer": "Whole numbers",
-          "decimal": "Decimal numbers",
-          "decimal_places": "How many decimal places should be displayed?"
-        },
-        "confirm": "By continuing, you confirm the dimension is correct."
-      },
-        "lookup_table_review": {
-            "heading": "Check the lookup table",
-            "dimension_heading": "Check the dimension",
-            "showing": "Showing a sample of {{rows}} of {{total}} rows.",
-            "confirm": "By continuing, you confirm the lookup table is correct.",
-            "dimension_confirm": "By continuing, you confirm the dimension is displaying correctly.",
-            "go_back": "Choose a different lookup table",
-            "choose_different": "Choose a different reference data",
-            "change_lookup_table": "Replace lookup table",
-            "change_date_format": "Change the date formats",
-            "change_dimension_type": "Change what kind of data this dimension contains",
-            "column_headers": {
-                "fact_table": "Fact table:",
-                "lookup_table": "Lookup table:",
-                "description": "Description",
-                "description_en": "Description (English)",
-                "description_cy": "Description (Welsh)",
-                "sort_order": "Sort order",
-                "hierarchy": "Hierarchy",
-                "notes_en": "Notes (English)",
-                "notes_cy": "Notes (Welsh)"
-            }
-        },
-        "measure_review": {
-            "heading": "Check the measure table",
-            "showing": "Showing a sample of {{rows}} of {{total}} rows.",
-            "confirm": "By continuing, you confirm the measure table is correct.",
-            "go_back": "Choose a different measure table",
-            "column_headers": {
-                "fact_table": "Fact Table:",
-                "lookup_table": "Lookup Table:",
-                "description_en": "Description (English)",
-                "description_cy": "Description (Welsh)",
-                "description": "Description",
-                "decimals": "Decimal places",
-                "hierarchy": "Hierarchy",
-                "language": "Language",
-                "reference": "Reference value",
-                "sort": "Sort order",
-                "sort_order": "Sort order",
-                "notes": "Notes",
-                "notes_en": "Notes (English)",
-                "notes_cy": "Notes (Welsh)",
-                "format": "Format",
-                "measure_type": "Value type"
-            },
-            "column_values": {
-                "null": "No",
-                "cy-gb": "Welsh",
-                "en-gb": "English",
-                "float": "Floating point number",
-                "decimal": "Decimal number",
-                "integer": "Whole number",
-                "long": "Big whole number",
-                "percentage": "Percentage",
-                "string": "Plain text",
-                "text": "Plain text",
-                "date": "Date",
-                "datetime": "Date and time",
-                "time": "Time"
-            }
-        },
-        "time_dimension_review": {
-            "heading": "Confirm the dates are correct",
-            "unknown_name": "Unnamed Dimension",
-            "actions": "Actions",
-            "showing": "Showing a sample of {{rows}} of {{total}} rows.",
-            "confirm": "By continuing, you confirm the dates are correct.",
-            "go_back": "Change date format",
-            "change_format": "Change date representation",
-            "change_name": "Change dimension name",
-            "change_measure_name": "Change measure name",
-            "column_headers": {
-                "date_code": "Date code",
-                "start_date": "Start",
-                "end_date": "End",
-                "date_type": "Date type",
-                "description": "Description",
-                "description_en": "Description (English)",
-                "description_cy": "Description (Welsh)",
-                "descriptionen": "Description (English)",
-                "descriptioncy": "Description (Welsh)",
-                "descriptionenglish": "Description (English)",
-                "descriptionwelsh": "Description (Welsh)",
-                "descriptioncymraeg": "Description (Welsh)",
-                "description_english": "Description (English)",
-                "description_welsh": "Description (Welsh)",
-                "description_cymraeg": "Description (Welsh)",
-                "notes": "Notes",
-                "notesen": "Notes (English)",
-                "notescy": "Notes (Welsh)",
-                "notesenglish": "Notes (English)",
-                "noteswelsh": "Notes (Welsh)",
-                "notescymraeg": "Notes (Welsh)",
-                "notes_english": "Notes (English)",
-                "notes_welsh": "Notes (Welsh)",
-                "notes_cymraeg": "Notes (Welsh)",
-                "language": "Language",
-                "lang": "Language",
-                "sortorder": "Sort Order",
-                "sort": "Sort Order",
-                "sort_order": "Sort Order",
-                "hierarchy": "Hierarchy"
-            },
-            "year_type": {
-                "calendar_year": "Calendar year",
-                "calendar_quarter": "Calendar quarter",
-                "calendar_month": "Calendar month",
-                "financial_year": "Financial year",
-                "financial_quarter": "Financial quarter",
-                "financial_month": "Financial month",
-                "academic_year": "Academic year",
-                "academic_quarter": "Academic quarter",
-                "academic_month": "Academic month",
-                "tax_year": "Tax year",
-                "tax_quarter": "Tax quarter",
-                "tax_month": "Tax month",
-                "meteorological_year": "Meteorological year",
-                "meteorological_quarter": "Meteorological quarter",
-                "meteorological_month": "Meteorological month",
-                "specific_day": "Specific point in time"
-            }
-        },
-        "measure_preview": {
-            "heading": "Upload a measure lookup table"
-        },
-        "period-type-chooser": {
-            "heading": "What are the shortest periods in the dimension?",
-            "subheading": "Dates",
-            "chooser": {
-                "years": "Years",
-                "quarters": "Quarters",
-                "months": "Months"
-            }
-        },
-        "year_type": {
-            "heading": "What type of year does the dimension represent?",
-            "chooser": {
-                "calendar": "Calendar",
-                "calendar-hint": "1 January to 31 December",
-                "financial" : "Financial",
-                "financial-hint": "1 April to 31 March",
-                "tax": "Tax",
-                "tax-hint": "6 April to 5 April",
-                "academic": "Academic",
-                "academic-hint": "1 September to 31 August",
-                "meteorological": "Meteorological",
-                "meteorological-hint": "1 March to 28 or 29 February"
-            }
-        },
-        "year_format": {
-            "heading": "What format is used for years in the dimension?",
-            "example": "For example, {{example}}"
-        },
-        "quarter_format": {
-            "heading": "What format is used for quarters in the dimension?",
-            "heading-alt": "What format is used for quarterly totals?",
-            "example": "For example, {{example}}",
-            "fifth_quarter": "Is a fifth quarter used to represent yearly totals?",
-            "fifth_example": "For example, 2024Q5 to represent the total for 2024",
-            "no_quarterly_totals": "There are no quarterly totals"
-        },
-        "month_format": {
-            "heading": "What format is used for months in the dimension?",
-            "example": "For example, {{example}}"
-        },
-        "measure_match_failure": {
-            "heading": "Measure lookup table cannot be matched to the data table",
-            "measure_subheading": "Reference codes in the measure lookup table that cannot be matched",
-            "information": "{{failureCount, number}} instances of reference codes in the data table cannot be found in the measure lookup table.",
-            "things_to_check": "You should check you selected the correct data table and measure lookup table and that they both:",
-            "formatting": "contain the correct reference codes",
-            "choices": "do not contain any trailing spaces after any values",
-            "upload_different_measure": "Upload corrected or different measure lookup table"
-        },
-        "dimension_match_failure": {
-            "lookup_heading": "Lookup table data cannot be matched to the data table",
-            "heading": "Reference data cannot be matched to the data table",
-            "lookup_information": "{{failureCount, number}} instances of reference codes in the data table could not be found in the uploaded lookup table.",
-            "you_should_check": "You should check you selected the correct data table and lookup table and that they both:",
-            "ref_information": "{{failureCount, number}} instances of reference codes in the data table could not be found in the selected standardised reference data.",
-            "you_should_check_ref": "You should check you selected the correct data table and reference data. You should also check the data table:",
-            "formatting": "contain the correct reference codes",
-            "choices": "do not contain any trailing spaces after any values",
-            "ref_formatting": "contains the correct reference codes",
-            "ref_choices": "does not contain any trailing spaces after any values",
-            "fact_table_subheading": "Reference codes in the data table that cannot be matched",
-            "actions": "Actions",
-            "upload_different_file": "Upload corrected or different data table",
-            "upload_different_file_warning": "Warning: This will remove all reference data from all dimensions",
-            "try_different_format": "Select different reference data",
-            "try_different_lookup": "Upload corrected or different lookup table",
-            "no_matches": "None of the dates matched the format supplied",
-            "missing_data_table_values": "Reference codes in the data table that cannot be matched",
-            "missing_lookup_table_values": "Reference codes in the lookup table that cannot be matched"
-        },
-        "period_match_failure": {
-            "heading": "Date formatting cannot be matched to the dimension",
-            "information": "{{failureCount, number}} instances of date codes in the dimension do not match the date formatting you have indicated. You should check:",
-            "formatting": "all date codes in the dimension are correct and do not contain any trailing spaces",
-            "choices": "you indicated the correct date formatting",
-            "supplied_format":"Indicated date formatting:",
-            "year_format": "Years: {{format}}",
-            "quarter_format": "Quarters: {{format}}",
-            "month_format": "Months: {{format}}",
-            "date_format": "Date: {{format}}",
-            "subheading": "Date codes in the data table that cannot be matched",
-            "fact_table_subheading": "Reference codes in the data table that cannot be matched",
-            "actions": "Actions",
-            "upload_different_file": "Upload corrected or different data table",
-            "upload_different_file_warning": "Warning: This will remove all reference data from all dimensions",
-            "try_different_format": "Indicate different date formatting",
-            "no_matches": "None of the dates matched the format supplied"
-        },
-        "title": {
-            "heading": "What is the title of this dataset?",
-            "appear": "This is the title that will appear on the StatsWales website",
-            "descriptive": "It should be short, descriptive and unique",
-            "form": {
-                "title": {
-                    "hint": "This should be entered in the language in which you're viewing this service.",
-                    "error": {
-                        "missing": "Enter the title of this dataset",
-                        "too_long": "The title of this dataset must be 1,000 characters or less",
-                        "too_short": "The title of this dataset must be 3 characters or more",
-                        "unique": "The entered title is already in use for a currently published dataset. Enter a unique title for this dataset."
-                    }
-                }
-            }
-        },
-        "summary": {
-            "heading": "What is the summary of this dataset?",
-            "explain": "In short, simple sentences explain:",
-            "explain_1": "what this dataset is about and what it shows",
-            "explain_2": "this dataset's dimensions and why they've been used, if needed",
-            "language": "This should be entered in the language in which you're viewing this service.",
-            "form": {
-                "description": {
-                    "error": {
-                        "missing": "Enter the summary of this dataset"
-                    }
-                }
-            }
-        },
-        "collection": {
-            "heading": "How was the data collected or calculated?",
-            "explain": "In short, simple sentences explain either:",
-            "explain_1": "the methodology used to collect the data",
-            "explain_2": "the methodology used to calculate the data",
-            "explain_3": "both of the above",
-            "language": "This should be entered in the language in which you're viewing this service.",
-            "form": {
-                "collection": {
-                    "error": {
-                        "missing": "Enter how the data was collected or calculated"
-                    }
-                }
-            }
-        },
-        "quality": {
-            "heading": "What is the statistical quality of this dataset?",
-            "explain": "In short, simple sentences explain:",
-            "explain_1": "any issues or methodological changes related to this dataset including any:",
-            "explain_1a": "notes relevant to all data values in this dataset",
-            "explain_1b": "custom explanations needed to clarify any note codes used",
-            "explain_2": "a high-level summary of the statistical quality report, if available",
-            "language": "This should be entered in the language in which you're viewing this service.",
-            "form": {
-                "quality": {
-                    "error": {
-                        "missing": "Enter the statistical quality of this dataset"
-                    }
-                },
-                "rounding_applied": {
-                    "heading": "Has rounding been applied to the data values?",
-                    "options": {
-                        "yes": {
-                            "label": "Yes",
-                            "note": "In short, simple sentences explain what rounding has been applied."
-                        },
-                        "no": {
-                            "label": "No"
-                        }
-                    },
-                    "error": {
-                        "missing": "Select whether any rounding has been applied to the data values"
-                    }
-                },
-                "rounding_description": {
-                    "label": "In short, simple sentences explain what rounding has been applied",
-                    "error": {
-                        "missing": "Enter what rounding has been applied to the data values"
-                    }
-                }
-            }
-        },
-        "update_frequency": {
-            "heading": "Will this dataset be regularly updated?",
-            "form": {
-                "is_updated": {
-                    "options": {
-                        "yes": {
-                            "label": "Yes"
-                        },
-                        "no": {
-                            "label": "No"
-                        }
-                    },
-                    "error": {
-                        "missing": "Select if this dataset will be regularly updated or not"
-                    }
-                },
-                "frequency_value": {
-                    "label": "Enter the period between updates. For example, 1 year.",
-                    "error": {
-                        "missing": "Enter the number of weeks, months or years for the period between updates"
-                    }
-                },
-                "frequency_unit": {
-                    "options": {
-                        "select": "Select",
-                        "day": "days",
-                        "week": "weeks",
-                        "month": "months",
-                        "year": "years"
-                    },
-                    "error": {
-                        "missing": "Select whether the period between updates is in weeks, months or years"
-                    }
-                }
-            }
-        },
-        "related": {
-            "add": {
-                "heading": "Add a link to a report",
-                "explain": "This may include reports for:",
-                "explain_1": "GOV.WALES statistics and research",
-                "explain_2": "statistical quality",
-                "explain_3": "other related work",
-                "form": {
-                    "link_url": {
-                        "label": "Link URL",
-                        "hint": "This should start with either 'https://' or 'http://'",
-                        "error": {
-                            "missing": "Enter the link URL for a related report",
-                            "invalid": "Enter the link URL in the correct format"
-                        }
-                    },
-                    "link_label": {
-                        "label": "Link text to appear on the webpage",
-                        "hint": "This should be entered in the language in which you're viewing this service.",
-                        "error": {
-                            "missing": "Enter the link text to appear on the webpage for a related report"
-                        }
-                    }
-                }
-            },
-            "list":  {
-                "heading": "Report links added",
-                "table": {
-                    "link": "Report link",
-                    "action_header": "Action",
-                    "action_edit": "Change",
-                    "action_delete": "Remove"
-                },
-                "not_translated": "Not yet translated",
-                "form": {
-                    "add_another": {
-                        "heading": "Do you need to add a link to another report?",
-                        "options": {
-                            "yes": {
-                                "label": "Yes"
-                            },
-                            "no": {
-                                "label": "No"
-                            }
-                        },
-                        "error": {
-                            "missing": "Select yes if you need to add a link to another report"
-                        }
-                    }
-                }
-            }
-        },
-        "providers": {
-            "add": {
-                "heading": "Add a data provider",
-                "explain": "If you cannot find the data provider in the list, you can <a class=\"govuk-link\" href=\"{{request_data_provider_url}}\">request a data provider be added</a>.",
-                "form": {
-                    "provider": {
-                        "hint": "Start typing or select from the list",
-                        "error": {
-                            "missing": "Select a data provider from the list of data providers"
-                        }
-                    }
-                }
-            },
-            "add_source": {
-                "heading": "Add a data source from the selected data provider",
-                "selected_provider": "Selected data provider",
-                "form" : {
-                    "has_source": {
-                        "options": {
-                            "yes": {
-                                "label": "Select source"
-                            },
-                            "no": {
-                                "label": "No specific source from data provider"
-                            }
-                        },
-                        "error": {
-                            "missing": "Select whether to select a source or indicate there is no specific source from the data provider"
-                        }
-                    },
-                    "source": {
-                        "note": "If you cannot find the source in the list, you can <a class=\"govuk-link\" href=\"{{request_data_source_url}}\">request a data source be added</a>.",
-                        "hint": "Start typing or select from the list",
-                        "error": {
-                            "missing": "Select a source from the list of sources for the selected data provider"
-                        }
-                    }
-                }
-            },
-            "list":  {
-                "heading": "Sources added",
-                "table": {
-                    "provider": "Provider",
-                    "source": "Source",
-                    "action_header": "Action",
-                    "action_edit": "Change",
-                    "action_delete": "Remove",
-                    "no_source": "No specific source from data provider"
-                },
-                "form": {
-                    "add_another": {
-                        "heading": "Do you need to add another source?",
-                        "options": {
-                            "yes": {
-                                "label": "Yes"
-                            },
-                            "no": {
-                                "label": "No"
-                            }
-                        },
-                        "error": {
-                            "missing": "Select yes if you need to add another source"
-                        }
-                    }
-                }
-            }
-        },
+    "designation": {
+      "heading": "How is this dataset designated?",
+      "form": {
         "designation": {
-            "heading": "How is this dataset designated?",
-            "form": {
-                "designation": {
-                    "options": {
-                        "official": {
-                            "label": "Official statistics"
-                        },
-                        "accredited": {
-                            "label": "Accredited official statistics"
-                        },
-                        "in_development": {
-                            "label": "Official statistics in development"
-                        },
-                        "management": {
-                            "label": "Management information"
-                        },
-                        "none": {
-                            "label": "No designation"
-                        }
-                    },
-                    "error": {
-                        "missing": "Select how this dataset is designated"
-                    }
-                }
+          "options": {
+            "official": {
+              "label": "Official statistics"
+            },
+            "accredited": {
+              "label": "Accredited official statistics"
+            },
+            "in_development": {
+              "label": "Official statistics in development"
+            },
+            "management": {
+              "label": "Management information"
+            },
+            "none": {
+              "label": "No designation"
             }
-        },
+          },
+          "error": {
+            "missing": "Select how this dataset is designated"
+          }
+        }
+      }
+    },
+    "topics": {
+      "heading": "Which topics are relevant to this dataset?",
+      "form": {
         "topics": {
-            "heading": "Which topics are relevant to this dataset?",
-            "form": {
-                "topics": {
-                    "error": {
-                        "missing": "Select which topics are relevant to this dataset"
-                    }
-                }
-            }
-        },
-        "schedule": {
-            "heading": "When should this dataset be published?",
-            "form": {
-                "date": {
-                    "label": "Date",
-                    "hint": "For example, 10 05 2024",
-                    "error": {
-                        "invalid": "The date this dataset should be published must be a real date",
-                        "past": "The date this dataset should be published must be in the future"
-                    }
-                },
-                "day": {
-                    "label": "Day",
-                    "error": "The date this dataset should be published must include a day"
-                },
-                "month": {
-                    "label": "Month",
-                    "error": "The date this dataset should be published must include a month"
-                },
-                "year": {
-                    "label": "Year",
-                    "error": "The date this dataset should be published must include a year"
-                },
-                "time": {
-                    "label": "Time",
-                    "hint": "This will be 09:30 by default. Only change this if a different publication time is needed. Use 24 hour clock format, for example 15:00.",
-                    "error": {
-                        "invalid": "The time this dataset should be published must be a real time"
-                    }
-                },
-                "hour": {
-                    "label": "Hour",
-                    "error": "The time this dataset should be published must include an hour"
-                },
-                "minute": {
-                    "label": "Minute",
-                    "error": "The time this dataset should be published must include a minute"
-                }
-            },
-            "error": {
-                "saving": "Publish date could not be saved. Try again later."
-            }
-        },
-        "organisation": {
-            "heading": "Publisher organisation and team",
-            "form": {
-                "organisation": {
-                    "label": "Organisation",
-                    "placeholder": "Select organisation",
-                    "error": "Select an organisation"
-                },
-                "team": {
-                    "label": "Team",
-                    "note": "If you cannot find your team in the list, or your team name has changed, you can <a class=\"govuk-link\" href=\"{{request_team}}\">request a team be added or changed</a>.",
-                    "placeholder": "Select team",
-                    "error": "Select a team"
-                }
-            },
-            "error": {
-                "saving": "Team could not be saved. Try again later."
-            }
-        },
-        "upload": {
-            "title": "Upload the data table",
-            "lookup_heading": "Upload a lookup table",
-            "measure_heading": "Upload a measure table",
-            "form": {
-                "file": {
-                    "label": "The file should be in CSV, JSON or Parquet format"
-                }
-            },
-            "buttons": {
-                "upload": "Continue"
-            },
-            "errors": {
-                "missing": "Select a data table",
-                "api": "The selected file could not be uploaded. Try again."
-            }
-        },
-        "preview": {
-            "heading": "Check the data table",
-            "heading_summary": "Data table summary",
-            "upload_has": "Your upload has:",
-            "columns": "{{count}} column",
-            "columns_other": "{{count}} columns",
-            "rows": "{{count}} row",
-            "rows_other": "{{count}} rows",
-            "row_number": "Row",
-            "preview_summary": "There are $t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} }) in your upload.",
-            "columns_rows": "$t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} })",
-            "upload_summary": "There are $t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} }) in the data table. $t(publish.preview.columns, {\"count\": {{ignored}} }) in the uploaded file have been ignored.",
-            "showing_rows": "Showing rows {{start}} – {{end}} of {{total}}",
-            "unnamed_column": "column {{colNum}}",
-            "confirm_correct": "By continuing, you confirm the data table is correct.",
-            "revisit_question": "What do you need to do?",
-            "upload_different": "Upload a different data table",
-            "upload_different_hint": "Warning: This will remove all reference data from all dimensions",
-            "change_source": "Change the definition of what each column in the data table contains",
-            "change_source_hint": "Warning: This will remove all reference data from all dimensions",
-            "source_type": {
-                "data_values": "Data values",
-                "note_codes": "Note codes",
-                "measure" : "Measure or data types",
-                "dimension": "Dimension",
-                "time": "Dimension containing dates",
-                "ignore": "This column can be ignored",
-                "unknown": "Unknown"
-            }
-        },
-        "sources": {
-            "heading": "What does each column in the data table contain?",
-            "types": {
-                "data_values": "Data values",
-                "note_codes": "Note codes",
-                "measure" : "Measure or data types",
-                "dimension": "Dimension",
-                "time": "Dimension containing dates",
-                "ignore": "This column can be ignored",
-                "unknown": "Select"
-            }
-        },
-        "tasklist": {
-            "no_title": "No title available",
-            "preview": "Preview (opens in new tab)",
-            "delete": "Delete this dataset",
-            "status": {
-                "cannot_start": "Cannot start yet",
-                "available": "Available",
-                "completed": "Completed",
-                "not_required": "Not required",
-                "not_started": "Not yet started",
-                "incomplete": "Incomplete",
-                "unchanged": "Unchanged",
-                "updated": "Updated"
-            },
-            "data": {
-                "subheading": "Data",
-                "datatable": "Data table"
-            },
-            "metadata": {
-                "subheading": "Metadata",
-                "title": "Title",
-                "summary": "Summary",
-                "data_collection": "Data collection",
-                "statistical_quality": "Statistical quality",
-                "data_sources": "Data sources",
-                "related_reports": "Related reports",
-                "update_frequency": "How often this dataset is updated",
-                "designation": "Designation",
-                "relevant_topics": "Relevant topics"
-            },
-            "translation": {
-                "subheading": "Translation",
-                "export": "Export text fields for translation",
-                "import": "Import translations"
-            },
-            "publishing": {
-                "subheading": "Publishing",
-                "organisation": "Publisher organisation and contact",
-                "when": "When this dataset should be published",
-                "when_update": "When this update should be published",
-                "submit": "Submit for approval"
-            },
-            "submit": {
-                "subheading": "By continuing, you confirm that all data and metadata has been checked and is correct.",
-                "button": "Submit for publishing"
-            }
-        },
-        "change_data": {
-            "title": "What do you need to do?",
-            "note": "The file should be in CSV, JSON or Parquet format",
-            "change_table": {
-                "label": "Upload a different data table",
-                "description": "This will remove reference data from all dimensions"
-            },
-            "change_columns": {
-                "label": "Change what each column in the data table contains",
-                "description": "This will remove reference data for any columns that contain dimensions that you change"
-            }
-        },
-        "point_in_time": {
-            "heading": "What date format is used?",
-            "example": "For example: {{example}}"
-        },
-        "overview": {
-            "scheduled": {
-                "notification": {
-                    "header": "Success",
-                    "content": "Dataset submitted successfully for publishing"
-                },
-                "publish_at": "Publishing scheduled: <strong>{{publish_at}}</strong>",
-                "what_next": "What do you want to do?",
-                "buttons": {
-                    "view_published_dataset": "View published dataset (opens in new tab)",
-                    "update_dataset": "Update this dataset",
-                    "withdraw_first_revision": "Change dataset before publication",
-                    "withdraw_update_revision": "Change update before publication",
-                    "continue_update": "Continue update",
-                    "continue": "Continue dataset",
-                    "preview": "View dataset preview"
-                }
-            },
-            "error": {
-                "withdraw": "Could not withdraw dataset from publication. You should contact support."
-            }
-        },
-        "update_type": {
-            "heading": "What do you need to do?",
-            "add": "Add new data only",
-            "add_revise": "Add new data and revise existing data",
-            "revise": "Revise existing data only",
-            "replace_all": "Replace all existing data",
-            "errors": {
-                "missing": "You need to select the type of update you wish to make"
-            }
+          "error": {
+            "missing": "Select which topics are relevant to this dataset"
+          }
         }
+      }
     },
-    "translations": {
-        "export": {
-            "heading": "Export text fields for translation",
-            "table": {
-                "field": "Text field",
-                "value": "Text",
-                "action": "Change link"
-            },
-            "field": {
-                "title": "Title",
-                "summary": "Summary",
-                "collection": "Data collection",
-                "quality": "Statistical quality",
-                "roundingDescription": "Rounding applied"
-            },
-            "dimension": "{{key}} dimension name",
-            "link": "Related report",
-            "buttons": {
-                "export": "Export CSV",
-                "change": "Change"
-            }
+    "schedule": {
+      "heading": "When should this dataset be published?",
+      "form": {
+        "date": {
+          "label": "Date",
+          "hint": "For example, 10 05 2024",
+          "error": {
+            "invalid": "The date this dataset should be published must be a real date",
+            "past": "The date this dataset should be published must be in the future"
+          }
         },
-        "import": {
-            "heading": "Import translation file",
-            "heading_preview": "Check the translated text",
-            "note": "You can only import the translation file if it has been fully populated.",
-            "form": {
-                "file": {
-                    "label": "The file must be in CSV format",
-                    "error": {
-                        "missing": "Select the populated translation file to upload",
-                        "invalid": "The selected file could not be uploaded. Check you have used the exported translation file for this dataset and have not changed any of the values in the key column.",
-                        "values": "The translation file must be fully populated for both languages"
-                    }
-                }
-            },
-            "buttons": {
-                "import": "Import CSV",
-                "confirm": "Continue"
-            },
-            "table": {
-                "field": "Text field",
-                "english": "Text (English)",
-                "welsh": "Text (Welsh)"
-            }
-        }
-    },
-    "developer": {
-        "heading": "Developer Tools",
-        "list": {
-            "heading": "List Datasets",
-            "details": "Details",
-            "tasklist": "Task List",
-            "error": {
-                "no_datasets": "No datasets are currently listed in the database. If you need help, contact a member of the development team."
-            }
+        "day": {
+          "label": "Day",
+          "error": "The date this dataset should be published must include a day"
         },
-        "display": {
-            "heading": "Display a Dataset",
-            "title": "Title",
-            "description": "Description",
-            "notes": "Notes",
-            "contents": "Contents",
-            "summary": "Summary",
-            "dimension": "Dimension",
-            "start_revision": "Start Revision ID",
-            "index": "Index",
-            "type": "Type",
-            "created_at": "Creation Date",
-            "created_by": "Created By",
-            "revision": "Revision",
-            "import": "File Import",
-            "imports": "File Imports",
-            "download": "Download",
-            "download_file": "Download File",
-            "location": "Location",
-            "filename": "Filename",
-            "mime_type": "Mime Type",
-            "fact_tables": "Fact Tables",
-            "error": {
-                "no_dimensions": "This dataset has not been completed with dimensions",
-                "no_revisions": "This dataset has not been completed with revisions",
-                "no_description": "No description available"
-            }
+        "month": {
+          "label": "Month",
+          "error": "The date this dataset should be published must include a month"
+        },
+        "year": {
+          "label": "Year",
+          "error": "The date this dataset should be published must include a year"
+        },
+        "time": {
+          "label": "Time",
+          "hint": "This will be 09:30 by default. Only change this if a different publication time is needed. Use 24 hour clock format, for example 15:00.",
+          "error": {
+            "invalid": "The time this dataset should be published must be a real time"
+          }
+        },
+        "hour": {
+          "label": "Hour",
+          "error": "The time this dataset should be published must include an hour"
+        },
+        "minute": {
+          "label": "Minute",
+          "error": "The time this dataset should be published must include a minute"
         }
+      },
+      "error": {
+        "saving": "Publish date could not be saved. Try again later."
+      }
     },
+    "upload": {
+      "title": "Upload the data table",
+      "lookup_heading": "Upload a lookup table",
+      "measure_heading": "Upload a measure table",
+      "form": {
+        "file": {
+          "label": "The file should be in CSV, JSON or Parquet format"
+        }
+      },
+      "buttons": {
+        "upload": "Continue"
+      },
+      "errors": {
+        "missing": "Select a data table",
+        "api": "The selected file could not be uploaded. Try again."
+      }
+    },
+    "preview": {
+      "heading": "Check the data table",
+      "heading_summary": "Data table summary",
+      "upload_has": "Your upload has:",
+      "columns": "{{count}} column",
+      "columns_other": "{{count}} columns",
+      "rows": "{{count}} row",
+      "rows_other": "{{count}} rows",
+      "row_number": "Row",
+      "preview_summary": "There are $t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} }) in your upload.",
+      "columns_rows": "$t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} })",
+      "upload_summary": "There are $t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} }) in the data table. $t(publish.preview.columns, {\"count\": {{ignored}} }) in the uploaded file have been ignored.",
+      "showing_rows": "Showing rows {{start}} – {{end}} of {{total}}",
+      "unnamed_column": "column {{colNum}}",
+      "confirm_correct": "By continuing, you confirm the data table is correct.",
+      "revisit_question": "What do you need to do?",
+      "upload_different": "Upload a different data table",
+      "upload_different_hint": "Warning: This will remove all reference data from all dimensions",
+      "change_source": "Change the definition of what each column in the data table contains",
+      "change_source_hint": "Warning: This will remove all reference data from all dimensions",
+      "source_type": {
+        "data_values": "Data values",
+        "note_codes": "Note codes",
+        "measure": "Measure or data types",
+        "dimension": "Dimension",
+        "time": "Dimension containing dates",
+        "ignore": "This column can be ignored",
+        "unknown": "Unknown"
+      }
+    },
+    "sources": {
+      "heading": "What does each column in the data table contain?",
+      "types": {
+        "data_values": "Data values",
+        "note_codes": "Note codes",
+        "measure": "Measure or data types",
+        "dimension": "Dimension",
+        "time": "Dimension containing dates",
+        "ignore": "This column can be ignored",
+        "unknown": "Select"
+      }
+    },
+    "tasklist": {
+      "no_title": "No title available",
+      "preview": "Preview (opens in new tab)",
+      "delete": "Delete this dataset",
+      "status": {
+        "cannot_start": "Cannot start yet",
+        "available": "Available",
+        "completed": "Completed",
+        "not_required": "Not required",
+        "not_started": "Not yet started",
+        "incomplete": "Incomplete",
+        "unchanged": "Unchanged",
+        "updated": "Updated"
+      },
+      "data": {
+        "subheading": "Data",
+        "datatable": "Data table"
+      },
+      "metadata": {
+        "subheading": "Metadata",
+        "title": "Title",
+        "summary": "Summary",
+        "data_collection": "Data collection",
+        "statistical_quality": "Statistical quality",
+        "data_sources": "Data sources",
+        "related_reports": "Related reports",
+        "update_frequency": "How often this dataset is updated",
+        "designation": "Designation",
+        "relevant_topics": "Relevant topics"
+      },
+      "translation": {
+        "subheading": "Translation",
+        "export": "Export text fields for translation",
+        "import": "Import translations"
+      },
+      "publishing": {
+        "subheading": "Publishing",
+        "organisation": "Publisher organisation and contact",
+        "when": "When this dataset should be published",
+        "when_update": "When this update should be published",
+        "submit": "Submit for approval"
+      },
+      "submit": {
+        "subheading": "By continuing, you confirm that all data and metadata has been checked and is correct.",
+        "button": "Submit for publishing"
+      }
+    },
+    "change_data": {
+      "title": "What do you need to do?",
+      "note": "The file should be in CSV, JSON or Parquet format",
+      "change_table": {
+        "label": "Upload a different data table",
+        "description": "This will remove reference data from all dimensions"
+      },
+      "change_columns": {
+        "label": "Change what each column in the data table contains",
+        "description": "This will remove reference data for any columns that contain dimensions that you change"
+      }
+    },
+    "point_in_time": {
+      "heading": "What date format is used?",
+      "example": "For example: {{example}}"
+    },
+    "overview": {
+      "scheduled": {
+        "notification": {
+          "header": "Success",
+          "content": "Dataset submitted successfully for publishing"
+        },
+        "publish_at": "Publishing scheduled: <strong>{{publish_at}}</strong>",
+        "what_next": "What do you want to do?",
+        "buttons": {
+          "view_published_dataset": "View published dataset (opens in new tab)",
+          "update_dataset": "Update this dataset",
+          "withdraw_first_revision": "Change dataset before publication",
+          "withdraw_update_revision": "Change update before publication",
+          "continue_update": "Continue update",
+          "continue": "Continue dataset",
+          "preview": "View dataset preview"
+        }
+      },
+      "error": {
+        "withdraw": "Could not withdraw dataset from publication. You should contact support."
+      }
+    },
+    "update_type": {
+      "heading": "What do you need to do?",
+      "add": "Add new data only",
+      "add_revise": "Add new data and revise existing data",
+      "revise": "Revise existing data only",
+      "replace_all": "Replace all existing data",
+      "errors": {
+        "missing": "You need to select the type of update you wish to make"
+      }
+    }
+  },
+  "translations": {
+    "export": {
+      "heading": "Export text fields for translation",
+      "table": {
+        "field": "Text field",
+        "value": "Text",
+        "action": "Change link"
+      },
+      "field": {
+        "title": "Title",
+        "summary": "Summary",
+        "collection": "Data collection",
+        "quality": "Statistical quality",
+        "roundingDescription": "Rounding applied"
+      },
+      "dimension": "{{key}} dimension name",
+      "link": "Related report",
+      "buttons": {
+        "export": "Export CSV",
+        "change": "Change"
+      }
+    },
+    "import": {
+      "heading": "Import translation file",
+      "heading_preview": "Check the translated text",
+      "note": "You can only import the translation file if it has been fully populated.",
+      "form": {
+        "file": {
+          "label": "The file must be in CSV format",
+          "error": {
+            "missing": "Select the populated translation file to upload",
+            "invalid": "The selected file could not be uploaded. Check you have used the exported translation file for this dataset and have not changed any of the values in the key column.",
+            "values": "The translation file must be fully populated for both languages"
+          }
+        }
+      },
+      "buttons": {
+        "import": "Import CSV",
+        "confirm": "Continue"
+      },
+      "table": {
+        "field": "Text field",
+        "english": "Text (English)",
+        "welsh": "Text (Welsh)"
+      }
+    }
+  },
+  "developer": {
+    "heading": "Developer Tools",
+    "list": {
+      "heading": "List Datasets",
+      "details": "Details",
+      "tasklist": "Task List",
+      "error": {
+        "no_datasets": "No datasets are currently listed in the database. If you need help, contact a member of the development team."
+      }
+    },
+    "display": {
+      "heading": "Display a Dataset",
+      "title": "Title",
+      "description": "Description",
+      "notes": "Notes",
+      "contents": "Contents",
+      "summary": "Summary",
+      "dimension": "Dimension",
+      "start_revision": "Start Revision ID",
+      "index": "Index",
+      "type": "Type",
+      "created_at": "Creation Date",
+      "created_by": "Created By",
+      "revision": "Revision",
+      "import": "File Import",
+      "imports": "File Imports",
+      "download": "Download",
+      "download_file": "Download File",
+      "location": "Location",
+      "filename": "Filename",
+      "mime_type": "Mime Type",
+      "fact_tables": "Fact Tables",
+      "error": {
+        "no_dimensions": "This dataset has not been completed with dimensions",
+        "no_revisions": "This dataset has not been completed with revisions",
+        "no_description": "No description available"
+      }
+    }
+  },
   "flash": {
     "dataset": {
       "draft_deleted": "Dataset has been deleted successfully"
     }
   },
-	"errors": {
-        "dataset": {
-          "delete_failed": "Failed to delete dataset due a server error"
-        },
-        "confirm": {
-            "missing": "You need to confirm or reject the uploaded file using the buttons at the end of the preview"
-        },
-        "session": {
-            "current_dataset_missing": "A data table cannot be found. Try uploading a data table.",
-            "current_revision_missing": "A data table cannot be found. Try uploading a data table.",
-            "current_import_missing": "A data table cannot be found. Try uploading a data table.",
-            "no_sources_on_import": "The selected data table does not contain any dimensions. Check the data table is correct."
-        },
-        "sources": {
-            "unknowns_found": "Select what each column in the data table contains",
-            "multiple_datavalues": "There should only be one column in the data table for data values. Check you've selected the correct options or check the data table is correct.",
-            "multiple_footnotes": "There should only be one column in the data table for note codes. Check you've selected the correct options or check the data table is correct.",
-            "multiple_measures": "There should only be one column in the data table for measure or data types. Check you've selected the correct options or check the data table is correct.",
-            "dimension_creation_failed": "Dimensions could not be created. Check you've selected the correct options or check the data table is correct."
-        },
-        "preview": {
-            "failed_to_get_preview": "Table preview could not be generated. Check you've added reference data to all dimensions or the data table is correct.",
-            "remove_error": "Uploaded file could not be removed from the server. Try again or contact support.",
-            "confirm_error":  "Confirm or reject the uploaded file",
-            "revision_missing": "A revision is missing from this dataset",
-            "import_missing": "An import is missing from this dataset",
-            "invalid_download_format": "Select whether to download dataset as CSV, Parquet, Excel or DuckDB",
-            "select_action": "Select whether you need to upload a different data table or change the definition of what each column in the data table contains"
-        },
-        "preview_failure": {
-          "heading": "Filed to generate dataset preview for {{datasetTitle}}",
-          "message": "Something went wrong trying to generate preview",
-          "error": "We were unable to generate a preview of the dataset due to an unexpected server error.",
-          "generation_fail": "Cube generation failed",
-          "no_preview": "Cube could not be generated, so table preview and download options are not available. Check you've added reference data to all dimensions or the data table is correct.",
-          "try_again": "Reload the page"
-        },
-        "datalake_error": "Unable to connect to Data Lake",
-        "blob_storage_errror": "Unable to connect to Blob Storage Service",
-		    "problem": "There is a problem",
-        "try_later": "Try again later",
-        "name_missing": "Dataset name missing",
-        "dataset_missing": "No dataset found with this ID",
-        "dimension_validation": {
-          "duplicate_descriptions_or_notes": "The same value used for all languages present in lookup table",
-          "fact_table_creation_failed": "Server error: Initial creation of the fact table failed.  Please contact support.",
-          "items_not_in_category": "Reference data items not found in selected reference data category",
-          "lookup_not_supported": "Lookup table format is not supported",
-          "lookup_table_loading_failed": "Server error: Failed to load lookup table.  Please contact support.",
-          "missing_languages": "The lookup table is missing entries for the following languages: $t({{languages}}).",
-          "no_reference_data_categories_present": "The reference in your dimension don't match the selected reference data category",
-          "no_reference_match": "The reference in your dimension don't match the selected reference data category",
-          "non_numerical_values_present": "There are non-numerical values present in the selected numerical dimension",
-          "primary_key_failed": "There are duplicated language, reference values in your lookup table.",
-          "reference_data_preview_failed": "Server error: Failed to load preview of the reference data. Please contact support.",
-          "reference_data_validation_failed.": "Validation of the reference data dimension failed.",
-          "some_references_failed_to_match": "Some of the references in your data table failed to match against your lookup table.",
-          "to_many_categories_present": "Data values in your data table dimension match against multiple reference data categories",
-          "unknown_error": "Server error: An unknown error occurred trying to validate the dimension",
-          "unknown_reference_data_items": "Data values in your data table dimension failed to match against the reference data category selected.",
-          "unknown_type": "Server Error: The dimension type selected is not supported. Please contact support."
-        },
-        "measure_validation": {
-          "duplicate_descriptions_or_notes": "The same value used for all languages present in lookup table.",
-          "extracting_data_failed": "Failed to extract the contents of the lookup table into the measure.",
-          "invalid_decimals_present": "There are non-integer or minus values in the decimals column in the lookup table.",
-          "invalid_formats_present": "There are invalid or unknown formats present in the formats column of the lookup table.",
-          "missing_languages": "The lookup table is missing entries for the following languages: $t({{languages}}).",
-          "no_description_columns": "There is no description column present in the lookup table.",
-          "no_join_column": "Unable to identify the correct column used for references in the lookup table.",
-          "no_reference_match": "None of the values in your reference column match the measure column entries in the data table.",
-          "primary_key_failed": "There are duplicated language, reference values in your lookup table.",
-          "some_references_failed_to_match": "Some of the references in your data table failed to match against your lookup table.",
-          "unknown_error": "Server error: An unknown error occurred trying to validate the measure lookup table."
-        },
-        "file_validation": {
-          "invalid_decimals_present": "There are non-integer values in the decimals column in the lookup table.",
-          "wrong_data_type_in_reference": "The reference column contains reference types not present in the data table.",
-          "unknown_mime_type": "The file type is not support by the service.  Please convert the file to CSV, Excel, JSON or Parquet.",
-          "unknown_file_format": "The file format is not support by the service.  Please convert the file to CSV, Excel, JSON or parquet.",
-          "invalid_unicode": "The service failed to convert the file to Unicode/UTF-8.  Please recode your file into Unicode/UTF-8.",
-          "missing_languages": "One of more required languages are missing from the lookup table file.",
-          "invalid_csv": "The uploaded file appears to not be a valid CSV or there are issues with your CSV file.  Please check the file and try again.",
-          "invalid_json": "The uploaded file appears to not be a valid JSON file or there are issues with your JSON file.  Please the file and try again.",
-          "fact_table": "Server Error: The service failed to create and load the fact table to validate your upload against.  Please contact support.",
-          "datalake": "Server Error: The service failed to retrieve a required file from our data storage service.  Please contact support.",
-          "unknown": "Server Error: An unknown error or unsupported error occurred.  Please contact support for further assistance."
-        },
-        "dimension": {
-            "name_missing": "Enter what this dimension should be called on the StatsWales website",
-            "name_too_long": "Dimension name must be 256 characters or less",
-            "naming_failed": "Dimension name could not be added. Try again.",
-            "illegal_characters": "Dimension name can only contain letters, numbers and the characters \"£ $ € ¢ % ( ) _ - +\"",
-            "dimension_period_type_required": "Select whether the dimension contains periods or specific points",
-            "dimension_type_required": "Select the kind of data this dimension contains",
-            "year_type_required": "Select the type of year the dimension represents",
-            "year_format_required": "Select the format used for years in the dimension",
-            "shortest_period_required": "Select what the shortest periods in the dimension are",
-            "quarter_type_required": "Select the format used for quarters in the dimension",
-            "quarter_total_type_required": "Select whether a fifth quarter is used to represent yearly totals",
-            "month_type_required": "Select the format used for months in the dimension",
-            "number_type_required": "Select what kind of numbers this dimension contains",
-            "invalid_unicode": "Failed to convert file to UTF-8, please resave the file as UTF-8 and try again."
-        },
-        "upload": {
-            "no_csv": "Select a lookup table",
-            "no_csv_data": "Select a lookup table"
-        },
-        "not_found": "Page not found",
-        "server_error": "An unknown error occurred, try again later",
-        "forbidden": "You do not have permission to access this page",
-        "dimension_reset": "Something went wrong trying to reset the dimension"
-	},
-    "routes": {
-        "healthcheck": "healthcheck",
-        "feedback": "feedback",
-        "dataset": "dataset",
-        "publish": "publish",
-        "start": "start",
-        "title": "title",
-        "preview": "preview",
-        "upload": "upload",
-        "confirm": "confirm",
-        "sources": "sources",
-        "source_confirmation": "source-confirmation",
-        "tasklist": "tasklist"
+  "errors": {
+    "dataset": {
+      "delete_failed": "Failed to delete dataset due a server error"
     },
-    "consumer": {
-        "global": {
-            "home_label": "Home",
-            "heading": "StatsWales",
-            "phase_banner": {
-                "beta": "Beta",
-                "feedback": "You’re viewing a new version of StatsWales"
-            }
+    "confirm": {
+      "missing": "You need to confirm or reject the uploaded file using the buttons at the end of the preview"
+    },
+    "session": {
+      "current_dataset_missing": "A data table cannot be found. Try uploading a data table.",
+      "current_revision_missing": "A data table cannot be found. Try uploading a data table.",
+      "current_import_missing": "A data table cannot be found. Try uploading a data table.",
+      "no_sources_on_import": "The selected data table does not contain any dimensions. Check the data table is correct."
+    },
+    "sources": {
+      "unknowns_found": "Select what each column in the data table contains",
+      "multiple_datavalues": "There should only be one column in the data table for data values. Check you've selected the correct options or check the data table is correct.",
+      "multiple_footnotes": "There should only be one column in the data table for note codes. Check you've selected the correct options or check the data table is correct.",
+      "multiple_measures": "There should only be one column in the data table for measure or data types. Check you've selected the correct options or check the data table is correct.",
+      "dimension_creation_failed": "Dimensions could not be created. Check you've selected the correct options or check the data table is correct."
+    },
+    "preview": {
+      "failed_to_get_preview": "Table preview could not be generated. Check you've added reference data to all dimensions or the data table is correct.",
+      "remove_error": "Uploaded file could not be removed from the server. Try again or contact support.",
+      "confirm_error": "Confirm or reject the uploaded file",
+      "revision_missing": "A revision is missing from this dataset",
+      "import_missing": "An import is missing from this dataset",
+      "invalid_download_format": "Select whether to download dataset as CSV, Parquet, Excel or DuckDB",
+      "select_action": "Select whether you need to upload a different data table or change the definition of what each column in the data table contains"
+    },
+    "preview_failure": {
+      "heading": "Filed to generate dataset preview for {{datasetTitle}}",
+      "message": "Something went wrong trying to generate preview",
+      "error": "We were unable to generate a preview of the dataset due to an unexpected server error.",
+      "generation_fail": "Cube generation failed",
+      "no_preview": "Cube could not be generated, so table preview and download options are not available. Check you've added reference data to all dimensions or the data table is correct.",
+      "try_again": "Reload the page"
+    },
+    "datalake_error": "Unable to connect to Data Lake",
+    "blob_storage_errror": "Unable to connect to Blob Storage Service",
+    "problem": "There is a problem",
+    "try_later": "Try again later",
+    "name_missing": "Dataset name missing",
+    "dataset_missing": "No dataset found with this ID",
+    "dimension_validation": {
+      "duplicate_descriptions_or_notes": "The same value used for all languages present in lookup table",
+      "fact_table_creation_failed": "Server error: Initial creation of the fact table failed.  Please contact support.",
+      "items_not_in_category": "Reference data items not found in selected reference data category",
+      "lookup_not_supported": "Lookup table format is not supported",
+      "lookup_table_loading_failed": "Server error: Failed to load lookup table.  Please contact support.",
+      "missing_languages": "The lookup table is missing entries for the following languages: $t({{languages}}).",
+      "no_reference_data_categories_present": "The reference in your dimension don't match the selected reference data category",
+      "no_reference_match": "The reference in your dimension don't match the selected reference data category",
+      "non_numerical_values_present": "There are non-numerical values present in the selected numerical dimension",
+      "primary_key_failed": "There are duplicated language, reference values in your lookup table.",
+      "reference_data_preview_failed": "Server error: Failed to load preview of the reference data. Please contact support.",
+      "reference_data_validation_failed.": "Validation of the reference data dimension failed.",
+      "some_references_failed_to_match": "Some of the references in your data table failed to match against your lookup table.",
+      "to_many_categories_present": "Data values in your data table dimension match against multiple reference data categories",
+      "unknown_error": "Server error: An unknown error occurred trying to validate the dimension",
+      "unknown_reference_data_items": "Data values in your data table dimension failed to match against the reference data category selected.",
+      "unknown_type": "Server Error: The dimension type selected is not supported. Please contact support."
+    },
+    "measure_validation": {
+      "duplicate_descriptions_or_notes": "The same value used for all languages present in lookup table.",
+      "extracting_data_failed": "Failed to extract the contents of the lookup table into the measure.",
+      "invalid_decimals_present": "There are non-integer or minus values in the decimals column in the lookup table.",
+      "invalid_formats_present": "There are invalid or unknown formats present in the formats column of the lookup table.",
+      "missing_languages": "The lookup table is missing entries for the following languages: $t({{languages}}).",
+      "no_description_columns": "There is no description column present in the lookup table.",
+      "no_join_column": "Unable to identify the correct column used for references in the lookup table.",
+      "no_reference_match": "None of the values in your reference column match the measure column entries in the data table.",
+      "primary_key_failed": "There are duplicated language, reference values in your lookup table.",
+      "some_references_failed_to_match": "Some of the references in your data table failed to match against your lookup table.",
+      "unknown_error": "Server error: An unknown error occurred trying to validate the measure lookup table."
+    },
+    "file_validation": {
+      "invalid_decimals_present": "There are non-integer values in the decimals column in the lookup table.",
+      "wrong_data_type_in_reference": "The reference column contains reference types not present in the data table.",
+      "unknown_mime_type": "The file type is not support by the service.  Please convert the file to CSV, Excel, JSON or Parquet.",
+      "unknown_file_format": "The file format is not support by the service.  Please convert the file to CSV, Excel, JSON or parquet.",
+      "invalid_unicode": "The service failed to convert the file to Unicode/UTF-8.  Please recode your file into Unicode/UTF-8.",
+      "missing_languages": "One of more required languages are missing from the lookup table file.",
+      "invalid_csv": "The uploaded file appears to not be a valid CSV or there are issues with your CSV file.  Please check the file and try again.",
+      "invalid_json": "The uploaded file appears to not be a valid JSON file or there are issues with your JSON file.  Please the file and try again.",
+      "fact_table": "Server Error: The service failed to create and load the fact table to validate your upload against.  Please contact support.",
+      "datalake": "Server Error: The service failed to retrieve a required file from our data storage service.  Please contact support.",
+      "unknown": "Server Error: An unknown error or unsupported error occurred.  Please contact support for further assistance."
+    },
+    "dimension": {
+      "name_missing": "Enter what this dimension should be called on the StatsWales website",
+      "name_too_long": "Dimension name must be 256 characters or less",
+      "naming_failed": "Dimension name could not be added. Try again.",
+      "illegal_characters": "Dimension name can only contain letters, numbers and the characters \"£ $ € ¢ % ( ) _ - +\"",
+      "dimension_period_type_required": "Select whether the dimension contains periods or specific points",
+      "dimension_type_required": "Select the kind of data this dimension contains",
+      "year_type_required": "Select the type of year the dimension represents",
+      "year_format_required": "Select the format used for years in the dimension",
+      "shortest_period_required": "Select what the shortest periods in the dimension are",
+      "quarter_type_required": "Select the format used for quarters in the dimension",
+      "quarter_total_type_required": "Select whether a fifth quarter is used to represent yearly totals",
+      "month_type_required": "Select the format used for months in the dimension",
+      "number_type_required": "Select what kind of numbers this dimension contains",
+      "invalid_unicode": "Failed to convert file to UTF-8, please resave the file as UTF-8 and try again."
+    },
+    "upload": {
+      "no_csv": "Select a lookup table",
+      "no_csv_data": "Select a lookup table"
+    },
+    "not_found": "Page not found",
+    "server_error": "An unknown error occurred, try again later",
+    "forbidden": "You do not have permission to access this page",
+    "dimension_reset": "Something went wrong trying to reset the dimension"
+  },
+  "routes": {
+    "healthcheck": "healthcheck",
+    "feedback": "feedback",
+    "dataset": "dataset",
+    "publish": "publish",
+    "start": "start",
+    "title": "title",
+    "preview": "preview",
+    "upload": "upload",
+    "confirm": "confirm",
+    "sources": "sources",
+    "source_confirmation": "source-confirmation",
+    "tasklist": "tasklist"
+  },
+  "admin": {
+    "group": {
+      "list": {
+        "heading": "User groups",
+        "table": {
+          "name": "Name",
+          "email": "Contact",
+          "user_count": "Users",
+          "dataset_count": "Datasets"
         },
-        "list": {
-            "heading": "Find statistics and data from the Welsh Government",
-            "total_datasets": "datasets"
+        "buttons": {
+          "add": "Add group"
         }
+      },
+      "view": {
+        "organisation": {
+          "heading": "Organisation",
+          "not_set": "Not set"
+        },
+        "email": {
+          "heading": "Contact email",
+          "not_set": "Not set"
+        },
+        "users": {
+          "heading": "Users",
+          "none": "No users assigned to this group"
+        },
+        "datasets": {
+          "heading": "Datasets",
+          "none": "No datasets assigned to this group"
+        },
+        "buttons": {
+          "edit": "Change group details"
+        }
+      },
+      "name": {
+        "heading": "What is the name of the group?",
+        "form": {
+          "name_en": {
+            "label": "Enter the name in English",
+            "error": {
+              "missing": "Enter a name for the group in English"
+            }
+          },
+          "name_cy": {
+            "label": "Enter the name in Welsh",
+            "error": {
+              "missing": "Enter a name for the group in Welsh"
+            }
+          }
+        },
+        "buttons": {
+          "create": "Create group",
+          "continue": "Continue"
+        }
+      },
+      "organisation": {
+        "heading": "Which organisation does this group belong to?",
+        "form": {
+          "organisation_id": {
+            "label": "Organisation",
+            "placeholder": "Select organisation",
+            "error": "Select an organisation"
+          }
+        },
+        "error": {
+          "saving": "Organisation could not be saved. Try again later."
+        }
+      },
+      "email": {
+        "heading": "What is the public facing email address for datasets in this group?",
+        "form": {
+          "email_en": {
+            "label": "Enter the email in English",
+            "error": {
+              "missing": "Enter an email for the group in English",
+              "invalid": "Enter a valid email for the group in English"
+            }
+          },
+          "email_cy": {
+            "label": "Enter the email in Welsh",
+            "error": {
+              "missing": "Enter an email for the group in Welsh",
+              "invalid": "Enter a valid email for the group in Welsh"
+            }
+          }
+        }
+      }
+    }
+  },
+  "consumer": {
+    "global": {
+      "home_label": "Home",
+      "heading": "StatsWales",
+      "phase_banner": {
+        "beta": "Beta",
+        "feedback": "You’re viewing a new version of StatsWales"
+      }
     },
+    "list": {
+      "heading": "Find statistics and data from the Welsh Government",
+      "total_datasets": "datasets"
+    }
+  },
   "languages": {
     "en": "English",
     "cy": "Welsh"

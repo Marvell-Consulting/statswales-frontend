@@ -1,5 +1,3 @@
-import { TeamDTO } from '../team';
-
 import { SingleLanguageDimension } from './dimension';
 import { SingleLanguageRevision } from './revision';
 import { SingleLanguageMeasure } from './measure';
@@ -17,7 +15,6 @@ export interface SingleLanguageDataset {
   end_revision?: SingleLanguageRevision;
   draft_revision?: SingleLanguageRevision;
   published_revision?: SingleLanguageRevision;
-  team?: TeamDTO;
   start_date?: string;
   end_date?: string;
 }

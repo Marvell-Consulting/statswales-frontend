@@ -38,7 +38,7 @@ export const getDatasetPreview = async (
       relatedLinks: related_links
     },
     published: {
-      team: dataset.team
+      organisation: undefined
     }
   };
 

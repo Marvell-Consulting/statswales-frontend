@@ -1,7 +1,6 @@
 import { DimensionDTO } from './dimension';
 import { RevisionDTO } from './revision';
 import { MeasureDTO } from './measure';
-import { TeamDTO } from './team';
 import { FactTableColumnDto } from './fact-table-column-dto';
 
 export interface DatasetDTO {
@@ -18,8 +17,6 @@ export interface DatasetDTO {
   end_revision?: RevisionDTO;
   draft_revision?: RevisionDTO;
   published_revision?: RevisionDTO;
-  team_id?: string;
-  team?: TeamDTO[];
   start_date?: string;
   end_date?: string;
 }

@@ -18,7 +18,6 @@ import { ProviderDTO } from '../dtos/provider';
 import { ProviderSourceDTO } from '../dtos/provider-source';
 import { TopicDTO } from '../dtos/topic';
 import { OrganisationDTO } from '../dtos/organisation';
-import { TeamDTO } from '../dtos/team';
 import { DimensionPatchDTO } from '../dtos/dimension-patch-dto';
 import { DimensionDTO } from '../dtos/dimension';
 import { DimensionMetadataDTO } from '../dtos/dimension-metadata';
@@ -28,6 +27,9 @@ import { FileFormat } from '../enums/file-format';
 import { FactTableColumnDto } from '../dtos/fact-table-column-dto';
 import { RevisionDTO } from '../dtos/revision';
 import { DatasetInclude } from '../enums/dataset-include';
+import { UserGroupDTO } from '../dtos/user/user-group';
+import { UserGroupMetadataDTO } from '../dtos/user/user-group-metadata-dto';
+import { UserGroupListItemDTO } from '../dtos/user/user-group-list-item-dto';
 
 const config = appConfig();
 
@@ -461,24 +463,6 @@ export class PublisherApi {
     return this.fetch({ url: 'organisation' }).then((response) => response.json() as unknown as OrganisationDTO[]);
   }
 
-  public async getAllTeams(): Promise<TeamDTO[]> {
-    logger.debug('Fetching teams...');
-    return this.fetch({ url: 'team' }).then((response) => response.json() as unknown as TeamDTO[]);
-  }
-
-  public async getTeam(teamId: string): Promise<TeamDTO> {
-    logger.debug('Fetching team...');
-    return this.fetch({ url: `team/${teamId}` }).then((response) => response.json() as unknown as TeamDTO);
-  }
-
-  public async updateDatasetTeam(datasetId: string, teamId: string): Promise<DatasetDTO> {
-    logger.debug('Updating dataset team...');
-    const data = { team_id: teamId };
-    return this.fetch({ url: `dataset/${datasetId}/team`, method: HttpMethod.Patch, json: data }).then(
-      (response) => response.json() as unknown as DatasetDTO
-    );
-  }
-
   public async getTranslationPreview(datasetId: string): Promise<TranslationDTO[]> {
     logger.debug('Fetching translation preview...');
     return this.fetch({ url: `translation/${datasetId}/preview` }).then(
@@ -544,5 +528,33 @@ export class PublisherApi {
       url: `dataset/${datasetId}/revision`,
       method: HttpMethod.Post
     }).then((response) => response.json() as unknown as RevisionDTO);
+  }
+
+  public async listUserGroups(page = 1, limit = 20): Promise<ResultsetWithCount<UserGroupListItemDTO>> {
+    logger.debug(`Fetching user group list...`);
+    const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
+
+    return this.fetch({ url: `admin/group?${qs}` }).then(
+      (response) => response.json() as unknown as ResultsetWithCount<UserGroupListItemDTO>
+    );
+  }
+
+  public async getUserGroup(groupId: string): Promise<UserGroupDTO> {
+    logger.debug(`Fetching user group...`);
+    return this.fetch({ url: `admin/group/${groupId}` }).then((response) => response.json() as unknown as UserGroupDTO);
+  }
+
+  public async createUserGroup(meta: UserGroupMetadataDTO[]): Promise<UserGroupDTO> {
+    logger.debug(`Creating new user group`);
+    return this.fetch({ url: `admin/group`, method: HttpMethod.Post, json: meta }).then(
+      (response) => response.json() as unknown as UserGroupDTO
+    );
+  }
+
+  public async updateUserGroup(group: UserGroupDTO): Promise<UserGroupDTO> {
+    logger.debug(`Updating user group`);
+    return this.fetch({ url: `admin/group/${group.id}`, method: HttpMethod.Patch, json: group }).then(
+      (response) => response.json() as unknown as UserGroupDTO
+    );
   }
 }

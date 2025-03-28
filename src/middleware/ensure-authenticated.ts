@@ -34,8 +34,10 @@ export const ensureAuthenticated = (req: Request, res: Response, next: NextFunct
     if (decoded.user) {
       req.user = decoded.user;
       // TODO: replace with role-based permissions are available
-      req.user.isDeveloper = /@marvell-consulting.com$/.test(decoded.user.email);
-      res.locals.isDeveloper = req.user.isDeveloper;
+      const developer = /@marvell-consulting.com$/.test(decoded.user.email);
+      req.user.isDeveloper = developer;
+      res.locals.isDeveloper = developer;
+      res.locals.isAdmin = developer;
     }
 
     res.locals.isAuthenticated = true;

@@ -1,7 +1,7 @@
 import { Designation } from '../enums/designation';
 import { SingleLanguageRevision } from '../dtos/single-language/revision';
 import { RelatedLinkDTO } from '../dtos/related-link';
-import { TeamDTO } from '../dtos/team';
+import { OrganisationDTO } from '../dtos/organisation';
 
 export interface PreviewMetadata {
   title?: string;
@@ -30,6 +30,6 @@ export interface PreviewMetadata {
     relatedLinks?: RelatedLinkDTO[];
   };
   published: {
-    team?: TeamDTO;
+    organisation?: OrganisationDTO;
   };
 }
