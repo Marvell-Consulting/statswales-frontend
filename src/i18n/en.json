@@ -1090,10 +1090,55 @@
         },
         "datalake_error": "Unable to connect to Data Lake",
         "blob_storage_errror": "Unable to connect to Blob Storage Service",
-		"problem": "There is a problem",
+		    "problem": "There is a problem",
         "try_later": "Try again later",
         "name_missing": "Dataset name missing",
         "dataset_missing": "No dataset found with this ID",
+        "dimension_validation": {
+          "duplicate_descriptions_or_notes": "The same value used for all languages present in lookup table",
+          "fact_table_creation_failed": "Server error: Initial creation of the fact table failed.  Please contact support.",
+          "items_not_in_category": "Reference data items not found in selected reference data category",
+          "lookup_not_supported": "Lookup table format is not supported",
+          "lookup_table_loading_failed": "Server error: Failed to load lookup table.  Please contact support.",
+          "missing_languages": "The lookup table is missing entries for the following languages: $t({{languages}}).",
+          "no_reference_data_categories_present": "The reference in your dimension don't match the selected reference data category",
+          "no_reference_match": "The reference in your dimension don't match the selected reference data category",
+          "non_numerical_values_present": "There are non-numerical values present in the selected numerical dimension",
+          "primary_key_failed": "There are duplicated language, reference values in your lookup table.",
+          "reference_data_preview_failed": "Server error: Failed to load preview of the reference data. Please contact support.",
+          "reference_data_validation_failed.": "Validation of the reference data dimension failed.",
+          "some_references_failed_to_match": "Some of the references in your data table failed to match against your lookup table.",
+          "to_many_categories_present": "Data values in your data table dimension match against multiple reference data categories",
+          "unknown_error": "Server error: An unknown error occurred trying to validate the dimension",
+          "unknown_reference_data_items": "Data values in your data table dimension failed to match against the reference data category selected.",
+          "unknown_type": "Server Error: The dimension type selected is not supported. Please contact support."
+        },
+        "measure_validation": {
+          "duplicate_descriptions_or_notes": "The same value used for all languages present in lookup table.",
+          "extracting_data_failed": "Failed to extract the contents of the lookup table into the measure.",
+          "invalid_decimals_present": "There are non-integer or minus values in the decimals column in the lookup table.",
+          "invalid_formats_present": "There are invalid or unknown formats present in the formats column of the lookup table.",
+          "missing_languages": "The lookup table is missing entries for the following languages: $t({{languages}}).",
+          "no_description_columns": "There is no description column present in the lookup table.",
+          "no_join_column": "Unable to identify the correct column used for references in the lookup table.",
+          "no_reference_match": "None of the values in your reference column match the measure column entries in the data table.",
+          "primary_key_failed": "There are duplicated language, reference values in your lookup table.",
+          "some_references_failed_to_match": "Some of the references in your data table failed to match against your lookup table.",
+          "unknown_error": "Server error: An unknown error occurred trying to validate the measure lookup table."
+        },
+        "file_validation": {
+          "invalid_decimals_present": "There are non-integer values in the decimals column in the lookup table.",
+          "wrong_data_type_in_reference": "The reference column contains reference types not present in the data table.",
+          "unknown_mime_type": "The file type is not support by the service.  Please convert the file to CSV, Excel, JSON or Parquet.",
+          "unknown_file_format": "The file format is not support by the service.  Please convert the file to CSV, Excel, JSON or parquet.",
+          "invalid_unicode": "The service failed to convert the file to Unicode/UTF-8.  Please recode your file into Unicode/UTF-8.",
+          "missing_languages": "One of more required languages are missing from the lookup table file.",
+          "invalid_csv": "The uploaded file appears to not be a valid CSV or there are issues with your CSV file.  Please check the file and try again.",
+          "invalid_json": "The uploaded file appears to not be a valid JSON file or there are issues with your JSON file.  Please the file and try again.",
+          "fact_table": "Server Error: The service failed to create and load the fact table to validate your upload against.  Please contact support.",
+          "datalake": "Server Error: The service failed to retrieve a required file from our data storage service.  Please contact support.",
+          "unknown": "Server Error: An unknown error or unsupported error occurred.  Please contact support for further assistance."
+        },
         "dimension": {
             "name_missing": "Enter what this dimension should be called on the StatsWales website",
             "name_too_long": "Dimension name must be 256 characters or less",
@@ -1107,7 +1152,8 @@
             "quarter_type_required": "Select the format used for quarters in the dimension",
             "quarter_total_type_required": "Select whether a fifth quarter is used to represent yearly totals",
             "month_type_required": "Select the format used for months in the dimension",
-            "number_type_required": "Select what kind of numbers this dimension contains"
+            "number_type_required": "Select what kind of numbers this dimension contains",
+            "invalid_unicode": "Failed to convert file to UTF-8, please resave the file as UTF-8 and try again."
         },
         "upload": {
             "no_csv": "Select a lookup table",
@@ -1145,5 +1191,9 @@
             "heading": "Find statistics and data from the Welsh Government",
             "total_datasets": "datasets"
         }
-    }
+    },
+  "languages": {
+    "en": "English",
+    "cy": "Welsh"
+  }
 }
