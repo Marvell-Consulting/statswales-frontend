@@ -1,0 +1,44 @@
+<%- include("../partials/header"); %>
+
+  <div class="govuk-width-container app-width-container">
+      <main class="govuk-main-wrapper" id="main-content" role="main">
+
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl"><%= t('admin.user.roles.heading') %></h1>
+
+            <%- include("../partials/error-handler"); %>
+
+            <form enctype="multipart/form-data" method="post">
+              <input type="hidden" name="groups" value="">
+              <div class="govuk-form-group">
+                <fieldset class="govuk-fieldset">
+                  <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                    <% for (let group of locals.groups) { %>
+                      <div class="govuk-checkboxes__item">
+                        <input class="govuk-checkboxes__input" id="<%= `group_${group.id}` %>" name="groups" type="checkbox" value="<%= group.id %>" aria-controls="<%= `conditional-group-${group.id}` %>" <%= locals.selectedGroups.includes(group.id) ? 'checked' : '' %>>
+                        <label class="govuk-label govuk-checkboxes__label" for="<%= `group_${group.id}` %>"><%= group.name %></label>
+                      </div>
+                      <% if (locals.availableRoles.length > 0) { %>
+                        <div class="govuk-checkboxes__conditional" id="<%= `conditional-group-${group.id}` %>">
+                          <% for (let role of availableRoles) { %>
+                            <div class="govuk-checkboxes__item">
+                              <input class="govuk-checkboxes__input" id="<%= `group_${group.id}_role_${role}` %>" name="group_roles" type="checkbox" value="<%= role %>" <%= group.roles.includes(role) ? 'checked' : '' %>>
+                              <label class="govuk-label govuk-checkboxes__label" for="<%= `group_${group.id}_role_${role}` %>"><%= t(`admin.user.roles.${role}`) %></label>
+                            </div>
+                          <% } %>
+                        </div>
+                      <% } %>
+                    <% } %>
+                  </div>
+                </fieldset>
+              </div>
+              <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
+            </form>
+          </div>
+        </div>
+
+      </main>
+  </div>
+
+<%- include("../partials/footer"); %>

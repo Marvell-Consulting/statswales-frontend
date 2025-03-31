@@ -5,10 +5,14 @@ import {
   listUserGroups,
   provideGroupName,
   provideOrganisation,
-  provideEmail,
+  provideGroupEmail,
   fetchUserGroup,
+  fetchUser,
   viewGroup,
-  listUsers
+  listUsers,
+  createUser,
+  editUserRoles,
+  viewUser
 } from '../controllers/admin';
 
 export const admin = Router();
@@ -33,8 +37,8 @@ admin.post('/group/:userGroupId/name', fetchUserGroup, upload.none(), provideGro
 admin.get('/group/:userGroupId/organisation', fetchUserGroup, provideOrganisation);
 admin.post('/group/:userGroupId/organisation', fetchUserGroup, upload.none(), provideOrganisation);
 
-admin.get('/group/:userGroupId/email', fetchUserGroup, provideEmail);
-admin.post('/group/:userGroupId/email', fetchUserGroup, upload.none(), provideEmail);
+admin.get('/group/:userGroupId/email', fetchUserGroup, provideGroupEmail);
+admin.post('/group/:userGroupId/email', fetchUserGroup, upload.none(), provideGroupEmail);
 
 admin.use('/user', (req: Request, res: Response, next: NextFunction) => {
   res.locals.activePage = 'users';
@@ -42,3 +46,10 @@ admin.use('/user', (req: Request, res: Response, next: NextFunction) => {
 });
 
 admin.get('/user', listUsers);
+
+admin.get('/user/create', createUser);
+admin.post('/user/create', upload.none(), createUser);
+
+admin.get('/user/:userId', fetchUser, viewUser);
+admin.get('/user/:userId/roles', fetchUser, editUserRoles);
+admin.post('/user/:userId/roles', fetchUser, upload.none(), editUserRoles);

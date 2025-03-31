@@ -1,0 +1,27 @@
+<%- include("../partials/header"); %>
+
+  <div class="govuk-width-container app-width-container">
+      <main class="govuk-main-wrapper" id="main-content" role="main">
+
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-two-thirds">
+            <h2 class="govuk-heading-m"><%= user.full_name || user.email %></h2>
+
+            <%- include("../partials/error-handler"); %>
+
+            <form enctype="multipart/form-data" method="post">
+              <h1 class="govuk-heading-xl"><%= user.full_name || user.email %></h1>
+              <div class="govuk-form-group">
+
+              </div>
+              <button type="submit" class="govuk-button" data-module="govuk-button">
+                  <%= t(`admin.user.create.buttons.continue`) %>
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </main>
+  </div>
+
+<%- include("../partials/footer"); %>

@@ -18,7 +18,7 @@
                     <span class="govuk-visually-hidden">Error:</span> <%= t(emailCyError.message.key) %>
                   </p>
                 <% } %>
-                <input class="govuk-input <%= emailCyError ? 'govuk-input--error' : '' %>" id="email_cy" name="email_cy" type="text" value="<%= locals.values.email_cy %>">
+                <input class="govuk-input <%= emailCyError ? 'govuk-input--error' : '' %>" id="email_cy" name="email_cy" type="email" value="<%= locals.values.email_cy %>">
               </div>
               <div class="govuk-form-group">
                   <label class="govuk-label" for="email_en"><%= t('admin.group.email.form.email_en.label') %></label>
@@ -28,7 +28,7 @@
                       <span class="govuk-visually-hidden">Error:</span> <%= t(emailEnError.message.key) %>
                     </p>
                   <% } %>
-                  <input class="govuk-input <%= emailEnError ? 'govuk-input--error' : '' %>" id="email_en" name="email_en" type="text" value="<%= locals.values.email_en %>">
+                  <input class="govuk-input <%= emailEnError ? 'govuk-input--error' : '' %>" id="email_en" name="email_en" type="email" value="<%= locals.values.email_en %>">
               </div>
 
               <button type="submit" class="govuk-button" data-module="govuk-button">
