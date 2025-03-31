@@ -1303,6 +1303,26 @@
           "add": "Add user"
         }
       },
+      "create": {
+        "heading": "What is the user's email address?",
+        "form": {
+          "email": {
+            "label": "Email address",
+            "error": {
+              "missing": "Enter the user's email address",
+              "invalid": "Enter a valid email address"
+            }
+          }
+        },
+        "buttons": {
+          "create": "Add user",
+          "continue": "Continue"
+        },
+        "error": {
+          "saving": "There was a problem saving the user",
+          "email_already_exists": "A user with this email address already exists"
+        }
+      },
       "badge": {
         "status": {
           "active": "Active",

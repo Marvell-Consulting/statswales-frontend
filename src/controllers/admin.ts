@@ -13,7 +13,9 @@ import {
   userGroupIdValidator,
   organisationIdValidator,
   emailCyValidator,
-  emailEnValidator
+  emailEnValidator,
+  emailValidator,
+  userIdValidator
 } from '../validators/admin';
 import { ApiException } from '../exceptions/api.exception';
 import { OrganisationDTO } from '../dtos/organisation';
@@ -23,6 +25,8 @@ import { NotFoundException } from '../exceptions/not-found.exception';
 import { UserGroupListItemDTO } from '../dtos/user/user-group-list-item-dto';
 import { singleLangUserGroup } from '../utils/single-lang-user-group';
 import { UserDTO } from '../dtos/user/user';
+import { UserCreateDTO } from '../dtos/user/user-create-dto';
+import { UserRole } from '../enums/user-role';
 
 export const fetchUserGroup = async (req: Request, res: Response, next: NextFunction) => {
   const userGroupIdError = await hasError(userGroupIdValidator(), req);
@@ -43,6 +47,31 @@ export const fetchUserGroup = async (req: Request, res: Response, next: NextFunc
       return;
     }
     next(new NotFoundException('errors.user_group_missing'));
+    return;
+  }
+
+  next();
+};
+
+export const fetchUser = async (req: Request, res: Response, next: NextFunction) => {
+  const userIdError = await hasError(userIdValidator(), req);
+
+  if (userIdError) {
+    logger.error('Invalid or missing userId');
+    next(new NotFoundException('errors.user_missing'));
+    return;
+  }
+
+  try {
+    const user = await req.pubapi.getUser(req.params.userId);
+    res.locals.userId = user.id;
+    res.locals.user = user;
+  } catch (err: any) {
+    if (err.status === 401) {
+      next(err);
+      return;
+    }
+    next(new NotFoundException('errors.user_missing'));
     return;
   }
 
@@ -144,7 +173,7 @@ export const provideOrganisation = async (req: Request, res: Response) => {
   res.render('admin/user-group-org', { values, organisations, errors });
 };
 
-export const provideEmail = async (req: Request, res: Response) => {
+export const provideGroupEmail = async (req: Request, res: Response) => {
   const group: UserGroupDTO = res.locals.group;
   let errors: ViewError[] = [];
   let values = {
@@ -194,4 +223,66 @@ export const listUsers = async (req: Request, res: Response, next: NextFunction)
   } catch (err) {
     next(err);
   }
+};
+
+export const createUser = async (req: Request, res: Response) => {
+  let errors: ViewError[] = [];
+  let values: UserCreateDTO = { email: '' };
+
+  try {
+    if (req.method === 'POST') {
+      values = req.body;
+      const validators = [emailValidator()];
+
+      errors = (await getErrors(validators, req)).map((error: FieldValidationError) => {
+        return { field: error.path, message: { key: `admin.user.create.form.${error.path}.error.${error.msg}` } };
+      });
+
+      errors = uniqBy(errors, 'field');
+      if (errors.length > 0) throw errors;
+
+      await req.pubapi.createUser(values);
+      req.session.flash = ['admin.user.create.success'];
+      req.session.save();
+      res.redirect(`/admin/user`);
+      return;
+    }
+  } catch (err) {
+    logger.error(err, 'there was a problem creating the user');
+    if (err instanceof ApiException) {
+      const error = JSON.parse(err.body as string).error;
+      if (err.status === 400 && error.includes('user_already_exists')) {
+        errors = [{ field: 'email', message: { key: 'admin.user.create.error.email_already_exists' } }];
+      } else {
+        errors = [{ field: 'api', message: { key: 'admin.user.create.error.saving' } }];
+      }
+    }
+  }
+
+  res.render('admin/user-create', { values, errors });
+};
+
+export const viewUser = async (req: Request, res: Response) => {
+  const user: UserDTO = res.locals.user;
+  res.render('admin/user-view', { user });
+};
+
+export const editUserRoles = async (req: Request, res: Response) => {
+  const user: UserDTO = res.locals.user;
+  let errors: ViewError[] = [];
+  let availableRoles: UserRole[] = [];
+
+  try {
+    availableRoles = await req.pubapi.getAvailableRoles();
+
+    if (req.method === 'POST') {
+      //todo
+    }
+  } catch (err) {
+    if (err instanceof ApiException) {
+      errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+    }
+  }
+
+  res.render('admin/user-roles', { user, availableRoles, errors });
 };

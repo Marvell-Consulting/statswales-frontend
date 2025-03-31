@@ -4,10 +4,11 @@ import { UserGroupWithRolesDTO } from './user-group-with-roles-dto';
 export interface UserDTO {
   id: string;
   provider: string;
+  provider_user_id?: string;
   email: string;
   given_name?: string;
   family_name?: string;
-  full_name: string;
+  full_name?: string;
   groups: UserGroupWithRolesDTO[];
   status: UserStatus;
   created_at: Date;

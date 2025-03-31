@@ -32,6 +32,8 @@ import { UserGroupMetadataDTO } from '../dtos/user/user-group-metadata-dto';
 import { UserGroupListItemDTO } from '../dtos/user/user-group-list-item-dto';
 import { FileImportDto } from '../dtos/file-import';
 import { UserDTO } from '../dtos/user/user';
+import { UserCreateDTO } from '../dtos/user/user-create-dto';
+import { UserRole } from '../enums/user-role';
 
 const config = appConfig();
 
@@ -599,5 +601,22 @@ export class PublisherApi {
     return this.fetch({ url: `admin/user?${qs}` }).then(
       (response) => response.json() as unknown as ResultsetWithCount<UserDTO>
     );
+  }
+
+  public async createUser(userCreate: UserCreateDTO): Promise<UserDTO> {
+    logger.debug(`Creating new user`);
+    return this.fetch({ url: `admin/user`, method: HttpMethod.Post, json: userCreate }).then(
+      (response) => response.json() as unknown as UserDTO
+    );
+  }
+
+  public async getUser(userId: string): Promise<UserDTO> {
+    logger.debug(`Fetching user...`);
+    return this.fetch({ url: `admin/user/${userId}` }).then((response) => response.json() as unknown as UserDTO);
+  }
+
+  public async getAvailableRoles(): Promise<UserRole[]> {
+    logger.debug(`Fetching available user roles...`);
+    return this.fetch({ url: `admin/roles` }).then((response) => response.json() as unknown as UserRole[]);
   }
 }
