@@ -1,4 +1,5 @@
-import { UserGroupDTO } from './user-group';
+import { UserStatus } from '../../enums/user-status';
+import { UserGroupWithRolesDTO } from './user-group-with-roles-dto';
 
 export interface UserDTO {
   id: string;
@@ -6,7 +7,9 @@ export interface UserDTO {
   email: string;
   given_name?: string;
   family_name?: string;
-  groups: UserGroupDTO[];
+  full_name: string;
+  groups: UserGroupWithRolesDTO[];
+  status: UserStatus;
   created_at: Date;
   updated_at: Date;
 }

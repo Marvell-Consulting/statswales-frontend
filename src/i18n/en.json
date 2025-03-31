@@ -45,7 +45,8 @@
       "logout": "Sign out",
       "login": "Sign in",
       "developer": "Developer",
-      "admin": "Groups"
+      "groups": "Groups",
+      "users": "Users"
     }
   },
   "footer": {
@@ -1287,6 +1288,25 @@
               "invalid": "Enter a valid email for the group in Welsh"
             }
           }
+        }
+      }
+    },
+    "user": {
+      "list": {
+        "heading": "Users",
+        "table": {
+          "name": "Name / Email",
+          "groups": "Groups",
+          "status": "Status"
+        },
+        "buttons": {
+          "add": "Add user"
+        }
+      },
+      "badge": {
+        "status": {
+          "active": "Active",
+          "inactive": "Deactivated"
         }
       }
     }

@@ -7,15 +7,16 @@ import {
   provideOrganisation,
   provideEmail,
   fetchUserGroup,
-  viewGroup
+  viewGroup,
+  listUsers
 } from '../controllers/admin';
 
 export const admin = Router();
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-admin.use((req: Request, res: Response, next: NextFunction) => {
-  res.locals.activePage = 'admin';
+admin.use('/group', (req: Request, res: Response, next: NextFunction) => {
+  res.locals.activePage = 'groups';
   next();
 });
 
@@ -34,3 +35,10 @@ admin.post('/group/:userGroupId/organisation', fetchUserGroup, upload.none(), pr
 
 admin.get('/group/:userGroupId/email', fetchUserGroup, provideEmail);
 admin.post('/group/:userGroupId/email', fetchUserGroup, upload.none(), provideEmail);
+
+admin.use('/user', (req: Request, res: Response, next: NextFunction) => {
+  res.locals.activePage = 'users';
+  next();
+});
+
+admin.get('/user', listUsers);

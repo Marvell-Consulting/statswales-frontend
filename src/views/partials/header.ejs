@@ -85,12 +85,13 @@
                     <li>
                         <a href="<%= buildUrl('/', i18n.language) %>" <% if (locals.activePage === 'home') { %>class="is-active" aria-current="page" <% } %>><%= t('header.navigation.home') %></a>
                     </li>
+                    <% if (locals?.isAdmin) { %>
+                        <li><a href="<%= buildUrl('/admin/group', i18n.language) %>" <% if (locals.activePage === 'groups') { %>class="is-active" aria-current="page" <% } %>><%= t('header.navigation.groups') %></a></li>
+                        <li><a href="<%= buildUrl('/admin/user', i18n.language) %>" <% if (locals.activePage === 'users') { %>class="is-active" aria-current="page" <% } %>><%= t('header.navigation.users') %></a></li>
+                    <% } %>
                     <li>
                         <a href="<%= buildUrl('/guidance', i18n.language) %>" <% if (locals.activePage === 'guidance') { %>class="is-active" aria-current="page" <% } %>><%= t('header.navigation.guidance') %></a>
                     </li>
-                    <% if (locals?.isAdmin) { %>
-                        <li><a href="<%= buildUrl('/admin/group', i18n.language) %>" <% if (locals.activePage === 'admin') { %>class="is-active" aria-current="page" <% } %>><%= t('header.navigation.admin') %></a></li>
-                    <% } %>
                     <% if (locals?.isDeveloper) { %>
                         <li><a href="<%= buildUrl('/developer', i18n.language) %>" <% if (locals.activePage === 'developer') { %>class="is-active" aria-current="page" <% } %>><%= t('header.navigation.developer') %></a></li>
                     <% } %>
