@@ -2,7 +2,6 @@ import { NextFunction, Request, Response, Router } from 'express';
 
 import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
-import { statusToColour } from '../utils/status-to-colour';
 import { getPaginationProps } from '../utils/pagination';
 
 export const homepage = Router();
@@ -25,7 +24,7 @@ homepage.get('/', async (req: Request, res: Response, next: NextFunction) => {
       req.session.flash = undefined;
       req.session.save();
     }
-    res.render('homepage', { data, ...pagination, statusToColour, flash: flash.length > 0 ? flash : undefined });
+    res.render('homepage', { data, ...pagination, flash: flash.length > 0 ? flash : undefined });
   } catch (err) {
     next(err);
   }
