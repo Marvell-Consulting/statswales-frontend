@@ -30,6 +30,7 @@ import { DatasetInclude } from '../enums/dataset-include';
 import { UserGroupDTO } from '../dtos/user/user-group';
 import { UserGroupMetadataDTO } from '../dtos/user/user-group-metadata-dto';
 import { UserGroupListItemDTO } from '../dtos/user/user-group-list-item-dto';
+import { UserDTO } from '../dtos/user/user';
 
 const config = appConfig();
 
@@ -555,6 +556,15 @@ export class PublisherApi {
     logger.debug(`Updating user group`);
     return this.fetch({ url: `admin/group/${group.id}`, method: HttpMethod.Patch, json: group }).then(
       (response) => response.json() as unknown as UserGroupDTO
+    );
+  }
+
+  public async listUsers(page = 1, limit = 20): Promise<ResultsetWithCount<UserDTO>> {
+    logger.debug(`Fetching user list...`);
+    const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
+
+    return this.fetch({ url: `admin/user?${qs}` }).then(
+      (response) => response.json() as unknown as ResultsetWithCount<UserDTO>
     );
   }
 }

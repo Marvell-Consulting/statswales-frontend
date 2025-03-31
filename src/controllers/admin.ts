@@ -22,6 +22,8 @@ import { UserGroupMetadataDTO } from '../dtos/user/user-group-metadata-dto';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { UserGroupListItemDTO } from '../dtos/user/user-group-list-item-dto';
 import { singleLangUserGroup } from '../utils/single-lang-user-group';
+import { UserDTO } from '../dtos/user/user';
+import { statusToColour } from '../utils/status-to-colour';
 
 export const fetchUserGroup = async (req: Request, res: Response, next: NextFunction) => {
   const userGroupIdError = await hasError(userGroupIdValidator(), req);
@@ -182,4 +184,15 @@ export const provideEmail = async (req: Request, res: Response) => {
   }
 
   res.render('admin/user-group-email', { values, errors });
+};
+
+export const listUsers = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const page = parseInt(req.query.page_number as string, 10) || 1;
+    const limit = parseInt(req.query.page_size as string, 10) || 10;
+    const { data }: ResultsetWithCount<UserDTO> = await req.pubapi.listUsers(page, limit);
+    res.render('admin/user-list', { users: data, statusToColour });
+  } catch (err) {
+    next(err);
+  }
 };
