@@ -12,17 +12,21 @@ O’ch sgrin hafan, cliciwch ‘Creu set ddata newydd’. Gan ddefnyddio eich [d
    * mesur neu fathau data   
    * codau nodiadau 
 
-Yna, byddwch yn cael eich tywys i’ch rhestr dasgau ar gyfer eich set ddata. Bydd hon yn rhestru’r holl ddimensiynau a nodoch, ac eithrio codau nodiadau gan bod y rhain wedi cael eu safoni.  
+Yna, byddwch yn cael eich tywys i’ch rhestr dasgau ar gyfer eich set ddata. Bydd hon yn rhestru’r holl ddimensiynau a nodoch, ac eithrio codau nodiadau gan bod y rhain wedi cael eu safoni.
 
-Bydd clicio ar bob dimensiwn yn caniatáu i chi ychwanegu’r data cyfeirio priodol. Ar gyfer pob dimensiwn, bydd angen i chi:
+Bydd clicio ar bob dimensiwn yn caniatáu i chi ddewis pa fath o ddata sydd yn y dimensiwn.  Bydd hyn naill ai yn:
+- ddyddiadau – yna byddwch yn ateb cwestiynau am ffurf y dyddiadau a ddefnyddiwyd
+- daearyddiaeth – yna bydd y system yn ychwanegu'r data cyfeirio safonol
+- testun, [lle nad oes angen cael tabl am-edrych](Data-preparation-‐-New-datasets#guidance-dimensiynau-sy'n-cynnwys-testun-neu-rifau-lle-nad-oes-gofyn-cael-tabl-am-edrych) 
+- rhifau, [lle nad oes angen cael tabl am-edrych](Data-preparation-‐-New-datasets#guidance-dimensiynau-sy'n-cynnwys-testun-neu-rifau-lle-nad-oes-gofyn-cael-tabl-am-edrych) - yna bydd angen i chi nodi'r math o rifau a ddefnyddir
+   - Ar gyfer y dewis hwn, rhaid i'r dimensiwn gynnwys rhifau yn unig, heb unrhyw symbolau neu lythrennau
+- rhywbeth arall - yna bydd angen i chi lanlwytho eich tabl am-edrych eich hun
 
-* ddewis pa fath o ddata y mae’r dimensiwn yn ei gynnwys, naill ai:  
-  * dyddiadau – yna byddwch yn ateb cwestiynau am ffurf y dyddiadau a ddefnyddir   
-  * daearyddiaeth – yna bydd y system yn ychwanegu’r data cyfeirio wedi’i safoni   
-  * rhywbeth arall – yna bydd angen i chi lanlwytho eich tabl am-edrych eich hun   
-* nodi enw ar gyfer y dimensiwn ar wefan StatsCymru 
+Ar gyfer pob dewis, gofynnir i chi nodi enw ar gyfer y dimensiwn, a roddir iddo ar wefan StatsCymru. Dylai'r enw fod:
+- yn gryno, gan esbonio'n glir yr hyn y mae'r dimensiwn yn ei gynnwys
+- yn wahanol i enwau dimensiwn eraill yn y set ddata
 
-Os oes gennych chi ddimensiwn ar gyfer mesur neu fathau data, pan fyddwch yn clicio arno o’ch rhestr dasgau ar gyfer eich set ddata, bydd angen i chi lanlwytho’r [tabl am-edrych briodol](Data-preparation-‐-New-datasets#guidance-mathau-data-neu-fesur).
+Ar gyfer dimensiwn sy'n cynnwys mathau o ddata neu fesur, pan fyddwch yn clicio arno o'ch rhestr dasgau ar gyfer y set ddata, bydd angen i chi lanlwytho'r [tabl am-edrych priodol](Data-preparation-‐-New-datasets#guidance-mathau-data-neu-fesur) wedi hyn.
 
 ### Cwestiynau am ffurf y dyddiadau 
 
