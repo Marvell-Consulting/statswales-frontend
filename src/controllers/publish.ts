@@ -306,9 +306,22 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
       }
     }
   } catch (err) {
-    logger.error(`There was a problem assigning source types`, err);
-    next(new UnknownException());
-    return;
+    const error = err as ApiException;
+    const viewErr = JSON.parse((error.body as string) || '{}') as ViewErrDTO;
+    if (viewErr.errors) {
+      errors = viewErr.errors;
+    } else {
+      errors = [{ field: 'source', message: { key: 'errors.sources.assign_failed' } }];
+    }
+    logger.error(err, `There was a problem assigning source types`);
+    res.status(error.status || 500);
+    if (errors[0].message.key === 'errors.fact_table_validation.incomplete_fact') {
+      res.render('publish/empty-fact', { ...viewErr, dimension: { factTableColumn: '' } });
+      return;
+    } else if (errors[0].message.key === 'errors.fact_table_validation.duplicate_fact') {
+      res.render('publish/duplicate-fact', { ...viewErr, dimension: { factTableColumn: '' } });
+      return;
+    }
   }
 
   res.render('publish/sources', {
@@ -658,7 +671,25 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
   }
   let errors: ViewError[] | undefined;
   const revisit = dataset.dimensions?.length > 0;
-  const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
+  let dataPreview: ViewDTO | ViewErrDTO;
+  try {
+    dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
+  } catch (err) {
+    logger.debug(err, `Failed to get lookup dimension preview`);
+    const error = err as ApiException;
+    dataPreview = {
+      status: error.status || 500,
+      errors: [
+        {
+          field: '',
+          message: {
+            key: 'errors.dimension_preview'
+          }
+        }
+      ],
+      dataset_id: dataset.id
+    };
+  }
   const supportedFormats = Object.values(DuckDBSupportFileFormats).map((format) => format.toLowerCase());
   if (req.method === 'POST') {
     logger.debug('User submitted a look up table');
