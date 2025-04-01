@@ -1,26 +1,86 @@
-<%- include("../partials/header", {developerPage: true}); %>
+<%- include("../partials/header"); %>
 
 <div class="govuk-width-container app-width-container">
-
     <main class="govuk-main-wrapper" id="main-content" role="main">
-        <h1 class="govuk-heading-xl"><%= t('developer.heading') %></h1>
-        <% if (locals?.datasets && locals?.datasets.length > 0) {%>
-            <ul class="govuk-list">
-            <% locals?.datasets.forEach(function(dataset) { %>
-                <li>
-                    <span><strong><%= dataset.title %>:</strong></span>
-                    <span><a href="/<%= i18n.language %>/publish/<%= dataset.id %>/tasklist" class="govuk-link"><%= t('developer.list.tasklist') %></a></span>
-                    <span><a href="/<%= i18n.language %>/developer/<%= dataset.id %>" class="govuk-link"><%= t('developer.list.details') %> <i class="fa-solid fa-file-csv"></i></a></span>
-                </li>
-            <% }); %>
-            </ul>
-        <% } %>
+
+        <%- include("../partials/flash-messages", locals.flash); %>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <h1 class="govuk-heading-l"><%= t('developer.heading') %></h1>
+            </div>
+        </div>
+
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <% if (locals.data && locals.data.length > 0) { %>
+                    <table class="govuk-table">
+                        <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                            <th scope="col" class="govuk-table__header"><%= t('homepage.table.title') %></th>
+                            <th scope="col" class="govuk-table__header" style="width:15%"><%= t('homepage.table.last_updated') %></th>
+                            <th scope="col" class="govuk-table__header"><%= t('homepage.table.dataset_status') %></th>
+                            <th scope="col" class="govuk-table__header"><%= t('homepage.table.publish_status') %></th>
+                            <th scope="col" class="govuk-table__header"></th>
+                            <th scope="col" class="govuk-table__header"></th>
+                        </tr>
+                        </thead>
+                        <tbody class="govuk-table__body">
+                        <% for (const dataset of locals.data) { %>
+                            <tr class="govuk-table__row">
+                                <td class="govuk-table__cell">
+                                    <% if (dataset.publishing_status === 'incomplete') { %>
+                                        <a href="<%= buildUrl(`/publish/${dataset.id}/tasklist`, i18n.language) %>" class="govuk-link"><%= dataset.title || `${dataset.title_alt} [${t('homepage.table.not_translated')}]` %></a>
+                                    <% } else { %>
+                                        <a href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language) %>" class="govuk-link"><%= dataset.title || `${dataset.title_alt} [${t('homepage.table.not_translated')}]` %></a>
+                                    <% } %>
+                                </td>
+                                <td class="govuk-table__cell date"><%= dateFormat(dataset.last_updated, 'd MMMM yyyy', { locale: i18n.language }) %></td>
+                                <td class="govuk-table__cell status">
+                                    <% if (dataset.status) { %>
+                                        <strong class="govuk-tag govuk-tag--<%= statusToColour(dataset.status) %>">
+                                            <%= t(`homepage.status.${dataset.status}`) %>
+                                        </strong>
+                                    <% } %>
+                                </td>
+                                <td class="govuk-table__cell status">
+                                    <% if (dataset.publishing_status) { %>
+                                        <strong class="govuk-tag govuk-tag--<%= statusToColour(dataset.publishing_status) %>">
+                                            <%= t(`homepage.publishing_status.${dataset.publishing_status}`) %>
+                                        </strong>
+                                    <% } %>
+                                </td>
+                                <td class="govuk-table__cell">
+                                    <a href="/<%= i18n.language %>/developer/<%= dataset.id %>" class="govuk-link">
+                                        <i class="fa-solid fa-laptop-code"></i> <%= t('developer.list.details') %>
+                                    </a>
+                                </td>
+                                <td class="govuk-table__cell">
+                                    <a href="/<%= i18n.language %>/publish/<%= dataset.id %>/tasklist" class="govuk-link">
+                                        <i class="fa-solid fa-list-check"></i> <%= t('developer.list.tasklist') %>
+                                    </a>
+                                </td>
+                            </tr>
+                        <% } %>
+                        </tbody>
+                    </table>
+
+                    <% if (locals.total_pages > 1) { %>
+                        <%- include("partials/pagination"); %>
+                    <% } %>
+                <% } %>
+            </div>
+        </div>
+
     </main>
 </div>
 
 <style>
-    .govuk-list span {
-        margin-right: 10px;
+    td.date, td.status {
+        white-space: nowrap;
+    }
+    .govuk-tag {
+        max-width: none;
     }
 </style>
 

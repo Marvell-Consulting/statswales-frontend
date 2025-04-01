@@ -1990,6 +1990,36 @@
   background-color: #ffe4e5;
   padding: 20px;
 }
+.wg td.line-number {
+  text-align: right;
+  padding-right: 10px;
+  color: #6f777b;
+  font-family: monospace !important;
+  border-right: 1px solid #b5b5b5;
+  margin-right: 10px;
+}
+.wg th.line-number + th {
+  padding-left: 20px;
+}
+.wg td.line-number + td {
+  padding-left: 20px;
+}
+.wg table.sticky-table {
+  position: relative;
+  overflow: scroll;
+}
+.wg table.sticky-table thead {
+  background-color: #ffffff;
+  border-bottom: 1px solid #b5b5b5;
+  position: sticky;
+  top: 0;
+}
+.wg table.sticky-table th {
+  background-color: #ffffff;
+  border-bottom: 1px solid #b5b5b5;
+  position: sticky;
+  top: 0;
+}
 
 .wg .autocomplete__wrapper {
   position: relative;

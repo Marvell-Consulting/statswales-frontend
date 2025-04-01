@@ -1,4 +1,4 @@
-<table class="govuk-table">
+<table class="govuk-table sticky-table">
     <thead class="govuk-table__head">
         <tr class="govuk-table__row">
             <% headers.forEach(function(cell, idx) { %>
@@ -7,6 +7,8 @@
                         <%= t(`publish.time_dimension_review.column_headers.${cell.name.toLowerCase()}`) %>
                     <% } else if (cell.name === dimension.factTableColumn) { %>
                         <%= dimension.metadata.name ? dimension.metadata.name : cell.name  %>
+                    <% } else if (cell.source_type === 'line_number') { %>
+                        <span class="govuk-visually-hidden"><%= t('publish.preview.row_number') %></span>
                     <% } else { %>
                         <%= cell.name %>
                     <% } %>

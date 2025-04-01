@@ -74,8 +74,8 @@
                     </div>
                 </div>
                 <div class="govuk-grid-row">
-                    <div class="table-display govuk-grid-column-full with-overflow">
-                        <table class="govuk-table" style="position: relative; border-collapse: collapse;">
+                    <div class="table-display govuk-grid-column-full">
+                        <table class="govuk-table sticky-table">
                             <colgroup>
                                 <% locals.headers.forEach(function(cell, idx) { %>
                                     <col class="<%= cell.type === 'ignore' ? 'ignore-column' : '' %>" />

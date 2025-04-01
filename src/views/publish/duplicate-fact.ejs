@@ -1,0 +1,50 @@
+<%- include("../partials/header"); %>
+
+<div class="govuk-width-container">
+    <main class="govuk-main-wrapper " id="main-content" role="main">
+
+        <div class="govuk-grid-row govuk-!-margin-bottom-4">
+            <div class="govuk-grid-column-full">
+                <div class="warning-background">
+                    <div class="govuk-error-message alert-warning">
+                        <h1 class="govuk-heading-l"><%= t('errors.fact_table_validation.duplicate_fact', {count: data.length}) %></h1>
+
+                        <p class="govuk-body"><%= t('errors.fact_table_validation.duplicate_fact_info') %></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <h2 class="govuk-heading-m"><%= t('errors.fact_table_validation.duplicate_fact_summary') %></h2>
+
+                <% if (data) { %>
+                    <% if (data.length > 10) { %>
+                        <details class="govuk-details" data-module="govuk-details">
+                            <summary class="govuk-details__summary"><%= t('errors.fact_table_validation.duplicate_table_summary') %></summary>
+                            <%- include("../partials/dimension-preview-table", headers, data);%>
+                        </details>
+                    <% } else { %>
+                        <%- include("../partials/dimension-preview-table", headers, data);%>
+                    <% } %>
+                <% } %>
+
+                <p class="govuk-heading-s"><%= t('publish.time_dimension_review.actions') %></p>
+                <ul class="govuk-list">
+                    <li>
+                        <a href="<%= buildUrl(`/publish/${locals.dataset.id}/sources`, i18n.language) %>">
+                            <%= t('errors.fact_table_validation.change_sources_action') %>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<%= buildUrl(`/publish/${locals.dataset.id}/upload`, i18n.language) %>">
+                            <%= t('errors.fact_table_validation.change_data_table') %>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+</div>
+
+<%- include("../partials/footer"); %>
