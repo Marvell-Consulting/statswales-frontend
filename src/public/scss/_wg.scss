@@ -2419,11 +2419,4 @@ $whitepurple: #eed5e3;
     position: sticky;
     top: 0;
   }
-
-  div.alert-warning > details > table > thead > tr > th,
-  div.alert-warning > table > thead > tr > th {
-    background-color: $whitered;
-    border-bottom: 1px solid #b5b5b5;
-  }
-
 }

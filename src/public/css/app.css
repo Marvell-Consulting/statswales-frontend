@@ -2013,11 +2013,6 @@
   position: sticky;
   top: 0;
 }
-.wg div.alert-warning > details > table > thead > tr > th,
-.wg div.alert-warning > table > thead > tr > th {
-  background-color: #ffe4e5;
-  border-bottom: 1px solid #b5b5b5;
-}
 
 .wg .autocomplete__wrapper {
   position: relative;
