@@ -2409,11 +2409,19 @@ $whitepurple: #eed5e3;
     padding-left: 20px;
   }
 
-  table {
+  table.sticky-table {
     position: relative;
+    overflow: scroll;
   }
 
-  th {
+  table.sticky-table thead {
+    background-color: $white;
+    border-bottom: 1px solid #b5b5b5;
+    position: sticky;
+    top: 0;
+  }
+
+  table.sticky-table th {
     background-color: $white;
     border-bottom: 1px solid #b5b5b5;
     position: sticky;

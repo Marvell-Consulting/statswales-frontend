@@ -2004,10 +2004,17 @@
 .wg td.line-number + td {
   padding-left: 20px;
 }
-.wg table {
+.wg table.sticky-table {
   position: relative;
+  overflow: scroll;
 }
-.wg th {
+.wg table.sticky-table thead {
+  background-color: #ffffff;
+  border-bottom: 1px solid #b5b5b5;
+  position: sticky;
+  top: 0;
+}
+.wg table.sticky-table th {
   background-color: #ffffff;
   border-bottom: 1px solid #b5b5b5;
   position: sticky;
