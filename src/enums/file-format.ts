@@ -5,5 +5,6 @@ export enum FileFormat {
   DuckDb = 'duckdb',
   Json = 'json',
   Odf = 'odf',
-  Sqlite = 'sqlite'
+  Sqlite = 'sqlite',
+  Zip = 'zip'
 }
