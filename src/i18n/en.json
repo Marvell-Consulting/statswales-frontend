@@ -1323,6 +1323,59 @@
           "email_already_exists": "A user with this email address already exists"
         }
       },
+      "view": {
+        "heading": "What do you want to do?",
+        "details": {
+          "status": "User status",
+          "email": "Email address"
+        },
+        "groups": {
+          "heading": "Groups",
+          "empty": "No assigned groups"
+        },
+        "form": {
+          "action": {
+            "options": {
+              "edit_roles": {
+                "label": "View or change roles and groups"
+              },
+              "deactivate": {
+                "label": "Deactivate user"
+              }
+            },
+            "error": {
+              "missing": "Select what you want to do with this user"
+            }
+          }
+        },
+        "buttons": {
+          "continue": "Continue"
+        }
+      },
+      "roles": {
+        "heading": "Which roles does {{user}} have?",
+        "service": {
+          "heading": "StatsWales"
+        },
+        "form": {
+          "roles": {
+            "options": {
+              "service_admin": {
+                "label": "Service administrator"
+              },
+              "editor": {
+                "label": "Editor"
+              },
+              "approver": {
+                "label": "Approver"
+              }
+            },
+            "error": {
+              "missing": "Select at least one role for this user"
+            }
+          }
+        }
+      },
       "badge": {
         "status": {
           "active": "Active",

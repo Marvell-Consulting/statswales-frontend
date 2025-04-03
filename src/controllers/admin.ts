@@ -15,7 +15,8 @@ import {
   emailCyValidator,
   emailEnValidator,
   emailValidator,
-  userIdValidator
+  userIdValidator,
+  actionValidator
 } from '../validators/admin';
 import { ApiException } from '../exceptions/api.exception';
 import { OrganisationDTO } from '../dtos/organisation';
@@ -26,7 +27,11 @@ import { UserGroupListItemDTO } from '../dtos/user/user-group-list-item-dto';
 import { singleLangUserGroup } from '../utils/single-lang-user-group';
 import { UserDTO } from '../dtos/user/user';
 import { UserCreateDTO } from '../dtos/user/user-create-dto';
-import { UserRole } from '../enums/user-role';
+import { UserAction } from '../enums/user-action';
+import { SingleLanguageUserGroup } from '../dtos/single-language/user-group';
+import { AvailableRoles } from '../interfaces/available-roles';
+import { Organisation } from '../interfaces/organisation';
+import { groupByOrg } from '../utils/group-by-org';
 
 export const fetchUserGroup = async (req: Request, res: Response, next: NextFunction) => {
   const userGroupIdError = await hasError(userGroupIdValidator(), req);
@@ -264,25 +269,57 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const viewUser = async (req: Request, res: Response) => {
   const user: UserDTO = res.locals.user;
-  res.render('admin/user-view', { user });
+  const actions = Object.values(UserAction);
+  const action = req.body.action || '';
+  let errors: ViewError[] = [];
+
+  if (req.method === 'POST') {
+    errors = (await getErrors(actionValidator(actions), req)).map((error: FieldValidationError) => {
+      return { field: error.path, message: { key: `admin.user.view.form.${error.path}.error.missing` } };
+    });
+
+    if (action === UserAction.EditRoles) {
+      res.redirect(req.buildUrl(`/admin/user/${user.id}/roles`, req.language));
+      return;
+    }
+
+    if (action === UserAction.Deactivate) {
+      res.redirect(req.buildUrl(`/admin/user/${user.id}/deactivate`, req.language));
+      return;
+    }
+  }
+
+  res.render('admin/user-view', { user, actions, action, errors });
 };
 
 export const editUserRoles = async (req: Request, res: Response) => {
   const user: UserDTO = res.locals.user;
   let errors: ViewError[] = [];
-  let availableRoles: UserRole[] = [];
+  let availableRoles: AvailableRoles = { global: [], group: [] };
+  let availableGroups: SingleLanguageUserGroup[] = [];
+  let availableOrganisations: Organisation[] = [];
+  let values = {};
 
   try {
-    availableRoles = await req.pubapi.getAvailableRoles();
+    [availableGroups, availableRoles] = await Promise.all([
+      req.pubapi.getAllUserGroups().then((groups) => groups.map((group) => singleLangUserGroup(group, req.language))),
+      req.pubapi.getAvailableRoles()
+    ]);
+
+    availableOrganisations = groupByOrg(availableGroups);
 
     if (req.method === 'POST') {
-      //todo
+      values = req.body;
+      console.log({ values });
     }
   } catch (err) {
+    logger.error(err, 'there was a problem');
     if (err instanceof ApiException) {
       errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
     }
   }
 
-  res.render('admin/user-roles', { user, availableRoles, errors });
+  console.log({ availableGroups, availableOrganisations, availableRoles });
+
+  res.render('admin/user-roles', { user, availableOrganisations, availableRoles, values, errors });
 };

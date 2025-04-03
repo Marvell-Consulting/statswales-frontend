@@ -51,5 +51,7 @@ admin.get('/user/create', createUser);
 admin.post('/user/create', upload.none(), createUser);
 
 admin.get('/user/:userId', fetchUser, viewUser);
+admin.post('/user/:userId', fetchUser, upload.none(), viewUser);
+
 admin.get('/user/:userId/roles', fetchUser, editUserRoles);
 admin.post('/user/:userId/roles', fetchUser, upload.none(), editUserRoles);

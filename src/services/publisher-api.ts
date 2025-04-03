@@ -33,7 +33,7 @@ import { UserGroupListItemDTO } from '../dtos/user/user-group-list-item-dto';
 import { FileImportDto } from '../dtos/file-import';
 import { UserDTO } from '../dtos/user/user';
 import { UserCreateDTO } from '../dtos/user/user-create-dto';
-import { UserRole } from '../enums/user-role';
+import { AvailableRoles } from '../interfaces/available-roles';
 
 const config = appConfig();
 
@@ -570,9 +570,14 @@ export class PublisherApi {
     logger.debug(`Fetching user group list...`);
     const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
 
-    return this.fetch({ url: `admin/group?${qs}` }).then(
+    return this.fetch({ url: `admin/group/list?${qs}` }).then(
       (response) => response.json() as unknown as ResultsetWithCount<UserGroupListItemDTO>
     );
+  }
+
+  public async getAllUserGroups(): Promise<UserGroupDTO[]> {
+    logger.debug(`Fetching all user groups...`);
+    return this.fetch({ url: `admin/group` }).then((response) => response.json() as unknown as UserGroupDTO[]);
   }
 
   public async getUserGroup(groupId: string): Promise<UserGroupDTO> {
@@ -615,8 +620,8 @@ export class PublisherApi {
     return this.fetch({ url: `admin/user/${userId}` }).then((response) => response.json() as unknown as UserDTO);
   }
 
-  public async getAvailableRoles(): Promise<UserRole[]> {
+  public async getAvailableRoles(): Promise<AvailableRoles> {
     logger.debug(`Fetching available user roles...`);
-    return this.fetch({ url: `admin/roles` }).then((response) => response.json() as unknown as UserRole[]);
+    return this.fetch({ url: `admin/role` }).then((response) => response.json() as unknown as AvailableRoles);
   }
 }

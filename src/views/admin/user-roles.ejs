@@ -5,7 +5,7 @@
 
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-xl"><%= t('admin.user.roles.heading') %></h1>
+            <h1 class="govuk-heading-xl"><%= t('admin.user.roles.heading', { user: user.full_name || user.email }) %></h1>
 
             <%- include("../partials/error-handler"); %>
 
@@ -13,25 +13,42 @@
               <input type="hidden" name="groups" value="">
               <div class="govuk-form-group">
                 <fieldset class="govuk-fieldset">
+                  <h2 class="govuk-heading-m"><%= t('admin.user.roles.service.heading') %></h2>
+
                   <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
-                    <% for (let group of locals.groups) { %>
+                    <% for (let role of locals.availableRoles.global) { %>
                       <div class="govuk-checkboxes__item">
-                        <input class="govuk-checkboxes__input" id="<%= `group_${group.id}` %>" name="groups" type="checkbox" value="<%= group.id %>" aria-controls="<%= `conditional-group-${group.id}` %>" <%= locals.selectedGroups.includes(group.id) ? 'checked' : '' %>>
-                        <label class="govuk-label govuk-checkboxes__label" for="<%= `group_${group.id}` %>"><%= group.name %></label>
+                        <input class="govuk-checkboxes__input" id="<%= `role_${role}` %>" name="global_roles" type="checkbox" value="<%= role %>" <%= false ? 'checked' : '' %>>
+                        <label class="govuk-label govuk-checkboxes__label" for="<%= `role_${role}` %>"><%= t(`admin.user.roles.form.roles.options.${role}.label`) %></label>
                       </div>
-                      <% if (locals.availableRoles.length > 0) { %>
-                        <div class="govuk-checkboxes__conditional" id="<%= `conditional-group-${group.id}` %>">
-                          <% for (let role of availableRoles) { %>
-                            <div class="govuk-checkboxes__item">
-                              <input class="govuk-checkboxes__input" id="<%= `group_${group.id}_role_${role}` %>" name="group_roles" type="checkbox" value="<%= role %>" <%= group.roles.includes(role) ? 'checked' : '' %>>
-                              <label class="govuk-label govuk-checkboxes__label" for="<%= `group_${group.id}_role_${role}` %>"><%= t(`admin.user.roles.${role}`) %></label>
-                            </div>
-                          <% } %>
-                        </div>
-                      <% } %>
                     <% } %>
                   </div>
                 </fieldset>
+
+                <% for (let organisation of locals.availableOrganisations) { %>
+                  <fieldset class="govuk-fieldset">
+                    <h2 class="govuk-heading-m"><%= organisation.name %></h2>
+
+                    <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                      <% for (let group of organisation.groups) { %>
+                        <div class="govuk-checkboxes__item">
+                          <input class="govuk-checkboxes__input" id="<%= `group_${group.id}` %>" name="groups" type="checkbox" value="<%= group.id %>" aria-controls="<%= `conditional-group-${group.id}` %>" <%= locals.selectedGroups?.includes(group.id) ? 'checked' : '' %>>
+                          <label class="govuk-label govuk-checkboxes__label" for="<%= `group_${group.id}` %>"><%= group.name %></label>
+                        </div>
+                        <% if (locals.availableRoles?.group.length > 0) { %>
+                          <div class="govuk-checkboxes__conditional" id="<%= `conditional-group-${group.id}` %>">
+                            <% for (let role of locals.availableRoles.group) { %>
+                              <div class="govuk-checkboxes__item">
+                                <input class="govuk-checkboxes__input" id="<%= `group_${group.id}_role_${role}` %>" name="<%= `group_roles_${group.id}` %>" type="checkbox" value="<%= role %>" <%= false ? 'checked' : '' %>>
+                                <label class="govuk-label govuk-checkboxes__label" for="<%= `group_${group.id}_role_${role}` %>"><%= t(`admin.user.roles.form.roles.options.${role}.label`) %></label>
+                              </div>
+                            <% } %>
+                          </div>
+                        <% } %>
+                      <% } %>
+                    </div>
+                  </fieldset>
+                <% } %>
               </div>
               <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
             </form>

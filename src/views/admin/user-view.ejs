@@ -5,17 +5,53 @@
 
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-two-thirds">
-            <h2 class="govuk-heading-m"><%= user.full_name || user.email %></h2>
+            <h1 class="govuk-heading-xl"><%= user.full_name || user.email %></h1>
 
-            <%- include("../partials/error-handler"); %>
+            <dl class="govuk-summary-list">
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key"><%= t('admin.user.view.details.status') %></dt>
+                <dd class="govuk-summary-list__value">
+                  <strong class="govuk-tag govuk-tag--<%= statusToColour(user.status) %>"><%= t(`admin.user.badge.status.${user.status}`) %></strong>
+                </dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key"><%= t('admin.user.view.details.email') %></dt>
+                <dd class="govuk-summary-list__value"><%= user.email %></dd>
+              </div>
+            </dl>
+
+            <h2 class="govuk-heading-m"><%= t('admin.user.view.groups.heading') %></h2>
+
+            <% if (user.groups && user.groups.length > 0) { %>
+              <ul class="govuk-list govuk-list--bullet">
+                <% user.groups.forEach(group => { %>
+                  <li class="govuk-list--bullet"><%= group.name %></li>
+                <% }) %>
+              </ul>
+            <% } else { %>
+              <p class="govuk-body"><%= t('admin.user.view.groups.empty') %></p>
+            <% } %>
 
             <form enctype="multipart/form-data" method="post">
-              <h1 class="govuk-heading-xl"><%= user.full_name || user.email %></h1>
-              <div class="govuk-form-group">
+              <h2 class="govuk-heading-m"><%= t('admin.user.view.heading') %></h2>
 
+              <%- include("../partials/error-handler"); %>
+
+              <div class="govuk-form-group <%= locals.errors?.find(e => e.field === 'action') ? 'govuk-form-group--error' : '' %>">
+                <fieldset class="govuk-fieldset" aria-describedby="action">
+                    <div class="govuk-radios" data-module="govuk-radios">
+                        <% locals.actions?.forEach(action => { %>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input" id="<%= `action_${action}` %>" name="action" type="radio" value="<%= action %>" <%= locals.action === action ? 'checked' : '' %> />
+                                <label class="govuk-label govuk-radios__label" for="<%= `action_${action}` %>"><%= t(`admin.user.view.form.action.options.${action}.label`) %></label>
+                            </div>
+                        <% }) %>
+                    </div>
+                </fieldset>
               </div>
+
               <button type="submit" class="govuk-button" data-module="govuk-button">
-                  <%= t(`admin.user.create.buttons.continue`) %>
+                  <%= t(`admin.user.view.buttons.continue`) %>
               </button>
             </form>
           </div>
