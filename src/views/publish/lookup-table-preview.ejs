@@ -18,6 +18,12 @@
         <% } %>
         <%- include("../partials/error-handler"); %>
 
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+                <p class="govuk-body"><%= t('publish.lookup_table_review.explain') %></p>
+            </div>
+        </div>
+
         <% if (locals?.data) { %>
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-full with-overflow">
