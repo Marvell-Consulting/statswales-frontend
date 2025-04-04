@@ -259,6 +259,7 @@
     },
     "lookup_table_review": {
       "heading": "Check the lookup table",
+      "explain": "The uploaded lookup table has been added to a standardised lookup table. There may be columns in this standardised lookup table that were not in the uploaded lookup table.",
       "dimension_heading": "Check the dimension",
       "showing": "Showing a sample of {{rows}} of {{total}} rows.",
       "confirm": "By continuing, you confirm the lookup table is correct.",
