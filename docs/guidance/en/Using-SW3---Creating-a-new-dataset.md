@@ -1,11 +1,11 @@
-# Using SW3 ‐ Creating a new dataset
+# Using SW3: Creating a new dataset
 
 ## Data
 
-From your home screen, click ‘Create new dataset’. Using your [prepared data](Data-preparation-‐-New-datasets#guidance-data-tables), you’ll go through the following steps:
+From your home screen, click ‘Create new dataset’. Using your [prepared data](Data-preparation-‐-New-datasets#guidance-data-tables), you’ll go through the following steps.
 
-1. Add title
-1. Upload your data table
+1. Add title.
+1. Upload your data table.
 1. Indicate what each column in the data table contains, either:
    - data values
    - a dimension
@@ -19,7 +19,7 @@ Clicking on each dimension will let you select what kind of data the dimension c
 - geography - the system will then add the standardised reference data
 - text, [where no lookup table is needed](Data-preparation-‐-New-datasets#guidance-dimensions-containing-text-or-numbers-where-no-lookup-table-is-required) 
 - numbers, [where no lookup table is needed](Data-preparation-‐-New-datasets#guidance-dimensions-containing-text-or-numbers-where-no-lookup-table-is-required) - you'll then need to indicate the kind of numbers used
-   - For this option, the dimension must only contain numbers, with no symbols or letters
+   - For this option, the dimension must only contain numbers, with no symbols or letters.
 - something else - you'll then need to upload your own lookup table
 
 For each option you'll be asked to enter a name for the dimension to be called on the StatsWales website. The name should be:
@@ -71,8 +71,8 @@ You should add all [prepared metadata](Data-preparation-‐-New-datasets#guidanc
 
 Once you’ve completed all text entry fields, you’ll be able to export all the text into a single CSV file. This CSV will be used to input all required translations of either Welsh or English, depending on which language you’ve completed all fields in.
 
-1. From your dataset tasklist, click ‘Export text fields for translation’
-1. You’ll be shown all relevant text and will be able to make any final changes, if needed
+1. From your dataset tasklist, click ‘Export text fields for translation’.
+1. You’ll be shown all relevant text and will be able to make any final changes, if needed.
 1. In summary, all possible text fields are:
    - dimension names
    - title
@@ -82,11 +82,11 @@ Once you’ve completed all text entry fields, you’ll be able to export all th
    - rounding applied
    - related report link text(s)
 1. Click ‘Export CSV’ to download a table containing columns for:
-   - Text field name
-   - Text (English)
-   - Text (Welsh)
-1. The column for whichever language you’ve been using will be populated
-1. You should send this CSV to your translator to enter the required translations, or enter the translations yourself if you have them
+   - text field name
+   - text (English)
+   - text (Welsh)
+1. The column for whichever language you’ve been using will be populated.
+1. You should send this CSV to your translator to enter the required translations, or enter the translations yourself if you have them.
 
 When opening the exported translation CSV in software such as Excel, text fields with multiple paragraphs may split across multiple cells. If this happens, you should ensure that all text for a specific section, in one language, is in a single cell.
 

@@ -1,23 +1,22 @@
-# Using SW3 ‐ Updating a dataset
+# Using SW3: Updating a dataset
 
 ## Data
 
 From your home screen, select the dataset you need to update. On the next screen select ‘Update this dataset’.
 
-Using your [prepared update data table](Data-preparation-‐-Updating-datasets), go through the following steps:
+Using your [prepared update data table](Data-preparation-‐-Updating-datasets), go through the following steps.
 
-1. Click ‘Data table’ from your dataset tasklist
+1. Click ‘Data table’ from your dataset tasklist.
 1. Select whether you need to:
-   - Add new data only
-   - Add new data and revise existing data
-   - Revise existing data only
-   - Replace all existing data
-1. Upload and check your update data table
-   - If there are any issues with your table, the system will explain the issue and what you need to do to fix it
+   - add new data only
+   - add new data and revise existing data
+   - revise existing data only
+   - replace all existing data
+1. Upload and check your update data table - if there are any issues with your table, the system will explain the issue and what you need to do to fix it.
 1. If you’re replacing existing data, you’ll need to add revision notes explaining in short, simple sentences:
    - what data has been changed
    - why the data has been changed
-1. Review the updates are correct and confirm the update
+1. Review the updates are correct and confirm the update.
 
 ## Metadata
 
@@ -37,10 +36,10 @@ If you change any of the text fields, you’ll need to provide updated translati
 
 You should follow the same process as for [translating a new dataset](Using-SW3---Creating-a-new-dataset#guidance-translations). The only difference is that the exported CSV will have columns for:
 
-- Text field name
-- Previous text (English) (not applicable for revision notes)
-- Previous text (Welsh) (not applicable for revision notes)
-- New text (English)
-- New text (Welsh)
+- text field name
+- previous text (English) (not applicable for revision notes)
+- previous text (Welsh) (not applicable for revision notes)
+- new text (English)
+- new text (Welsh)
 
 The 'previous text' columns will be populated with the most recently published, bilingual entries for these fields. This will aid translators entering the new text in the translated language. They won’t have to retranslate everything if there have only been minor changes to the text.

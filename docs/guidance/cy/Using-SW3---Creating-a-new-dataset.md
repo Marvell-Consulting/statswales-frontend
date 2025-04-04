@@ -1,11 +1,11 @@
-# Defnyddio SW3 ‐ Creu set ddata newydd 
+# Defnyddio SW3: Creu set ddata newydd 
 
 ## Data
 
-O’ch sgrin hafan, cliciwch ‘Creu set ddata newydd’. Gan ddefnyddio eich [data a baratowyd](Data-preparation-‐-New-datasets#guidance-tablau-data), byddwch yn mynd trwy’r camau canlynol:
+O’ch sgrin hafan, cliciwch ‘Creu set ddata newydd’. Gan ddefnyddio eich [data a baratowyd](Data-preparation-‐-New-datasets#guidance-tablau-data), byddwch yn mynd trwy’r camau canlynol.
 
-1. Ychwanegu teitl  
-2. Lanlwytho eich tabl data   
+1. Ychwanegu teitl.  
+2. Lanlwytho eich tabl data.  
 3. Nodi’r hyn y mae pob colofn yn y tabl data yn ei gynnwys, naill ai:  
    * gwerthoedd data   
    * dimensiwn   
@@ -14,12 +14,12 @@ O’ch sgrin hafan, cliciwch ‘Creu set ddata newydd’. Gan ddefnyddio eich [d
 
 Yna, byddwch yn cael eich tywys i’ch rhestr dasgau ar gyfer eich set ddata. Bydd hon yn rhestru’r holl ddimensiynau a nodoch, ac eithrio codau nodiadau gan bod y rhain wedi cael eu safoni.
 
-Bydd clicio ar bob dimensiwn yn caniatáu i chi ddewis pa fath o ddata sydd yn y dimensiwn.  Bydd hyn naill ai yn:
+Bydd clicio ar bob dimensiwn yn caniatáu i chi ddewis pa fath o ddata sydd yn y dimensiwn. Bydd hyn naill ai yn:
 - ddyddiadau – yna byddwch yn ateb cwestiynau am ffurf y dyddiadau a ddefnyddiwyd
 - daearyddiaeth – yna bydd y system yn ychwanegu'r data cyfeirio safonol
 - testun, [lle nad oes angen cael tabl am-edrych](Data-preparation-‐-New-datasets#guidance-dimensiynau-sy'n-cynnwys-testun-neu-rifau-lle-nad-oes-gofyn-cael-tabl-am-edrych) 
 - rhifau, [lle nad oes angen cael tabl am-edrych](Data-preparation-‐-New-datasets#guidance-dimensiynau-sy'n-cynnwys-testun-neu-rifau-lle-nad-oes-gofyn-cael-tabl-am-edrych) - yna bydd angen i chi nodi'r math o rifau a ddefnyddir
-   - Ar gyfer y dewis hwn, rhaid i'r dimensiwn gynnwys rhifau yn unig, heb unrhyw symbolau neu lythrennau
+   - Ar gyfer y dewis hwn, rhaid i'r dimensiwn gynnwys rhifau yn unig, heb unrhyw symbolau neu lythrennau.
 - rhywbeth arall - yna bydd angen i chi lanlwytho eich tabl am-edrych eich hun
 
 Ar gyfer pob dewis, gofynnir i chi nodi enw ar gyfer y dimensiwn, a roddir iddo ar wefan StatsCymru. Dylai'r enw fod:
@@ -73,8 +73,8 @@ Dylech ychwanegu’r holl [fetadata a baratowyd](Data-preparation-‐-New-datase
 
 Ar ôl i chi lenwi’r holl feysydd cofnodi testun, byddwch yn gallu allgludo’r holl destun i un ffeil CSV. Defnyddir y CSV hon i fewnbynnu’r holl gyfieithiadau gofynnol yn Gymraeg neu yn Saesneg, gan ddibynnu ar ba iaith a ddefnyddioch i lenwi’r holl feysydd.
 
-1. O’ch rhestr dasgau ar gyfer eich set ddata, cliciwch ‘allgludo meysydd testun i’w cyfieithu’  
-2. Dangosir yr holl destun perthnasol i chi a byddwch yn gallu gwneud unrhyw newidiadau terfynol, yn ôl yr angen  
+1. O’ch rhestr dasgau ar gyfer eich set ddata, cliciwch ‘allgludo meysydd testun i’w cyfieithu’.
+2. Dangosir yr holl destun perthnasol i chi a byddwch yn gallu gwneud unrhyw newidiadau terfynol, yn ôl yr angen.
 3. I grynhoi, mae’r holl feysydd testun posibl fel a ganlyn:  
    * enwau dimensiwn   
    * teitl  
@@ -84,11 +84,11 @@ Ar ôl i chi lenwi’r holl feysydd cofnodi testun, byddwch yn gallu allgludo’
    * wedi’u talgrynnu   
    * testun(au) cyswllt adroddiad cysylltiedig   
 4. Cliciwch ‘Allgludo CSV’ er mwyn lawrlwytho tabl sy’n cynnwys colofnau ar gyfer:  
-   * Enw maes testun   
-   * Testun (Saesneg)   
-   * Testun (Cymraeg)  
-5. Llenwir y golofn ar gyfer pa bynnag iaith yr ydych chi wedi bod yn ei defnyddio  
-6. Dylech anfon y CSV hon at eich cyfieithydd er mwyn iddynt nodi’r cyfieithiadau gofynnol, neu gofnodi’r cyfieithiadau eich hun os oes gennych chi nhw
+   * enw maes testun   
+   * testun (Saesneg)   
+   * testun (Cymraeg)  
+5. Llenwir y golofn ar gyfer pa bynnag iaith yr ydych chi wedi bod yn ei defnyddio.
+6. Dylech anfon y CSV hon at eich cyfieithydd er mwyn iddynt nodi’r cyfieithiadau gofynnol, neu gofnodi’r cyfieithiadau eich hun os oes gennych chi nhw.
 
 Wrth agor y CSV cyfieithiadau a allgludwyd mewn meddalwedd fel Excel, efallai y bydd meysydd testun sy’n cynnwys paragraffau lluosog yn rhannu ar draws celloedd lluosog. Os bydd hyn yn digwydd, dylech sicrhau bod yr holl destun ar gyfer adran benodol, mewn un iaith, mewn un cell.
 

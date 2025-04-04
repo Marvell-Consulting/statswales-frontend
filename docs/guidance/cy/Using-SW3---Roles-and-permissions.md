@@ -1,4 +1,4 @@
-# Defnyddio SW3 ‐ Rolau a chaniatâd
+# Defnyddio SW3: Rolau a chaniatâd
 
 Yn eich sefydliad, efallai y bydd un grŵp neu sawl grŵp sy’n cyhoeddi setiau data.  Mae pob set ddata yn StatsCymru yn perthyn i un grŵp penodol yn unig.
 

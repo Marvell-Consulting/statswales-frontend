@@ -1,4 +1,4 @@
-# Paratoi data ‐ Setiau data newydd 
+# Paratoi data: Setiau data newydd 
 
 Mae setiau data yn cynnwys set o ystadegau a’u metadata cysylltiedig.  Caiff y set ddata ei hadeiladu yn SW3 fel ciwb data o dabl data a data cyfeirio neu am-edrych.
 
@@ -41,7 +41,7 @@ Dylai enwau penawdau colofnau fod yn ystyrlon, fel eich bod yn gwybod yr hyn y m
 
 ### Cyfansymiau a chyfartaleddau 
 
-Dylech gynnwys rhesi yn eich tabl data ar gyfer unrhyw gyfansymiau neu gyfartaleddau yr hoffech eu cynnwys gyda’r set ddata.  Dylai’r rhesi gynnwys:
+Dylech gynnwys rhesi yn eich tabl data ar gyfer unrhyw gyfansymiau neu gyfartaleddau yr hoffech eu cynnwys gyda’r set ddata. Mae hyn yn cynnwys unrhyw is-gyfansymiau a chyfansymiau terfynol. Dylai’r rhesi gynnwys:
 
 - cyfansymiau neu gyfartaleddau   
 - [codau cyfeirio](#guidance-data-cyfeirio) neu [fformatau dyddiad](#guidance-fformatio-dyddiadau) cywir  
@@ -124,11 +124,15 @@ Unrhyw rai o’r fformatau blwyddyn, wedi’u dilyn gan god mis.
 
 Bydd angen i chi wybod y math o flwyddyn y mae’r dimensiwn yn ei gynnwys hefyd, naill ai:
 
-- Calendr (1 Ionawr i 31 Rhagfyr)  
-- Meteorolegol (1 Mawrth i 28 neu 29 Chwefror)  
-- Ariannol (1 Ebrill i 31 Mawrth)  
-- Treth (6 Ebrill i 5 Ebrill)  
-- Academaidd (1 Medi i 31 Awst)
+- calendr (1 Ionawr i 31 Rhagfyr)  
+- meteorolegol (1 Mawrth i 28 neu 29 Chwefror)  
+- ariannol (1 Ebrill i 31 Mawrth)  
+- treth (6 Ebrill i 5 Ebrill)  
+- academaidd (1 Medi i 31 Awst)
+
+Ni all y system ymdopi â blynyddoedd treigl ar hyn o bryd.  Caiff y canllawiau hyn eu diweddaru ar ôl ychwanegu'r swyddogaeth hon.
+
+Os nad ydych chi'n gwybod y math o flwyddyn y mae'r dimensiwn yn ymwneud â hi, dylech gysylltu â'r casglwr data ar gyfer eich set ddata.
 
 ##### Cyfnodau lluosog yn yr un set ddata 
 
@@ -157,46 +161,46 @@ Yn ddelfrydol, dylai eich tabl am-edrych fod mewn [fformat CSV](#guidance-fforma
 
 #### Fformat 2-rhes (a ffefrir)
 
-| Pennawd | Yr hyn y mae’r golofn yn ei gynnwys  |
-| :---- | :---- |
-| codcyf  | Codau cyfeirio  |
-| hierarchaeth  | Dynodi os yw gwerth yn gysylltiedig â gwerthoedd eraill mewn ffordd hierarchaidd  |
-| trefn | Trefn ddidoli  |
-| disgrifiad  | Disgrifiad  |
-| iaith  | Iaith a ddefnyddir, naill ai 'en' neu 'cy' |
-| nodyn  | Nodiadau |
+| Pennawd | Yr hyn y mae’r golofn yn ei gynnwys | Wastad yn ofynnol |
+| :---- | :---- | :---- |
+| codcyf  | Codau cyfeirio | <strong class="govuk-tag govuk-tag--green">Oes</strong> |
+| disgrifiad  | Disgrifiad | <strong class="govuk-tag govuk-tag--green">Oes</strong> |
+| iaith  | Iaith a ddefnyddir, naill ai 'en' neu 'cy' | <strong class="govuk-tag govuk-tag--green">Oes</strong> |
+| hierarchaeth  | Dynodi os yw gwerth yn gysylltiedig â gwerthoedd eraill mewn ffordd hierarchaidd | <strong class="govuk-tag govuk-tag--red">Nac oes</strong> |
+| trefn | Trefn ddidoli | <strong class="govuk-tag govuk-tag--red">Nac oes</strong> |
+| nodyn  | Nodiadau | <strong class="govuk-tag govuk-tag--red">Nac oes</strong> |
 
 Enghraifft o rhan o dabl am-edrych ar gyfer cod band treth:
 
-| codcyf  | hierarchaeth | trefn  | disgrifiad  | iaith  | nodyn  |
-| :---- | :---- | :---- | :---- | :---- | :---- |
-| A- |  | 1 | Tax band A- | en |  |
-| A- |  | 1 | Band treth A- | cy |  |
-| A |  | 2 | Tax band A | en |  |
-| A |  | 2 | Band treth A | cy |  |
-| B |  | 3 | Tax band B | en |  |
+| codcyf  | disgrifiad    | iaith | trefn |
+| :------ | :------------ | :---- | :---- |
+| A-      | Tax band A-   | en    | 1     |
+| A-      | Band treth A- | cy    | 1     |
+| A       | Tax band A    | en    | 2     |
+| A       | Band treth A  | cy    | 2     |
+| B       | Tax band B    | en    | 3     |
 
 #### Fformat rhes unigol 
 
-| Pennawd | Yr hyn y mae’r golofn yn ei chynnwys  |
-| :---- | :---- |
-| codcyf | Codau cyfeirio |
-| hierarchaeth | Dynodi os yw gwerth yn gysylltiedig â gwerthoedd eraill mewn ffordd hierarchaidd  |
-| trefn | Trefn ddidoli  |
-| disgrifiad\_en | Disgrifiad (Saesneg) |
-| disgrifiad\_cy | Disgrifiad (Cymraeg) |
-| nodyn\_en | Nodiadau (Saesneg) |
-| nodyn\_cy | Nodiadau (Cymraeg) |
+| Pennawd | Yr hyn y mae’r golofn yn ei chynnwys | Wastad yn ofynnol |
+| :---- | :---- | :---- |
+| codcyf | Codau cyfeirio | <strong class="govuk-tag govuk-tag--green">Oes</strong> |
+| disgrifiad\_en | Disgrifiad (Saesneg) | <strong class="govuk-tag govuk-tag--green">Oes</strong> |
+| disgrifiad\_cy | Disgrifiad (Cymraeg) | <strong class="govuk-tag govuk-tag--green">Oes</strong> |
+| hierarchaeth | Dynodi os yw gwerth yn gysylltiedig â gwerthoedd eraill mewn ffordd hierarchaidd | <strong class="govuk-tag govuk-tag--red">Nac oes</strong> |
+| trefn | Trefn ddidoli  | <strong class="govuk-tag govuk-tag--red">Nac oes</strong> |
+| nodyn\_en | Nodiadau (Saesneg) | <strong class="govuk-tag govuk-tag--red">Nac oes</strong> |
+| nodyn\_cy | Nodiadau (Cymraeg) | <strong class="govuk-tag govuk-tag--red">Nac oes</strong> |
 
 Enghraifft o rhan o dabl am-edrych ar gyfer cod band treth:
 
-| codcyf  | hierarchaeth | trefn | disgrifiad\_en | disgrifiad \_cy | nodyn\_en | nodyn\_cy |
-| :---- | :---- | :---- | :---- | :---- | :---- | :---- |
-| A- |  | 1 | Tax band A- | Band treth A- |  |  |
-| A |  | 2 | Tax band A | Band treth A |  |  |
-| B |  | 3 | Tax band B | Band treth B |  |  |
-| C |  | 4 | Tax band C | Band treth C |  |  |
-| D |  | 5 | Tax band D | Band treth D |  |  |
+| codcyf  | disgrifiad\_en | disgrifiad \_cy | trefn |
+| :------ | :------------- | :-------------- | :---- |
+| A-      | Tax band A-    | Band treth A-   | 1     |
+| A       | Tax band A     | Band treth A    | 2     |
+| B       | Tax band B     | Band treth B    | 3     |
+| C       | Tax band C     | Band treth C    | 4     |
+| D       | Tax band D     | Band treth D    | 5     |
 
 #### Penawdau colofnau 
 
@@ -208,13 +212,13 @@ Defnyddiwch y golofn 'hierarchaeth' i ddynodi a yw gwerth dimensiwn yn is na gwe
 
 Rhan enghreifftiol o dabl am-edrych am godau bandiau treth sydd â hierarchaeth 3-lefel:
 
-| codcyf  | hierarchaeth | trefn | disgrifiad\_en | disgrifiad \_cy | nodyn\_en | nodyn\_cy |
-| :------ | :-------- | :--- | :------------- | :------------- | :------ | :------ |
-| A       |           | 14   | Tax band A     | Band treth A   |         |         |
-| A1      | A         | 15   | Tax band A1    | Band treth A1  |         |         |
-| A1a     | A1        | 16   | Tax band A1a   | Band treth A1a |         |         |
-| A1b     | A1        | 17   | Tax band A1b   | Band treth A1b |         |         |
-| A1c     | A1        | 18   | Tax band A1c   | Band treth A1c |         |         |
+| codcyf  | disgrifiad\_en | disgrifiad \_cy | hierarchaeth | trefn |
+| :------ | :------------- | :-------------- | :------------| :---- |
+| A       | Tax band A     | Band treth A    |              | 14    |
+| A1      | Tax band A1    | Band treth A1   | A            | 15    |
+| A1a     | Tax band A1a   | Band treth A1a  | A1           | 16    |
+| A1b     | Tax band A1b   | Band treth A1b  | A1           | 17    |
+| A1c     | Tax band A1c   | Band treth A1c  | A1           | 18    |
 
 Nid oes cyfyngiad o ran sawl lefel y gall hierarchaeth eu cynnwys.  Fodd bynnag, dim ond at un gwerth uwch ei ben yn yr hierarchaeth y gall gwerth dimensiwn ymwneud ag ef.  Er enghraifft, ni fyddai modd i is-fand 'A1' eistedd dan 'A' ac 'A-'.
 
@@ -302,7 +306,7 @@ Mae SW3 yn defnyddio codau nodiadau llaw-fer, gydag esboniadau safonol, sy’n d
 | x | Data coll  | Er enghraifft, pan na chaiff gwerth data ei gasglu mewn rhanbarth |
 | z | Amherthnasol | Er enghraifft, mewn tablau cyflogaeth pan na ellir cyflogi pobl dan 16 oed yn gyfreithlon |
 
-Dylid darparu unrhyw esboniadau wedi’u haddasu yr ydych chi’n teimlo eu bod yn angenrheidiol er mwyn egluro unrhyw godau nodiadau, yn yr [adran metadata](#guidance-metadata).
+Dylid darparu unrhyw esboniadau wedi’u haddasu yr ydych chi’n teimlo eu bod yn angenrheidiol er mwyn egluro unrhyw godau nodiadau, yn yr [adran metadata](#guidance-metadata) mwyaf priodol. Er enghraifft, os bydd angen i chi esbonio rhesymau lluosog pam bod gwerthoedd data wedi cael eu hatal.
 
 Os bydd angen i chi ychwanegu codau nodiadau lluosog i un gwerth data, dylid gwahanu’r rhain gan ddefnyddio coma, er enghraifft ‘p,f’.
 
@@ -357,16 +361,16 @@ Mae’r canlynol yn cynrychioli’r holl fetadata y bydd angen i chi ei ddarparu
 
 #### Teitl 
 
-- Y teitl a fydd yn ymddangos gyda’r set ddata ar wefan StatsCymru   
-- Dylai fod yn fyr, yn ddisgrifiadol ac yn unigryw   
-- Bydd y system yn dweud wrthych os byddwch yn nodi teitl sydd eisoes yn cael ei ddefnyddio gan set ddata fyw, wedi’i chyhoeddi
+Enw byr, disgrifiadol ac unigryw ar gyfer y set ddata ar gyfer gwefan StatsCymru. Bydd y system yn dweud wrthych os byddwch yn nodi teitl sydd eisoes yn cael ei ddefnyddio gan set ddata fyw, wedi’i chyhoeddi
 
 #### Crynodeb 
 
-- Mewn brawddegau byr a syml, esboniwch yr hyn y mae’r set ddata hon amdano a’r hyn y mae’n dangos  
-- Disgrifiwch pa ddimensiynau a ddefnyddiwyd ac os oes angen, pam eu bod wedi cael eu defnyddio  
-- Yn ddelfrydol, ni ddylai hwn fod yn hirach na 2-3 paragraff  
-- Ni ddylid cynnwys unrhyw beth sy’n ymwneud â chasglu data neu ansawdd data, a dylid cadw hyn i’w hadrannau perthnasol
+Mae hyn yn esbonio'r hyn y mae'r set ddata yn ymwneud ag ef a'r hyn y mae'n ei ddangos. Dylai:
+
+- ddefnyddio brawddegau byr, syml
+- disgrifio pa ddimensiynau a ddefnyddiwyd a pham
+- heb fod yn hirach na 2-3 paragraff yn ddelfrydol
+- peidio cynnwys unrhyw beth sy'n ymwneud â chasglu data neu ansawdd data – dylai hwn fod yn yr adran berthnasol yn lle hynny
 
 #### Cyfrifo neu gasglu data 
 
