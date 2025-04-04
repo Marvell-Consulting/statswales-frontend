@@ -151,10 +151,22 @@ export const uploadDataTable = async (req: Request, res: Response) => {
       return;
     } catch (err) {
       logger.error(err, `There was a problem uploading the file`);
-      res.status(400);
       if (err instanceof ApiException) {
-        const body = JSON.parse(err.body?.toString() || '{}') as ViewErrDTO;
+        let body: ViewErrDTO = {
+          status: err.status || 500,
+          dataset_id: dataset.id,
+          errors: [{ field: 'csv', message: { key: 'errors.fact_table_validation.unknown_error' } }]
+        };
+        try {
+          body = JSON.parse(err.body?.toString() || '{}') as ViewErrDTO;
+        } catch (parseError) {
+          logger.error(parseError, 'Failed to parse error body as JSON');
+        }
+        res.status(body.status);
         errors = body.errors || [{ field: 'csv', message: { key: 'errors.fact_table_validation.unknown_error' } }];
+      } else {
+        res.status(500);
+        errors = [{ field: 'csv', message: { key: 'errors.fact_table_validation.unknown_error' } }];
       }
     }
   }
