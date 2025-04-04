@@ -1180,6 +1180,7 @@
       "incomplete_table_summary": "Table containing {{rows}} incomplete facts.",
       "change_data_table": "Replace the data table",
       "duplicate_fact": "Data table has {{count}} duplicate facts",
+      "unknown_duplicate_fact": "The data table has one or more duplicate facts already in the cube.",
       "duplicate_fact_info": "You should correct your data table and upload it again.",
       "change_sources_action": "Change what each column contains",
       "duplicate_fact_summary": "Duplicate facts",

@@ -150,14 +150,28 @@ export const uploadDataTable = async (req: Request, res: Response) => {
       res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
       return;
     } catch (err) {
-      res.status(400);
+      logger.error(err, `There was a problem uploading the file`);
       if (err instanceof ApiException) {
-        errors = [{ field: 'csv', message: { key: 'publish.upload.errors.api' } }];
+        let body: ViewErrDTO = {
+          status: err.status || 500,
+          dataset_id: dataset.id,
+          errors: [{ field: 'csv', message: { key: 'errors.fact_table_validation.unknown_error' } }]
+        };
+        try {
+          body = JSON.parse(err.body?.toString() || '{}') as ViewErrDTO;
+        } catch (parseError) {
+          logger.error(parseError, 'Failed to parse error body as JSON');
+        }
+        res.status(body.status);
+        errors = body.errors || [{ field: 'csv', message: { key: 'errors.fact_table_validation.unknown_error' } }];
+      } else {
+        res.status(500);
+        errors = [{ field: 'csv', message: { key: 'errors.fact_table_validation.unknown_error' } }];
       }
     }
   }
 
-  res.render('publish/upload', { revisit, supportedFormats: supportedFormats.join(', '), uploadType: false });
+  res.render('publish/upload', { revisit, supportedFormats: supportedFormats.join(', '), errors, uploadType: false });
 };
 
 export const factTablePreview = async (req: Request, res: Response, next: NextFunction) => {
