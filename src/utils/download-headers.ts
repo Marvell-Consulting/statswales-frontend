@@ -10,7 +10,8 @@ export const getDownloadHeaders = (format: FileFormat | undefined, downloadName:
     duckdb: { ext: 'duckdb', contentType: 'application/octet-stream' },
     json: { ext: 'json', contentType: 'application/json' },
     odf: { ext: 'odf', contentType: 'application/vnd.oasis.opendocument.spreadsheet' },
-    sqlite: { ext: 'sqlite', contentType: 'application/octet-stream' }
+    sqlite: { ext: 'sqlite', contentType: 'application/octet-stream' },
+    zip: { ext: 'zip', contentType: 'application/zip' }
   };
 
   const opts = formats[format];

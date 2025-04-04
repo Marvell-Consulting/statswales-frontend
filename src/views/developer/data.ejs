@@ -49,6 +49,11 @@
                                     </a>
                                 </li>
                                 <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                                    <a class="govuk-tabs__tab" href="#files">
+                                        <%- t('developer.display.files') %>
+                                    </a>
+                                </li>
+                                <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
                                     <a class="govuk-tabs__tab" href="#json">
                                         JSON
                                     </a>
@@ -236,26 +241,29 @@
                                                 <th scope="col" class="govuk-table__header"><%- t('developer.display.type') %></th>
                                                 <th scope="col" class="govuk-table__header"><%- t('developer.display.fact_table_column') %></th>
                                                 <th scope="col" class="govuk-table__header"><%- t('developer.display.join_column') %></th>
-                                                <th scope="col" class="govuk-table__header"><%- t('developer.display.extractor') %></th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <% locals.dataset?.dimensions?.forEach((dim) => { %>
                                                 <tr>
-                                                    <td class="govuk-table__cell"><%= dim.id %></td>
+                                                    <td class="govuk-table__cell" rowspan="2"><%= dim.id %></td>
                                                     <td class="govuk-table__cell"><%= dim.type %></td>
                                                     <td class="govuk-table__cell"><%= dim.factTableColumn%></td>
                                                     <td class="govuk-table__cell"><%= dim.joinColumn %></td>
                                                     <td class="govuk-table__cell">
-                                                        <details class="govuk-details" data-module="govuk-details">
+
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="govuk-table__cell" scope="row"><%- t('developer.display.extractor') %></td>
+                                                    <td colspan="2" class="govuk-table__cell"><details class="govuk-details" data-module="govuk-details">
                                                             <summary class="govuk-details__summary">
                                                         <span class="govuk-details__summary-text">
                                                             <%= t('developer.display.show_extractor') %>
                                                         </span>
                                                             </summary>
                                                             <pre><code><%= JSON.stringify(dim.extractor, null, 2)%></code></pre>
-                                                        </details>
-                                                    </td>
+                                                        </details></td>
                                                 </tr>
                                             <% });%>
                                             </tbody>
@@ -323,6 +331,22 @@
                                 <% } else { %>
                                     <p class="govuk-body-l"><%= t('developer.display.error.no_revisions') %></p>
                                 <% } %>
+                            </div>
+                            <div class="govuk-tabs__panel" id="files">
+                                <h2 class="govuk-heading-m"><%- t('developer.display.download_files') %></h2>
+                                <% fileList.forEach((sublist) => { %>
+                                <div class="govuk-grid-row">
+                                    <% sublist.forEach((file) => { %>
+                                    <div class="govuk-grid-column-one-quarter" style="text-align: center;">
+                                        <p>
+                                            <a href="<%= file.link %> %>">
+                                            <img src="/assets/images/dev-icons/<%= file.file_type %>-icon.svg" alt="<%= file.type %> Icon" width="64" height="64" style="margin-bottom: 10px"><br>
+                                            <%= file.filename %> (<%= file.type %>)</a>
+                                        </p>
+                                    </div>
+                                    <% });%>
+                                </div>
+                            <% }); %>
                             </div>
                             <div class="govuk-tabs__panel" id="json">
                                 <h2 class="govuk-heading-m">JSON</h2>

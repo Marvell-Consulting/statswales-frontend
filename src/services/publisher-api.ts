@@ -30,6 +30,7 @@ import { DatasetInclude } from '../enums/dataset-include';
 import { UserGroupDTO } from '../dtos/user/user-group';
 import { UserGroupMetadataDTO } from '../dtos/user/user-group-metadata-dto';
 import { UserGroupListItemDTO } from '../dtos/user/user-group-list-item-dto';
+import { FileImportDto } from '../dtos/file-import';
 
 const config = appConfig();
 
@@ -179,11 +180,43 @@ export class PublisherApi {
     );
   }
 
+  public async getDatasetFileList(datasetId: string): Promise<FileImportDto[]> {
+    logger.debug(`Fetching file list for dataset: ${datasetId}`);
+
+    return this.fetch({ url: `dataset/${datasetId}/list-files` }).then(
+      (response) => response.json() as unknown as FileImportDto[]
+    );
+  }
+
   public async getOriginalUpload(datasetId: string, revisionId: string): Promise<ReadableStream> {
     logger.debug(`Fetching raw file import for revision: ${revisionId}...`);
 
     return this.fetch({
       url: `dataset/${datasetId}/revision/by-id/${revisionId}/data-table/raw`
+    }).then((response) => response.body as ReadableStream);
+  }
+
+  public async getOriginalUploadMeasure(datasetId: string): Promise<ReadableStream> {
+    logger.debug(`Fetching raw file import for measure on dataset: ${datasetId}...`);
+
+    return this.fetch({
+      url: `dataset/${datasetId}/measure/lookup/raw`
+    }).then((response) => response.body as ReadableStream);
+  }
+
+  public async getOriginalUploadDimension(datasetId: string, dimensionId: string): Promise<ReadableStream> {
+    logger.debug(`Fetching raw file import for dimension: ${dimensionId}...`);
+
+    return this.fetch({
+      url: `dataset/${datasetId}/dimension/by-id/${dimensionId}/lookup/raw`
+    }).then((response) => response.body as ReadableStream);
+  }
+
+  public async getAllDatasetFiles(datasetId: string): Promise<ReadableStream> {
+    logger.debug(`Fetching zip file of assets for dataset ${datasetId}...`);
+
+    return this.fetch({
+      url: `dataset/${datasetId}/download`
     }).then((response) => response.body as ReadableStream);
   }
 

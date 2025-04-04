@@ -1047,6 +1047,9 @@
       "show_extractor": "Show Extractor",
       "metadata": "Metadata",
       "show_metadata": "Show Metadata",
+      "all_files": "All Files",
+      "files": "Files",
+      "download_files": "Download Files",
       "error": {
         "no_dimensions": "This dataset has not been completed with dimensions",
         "no_revisions": "This dataset has not been completed with revisions",
