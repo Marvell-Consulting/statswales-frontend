@@ -150,14 +150,16 @@ export const uploadDataTable = async (req: Request, res: Response) => {
       res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
       return;
     } catch (err) {
+      logger.error(err, `There was a problem uploading the file`);
       res.status(400);
       if (err instanceof ApiException) {
-        errors = [{ field: 'csv', message: { key: 'publish.upload.errors.api' } }];
+        const body = JSON.parse(err.body?.toString() || '{}') as ViewErrDTO;
+        errors = body.errors || [{ field: 'csv', message: { key: 'errors.fact_table_validation.unknown_error' } }];
       }
     }
   }
 
-  res.render('publish/upload', { revisit, supportedFormats: supportedFormats.join(', '), uploadType: false });
+  res.render('publish/upload', { revisit, supportedFormats: supportedFormats.join(', '), errors, uploadType: false });
 };
 
 export const factTablePreview = async (req: Request, res: Response, next: NextFunction) => {
