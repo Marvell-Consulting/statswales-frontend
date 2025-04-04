@@ -1,4 +1,4 @@
-# Using SW3 ‐ Roles and permissions
+# Using SW3: Roles and permissions
 
 Within your organisation, there may be one or many groups that publish datasets. Each dataset in StatsWales belongs to one specific group only.
 

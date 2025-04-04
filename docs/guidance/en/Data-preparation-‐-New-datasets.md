@@ -1,4 +1,4 @@
-# Data preparation ‐ New datasets
+# Data preparation: New datasets
 
 Datasets consist of a set of statistics and their associated metadata. The dataset is built in SW3 as a data cube from a data table and reference, or lookup, data.
 
@@ -41,7 +41,7 @@ Column headings should have meaningful names, so that you know what each column 
 
 ### Totals and averages
 
-You should include rows in your data table for any totals or averages you want to include with the dataset. The rows should contain:
+You should include rows in your data table for any totals or averages you want to include with the dataset. This includes any subtotals and grand totals. The rows should contain:
 
 - totals or averages
 - correct [references codes](#guidance-reference-data) or [date formats](#guidance-date-formatting)
@@ -123,11 +123,15 @@ Any of the year formats followed by a month code.
 
 You also need to know the type of year the dimension covers, either:
 
-- Calendar (1 January to 31 December)
-- Meteorological (1st March to 28th or 29th February)
-- Financial (1 April to 31 March)
-- Tax (6 April to 5 April)
-- Academic (1 September to 31 August)
+- calendar (1 January to 31 December)
+- meteorological (1st March to 28th or 29th February)
+- financial (1 April to 31 March)
+- tax (6 April to 5 April)
+- academic (1 September to 31 August)
+
+The system cannot currently handle rolling years. This guidance will be updated once this functionality is added.
+
+If you do not know the type of year the dimension covers, you should contact the data collector for your dataset.
 
 ##### Multiple periods in the same dataset
 
@@ -156,46 +160,46 @@ Your lookup table should be preferably in [CSV format](#guidance-file-format) an
 
 #### 2-row format (preferred)
 
-| Heading     | What the column contains                                   |
-| :---------- | :--------------------------------------------------------- |
-| refcode     | Reference codes                                            |
-| hierarchy   | Indicate if a value hierarchically relates to other values |
-| sort        | Sort order                                                 |
-| description | Description                                                |
-| lang        | Language used, either 'en' or 'cy'                         |
-| note        | Notes                                                      |
+| Heading     | What the column contains                                   | Always required                                         |
+| :---------- | :--------------------------------------------------------- | :------------------------------------------------------ |
+| refcode     | Reference codes                                            | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
+| description | Description                                                | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
+| lang        | Language used, either 'en' or 'cy'                         | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
+| hierarchy   | Indicate if a value hierarchically relates to other values | <strong class="govuk-tag govuk-tag--red">No</strong>    |
+| sort        | Sort order                                                 | <strong class="govuk-tag govuk-tag--red">No</strong>    |
+| note        | Notes                                                      | <strong class="govuk-tag govuk-tag--red">No</strong>    |
 
 Example part of lookup table for tax band code:
 
-| refcode | hierarchy | sort | description   | lang | note |
-| :------ | :-------- | :--- | :------------ | :--- | :--- |
-| A-      |           | 1    | Tax band A-   | en   |      |
-| A-      |           | 1    | Band treth A- | cy   |      |
-| A       |           | 2    | Tax band A    | en   |      |
-| A       |           | 2    | Band treth A  | cy   |      |
-| B       |           | 3    | Tax band B    | en   |      |
+| refcode | description   | lang | sort |
+| :------ | :------------ | :--- | :--- |
+| A-      | Tax band A-   | en   | 1    |
+| A-      | Band treth A- | cy   | 1    |
+| A       | Tax band A    | en   | 2    |
+| A       | Band treth A  | cy   | 2    |
+| B       | Tax band B    | en   | 3    |
 
 #### Single row format
 
-| Heading        | What the column contains                                   |
-| :------------- | :--------------------------------------------------------- |
-| refcode        | Reference codes                                            |
-| hierarchy      | Indicate if a value hierarchically relates to other values |
-| sort           | Sort order                                                 |
-| description_en | Description (English)                                      |
-| description_cy | Description (Welsh)                                        |
-| note_en        | Notes (English)                                            |
-| note_cy        | Notes (Welsh)                                              |
+| Heading        | What the column contains                                              | Always required                                         |
+| :------------- | :-------------------------------------------------------------------- | :------------------------------------------------------ |
+| refcode        | Reference codes                                                       | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
+| description_en | Description (English)                                                 | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
+| description_cy | Description (Welsh)                                                   | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
+| hierarchy      | Indicate if a value hierarchically relates to other values            | <strong class="govuk-tag govuk-tag--red">No</strong>    |
+| sort           | Sort order                                                            | <strong class="govuk-tag govuk-tag--red">No</strong>    |
+| note_en        | Notes (English)                                                       | <strong class="govuk-tag govuk-tag--red">No</strong>    |
+| note_cy        | Notes (Welsh)                                                         | <strong class="govuk-tag govuk-tag--red">No</strong>    |
 
 Example part of lookup table for tax band code:
 
-| refcode | hierarchy | sort | description_en | description_cy | note_en | note_cy |
-| :------ | :-------- | :--- | :------------- | :------------- | :------ | :------ |
-| A-      |           | 1    | Tax band A-    | Band treth A-  |         |         |
-| A       |           | 2    | Tax band A     | Band treth A   |         |         |
-| B       |           | 3    | Tax band B     | Band treth B   |         |         |
-| C       |           | 4    | Tax band C     | Band treth C   |         |         |
-| D       |           | 5    | Tax band D     | Band treth D   |         |         |
+| refcode | description_en | description_cy | sort |
+| :------ | :------------- | :------------- | :--- |
+| A-      | Tax band A-    | Band treth A-  | 1    |
+| A       | Tax band A     | Band treth A   | 2    |
+| B       | Tax band B     | Band treth B   | 3    |
+| C       | Tax band C     | Band treth C   | 4    |
+| D       | Tax band D     | Band treth D   | 5    |
 
 #### Column headings
 
@@ -207,13 +211,13 @@ Use the 'hierarchy' column to indicate whether a dimension value is hierarchical
 
 Example part of lookup table for tax bands codes with a 3-level hierarchy: 
 
-| refcode | hierarchy | sort | description_en | description_cy | note_en | note_cy |
-| :------ | :-------- | :--- | :------------- | :------------- | :------ | :------ |
-| A       |           | 14   | Tax band A     | Band treth A   |         |         |
-| A1      | A         | 15   | Tax band A1    | Band treth A1  |         |         |
-| A1a     | A1        | 16   | Tax band A1a   | Band treth A1a |         |         |
-| A1b     | A1        | 17   | Tax band A1b   | Band treth A1b |         |         |
-| A1c     | A1        | 18   | Tax band A1c   | Band treth A1c |         |         |
+| refcode | description_en | description_cy | hierarchy | sort |
+| :------ | :------------- | :------------- | :---------| :--- |
+| A       | Tax band A     | Band treth A   |           | 14   |
+| A1      | Tax band A1    | Band treth A1  | A         | 15   |
+| A1a     | Tax band A1a   | Band treth A1a | A1        | 16   |
+| A1b     | Tax band A1b   | Band treth A1b | A1        | 17   |
+| A1c     | Tax band A1c   | Band treth A1c | A1        | 18   |
 
 There is no limit to how many levels a hierarchy can have. However, a dimension value can only relate to a single value above it in the hierarchy. For example, sub-band 'A1' could not sit below both 'A' and 'A-'.
 
@@ -299,7 +303,7 @@ SW3 uses shorthand note codes, with standardised explanations, closely following
 | x                                  | Missing data             | For example, where a data value is not collected in a region |
 | z                                  | Not applicable           | For example, in tables of employment where people under 16 cannot legally be employed |
 
-Any custom explanations you feel are needed to clarify any note codes, should be provided in the [metadata section](#guidance-metadata).
+Any custom explanations you feel are needed to clarify any note codes, should be provided in the most appropriate [metadata section](#guidance-metadata). For example, if you need to explain multiple reasons why data values have been suppressed.
 
 If you need to add multiple note codes to a single data value, these should be comma separated, for example ‘p,f’.
 
@@ -352,16 +356,16 @@ The following is all the metadata you’ll need to provide.
 
 #### Title
 
-- The title that will appear with the dataset on the StatsWales website
-- Should be short, descriptive and unique
-- The system will tell you if you enter a title that is already in use by a live, published dataset
+A short, descriptive and unique name for the dataset for the StatsWales website. The system will tell you if you enter a title that is already in use by a live, published dataset.
 
 #### Summary
 
-- In short, simple sentences explain what this dataset is about and what it shows
-- Describe which dimensions have been used and, if needed, why they’ve been used
-- This should ideally not be more than 2-3 paragraphs long
-- Anything related to data collection or data quality should not be included, and be kept to their respective sections
+This explains what the dataset is about and what it shows. It should:
+
+- use short, simple sentences
+- describe which dimensions have been used and why
+- ideally be no more than 2-3 paragraphs long
+- not include anything related to data collection or data quality - this should be in the relevant section instead
 
 #### Data collection or calculation
 

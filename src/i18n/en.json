@@ -282,6 +282,7 @@
     },
     "measure_review": {
       "heading": "Check the measure table",
+      "explain": "The uploaded measure lookup table has been added to a standardised measure table. There may be columns in this measure table that were not in the uploaded measure lookup table.",
       "showing": "Showing a sample of {{rows}} of {{total}} rows.",
       "confirm": "By continuing, you confirm the measure table is correct.",
       "go_back": "Choose a different measure table",

@@ -1,4 +1,4 @@
-# Paratoi data ‐ Diweddaru setiau data 
+# Paratoi data: Diweddaru setiau data 
 
 ## Diweddaru gwerthoedd data 
 
