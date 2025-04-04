@@ -25,8 +25,3 @@ developer.get('/:datasetId/download', fetchDataset(Include.All), downloadAllData
 developer.get('/:datasetId/revision/:revisionId/datatable', fetchDataset(Include.All), downloadDataTableFromRevision);
 developer.get('/:datasetId/dimension/:dimensionId/lookup', fetchDataset(Include.All), downloadLookupFileFromDimension);
 developer.get('/:datasetId/measure/lookup', fetchDataset(Include.All), downloadLookupFileFromMeasure);
-
-/*
-/en-GB/developer/13fe4647-c0a2-469b-a159-7ac5bfece4e9
-/en-GB/developer/13fe4647-c0a2-469b-a159-7ac5bfece4e9/download
-*/
