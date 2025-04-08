@@ -1209,7 +1209,7 @@
   "admin": {
     "group": {
       "list": {
-        "heading": "User groups",
+        "heading": "Groups",
         "table": {
           "name": "Name",
           "email": "Contact",
