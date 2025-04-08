@@ -85,11 +85,19 @@
                                             <tbody class="govuk-table__body">
                                                 <tr>
                                                     <th scope="row" class="govuk-table__header"><%- t('developer.display.created_at') %></th>
-                                                    <td class="govuk-table__cell"><%= dateFormat(locals.dataset.created_at, 'd MMMM yyyy h:mm a', { locale: i18n.language }) %></td>
+                                                    <td class="govuk-table__cell">
+                                                        <%if (locals.dataset.created_at) {%>
+                                                            <%= dateFormat(locals.dataset.created_at, 'd MMMM yyyy h:mm a', { locale: i18n.language }) %>
+                                                        <% } %>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <th scope="row" class="govuk-table__header"><%- t('developer.display.live') %></th>
-                                                    <td class="govuk-table__cell"><%= dateFormat(locals.dataset.live, 'd MMMM yyyy h:mm a', { locale: i18n.language }) %></td>
+                                                    <td class="govuk-table__cell">
+                                                        <%if (locals.dataset.live) { %>
+                                                            <%= dateFormat(locals.dataset.live, 'd MMMM yyyy h:mm a', { locale: i18n.language }) %>
+                                                        <% } %>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -184,6 +192,7 @@
                                         </details>
                                     </div>
                                 </div>
+                                <% if (locals.dataset?.measure && locals.dataset?.measure.lookup_table) { %>
                                 <div class="govuk-grid-row">
                                     <div class="govuk-grid-column-one-full">
                                         <details class="govuk-details" data-module="govuk-details">
@@ -227,6 +236,7 @@
                                         </details>
                                     </div>
                                 </div>
+                                <<% } %>
                             </div>
                             <% } %>
                             <div class="govuk-tabs__panel" id="dimension">
@@ -341,7 +351,7 @@
                                         <p>
                                             <a href="<%= file.link %> %>">
                                             <img src="/assets/images/dev-icons/<%= file.file_type %>-icon.svg" alt="<%= file.type %> Icon" width="64" height="64" style="margin-bottom: 10px"><br>
-                                            <%= file.filename %> (<%= file.type %>)</a>
+                                            <%= file.filename.replaceAll('_', ' ').replaceAll('-', ' ') %> (<%= file.type %>)</a>
                                         </p>
                                     </div>
                                     <% });%>
