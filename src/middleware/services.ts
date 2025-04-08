@@ -8,6 +8,7 @@ import { PublisherApi } from '../services/publisher-api';
 import { ConsumerApi } from '../services/consumer-api';
 
 import { localeUrl } from './language-switcher';
+import { statusToColour } from '../utils/status-to-colour';
 
 const config = appConfig();
 
@@ -18,17 +19,21 @@ const dateFormat = (date: DateArg<Date> & {}, formatStr: string, options?: any):
   return format(date, formatStr, options);
 };
 
-// initialise any request-scoped services required by the app and store them on the request object for later use
-// see @types/express/index.d.ts for details
+// initialise any request-scoped services required by the app. See @types/express/index.d.ts for details
 export const initServices = (req: Request, res: Response, next: NextFunction): void => {
+  // for use in controllers (added to req)
   req.pubapi = new PublisherApi(req.language as Locale, req.cookies.jwt);
   req.conapi = new ConsumerApi(req.language as Locale);
-  req.buildUrl = localeUrl; // for controllers
-  res.locals.buildUrl = localeUrl; // for templates
-  res.locals.url = req.originalUrl; // Allows the passing through of the URL
+  req.buildUrl = localeUrl;
+
+  // for use in templates (added to res.locals)
+  res.locals.buildUrl = localeUrl;
+  res.locals.statusToColour = statusToColour;
+  res.locals.url = req.originalUrl;
   res.locals.referrer = req.get('Referrer');
   res.locals.parseISO = parseISO;
   res.locals.dateFormat = dateFormat;
   res.locals.supportEmail = config.supportEmail;
+
   next();
 };

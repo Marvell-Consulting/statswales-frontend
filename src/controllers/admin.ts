@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { uniqBy } from 'lodash';
+import { sortBy, uniqBy } from 'lodash';
 import { FieldValidationError } from 'express-validator';
 
 import { logger } from '../utils/logger';
@@ -13,7 +13,10 @@ import {
   userGroupIdValidator,
   organisationIdValidator,
   emailCyValidator,
-  emailEnValidator
+  emailEnValidator,
+  emailValidator,
+  userIdValidator,
+  actionValidator
 } from '../validators/admin';
 import { ApiException } from '../exceptions/api.exception';
 import { OrganisationDTO } from '../dtos/organisation';
@@ -22,6 +25,17 @@ import { UserGroupMetadataDTO } from '../dtos/user/user-group-metadata-dto';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { UserGroupListItemDTO } from '../dtos/user/user-group-list-item-dto';
 import { singleLangUserGroup } from '../utils/single-lang-user-group';
+import { UserDTO } from '../dtos/user/user';
+import { UserCreateDTO } from '../dtos/user/user-create-dto';
+import { UserAction } from '../enums/user-action';
+import { SingleLanguageUserGroup } from '../dtos/single-language/user-group';
+import { AvailableRoles } from '../interfaces/available-roles';
+import { Organisation } from '../interfaces/organisation';
+import { groupByOrg } from '../utils/group-by-org';
+import { GroupRole } from '../enums/group-role';
+import { RoleSelectionDTO } from '../dtos/user/role-selection-dto';
+import { getUserRoleFormValues } from '../utils/user-role-form-values';
+import { UserRoleFormValues } from '../interfaces/user-role-form-values';
 
 export const fetchUserGroup = async (req: Request, res: Response, next: NextFunction) => {
   const userGroupIdError = await hasError(userGroupIdValidator(), req);
@@ -42,6 +56,31 @@ export const fetchUserGroup = async (req: Request, res: Response, next: NextFunc
       return;
     }
     next(new NotFoundException('errors.user_group_missing'));
+    return;
+  }
+
+  next();
+};
+
+export const fetchUser = async (req: Request, res: Response, next: NextFunction) => {
+  const userIdError = await hasError(userIdValidator(), req);
+
+  if (userIdError) {
+    logger.error('Invalid or missing userId');
+    next(new NotFoundException('errors.user_missing'));
+    return;
+  }
+
+  try {
+    const user = await req.pubapi.getUser(req.params.userId);
+    res.locals.userId = user.id;
+    res.locals.user = user;
+  } catch (err: any) {
+    if (err.status === 401) {
+      next(err);
+      return;
+    }
+    next(new NotFoundException('errors.user_missing'));
     return;
   }
 
@@ -143,7 +182,7 @@ export const provideOrganisation = async (req: Request, res: Response) => {
   res.render('admin/user-group-org', { values, organisations, errors });
 };
 
-export const provideEmail = async (req: Request, res: Response) => {
+export const provideGroupEmail = async (req: Request, res: Response) => {
   const group: UserGroupDTO = res.locals.group;
   let errors: ViewError[] = [];
   let values = {
@@ -182,4 +221,170 @@ export const provideEmail = async (req: Request, res: Response) => {
   }
 
   res.render('admin/user-group-email', { values, errors });
+};
+
+export const listUsers = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const page = parseInt(req.query.page_number as string, 10) || 1;
+    const limit = parseInt(req.query.page_size as string, 10) || 10;
+    const { data }: ResultsetWithCount<UserDTO> = await req.pubapi.listUsers(page, limit);
+    res.render('admin/user-list', { users: data });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const createUser = async (req: Request, res: Response) => {
+  let errors: ViewError[] = [];
+  let values: UserCreateDTO = { email: '' };
+
+  try {
+    if (req.method === 'POST') {
+      values = req.body;
+      const validators = [emailValidator()];
+
+      errors = (await getErrors(validators, req)).map((error: FieldValidationError) => {
+        return { field: error.path, message: { key: `admin.user.create.form.${error.path}.error.${error.msg}` } };
+      });
+
+      errors = uniqBy(errors, 'field');
+      if (errors.length > 0) throw errors;
+
+      const user = await req.pubapi.createUser(values);
+      req.session.flash = ['admin.user.create.success'];
+      req.session.save();
+      res.redirect(`/admin/user/${user.id}/roles`);
+      return;
+    }
+  } catch (err) {
+    logger.error(err, 'there was a problem creating the user');
+    if (err instanceof ApiException) {
+      const error = JSON.parse(err.body as string).error;
+      if (err.status === 400 && error.includes('user_already_exists')) {
+        errors = [{ field: 'email', message: { key: 'admin.user.create.error.email_already_exists' } }];
+      } else {
+        errors = [{ field: 'api', message: { key: 'admin.user.create.error.saving' } }];
+      }
+    }
+  }
+
+  res.render('admin/user-create', { values, errors });
+};
+
+export const viewUser = async (req: Request, res: Response) => {
+  const user: UserDTO = res.locals.user;
+  // const actions = Object.values(UserAction); // uncomment once deactivate is implemented
+  const actions = [UserAction.EditRoles];
+  const action = req.body.action || '';
+  const flash = res.locals.flash;
+  let errors: ViewError[] = [];
+
+  const groups = sortBy(
+    user.groups.map((groupRole) => ({
+      ...singleLangUserGroup(groupRole.group, req.language),
+      roles: groupRole.roles
+    })),
+    'name'
+  );
+
+  if (req.method === 'POST') {
+    errors = (await getErrors(actionValidator(actions), req)).map((error: FieldValidationError) => {
+      return { field: error.path, message: { key: `admin.user.view.form.${error.path}.error.missing` } };
+    });
+
+    if (action === UserAction.EditRoles) {
+      res.redirect(req.buildUrl(`/admin/user/${user.id}/roles`, req.language));
+      return;
+    }
+
+    if (action === UserAction.Deactivate) {
+      res.redirect(req.buildUrl(`/admin/user/${user.id}/deactivate`, req.language));
+      return;
+    }
+  }
+
+  res.render('admin/user-view', { user, groups, actions, action, flash, errors });
+};
+
+export const editUserRoles = async (req: Request, res: Response) => {
+  const user: UserDTO = res.locals.user;
+  const userName = user.full_name || user.email;
+  let errors: ViewError[] = [];
+  let availableRoles: AvailableRoles = { global: [], group: [] };
+  let availableGroups: SingleLanguageUserGroup[] = [];
+  let availableOrganisations: Organisation[] = [];
+  let values: UserRoleFormValues = getUserRoleFormValues(user);
+
+  try {
+    [availableGroups, availableRoles] = await Promise.all([
+      req.pubapi.getAllUserGroups().then((groups) => groups.map((group) => singleLangUserGroup(group, req.language))),
+      req.pubapi.getAvailableUserRoles()
+    ]);
+
+    availableOrganisations = groupByOrg(availableGroups);
+
+    if (req.method === 'POST') {
+      const selected: RoleSelectionDTO[] = [];
+
+      values = {
+        ...req.body,
+        global: Array.isArray(req.body.global) ? req.body.global : [req.body.global],
+        groups: Array.isArray(req.body.groups) ? req.body.groups : [req.body.groups]
+      };
+
+      if (values.global) {
+        selected.push({ type: 'global', roles: values.global.filter(Boolean) });
+      }
+
+      values.groups?.filter(Boolean).forEach((groupId: string) => {
+        if (!availableGroups.find((group) => group.id === groupId)) {
+          errors.push({ field: 'groups', message: { key: 'admin.user.roles.form.groups.error.invalid' } });
+          return;
+        }
+
+        const roles = (
+          Array.isArray(values[`group_roles_${groupId}`])
+            ? values[`group_roles_${groupId}`]
+            : [values[`group_roles_${groupId}`]]
+        ) as GroupRole[];
+
+        if (roles && roles.length > 0) {
+          selected.push({ type: 'group', roles, groupId });
+        }
+      });
+
+      selected
+        .filter((selection) => selection.type === 'group')
+        .forEach((selection) => {
+          const groupName = availableGroups.find((group) => group.id === selection.groupId)?.name;
+          const groupRoles = selection.roles.filter(Boolean) as GroupRole[];
+          const invalid = groupRoles.some((role: GroupRole) => !availableRoles.group.includes(role));
+          const missing = groupRoles.length === 0;
+          if (invalid || missing) {
+            errors.push({
+              field: 'roles',
+              message: {
+                key: 'admin.user.roles.form.roles.error.invalid',
+                params: { userName, groupName }
+              }
+            });
+          }
+        });
+
+      if (errors.length > 0) throw errors;
+
+      await req.pubapi.updateUserRoles(user.id, selected);
+      req.session.flash = ['admin.user.roles.success'];
+      req.session.save();
+      res.redirect(req.buildUrl(`/admin/user/${user.id}`, req.language));
+      return;
+    }
+  } catch (err) {
+    if (err instanceof ApiException) {
+      logger.error(err, 'there was a problem saving the user roles');
+      errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+    }
+  }
+
+  res.render('admin/user-roles', { user, userName, availableOrganisations, availableRoles, values, errors });
 };

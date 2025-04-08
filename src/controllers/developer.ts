@@ -26,13 +26,8 @@ export const listAllDatasets = async (req: Request, res: Response, next: NextFun
     const results: ResultsetWithCount<DatasetListItemDTO> = await req.pubapi.getDatasetList(page, limit);
     const { data, count } = results;
     const pagination = getPaginationProps(page, limit, count);
-    let flash: string[] = [];
-    if (req.session.flash) {
-      flash = req.session.flash;
-      req.session.flash = undefined;
-      req.session.save();
-    }
-    res.render('developer/list', { data, ...pagination, statusToColour, flash: flash.length > 0 ? flash : undefined });
+    const flash = res.locals.flash;
+    res.render('developer/list', { data, ...pagination, statusToColour, flash });
   } catch (err) {
     next(err);
   }

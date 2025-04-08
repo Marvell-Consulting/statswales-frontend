@@ -38,7 +38,6 @@ import { SourceAssignmentDTO } from '../dtos/source-assignment-dto';
 import { UnknownException } from '../exceptions/unknown.exception';
 import { TaskListState } from '../dtos/task-list-state';
 import { NotFoundException } from '../exceptions/not-found.exception';
-import { statusToColour } from '../utils/status-to-colour';
 import { singleLangDataset, singleLangRevision } from '../utils/single-lang-dataset';
 import { Designation } from '../enums/designation';
 import { DurationUnit } from '../enums/duration-unit';
@@ -373,7 +372,6 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
       taskList,
       revision,
       dimensions,
-      statusToColour,
       datasetStatus,
       publishingStatus
     });
@@ -412,7 +410,6 @@ export const deleteDraftDataset = async (req: Request, res: Response) => {
   res.render('publish/delete-draft', {
     datasetTitle,
     datasetStatus,
-    statusToColour,
     errors: errors.length > 0 ? errors : undefined,
     publishingStatus
   });
@@ -471,13 +468,12 @@ export const cubePreview = async (req: Request, res: Response) => {
       errors,
       datasetStatus,
       publishingStatus,
-      statusToColour,
       datasetTitle
     });
     return;
   }
 
-  res.render('publish/preview-failure', { datasetStatus, publishingStatus, statusToColour, datasetTitle });
+  res.render('publish/preview-failure', { datasetStatus, publishingStatus, datasetTitle });
 };
 
 export const downloadDataset = async (req: Request, res: Response, next: NextFunction) => {
@@ -2494,7 +2490,6 @@ export const overview = async (req: Request, res: Response) => {
     justScheduled,
     datasetStatus,
     publishingStatus,
-    statusToColour,
     errors
   });
 };

@@ -6,6 +6,10 @@
   "yes": "Yes",
   "no": "No",
   "toc": "Contents",
+  "user_roles": {
+    "editor": "Editor",
+    "approver": "Approver"
+  },
   "buttons": {
     "continue": "Continue",
     "back": "Back",
@@ -45,7 +49,8 @@
       "logout": "Sign out",
       "login": "Sign in",
       "developer": "Developer",
-      "admin": "Groups"
+      "groups": "Groups",
+      "users": "Users"
     }
   },
   "footer": {
@@ -1289,6 +1294,109 @@
           }
         }
       }
+    },
+    "user": {
+      "list": {
+        "heading": "Users",
+        "table": {
+          "name": "Name / Email",
+          "groups": "Groups",
+          "status": "Status"
+        },
+        "buttons": {
+          "add": "Add user"
+        }
+      },
+      "create": {
+        "heading": "What is the user's email address?",
+        "form": {
+          "email": {
+            "label": "Email address",
+            "error": {
+              "missing": "Enter the user's email address",
+              "invalid": "Enter a valid email address"
+            }
+          }
+        },
+        "buttons": {
+          "create": "Add user",
+          "continue": "Continue"
+        },
+        "success": "User created successfully",
+        "error": {
+          "saving": "There was a problem saving the user",
+          "email_already_exists": "A user with this email address already exists"
+        }
+      },
+      "view": {
+        "heading": "What do you want to do?",
+        "details": {
+          "status": "User status",
+          "email": "Email address",
+          "login": "Last login",
+          "service_admin": "Service Admin"
+        },
+        "login_never": "Never",
+        "groups": {
+          "heading": "Groups",
+          "empty": "No assigned groups"
+        },
+        "form": {
+          "action": {
+            "options": {
+              "edit_roles": {
+                "label": "View or change roles and groups"
+              },
+              "deactivate": {
+                "label": "Deactivate user"
+              }
+            },
+            "error": {
+              "missing": "Select what you want to do with this user"
+            }
+          }
+        },
+        "buttons": {
+          "continue": "Continue"
+        }
+      },
+      "roles": {
+        "heading": "Which roles does {{userName}} have?",
+        "service": {
+          "heading": "StatsWales"
+        },
+        "form": {
+          "groups": {
+            "error": {
+              "invalid": "Select a group"
+            }
+          },
+          "roles": {
+            "options": {
+              "service_admin": {
+                "label": "Service administrator"
+              },
+              "editor": {
+                "label": "Editor"
+              },
+              "approver": {
+                "label": "Approver"
+              }
+            },
+            "error": {
+              "invalid": "Select which roles {{userName}} has for {{groupName}}"
+            }
+          }
+        },
+        "success": "Roles updated successfully"
+      },
+      "badge": {
+        "status": {
+          "active": "Active",
+          "inactive": "Deactivated"
+        }
+      },
+      "success": "Roles updated successfully"
     }
   },
   "consumer": {

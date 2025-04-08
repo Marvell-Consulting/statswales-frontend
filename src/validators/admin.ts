@@ -1,6 +1,7 @@
 import { body, param } from 'express-validator';
 
 export const userGroupIdValidator = () => param('userGroupId').trim().notEmpty().isUUID(4);
+export const userIdValidator = () => param('userId').trim().notEmpty().isUUID(4);
 
 export const nameEnValidator = () =>
   body('name_en')
@@ -33,3 +34,8 @@ export const emailEnValidator = () =>
 
 export const emailCyValidator = () =>
   body('email_cy').trim().notEmpty().withMessage('missing').bail().isEmail().withMessage('invalid');
+
+export const emailValidator = () =>
+  body('email').trim().notEmpty().withMessage('missing').bail().isEmail().withMessage('invalid');
+
+export const actionValidator = (actions: string[]) => body('action').trim().isIn(actions);

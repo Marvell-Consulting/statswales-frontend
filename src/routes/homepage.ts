@@ -1,11 +1,13 @@
 import { NextFunction, Request, Response, Router } from 'express';
 
+import { flashMessages } from '../middleware/flash';
 import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
-import { statusToColour } from '../utils/status-to-colour';
 import { getPaginationProps } from '../utils/pagination';
 
 export const homepage = Router();
+
+homepage.use(flashMessages);
 
 homepage.use((req: Request, res: Response, next: NextFunction) => {
   res.locals.activePage = 'home';
@@ -19,13 +21,8 @@ homepage.get('/', async (req: Request, res: Response, next: NextFunction) => {
     const results: ResultsetWithCount<DatasetListItemDTO> = await req.pubapi.getDatasetList(page, limit);
     const { data, count } = results;
     const pagination = getPaginationProps(page, limit, count);
-    let flash: string[] = [];
-    if (req.session.flash) {
-      flash = req.session.flash;
-      req.session.flash = undefined;
-      req.session.save();
-    }
-    res.render('homepage', { data, ...pagination, statusToColour, flash: flash.length > 0 ? flash : undefined });
+    const flash = res.locals.flash;
+    res.render('homepage', { data, ...pagination, flash });
   } catch (err) {
     next(err);
   }

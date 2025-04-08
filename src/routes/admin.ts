@@ -5,17 +5,25 @@ import {
   listUserGroups,
   provideGroupName,
   provideOrganisation,
-  provideEmail,
+  provideGroupEmail,
   fetchUserGroup,
-  viewGroup
+  fetchUser,
+  viewGroup,
+  listUsers,
+  createUser,
+  editUserRoles,
+  viewUser
 } from '../controllers/admin';
+import { flashMessages } from '../middleware/flash';
 
 export const admin = Router();
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-admin.use((req: Request, res: Response, next: NextFunction) => {
-  res.locals.activePage = 'admin';
+admin.use(flashMessages);
+
+admin.use('/group', (req: Request, res: Response, next: NextFunction) => {
+  res.locals.activePage = 'groups';
   next();
 });
 
@@ -32,5 +40,21 @@ admin.post('/group/:userGroupId/name', fetchUserGroup, upload.none(), provideGro
 admin.get('/group/:userGroupId/organisation', fetchUserGroup, provideOrganisation);
 admin.post('/group/:userGroupId/organisation', fetchUserGroup, upload.none(), provideOrganisation);
 
-admin.get('/group/:userGroupId/email', fetchUserGroup, provideEmail);
-admin.post('/group/:userGroupId/email', fetchUserGroup, upload.none(), provideEmail);
+admin.get('/group/:userGroupId/email', fetchUserGroup, provideGroupEmail);
+admin.post('/group/:userGroupId/email', fetchUserGroup, upload.none(), provideGroupEmail);
+
+admin.use('/user', (req: Request, res: Response, next: NextFunction) => {
+  res.locals.activePage = 'users';
+  next();
+});
+
+admin.get('/user', listUsers);
+
+admin.get('/user/create', createUser);
+admin.post('/user/create', upload.none(), createUser);
+
+admin.get('/user/:userId', fetchUser, viewUser);
+admin.post('/user/:userId', fetchUser, upload.none(), viewUser);
+
+admin.get('/user/:userId/roles', fetchUser, editUserRoles);
+admin.post('/user/:userId/roles', fetchUser, upload.none(), editUserRoles);

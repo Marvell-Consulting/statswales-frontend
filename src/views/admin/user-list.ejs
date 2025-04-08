@@ -1,0 +1,40 @@
+<%- include("../partials/header"); %>
+
+<div class="govuk-width-container app-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+        <%- include("../partials/flash-messages"); %>
+
+        <h1 class="govuk-heading-xl"><%= t('admin.user.list.heading') %></h1>
+
+        <a href="<%= buildUrl(`/admin/user/create`, i18n.language) %>" class="govuk-button"><%= t('admin.user.list.buttons.add') %></a>
+
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-full">
+            <% if (locals?.users && locals?.users.length > 0) {%>
+              <table class="govuk-table">
+                <thead class="govuk-table__head">
+                  <tr class="govuk-table__row">
+                    <th class="govuk-table__header"><%= t('admin.user.list.table.name') %></th>
+                    <th class="govuk-table__header"><%= t('admin.user.list.table.groups') %></th>
+                    <th class="govuk-table__header"><%= t('admin.user.list.table.status') %></th>
+                  </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                  <% locals?.users.forEach(function(user) { %>
+                    <tr class="govuk-table__row">
+                      <td class="govuk-table__cell"><a href="<%= buildUrl(`/admin/user/${user.id}`, i18n.language) %>" class="govuk-link"><%= user.full_name || user.email %></a></td>
+                      <td class="govuk-table__cell"><%= user.groups?.length || 0 %></td>
+                      <td class="govuk-table__cell">
+                        <strong class="govuk-tag govuk-tag--<%= statusToColour(user.status) %>"><%= t(`admin.user.badge.status.${user.status}`) %></strong>
+                      </td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            <% } %>
+          </div>
+        </div>
+    </main>
+</div>
+
+<%- include("../partials/footer"); %>

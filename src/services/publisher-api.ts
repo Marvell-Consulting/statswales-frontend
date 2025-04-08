@@ -31,6 +31,10 @@ import { UserGroupDTO } from '../dtos/user/user-group';
 import { UserGroupMetadataDTO } from '../dtos/user/user-group-metadata-dto';
 import { UserGroupListItemDTO } from '../dtos/user/user-group-list-item-dto';
 import { FileImportDto } from '../dtos/file-import';
+import { UserDTO } from '../dtos/user/user';
+import { UserCreateDTO } from '../dtos/user/user-create-dto';
+import { AvailableRoles } from '../interfaces/available-roles';
+import { RoleSelectionDTO } from '../dtos/user/role-selection-dto';
 
 const config = appConfig();
 
@@ -567,9 +571,14 @@ export class PublisherApi {
     logger.debug(`Fetching user group list...`);
     const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
 
-    return this.fetch({ url: `admin/group?${qs}` }).then(
+    return this.fetch({ url: `admin/group/list?${qs}` }).then(
       (response) => response.json() as unknown as ResultsetWithCount<UserGroupListItemDTO>
     );
+  }
+
+  public async getAllUserGroups(): Promise<UserGroupDTO[]> {
+    logger.debug(`Fetching all user groups...`);
+    return this.fetch({ url: `admin/group` }).then((response) => response.json() as unknown as UserGroupDTO[]);
   }
 
   public async getUserGroup(groupId: string): Promise<UserGroupDTO> {
@@ -588,6 +597,39 @@ export class PublisherApi {
     logger.debug(`Updating user group`);
     return this.fetch({ url: `admin/group/${group.id}`, method: HttpMethod.Patch, json: group }).then(
       (response) => response.json() as unknown as UserGroupDTO
+    );
+  }
+
+  public async listUsers(page = 1, limit = 20): Promise<ResultsetWithCount<UserDTO>> {
+    logger.debug(`Fetching user list...`);
+    const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
+
+    return this.fetch({ url: `admin/user?${qs}` }).then(
+      (response) => response.json() as unknown as ResultsetWithCount<UserDTO>
+    );
+  }
+
+  public async createUser(userCreate: UserCreateDTO): Promise<UserDTO> {
+    logger.debug(`Creating new user`);
+    return this.fetch({ url: `admin/user`, method: HttpMethod.Post, json: userCreate }).then(
+      (response) => response.json() as unknown as UserDTO
+    );
+  }
+
+  public async getUser(userId: string): Promise<UserDTO> {
+    logger.debug(`Fetching user...`);
+    return this.fetch({ url: `admin/user/${userId}` }).then((response) => response.json() as unknown as UserDTO);
+  }
+
+  public async getAvailableUserRoles(): Promise<AvailableRoles> {
+    logger.debug(`Fetching available user roles...`);
+    return this.fetch({ url: `admin/role` }).then((response) => response.json() as unknown as AvailableRoles);
+  }
+
+  public async updateUserRoles(userId: string, selectedRoles: RoleSelectionDTO[]): Promise<UserDTO> {
+    logger.debug(`Updating user roles`);
+    return this.fetch({ url: `admin/user/${userId}/role`, method: HttpMethod.Patch, json: selectedRoles }).then(
+      (response) => response.json() as unknown as UserDTO
     );
   }
 }
