@@ -96,8 +96,9 @@ export const listUserGroups = async (req: Request, res: Response, next: NextFunc
   try {
     const page = parseInt(req.query.page_number as string, 10) || 1;
     const limit = parseInt(req.query.page_size as string, 10) || 10;
+    const flash = res.locals.flash;
     const { data }: ResultsetWithCount<UserGroupListItemDTO> = await req.pubapi.listUserGroups(page, limit);
-    res.render('admin/user-group-list', { groups: data });
+    res.render('admin/user-group-list', { groups: data, flash });
   } catch (err) {
     next(err);
   }

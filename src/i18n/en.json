@@ -1297,7 +1297,8 @@
               "invalid": "Enter a valid email for the group in Welsh"
             }
           }
-        }
+        },
+        "success": "Group created successfully"
       }
     },
     "user": {
