@@ -5,6 +5,8 @@
 
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-two-thirds">
+            <%- include("../partials/flash-messages"); %>
+
             <h1 class="govuk-heading-xl"><%= t('admin.user.roles.heading', { userName }) %></h1>
 
             <%- include("../partials/error-handler"); %>

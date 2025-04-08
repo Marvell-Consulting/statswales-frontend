@@ -1322,6 +1322,7 @@
           "create": "Add user",
           "continue": "Continue"
         },
+        "success": "User created successfully",
         "error": {
           "saving": "There was a problem saving the user",
           "email_already_exists": "A user with this email address already exists"

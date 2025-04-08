@@ -2,6 +2,8 @@
 
 <div class="govuk-width-container app-width-container">
     <main class="govuk-main-wrapper" id="main-content" role="main">
+        <%- include("../partials/flash-messages"); %>
+
         <h1 class="govuk-heading-xl"><%= t('admin.user.list.heading') %></h1>
 
         <a href="<%= buildUrl(`/admin/user/create`, i18n.language) %>" class="govuk-button"><%= t('admin.user.list.buttons.add') %></a>
