@@ -22,7 +22,7 @@ homepage.get('/', async (req: Request, res: Response, next: NextFunction) => {
     const { data, count } = results;
     const pagination = getPaginationProps(page, limit, count);
     const flash = res.locals.flash;
-    res.render('homepage', { data, ...pagination, flash: flash.length > 0 ? flash : undefined });
+    res.render('homepage', { data, ...pagination, flash });
   } catch (err) {
     next(err);
   }

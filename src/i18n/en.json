@@ -1385,7 +1385,7 @@
             }
           }
         },
-        "success": "User roles updated successfully"
+        "success": "Roles updated successfully"
       },
       "badge": {
         "status": {

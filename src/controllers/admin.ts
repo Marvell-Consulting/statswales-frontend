@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { uniqBy } from 'lodash';
+import { sortBy, uniqBy } from 'lodash';
 import { FieldValidationError } from 'express-validator';
 
 import { logger } from '../utils/logger';
@@ -250,10 +250,10 @@ export const createUser = async (req: Request, res: Response) => {
       errors = uniqBy(errors, 'field');
       if (errors.length > 0) throw errors;
 
-      await req.pubapi.createUser(values);
+      const user = await req.pubapi.createUser(values);
       req.session.flash = ['admin.user.create.success'];
       req.session.save();
-      res.redirect(`/admin/user`);
+      res.redirect(`/admin/user/${user.id}/roles`);
       return;
     }
   } catch (err) {
@@ -273,15 +273,19 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const viewUser = async (req: Request, res: Response) => {
   const user: UserDTO = res.locals.user;
-  const actions = Object.values(UserAction);
+  // const actions = Object.values(UserAction); // uncomment once deactivate is implemented
+  const actions = [UserAction.EditRoles];
   const action = req.body.action || '';
   const flash = res.locals.flash;
   let errors: ViewError[] = [];
 
-  const groups = user.groups.map((groupRole) => ({
-    ...singleLangUserGroup(groupRole.group, req.language),
-    roles: groupRole.roles
-  }));
+  const groups = sortBy(
+    user.groups.map((groupRole) => ({
+      ...singleLangUserGroup(groupRole.group, req.language),
+      roles: groupRole.roles
+    })),
+    'name'
+  );
 
   if (req.method === 'POST') {
     errors = (await getErrors(actionValidator(actions), req)).map((error: FieldValidationError) => {
@@ -321,7 +325,6 @@ export const editUserRoles = async (req: Request, res: Response) => {
 
     if (req.method === 'POST') {
       const selected: RoleSelectionDTO[] = [];
-      let allRoles: string[] = [];
 
       values = {
         ...req.body,
@@ -331,7 +334,6 @@ export const editUserRoles = async (req: Request, res: Response) => {
 
       if (values.global) {
         selected.push({ type: 'global', roles: values.global.filter(Boolean) });
-        allRoles = allRoles.concat(values.global);
       }
 
       values.groups?.filter(Boolean).forEach((groupId: string) => {
@@ -346,18 +348,19 @@ export const editUserRoles = async (req: Request, res: Response) => {
             : [values[`group_roles_${groupId}`]]
         ) as GroupRole[];
 
-        if (roles) {
-          selected.push({ type: 'group', roles: roles.filter(Boolean), groupId });
-          allRoles = allRoles.concat(roles);
+        if (roles && roles.length > 0) {
+          selected.push({ type: 'group', roles, groupId });
         }
       });
 
       selected
         .filter((selection) => selection.type === 'group')
         .forEach((selection) => {
-          const groupRoles = selection.roles as GroupRole[];
           const groupName = availableGroups.find((group) => group.id === selection.groupId)?.name;
-          if (groupRoles.some((role: GroupRole) => !availableRoles.group.includes(role))) {
+          const groupRoles = selection.roles.filter(Boolean) as GroupRole[];
+          const invalid = groupRoles.some((role: GroupRole) => !availableRoles.group.includes(role));
+          const missing = groupRoles.length === 0;
+          if (invalid || missing) {
             errors.push({
               field: 'roles',
               message: {
