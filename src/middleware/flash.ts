@@ -10,3 +10,12 @@ export const flashErrors = (req: Request, res: Response, next: NextFunction) => 
   }
   next();
 };
+
+export const flashMessages = (req: Request, res: Response, next: NextFunction) => {
+  if (req.session.flash) {
+    logger.debug('Message found in session, saving to locals for view and clearing');
+    res.locals.flash = req.session.flash;
+    delete req.session.flash;
+  }
+  next();
+};

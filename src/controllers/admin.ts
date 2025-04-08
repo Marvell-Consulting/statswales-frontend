@@ -32,6 +32,10 @@ import { SingleLanguageUserGroup } from '../dtos/single-language/user-group';
 import { AvailableRoles } from '../interfaces/available-roles';
 import { Organisation } from '../interfaces/organisation';
 import { groupByOrg } from '../utils/group-by-org';
+import { GroupRole } from '../enums/group-role';
+import { RoleSelectionDTO } from '../dtos/user/role-selection-dto';
+import { getUserRoleFormValues } from '../utils/user-role-form-values';
+import { UserRoleFormValues } from '../interfaces/user-role-form-values';
 
 export const fetchUserGroup = async (req: Request, res: Response, next: NextFunction) => {
   const userGroupIdError = await hasError(userGroupIdValidator(), req);
@@ -271,7 +275,13 @@ export const viewUser = async (req: Request, res: Response) => {
   const user: UserDTO = res.locals.user;
   const actions = Object.values(UserAction);
   const action = req.body.action || '';
+  const flash = res.locals.flash;
   let errors: ViewError[] = [];
+
+  const groups = user.groups.map((groupRole) => ({
+    ...singleLangUserGroup(groupRole.group, req.language),
+    roles: groupRole.roles
+  }));
 
   if (req.method === 'POST') {
     errors = (await getErrors(actionValidator(actions), req)).map((error: FieldValidationError) => {
@@ -289,37 +299,89 @@ export const viewUser = async (req: Request, res: Response) => {
     }
   }
 
-  res.render('admin/user-view', { user, actions, action, errors });
+  res.render('admin/user-view', { user, groups, actions, action, flash, errors });
 };
 
 export const editUserRoles = async (req: Request, res: Response) => {
   const user: UserDTO = res.locals.user;
+  const userName = user.full_name || user.email;
   let errors: ViewError[] = [];
   let availableRoles: AvailableRoles = { global: [], group: [] };
   let availableGroups: SingleLanguageUserGroup[] = [];
   let availableOrganisations: Organisation[] = [];
-  let values = {};
+  let values: UserRoleFormValues = getUserRoleFormValues(user);
 
   try {
     [availableGroups, availableRoles] = await Promise.all([
       req.pubapi.getAllUserGroups().then((groups) => groups.map((group) => singleLangUserGroup(group, req.language))),
-      req.pubapi.getAvailableRoles()
+      req.pubapi.getAvailableUserRoles()
     ]);
 
     availableOrganisations = groupByOrg(availableGroups);
 
     if (req.method === 'POST') {
-      values = req.body;
-      console.log({ values });
+      const selected: RoleSelectionDTO[] = [];
+      let allRoles: string[] = [];
+
+      values = {
+        ...req.body,
+        global: Array.isArray(req.body.global) ? req.body.global : [req.body.global],
+        groups: Array.isArray(req.body.groups) ? req.body.groups : [req.body.groups]
+      };
+
+      if (values.global) {
+        selected.push({ type: 'global', roles: values.global.filter(Boolean) });
+        allRoles = allRoles.concat(values.global);
+      }
+
+      values.groups?.filter(Boolean).forEach((groupId: string) => {
+        if (!availableGroups.find((group) => group.id === groupId)) {
+          errors.push({ field: 'groups', message: { key: 'admin.user.roles.form.groups.error.invalid' } });
+          return;
+        }
+
+        const roles = (
+          Array.isArray(values[`group_roles_${groupId}`])
+            ? values[`group_roles_${groupId}`]
+            : [values[`group_roles_${groupId}`]]
+        ) as GroupRole[];
+
+        if (roles) {
+          selected.push({ type: 'group', roles: roles.filter(Boolean), groupId });
+          allRoles = allRoles.concat(roles);
+        }
+      });
+
+      selected
+        .filter((selection) => selection.type === 'group')
+        .forEach((selection) => {
+          const groupRoles = selection.roles as GroupRole[];
+          const groupName = availableGroups.find((group) => group.id === selection.groupId)?.name;
+          if (groupRoles.some((role: GroupRole) => !availableRoles.group.includes(role))) {
+            errors.push({
+              field: 'roles',
+              message: {
+                key: 'admin.user.roles.form.roles.error.invalid',
+                params: { userName, groupName }
+              }
+            });
+          }
+        });
+
+      if (errors.length > 0) throw errors;
+
+      await req.pubapi.updateUserRoles(user.id, selected);
+      req.session.flash = ['admin.user.roles.success'];
+      req.session.save();
+      res.redirect(req.buildUrl(`/admin/user/${user.id}`, req.language));
+      return;
     }
   } catch (err) {
-    logger.error(err, 'there was a problem');
     if (err instanceof ApiException) {
+      logger.error(err, 'there was a problem saving the user roles');
       errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
     }
   }
 
-  console.log({ availableGroups, availableOrganisations, availableRoles });
-
-  res.render('admin/user-roles', { user, availableOrganisations, availableRoles, values, errors });
+  res.render('admin/user-roles', { user, userName, availableOrganisations, availableRoles, values, errors });
 };

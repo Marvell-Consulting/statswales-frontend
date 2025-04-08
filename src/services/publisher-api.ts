@@ -34,6 +34,7 @@ import { FileImportDto } from '../dtos/file-import';
 import { UserDTO } from '../dtos/user/user';
 import { UserCreateDTO } from '../dtos/user/user-create-dto';
 import { AvailableRoles } from '../interfaces/available-roles';
+import { RoleSelectionDTO } from '../dtos/user/role-selection-dto';
 
 const config = appConfig();
 
@@ -620,8 +621,15 @@ export class PublisherApi {
     return this.fetch({ url: `admin/user/${userId}` }).then((response) => response.json() as unknown as UserDTO);
   }
 
-  public async getAvailableRoles(): Promise<AvailableRoles> {
+  public async getAvailableUserRoles(): Promise<AvailableRoles> {
     logger.debug(`Fetching available user roles...`);
     return this.fetch({ url: `admin/role` }).then((response) => response.json() as unknown as AvailableRoles);
+  }
+
+  public async updateUserRoles(userId: string, selectedRoles: RoleSelectionDTO[]): Promise<UserDTO> {
+    logger.debug(`Updating user roles`);
+    return this.fetch({ url: `admin/user/${userId}/role`, method: HttpMethod.Patch, json: selectedRoles }).then(
+      (response) => response.json() as unknown as UserDTO
+    );
   }
 }

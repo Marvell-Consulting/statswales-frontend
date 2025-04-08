@@ -5,6 +5,8 @@
 
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-two-thirds">
+            <%- include("../partials/flash-messages"); %>
+
             <h1 class="govuk-heading-xl"><%= user.full_name || user.email %></h1>
 
             <dl class="govuk-summary-list">
@@ -18,14 +20,18 @@
                 <dt class="govuk-summary-list__key"><%= t('admin.user.view.details.email') %></dt>
                 <dd class="govuk-summary-list__value"><%= user.email %></dd>
               </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key"><%= t('admin.user.view.details.service_admin') %></dt>
+                <dd class="govuk-summary-list__value"><%= user.global_roles.includes('service_admin') ? t('yes') : t('no') %></dd>
+              </div>
             </dl>
 
             <h2 class="govuk-heading-m"><%= t('admin.user.view.groups.heading') %></h2>
 
-            <% if (user.groups && user.groups.length > 0) { %>
+            <% if (locals.groups && locals.groups.length > 0) { %>
               <ul class="govuk-list govuk-list--bullet">
-                <% user.groups.forEach(group => { %>
-                  <li class="govuk-list--bullet"><%= group.name %></li>
+                <% locals.groups.forEach(group => { %>
+                  <li><%= group.name %> (<%= group.roles?.map(r => t(`user_roles.${r}`)).join(', ') %>)</li>
                 <% }) %>
               </ul>
             <% } else { %>

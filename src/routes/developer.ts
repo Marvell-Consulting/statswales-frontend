@@ -2,6 +2,7 @@ import { DatasetInclude as Include } from '../enums/dataset-include';
 import { Router, Request, Response, NextFunction } from 'express';
 
 import { fetchDataset } from '../middleware/fetch-dataset';
+import { flashMessages } from '../middleware/flash';
 import {
   displayDatasetPreview,
   downloadAllDatasetFiles,
@@ -12,6 +13,8 @@ import {
 } from '../controllers/developer';
 
 export const developer = Router();
+
+developer.use(flashMessages);
 
 developer.use((req: Request, res: Response, next: NextFunction) => {
   res.locals.activePage = 'developer';

@@ -6,6 +6,10 @@
   "yes": "Yes",
   "no": "No",
   "toc": "Contents",
+  "user_roles": {
+    "editor": "Editor",
+    "approver": "Approver"
+  },
   "buttons": {
     "continue": "Continue",
     "back": "Back",
@@ -1327,7 +1331,8 @@
         "heading": "What do you want to do?",
         "details": {
           "status": "User status",
-          "email": "Email address"
+          "email": "Email address",
+          "service_admin": "Service Admin"
         },
         "groups": {
           "heading": "Groups",
@@ -1353,11 +1358,16 @@
         }
       },
       "roles": {
-        "heading": "Which roles does {{user}} have?",
+        "heading": "Which roles does {{userName}} have?",
         "service": {
           "heading": "StatsWales"
         },
         "form": {
+          "groups": {
+            "error": {
+              "invalid": "Select a group"
+            }
+          },
           "roles": {
             "options": {
               "service_admin": {
@@ -1371,17 +1381,19 @@
               }
             },
             "error": {
-              "missing": "Select at least one role for this user"
+              "invalid": "Select which roles {{userName}} has for {{groupName}}"
             }
           }
-        }
+        },
+        "success": "User roles updated successfully"
       },
       "badge": {
         "status": {
           "active": "Active",
           "inactive": "Deactivated"
         }
-      }
+      },
+      "success": "Roles updated successfully"
     }
   },
   "consumer": {
