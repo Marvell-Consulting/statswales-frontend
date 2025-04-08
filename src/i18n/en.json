@@ -1231,7 +1231,12 @@
         },
         "users": {
           "heading": "Users",
-          "none": "No users assigned to this group"
+          "none": "No users assigned to this group",
+          "table": {
+            "name": "Name / Email",
+            "roles": "Roles",
+            "status": "Status"
+          }
         },
         "datasets": {
           "heading": "Datasets",

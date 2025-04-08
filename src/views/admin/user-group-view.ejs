@@ -23,6 +23,30 @@
             <% if (!locals.group?.users || locals.group.users.length === 0) { %>
               <p><%= t('admin.group.view.users.none') %></p>
             <% } else { %>
+              <table class="govuk-table">
+                <thead class="govuk-table__head">
+                  <tr class="govuk-table__row">
+                    <th class="govuk-table__header" scope="col"><%= t('admin.group.view.users.table.name') %></th>
+                    <th class="govuk-table__header" scope="col"><%= t('admin.group.view.users.table.roles') %></th>
+                    <th class="govuk-table__header" scope="col"><%= t('admin.group.view.users.table.status') %></th>
+                  </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                  <% locals.group.users.forEach(function(userWithRoles) { %>
+                    <% var user = userWithRoles.user %>
+                    <% var roles = userWithRoles.roles %>
+                    <tr class="govuk-table__row">
+                      <td class="govuk-table__cell">
+                        <a href="<%= buildUrl(`/admin/user/${user.id}`, i18n.language) %>" class="govuk-link"><%= user.full_name || user.email %></a>
+                      </td>
+                      <td class="govuk-table__cell"><%= roles?.map(r => t(`user_roles.${r}`)).join(', ') %></td>
+                      <td class="govuk-table__cell">
+                        <strong class="govuk-tag govuk-tag--<%= statusToColour(user.status) %>"><%= t(`admin.user.badge.status.${user.status}`) %></strong>
+                      </td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
             <% } %>
           </div>
         </div>
@@ -30,7 +54,7 @@
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-two-thirds">
             <h2><%= t('admin.group.view.datasets.heading') %></h2>
-            <% if (!locals.group?.users || locals.group.users.length === 0) { %>
+            <% if (!locals.group?.datasets || locals.group.users.length === 0) { %>
               <p><%= t('admin.group.view.datasets.none') %></p>
             <% } else { %>
             <% } %>
