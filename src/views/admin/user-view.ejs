@@ -21,6 +21,10 @@
                 <dd class="govuk-summary-list__value"><%= user.email %></dd>
               </div>
               <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key"><%= t('admin.user.view.details.login') %></dt>
+                <dd class="govuk-summary-list__value"><%= user.last_login_at ? dateFormat(user.last_login_at, 'd MMMM yyyy h:mm a') : t('admin.user.view.login_never') %></dd>
+              </div>
+              <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key"><%= t('admin.user.view.details.service_admin') %></dt>
                 <dd class="govuk-summary-list__value"><%= user.global_roles.includes('service_admin') ? t('yes') : t('no') %></dd>
               </div>
@@ -31,7 +35,10 @@
             <% if (locals.groups && locals.groups.length > 0) { %>
               <ul class="govuk-list govuk-list--bullet">
                 <% locals.groups.forEach(group => { %>
-                  <li><%= group.name %> (<%= group.roles?.map(r => t(`user_roles.${r}`)).join(', ') %>)</li>
+                  <li>
+                    <a href="<%= buildUrl(`/admin/group/${group.id}`, i18n.language) %>" class="govuk-link"><%= group.name %></a>
+                    (<%= group.roles?.map(r => t(`user_roles.${r}`)).join(', ') %>)
+                  </li>
                 <% }) %>
               </ul>
             <% } else { %>

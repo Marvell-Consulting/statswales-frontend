@@ -1333,8 +1333,10 @@
         "details": {
           "status": "User status",
           "email": "Email address",
+          "login": "Last login",
           "service_admin": "Service Admin"
         },
+        "login_never": "Never",
         "groups": {
           "heading": "Groups",
           "empty": "No assigned groups"

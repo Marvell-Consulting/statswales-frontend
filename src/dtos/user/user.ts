@@ -15,4 +15,5 @@ export interface UserDTO {
   status: UserStatus;
   created_at: Date;
   updated_at: Date;
+  last_login_at: Date;
 }
