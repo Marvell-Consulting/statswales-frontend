@@ -7,13 +7,18 @@
           <div class="govuk-grid-column-two-thirds">
             <h1 class="govuk-heading-xl"><%= locals.group?.name %></h1>
 
+            <dl class="govuk-summary-list">
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key"><%= t('admin.group.view.organisation.heading') %></dt>
+                <dd class="govuk-summary-list__value"><%= locals.group?.organisation || t('admin.group.view.organisation.not_set') %></dd>
+              </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key"><%= t('admin.group.view.email.heading') %></dt>
+                <dd class="govuk-summary-list__value"><%= locals.group?.email || t('admin.group.view.email.not_set') %></dd>
+              </div>
+            </dl>
+
             <a href="<%= buildUrl(`/admin/group/${locals.group.id}/name`, i18n.language) %>" class="govuk-link"><%= t('admin.group.view.buttons.edit') %></a>
-
-            <h3><%= t('admin.group.view.organisation.heading') %></h3>
-            <p><%= locals.group?.organisation || t('admin.group.view.organisation.not_set') %></p>
-
-            <h3><%= t('admin.group.view.email.heading') %></h3>
-            <p><%= locals.group?.email || t('admin.group.view.email.not_set') %></p>
           </div>
         </div>
 
