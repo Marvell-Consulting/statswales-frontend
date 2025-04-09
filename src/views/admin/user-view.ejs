@@ -33,40 +33,36 @@
             <h2 class="govuk-heading-l"><%= t('admin.user.view.groups.heading') %></h2>
 
             <% if (locals.groups && locals.groups.length > 0) { %>
-              <ul class="govuk-list govuk-list--bullet">
-                <% locals.groups.forEach(group => { %>
-                  <li>
-                    <a href="<%= buildUrl(`/admin/group/${group.id}`, i18n.language) %>" class="govuk-link"><%= group.name %></a>
-                    (<%= group.roles?.map(r => t(`user_roles.${r}`)).join(', ') %>)
-                  </li>
-                <% }) %>
-              </ul>
+              <table class="govuk-table">
+                <thead class="govuk-table__head">
+                  <tr class="govuk-table__row">
+                    <th class="govuk-table__header" scope="col"><%= t('admin.user.view.groups.table.name') %></th>
+                    <th class="govuk-table__header" scope="col"><%= t('admin.user.view.groups.table.roles') %></th>
+                  </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                  <% locals.groups.forEach(group => { %>
+                    <tr class="govuk-table__row">
+                      <td class="govuk-table__cell"><a href="<%= buildUrl(`/admin/group/${group.id}`, i18n.language) %>"><%= group.name %></a></td>
+                      <td class="govuk-table__cell"><%= group.roles?.map(r => t(`user_roles.${r}`)).join(', ') %></td>
+                    </tr>
+                  <% }) %>
+                </tbody>
+              </table>
             <% } else { %>
               <p class="govuk-body"><%= t('admin.user.view.groups.empty') %></p>
             <% } %>
 
-            <form enctype="multipart/form-data" method="post">
-              <h2 class="govuk-heading-l"><%= t('admin.user.view.heading') %></h2>
+            <h2 class="govuk-heading-l"><%= t('admin.user.view.actions.heading') %></h2>
 
-              <%- include("../partials/error-handler"); %>
+            <div class="actions">
+              <ul class="govuk-list">
+                <% locals.actions?.forEach(action => { %>
+                  <li><a class="govuk-link govuk-link--no-underline" href="<%= action.url %>"><%= t(`admin.user.view.actions.${action.key}.label`) %></a></li>
+                <% }) %>
+              </ul>
+            </div>
 
-              <div class="govuk-form-group <%= locals.errors?.find(e => e.field === 'action') ? 'govuk-form-group--error' : '' %>">
-                <fieldset class="govuk-fieldset" aria-describedby="action">
-                    <div class="govuk-radios" data-module="govuk-radios">
-                        <% locals.actions?.forEach(action => { %>
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="<%= `action_${action}` %>" name="action" type="radio" value="<%= action %>" <%= locals.action === action ? 'checked' : '' %> />
-                                <label class="govuk-label govuk-radios__label" for="<%= `action_${action}` %>"><%= t(`admin.user.view.form.action.options.${action}.label`) %></label>
-                            </div>
-                        <% }) %>
-                    </div>
-                </fieldset>
-              </div>
-
-              <button type="submit" class="govuk-button" data-module="govuk-button">
-                  <%= t(`admin.user.view.buttons.continue`) %>
-              </button>
-            </form>
           </div>
         </div>
 

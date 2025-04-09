@@ -2,9 +2,11 @@
 <div class="govuk-notification-banner govuk-notification-banner--success" role="region" data-module="govuk-notification-banner">
     <div class="govuk-notification-banner__content">
         <% locals.flash?.forEach(function(msg) { %>
-            <p class="govuk-notification-banner__heading">
-                <%= t(msg) %>
-            </p>
+            <% if (typeof msg == 'string') { %>
+                <p class="govuk-notification-banner__heading"><%= t(msg) %></p>
+            <% } else if (msg != null && typeof msg == 'object') { %>
+                <p class="govuk-notification-banner__heading"><%= t(msg.key, msg.params) %></p>
+            <% } %>
         <% }); %>
     </div>
 </div>

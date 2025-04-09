@@ -15,8 +15,7 @@ import {
   emailCyValidator,
   emailEnValidator,
   emailValidator,
-  userIdValidator,
-  actionValidator
+  userIdValidator
 } from '../validators/admin';
 import { ApiException } from '../exceptions/api.exception';
 import { OrganisationDTO } from '../dtos/organisation';
@@ -36,6 +35,7 @@ import { GroupRole } from '../enums/group-role';
 import { RoleSelectionDTO } from '../dtos/user/role-selection-dto';
 import { getUserRoleFormValues } from '../utils/user-role-form-values';
 import { UserRoleFormValues } from '../interfaces/user-role-form-values';
+import { differenceInSeconds } from 'date-fns';
 
 export const fetchUserGroup = async (req: Request, res: Response, next: NextFunction) => {
   const userGroupIdError = await hasError(userGroupIdValidator(), req);
@@ -255,8 +255,6 @@ export const createUser = async (req: Request, res: Response) => {
       if (errors.length > 0) throw errors;
 
       const user = await req.pubapi.createUser(values);
-      req.session.flash = ['admin.user.create.success'];
-      req.session.save();
       res.redirect(`/admin/user/${user.id}/roles`);
       return;
     }
@@ -277,11 +275,14 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const viewUser = async (req: Request, res: Response) => {
   const user: UserDTO = res.locals.user;
-  // const actions = Object.values(UserAction); // uncomment once deactivate is implemented
-  const actions = [UserAction.EditRoles];
+
+  const actions = [
+    { key: UserAction.EditRoles, url: req.buildUrl(`/admin/user/${user.id}/roles`, req.language) }
+    // { key: UserAction.Deactivate, url: req.buildUrl(`/admin/user/${user.id}/deactivate`, req.language) }
+  ];
+
   const action = req.body.action || '';
   const flash = res.locals.flash;
-  let errors: ViewError[] = [];
 
   const groups = sortBy(
     user.groups.map((groupRole) => ({
@@ -291,23 +292,7 @@ export const viewUser = async (req: Request, res: Response) => {
     'name'
   );
 
-  if (req.method === 'POST') {
-    errors = (await getErrors(actionValidator(actions), req)).map((error: FieldValidationError) => {
-      return { field: error.path, message: { key: `admin.user.view.form.${error.path}.error.missing` } };
-    });
-
-    if (action === UserAction.EditRoles) {
-      res.redirect(req.buildUrl(`/admin/user/${user.id}/roles`, req.language));
-      return;
-    }
-
-    if (action === UserAction.Deactivate) {
-      res.redirect(req.buildUrl(`/admin/user/${user.id}/deactivate`, req.language));
-      return;
-    }
-  }
-
-  res.render('admin/user-view', { user, groups, actions, action, flash, errors });
+  res.render('admin/user-view', { user, groups, actions, action, flash });
 };
 
 export const editUserRoles = async (req: Request, res: Response) => {
@@ -318,6 +303,9 @@ export const editUserRoles = async (req: Request, res: Response) => {
   let availableGroups: SingleLanguageUserGroup[] = [];
   let availableOrganisations: Organisation[] = [];
   let values: UserRoleFormValues = getUserRoleFormValues(user);
+
+  // user is already created in the db, but we want the success message to be relevant to the create/update journey
+  const action = differenceInSeconds(new Date(), user.created_at) < 60 ? 'create' : 'update';
 
   try {
     [availableGroups, availableRoles] = await Promise.all([
@@ -378,9 +366,9 @@ export const editUserRoles = async (req: Request, res: Response) => {
       if (errors.length > 0) throw errors;
 
       await req.pubapi.updateUserRoles(user.id, selected);
-      req.session.flash = ['admin.user.roles.success'];
+      req.session.flash = [{ key: `admin.user.roles.success.${action}`, params: { userName } }];
       req.session.save();
-      res.redirect(req.buildUrl(`/admin/user/${user.id}`, req.language));
+      res.redirect(req.buildUrl(`/admin/user`, req.language));
       return;
     }
   } catch (err) {
