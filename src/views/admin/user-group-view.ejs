@@ -7,7 +7,7 @@
           <div class="govuk-grid-column-two-thirds">
             <h1 class="govuk-heading-xl"><%= locals.group?.name %></h1>
 
-            <h2><%= t('admin.group.view.details.heading') %></h2>
+            <h2 class="govuk-heading-l"><%= t('admin.group.view.details.heading') %></h2>
             <dl class="govuk-summary-list">
               <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key"><%= t('admin.group.view.details.organisation.heading') %></dt>
@@ -23,9 +23,9 @@
           </div>
         </div>
 
-        <div class="govuk-grid-row">
+        <div class="govuk-grid-row govuk-!-margin-top-6">
           <div class="govuk-grid-column-two-thirds">
-            <h2><%= t('admin.group.view.users.heading') %></h2>
+            <h2 class="govuk-heading-l"><%= t('admin.group.view.users.heading') %></h2>
             <% if (!locals.group?.users || locals.group.users.length === 0) { %>
               <p><%= t('admin.group.view.users.none') %></p>
             <% } else { %>
@@ -59,7 +59,7 @@
 
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-two-thirds">
-            <h2><%= t('admin.group.view.datasets.heading') %></h2>
+            <h2 class="govuk-heading-l"><%= t('admin.group.view.datasets.heading') %></h2>
             <% if (!locals.group?.datasets || locals.group.users.length === 0) { %>
               <p><%= t('admin.group.view.datasets.none') %></p>
             <% } else { %>
