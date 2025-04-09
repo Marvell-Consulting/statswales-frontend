@@ -1397,7 +1397,7 @@
         },
         "success": {
           "create": "{{userName}} added",
-          "update": "{{userName}}'s roles updated"
+          "update": "{{userName}} updated"
         }
       },
       "badge": {
