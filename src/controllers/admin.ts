@@ -36,6 +36,7 @@ import { GroupRole } from '../enums/group-role';
 import { RoleSelectionDTO } from '../dtos/user/role-selection-dto';
 import { getUserRoleFormValues } from '../utils/user-role-form-values';
 import { UserRoleFormValues } from '../interfaces/user-role-form-values';
+import { differenceInSeconds } from 'date-fns';
 
 export const fetchUserGroup = async (req: Request, res: Response, next: NextFunction) => {
   const userGroupIdError = await hasError(userGroupIdValidator(), req);
@@ -255,8 +256,6 @@ export const createUser = async (req: Request, res: Response) => {
       if (errors.length > 0) throw errors;
 
       const user = await req.pubapi.createUser(values);
-      req.session.flash = ['admin.user.create.success'];
-      req.session.save();
       res.redirect(`/admin/user/${user.id}/roles`);
       return;
     }
@@ -319,6 +318,9 @@ export const editUserRoles = async (req: Request, res: Response) => {
   let availableOrganisations: Organisation[] = [];
   let values: UserRoleFormValues = getUserRoleFormValues(user);
 
+  // user is already created in the db, but we want the success message to be relevant to the create/update journey
+  const action = differenceInSeconds(new Date(), user.created_at) < 60 ? 'create' : 'update';
+
   try {
     [availableGroups, availableRoles] = await Promise.all([
       req.pubapi.getAllUserGroups().then((groups) => groups.map((group) => singleLangUserGroup(group, req.language))),
@@ -378,9 +380,9 @@ export const editUserRoles = async (req: Request, res: Response) => {
       if (errors.length > 0) throw errors;
 
       await req.pubapi.updateUserRoles(user.id, selected);
-      req.session.flash = ['admin.user.roles.success'];
+      req.session.flash = [{ key: `admin.user.roles.success.${action}`, params: { userName } }];
       req.session.save();
-      res.redirect(req.buildUrl(`/admin/user/${user.id}`, req.language));
+      res.redirect(req.buildUrl(`/admin/user`, req.language));
       return;
     }
   } catch (err) {

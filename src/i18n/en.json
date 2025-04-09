@@ -1400,7 +1400,10 @@
             }
           }
         },
-        "success": "Roles updated successfully"
+        "success": {
+          "create": "{{userName}} added",
+          "update": "Roles updated successfully"
+        }
       },
       "badge": {
         "status": {
