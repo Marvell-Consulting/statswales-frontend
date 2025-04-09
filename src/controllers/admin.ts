@@ -186,10 +186,13 @@ export const provideOrganisation = async (req: Request, res: Response) => {
 export const provideGroupEmail = async (req: Request, res: Response) => {
   const group: UserGroupDTO = res.locals.group;
   let errors: ViewError[] = [];
+
   let values = {
     email_en: group?.metadata?.find((m) => m.language === Locale.EnglishGb)?.email || '',
     email_cy: group?.metadata?.find((m) => m.language === Locale.WelshGb)?.email || ''
   };
+
+  const action = values.email_en ? 'update' : 'create'; // if email already exists, this is an update
 
   try {
     if (req.method === 'POST') {
@@ -209,7 +212,7 @@ export const provideGroupEmail = async (req: Request, res: Response) => {
       ];
 
       await req.pubapi.updateUserGroup({ id: group.id, metadata });
-      req.session.flash = ['admin.group.email.success'];
+      req.session.flash = [`admin.group.email.success.${action}`];
       req.session.save();
       res.redirect(`/admin/group`);
       return;

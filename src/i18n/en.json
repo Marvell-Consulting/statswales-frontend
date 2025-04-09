@@ -1221,13 +1221,16 @@
         }
       },
       "view": {
-        "organisation": {
-          "heading": "Organisation",
-          "not_set": "Not set"
-        },
-        "email": {
-          "heading": "Contact email",
-          "not_set": "Not set"
+        "details": {
+          "heading": "Group details",
+          "organisation": {
+            "heading": "Organisation",
+            "not_set": "Not set"
+          },
+          "email": {
+            "heading": "Contact email",
+            "not_set": "Not set"
+          }
         },
         "users": {
           "heading": "Users",
@@ -1298,7 +1301,10 @@
             }
           }
         },
-        "success": "Group created successfully"
+        "success": {
+          "create": "Group created successfully",
+          "update": "Group updated successfully"
+        }
       }
     },
     "user": {
