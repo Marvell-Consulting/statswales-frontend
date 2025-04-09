@@ -1236,7 +1236,7 @@
           "heading": "Users",
           "none": "No users assigned to this group",
           "table": {
-            "name": "Name / Email",
+            "name": "Name or email address",
             "roles": "Roles",
             "status": "Status"
           }
@@ -1311,7 +1311,7 @@
       "list": {
         "heading": "Users",
         "table": {
-          "name": "Name / Email",
+          "name": "Name or email address",
           "groups": "Groups",
           "status": "Status"
         },
@@ -1343,15 +1343,19 @@
       "view": {
         "heading": "What do you want to do?",
         "details": {
-          "status": "User status",
+          "status": "Status",
           "email": "Email address",
           "login": "Last login",
-          "service_admin": "Service Admin"
+          "service_admin": "Service administrator"
         },
         "login_never": "Never",
         "groups": {
           "heading": "Groups",
-          "empty": "No assigned groups"
+          "empty": "No assigned groups",
+          "table": {
+            "name": "Group name",
+            "roles": "Roles"
+          }
         },
         "form": {
           "action": {
