@@ -12,7 +12,8 @@ import {
   listUsers,
   createUser,
   editUserRoles,
-  viewUser
+  viewUser,
+  userStatus
 } from '../controllers/admin';
 import { flashMessages } from '../middleware/flash';
 
@@ -58,3 +59,6 @@ admin.post('/user/:userId', fetchUser, upload.none(), viewUser);
 
 admin.get('/user/:userId/roles', fetchUser, editUserRoles);
 admin.post('/user/:userId/roles', fetchUser, upload.none(), editUserRoles);
+
+admin.get('/user/:userId/status', fetchUser, userStatus);
+admin.post('/user/:userId/status', fetchUser, upload.none(), userStatus);

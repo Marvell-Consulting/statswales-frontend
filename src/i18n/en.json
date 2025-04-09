@@ -1364,6 +1364,9 @@
           },
           "deactivate": {
             "label": "Deactivate user"
+          },
+          "reactivate": {
+            "label": "Reactivate user"
           }
         }
       },
@@ -1398,6 +1401,22 @@
         "success": {
           "create": "{{userName}} added",
           "update": "{{userName}} updated"
+        }
+      },
+      "deactivate": {
+        "heading": "Are you sure you want to deactivate {{userName}}?",
+        "description": "This user will not be able to sign in or edit any datasets.",
+        "success": "{{userName}} deactivated",
+        "error": {
+          "saving": "User could not be deactivated. Try again later."
+        }
+      },
+      "reactivate": {
+        "heading": "Are you sure you want to reactivate {{userName}}?",
+        "description": "This user will be able to sign in and resume their assigned roles.",
+        "success": "{{userName}} reactivated",
+        "error": {
+          "saving": "User could not be reactivated. Try again later."
         }
       },
       "badge": {

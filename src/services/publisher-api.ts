@@ -35,6 +35,7 @@ import { UserDTO } from '../dtos/user/user';
 import { UserCreateDTO } from '../dtos/user/user-create-dto';
 import { AvailableRoles } from '../interfaces/available-roles';
 import { RoleSelectionDTO } from '../dtos/user/role-selection-dto';
+import { UserStatus } from '../enums/user-status';
 
 const config = appConfig();
 
@@ -629,6 +630,14 @@ export class PublisherApi {
   public async updateUserRoles(userId: string, selectedRoles: RoleSelectionDTO[]): Promise<UserDTO> {
     logger.debug(`Updating user roles`);
     return this.fetch({ url: `admin/user/${userId}/role`, method: HttpMethod.Patch, json: selectedRoles }).then(
+      (response) => response.json() as unknown as UserDTO
+    );
+  }
+
+  public async updateUserStatus(userId: string, status: UserStatus): Promise<UserDTO> {
+    logger.debug(`Updating user status to ${status}...`);
+    const json = { status };
+    return this.fetch({ url: `admin/user/${userId}/status`, method: HttpMethod.Patch, json }).then(
       (response) => response.json() as unknown as UserDTO
     );
   }
