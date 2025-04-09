@@ -14,6 +14,7 @@
 
             <form enctype="multipart/form-data" method="post">
               <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
+              <a href="<%= buildUrl(`/admin/user`, i18n.language) %>" class="govuk-button govuk-button--secondary" data-module="govuk-button"><%= t('buttons.cancel') %></a>
             </form>
 
           </div>

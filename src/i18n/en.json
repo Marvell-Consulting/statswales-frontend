@@ -13,6 +13,7 @@
   "buttons": {
     "continue": "Continue",
     "back": "Back",
+    "cancel": "Cancel",
     "upload_csv": "Continue",
     "preview": "Preview (opens in new tab)"
   },
