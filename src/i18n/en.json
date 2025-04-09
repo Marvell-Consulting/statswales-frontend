@@ -1209,7 +1209,7 @@
   "admin": {
     "group": {
       "list": {
-        "heading": "User groups",
+        "heading": "Groups",
         "table": {
           "name": "Name",
           "email": "Contact",
@@ -1221,13 +1221,16 @@
         }
       },
       "view": {
-        "organisation": {
-          "heading": "Organisation",
-          "not_set": "Not set"
-        },
-        "email": {
-          "heading": "Contact email",
-          "not_set": "Not set"
+        "details": {
+          "heading": "Group details",
+          "organisation": {
+            "heading": "Organisation",
+            "not_set": "Not set"
+          },
+          "email": {
+            "heading": "Contact email",
+            "not_set": "Not set"
+          }
         },
         "users": {
           "heading": "Users",
@@ -1297,6 +1300,10 @@
               "invalid": "Enter a valid email for the group in Welsh"
             }
           }
+        },
+        "success": {
+          "create": "Group created successfully",
+          "update": "Group updated successfully"
         }
       }
     },

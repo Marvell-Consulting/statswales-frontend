@@ -457,7 +457,7 @@
   font-weight: normal;
 }
 .wg .govuk-notification-banner__content {
-  background-color: #fff;
+  background-color: transparent;
   padding: 20px 20px;
 }
 .wg .govuk-notification-banner--success h2 {

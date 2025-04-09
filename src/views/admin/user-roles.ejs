@@ -14,7 +14,7 @@
             <form enctype="multipart/form-data" method="post">
               <div class="govuk-form-group">
                 <fieldset class="govuk-fieldset">
-                  <h2 class="govuk-heading-m"><%= t('admin.user.roles.service.heading') %></h2>
+                  <h2 class="govuk-heading-l"><%= t('admin.user.roles.service.heading') %></h2>
 
                   <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
                     <% for (let role of locals.availableRoles.global) { %>
@@ -28,7 +28,7 @@
 
                 <% for (let organisation of locals.availableOrganisations) { %>
                   <fieldset class="govuk-fieldset">
-                    <h2 class="govuk-heading-m"><%= organisation.name %></h2>
+                    <h2 class="govuk-heading-l"><%= organisation.name %></h2>
 
                     <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
                       <% for (let group of organisation.groups) { %>
