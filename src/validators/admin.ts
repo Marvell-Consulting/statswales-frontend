@@ -37,5 +37,3 @@ export const emailCyValidator = () =>
 
 export const emailValidator = () =>
   body('email').trim().notEmpty().withMessage('missing').bail().isEmail().withMessage('invalid');
-
-export const actionValidator = (actions: string[]) => body('action').trim().isIn(actions);

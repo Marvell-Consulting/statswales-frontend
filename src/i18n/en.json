@@ -1255,13 +1255,13 @@
           "name_en": {
             "label": "Enter the name in English",
             "error": {
-              "missing": "Enter a name for the group in English"
+              "missing": "Enter the name of the group in English"
             }
           },
           "name_cy": {
             "label": "Enter the name in Welsh",
             "error": {
-              "missing": "Enter a name for the group in Welsh"
+              "missing": "Enter the name of the group in Welsh"
             }
           }
         },
@@ -1289,14 +1289,14 @@
           "email_en": {
             "label": "Enter the email in English",
             "error": {
-              "missing": "Enter an email for the group in English",
+              "missing": "Enter the public email address for datasets in the group in English",
               "invalid": "Enter a valid email for the group in English"
             }
           },
           "email_cy": {
             "label": "Enter the email in Welsh",
             "error": {
-              "missing": "Enter an email for the group in Welsh",
+              "missing": "Enter the public email address for datasets in the group in Welsh",
               "invalid": "Enter a valid email for the group in Welsh"
             }
           }
@@ -1357,23 +1357,14 @@
             "roles": "Roles"
           }
         },
-        "form": {
-          "action": {
-            "options": {
-              "edit_roles": {
-                "label": "View or change roles and groups"
-              },
-              "deactivate": {
-                "label": "Deactivate user"
-              }
-            },
-            "error": {
-              "missing": "Select what you want to do with this user"
-            }
+        "actions": {
+          "heading": "Actions",
+          "edit_roles": {
+            "label": "View or change roles and groups"
+          },
+          "deactivate": {
+            "label": "Deactivate user"
           }
-        },
-        "buttons": {
-          "continue": "Continue"
         }
       },
       "roles": {
@@ -1406,7 +1397,7 @@
         },
         "success": {
           "create": "{{userName}} added",
-          "update": "Roles updated successfully"
+          "update": "{{userName}}'s roles updated"
         }
       },
       "badge": {
@@ -1414,8 +1405,7 @@
           "active": "Active",
           "inactive": "Deactivated"
         }
-      },
-      "success": "Roles updated successfully"
+      }
     }
   },
   "consumer": {

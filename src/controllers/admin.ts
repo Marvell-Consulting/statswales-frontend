@@ -15,8 +15,7 @@ import {
   emailCyValidator,
   emailEnValidator,
   emailValidator,
-  userIdValidator,
-  actionValidator
+  userIdValidator
 } from '../validators/admin';
 import { ApiException } from '../exceptions/api.exception';
 import { OrganisationDTO } from '../dtos/organisation';
@@ -276,11 +275,14 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const viewUser = async (req: Request, res: Response) => {
   const user: UserDTO = res.locals.user;
-  // const actions = Object.values(UserAction); // uncomment once deactivate is implemented
-  const actions = [UserAction.EditRoles];
+
+  const actions = [
+    { key: UserAction.EditRoles, url: req.buildUrl(`/admin/user/${user.id}/roles`, req.language) }
+    // { key: UserAction.Deactivate, url: req.buildUrl(`/admin/user/${user.id}/deactivate`, req.language) }
+  ];
+
   const action = req.body.action || '';
   const flash = res.locals.flash;
-  let errors: ViewError[] = [];
 
   const groups = sortBy(
     user.groups.map((groupRole) => ({
@@ -290,23 +292,7 @@ export const viewUser = async (req: Request, res: Response) => {
     'name'
   );
 
-  if (req.method === 'POST') {
-    errors = (await getErrors(actionValidator(actions), req)).map((error: FieldValidationError) => {
-      return { field: error.path, message: { key: `admin.user.view.form.${error.path}.error.missing` } };
-    });
-
-    if (action === UserAction.EditRoles) {
-      res.redirect(req.buildUrl(`/admin/user/${user.id}/roles`, req.language));
-      return;
-    }
-
-    if (action === UserAction.Deactivate) {
-      res.redirect(req.buildUrl(`/admin/user/${user.id}/deactivate`, req.language));
-      return;
-    }
-  }
-
-  res.render('admin/user-view', { user, groups, actions, action, flash, errors });
+  res.render('admin/user-view', { user, groups, actions, action, flash });
 };
 
 export const editUserRoles = async (req: Request, res: Response) => {
