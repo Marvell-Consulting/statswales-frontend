@@ -36,6 +36,7 @@ import { RoleSelectionDTO } from '../dtos/user/role-selection-dto';
 import { getUserRoleFormValues } from '../utils/user-role-form-values';
 import { UserRoleFormValues } from '../interfaces/user-role-form-values';
 import { differenceInSeconds } from 'date-fns';
+import { UserStatus } from '../enums/user-status';
 
 export const fetchUserGroup = async (req: Request, res: Response, next: NextFunction) => {
   const userGroupIdError = await hasError(userGroupIdValidator(), req);
@@ -277,8 +278,11 @@ export const viewUser = async (req: Request, res: Response) => {
   const user: UserDTO = res.locals.user;
 
   const actions = [
-    { key: UserAction.EditRoles, url: req.buildUrl(`/admin/user/${user.id}/roles`, req.language) }
-    // { key: UserAction.Deactivate, url: req.buildUrl(`/admin/user/${user.id}/deactivate`, req.language) }
+    { key: UserAction.EditRoles, url: req.buildUrl(`/admin/user/${user.id}/roles`, req.language) },
+    {
+      key: user.status === UserStatus.Active ? UserAction.Deactivate : UserAction.Reactivate,
+      url: req.buildUrl(`/admin/user/${user.id}/status`, req.language)
+    }
   ];
 
   const action = req.body.action || '';
@@ -379,4 +383,33 @@ export const editUserRoles = async (req: Request, res: Response) => {
   }
 
   res.render('admin/user-roles', { user, userName, availableOrganisations, availableRoles, values, errors });
+};
+
+export const userStatus = async (req: Request, res: Response) => {
+  const user: UserDTO = res.locals.user;
+  const userName = user.full_name || user.email;
+  let errors: ViewError[] = [];
+
+  const action = user.status === UserStatus.Active ? UserAction.Deactivate : UserAction.Reactivate;
+
+  try {
+    if (req.method === 'POST') {
+      if (action === UserAction.Deactivate) {
+        await req.pubapi.updateUserStatus(user.id, UserStatus.Inactive);
+      } else {
+        await req.pubapi.updateUserStatus(user.id, UserStatus.Active);
+      }
+      req.session.flash = [{ key: `admin.user.${action}.success`, params: { userName } }];
+      req.session.save();
+      res.redirect(req.buildUrl(`/admin/user`, req.language));
+      return;
+    }
+  } catch (err) {
+    if (err instanceof ApiException) {
+      logger.error(err, 'there was a problem updating the user status');
+      errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+    }
+  }
+
+  res.render('admin/user-status', { user, userName, action, errors });
 };

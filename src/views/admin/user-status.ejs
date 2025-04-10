@@ -1,0 +1,26 @@
+<%- include("../partials/header"); %>
+
+  <div class="govuk-width-container app-width-container">
+      <main class="govuk-main-wrapper" id="main-content" role="main">
+
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-two-thirds">
+            <%- include("../partials/flash-messages"); %>
+            <%- include("../partials/error-handler"); %>
+
+            <h1 class="govuk-heading-xl"><%= t(`admin.user.${action}.heading`, { userName }) %></h1>
+
+            <p class="govuk-body"><%= t(`admin.user.${action}.description`) %></p>
+
+            <form enctype="multipart/form-data" method="post">
+              <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
+              <a href="<%= buildUrl(`/admin/user`, i18n.language) %>" class="govuk-button govuk-button--secondary" data-module="govuk-button"><%= t('buttons.cancel') %></a>
+            </form>
+
+          </div>
+        </div>
+
+      </main>
+  </div>
+
+<%- include("../partials/footer"); %>
