@@ -1,6 +1,6 @@
 services:
-  redis:
-    image: redis:latest
+  valkey:
+    image: valkey/valkey:latest
     ports:
       - "6380:6379"
 
@@ -27,7 +27,7 @@ services:
     ports:
       - "3001:3001"
     depends_on:
-      - redis
+      - valkey
       - db
       - blobstorage
     environment:
