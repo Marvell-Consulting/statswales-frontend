@@ -44,6 +44,8 @@
             <% } else { %>
                 <h1 class="govuk-heading-xl"><%= t('translations.import.heading') %></h1>
 
+                <%- include("../../partials/translations-preview-table", { translations: existingTranslations, isImport: true }); %>
+
                 <div class="govuk-inset-text">
                     <%= t('translations.import.note') %>
                 </div>
