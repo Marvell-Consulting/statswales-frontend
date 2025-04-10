@@ -40,6 +40,7 @@
     "product_name": "StatsWales V3.0",
     "beta": "Beta",
     "feedback": "You’re viewing a new version of StatsWales. Get support at <a class=\"govuk-link\" href=\"mailto:{{support_email}}\">{{support_email}}</a>.",
+    "logo": "StatsWales logo",
     "navigation": {
       "home": "Home",
       "menu": "Menu",
