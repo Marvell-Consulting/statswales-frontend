@@ -9,7 +9,13 @@ const config: Config = {
   coverageDirectory: './coverage',
   collectCoverage: true,
   coverageReporters: ['cobertura', 'lcov', 'html', 'text'],
-  coveragePathIgnorePatterns: ['/node_modules/', '/tests/', '/tests-e2e/', '/src/controllers/datalake.ts', '/src/config/envs/'],
+  coveragePathIgnorePatterns: [
+    '/node_modules/',
+    '/tests/',
+    '/tests-e2e/',
+    '/src/controllers/datalake.ts',
+    '/src/config/envs/'
+  ],
   setupFiles: ['<rootDir>/tests/.jest/set-env-vars.ts']
 };
 

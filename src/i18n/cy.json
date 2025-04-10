@@ -13,15 +13,15 @@
   },
   "badge": {
     "dataset_status": {
-        "new": "Set ddata newydd",
-        "live": "Set ddata fyw"
+      "new": "Set ddata newydd",
+      "live": "Set ddata fyw"
     },
     "publishing_status": {
-        "published": "Cyhoeddwyd",
-        "incomplete": "Anghyflawn",
-        "scheduled": "Wedi'i hamserlennu",
-        "update_incomplete": "Diweddariad yn Anghyflawn",
-        "update_scheduled": "Diweddariad wedi'i Amserlennu"
+      "published": "Cyhoeddwyd",
+      "incomplete": "Anghyflawn",
+      "scheduled": "Wedi'i hamserlennu",
+      "update_incomplete": "Diweddariad yn Anghyflawn",
+      "update_scheduled": "Diweddariad wedi'i Amserlennu"
     }
   },
   "pagination": {

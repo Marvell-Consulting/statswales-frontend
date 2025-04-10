@@ -70,13 +70,13 @@ Depending on the reason for removal, it may be necessary to add an explanation t
 
 Example rows of update data table for council tax bands, removing data for council tax band A- before 2001/02:
 
-| AreaCode  | YearCode | BandCode | NoteCodes | Measure or data type | Data   |
-| :-------- | :------- | :------- | :-------- | :------------------- | :----- |
-| W06000001 | 1996/97  | A-       | z,r       |                      |        |
-| W06000001 | 1997/98  | A-       | z,r       |                      |        |
-| W06000001 | 1998/99  | A-       | z,r       |                      |        |
-| W06000001 | 1999/00  | A-       | z,r       |                      |        |
-| W06000001 | 2000/01  | A-       | z,r       |                      |        |
+| AreaCode  | YearCode | BandCode | NoteCodes | Measure or data type | Data |
+| :-------- | :------- | :------- | :-------- | :------------------- | :--- |
+| W06000001 | 1996/97  | A-       | z,r       |                      |      |
+| W06000001 | 1997/98  | A-       | z,r       |                      |      |
+| W06000001 | 1998/99  | A-       | z,r       |                      |      |
+| W06000001 | 1999/00  | A-       | z,r       |                      |      |
+| W06000001 | 2000/01  | A-       | z,r       |                      |      |
 
 _Please note this example is for demonstration purposes only and is not a genuine update._
 

@@ -4,9 +4,9 @@
 
 ## Requirements
 
--   Node 20+
--   An Instance of the StatsWales backend Service
--   Docker or Podman (if you want to use Redis for sessions)
+- Node 20+
+- An Instance of the StatsWales backend Service
+- Docker or Podman (if you want to use Redis for sessions)
 
 ### Windows
 
@@ -84,23 +84,27 @@ npm run test:e2e -- --ui
 
 There a several routes for checking service availability and container health. A successful healthcheck will return a
 200 response with the following body:
+
 ```
 { message: 'success' }
 ```
 
 An endpoint to report if the service has started up:
+
 ```
 GET /heathcheck
 ```
 
 An endpoint that reports if the service is ready to receive requests. It checks for a connection to the backend api, and
 will respond with a 500 if the backend is unreachable or returns an error:
+
 ```
 GET /healthcheck/ready
 ```
 
 An endpoint that reports if the service is still in a healthy state. This is currently an alias for the
 `/healthcheck/ready` route above.
+
 ```
 GET /healthcheck/live
 ```

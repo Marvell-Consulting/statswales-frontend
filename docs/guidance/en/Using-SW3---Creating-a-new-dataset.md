@@ -12,17 +12,19 @@ From your home screen, click ‘Create new dataset’. Using your [prepared data
    - measure or data types
    - note codes
 
-You'll then be taken to your dataset tasklist. It will list all the dimensions you indicated, except note codes as these are standardised. 
+You'll then be taken to your dataset tasklist. It will list all the dimensions you indicated, except note codes as these are standardised.
 
 Clicking on each dimension will let you select what kind of data the dimension contains. This will be either:
+
 - dates - you'll then answer questions about the date formatting used
 - geography - the system will then add the standardised reference data
-- text, [where no lookup table is needed](Data-preparation-‐-New-datasets#guidance-dimensions-containing-text-or-numbers-where-no-lookup-table-is-required) 
+- text, [where no lookup table is needed](Data-preparation-‐-New-datasets#guidance-dimensions-containing-text-or-numbers-where-no-lookup-table-is-required)
 - numbers, [where no lookup table is needed](Data-preparation-‐-New-datasets#guidance-dimensions-containing-text-or-numbers-where-no-lookup-table-is-required) - you'll then need to indicate the kind of numbers used
-   - For this option, the dimension must only contain numbers, with no symbols or letters.
+  - For this option, the dimension must only contain numbers, with no symbols or letters.
 - something else - you'll then need to upload your own lookup table
 
 For each option you'll be asked to enter a name for the dimension to be called on the StatsWales website. The name should be:
+
 - concise and clearly explain what the dimension contains
 - different to other dimension names in the dataset
 
@@ -31,10 +33,12 @@ For a dimension containing measure or data types, when you click on it from your
 ### Date formatting questions
 
 For [dimensions containing dates](Data-preparation-‐-New-datasets#guidance-date-formatting), you’ll be asked whether the dimension contains either:
+
 - periods - for example, months or years for which data values apply to
 - specific points - for example, specific dates when data values were collected
 
 For periods you’ll be asked:
+
 - the type of year the dimension represents
 - the date format used for years
 - whether the shortest period in the dimension are months, quarters or years
@@ -90,7 +94,8 @@ Once you’ve completed all text entry fields, you’ll be able to export all th
 
 When opening the exported translation CSV in software such as Excel, text fields with multiple paragraphs may split across multiple cells. If this happens, you should ensure that all text for a specific section, in one language, is in a single cell.
 
-Once you have the completed CSV: 
+Once you have the completed CSV:
+
 1. select ‘Import translations’ from your dataset tasklist
 1. upload the CSV and check the translations have uploaded correctly
 1. click ‘Continue’ to populate all fields appropriately
