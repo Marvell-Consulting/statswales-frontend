@@ -2287,6 +2287,14 @@ $whitepurple: #eed5e3;
     background-size: cover;
   }
 
+  &[lang^='cy'] {
+    .statsWales-logo {
+      background-image: url('../assets/images/StatsCymru.svg');
+      width: 183.75px;
+      height: 31.5px;
+    }
+  }
+
   .table-border {
     border-right: 1px solid $midgrey;
   }

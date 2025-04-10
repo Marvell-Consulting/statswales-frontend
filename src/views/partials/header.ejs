@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="govuk-template wg">
+<html lang="<%= i18n.language %>" class="govuk-template wg">
 
 <head>
     <meta charset="utf-8">
@@ -74,7 +74,7 @@
 
     <nav class="primary js-primary-nav" aria-label="Primary Navigation">
         <div class="govuk-width-container nav__toggle">
-            <a href="<%= buildUrl('/', i18n.language) %>"><div class="statsWales-logo" role="img" aria-label="StatsWales logo"></div></a>
+            <a href="<%= buildUrl('/', i18n.language) %>"><div class="statsWales-logo" role="img" aria-label="<%= t('header.logo') %>"></div></a>
             <% if (locals?.isAuthenticated) { %>
                 <a class="button button--secondary ignore-external helper-menu__sign-out" href="/<%= i18n.language %>/auth/logout"><%= t('header.navigation.logout') %></a>
             <% } %>
