@@ -5,12 +5,15 @@ import { TranslationDTO } from '../dtos/translations';
 export const addEditLinks = (translations: TranslationDTO[], datasetId: string, req: Request) => {
   return translations.map((translation) => {
     if (translation.type === 'dimension') {
-      translation.edit_link = req.buildUrl(`/publish/${datasetId}/dimension/${translation.id}`, req.language);
+      translation.edit_link = req.buildUrl(
+        `/publish/${datasetId}/dimension/${translation.id}/change-name`,
+        req.language
+      );
       return translation;
     }
 
     if (translation.type === 'link') {
-      translation.edit_link = req.buildUrl(`/publish/${datasetId}/related`, req.language);
+      translation.edit_link = req.buildUrl(`/publish/${datasetId}/related?edit=${translation.key}`, req.language);
       return translation;
     }
 
