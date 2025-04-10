@@ -19,7 +19,7 @@
     "check": "npm-run-all prettier:fix lint:fix test build",
     "dev:check": "npm-run-all check dev",
     "predev": "bash -c 'f() { if [ $(command -v podman) ]; then podman compose up -d valkey; else docker compose up -d valkey; fi }; f'",
-    "dev": "nodemon --watch src -e ts,ejs,json,scss --exec npm run start",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts | pino-colada",
     "prelocalstack": "bash -c 'f() { if [ $(command -v podman) ]; then podman compose up -d valkey db blobstorage backend; else docker compose up -d valkey db blobstorage backend; fi }; f'",
     "localstack": "trap 'exit 0' SIGINT; nodemon --watch src -e ts,ejs,json,scss --exec npm run start",
     "postlocalstack": "bash -c 'f() { if [ $(command -v podman) ]; then podman compose stop valkey db blobstorage backend; else docker compose stop valkey db blobstorage backend; fi }; f'",
@@ -32,6 +32,7 @@
   "devDependencies": {
     "@eslint/js": "^9.22.0",
     "@playwright/test": "^1.49.1",
+    "@tsconfig/node22": "^22.0.1",
     "@types/cookie-parser": "^1.4.7",
     "@types/express": "^4.17.21",
     "@types/express-session": "^1.18.0",
