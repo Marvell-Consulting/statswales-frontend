@@ -48,6 +48,7 @@ You should include rows in your data table for any totals or averages you want t
 - a [standard note code](#guidance-notes) indicating whether the data value is a total (t) or an average (a)
 
 In our council tax example, the AreaCode dimension refers to local authorities. If you wanted to include a total or average for the whole of Wales, you would need to include a row containing:
+
 - the total or average
 - the reference code for Wales [W92000004]
 - either a ‘t’ or 'a' note code
@@ -181,15 +182,15 @@ Example part of lookup table for tax band code:
 
 #### Single row format
 
-| Heading        | What the column contains                                              | Always required                                         |
-| :------------- | :-------------------------------------------------------------------- | :------------------------------------------------------ |
-| refcode        | Reference codes                                                       | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
-| description_en | Description (English)                                                 | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
-| description_cy | Description (Welsh)                                                   | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
-| hierarchy      | Indicate if a value hierarchically relates to other values            | <strong class="govuk-tag govuk-tag--red">No</strong>    |
-| sort           | Sort order                                                            | <strong class="govuk-tag govuk-tag--red">No</strong>    |
-| note_en        | Notes (English)                                                       | <strong class="govuk-tag govuk-tag--red">No</strong>    |
-| note_cy        | Notes (Welsh)                                                         | <strong class="govuk-tag govuk-tag--red">No</strong>    |
+| Heading        | What the column contains                                   | Always required                                         |
+| :------------- | :--------------------------------------------------------- | :------------------------------------------------------ |
+| refcode        | Reference codes                                            | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
+| description_en | Description (English)                                      | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
+| description_cy | Description (Welsh)                                        | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
+| hierarchy      | Indicate if a value hierarchically relates to other values | <strong class="govuk-tag govuk-tag--red">No</strong>    |
+| sort           | Sort order                                                 | <strong class="govuk-tag govuk-tag--red">No</strong>    |
+| note_en        | Notes (English)                                            | <strong class="govuk-tag govuk-tag--red">No</strong>    |
+| note_cy        | Notes (Welsh)                                              | <strong class="govuk-tag govuk-tag--red">No</strong>    |
 
 Example part of lookup table for tax band code:
 
@@ -209,10 +210,10 @@ It is important **these specific column headings** are used.
 
 Use the 'hierarchy' column to indicate whether a dimension value is hierarchically below another value. For example, if tax bands were divided into sub-bands such as 'A1', 'A2' and 'A3', the 'hierarchy' column for each of these sub-bands would have an 'A' in it. The 'hierarchy' column should only contain reference codes used in the 'refcode' column.
 
-Example part of lookup table for tax bands codes with a 3-level hierarchy: 
+Example part of lookup table for tax bands codes with a 3-level hierarchy:
 
 | refcode | description_en | description_cy | hierarchy | sort |
-| :------ | :------------- | :------------- | :---------| :--- |
+| :------ | :------------- | :------------- | :-------- | :--- |
 | A       | Tax band A     | Band treth A   |           | 14   |
 | A1      | Tax band A1    | Band treth A1  | A         | 15   |
 | A1a     | Tax band A1a   | Band treth A1a | A1        | 16   |
@@ -226,6 +227,7 @@ If you have a hierarchy you don't know how to implement, email richard.davies3@g
 #### Descriptions
 
 Descriptions of all dimension values should be:
+
 - concise and clearly explain what the dimension value represents
 - in sentence case, except for proper nouns, for example 'Doses allocated to Wales'
 - unique and distinct from each other
@@ -237,7 +239,8 @@ Lookup table notes can be provided, but **are not currently shown in the consume
 
 ### Dimensions containing text or numbers where no lookup table is required
 
-No lookup table is required if the dimension values used in the data table can be used directly as descriptions. This is only the case if: 
+No lookup table is required if the dimension values used in the data table can be used directly as descriptions. This is only the case if:
+
 - dimension values consist of letters, numbers or symbols that are the same in English and Welsh
 - a sort order does not need to be stated
 - no hierarchies and notes are needed
@@ -259,11 +262,11 @@ A measure, or data type, indicates what the data value represents. You **must** 
 
 For a dimension containing measures, you should prepare your own lookup table. You will upload this to SW3. It should be in the same format as other [lookup tables](#guidance-lookup-tables), with the following additional columns:
 
-| Heading | What the column contains |
-| :------ | :----------------------- |
+| Heading | What the column contains                                                                                                                                                                                                                                                                                     |
+| :------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | type    | Any of the following:<ul><li>count</li><li>percentage</li><li>rate</li><li>rank</li><li>numerator</li><li>denominator</li><li>index value</li><li>mode</li><li>median</li><li>mean</li><li>standard deviation</li><li>variance</li><li>quartile</li><li>quintile</li><li>decile</li><li>percentile</li></ul> |
-| format  | Any of the following:<ul><li>decimal</li><li>float</li><li>integer</li><li>long</li><li>percentage</li><li>string</li><li>text</li><li>date</li><li>datetime</li><li>time</li></ul> |
-| decimal | Number of decimal places to show, if relevant |
+| format  | Any of the following:<ul><li>decimal</li><li>float</li><li>integer</li><li>long</li><li>percentage</li><li>string</li><li>text</li><li>date</li><li>datetime</li><li>time</li></ul>                                                                                                                          |
+| decimal | Number of decimal places to show, if relevant                                                                                                                                                                                                                                                                |
 
 Example measure lookup table for our council tax example:
 
@@ -283,25 +286,25 @@ You should only add a note to a specific data value if it's necessary to underst
 
 SW3 uses shorthand note codes, with standardised explanations, closely following [public sector standards](https://analysisfunction.civilservice.gov.uk/policy-store/symbols-in-tables-definitions-and-help/). The codes are not case sensitive.
 
-| Shorthand                          | Meaning                  | Use |
-| :--------------------------------- | :----------------------- | :-- |
-| a                                  | Average                  | When a data value is an average of other values |
-| b                                  | Break in time series     | When there is a break in a data series that means that data before the break cannot be directly compared with data after the break |
-| c                                  | Confidential information | For example, if a data value has been suppressed because you could identify details about specific people from the data. Note that there is no way in SW3 to mask or suppress values, so this must be done in your data table. |
-| e                                  | Estimated                | When a data value is an estimated value |
-| f                                  | Forecast                 | When a data value is a calculated future value instead of an observed value |
-| k                                  | Low figure               | A low figure that appears as a zero when rounded |
-| ns                                 | Not statistically significant | When it's not possible to determine if a data value is reliable or not |
-| p                                  | Provisional              | When a data value is yet to be finalised, or is expected to be revised |
-| r                                  | Revised                  | When a data value has been revised since it was first published |
-| s                                  | Statistically significant at 0.05 or 5% level | When there's a less than 5% chance a data value is unreliable |
-| ss                                  | Statistically significant at 0.01 or 1% level | When there's a less than 1% chance a data value is unreliable |
-| sss                                  | Statistically significant at 0.001 or 0.1% level | When there's a less than 0.1% chance a data value is unreliable |
-| t                                  | Total                    | When a data value is a total of other values |
-| u                                  | Low reliability          | When a data value is of low statistical quality |
-| w                                  | None recorded in survey  | When no people are estimated to be in a category |
-| x                                  | Missing data             | For example, where a data value is not collected in a region |
-| z                                  | Not applicable           | For example, in tables of employment where people under 16 cannot legally be employed |
+| Shorthand | Meaning                                          | Use                                                                                                                                                                                                                            |
+| :-------- | :----------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| a         | Average                                          | When a data value is an average of other values                                                                                                                                                                                |
+| b         | Break in time series                             | When there is a break in a data series that means that data before the break cannot be directly compared with data after the break                                                                                             |
+| c         | Confidential information                         | For example, if a data value has been suppressed because you could identify details about specific people from the data. Note that there is no way in SW3 to mask or suppress values, so this must be done in your data table. |
+| e         | Estimated                                        | When a data value is an estimated value                                                                                                                                                                                        |
+| f         | Forecast                                         | When a data value is a calculated future value instead of an observed value                                                                                                                                                    |
+| k         | Low figure                                       | A low figure that appears as a zero when rounded                                                                                                                                                                               |
+| ns        | Not statistically significant                    | When it's not possible to determine if a data value is reliable or not                                                                                                                                                         |
+| p         | Provisional                                      | When a data value is yet to be finalised, or is expected to be revised                                                                                                                                                         |
+| r         | Revised                                          | When a data value has been revised since it was first published                                                                                                                                                                |
+| s         | Statistically significant at 0.05 or 5% level    | When there's a less than 5% chance a data value is unreliable                                                                                                                                                                  |
+| ss        | Statistically significant at 0.01 or 1% level    | When there's a less than 1% chance a data value is unreliable                                                                                                                                                                  |
+| sss       | Statistically significant at 0.001 or 0.1% level | When there's a less than 0.1% chance a data value is unreliable                                                                                                                                                                |
+| t         | Total                                            | When a data value is a total of other values                                                                                                                                                                                   |
+| u         | Low reliability                                  | When a data value is of low statistical quality                                                                                                                                                                                |
+| w         | None recorded in survey                          | When no people are estimated to be in a category                                                                                                                                                                               |
+| x         | Missing data                                     | For example, where a data value is not collected in a region                                                                                                                                                                   |
+| z         | Not applicable                                   | For example, in tables of employment where people under 16 cannot legally be employed                                                                                                                                          |
 
 Any custom explanations you feel are needed to clarify any note codes, should be provided in the most appropriate [metadata section](#guidance-metadata). For example, if you need to explain multiple reasons why data values have been suppressed.
 
@@ -326,6 +329,7 @@ You should enter bullets with an asterisk and a space at the start. For example:
 The system will style these as lists with circular bullet points.
 
 You should:
+
 - keep to one sentence per bullet
 - not end bullets with punctuation or conjunctions like 'or'
 - try to use a different word at the beginning of each bullet
@@ -345,6 +349,7 @@ You should enter links with the link text in square brackets followed directly b
 The system will style this as a clickable link, that is '[Welsh Government](https://www.gov.wales)'. The URL must start with either 'https://' or 'http://'.
 
 Link text should:
+
 - make it clear what the user will be getting from the link
 - avoid directions such as “click here” or “find out more”
 - be longer than 1 word, but not a full sentence
@@ -429,8 +434,8 @@ There are [different types of statistics designations](https://uksa.statisticsau
 | Official statistics                                                   | Statistics produced by Crown bodies and other organisations listed within an Official Statistics Order, on behalf of the UK government or devolved administrations                             |
 | Accredited official statistics (formerly National Statistics)         | Official statistics that the Office for Statistics Regulation (OSR) has independently reviewed and confirmed comply with the standards of trustworthiness, quality and value                   |
 | Official statistics in development (formerly experimental statistics) | Official statistics that are undergoing a development; they may be new or existing statistics, and will be tested with users, in line with the standards of trustworthiness, quality and value |
-| Management information                                                | Operational data that provides transparency about an organisation’s activity |
-| No designation                                                        | Any other statistics |
+| Management information                                                | Operational data that provides transparency about an organisation’s activity                                                                                                                   |
+| No designation                                                        | Any other statistics                                                                                                                                                                           |
 
 #### Relevant topics
 

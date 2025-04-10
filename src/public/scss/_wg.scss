@@ -33,7 +33,6 @@ $purple: #a82b71;
 $whitepurple: #eed5e3;
 
 .wg {
-
   .govuk-body {
     color: $black;
   }
@@ -43,8 +42,29 @@ $whitepurple: #eed5e3;
     line-height: 24px;
   }
 
-  h1, h2, h3, h4, h5, h6, p, ol, ul, a, table, .govuk-header__link, .govuk-task-list__status, .govuk-tag, .govuk-input, .govuk-label, .govuk-button, .govuk-select, dl, .govuk-accordion__section-heading-text, span, .govuk-inset-text {
-    font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  ol,
+  ul,
+  a,
+  table,
+  .govuk-header__link,
+  .govuk-task-list__status,
+  .govuk-tag,
+  .govuk-input,
+  .govuk-label,
+  .govuk-button,
+  .govuk-select,
+  dl,
+  .govuk-accordion__section-heading-text,
+  span,
+  .govuk-inset-text {
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
   }
 
   ul.li,
@@ -106,7 +126,8 @@ $whitepurple: #eed5e3;
       box-shadow: none;
     }
 
-    &:hover, &[disabled]:hover {
+    &:hover,
+    &[disabled]:hover {
       background: $brightred;
       color: $white;
     }
@@ -483,7 +504,7 @@ $whitepurple: #eed5e3;
 
   .govuk-file-upload,
   .govuk-hint {
-    font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif;
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
     font-size: 18px;
   }
 
@@ -616,7 +637,7 @@ $whitepurple: #eed5e3;
     border-left: solid $red 3px;
     padding: 25px 20px;
     background-color: $whitered;
-}
+  }
 
   .header-select {
     vertical-align: middle;
@@ -712,7 +733,7 @@ $whitepurple: #eed5e3;
     background-color: transparent;
     color: $blue;
     font-weight: bold;
-    font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif;
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
     text-decoration: none;
     cursor: pointer;
   }
@@ -725,7 +746,7 @@ $whitepurple: #eed5e3;
     background-color: transparent;
     color: $blue;
     font-weight: bold;
-    font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif;
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
     text-decoration: none;
     cursor: pointer;
   }
@@ -741,7 +762,7 @@ $whitepurple: #eed5e3;
     background-color: transparent;
     color: $blue;
     font-weight: bold;
-    font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif;
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
     text-decoration: none;
     cursor: pointer;
   }
@@ -754,7 +775,7 @@ $whitepurple: #eed5e3;
     background-color: transparent;
     color: $blue;
     font-weight: bold;
-    font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif;
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
     text-decoration: none;
     cursor: pointer;
   }
@@ -821,7 +842,7 @@ $whitepurple: #eed5e3;
   }
 
   .govuk-tag {
-    font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif;
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
     font-size: 14px;
     font-weight: bold;
     text-transform: uppercase;
@@ -887,7 +908,7 @@ $whitepurple: #eed5e3;
 
   .govuk-textarea {
     font-size: 18px;
-    font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif;
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
   }
 
   .govuk-input {
@@ -899,7 +920,7 @@ $whitepurple: #eed5e3;
   }
 
   .govuk-fieldset__legend {
-    font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif;
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
   }
 
   .hmrc-list-with-actions--short .hmrc-summary-list__actions {
@@ -1025,7 +1046,7 @@ $whitepurple: #eed5e3;
   }
 
   .govuk-warning-text__text {
-    font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif;
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
     font-weight: normal;
     background-color: $lightgrey_light;
     border-left: 10px solid $blue;
@@ -1063,7 +1084,7 @@ $whitepurple: #eed5e3;
   .govuk-back-link:link,
   .govuk-back-link:visited {
     color: $blue;
-}
+  }
 
   .govuk-breadcrumbs__list-item::before {
     border-width: max(3px, 0.0625em) max(3px, 0.0625em) 0 0;
@@ -1332,7 +1353,6 @@ $whitepurple: #eed5e3;
     }
   }
 
-
   .checkbox-level-2 {
     margin-left: 50px;
   }
@@ -1342,7 +1362,7 @@ $whitepurple: #eed5e3;
   }
 
   .govuk-tabs {
-    font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif;
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
   }
 
   .govuk-tabs__tab:visited,
@@ -2331,7 +2351,8 @@ $whitepurple: #eed5e3;
   }
 
   .source-list-item,
-  .govuk-table__header, .govuk-table__cell {
+  .govuk-table__header,
+  .govuk-table__cell {
     border-bottom: 1px solid $lightgrey;
   }
 
@@ -2354,7 +2375,7 @@ $whitepurple: #eed5e3;
   }
 
   footer .top .govuk-button:before {
-    content: "";
+    content: '';
     display: block;
     position: absolute;
     top: 0.2em;
