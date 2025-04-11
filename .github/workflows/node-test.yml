@@ -19,28 +19,6 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      # - name: Check Docker Version
-      #   run: docker --version
-
-      # - name: Install Latest Docker
-      #   run: |
-      #     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-      #     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs)  stable"
-      #     sudo apt-get update
-      #     sudo apt-get install docker-ce
-
-      # - name: Check Docker Version
-      #   run: docker --version
-
-      # - name: update moby
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y moby-compose
-      #     systemctl is-active --quiet docker.service || systemctl start docker.service
-      #     systemctl is-enabled --quiet docker.service || systemctl enable docker.service
-      #     sleep 10
-      #     docker info
-
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
@@ -59,11 +37,11 @@ jobs:
           up-flags: -d
           compose-version: 'latest'
 
-      # - name: run docker compose
-      #   run: docker --version && docker compose up -d valkey db blobstorage backend
+      - name: install playwright
+        run: npx playwright install
 
       - name: start client
-        run: npm start
+        run: npm start &
         env:
           APP_ENV: ci
           FRONTEND_URL: http://localhost:3000
@@ -73,11 +51,5 @@ jobs:
           JWT_SECRET: jwtsecret
           SUPPORT_EMAIL: support@example.com
 
-      - name: install playwright
-        run: npx playwright install
-
       - name: run e2e tests
         run: npm run test:e2e
-
-      - name: cleanup
-        run: docker compose stop valkey db blobstorage backend
