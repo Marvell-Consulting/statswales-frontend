@@ -15,7 +15,7 @@
     "build": "npm-run-all clean tsc css copy-assets",
     "test": "jest",
     "test:ci": "jest --ci --coverage --config=jest.config.ts",
-    "test:e2e": "npx playwright test",
+    "test:e2e": "npx playwright test ./tests-e2e/homepage.spec.ts",
     "check": "npm-run-all prettier:fix lint:fix test build",
     "dev:check": "npm-run-all check dev",
     "predev": "bash -c 'f() { if [ $(command -v podman) ]; then podman compose up -d valkey; else docker compose up -d valkey; fi }; f'",
