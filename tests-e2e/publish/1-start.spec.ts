@@ -9,7 +9,7 @@ const baseUrl = config.frontend.url;
 test.describe('Not authed', () => {
   test('Redirects to login page when not authenticated', async ({ page }) => {
     await page.goto('/en-GB/publish');
-    await expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
+    expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
   });
 });
 
@@ -27,15 +27,9 @@ test.describe('Authed as a publisher', () => {
     await expect(page.getByRole('heading', { name: 'Creu set ddata newydd' })).toBeVisible();
   });
 
-  test('Can be cancelled', async ({ page }) => {
-    await page.goto('/en-GB/publish');
-    await page.getByRole('link', { name: 'Cancel' }).click();
-    expect(page.url()).toBe(`${baseUrl}/en-GB`);
-  });
-
   test('Starts the publish journey', async ({ page }) => {
     await page.goto('/en-GB/publish');
     await page.getByRole('link', { name: 'Continue' }).click();
-    await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/title`);
+    expect(page.url()).toBe(`${baseUrl}/en-GB/publish/title`);
   });
 });

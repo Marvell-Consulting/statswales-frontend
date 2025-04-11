@@ -16,7 +16,12 @@ test('Provides Google auth', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'Google' })).toBeVisible();
 });
 
-test('Provides Microsoft (EntraID) auth', async ({ page }) => {
+test('Provides Form auth', async ({ page }) => {
+  await page.goto('/en-GB/auth/login');
+  await expect(page.getByRole('link', { name: 'Form' })).toBeVisible();
+});
+
+test('Provides Microsoft auth', async ({ page }) => {
   await page.goto('/en-GB/auth/login');
   await expect(page.getByRole('link', { name: 'Microsoft' })).toBeVisible();
 });

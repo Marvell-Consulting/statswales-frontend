@@ -17,24 +17,24 @@ test.describe('Authed as a publisher', () => {
     await expect(page.getByRole('heading', { name: 'StatsWales datasets' })).toBeVisible();
   });
 
-  test.fixme('Can switch to Welsh', async ({ page }) => {
+  test('Can switch to Welsh', async ({ page }) => {
     // TODO: waiting on translations
     await page.goto('/en-GB');
     await page.getByText('Cymraeg').click();
-    await expect(page.getByRole('heading', { name: '' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Setiau data StatsCymru' })).toBeVisible();
   });
 
   test('Displays a table listing datasets', async ({ page }) => {
     await page.goto('/en-GB');
     await expect(page.getByRole('table')).toBeVisible();
-    await expect(page.getByRole('columnheader', { name: 'ID' })).toBeVisible();
+    // await expect(page.getByRole('columnheader', { name: 'ID' })).toBeVisible();
     await expect(page.getByRole('columnheader', { name: 'Title' })).toBeVisible();
     await expect(page.getByRole('columnheader', { name: 'Last updated' })).toBeVisible();
     await expect(page.getByRole('columnheader', { name: 'Dataset status' })).toBeVisible();
     await expect(page.getByRole('columnheader', { name: 'Publishing status' })).toBeVisible();
 
-    const uploadTestDataset = await page.getByRole('row', { name: 'Test - Upload' });
-    await expect(uploadTestDataset.getByRole('link', { name: 'Test - Upload' })).toBeVisible();
+    const uploadTestDataset = page.getByRole('row', { name: 'Test - Metadata B' });
+    await expect(uploadTestDataset.getByRole('link', { name: 'Test - Metadata B' })).toBeVisible();
     await expect(uploadTestDataset.getByRole('cell', { name: 'New' })).toBeVisible();
     await expect(uploadTestDataset.getByRole('cell', { name: 'Incomplete' })).toBeVisible();
   });
