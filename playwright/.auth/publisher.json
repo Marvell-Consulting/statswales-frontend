@@ -2,7 +2,7 @@
   "cookies": [
     {
       "name": "jwt",
-      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjNkYzFhZTYtMjczZS00YWM5LWE0OTgtYmEyODEzYzUxYzI0IiwibmFtZSI6IkpvZSBQdWJsaXNoZXIiLCJlbWFpbCI6ImpvZS5wdWJsaXNoZXJAZXhhbXBsZS5jb20ifSwiaWF0IjoxNzMyMjAwODk5fQ.9IFNtUqpxrNz0UU1QmhjVriafqVhd7rXye9XQZV3fgk",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiZjNkYzFhZTYtMjczZS00YWM5LWE0OTgtYmEyODEzYzUxYzI0IiwiZW1haWwiOiJqb2UucHVibGlzaGVyQGV4YW1wbGUuY29tIiwiZ2l2ZW5OYW1lIjoiSm9lIiwiZmFtaWx5TmFtZSI6IlB1Ymxpc2hlciJ9LCJpYXQiOjE3NDQzNzEwOTgsImV4cCI6MTc0NDM5MjY5OH0.8wpmfvBefi9bEK3S8OIvCkzqJMA5skOzlFREj5BkxO4",
       "domain": "localhost",
       "path": "/",
       "expires": -1,
