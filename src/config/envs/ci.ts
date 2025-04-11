@@ -1,3 +1,4 @@
+import { Level } from 'pino';
 import { AuthProvider } from '../../enums/auth-providers';
 import { AppConfig } from '../app-config.interface';
 import { defineConfig } from '../define-config';
@@ -11,7 +12,7 @@ export function getCIConfig(): AppConfig {
     env: AppEnv.Ci,
     supportEmail: 'support@example.com',
     logger: {
-      level: 'silent'
+      level: (process.env.LOG_LEVEL as Level) || 'silent'
     },
     frontend: {
       port: 3000,
@@ -32,7 +33,7 @@ export function getCIConfig(): AppConfig {
     auth: {
       providers: [AuthProvider.Local],
       jwt: {
-        secret: 'mysecret',
+        secret: process.env.JWT_SECRET || 'jwtsecret',
         cookieDomain: 'http://localhost'
       }
     }

@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
 
-import { publisherContext } from '../../playwright/.auth/contexts';
 import { appConfig } from '../../src/config';
 import { metadataA as dataset, metadataB as datasetB } from '../fixtures/datasets';
 
 import { ProviderPage } from './pages/provider-page';
+import { users } from '../fixtures/logins';
 
 const config = appConfig();
 const baseUrl = config.frontend.url;
@@ -26,7 +26,7 @@ test.describe('Metadata Data Providers', () => {
   });
 
   test.describe('Authed as a publisher', () => {
-    test.use({ storageState: publisherContext });
+    test.use({ storageState: users.publisher.path });
 
     test('Has a heading', async ({ page }) => {
       await providerPage.goto(dataset.id);

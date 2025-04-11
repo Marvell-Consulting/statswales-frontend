@@ -2,12 +2,12 @@ import path from 'node:path';
 
 import { test, expect } from '@playwright/test';
 
-import { publisherContext } from '../../playwright/.auth/contexts';
 import { appConfig } from '../../src/config';
 import { previewA as datasetA, previewB as datasetB } from '../fixtures/datasets';
 
 import { PreviewPage } from './pages/preview-page';
 import { UploadPage } from './pages/upload-page';
+import { users } from '../fixtures/logins';
 
 const config = appConfig();
 const baseUrl = config.frontend.url;
@@ -29,7 +29,7 @@ test.describe('Preview page', () => {
   });
 
   test.describe('Authed as a publisher', () => {
-    test.use({ storageState: publisherContext });
+    test.use({ storageState: users.publisher.path });
 
     test.beforeEach(async () => {
       await previewPage.goto(datasetA.id);

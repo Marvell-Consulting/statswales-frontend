@@ -30,3 +30,28 @@ jobs:
       - run: npm run lint:ci
       - run: npm run build
       - run: npm run test:ci
+
+      - name: Run docker compose
+        uses: hoverkraft-tech/compose-action@v2
+        with:
+          compose-version: 'latest'
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright tests
+        run: npm run test:e2e
+        env:
+          APP_ENV: ci
+          FRONTEND_URL: http://localhost:3000
+          BACKEND_URL: http://localhost:3001
+          SESSION_STORE: memory
+          SESSION_SECRET: peakaboo
+          JWT_SECRET: jwtsecret
+          SUPPORT_EMAIL: support@example.com
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright/results/
+          retention-days: 30
