@@ -13,16 +13,16 @@
     "./playwright/*"
   ],
   "compilerOptions": {
-    "rootDir": "src",                                    /* Specify the root folder within your source files. */
-    "resolveJsonModule": true,                           /* Enable importing .json files. */
+    "rootDir": "src" /* Specify the root folder within your source files. */,
+    "resolveJsonModule": true /* Enable importing .json files. */,
     /* JavaScript Support */
-    "allowJs": true,                                     /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
+    "allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
     /* Emit */
-    "outDir": "dist",                                   /* Specify an output folder for all emitted files. */
+    "outDir": "dist" /* Specify an output folder for all emitted files. */,
     /* Interop Constraints */
-    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
+    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
     /* Type Checking */
-    "noImplicitAny": true,                               /* Enable error reporting for expressions and declarations with an implied 'any' type. */
+    "noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
     /* Completeness */
     "strictPropertyInitialization": false,
     "emitDecoratorMetadata": true,

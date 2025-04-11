@@ -39,3 +39,6 @@ yarn.lock
 /playwright/results/
 /playwright/report/
 /playwright/.cache/
+
+# ignore IDE settings
+.vscode/

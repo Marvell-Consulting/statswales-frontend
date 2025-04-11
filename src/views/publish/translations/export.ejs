@@ -13,30 +13,7 @@
 			<div class="govuk-width-container">
 				<h1 class="govuk-heading-xl"><%= t('translations.export.heading') %></h1>
 
-				<table class="govuk-table translation-export">
-					<thead class="govuk-table__head">
-						<tr class="govuk-table__row">
-							<th scope="col" class="govuk-table__header"><%= t('translations.export.table.field') %></th>
-							<th scope="col" class="govuk-table__header"><%= t('translations.export.table.value') %></th>
-							<th scope="col" class="govuk-table__header"><%= t('translations.export.table.action') %></th>
-						</tr>
-					</thead>
-					<tbody class="govuk-table__body">
-						<% translations.forEach(function(translation) { %>
-							<tr class="govuk-table__row">
-								<% if (translation.type === 'dimension') { %>
-									<td class="govuk-table__cell"><%= t(`translations.export.dimension`, { key: translation.key }) %></td>
-								<% } else if (translation.type === 'metadata') { %>
-									<td class="govuk-table__cell"><%= t(`translations.export.field.${translation.key}`) %></td>
-								<% } else if (translation.type === 'link') { %>
-									<td class="govuk-table__cell"><%= t(`translations.export.link`, { key: translation.key }) %></td>
-								<% } %>
-								<td class="govuk-table__cell"><%= i18n.language.includes('en') ? translation.english : translation.cymraeg %></td>
-								<td class="govuk-table__cell"><a href="<%= translation.edit_link %>"><%= t('translations.export.buttons.change') %></a></td>
-							</tr>
-						<% }); %>
-					</tbody>
-				</table>
+				<%- include("../../partials/translations-preview-table", { translations, isImport: false }); %>
 
 				<div class="govuk-button-group">
 					<a href="<%= buildUrl(`/publish/${locals.datasetId}/translation/export?format=csv`, i18n.language) %>" class="govuk-button"><%= t('translations.export.buttons.export') %></a>

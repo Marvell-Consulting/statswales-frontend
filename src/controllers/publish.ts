@@ -2461,7 +2461,9 @@ export const importTranslations = async (req: Request, res: Response) => {
     }
   }
 
-  res.render('publish/translations/import', { preview, translations, errors });
+  const existingTranslations = await req.pubapi.getTranslationPreview(dataset.id);
+
+  res.render('publish/translations/import', { preview, translations, errors, existingTranslations });
 };
 
 export const overview = async (req: Request, res: Response) => {

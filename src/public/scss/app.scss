@@ -2,7 +2,6 @@
 @use 'autocomplete';
 
 .wg {
-
   .govuk-header__link:hover {
     border: none;
   }
@@ -15,7 +14,7 @@
     background: wg.$charcoal;
     border-bottom: 0px;
     padding: 20px 0px;
-    height:34px;
+    height: 34px;
   }
 
   .govuk-phase-banner {
@@ -53,5 +52,4 @@
   .tasklist-no-border {
     border-bottom: none;
   }
-
 }
