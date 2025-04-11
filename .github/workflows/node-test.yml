@@ -30,3 +30,12 @@ jobs:
       - run: npm run lint:ci
       - run: npm run build
       - run: npm run test:ci
+
+      - name: localstack
+        run: npm run localstack
+
+      - name: install playwright
+        run: npx playwright install
+
+      - name: run e2e tests
+        run: npm run test:e2e
