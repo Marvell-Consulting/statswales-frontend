@@ -4,6 +4,7 @@ import JWT from 'jsonwebtoken';
 import { JWTPayloadWithUser } from '../interfaces/jwt-payload-with-user';
 import { logger } from '../utils/logger';
 import { appConfig } from '../config';
+import { GlobalRole } from '../enums/global-role';
 
 const config = appConfig();
 
@@ -33,11 +34,8 @@ export const ensureAuthenticated = (req: Request, res: Response, next: NextFunct
 
     if (decoded.user) {
       req.user = decoded.user;
-      // TODO: replace with role-based permissions are available
-      const developer = /@marvell-consulting.com$/.test(decoded.user.email);
-      req.user.isDeveloper = developer;
-      res.locals.isDeveloper = developer;
-      res.locals.isAdmin = developer;
+      res.locals.isAdmin = req.user.global_roles.includes(GlobalRole.ServiceAdmin);
+      res.locals.isDeveloper = req.user.global_roles.includes(GlobalRole.Developer);
     }
 
     res.locals.isAuthenticated = true;

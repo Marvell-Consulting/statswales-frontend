@@ -4,6 +4,7 @@
     <main class="govuk-main-wrapper" id="main-content" role="main">
 
         <%- include("partials/flash-messages"); %>
+        <%- include("partials/error-handler"); %>
 
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
@@ -11,11 +12,13 @@
             </div>
         </div>
 
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-one-half">
-                <a class="govuk-button" href="<%= buildUrl(`/publish`, i18n.language) %>"><%= t('homepage.buttons.create') %></a>
+        <% if (canCreate) { %>
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-one-half">
+                    <a class="govuk-button" href="<%= buildUrl(`/publish`, i18n.language) %>"><%= t('homepage.buttons.create') %></a>
+                </div>
             </div>
-        </div>
+        <% } %>
 
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">

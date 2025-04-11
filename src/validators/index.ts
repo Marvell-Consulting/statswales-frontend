@@ -83,3 +83,5 @@ export const hourValidator = () => body('hour').isInt({ min: 0, max: 23, allow_l
 export const minuteValidator = () => body('minute').isInt({ min: 0, max: 59, allow_leading_zeroes: true });
 
 export const organisationIdValidator = () => body('organisation').trim().notEmpty().isUUID(4);
+
+export const groupIdValidator = (groupIds: string[]) => body('group_id').trim().isIn(groupIds);
