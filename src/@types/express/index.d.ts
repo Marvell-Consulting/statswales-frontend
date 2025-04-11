@@ -1,11 +1,11 @@
-import { User } from '../../interfaces/user.interface';
 import { PublisherApi } from '../../services/publisher-api';
 import { Locale } from '../../enums/locale';
 import { ConsumerApi } from '../../services/consumer-api';
+import { UserDTO } from '../../dtos/user/user';
 
 declare module 'express-serve-static-core' {
   interface Request {
-    user?: User;
+    user?: UserDTO;
     jwt?: string;
     pubapi: PublisherApi;
     conapi: ConsumerApi;

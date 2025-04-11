@@ -1,3 +1,4 @@
 export enum GlobalRole {
-  ServiceAdmin = 'admin'
+  ServiceAdmin = 'service_admin',
+  Developer = 'developer'
 }

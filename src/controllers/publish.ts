@@ -15,6 +15,7 @@ import {
   frequencyUnitValidator,
   frequencyValueValidator,
   getErrors,
+  groupIdValidator,
   hourValidator,
   isUpdatedValidator,
   linkIdValidator,
@@ -69,20 +70,69 @@ import { PreviewMetadata } from '../interfaces/preview-metadata';
 import slugify from 'slugify';
 import { DuckDBSupportFileFormats } from '../enums/support-fileformats';
 import { TZDate } from '@date-fns/tz';
+import { singleLangUserGroup } from '../utils/single-lang-user-group';
+import { getEditorUserGroups } from '../utils/get-editor-user-groups';
 
 export const start = (req: Request, res: Response) => {
   req.session.errors = undefined;
   req.session.dimensionPatch = undefined;
   req.session.updateType = undefined;
   req.session.save();
-  res.render('publish/start');
+
+  const editorGroups = getEditorUserGroups(req.user);
+
+  // user must be in at least one group to start a new dataset
+  if (editorGroups.length < 1) {
+    req.session.errors = [{ field: '', message: { key: 'publish.start.errors.no_groups' } }];
+    req.session.save();
+    res.redirect(req.buildUrl('/', req.language));
+    return;
+  }
+
+  // if the user is only in a single group, we can bypass group selection and go straight to title
+  const datasetGroup = editorGroups[0].group;
+  const nextStep = editorGroups.length === 1 ? `title?group_id=${datasetGroup.id}` : 'group';
+
+  res.render('publish/start', { nextStep });
+};
+
+export const provideDatasetGroup = async (req: Request, res: Response) => {
+  const availableGroups = getEditorUserGroups(req.user).map((g) => singleLangUserGroup(g.group, req.language)) || [];
+  const validGroupIds = availableGroups.map((group) => group.id) as string[];
+  const values = req.body;
+  let errors: ViewError[] = [];
+
+  if (req.method === 'POST') {
+    try {
+      errors = (await getErrors(groupIdValidator(validGroupIds), req)).map((error: FieldValidationError) => {
+        return {
+          field: 'group_id',
+          message: { key: `publish.group.form.group_id.error.${error.value ? 'invalid' : 'missing'}` }
+        };
+      });
+
+      if (errors.length > 0) {
+        res.status(400);
+        throw new Error();
+      }
+
+      res.redirect(req.buildUrl(`/publish/title?group_id=${values.group_id}`, req.language));
+      return;
+    } catch (err) {
+      if (err instanceof ApiException) {
+        errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+      }
+    }
+  }
+
+  res.render('publish/group', { availableGroups, values, errors });
 };
 
 export const dimensionColumnNameRegex = /^[a-zA-ZÀ-ž0-9()\-_ £¢€$%+]+$/;
 
 export const provideTitle = async (req: Request, res: Response) => {
   let errors: ViewError[] = [];
-
+  const group_id = req.query.group_id as string;
   const existingDataset = res.locals.dataset ? singleLangDataset(res.locals.dataset, req.language) : undefined;
   const revisit = Boolean(existingDataset); // dataset will not exist the first time through
   let title = existingDataset?.draft_revision?.metadata?.title;
@@ -104,7 +154,13 @@ export const provideTitle = async (req: Request, res: Response) => {
         await req.pubapi.updateMetadata(existingDataset.id, { title, language: req.language });
         res.redirect(req.buildUrl(`/publish/${existingDataset.id}/tasklist`, req.language));
       } else {
-        const dataset = await req.pubapi.createDataset(title, req.language);
+        if (!group_id) {
+          res.status(400);
+          errors.push({ field: '', message: { key: 'publish.title.form.group_id.error.missing' } });
+          throw new Error();
+        }
+
+        const dataset = await req.pubapi.createDataset(title!, group_id, req.language);
         res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
       }
       return;
