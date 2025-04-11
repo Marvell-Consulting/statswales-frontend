@@ -5,7 +5,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Not authed', () => {
   test('Redirects to login page when not authenticated', async ({ page }) => {
     await page.goto('/');
-    expect(page.url()).toBe('http://localhost:3000/en-GB/auth/login');
+    expect(page.url()).toBe(`${process.env.FRONTEND_URL}/en-GB/auth/login`);
   });
 });
 
