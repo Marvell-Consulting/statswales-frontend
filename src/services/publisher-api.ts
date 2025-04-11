@@ -101,9 +101,9 @@ export class PublisherApi {
     });
   }
 
-  public async createDataset(title?: string, language?: string): Promise<DatasetDTO> {
+  public async createDataset(title: string, userGroupId: string, language?: string): Promise<DatasetDTO> {
     logger.debug(`Creating new dataset...`);
-    const json: RevisionMetadataDTO = { title, language };
+    const json = { title, user_group_id: userGroupId, language };
 
     return this.fetch({ url: 'dataset', method: HttpMethod.Post, json }).then(
       (response) => response.json() as unknown as DatasetDTO

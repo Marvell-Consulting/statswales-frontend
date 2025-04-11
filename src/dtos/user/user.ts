@@ -13,7 +13,7 @@ export interface UserDTO {
   global_roles: GlobalRole[];
   groups: UserGroupWithRolesDTO[];
   status: UserStatus;
-  created_at: Date;
-  updated_at: Date;
-  last_login_at: Date;
+  created_at: string;
+  updated_at: string;
+  last_login_at?: string;
 }
