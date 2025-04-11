@@ -44,8 +44,8 @@ jobs:
         run: npm run test:e2e
         env:
           APP_ENV: ci
-          FRONTEND_URL: http://127.0.0.1:3000
-          BACKEND_URL: http://127.0.0.1:3001
+          FRONTEND_URL: http://localhost:3000
+          BACKEND_URL: http://localhost:3001
           SESSION_STORE: memory
           SESSION_SECRET: peakaboo
           JWT_SECRET: jwtsecret
