@@ -37,6 +37,7 @@ import { getUserRoleFormValues } from '../utils/user-role-form-values';
 import { UserRoleFormValues } from '../interfaces/user-role-form-values';
 import { differenceInSeconds } from 'date-fns';
 import { UserStatus } from '../enums/user-status';
+import { getPaginationProps } from '../utils/pagination';
 
 export const fetchUserGroup = async (req: Request, res: Response, next: NextFunction) => {
   const userGroupIdError = await hasError(userGroupIdValidator(), req);
@@ -98,8 +99,9 @@ export const listUserGroups = async (req: Request, res: Response, next: NextFunc
     const page = parseInt(req.query.page_number as string, 10) || 1;
     const limit = parseInt(req.query.page_size as string, 10) || 10;
     const flash = res.locals.flash;
-    const { data }: ResultsetWithCount<UserGroupListItemDTO> = await req.pubapi.listUserGroups(page, limit);
-    res.render('admin/user-group-list', { groups: data, flash });
+    const { data, count }: ResultsetWithCount<UserGroupListItemDTO> = await req.pubapi.listUserGroups(page, limit);
+    const pagination = getPaginationProps(page, limit, count);
+    res.render('admin/user-group-list', { groups: data, ...pagination, flash });
   } catch (err) {
     next(err);
   }
@@ -232,8 +234,9 @@ export const listUsers = async (req: Request, res: Response, next: NextFunction)
   try {
     const page = parseInt(req.query.page_number as string, 10) || 1;
     const limit = parseInt(req.query.page_size as string, 10) || 10;
-    const { data }: ResultsetWithCount<UserDTO> = await req.pubapi.listUsers(page, limit);
-    res.render('admin/user-list', { users: data });
+    const { data, count }: ResultsetWithCount<UserDTO> = await req.pubapi.listUsers(page, limit);
+    const pagination = getPaginationProps(page, limit, count);
+    res.render('admin/user-list', { users: data, count, ...pagination });
   } catch (err) {
     next(err);
   }
