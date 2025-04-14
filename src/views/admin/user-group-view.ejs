@@ -60,9 +60,10 @@
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-two-thirds">
             <h2 class="govuk-heading-l"><%= t('admin.group.view.datasets.heading') %></h2>
-            <% if (!locals.group?.datasets || locals.group.users.length === 0) { %>
+            <% if (!locals.group?.datasets || locals.group.datasets.length === 0) { %>
               <p><%= t('admin.group.view.datasets.none') %></p>
             <% } else { %>
+              <p><%= t('admin.group.view.datasets.some', { count: locals.datsetCount }) %></p>
             <% } %>
           </div>
         </div>

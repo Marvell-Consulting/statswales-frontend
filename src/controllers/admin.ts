@@ -91,7 +91,8 @@ export const fetchUser = async (req: Request, res: Response, next: NextFunction)
 
 export const viewGroup = async (req: Request, res: Response) => {
   const group = singleLangUserGroup(res.locals.group, req.language);
-  res.render('admin/user-group-view', { group });
+  const datsetCount = group.datasets?.length || 0;
+  res.render('admin/user-group-view', { group, datsetCount });
 };
 
 export const listUserGroups = async (req: Request, res: Response, next: NextFunction) => {
