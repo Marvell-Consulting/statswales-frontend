@@ -33,7 +33,7 @@ export const listAllDatasets = async (req: Request, res: Response, next: NextFun
   }
 };
 
-export const displayDatasetPreview = async (req: Request, res: Response, next: NextFunction) => {
+export const displayDatasetPreview = async (req: Request, res: Response) => {
   const dataset = singleLangDataset(res.locals.dataset, req.language);
   const datasetStatus = getDatasetStatus(res.locals.dataset);
   const publishingStatus = getPublishingStatus(res.locals.dataset);
@@ -50,18 +50,19 @@ export const displayDatasetPreview = async (req: Request, res: Response, next: N
   let unProcessedFilelist: FileImportDto[] = [];
 
   try {
-    logger.debug(`Sending request to backend...`);
+    logger.debug(`Sending request to backend for preview of dataset ${dataset.id}...`);
     datasetView = await req.pubapi.getDatasetView(dataset.id, page, pageSize);
+  } catch (err) {
+    logger.error(err);
+  }
+
+  try {
+    logger.debug(`Sending request to backend for file list of dataset ${dataset.id}...`);
     unProcessedFilelist = await req.pubapi.getDatasetFileList(dataset.id);
   } catch (err) {
     logger.error(err);
-    next(new NotFoundException());
-    return;
   }
-  if (!datasetView) {
-    next(new NotFoundException());
-    return;
-  }
+
   unProcessedFilelist = unProcessedFilelist.sort((fileA, fileB) => fileA.filename.localeCompare(fileB.filename));
   unProcessedFilelist.unshift({
     filename: t('developer.display.all_files', { lng: req.language }),
@@ -94,7 +95,11 @@ export const displayDatasetPreview = async (req: Request, res: Response, next: N
       fileList[fileList.length - 1].push(file);
     }
   });
-  res.locals.pagination = generateSequenceForNumber(datasetView?.current_page, datasetView?.total_pages);
+
+  if (datasetView) {
+    res.locals.pagination = generateSequenceForNumber(datasetView?.current_page, datasetView?.total_pages);
+  }
+
   logger.debug(`Developer view details:\n${JSON.stringify({ ...datasetView, dataset, page, pageSize }, null, 2)}`);
   res.render('developer/data', {
     ...datasetView,
