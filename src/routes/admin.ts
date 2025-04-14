@@ -15,21 +15,14 @@ import {
   viewUser,
   userStatus
 } from '../controllers/admin';
+import { ensureAdmin } from '../middleware/ensure-admin';
 import { flashMessages } from '../middleware/flash';
-import { ForbiddenException } from '../exceptions/forbidden.exception';
 
 export const admin = Router();
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-admin.use(flashMessages);
-
-admin.use((req: Request, res: Response, next: NextFunction) => {
-  if (!res.locals.isAdmin) {
-    next(new ForbiddenException());
-  }
-  next();
-});
+admin.use(ensureAdmin, flashMessages);
 
 admin.use('/group', (req: Request, res: Response, next: NextFunction) => {
   res.locals.activePage = 'groups';
