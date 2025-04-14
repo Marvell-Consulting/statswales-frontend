@@ -13,7 +13,28 @@
   font-size: 18px;
   line-height: 24px;
 }
-.wg h1, .wg h2, .wg h3, .wg h4, .wg h5, .wg h6, .wg p, .wg ol, .wg ul, .wg a, .wg table, .wg .govuk-header__link, .wg .govuk-task-list__status, .wg .govuk-tag, .wg .govuk-input, .wg .govuk-label, .wg .govuk-button, .wg .govuk-select, .wg dl, .wg .govuk-accordion__section-heading-text, .wg span, .wg .govuk-inset-text {
+.wg h1,
+.wg h2,
+.wg h3,
+.wg h4,
+.wg h5,
+.wg h6,
+.wg p,
+.wg ol,
+.wg ul,
+.wg a,
+.wg table,
+.wg .govuk-header__link,
+.wg .govuk-task-list__status,
+.wg .govuk-tag,
+.wg .govuk-input,
+.wg .govuk-label,
+.wg .govuk-button,
+.wg .govuk-select,
+.wg dl,
+.wg .govuk-accordion__section-heading-text,
+.wg span,
+.wg .govuk-inset-text {
   font-family: Arial, Helvetica, "Nimbus Sans L", sans-serif;
 }
 .wg ul.li,
@@ -1938,7 +1959,8 @@
   animation: rotation 2s linear infinite;
 }
 .wg .source-list-item,
-.wg .govuk-table__header, .wg .govuk-table__cell {
+.wg .govuk-table__header,
+.wg .govuk-table__cell {
   border-bottom: 1px solid #b5b5b5;
 }
 .wg .govuk-table__head {

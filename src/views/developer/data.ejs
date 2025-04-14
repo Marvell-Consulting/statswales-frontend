@@ -3,7 +3,6 @@
     <div class="govuk-width-container app-width-container">
 
         <main class="govuk-main-wrapper" id="main-content" role="main">
-            <% if (locals?.data) { %>
                 <div class="govuk-grid-row">
                     <div class="govuk-grid-column-two-thirds">
                         <h1 class="govuk-heading-xl govuk-!-margin-bottom-2"><%= datasetTitle %></h1>
@@ -367,7 +366,7 @@
                 </div>
 
                 <hr>
-
+            <% if (locals?.data) { %>
                 <div class="govuk-grid-row">
                     <div class="govuk-grid-column-full" style="text-align: right;">
                         <form method="get" role="page-size" class="govuk-!-margin-bottom-0">
@@ -425,10 +424,6 @@
                 </div>
 
                 <%- include("../partials/pagination", t, locals.current_page, locals.total_records, locals.pagaination); %>
-            <% } else { %>
-                <h1 class="govuk-heading-l"><%= t('display.title') %></h1>
-
-                <%= include('../partials/error-handler') %>
             <% } %>
         </main>
     </div>
