@@ -509,10 +509,10 @@
           }
         },
         "group_id": {
-            "error": {
-              "missing": "No group has been selected for this dataset. You need to create this dataset again from the dataset list."
-            }
+          "error": {
+            "missing": "No group has been selected for this dataset. You need to create this dataset again from the dataset list."
           }
+        }
       }
     },
     "summary": {
