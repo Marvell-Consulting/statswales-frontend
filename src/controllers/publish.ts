@@ -5,7 +5,7 @@ import { sortBy } from 'lodash';
 import { FieldValidationError, matchedData } from 'express-validator';
 import { nanoid } from 'nanoid';
 import { v4 as uuid } from 'uuid';
-import { isBefore, isValid, parseISO } from 'date-fns';
+import { isBefore, isValid } from 'date-fns';
 import { parse } from 'csv-parse';
 
 import {
@@ -68,6 +68,7 @@ import { NumberType } from '../enums/number-type';
 import { PreviewMetadata } from '../interfaces/preview-metadata';
 import slugify from 'slugify';
 import { DuckDBSupportFileFormats } from '../enums/support-fileformats';
+import { TZDate } from '@date-fns/tz';
 
 export const start = (req: Request, res: Response) => {
   req.session.errors = undefined;
@@ -2330,7 +2331,7 @@ export const providePublishDate = async (req: Request, res: Response) => {
   let values = { year: '', month: '', day: '', hour: '09', minute: '30' };
 
   if (revision.publish_at) {
-    const publishAt = new Date(revision.publish_at);
+    const publishAt = new TZDate(revision.publish_at, 'Europe/London');
     values = {
       year: publishAt.getFullYear().toString(),
       month: (publishAt.getMonth() + 1).toString().padStart(2, '0'),
@@ -2356,7 +2357,15 @@ export const providePublishDate = async (req: Request, res: Response) => {
         minute: req.body.minute ? req.body.minute.padStart(2, '0') : ''
       };
 
-      const publishDate = parseISO(`${values.year}-${values.month}-${values.day}T${values.hour}:${values.minute}:00`);
+      const publishDate = new TZDate(
+        Number(values.year),
+        // month is 0-11
+        Number(values.month) - 1,
+        Number(values.day),
+        Number(values.hour),
+        Number(values.minute),
+        'Europe/London'
+      );
 
       if (!isValid(publishDate)) {
         dateError = { field: 'date', message: { key: 'publish.schedule.form.date.error.invalid' } };

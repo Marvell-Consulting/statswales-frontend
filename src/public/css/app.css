@@ -1904,6 +1904,11 @@
   background-image: url("../assets/images/StatsWales.svg");
   background-size: cover;
 }
+.wg[lang^=cy] .statsWales-logo {
+  background-image: url("../assets/images/StatsCymru.svg");
+  width: 183.75px;
+  height: 31.5px;
+}
 .wg .table-border {
   border-right: 1px solid #999999;
 }
