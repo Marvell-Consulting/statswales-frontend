@@ -43,7 +43,8 @@ import {
   updateDatatable,
   measureName,
   setupNumberDimension,
-  deleteDraftDataset
+  deleteDraftDataset,
+  provideDatasetGroup
 } from '../controllers/publish';
 import { DatasetInclude as Include } from '../enums/dataset-include';
 
@@ -54,6 +55,9 @@ const upload = multer({ storage: multer.memoryStorage() });
 publish.get('/', start);
 
 /* Dataset creation */
+publish.get('/group', provideDatasetGroup);
+publish.post('/group', upload.none(), provideDatasetGroup);
+
 publish.get('/title', provideTitle);
 publish.post('/title', upload.none(), provideTitle);
 

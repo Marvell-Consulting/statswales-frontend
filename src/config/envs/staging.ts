@@ -13,7 +13,7 @@ export function getStagingConfig(): AppConfig {
       store: SessionStore.Redis
     },
     auth: {
-      providers: [AuthProvider.EntraId, AuthProvider.Google, AuthProvider.Local],
+      providers: [AuthProvider.EntraId],
       jwt: {
         cookieDomain: process.env.BACKEND_URL
           ? process.env.BACKEND_URL.replace('statswales-develop-backend.', '')

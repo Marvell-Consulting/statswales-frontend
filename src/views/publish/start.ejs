@@ -2,17 +2,22 @@
 
 <div class="govuk-width-container app-width-container">
 	<main class="govuk-main-wrapper" id="main-content" role="main">
+
 		<h1 class="govuk-heading-xl"><%= t('publish.start.title') %></h1>
 		<%- include("../partials/error-handler"); %>
+
 		<p class="govuk-body"><%= t('publish.start.p1') %></p>
+
 		<ul class="govuk-list govuk-list--bullet">
 			<li><%= t('publish.start.data_table') %></li>
 			<li><%= t('publish.start.lookup_table') %></li>
 			<li><%= t('publish.start.metadata') %></li>
 		</ul>
+
 		<div class="govuk-button-group">
-			<a href="<%= buildUrl('/publish/title', i18n.language) %>" class="govuk-button"><%= t('buttons.continue') %></a>
+			<a href="<%= buildUrl(`/publish/${nextStep}`, i18n.language) %>" class="govuk-button"><%= t('buttons.continue') %></a>
 		</div>
+
 	</main>
 </div>
 
