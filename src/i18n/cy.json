@@ -34,6 +34,7 @@
     "product_name": "StatsCymru F3.0",
     "beta": "Beta",
     "feedback": "Rydych chi'n edrych ar fersiwn newydd o StatsCymru.  Gallwch gael cymorth trwy droi at <a class=\"govuk-link\" href=\"mailto:{{support_email}}\">{{support_email}}</a>.",
+    "logo": "StatsCymru logo",
     "navigation": {
       "menu": "Dewislen",
       "skip_to_content": "Neidio i'r prif gynnwys",
