@@ -1295,12 +1295,12 @@
         }
       },
       "organisation": {
-        "heading": "Which organisation does this group belong to?",
+        "heading": "Which organisation does the group belong to?",
         "form": {
           "organisation_id": {
             "label": "Organisation",
             "placeholder": "Select organisation",
-            "error": "Select an organisation"
+            "error": "Select the organisation the group belongs to"
           }
         },
         "error": {
@@ -1308,7 +1308,7 @@
         }
       },
       "email": {
-        "heading": "What is the public facing email address for datasets in this group?",
+        "heading": "What is the public email address for datasets in the group?",
         "form": {
           "email_en": {
             "label": "Enter the email in English",
