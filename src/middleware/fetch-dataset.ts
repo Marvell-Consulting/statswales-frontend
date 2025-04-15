@@ -20,7 +20,7 @@ export const fetchDataset = (include?: DatasetInclude) => {
       res.locals.datasetId = dataset.id;
       res.locals.dataset = dataset;
     } catch (err: any) {
-      if (err.status === 401) {
+      if ([401, 403].includes(err.status)) {
         next(err);
         return;
       }
