@@ -488,8 +488,8 @@
       "form": {
         "group_id": {
           "error": {
-            "invalid": "Select a group for this dataset",
-            "missing": "Select a group for this dataset"
+            "invalid": "Select which group this dataset should belong to",
+            "missing": "Select which group this dataset should belong to"
           }
         }
       }
