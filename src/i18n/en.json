@@ -93,6 +93,7 @@
     "table": {
       "id": "ID",
       "title": "Title",
+      "group": "Group",
       "last_updated": "Last updated",
       "dataset_status": "Dataset status",
       "publish_status": "Publishing status",
