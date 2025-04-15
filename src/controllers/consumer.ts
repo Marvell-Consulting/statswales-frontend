@@ -5,7 +5,7 @@ import slugify from 'slugify';
 
 import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
-import { getPaginationProps } from '../utils/pagination';
+import { generateSequenceForNumber, getPaginationProps } from '../utils/pagination';
 import { singleLangDataset } from '../utils/single-lang-dataset';
 import { getDatasetPreview } from '../utils/dataset-preview';
 import { NotFoundException } from '../exceptions/not-found.exception';
@@ -31,15 +31,20 @@ export const listPublishedDatasets = async (req: Request, res: Response, next: N
 export const viewPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
   const dataset = singleLangDataset(res.locals.dataset, req.language);
   const revision = dataset.published_revision;
+  const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
+  const pageSize = Number.parseInt(req.query.page_size as string, 10) || 10;
+  let pagination: (string | number)[] = [];
 
   if (!dataset.live || !revision) {
     next(new NotFoundException('no published revision found'));
     return;
   }
 
-  const preview = await getDatasetPreview(dataset, revision);
+  const datasetMetadata = await getDatasetPreview(dataset, revision);
+  const preview = await req.conapi.getPublishedDatasetView(dataset.id, pageSize, pageNumber, undefined);
+  pagination = generateSequenceForNumber(preview.current_page, preview.total_pages);
 
-  res.render('consumer/view', { dataset, preview });
+  res.render('consumer/view', { ...preview, datasetMetadata, pagination });
 };
 
 export const downloadPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {

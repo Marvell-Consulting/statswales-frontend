@@ -1213,6 +1213,15 @@
       "duplicate_table_summary": "Show all duplicate facts"
     }
   },
+  "consumer_view": {
+    "about_this_dataset": "About this dataset",
+    "data": "Data",
+    "download": "Download",
+    "filter": "Filters",
+    "apply_filters": "Apply Filters",
+    "start_date": "Start Date",
+    "end_date": "End Date"
+  },
   "routes": {
     "healthcheck": "healthcheck",
     "feedback": "feedback",

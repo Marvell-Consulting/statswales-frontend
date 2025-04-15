@@ -10,6 +10,7 @@ import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
 import { FileFormat } from '../enums/file-format';
 import { AuthProvider } from '../enums/auth-providers';
+import { ViewDTO } from '../dtos/view-dto';
 
 const config = appConfig();
 
@@ -79,6 +80,24 @@ export class ConsumerApi {
   public async getPublishedDataset(datasetId: string): Promise<DatasetDTO> {
     logger.debug(`Fetching published dataset: ${datasetId}`);
     return this.fetch({ url: `published/${datasetId}` }).then((response) => response.json() as unknown as DatasetDTO);
+  }
+
+  public async getPublishedDatasetView(
+    datasetId: string,
+    pageSize: number,
+    pageNumber: number,
+    sortBy?: string
+  ): Promise<ViewDTO> {
+    logger.debug(`Fetching published view of dataset: ${datasetId}`);
+    let params = '';
+    if (sortBy) {
+      params = `${new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString(), sort_by: sortBy }).toString()}`;
+    } else {
+      params = `${new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString() }).toString()}`;
+    }
+    return this.fetch({ url: `published/${datasetId}/view?${params}` }).then(
+      (response) => response.json() as unknown as ViewDTO
+    );
   }
 
   public async getCubeFileStream(datasetId: string, format: FileFormat): Promise<ReadableStream> {
