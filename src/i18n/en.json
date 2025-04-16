@@ -99,6 +99,11 @@
       "publish_status": "Publishing status",
       "not_translated": "Not yet translated"
     },
+    "no_results": {
+      "summary": "You do not have access to any datasets. You have either:",
+      "summary_1": "been added to a group with no datasets in it",
+      "summary_2": "not been given editor or approver access to any groups"
+    },
     "status": {
       "new": "New",
       "live": "Live"
