@@ -43,7 +43,7 @@
                                             <a href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language) %>" class="govuk-link"><%= dataset.title || `${dataset.title_alt} [${t('homepage.table.not_translated')}]` %></a>
                                         <% } %>
                                     </td>
-                                    <td class="govuk-table__cell"><%= dataset.group_name %></td>
+                                    <td class="govuk-table__cell group"><%= dataset.group_name %></td>
                                     <td class="govuk-table__cell date"><%= dateFormat(dataset.last_updated, 'd MMMM yyyy', { locale: i18n.language }) %></td>
                                     <td class="govuk-table__cell status">
                                         <% if (dataset.status) { %>
@@ -75,7 +75,7 @@
 </div>
 
 <style>
-    td.date, td.status {
+    td.group, td.date, td.status {
         white-space: nowrap;
     }
     .govuk-tag {
