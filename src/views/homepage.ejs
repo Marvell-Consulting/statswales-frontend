@@ -67,6 +67,12 @@
                     <% if (locals.total_pages > 1) { %>
                         <%- include("partials/pagination"); %>
                     <% } %>
+                <% } else { %>
+                    <p class="govuk-body"><%= t('homepage.no_results.summary') %></p>
+                    <ul class="govuk-list govuk-list--bullet">
+                        <li><%= t('homepage.no_results.summary_1') %></li>
+                        <li><%= t('homepage.no_results.summary_2') %></li>
+                    </ul>
                 <% } %>
             </div>
         </div>
