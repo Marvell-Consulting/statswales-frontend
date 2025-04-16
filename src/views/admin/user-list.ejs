@@ -16,6 +16,7 @@
                   <tr class="govuk-table__row">
                     <th class="govuk-table__header"><%= t('admin.user.list.table.name') %></th>
                     <th class="govuk-table__header"><%= t('admin.user.list.table.groups') %></th>
+                    <th class="govuk-table__header"><%= t('admin.user.list.table.login') %></th>
                     <th class="govuk-table__header"><%= t('admin.user.list.table.status') %></th>
                   </tr>
                 </thead>
@@ -24,6 +25,7 @@
                     <tr class="govuk-table__row">
                       <td class="govuk-table__cell"><a href="<%= buildUrl(`/admin/user/${user.id}`, i18n.language) %>" class="govuk-link"><%= user.full_name || user.email %></a></td>
                       <td class="govuk-table__cell"><%= user.groups?.length || 0 %></td>
+                      <td class="govuk-table__cell"><%= user.last_login_at ? dateFormat(user.last_login_at, 'd MMMM yyyy h:mm a') : t('admin.user.view.login_never') %></td>
                       <td class="govuk-table__cell">
                         <strong class="govuk-tag govuk-tag--<%= statusToColour(user.status) %>"><%= t(`admin.user.badge.status.${user.status}`) %></strong>
                       </td>

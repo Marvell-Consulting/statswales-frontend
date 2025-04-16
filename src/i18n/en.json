@@ -1341,6 +1341,7 @@
         "table": {
           "name": "Name or email address",
           "groups": "Groups",
+          "login": "Last login",
           "status": "Status"
         },
         "buttons": {

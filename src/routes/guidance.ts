@@ -32,7 +32,7 @@ guidance.get('/', async (req: Request, res: Response) => {
     const title = await getTitle(path.join(fullDocsPath, file));
     documentList.push(`<li><a href="/${req.language}/guidance/${path.parse(file).name}">${title}</a></li>`);
   }
-  const heading = '<h1 class="govuk-heading-l">Guidance</h1>';
+  const heading = '<h1 class="govuk-heading-xl">Guidance</h1>';
   const guidanceList = `<ul class="govuk-list govuk-list--bullet">${documentList.join('\n')}</ul>`;
   const content = `${heading}${guidanceList}`;
   res.render('guidance', { content, tableOfContents: '', title: 'Guidance' });
