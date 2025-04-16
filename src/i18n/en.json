@@ -89,10 +89,11 @@
     }
   },
   "homepage": {
-    "heading": "StatsWales datasets",
+    "heading": "Datasets",
     "table": {
       "id": "ID",
       "title": "Title",
+      "group": "Group",
       "last_updated": "Last updated",
       "dataset_status": "Dataset status",
       "publish_status": "Publishing status",
@@ -1198,7 +1199,10 @@
     },
     "not_found": "Page not found",
     "server_error": "An unknown error occurred, try again later",
-    "forbidden": "You do not have permission to access this page",
+    "forbidden": {
+      "heading": "You do not have permission to access this page",
+      "description": "If you think you should have access to this page, you should contact a service administrator."
+    },
     "dimension_reset": "Something went wrong trying to reset the dimension",
     "fact_table_validation": {
       "incomplete_fact": "Data table has {{count}} incomplete facts",
