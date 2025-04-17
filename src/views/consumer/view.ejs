@@ -3,18 +3,78 @@
     <div class="govuk-width-container">
       <main class="govuk-main-wrapper" id="main-content" role="main">
 
-        <h1 class="govuk-heading-xl"><%= preview.title %></h1>
+        <h1 class="govuk-heading-xl"><%= datasetMetadata.title %></h1>
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+          <div class="govuk-tabs" data-module="govuk-tabs">
+              <div class="tabs">
+                  <div class="govuk-width-container">
+                      <ul class="govuk-tabs__list">
+                          <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                              <a class="govuk-tabs__tab" href="#data">
+                                  <%= t('consumer_view.data') %>
+                              </a>
+                          </li>
+                          <li class="govuk-tabs__list-item">
+                              <a class="govuk-tabs__tab" href="#about-dataset">
+                                  <%= t('consumer_view.about_this_dataset') %>
+                              </a>
+                          </li>
+                          <li class="govuk-tabs__list-item">
+                              <a class="govuk-tabs__tab" href="#past-month">
+                                  <%= t('consumer_view.download') %>
+                              </a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+              <div class="govuk-tabs__panel" id="data">
+                  <div class="govuk-row">
+                      <div class="govuk-grid-column-one-quarter">
+                          <form method="get">
+                              <h2 class="govuk-heading-m"><%= t('consumer_view.filter') %></h2>
+                              <div class="govuk-form-group">
+                              <label class="govuk-label" for="page_size">
+                                  <%= t('pagination.page_size') %>
+                              </label>
+                              <select class="govuk-select" id="page_size" name="page_size">
+                                  <option value="5" <% if (locals.page_size===5) { %>selected <% }; %>>5</option>
+                                  <option value="10" <% if (locals.page_size===10) { %>selected <% }; %>>10</option>
+                                  <option value="25" <% if (locals.page_size===25) { %>selected <% }; %>>25</option>
+                                  <option value="50" <% if (locals.page_size===50) { %>selected <% }; %>>50</option>
+                                  <option value="100" <% if (locals.page_size===100) { %>selected <% }; %>>100</option>
+                                  <option value="250" <% if (locals.page_size===250) { %>selected <% }; %>>250</option>
+                                  <option value="500" <% if (locals.page_size===500) { %>selected <% }; %>>500</option>
+                              </select>
+                              </div>
+                              <div class="govuk-form-group">
+                                  <input class="govuk-button" type="submit" value="<%= t('consumer_view.apply_filters') %>">
+                              </div>
+                          </form>
+                      </div>
+                      <div class="govuk-grid-column-three-quarters">
+                          <%- include("partials/view-table", {headers, data}); %>
+                          <%- include("../partials/pagination"); %>
+                      </div>
+                  </div>
+              </div>
+              <div class="govuk-tabs__panel govuk-tabs__panel--hidden" id="about-dataset">
+                  <%- include("../partials/dataset/key-info", { keyInfo: datasetMetadata.keyInfo }); %>
 
-        <%- include("../partials/dataset/key-info", { keyInfo: preview.keyInfo }); %>
+                  <%- include("../partials/dataset/notes", { notes: datasetMetadata.notes }); %>
 
-        <%- include("../partials/dataset/download"); %>
+                  <%- include("../partials/dataset/about", { about: datasetMetadata.about }); %>
 
-        <%- include("../partials/dataset/notes", { notes: preview.notes }); %>
-
-        <%- include("../partials/dataset/about", { about: preview.about }); %>
-
-        <%- include("../partials/dataset/published", { published: preview.published }); %>
-
+                  <%- include("../partials/dataset/published", { published: datasetMetadata.published }); %>
+              </div>
+              <div class="govuk-tabs__panel govuk-tabs__panel--hidden" id="past-month">
+                  <div class="govuk-width-container">
+                    <%- include("../partials/dataset/download"); %>
+                  </div>
+              </div>
+          </div>
+            </div>
+        </div>
       </main>
     </div>
 
