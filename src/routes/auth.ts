@@ -16,7 +16,7 @@ auth.get('/login', async (req: Request, res: Response) => {
   let providers;
 
   try {
-    providers = await req.conapi.getEnabledAuthProviders();
+    providers = await req.pubapi.getEnabledAuthProviders();
   } catch (err) {
     logger.error(err, 'Could not fetch auth providers from backend');
     providers = config.auth.providers;
@@ -31,7 +31,7 @@ auth.get('/login', async (req: Request, res: Response) => {
   res.render('auth/login', { providers });
 });
 
-// TODO: remove once EntraID is available for WG users
+// Should only be used for localstack or testing
 auth.all('/local', urlencoded({ extended: false }), (req: Request, res: Response) => {
   let errors: ViewError[] | undefined;
 
@@ -62,9 +62,16 @@ auth.get('/entraid', (req: Request, res: Response) => {
   res.redirect(`${config.backend.url}/auth/entraid?lang=${req.language}`);
 });
 
-auth.get('/callback', (req: Request, res: Response) => {
+auth.get('/callback', async (req: Request, res: Response) => {
   logger.debug('returning from auth backend');
-  const providers = config.auth.providers;
+  let providers;
+
+  try {
+    providers = await req.pubapi.getEnabledAuthProviders();
+  } catch (err) {
+    logger.error(err, 'Could not fetch auth providers from backend');
+    providers = config.auth.providers;
+  }
 
   try {
     if (req.query.error) {

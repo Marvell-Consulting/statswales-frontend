@@ -35,7 +35,6 @@ services:
       LOG_LEVEL: 'debug'
       TEST_DB_HOST: 'db'
       TEST_DB_PORT: 5432
+      TEST_DB_SYNC: 'false'
       AZURE_BLOB_STORAGE_URL: 'http://blobstorage:10000/devstoreaccount1'
-    command: node dist/server.js # override command to prevent running migrations (autosync is on for CI env)
-    post_start:
-      - command: sh -c "npm run seed:required && npm run seed:ci"
+    command: sh -c "npm run seed:required && npm run seed:ci && exec npm run start"
