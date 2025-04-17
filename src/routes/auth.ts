@@ -16,7 +16,7 @@ auth.get('/login', async (req: Request, res: Response) => {
   let providers;
 
   try {
-    providers = await req.conapi.getEnabledAuthProviders();
+    providers = await req.pubapi.getEnabledAuthProviders();
   } catch (err) {
     logger.error(err, 'Could not fetch auth providers from backend');
     providers = config.auth.providers;
@@ -67,7 +67,7 @@ auth.get('/callback', async (req: Request, res: Response) => {
   let providers;
 
   try {
-    providers = await req.conapi.getEnabledAuthProviders();
+    providers = await req.pubapi.getEnabledAuthProviders();
   } catch (err) {
     logger.error(err, 'Could not fetch auth providers from backend');
     providers = config.auth.providers;

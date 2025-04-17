@@ -36,6 +36,7 @@ import { UserCreateDTO } from '../dtos/user/user-create-dto';
 import { AvailableRoles } from '../interfaces/available-roles';
 import { RoleSelectionDTO } from '../dtos/user/role-selection-dto';
 import { UserStatus } from '../enums/user-status';
+import { AuthProvider } from '../enums/auth-providers';
 
 const config = appConfig();
 
@@ -99,6 +100,12 @@ export class PublisherApi {
       logger.debug('API responded to ping');
       return true;
     });
+  }
+
+  public async getEnabledAuthProviders(): Promise<AuthProvider[]> {
+    return this.fetch({ url: 'auth/providers' })
+      .then((response) => response.json())
+      .then((body) => body.enabled as unknown as AuthProvider[]);
   }
 
   public async createDataset(title: string, userGroupId: string, language?: string): Promise<DatasetDTO> {
