@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 
-import { publisherContext } from '../../playwright/.auth/contexts';
 import { appConfig } from '../../src/config';
 
 import { TitlePage } from './pages/title-page';
+import { users } from '../fixtures/logins';
 
 const config = appConfig();
 const baseUrl = config.frontend.url;
@@ -23,7 +23,7 @@ test.describe('Title page', () => {
   });
 
   test.describe('Authed as a publisher', () => {
-    test.use({ storageState: publisherContext });
+    test.use({ storageState: users.publisher.path });
 
     test.beforeEach(async () => {
       await titlePage.goto();

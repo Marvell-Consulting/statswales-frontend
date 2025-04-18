@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
-
-import { publisherContext } from '../playwright/.auth/contexts';
+import { users } from '../fixtures/logins';
 
 test.describe('Not authed', () => {
   test('Redirects to login page when not authenticated', async ({ page }) => {
@@ -10,18 +9,18 @@ test.describe('Not authed', () => {
 });
 
 test.describe('Authed as a publisher', () => {
-  test.use({ storageState: publisherContext });
+  test.use({ storageState: users.publisher.path });
 
   test('Has a heading', async ({ page }) => {
     await page.goto('/en-GB');
-    await expect(page.getByRole('heading', { name: 'StatsWales datasets' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Datasets' })).toBeVisible();
   });
 
   test('Can switch to Welsh', async ({ page }) => {
     // TODO: waiting on translations
     await page.goto('/en-GB');
     await page.getByText('Cymraeg').click();
-    await expect(page.getByRole('heading', { name: 'Setiau data StatsCymru' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Setiau data' })).toBeVisible();
   });
 
   test('Displays a table listing datasets', async ({ page }) => {

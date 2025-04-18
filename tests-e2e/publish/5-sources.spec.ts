@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
 
-import { publisherContext } from '../../playwright/.auth/contexts';
 import { appConfig } from '../../src/config';
 import { sources as dataset } from '../fixtures/datasets';
 
 import { SourcesPage } from './pages/sources-page';
+import { users } from '../fixtures/logins';
 
 const config = appConfig();
 const baseUrl = config.frontend.url;
@@ -24,7 +24,7 @@ test.describe('Sources page', () => {
   });
 
   test.describe('Authed as a publisher', () => {
-    test.use({ storageState: publisherContext });
+    test.use({ storageState: users.publisher.path });
 
     test.beforeEach(async () => {
       await sourcesPage.goto(dataset.id);

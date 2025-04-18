@@ -42,3 +42,6 @@ yarn.lock
 
 # ignore IDE settings
 .vscode/
+playwright/.auth
+
+playwright/.auth
