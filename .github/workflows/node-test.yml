@@ -31,7 +31,11 @@ jobs:
       - run: npm run build
       - run: npm run test:ci
 
-      - run: npm run docker-compose-up
+      - name: Run docker compose
+        uses: hoverkraft-tech/compose-action@v2
+        with:
+          up-flags: -d
+          compose-version: 'latest'
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
@@ -52,5 +56,3 @@ jobs:
           name: playwright-report
           path: playwright/results/
           retention-days: 30
-
-      - run: npm run docker-compose-down
