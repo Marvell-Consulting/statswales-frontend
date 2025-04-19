@@ -37,5 +37,4 @@ services:
       TEST_DB_PORT: 5432
       TEST_DB_SYNC: 'true'
       AZURE_BLOB_STORAGE_URL: 'http://blobstorage:10000/devstoreaccount1'
-    post_start:
-      - command: sh -c "npm run migration:run && npm run seed:required && npm run seed:ci"
+    command: sh -c "npm run migration:run && npm run seed:required && npm run seed:ci && sleep 5 && exec npm run start"
