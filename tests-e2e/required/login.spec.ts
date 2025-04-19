@@ -11,12 +11,7 @@ test('Can switch to Welsh', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Mewngofnodi' })).toBeVisible();
 });
 
-test('Provides Google auth', async ({ page }) => {
+test('Provides Form auth', async ({ page }) => {
   await page.goto('/en-GB/auth/login');
-  await expect(page.getByRole('link', { name: 'Google' })).toBeVisible();
-});
-
-test('Provides Microsoft (EntraID) auth', async ({ page }) => {
-  await page.goto('/en-GB/auth/login');
-  await expect(page.getByRole('link', { name: 'Microsoft' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Form' })).toBeVisible();
 });

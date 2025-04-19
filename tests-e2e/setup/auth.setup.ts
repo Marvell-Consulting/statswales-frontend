@@ -1,34 +1,31 @@
-import { test as setup } from '@playwright/test';
-import JWT from 'jsonwebtoken';
+import { test as setup, expect, Page, TestInfo } from '@playwright/test';
+import { users } from '../fixtures/logins';
 
-import { appConfig } from '../../src/config';
-import { User } from '../../src/interfaces/user.interface';
-import { adminContext, publisherContext, approverContext } from '../../playwright/.auth/contexts';
-import { admin1, publisher1, approver1 } from '../fixtures/users';
+async function login(page: Page, user: { username: string; path: string }, testInfo: TestInfo) {
+  // Perform authentication steps. Replace these actions with your own.
+  await page.goto('/en-GB/auth/login');
+  await page.getByRole('link', { name: 'Form' }).click();
+  await page.getByLabel('Username').fill(user.username);
+  await page.getByRole('button', { name: 'Continue' }).click();
 
-const config = appConfig();
-const jwtSecret = config.auth.jwt.secret;
+  const screenshotPath = testInfo.outputPath(`${user.username}.png`);
+  testInfo.attachments.push({ name: 'screenshot', path: screenshotPath, contentType: 'image/png' });
+  // Take the screenshot itself.
+  await page.screenshot({ path: screenshotPath, timeout: 5000 });
 
-const jwtCookie = (user: User) => {
-  return {
-    name: 'jwt',
-    value: JWT.sign({ user }, jwtSecret),
-    domain: 'localhost',
-    path: '/'
-  };
-};
+  await expect(page.getByRole('heading', { name: 'Datasets' })).toBeVisible();
 
-setup('authenticate as admin', async ({ page }) => {
-  await page.context().addCookies([jwtCookie(admin1)]);
-  await page.context().storageState({ path: adminContext });
+  await page.context().storageState({ path: user.path });
+}
+
+setup('authenticate as admin', async ({ page }, testInfo) => {
+  await login(page, users.admin, testInfo);
 });
 
-setup('authenticate as publisher', async ({ page }) => {
-  await page.context().addCookies([jwtCookie(publisher1)]);
-  await page.context().storageState({ path: publisherContext });
+setup('authenticate as publisher', async ({ page }, testInfo) => {
+  await login(page, users.publisher, testInfo);
 });
 
-setup('authenticate as approver', async ({ page }) => {
-  await page.context().addCookies([jwtCookie(approver1)]);
-  await page.context().storageState({ path: approverContext });
+setup('authenticate as approver', async ({ page }, testInfo) => {
+  await login(page, users.approver, testInfo);
 });
