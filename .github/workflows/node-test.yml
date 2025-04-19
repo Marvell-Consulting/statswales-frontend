@@ -34,7 +34,7 @@ jobs:
       - name: Run docker compose
         uses: hoverkraft-tech/compose-action@v2
         with:
-          up-flags: -d --wait
+          # up-flags: -d --wait
           compose-version: 'latest'
 
       - name: Install Playwright Browsers
