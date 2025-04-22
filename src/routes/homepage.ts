@@ -4,7 +4,7 @@ import { flashErrors, flashMessages } from '../middleware/flash';
 import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
 import { getPaginationProps } from '../utils/pagination';
-import { getEditorUserGroups } from '../utils/get-editor-user-groups';
+import { getEditorUserGroups } from '../utils/user-permissions';
 
 export const homepage = Router();
 
