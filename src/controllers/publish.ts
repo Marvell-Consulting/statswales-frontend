@@ -72,6 +72,7 @@ import { DuckDBSupportFileFormats } from '../enums/support-fileformats';
 import { TZDate } from '@date-fns/tz';
 import { singleLangUserGroup } from '../utils/single-lang-user-group';
 import { getEditorUserGroups, isEditor } from '../utils/user-permissions';
+import { PublishingStatus } from '../enums/publishing-status';
 
 export const start = (req: Request, res: Response) => {
   req.session.errors = undefined;
@@ -438,38 +439,37 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
   }
 };
 
-export const deleteDraftDataset = async (req: Request, res: Response) => {
+export const deleteDraft = async (req: Request, res: Response) => {
   const dataset = singleLangDataset(res.locals.dataset, req.language);
   const datasetStatus = getDatasetStatus(res.locals.dataset);
   const publishingStatus = getPublishingStatus(res.locals.dataset);
-  const revision = dataset.draft_revision!;
-  const datasetTitle = revision.metadata?.title;
+  const draftRevision = dataset.draft_revision!;
+  const draftType = publishingStatus === PublishingStatus.UpdateIncomplete ? 'update' : 'dataset';
+  const datasetTitle = draftRevision.metadata?.title;
   const errors: ViewError[] = [];
+
   if (req.method === 'POST') {
     try {
-      await req.pubapi.deleteDraftDataset(dataset.id);
-      req.session.flash = ['flash.dataset.draft_deleted'];
+      if (publishingStatus === PublishingStatus.Incomplete) {
+        await req.pubapi.deleteDraftDataset(dataset.id);
+        req.session.flash = [`publish.delete_draft.${draftType}.success`];
+      } else if (publishingStatus === PublishingStatus.UpdateIncomplete) {
+        await req.pubapi.deleteDraftRevision(dataset.id, draftRevision.id);
+        req.session.flash = [`publish.delete_draft.${draftType}.success`];
+      } else {
+        throw new Error('Cannot delete a revision that is already published');
+      }
       req.session.save();
       res.redirect(req.buildUrl(`/`, req.language));
       return;
     } catch (error) {
-      logger.error(error, `Failed to delete draft dataset`);
-      errors.push({
-        field: 'unknown',
-        message: {
-          key: 'errors.dataset.delete_failed'
-        }
-      });
+      logger.error(error, `Failed to delete draft`);
+      errors.push({ field: 'unknown', message: { key: `publish.delete_draft.${draftType}.error` } });
       res.status(500);
     }
   }
 
-  res.render('publish/delete-draft', {
-    datasetTitle,
-    datasetStatus,
-    errors: errors.length > 0 ? errors : undefined,
-    publishingStatus
-  });
+  res.render('publish/delete-draft', { datasetTitle, datasetStatus, publishingStatus, errors });
 };
 
 export const cubePreview = async (req: Request, res: Response) => {

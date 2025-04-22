@@ -208,10 +208,21 @@
       "panel": "This is a preview of this dataset.",
       "heading": "Main information"
     },
-    "delete_dataset": {
-      "heading": "By continuing, you confirm this dataset should be deleted",
-      "message": "All data for this dataset will be removed permanently. This cannot be undone.",
-      "button": "Delete dataset"
+    "delete_draft": {
+      "dataset": {
+        "heading": "By continuing, you confirm this dataset should be deleted",
+        "message": "All data for this dataset will be removed permanently. This cannot be undone.",
+        "button": "Delete dataset",
+        "success": "Dataset has been deleted successfully",
+        "error": "Failed to delete dataset due to a server error"
+      },
+      "update": {
+        "heading": "By continuing, you confirm this update should be deleted",
+        "message": "All data from this update will be removed permanently, but the published dataset will not be affected. This cannot be undone.",
+        "button": "Delete update",
+        "success": "Update has been deleted successfully",
+        "error": "Failed to delete update due to a server error"
+      }
     },
     "start": {
       "title": "Create a new dataset",
@@ -884,7 +895,10 @@
     "tasklist": {
       "no_title": "No title available",
       "preview": "Preview (opens in new tab)",
-      "delete": "Delete this dataset",
+      "delete": {
+        "dataset": "Delete this dataset",
+        "update": "Delete this update"
+      },
       "status": {
         "cannot_start": "Cannot start yet",
         "available": "Available",
@@ -1089,15 +1103,7 @@
       }
     }
   },
-  "flash": {
-    "dataset": {
-      "draft_deleted": "Dataset has been deleted successfully"
-    }
-  },
   "errors": {
-    "dataset": {
-      "delete_failed": "Failed to delete dataset due a server error"
-    },
     "confirm": {
       "missing": "You need to confirm or reject the uploaded file using the buttons at the end of the preview"
     },
