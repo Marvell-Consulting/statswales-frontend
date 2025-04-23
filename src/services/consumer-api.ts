@@ -8,8 +8,8 @@ import { ApiException } from '../exceptions/api.exception';
 import { Locale } from '../enums/locale';
 import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
-import { AuthProvider } from '../enums/auth-providers';
 import { ViewDTO } from '../dtos/view-dto';
+import { FileFormat } from '../enums/file-format';
 
 const config = appConfig();
 
