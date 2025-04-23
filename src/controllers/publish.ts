@@ -1,7 +1,7 @@
 import { Readable } from 'node:stream';
 
 import { NextFunction, Request, Response } from 'express';
-import { sortBy } from 'lodash';
+import { get, set, sortBy } from 'lodash';
 import { FieldValidationError, matchedData } from 'express-validator';
 import { nanoid } from 'nanoid';
 import { v4 as uuid } from 'uuid';
@@ -71,18 +71,15 @@ import slugify from 'slugify';
 import { DuckDBSupportFileFormats } from '../enums/support-fileformats';
 import { TZDate } from '@date-fns/tz';
 import { singleLangUserGroup } from '../utils/single-lang-user-group';
-import { getEditorUserGroups } from '../utils/get-editor-user-groups';
+import { getEditorUserGroups, isEditor } from '../utils/user-permissions';
+import { PublishingStatus } from '../enums/publishing-status';
 
 export const start = (req: Request, res: Response) => {
   req.session.errors = undefined;
-  req.session.dimensionPatch = undefined;
-  req.session.updateType = undefined;
   req.session.save();
 
-  const editorGroups = getEditorUserGroups(req.user);
-
   // user must be in at least one group to start a new dataset
-  if (editorGroups.length < 1) {
+  if (!isEditor(req.user)) {
     req.session.errors = [{ field: '', message: { key: 'publish.start.errors.no_groups' } }];
     req.session.save();
     res.redirect(req.buildUrl('/', req.language));
@@ -90,6 +87,7 @@ export const start = (req: Request, res: Response) => {
   }
 
   // if the user is only in a single group, we can bypass group selection and go straight to title
+  const editorGroups = getEditorUserGroups(req.user);
   const datasetGroup = editorGroups[0].group;
   const nextStep = editorGroups.length === 1 ? `title?group_id=${datasetGroup.id}` : 'group';
 
@@ -178,8 +176,10 @@ export const uploadDataTable = async (req: Request, res: Response) => {
   const dataset = res.locals.dataset;
   const revision = dataset.draft_revision;
   const revisit = dataset.dimensions?.length > 0;
-  let errors: ViewError[] = [];
   const supportedFormats = Object.values(DuckDBSupportFileFormats).map((format) => format.toLowerCase());
+  const session = get(req.session, `dataset[${dataset.id}]`, { updateType: undefined });
+  let errors: ViewError[] = [];
+
   if (req.method === 'POST') {
     logger.debug('User is uploading a fact table.');
     try {
@@ -194,14 +194,14 @@ export const uploadDataTable = async (req: Request, res: Response) => {
       const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
       logger.debug('Sending file to backend');
 
-      if (req.session.updateType) {
+      if (session.updateType) {
         logger.info('Performing an update to the dataset');
-        await req.pubapi.uploadCSVToUpdateDataset(dataset.id, revision.id, fileData, fileName, req.session.updateType);
+        await req.pubapi.uploadCSVToUpdateDataset(dataset.id, revision.id, fileData, fileName, session.updateType);
       } else {
         await req.pubapi.uploadDataToDataset(dataset.id, fileData, fileName);
       }
 
-      req.session.updateType = undefined;
+      set(req.session, `dataset[${dataset.id}]`, undefined);
       req.session.save();
       res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
       return;
@@ -237,6 +237,7 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
   const hasUnknownColumns = dataset.fact_table.some((col: FactTableColumnDto) => col.type === 'unknown');
   const isUpdate = Boolean(revision.previous_revision_id);
   const revisit = !isUpdate && !hasUnknownColumns;
+  const session = get(req.session, `dataset[${dataset.id}]`, { updateType: undefined });
 
   let errors: ViewError[] | undefined;
   let previewData: ViewDTO | undefined;
@@ -250,7 +251,7 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
   }
 
   if (req.method === 'POST') {
-    logger.debug(`User is confirming the fact table upload and source_type = ${req.session.updateType}`);
+    logger.debug(`User is confirming the fact table upload and source_type = ${session.updateType}`);
 
     try {
       if (revisit) {
@@ -438,38 +439,37 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
   }
 };
 
-export const deleteDraftDataset = async (req: Request, res: Response) => {
+export const deleteDraft = async (req: Request, res: Response) => {
   const dataset = singleLangDataset(res.locals.dataset, req.language);
   const datasetStatus = getDatasetStatus(res.locals.dataset);
   const publishingStatus = getPublishingStatus(res.locals.dataset);
-  const revision = dataset.draft_revision!;
-  const datasetTitle = revision.metadata?.title;
+  const draftRevision = dataset.draft_revision!;
+  const draftType = publishingStatus === PublishingStatus.UpdateIncomplete ? 'update' : 'dataset';
+  const datasetTitle = draftRevision.metadata?.title;
   const errors: ViewError[] = [];
+
   if (req.method === 'POST') {
     try {
-      await req.pubapi.deleteDraftDataset(dataset.id);
-      req.session.flash = ['flash.dataset.draft_deleted'];
+      if (publishingStatus === PublishingStatus.Incomplete) {
+        await req.pubapi.deleteDraftDataset(dataset.id);
+        req.session.flash = [`publish.delete_draft.${draftType}.success`];
+      } else if (publishingStatus === PublishingStatus.UpdateIncomplete) {
+        await req.pubapi.deleteDraftRevision(dataset.id, draftRevision.id);
+        req.session.flash = [`publish.delete_draft.${draftType}.success`];
+      } else {
+        throw new Error('Cannot delete a revision that is already published');
+      }
       req.session.save();
       res.redirect(req.buildUrl(`/`, req.language));
       return;
     } catch (error) {
-      logger.error(error, `Failed to delete draft dataset`);
-      errors.push({
-        field: 'unknown',
-        message: {
-          key: 'errors.dataset.delete_failed'
-        }
-      });
+      logger.error(error, `Failed to delete draft`);
+      errors.push({ field: 'unknown', message: { key: `publish.delete_draft.${draftType}.error` } });
       res.status(500);
     }
   }
 
-  res.render('publish/delete-draft', {
-    datasetTitle,
-    datasetStatus,
-    errors: errors.length > 0 ? errors : undefined,
-    publishingStatus
-  });
+  res.render('publish/delete-draft', { datasetTitle, datasetStatus, publishingStatus, errors });
 };
 
 export const cubePreview = async (req: Request, res: Response) => {
@@ -1173,15 +1173,17 @@ export const fetchTimeDimensionPreview = async (req: Request, res: Response, nex
 };
 
 export const yearTypeChooser = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const dimension = dataset.dimensions?.find((dim) => dim.id === req.params.dimensionId);
-    if (!dimension) {
-      logger.error('Failed to find dimension in dataset');
-      next(new NotFoundException());
-      return;
-    }
+  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const dimension = dataset.dimensions?.find((dim) => dim.id === req.params.dimensionId);
+  const session = get(req.session, `dataset[${dataset.id}]`, { dimensionPatch: undefined });
 
+  if (!dimension) {
+    logger.error('Failed to find dimension in dataset');
+    next(new NotFoundException());
+    return;
+  }
+
+  try {
     if (req.method === 'POST') {
       if (!req.body.yearType) {
         logger.error('User failed to select an option for year type');
@@ -1200,23 +1202,25 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
         return;
       }
       if (req.body.yearType === 'calendar') {
-        req.session.dimensionPatch = {
+        session.dimensionPatch = {
           dimension_id: req.params.dimensionId,
           dimension_type: DimensionType.DatePeriod,
           date_type: req.body.yearType,
           year_format: 'YYYY'
         };
+        set(req.session, `dataset[${dataset.id}]`, session);
         req.session.save();
         res.redirect(
           req.buildUrl(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/period/type`, req.language)
         );
         return;
       } else {
-        req.session.dimensionPatch = {
+        session.dimensionPatch = {
           dimension_id: req.params.dimensionId,
           dimension_type: DimensionType.Date,
           date_type: req.body.yearType
         };
+        set(req.session, `dataset[${dataset.id}]`, session);
         req.session.save();
         res.redirect(
           req.buildUrl(
@@ -1236,18 +1240,19 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
 };
 
 export const yearFormat = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const dimension = singleLangDataset(res.locals.dataset, req.language).dimensions?.find(
-      (dim) => dim.id === req.params.dimensionId
-    );
-    if (!dimension) {
-      logger.error('Failed to find dimension in dataset');
-      next(new NotFoundException());
-      return;
-    }
+  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const dimension = dataset.dimensions?.find((dim) => dim.id === req.params.dimensionId);
+  const session = get(req.session, `dataset[${dataset.id}]`, { dimensionPatch: undefined });
 
+  if (!dimension) {
+    logger.error('Failed to find dimension in dataset');
+    next(new NotFoundException());
+    return;
+  }
+
+  try {
     if (req.method === 'POST') {
-      if (!req.session.dimensionPatch || req.session.dimensionPatch.dimension_id !== dimension.id) {
+      if (!session.dimensionPatch || session.dimensionPatch.dimension_id !== dimension.id) {
         logger.error('Failed to find patch information in the session.');
         throw new Error('Year type not set in previous step');
       }
@@ -1267,7 +1272,8 @@ export const yearFormat = async (req: Request, res: Response, next: NextFunction
         });
         return;
       }
-      req.session.dimensionPatch.year_format = req.body.yearType;
+      session.dimensionPatch.year_format = req.body.yearType;
+      set(req.session, `dataset[${dataset.id}]`, session);
       req.session.save();
       res.redirect(
         req.buildUrl(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/period/type`, req.language)
@@ -1283,16 +1289,18 @@ export const yearFormat = async (req: Request, res: Response, next: NextFunction
 };
 
 export const periodType = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const dimension = dataset.dimensions?.find((dim) => dim.id === req.params.dimensionId);
-    if (!dimension) {
-      logger.error('Failed to find dimension in dataset');
-      next(new NotFoundException());
-      return;
-    }
+  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const dimension = dataset.dimensions?.find((dim) => dim.id === req.params.dimensionId);
+  const session = get(req.session, `dataset[${dataset.id}]`, { dimensionPatch: undefined });
 
-    const patchRequest = req.session.dimensionPatch;
+  if (!dimension) {
+    logger.error('Failed to find dimension in dataset');
+    next(new NotFoundException());
+    return;
+  }
+
+  try {
+    const patchRequest = session.dimensionPatch;
     if (!patchRequest) {
       logger.error('Failed to find patch information in the session');
       req.buildUrl(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/period/`, req.language);
@@ -1372,22 +1380,21 @@ export const periodType = async (req: Request, res: Response, next: NextFunction
 };
 
 export const quarterChooser = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const dimension = dataset.dimensions?.find((dim) => dim.id === req.params.dimensionId);
-    if (!dimension) {
-      logger.error('Failed to find dimension in dataset');
-      next(new NotFoundException());
-      return;
-    }
+  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const dimension = dataset.dimensions?.find((dim) => dim.id === req.params.dimensionId);
+  const session = get(req.session, `dataset[${dataset.id}]`, { dimensionPatch: undefined });
 
-    let quarterTotals = false;
-    if (req.session.dimensionPatch?.month_format) {
-      quarterTotals = true;
-    }
+  if (!dimension) {
+    logger.error('Failed to find dimension in dataset');
+    next(new NotFoundException());
+    return;
+  }
+
+  try {
+    const quarterTotals = session.dimensionPatch?.month_format ? true : false;
 
     if (req.method === 'POST') {
-      const patchRequest = req.session.dimensionPatch;
+      const patchRequest = session.dimensionPatch;
       if (!patchRequest) {
         res.redirect(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}`);
         return;
@@ -1432,12 +1439,14 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
       try {
         await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
 
-        req.session.dimensionPatch = undefined;
+        session.dimensionPatch = undefined;
+        set(req.session, `dataset[${dataset.id}]`, session);
         req.session.save();
         res.redirect(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`);
         return;
       } catch (err) {
-        req.session.dimensionPatch = undefined;
+        session.dimensionPatch = undefined;
+        set(req.session, `dataset[${dataset.id}]`, session);
         req.session.save();
         const error = err as ApiException;
         logger.debug(`Error is: ${JSON.stringify(error, null, 2)}`);
@@ -1456,7 +1465,7 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
         return;
       }
     }
-    logger.debug(`Session dimensionPatch = ${JSON.stringify(req.session.dimensionPatch, null, 2)}`);
+    logger.debug(`Session dimensionPatch = ${JSON.stringify(session.dimensionPatch, null, 2)}`);
     res.render('publish/quarter-format', { quarterTotals, dimension });
   } catch (err) {
     logger.error('Failed to get dimension preview', err);
@@ -1465,17 +1474,19 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
 };
 
 export const monthChooser = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const dimension = dataset.dimensions?.find((dim) => dim.id === req.params.dimensionId);
-    if (!dimension) {
-      logger.error('Failed to find dimension in dataset');
-      next(new NotFoundException());
-      return;
-    }
+  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const dimension = dataset.dimensions?.find((dim) => dim.id === req.params.dimensionId);
+  const session = get(req.session, `dataset[${dataset.id}]`, { dimensionPatch: undefined });
 
+  if (!dimension) {
+    logger.error('Failed to find dimension in dataset');
+    next(new NotFoundException());
+    return;
+  }
+
+  try {
     if (req.method === 'POST') {
-      const patchRequest = req.session.dimensionPatch;
+      const patchRequest = session.dimensionPatch;
       if (!patchRequest) {
         logger.error('Failed to find dimension in dataset in session');
         res.redirect(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}`);
@@ -1498,13 +1509,15 @@ export const monthChooser = async (req: Request, res: Response, next: NextFuncti
         return;
       }
       patchRequest.month_format = req.body.monthFormat;
-      req.session.dimensionPatch = patchRequest;
+      session.dimensionPatch = patchRequest;
+      set(req.session, `dataset[${dataset.id}]`, session);
       logger.debug(`Saving Dimension Patch to session with the following: ${JSON.stringify(patchRequest, null, 2)}`);
       req.session.save();
       try {
         await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
 
-        req.session.dimensionPatch = undefined;
+        session.dimensionPatch = undefined;
+        set(req.session, `dataset[${dataset.id}]`, session);
         req.session.save();
         res.redirect(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`);
         return;
@@ -1523,16 +1536,17 @@ export const monthChooser = async (req: Request, res: Response, next: NextFuncti
 };
 
 export const periodReview = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const dimension = dataset.dimensions?.find((dim) => dim.id === req.params.dimensionId);
-    if (!dimension) {
-      logger.error('Failed to find dimension in dataset');
-      next(new NotFoundException());
-      return;
-    }
-    let errors: ViewErrDTO | undefined;
+  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const dimension = dataset.dimensions?.find((dim) => dim.id === req.params.dimensionId);
 
+  if (!dimension) {
+    logger.error('Failed to find dimension in dataset');
+    next(new NotFoundException());
+    return;
+  }
+  let errors: ViewErrDTO | undefined;
+
+  try {
     if (req.method === 'POST') {
       switch (req.body.confirm) {
         case 'true':
@@ -2575,9 +2589,10 @@ export const createNewUpdate = async (req: Request, res: Response) => {
 
 export const updateDatatable = async (req: Request, res: Response) => {
   const dataset = res.locals.dataset;
+
   if (req.method === 'POST') {
     if (req.body.updateType) {
-      req.session.updateType = req.body.updateType;
+      set(req.session, `dataset.${dataset.id}`, { updateType: req.body.updateType });
       req.session.save();
       res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
       return;

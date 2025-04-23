@@ -31,6 +31,11 @@ The preferred file format is a CSV with:
 - columns in any order
 - data values as numeric values only
 
+If a data value is missing or not applicable, you should:
+
+- leave the cell blank
+- enter a [standard note code](#guidance-notes) in the note codes column, indicating whether the data value is missing (x) or not applicable (z)
+
 The preferred format for CSVs is UTF-8, as this works better with any special characters used. This format should be an option in the software you use to generate CSVs, and may be under 'text encoding' or similar. In Excel, 'CSV UTF-8' is under common formats in the 'Save as' options.
 
 Whilst CSVs are the recommended format, the system can also accept JSON, Parquet and Excel XLSX formats as well.
@@ -266,7 +271,7 @@ For a dimension containing measures, you should prepare your own lookup table. Y
 | :------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | type    | Any of the following:<ul><li>count</li><li>percentage</li><li>rate</li><li>rank</li><li>numerator</li><li>denominator</li><li>index value</li><li>mode</li><li>median</li><li>mean</li><li>standard deviation</li><li>variance</li><li>quartile</li><li>quintile</li><li>decile</li><li>percentile</li></ul> |
 | format  | Any of the following:<ul><li>decimal</li><li>float</li><li>integer</li><li>long</li><li>percentage</li><li>string</li><li>text</li><li>date</li><li>datetime</li><li>time</li></ul>                                                                                                                          |
-| decimal | Number of decimal places to show, if relevant                                                                                                                                                                                                                                                                |
+| decimal | If 'decimal' has been entered for 'format':<ul><li>enter the number of decimal places to show</li><li>if nothing is entered, numbers will be rounded to the nearest whole number</li><ul>                                                                                                                    |
 
 Example measure lookup table for our council tax example:
 

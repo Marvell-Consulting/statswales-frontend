@@ -30,7 +30,7 @@ export function getCIConfig(): AppConfig {
       secure: false
     },
     auth: {
-      providers: [AuthProvider.EntraId, AuthProvider.Google],
+      providers: [AuthProvider.Local],
       jwt: {
         secret: 'mysecret',
         cookieDomain: 'http://localhost'

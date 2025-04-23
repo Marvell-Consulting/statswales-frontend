@@ -32,6 +32,7 @@
   "devDependencies": {
     "@eslint/js": "^9.22.0",
     "@playwright/test": "^1.49.1",
+    "@tsconfig/node22": "^22.0.1",
     "@types/cookie-parser": "^1.4.7",
     "@types/express": "^4.17.21",
     "@types/express-session": "^1.18.0",

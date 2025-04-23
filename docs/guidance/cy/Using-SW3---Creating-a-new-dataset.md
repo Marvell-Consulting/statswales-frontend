@@ -117,8 +117,10 @@ Caiff \[rhestr y timau a’r cyfeiriadau e-bost cysylltiedig [link TBD](#)\] ei 
 
 Nodwch y dyddiad a’r amser pan ddylid cyhoeddi’r set ddata. Ystyriwch pa mor hir y bydd hi’n cymryd i gymeradwyo’r set ddata ar ôl i chi ei chyflwyno. Dylech osod y dyddiad cyhoeddi yn ddigon pell yn y dyfodol er mwyn caniatáu hyn.
 
-Yr amser cyhoeddi diofyn yw 9:30am. Dim ond os yw amser gwahanol yn hollol angenrheidiol y dylech chi newid hwn.
+Yr amser cyhoeddi yw 9:30am, yr amser lleol yn y DU, fel rhagosodiad. Dim ond os yw amser gwahanol yn hollol angenrheidiol y dylech chi newid hwn.
 
 ### Cyflwyno
 
-Cyflwynwch y set ddata i’w chyhoeddi ar y dyddiad cyhoeddi a ddewiswyd.
+Cyflwyno'r set ddata i'w chymeradwyo. Bydd cymeradwywr yn eich grŵp yn gwirio'r set ddata ac yn ei chymeradwyo neu'n ei gwrthod at ddibenion ei chyhoeddi ar y dyddiad cyhoeddi arfaethedig.
+
+Os bydd y cymeradwywr yn gwrthod y set ddata at ddibenion cyhoeddi, byddant yn cynnig manylion am y rheswm dros ei gwrthod a'r hyn y mae angen ei drwsio. Bydd modd gweld y manylion hyn yn yr adran 'Hanes' ar dudalen trosolwg y set ddata. Ar ôl trwsio'r materion, gellir ailgyflwyno'r set ddata er mwyn iddi gael ei chymeradwyo.

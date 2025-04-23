@@ -53,7 +53,7 @@ export const fetchUserGroup = async (req: Request, res: Response, next: NextFunc
     res.locals.groupId = group.id;
     res.locals.group = group;
   } catch (err: any) {
-    if (err.status === 401) {
+    if ([401, 403].includes(err.status)) {
       next(err);
       return;
     }
@@ -78,7 +78,7 @@ export const fetchUser = async (req: Request, res: Response, next: NextFunction)
     res.locals.userId = user.id;
     res.locals.user = user;
   } catch (err: any) {
-    if (err.status === 401) {
+    if ([401, 403].includes(err.status)) {
       next(err);
       return;
     }

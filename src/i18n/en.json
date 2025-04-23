@@ -89,14 +89,20 @@
     }
   },
   "homepage": {
-    "heading": "StatsWales datasets",
+    "heading": "Datasets",
     "table": {
       "id": "ID",
       "title": "Title",
+      "group": "Group",
       "last_updated": "Last updated",
       "dataset_status": "Dataset status",
       "publish_status": "Publishing status",
       "not_translated": "Not yet translated"
+    },
+    "no_results": {
+      "summary": "You do not have access to any datasets. You have either:",
+      "summary_1": "been added to a group with no datasets in it",
+      "summary_2": "not been given editor or approver access to any groups"
     },
     "status": {
       "new": "New",
@@ -203,10 +209,21 @@
       "panel": "This is a preview of this dataset.",
       "heading": "Main information"
     },
-    "delete_dataset": {
-      "heading": "By continuing, you confirm this dataset should be deleted",
-      "message": "All data for this dataset will be removed permanently. This cannot be undone.",
-      "button": "Delete dataset"
+    "delete_draft": {
+      "dataset": {
+        "heading": "By continuing, you confirm this dataset should be deleted",
+        "message": "All data for this dataset will be removed permanently. This cannot be undone.",
+        "button": "Delete dataset",
+        "success": "Dataset has been deleted successfully",
+        "error": "Failed to delete dataset due to a server error"
+      },
+      "update": {
+        "heading": "By continuing, you confirm this update should be deleted",
+        "message": "All data from this update will be removed permanently, but the published dataset will not be affected. This cannot be undone.",
+        "button": "Delete update",
+        "success": "Update has been deleted successfully",
+        "error": "Failed to delete update due to a server error"
+      }
     },
     "start": {
       "title": "Create a new dataset",
@@ -879,7 +896,10 @@
     "tasklist": {
       "no_title": "No title available",
       "preview": "Preview (opens in new tab)",
-      "delete": "Delete this dataset",
+      "delete": {
+        "dataset": "Delete this dataset",
+        "update": "Delete this update"
+      },
       "status": {
         "cannot_start": "Cannot start yet",
         "available": "Available",
@@ -1027,6 +1047,16 @@
       "tasklist": "Task List",
       "error": {
         "no_datasets": "No datasets are currently listed in the database. If you need help, contact a member of the development team."
+      },
+      "table": {
+        "id": "ID",
+        "title": "Title",
+        "group": "Group",
+        "revision_by": "Author",
+        "last_updated": "Last updated",
+        "dataset_status": "Dataset status",
+        "publish_status": "Publishing status",
+        "not_translated": "Not yet translated"
       }
     },
     "display": {
@@ -1084,15 +1114,7 @@
       }
     }
   },
-  "flash": {
-    "dataset": {
-      "draft_deleted": "Dataset has been deleted successfully"
-    }
-  },
   "errors": {
-    "dataset": {
-      "delete_failed": "Failed to delete dataset due a server error"
-    },
     "confirm": {
       "missing": "You need to confirm or reject the uploaded file using the buttons at the end of the preview"
     },
@@ -1199,7 +1221,10 @@
     },
     "not_found": "Page not found",
     "server_error": "An unknown error occurred, try again later",
-    "forbidden": "You do not have permission to access this page",
+    "forbidden": {
+      "heading": "You do not have permission to access this page",
+      "description": "If you think you should have access to this page, you should contact a service administrator."
+    },
     "dimension_reset": "Something went wrong trying to reset the dimension",
     "fact_table_validation": {
       "incomplete_fact": "Data table has {{count}} incomplete facts",
@@ -1367,6 +1392,7 @@
         "table": {
           "name": "Name or email address",
           "groups": "Groups",
+          "login": "Last login",
           "status": "Status"
         },
         "buttons": {
