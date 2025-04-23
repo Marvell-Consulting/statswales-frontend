@@ -23,7 +23,7 @@ export const listAllDatasets = async (req: Request, res: Response, next: NextFun
   try {
     const page = parseInt(req.query.page_number as string, 10) || 1;
     const limit = parseInt(req.query.page_size as string, 10) || 20;
-    const results: ResultsetWithCount<DatasetListItemDTO> = await req.pubapi.getDatasetList(page, limit);
+    const results: ResultsetWithCount<DatasetListItemDTO> = await req.pubapi.getFullDatasetList(page, limit);
     const { data, count } = results;
     const pagination = getPaginationProps(page, limit, count);
     const flash = res.locals.flash;

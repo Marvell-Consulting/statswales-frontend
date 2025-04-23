@@ -15,13 +15,14 @@ import {
   viewUser,
   userStatus
 } from '../controllers/admin';
+import { ensureAdmin } from '../middleware/ensure-admin';
 import { flashMessages } from '../middleware/flash';
 
 export const admin = Router();
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-admin.use(flashMessages);
+admin.use(ensureAdmin, flashMessages);
 
 admin.use('/group', (req: Request, res: Response, next: NextFunction) => {
   res.locals.activePage = 'groups';

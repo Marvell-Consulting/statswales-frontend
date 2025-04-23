@@ -13,10 +13,7 @@ Gan ddefnyddio eich [tabl data diweddariad a baratowyd](Data-preparation-‐-Upd
    - Diwygio’r data sydd yno yn barod yn unig
    - Disodli’r holl ddata sydd yno yn barod
 3. Lanlwytho a gwirio eich tabl data diweddariad - os oes unrhyw broblemau gyda’ch tabl, bydd y system yn esbonio’r broblem a’r hyn y mae angen i chi ei wneud i’w drwsio
-4. Os ydych chi’n disodli data sydd yno yn barod, bydd angen i chi ychwanegu nodiadau diwygio yn esbonio mewn brawddegau byr a syml:
-   - pa ddata a newidiwyd
-   - pam bod y data wedi cael ei newid
-5. Adolygu bod y diweddariadau’n gywir a chadarnhau’r diweddariad.
+4. Adolygu bod y diweddariadau’n gywir a chadarnhau’r diweddariad.
 
 ## Metadata
 

@@ -8,7 +8,7 @@
 
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
-                <h1 class="govuk-heading-l"><%= t('homepage.heading') %></h1>
+                <h1 class="govuk-heading-xl"><%= t('homepage.heading') %></h1>
             </div>
         </div>
 
@@ -27,6 +27,7 @@
                         <thead class="govuk-table__head">
                         <tr class="govuk-table__row">
                             <th scope="col" class="govuk-table__header"><%= t('homepage.table.title') %></th>
+                            <th scope="col" class="govuk-table__header"><%= t('homepage.table.group') %></th>
                             <th scope="col" class="govuk-table__header" style="width:15%"><%= t('homepage.table.last_updated') %></th>
                             <th scope="col" class="govuk-table__header"><%= t('homepage.table.dataset_status') %></th>
                             <th scope="col" class="govuk-table__header"><%= t('homepage.table.publish_status') %></th>
@@ -42,6 +43,7 @@
                                             <a href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language) %>" class="govuk-link"><%= dataset.title || `${dataset.title_alt} [${t('homepage.table.not_translated')}]` %></a>
                                         <% } %>
                                     </td>
+                                    <td class="govuk-table__cell group"><%= dataset.group_name %></td>
                                     <td class="govuk-table__cell date"><%= dateFormat(dataset.last_updated, 'd MMMM yyyy', { locale: i18n.language }) %></td>
                                     <td class="govuk-table__cell status">
                                         <% if (dataset.status) { %>
@@ -65,6 +67,12 @@
                     <% if (locals.total_pages > 1) { %>
                         <%- include("partials/pagination"); %>
                     <% } %>
+                <% } else { %>
+                    <p class="govuk-body"><%= t('homepage.no_results.summary') %></p>
+                    <ul class="govuk-list govuk-list--bullet">
+                        <li><%= t('homepage.no_results.summary_1') %></li>
+                        <li><%= t('homepage.no_results.summary_2') %></li>
+                    </ul>
                 <% } %>
             </div>
         </div>
@@ -73,7 +81,7 @@
 </div>
 
 <style>
-    td.date, td.status {
+    td.group, td.date, td.status {
         white-space: nowrap;
     }
     .govuk-tag {

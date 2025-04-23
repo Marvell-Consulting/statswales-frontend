@@ -104,21 +104,14 @@ You can now preview your dataset fully in both English and Welsh.
 
 ## Publishing
 
-### Publisher organisation and team
-
-Select your organisation and team. Teams have a set contact email address associated with them.
-
-The [list of teams and associated emails [link TBD](#)] is centrally managed. If you need to have a team in the list added or changed, you need to:
-
-- email ... at ... [process TBD]
-- provide the team and its email address in both English and Welsh
-
 ### When the dataset should be published
 
 Indicate what date and time the dataset should be published. Consider how long the dataset will take to be approved once you've submitted it. Set the publishing date far enough in the future to allow for this.
 
-The publishing time is 9:30am by default. You should only change this if a different time is absolutely necessary.
+The publishing time is 9:30am local UK time by default. You should only change this if a different time is absolutely necessary.
 
 ### Submit
 
-Submit the dataset for publishing on selected publishing date.
+Submit the dataset for approval. An approver in your group will check the dataset and approve or reject it for publishing on the proposed publishing date.
+
+If the approver rejects the dataset for publishing, they will provide detail on why it's been rejected and what needs fixing. These details will be visible in the 'History' section of the dataset's overview page. Once the issues have been fixed, the dataset can be resubmitted for approval.

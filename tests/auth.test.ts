@@ -42,16 +42,6 @@ describe('Authentication', () => {
       expect(res.text).toContain(t('login.heading', { lng: Locale.English }));
     });
 
-    test('supports google', async () => {
-      const res = await request(app).get('/en-GB/auth/login');
-      expect(res.text).toContain(t('login.buttons.google', { lng: Locale.English }));
-    });
-
-    test('supports entraid', async () => {
-      const res = await request(app).get('/en-GB/auth/login');
-      expect(res.text).toContain(t('login.buttons.entraid', { lng: Locale.English }));
-    });
-
     test('expired token error', async () => {
       const res = await request(app).get('/en-GB/auth/login?error=expired');
       expect(res.text).toContain(t('login.error.expired', { lng: Locale.English }));

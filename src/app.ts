@@ -8,7 +8,6 @@ import { checkConfig } from './config/check-config';
 import { httpLogger, logger } from './utils/logger';
 import session from './middleware/session';
 import { ensureAuthenticated } from './middleware/ensure-authenticated';
-import { ensureDeveloper } from './middleware/ensure-developer';
 import { rateLimiter } from './middleware/rate-limiter';
 import { i18next, i18nextMiddleware } from './middleware/translation';
 import { languageSwitcher } from './middleware/language-switcher';
@@ -64,7 +63,7 @@ app.use('/:lang/cookies', rateLimiter, ensureAuthenticated, cookies);
 
 // authenticated routes
 app.use('/:lang/publish', rateLimiter, ensureAuthenticated, publish);
-app.use('/:lang/developer', rateLimiter, ensureAuthenticated, ensureDeveloper, developer);
+app.use('/:lang/developer', rateLimiter, ensureAuthenticated, developer);
 app.use('/:lang/admin', rateLimiter, ensureAuthenticated, admin);
 app.use('/:lang', rateLimiter, ensureAuthenticated, homepage);
 

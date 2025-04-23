@@ -4,7 +4,7 @@ import { flashErrors, flashMessages } from '../middleware/flash';
 import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
 import { getPaginationProps } from '../utils/pagination';
-import { getEditorUserGroups } from '../utils/get-editor-user-groups';
+import { getEditorUserGroups } from '../utils/user-permissions';
 
 export const homepage = Router();
 
@@ -25,7 +25,7 @@ homepage.get('/', async (req: Request, res: Response, next: NextFunction) => {
     // user must be an editor in at least one group to start a new dataset
     const canCreate = getEditorUserGroups(req.user).length > 0;
 
-    const results: ResultsetWithCount<DatasetListItemDTO> = await req.pubapi.getDatasetList(page, limit);
+    const results: ResultsetWithCount<DatasetListItemDTO> = await req.pubapi.getUserDatasetList(page, limit);
     const { data, count } = results;
     const pagination = getPaginationProps(page, limit, count);
     const flash = res.locals.flash;

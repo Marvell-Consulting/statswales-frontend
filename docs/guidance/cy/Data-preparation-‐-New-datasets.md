@@ -31,6 +31,11 @@ Y fformat a ffefrir ar gyfer ffeil yw CSV gyda:
 - colofnau mewn unrhyw drefn
 - gwerthoedd data fel gwerthoedd rhifol yn unig
 
+Os bydd gwerth data ar goll neu heb fod yn berthnasol, dylech:
+
+- adael y gell yn wag
+- nodi [cod nodyn safonol](#guidance-nodiadau) yn y golofn codau nodiadau, gan nodi a yw'r gwerth data ar goll (x) neu heb fod yn berthnasol (z)
+
 Y fformat a ffefrir ar gyfer CSVs yw UTF-8, gan bod hwn yn gweithio’n well gydag unrhyw nodau arbennig a ddefnyddir. Dylai’r fformat hwn fod yn ddewis yn y feddalwedd yr ydych chi’n ei defnyddio er mwyn creu CSVs, ac fe allai fod dan ‘amgodio testun’ neu rywbeth tebyg. Yn Excel, mae 'CSV UTF-8' dan fformatau cyffredin yn newis 'Save as'.
 
 Er mai CSVs yw’r fformat a argymhellir, gall y system dderbyn fformatau JSON, Parquet a Excel XLSX hefyd.
@@ -266,7 +271,7 @@ Ar gyfer dimensiwn sy’n cynnwys mesurau, dylech baratoi eich tabl am-edrych ei
 | :------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | math    | Unrhyw rai o’r canlynol: <ul><li>cyfrif</li><li>canran</li><li>cyfradd</li><li>safle</li><li>rhifiadur</li><li>enwadur</li><li>gwerth mynegai</li><li>modd</li><li>canolrif</li><li>cymedr</li><li>gwyriad safonol</li><li>amrywiant</li><li>chwartel</li><li>cwintel</li><li>degradd</li><li>canradd</li></ul> |
 | fformat | Unrhyw rai o’r canlynol: <ul><li>degol</li><li>arnawf</li><li>cyfanrif</li><li>hir</li><li>canran</li><li>llinyn</li><li>testun</li><li>dyddiad</li><li>dyddiadamser</li><li>amser</li></ul>                                                                                                                    |
-| degol   | Nifer y lleoedd degol i’w dangos, os yn berthnasol                                                                                                                                                                                                                                                              |
+| degol   | Os nodwyd 'degol' ar gyfer 'fformat':<ul><li>nodwch nifer y lleoedd degol i'w dangos</li><li>os na nodir unrhyw beth, caiff rhifau eu talgrynnu i'r rhif cyfan agosaf</li><ul>                                                                                                                                  |
 
 Tabl am-edrych mesur enghreifftiol ar gyfer ein henghraifft treth gyngor:
 

@@ -36,6 +36,7 @@ import { UserCreateDTO } from '../dtos/user/user-create-dto';
 import { AvailableRoles } from '../interfaces/available-roles';
 import { RoleSelectionDTO } from '../dtos/user/role-selection-dto';
 import { UserStatus } from '../enums/user-status';
+import { AuthProvider } from '../enums/auth-providers';
 
 const config = appConfig();
 
@@ -99,6 +100,12 @@ export class PublisherApi {
       logger.debug('API responded to ping');
       return true;
     });
+  }
+
+  public async getEnabledAuthProviders(): Promise<AuthProvider[]> {
+    return this.fetch({ url: 'auth/providers' })
+      .then((response) => response.json())
+      .then((body) => body.enabled as unknown as AuthProvider[]);
   }
 
   public async createDataset(title: string, userGroupId: string, language?: string): Promise<DatasetDTO> {
@@ -176,11 +183,21 @@ export class PublisherApi {
     );
   }
 
-  public async getDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {
-    logger.debug(`Fetching active dataset list...`);
+  public async getUserDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {
+    logger.debug(`Fetching user dataset list...`);
     const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
 
     return this.fetch({ url: `dataset?${qs}` }).then(
+      (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
+    );
+  }
+
+  // should only be used for developer view
+  public async getFullDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {
+    logger.debug(`Fetching full dataset list...`);
+    const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
+
+    return this.fetch({ url: `developer/dataset?${qs}` }).then(
       (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
     );
   }
@@ -541,15 +558,14 @@ export class PublisherApi {
 
   public async deleteDraftDataset(datasetId: string): Promise<boolean> {
     logger.debug(`Deleting draft dataset: ${datasetId}`);
-    return this.fetch({
-      url: `dataset/${datasetId}`,
-      method: HttpMethod.Delete
-    }).then((response) => {
-      if (response.status === 202) {
-        return Promise.resolve(true);
-      }
-      throw new Error('Failed to delete dataset');
-    });
+    return this.fetch({ url: `dataset/${datasetId}`, method: HttpMethod.Delete }).then(() => true);
+  }
+
+  public async deleteDraftRevision(datasetId: string, revisionId: string): Promise<boolean> {
+    logger.debug(`Deleting draft dataset: ${datasetId}`);
+    return this.fetch({ url: `dataset/${datasetId}/revision/by-id/${revisionId}`, method: HttpMethod.Delete }).then(
+      () => true
+    );
   }
 
   public async withdrawFromPublication(datasetId: string, revisionId: string): Promise<DatasetDTO> {

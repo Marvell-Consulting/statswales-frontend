@@ -13,9 +13,6 @@ Using your [prepared update data table](Data-preparation-‐-Updating-datasets),
    - revise existing data only
    - replace all existing data
 1. Upload and check your update data table - if there are any issues with your table, the system will explain the issue and what you need to do to fix it.
-1. If you’re replacing existing data, you’ll need to add revision notes explaining in short, simple sentences:
-   - what data has been changed
-   - why the data has been changed
 1. Review the updates are correct and confirm the update.
 
 ## Metadata
