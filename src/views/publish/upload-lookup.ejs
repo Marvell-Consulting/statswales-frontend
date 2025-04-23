@@ -18,7 +18,7 @@
         <% if (locals?.data) { %>
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-full with-overflow">
-                    <%- include("../partials/dimension-preview-table.ejs", { dimension: locals.dimension, headers: locals.headers, data: locals.data }) %>
+                    <%- include("../partials/view-table.ejs", { dimension: locals.dimension, headers: locals.headers, data: locals.data }) %>
                     <% if (locals.page_info?.total_records > locals.page_size) { %>
                         <p class="govuk-body govuk-hint"><%= t('publish.measure_review.showing', {rows: locals.page_size, total: locals.page_info.total_records}) %></p>
                     <% } %>

@@ -3,18 +3,311 @@
     <div class="govuk-width-container">
       <main class="govuk-main-wrapper" id="main-content" role="main">
 
-        <h1 class="govuk-heading-xl"><%= preview.title %></h1>
+        <h1 class="govuk-heading-xl"><%= datasetMetadata.title %></h1>
 
-        <%- include("../partials/dataset/key-info", { keyInfo: preview.keyInfo }); %>
+          <div class="govuk-tabs" data-module="govuk-tabs">
+              <h2 class="govuk-tabs__title">
+                  <%= t('toc') %>
+              </h2>
+              <div class="tabs">
+                  <div class="govuk-width-container">
+                      <div class="govuk-main-wrapper govuk-!-padding-bottom-0" id="main-content">
 
-        <%- include("../partials/dataset/download"); %>
+                          <ul class="govuk-tabs__list" role="tablist">
+                              <li class="govuk-tabs__list-item govuk-tabs__list-item--selected" role="presentation">
+                                  <a class="govuk-tabs__tab" href="#data" id="tab_data" role="tab" aria-controls="data" aria-selected="true" tabindex="0">
+                                      <%= t('consumer_view.data') %>
+                                  </a>
+                              </li>
+                              <!-- Commented out until we implement dataset history -->
+<!--                              <li class="govuk-tabs__list-item" role="presentation">-->
+<!--                                  <a class="govuk-tabs__tab" href="#history" id="tab_history" role="tab" aria-controls="history" aria-selected="false" tabindex="-1">-->
+<!--                                      Dataset history-->
+<!--                                  </a>-->
+<!--                              </li>-->
+                              <li class="govuk-tabs__list-item" role="presentation">
+                                  <a class="govuk-tabs__tab" href="#about_dataset" id="tab_about" role="tab" aria-controls="about" aria-selected="false" tabindex="-1">
+                                      <%= t('consumer_view.about_this_dataset') %>
+                                  </a>
+                              </li>
+                              <li class="govuk-tabs__list-item" role="presentation">
+                                  <a class="govuk-tabs__tab" href="#download_dataset" id="tab_download" role="tab" aria-controls="download" aria-selected="false" tabindex="-1">
+                                      <%= t('consumer_view.download') %>
+                                  </a>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
 
-        <%- include("../partials/dataset/notes", { notes: preview.notes }); %>
+              <div class="govuk-tabs__panel" id="data" role="tabpanel" aria-labelledby="tab_data">
+                  <div class="govuk-width-container">
+                      <div class="govuk-main-wrapper govuk-!-padding-top-0">
+                          <div class="govuk-grid-row govuk-!-margin-bottom-0">
 
-        <%- include("../partials/dataset/about", { about: preview.about }); %>
+                              <div class="govuk-grid-column-one-half">
+                                  <form method="get">
+                                  <label class="govuk-label govuk-label--s" for="view" style="display: inline-block;">
+                                      <%= t('consumer_view.data_view') %>:
+                                  </label>
+                                  <select class="govuk-select" id="view" name="dataViewsChoice">
+                                      <option value="" disabled=""><%= t('consumer_view.select_view') %></option>
+                                      <option value="default" selected><%= t('consumer_view.data_table') %></option>
+                                  </select>
+                                  <button type="submit" class="govuk-button button-black govuk-button-small" data-module="govuk-button">
+                                      <%= t('consumer_view.apply_view') %>
+                                  </button>
+                                  </form>
+                              </div>
+                              <div class="govuk-grid-column-one-half govuk-!-text-align-right">
+                                  <%= t('publish.preview.showing_rows', {start: locals.page_info.start_record, end: locals.page_info.end_record, total: locals.page_info.total_records}) %>
+                              </div>
+                          </div>
+                          <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-padding-top-0">
+                          <div class="govuk-grid-row">
+                              <!--Sidebar filters-->
+                              <div class="govuk-grid-column-one-quarter">
+                                  <form method="get">
+                                  <h3><%= t('consumer_view.filters') %></h3>
+                                  <div class="govuk-form-group">
+                                      <label class="govuk-label" for="page_size">
+                                          <%= t('pagination.page_size') %>
+                                      </label>
+                                      <select class="govuk-select" id="page_size" name="page_size">
+                                          <option value="5" <% if (locals.page_size===5) { %>selected <% }; %>>5</option>
+                                          <option value="10" <% if (locals.page_size===10) { %>selected <% }; %>>10</option>
+                                          <option value="25" <% if (locals.page_size===25) { %>selected <% }; %>>25</option>
+                                          <option value="50" <% if (locals.page_size===50) { %>selected <% }; %>>50</option>
+                                          <option value="100" <% if (locals.page_size===100) { %>selected <% }; %>>100</option>
+                                          <option value="250" <% if (locals.page_size===250) { %>selected <% }; %>>250</option>
+                                          <option value="500" <% if (locals.page_size===500) { %>selected <% }; %>>500</option>
+                                      </select>
+                                  </div>
 
-        <%- include("../partials/dataset/published", { published: preview.published }); %>
 
+                                  <script>
+                                    // Ensure nested checkboxes toggle visibility but do not auto-select
+                                    document.querySelectorAll('.govuk-checkboxes__input').forEach(parentCheckbox => {
+                                      const controlledId = parentCheckbox.getAttribute('data-aria-controls');
+                                      const nestedContainer = controlledId ? document.getElementById(controlledId) : null;
+
+                                      if (nestedContainer) {
+                                        // Toggle visibility of nested checkboxes
+                                        parentCheckbox.addEventListener('change', function () {
+                                          nestedContainer.style.display = parentCheckbox.checked ? 'block' : 'none';
+                                        });
+                                      }
+                                    });
+                                  </script>
+
+                                  <button name="dataViewsChoice" value="filter" type="submit" class="govuk-button button-black" data-module="govuk-button">
+                                      <%= t('consumer_view.apply_filters') %>
+                                  </button>
+                                  </form>
+                              </div>
+
+                              <!--Main column-->
+                              <div class="govuk-grid-column-three-quarters">
+
+                                  <!--Table-->
+                                  <div class="govuk-!-padding-top-5 govuk-!-margin-bottom-2" style="overflow-x: scroll;">
+                                      <%- include("partials/view-table", {headers, data}); %>
+                                  </div>
+
+                                  <!--Pagination-->
+                                  <%- include("../partials/pagination", { hideLineCount: true }); %>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+<!--              <div class="govuk-tabs__panel govuk-tabs__panel&#45;&#45;hidden" id="history" role="tabpanel" aria-labelledby="tab_history">-->
+<!--                  <div class="govuk-grid-row">-->
+<!--                      <div class="govuk-grid-column-two-thirds">-->
+
+<!--                          <p><b>Next update expected (provisional):</b>  This dataset will not be updated</p>-->
+
+<!--                          <h2 class="govuk-heading-m">Updates</h2>-->
+
+<!--                          <dl class="govuk-summary-list">-->
+<!--                              <div class="govuk-summary-list__row">-->
+<!--                                  <dt style="width:16%" class="govuk-summary-list__key">-->
+<!--                                      19 December 2019-->
+<!--                                  </dt>-->
+<!--                                  <dd class="govuk-summary-list__value">-->
+<!--                                      Provisional values for Isle of Anglesey were revised. The 2019 dataset is now completed and will not be updated further.-->
+<!--                                  </dd>-->
+<!--                              </div>-->
+<!--                              <div class="govuk-summary-list__row">-->
+<!--                                  <dt class="govuk-summary-list__key">-->
+<!--                                      14 September 2019-->
+<!--                                  </dt>-->
+<!--                                  <dd class="govuk-summary-list__value">-->
+<!--                                      Dataset first published.-->
+<!--                                  </dd>-->
+<!--                              </div>-->
+<!--                          </dl>-->
+
+<!--                      </div>-->
+<!--                  </div>-->
+<!--              </div>-->
+
+              <div class="govuk-tabs__panel govuk-tabs__panel--hidden" id="about_dataset" role="tabpanel" aria-labelledby="tab_about">
+                  <div class="govuk-grid-row">
+                      <div class="govuk-grid-column-full">
+                          <%- include("../partials/dataset/key-info", { keyInfo: datasetMetadata.keyInfo }); %>
+
+                          <%- include("../partials/dataset/notes", { notes: datasetMetadata.notes }); %>
+
+                          <%- include("../partials/dataset/about", { about: datasetMetadata.about }); %>
+
+                          <%- include("../partials/dataset/published", { published: datasetMetadata.published }); %>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="govuk-tabs__panel govuk-tabs__panel--hidden" id="download_dataset" role="tabpanel" aria-labelledby="tab_download">
+                  <div class="govuk-grid-row">
+
+                      <div class="govuk-grid-column-full">
+                        <form method="get" action="<%= buildUrl(`/published/${dataset.id}/download`, i18n.language) %>">
+                          <div class="govuk-form-group">
+                              <fieldset class="govuk-fieldset">
+                                  <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                      <h2 class="govuk-fieldset__heading govuk-heading-m">
+                                          <%= t('consumer_view.download_heading') %>
+                                      </h2>
+                                  </legend>
+                                  <div class="govuk-radios" data-module="govuk-radios">
+                                      <div class="govuk-radios__item">
+                                          <input class="govuk-radios__input" id="filtered" name="view_type" type="radio" value="filtered" disabled>
+                                          <label class="govuk-label govuk-radios__label" for="filtered">
+                                              <%= t('consumer_view.filtered_download') %>
+                                          </label>
+                                      </div>
+                                      <div class="govuk-radios__item">
+                                          <input class="govuk-radios__input" id="default" name="view_type" type="radio" value="default" checked>
+                                          <label class="govuk-label govuk-radios__label" for="default">
+                                              <%= t('consumer_view.default_download') %>
+                                          </label>
+                                      </div>
+                                  </div>
+                              </fieldset>
+                          </div>
+
+                          <div class="govuk-form-group">
+                              <fieldset class="govuk-fieldset">
+                                  <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                      <h2 class="govuk-fieldset__heading govuk-heading-m">
+                                          <%= t('consumer_view.download_format') %>
+                                      </h2>
+                                  </legend>
+                                  <div class="govuk-radios" data-module="govuk-radios">
+                                      <div class="govuk-radios__item">
+                                          <input class="govuk-radios__input" id="csv" name="format" type="radio" value="csv">
+                                          <label class="govuk-label govuk-radios__label" for="csv">
+                                              CSV
+                                          </label>
+                                          <div id="number-format-hint" class="govuk-hint govuk-radios__hint govuk-radios__hint-gel">
+                                              <%= t('consumer_view.data_only_hint') %>
+                                          </div>
+                                      </div>
+                                      <div class="govuk-radios__item">
+                                          <input class="govuk-radios__input" id="excel" name="format" type="radio" value="excel">
+                                          <label class="govuk-label govuk-radios__label" for="excel">
+                                              Excel
+                                          </label>
+                                          <div id="number-format-hint" class="govuk-hint govuk-radios__hint govuk-radios__hint-gel">
+                                              <%= t('consumer_view.data_metadata_hint') %>
+                                          </div>
+                                      </div>
+                                      <div class="govuk-radios__item">
+                                          <input class="govuk-radios__input" id="parquet" name="format" type="radio" value="parquet">
+                                          <label class="govuk-label govuk-radios__label" for="parquet">
+                                              Parquet
+                                          </label>
+                                          <div id="number-format-hint" class="govuk-hint govuk-radios__hint govuk-radios__hint-gel">
+                                              <%= t('consumer_view.data_metadata_hint') %>
+                                          </div>
+                                      </div>
+                                      <div class="govuk-radios__item">
+                                          <input class="govuk-radios__input" id="duckdb" name="format" type="radio" value="duckdb">
+                                          <label class="govuk-label govuk-radios__label" for="duckdb">
+                                              DuckDB
+                                          </label>
+                                          <div id="number-format-hint" class="govuk-hint govuk-radios__hint govuk-radios__hint-gel">
+                                              <%= t('consumer_view.everything_hint') %>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </fieldset>
+                          </div>
+
+                          <div class="govuk-form-group">
+                              <fieldset class="govuk-fieldset">
+                                  <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                      <h2 class="govuk-fieldset__heading govuk-heading-m">
+                                          <%= t('consumer_view.number_formating') %>
+                                      </h2>
+                                  </legend>
+                                  <div class="govuk-radios" data-module="govuk-radios">
+                                      <div class="govuk-radios__item">
+                                          <input class="govuk-radios__input" id="dafault_format" name="number_format" type="radio" value="default" checked>
+                                          <label class="govuk-label govuk-radios__label" for="dafault_format">
+                                              <%= t('consumer_view.formatted_numbers') %>
+                                          </label>
+                                          <div id="number-format-hint" class="govuk-hint govuk-radios__hint govuk-radios__hint-gel">
+                                              <%= t('consumer_view.formatted_numbers_hint') %>
+                                          </div>
+                                      </div>
+                                      <div class="govuk-radios__item">
+                                          <input class="govuk-radios__input" id="raw_format" name="number_format" type="radio" value="raw" disabled>
+                                          <label class="govuk-label govuk-radios__label" for="raw_format">
+                                              <%= t('consumer_view.unformatted_numbers') %>
+                                          </label>
+                                      </div>
+                                  </div>
+                              </fieldset>
+                          </div>
+
+                          <div class="govuk-form-group">
+                              <fieldset class="govuk-fieldset">
+                                  <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                      <h2 class="govuk-fieldset__heading govuk-heading-m">
+                                          <%= t('consumer_view.select_language') %>
+                                      </h2>
+                                  </legend>
+                                  <div class="govuk-radios" data-module="govuk-radios">
+                                      <div class="govuk-radios__item">
+                                          <input class="govuk-radios__input" id="en-GB" name="download_language" type="radio" value="en-GB">
+                                          <label class="govuk-label govuk-radios__label" for="en-GB">
+                                              <%= t('consumer_view.english') %>
+                                          </label>
+                                      </div>
+                                      <div class="govuk-radios__item">
+                                          <input class="govuk-radios__input" id="cy-GB" name="download_language" type="radio" value="cy-GB">
+                                          <label class="govuk-label govuk-radios__label" for="cy-GB">
+                                              <%= t('consumer_view.welsh') %>
+                                          </label>
+                                      </div>
+                                  </div>
+                              </fieldset>
+                          </div>
+
+
+
+                          <button name="action" value="download" type="submit" class="govuk-button button-blue" data-module="govuk-button">
+                              <%= t('consumer_view.download_button') %>
+                          </button>
+                        </form>
+
+                      </div>
+
+                  </div>
+              </div>
+
+          </div>
       </main>
     </div>
 

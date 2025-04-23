@@ -5,13 +5,14 @@ import slugify from 'slugify';
 
 import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
-import { getPaginationProps } from '../utils/pagination';
+import { generateSequenceForNumber, getPaginationProps } from '../utils/pagination';
 import { singleLangDataset } from '../utils/single-lang-dataset';
 import { getDatasetPreview } from '../utils/dataset-preview';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { FileFormat } from '../enums/file-format';
 import { getDownloadHeaders } from '../utils/download-headers';
 import { logger } from '../utils/logger';
+import { Locale } from '../enums/locale';
 
 export const listPublishedDatasets = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -31,15 +32,20 @@ export const listPublishedDatasets = async (req: Request, res: Response, next: N
 export const viewPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
   const dataset = singleLangDataset(res.locals.dataset, req.language);
   const revision = dataset.published_revision;
+  const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
+  const pageSize = Number.parseInt(req.query.page_size as string, 10) || 100;
+  let pagination: (string | number)[] = [];
 
   if (!dataset.live || !revision) {
     next(new NotFoundException('no published revision found'));
     return;
   }
 
-  const preview = await getDatasetPreview(dataset, revision);
+  const datasetMetadata = await getDatasetPreview(dataset, revision);
+  const preview = await req.conapi.getPublishedDatasetView(dataset.id, pageSize, pageNumber, undefined);
+  pagination = generateSequenceForNumber(preview.current_page, preview.total_pages);
 
-  res.render('consumer/view', { dataset, preview });
+  res.render('consumer/view', { ...preview, datasetMetadata, pagination });
 };
 
 export const downloadPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
@@ -60,13 +66,14 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
     }
 
     const format = req.query.format as FileFormat;
+    const lang = req.query.download_language as Locale;
     const headers = getDownloadHeaders(format, attachmentName);
 
     if (!headers) {
       throw new NotFoundException('invalid file format');
     }
 
-    const fileStream = await req.conapi.getCubeFileStream(dataset.id, format);
+    const fileStream = await req.conapi.getCubeFileStream(dataset.id, format, lang);
     res.writeHead(200, headers);
     const readable: Readable = Readable.from(fileStream);
     readable.pipe(res);

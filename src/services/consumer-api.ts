@@ -8,6 +8,7 @@ import { ApiException } from '../exceptions/api.exception';
 import { Locale } from '../enums/locale';
 import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
+import { ViewDTO } from '../dtos/view-dto';
 import { FileFormat } from '../enums/file-format';
 
 const config = appConfig();
@@ -20,6 +21,7 @@ interface fetchParams {
   body?: FormData | string;
   json?: unknown;
   headers?: Record<string, string>;
+  lang?: Locale;
 }
 
 export class ConsumerApi {
@@ -27,10 +29,10 @@ export class ConsumerApi {
 
   constructor(private lang = Locale.English) {}
 
-  public async fetch({ url, method = HttpMethod.Get, body, json, headers }: fetchParams): Promise<Response> {
+  public async fetch({ url, method = HttpMethod.Get, body, json, headers, lang }: fetchParams): Promise<Response> {
     /* eslint-disable @typescript-eslint/naming-convention */
     const head = {
-      'Accept-Language': this.lang,
+      'Accept-Language': lang || this.lang,
       ...(json ? { 'Content-Type': 'application/json; charset=UTF-8' } : {}),
       ...headers
     };
@@ -74,11 +76,27 @@ export class ConsumerApi {
     return this.fetch({ url: `published/${datasetId}` }).then((response) => response.json() as unknown as DatasetDTO);
   }
 
-  public async getCubeFileStream(datasetId: string, format: FileFormat): Promise<ReadableStream> {
+  public async getPublishedDatasetView(
+    datasetId: string,
+    pageSize: number,
+    pageNumber: number,
+    sortBy?: string
+  ): Promise<ViewDTO> {
+    logger.debug(`Fetching published view of dataset: ${datasetId}`);
+    const searchParams = new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString() });
+    if (sortBy) searchParams.append('sort_by', sortBy);
+
+    return this.fetch({ url: `published/${datasetId}/view?${searchParams.toString()}` }).then(
+      (response) => response.json() as unknown as ViewDTO
+    );
+  }
+
+  public async getCubeFileStream(datasetId: string, format: FileFormat, language: Locale): Promise<ReadableStream> {
     logger.debug(`Fetching ${format} stream for dataset: ${datasetId}...`);
 
     return this.fetch({
-      url: `published/${datasetId}/download/${format}`
+      url: `published/${datasetId}/download/${format}`,
+      lang: language
     }).then((response) => response.body as ReadableStream);
   }
 }
