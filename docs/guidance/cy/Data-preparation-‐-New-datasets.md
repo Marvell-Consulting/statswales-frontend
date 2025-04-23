@@ -32,6 +32,7 @@ Y fformat a ffefrir ar gyfer ffeil yw CSV gyda:
 - gwerthoedd data fel gwerthoedd rhifol yn unig
 
 Os bydd gwerth data ar goll neu heb fod yn berthnasol, dylech:
+
 - adael y gell yn wag
 - nodi [cod nodyn safonol](#guidance-nodiadau) yn y golofn codau nodiadau, gan nodi a yw'r gwerth data ar goll (x) neu heb fod yn berthnasol (z)
 
@@ -266,11 +267,11 @@ Mae mesur, neu fath data, yn dynodi’r hyn y mae’r gwerth data yn ei gynrychi
 
 Ar gyfer dimensiwn sy’n cynnwys mesurau, dylech baratoi eich tabl am-edrych eich hun. Byddwch yn lanlwytho hwn i SW3. Dylai fod yn yr un fformat â [thablau am-edrych](#guidance-tablau-am-edrych) eraill, gyda’r colofnau ychwanegol canlynol:
 
-| Pennawd | Yr hyn y mae’r golofn yn ei gynnwys |
-| :------ | :---------------------------------- |
+| Pennawd | Yr hyn y mae’r golofn yn ei gynnwys                                                                                                                                                                                                                                                                             |
+| :------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | math    | Unrhyw rai o’r canlynol: <ul><li>cyfrif</li><li>canran</li><li>cyfradd</li><li>safle</li><li>rhifiadur</li><li>enwadur</li><li>gwerth mynegai</li><li>modd</li><li>canolrif</li><li>cymedr</li><li>gwyriad safonol</li><li>amrywiant</li><li>chwartel</li><li>cwintel</li><li>degradd</li><li>canradd</li></ul> |
-| fformat | Unrhyw rai o’r canlynol: <ul><li>degol</li><li>arnawf</li><li>cyfanrif</li><li>hir</li><li>canran</li><li>llinyn</li><li>testun</li><li>dyddiad</li><li>dyddiadamser</li><li>amser</li></ul> |
-| degol   | Os nodwyd 'degol' ar gyfer 'fformat':<ul><li>nodwch nifer y lleoedd degol i'w dangos</li><li>os na nodir unrhyw beth, caiff rhifau eu talgrynnu i'r rhif cyfan agosaf</li><ul>|
+| fformat | Unrhyw rai o’r canlynol: <ul><li>degol</li><li>arnawf</li><li>cyfanrif</li><li>hir</li><li>canran</li><li>llinyn</li><li>testun</li><li>dyddiad</li><li>dyddiadamser</li><li>amser</li></ul>                                                                                                                    |
+| degol   | Os nodwyd 'degol' ar gyfer 'fformat':<ul><li>nodwch nifer y lleoedd degol i'w dangos</li><li>os na nodir unrhyw beth, caiff rhifau eu talgrynnu i'r rhif cyfan agosaf</li><ul>                                                                                                                                  |
 
 Tabl am-edrych mesur enghreifftiol ar gyfer ein henghraifft treth gyngor:
 

@@ -112,6 +112,6 @@ The publishing time is 9:30am local UK time by default. You should only change t
 
 ### Submit
 
-Submit the dataset for approval. An approver in your group will check the dataset and approve or reject it for publishing on the proposed publishing date. 
+Submit the dataset for approval. An approver in your group will check the dataset and approve or reject it for publishing on the proposed publishing date.
 
 If the approver rejects the dataset for publishing, they will provide detail on why it's been rejected and what needs fixing. These details will be visible in the 'History' section of the dataset's overview page. Once the issues have been fixed, the dataset can be resubmitted for approval.
