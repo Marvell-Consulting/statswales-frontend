@@ -121,6 +121,6 @@ Yr amser cyhoeddi yw 9:30am, yr amser lleol yn y DU, fel rhagosodiad. Dim ond os
 
 ### Cyflwyno
 
-Cyflwyno'r set ddata i'w chymeradwyo.  Bydd cymeradwywr yn eich grŵp yn gwirio'r set ddata ac yn ei chymeradwyo neu'n ei gwrthod at ddibenion ei chyhoeddi ar y dyddiad cyhoeddi arfaethedig.
+Cyflwyno'r set ddata i'w chymeradwyo. Bydd cymeradwywr yn eich grŵp yn gwirio'r set ddata ac yn ei chymeradwyo neu'n ei gwrthod at ddibenion ei chyhoeddi ar y dyddiad cyhoeddi arfaethedig.
 
-Os bydd y cymeradwywr yn gwrthod y set ddata at ddibenion cyhoeddi, byddant yn cynnig manylion am y rheswm dros ei gwrthod a'r hyn y mae angen ei drwsio.  Bydd modd gweld y manylion hyn yn yr adran 'Hanes' ar dudalen trosolwg y set ddata.  Ar ôl trwsio'r materion, gellir ailgyflwyno'r set ddata er mwyn iddi gael ei chymeradwyo.
+Os bydd y cymeradwywr yn gwrthod y set ddata at ddibenion cyhoeddi, byddant yn cynnig manylion am y rheswm dros ei gwrthod a'r hyn y mae angen ei drwsio. Bydd modd gweld y manylion hyn yn yr adran 'Hanes' ar dudalen trosolwg y set ddata. Ar ôl trwsio'r materion, gellir ailgyflwyno'r set ddata er mwyn iddi gael ei chymeradwyo.
