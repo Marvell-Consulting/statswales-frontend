@@ -66,7 +66,9 @@
     </div>
 </div>
 
-<% if (!hideShowing) { %>
+<% if (hideLineCount) { %>
+
+<% } else { %>
 <div class="govuk-grid-row govuk-!-margin-bottom-2">
     <% if (!locals.hide_pagination_hint) { %>
         <div class="govuk-grid-column-full govuk-!-text-align-centre govuk-hint">
