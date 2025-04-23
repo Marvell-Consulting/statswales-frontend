@@ -83,13 +83,10 @@ export class ConsumerApi {
     sortBy?: string
   ): Promise<ViewDTO> {
     logger.debug(`Fetching published view of dataset: ${datasetId}`);
-    let params = '';
-    if (sortBy) {
-      params = `${new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString(), sort_by: sortBy }).toString()}`;
-    } else {
-      params = `${new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString() }).toString()}`;
-    }
-    return this.fetch({ url: `published/${datasetId}/view?${params}` }).then(
+    const searchParams = new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString() });
+    if (sortBy) searchParams.append('sort_by', sortBy);
+
+    return this.fetch({ url: `published/${datasetId}/view?${searchParams.toString()}` }).then(
       (response) => response.json() as unknown as ViewDTO
     );
   }
