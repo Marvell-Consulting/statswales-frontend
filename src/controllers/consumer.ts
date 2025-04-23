@@ -12,6 +12,7 @@ import { NotFoundException } from '../exceptions/not-found.exception';
 import { FileFormat } from '../enums/file-format';
 import { getDownloadHeaders } from '../utils/download-headers';
 import { logger } from '../utils/logger';
+import { Locale } from '../enums/locale';
 
 export const listPublishedDatasets = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -32,7 +33,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   const dataset = singleLangDataset(res.locals.dataset, req.language);
   const revision = dataset.published_revision;
   const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
-  const pageSize = Number.parseInt(req.query.page_size as string, 10) || 10;
+  const pageSize = Number.parseInt(req.query.page_size as string, 10) || 100;
   let pagination: (string | number)[] = [];
 
   if (!dataset.live || !revision) {
@@ -65,13 +66,14 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
     }
 
     const format = req.query.format as FileFormat;
+    const lang = req.query.download_language as Locale;
     const headers = getDownloadHeaders(format, attachmentName);
 
     if (!headers) {
       throw new NotFoundException('invalid file format');
     }
 
-    const fileStream = await req.conapi.getCubeFileStream(dataset.id, format);
+    const fileStream = await req.conapi.getCubeFileStream(dataset.id, format, lang);
     res.writeHead(200, headers);
     const readable: Readable = Readable.from(fileStream);
     readable.pipe(res);

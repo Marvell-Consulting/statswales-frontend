@@ -2047,6 +2047,30 @@
   position: sticky;
   top: 0;
 }
+.wg .govuk-pagination__prev {
+  padding-left: 35px;
+}
+.wg .govuk-pagination__prev::before {
+  border-width: max(2px, 0.0625em) max(2px, 0.0625em) 0 0;
+  width: 0.35em;
+  height: 0.35em;
+  left: 1em;
+}
+.wg .govuk-pagination__prev-none::before {
+  border: none;
+}
+.wg .govuk-pagination__next {
+  padding-right: 35px;
+}
+.wg .govuk-pagination__next::after {
+  border-width: max(2px, 0.0625em) max(2px, 0.0625em) 0 0;
+  width: 0.35em;
+  height: 0.35em;
+  right: 1em;
+}
+.wg .govuk-pagination__next-none::after {
+  border: none;
+}
 
 .wg .autocomplete__wrapper {
   position: relative;

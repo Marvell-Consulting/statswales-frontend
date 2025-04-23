@@ -2456,4 +2456,34 @@ $whitepurple: #eed5e3;
     position: sticky;
     top: 0;
   }
+
+  .govuk-pagination__prev {
+    padding-left: 35px;
+  }
+
+  .govuk-pagination__prev::before {
+    border-width: max(2px, 0.0625em) max(2px, 0.0625em) 0 0;
+    width: 0.35em;
+    height: 0.35em;
+    left: 1em;
+  }
+
+  .govuk-pagination__prev-none::before {
+    border: none;
+  }
+
+  .govuk-pagination__next {
+    padding-right: 35px;
+  }
+
+  .govuk-pagination__next::after {
+    border-width: max(2px, 0.0625em) max(2px, 0.0625em) 0 0;
+    width: 0.35em;
+    height: 0.35em;
+    right: 1em;
+  }
+
+  .govuk-pagination__next-none::after {
+    border: none;
+  }
 }

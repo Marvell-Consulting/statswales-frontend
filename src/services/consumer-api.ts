@@ -22,6 +22,7 @@ interface fetchParams {
   body?: FormData | string;
   json?: unknown;
   headers?: Record<string, string>;
+  lang?: Locale;
 }
 
 export class ConsumerApi {
@@ -29,10 +30,10 @@ export class ConsumerApi {
 
   constructor(private lang = Locale.English) {}
 
-  public async fetch({ url, method = HttpMethod.Get, body, json, headers }: fetchParams): Promise<Response> {
+  public async fetch({ url, method = HttpMethod.Get, body, json, headers, lang }: fetchParams): Promise<Response> {
     /* eslint-disable @typescript-eslint/naming-convention */
     const head = {
-      'Accept-Language': this.lang,
+      'Accept-Language': lang || this.lang,
       ...(json ? { 'Content-Type': 'application/json; charset=UTF-8' } : {}),
       ...headers
     };
@@ -100,11 +101,12 @@ export class ConsumerApi {
     );
   }
 
-  public async getCubeFileStream(datasetId: string, format: FileFormat): Promise<ReadableStream> {
+  public async getCubeFileStream(datasetId: string, format: FileFormat, language: Locale): Promise<ReadableStream> {
     logger.debug(`Fetching ${format} stream for dataset: ${datasetId}...`);
 
     return this.fetch({
-      url: `published/${datasetId}/download/${format}`
+      url: `published/${datasetId}/download/${format}`,
+      lang: language
     }).then((response) => response.body as ReadableStream);
   }
 }
