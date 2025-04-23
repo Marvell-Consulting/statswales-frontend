@@ -1396,7 +1396,8 @@
           "status": "Status",
           "email": "Email address",
           "login": "Last login",
-          "service_admin": "Service administrator"
+          "service_admin": "Service administrator",
+          "developer": "Developer"
         },
         "login_never": "Never",
         "groups": {

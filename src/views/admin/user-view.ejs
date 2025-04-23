@@ -28,6 +28,10 @@
                 <dt class="govuk-summary-list__key"><%= t('admin.user.view.details.service_admin') %></dt>
                 <dd class="govuk-summary-list__value"><%= user.global_roles.includes('service_admin') ? t('yes') : t('no') %></dd>
               </div>
+              <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key"><%= t('admin.user.view.details.developer') %></dt>
+                <dd class="govuk-summary-list__value"><%= user.global_roles.includes('developer') ? t('yes') : t('no') %></dd>
+              </div>
             </dl>
 
             <h2 class="govuk-heading-l"><%= t('admin.user.view.groups.heading') %></h2>
