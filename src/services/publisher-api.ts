@@ -183,11 +183,21 @@ export class PublisherApi {
     );
   }
 
-  public async getDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {
-    logger.debug(`Fetching active dataset list...`);
+  public async getUserDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {
+    logger.debug(`Fetching user dataset list...`);
     const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
 
     return this.fetch({ url: `dataset?${qs}` }).then(
+      (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
+    );
+  }
+
+  // should only be used for developer view
+  public async getFullDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {
+    logger.debug(`Fetching full dataset list...`);
+    const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
+
+    return this.fetch({ url: `developer/dataset?${qs}` }).then(
       (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
     );
   }

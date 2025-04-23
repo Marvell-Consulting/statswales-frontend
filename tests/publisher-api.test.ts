@@ -73,17 +73,17 @@ describe('PublisherApi', () => {
     });
   });
 
-  describe('getDatasetList', () => {
+  describe('getUserDatasetList', () => {
     it('should return an array of DatasetListItemDTO', async () => {
       const list: DatasetListItemDTO[] = [
         { id: randomUUID(), title: 'Example 1' },
         { id: randomUUID(), title: 'Example 2' }
       ];
 
-      mockResponse = Promise.resolve(new Response(JSON.stringify({ files: list })));
+      mockResponse = Promise.resolve(new Response(JSON.stringify(list)));
 
-      const fileList = await statsWalesApi.getDatasetList();
-      expect(fileList).toEqual({ files: list });
+      const response = await statsWalesApi.getUserDatasetList();
+      expect(response).toEqual(list);
     });
   });
 

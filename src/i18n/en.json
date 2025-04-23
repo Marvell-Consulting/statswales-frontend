@@ -1046,6 +1046,16 @@
       "tasklist": "Task List",
       "error": {
         "no_datasets": "No datasets are currently listed in the database. If you need help, contact a member of the development team."
+      },
+      "table": {
+        "id": "ID",
+        "title": "Title",
+        "group": "Group",
+        "revision_by": "Author",
+        "last_updated": "Last updated",
+        "dataset_status": "Dataset status",
+        "publish_status": "Publishing status",
+        "not_translated": "Not yet translated"
       }
     },
     "display": {
