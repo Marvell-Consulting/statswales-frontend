@@ -27,6 +27,12 @@ export const errorHandler: ErrorRequestHandler = (err: any, req: Request, res: R
       res.render('errors/not-found');
       break;
 
+    case 405:
+      logger.error(`405 error detected: ${err.message}`);
+      res.status(405);
+      res.render('errors/forbidden');
+      break;
+
     case 500:
     default:
       logger.error(err, `error detected for ${req.originalUrl}, rendering error page`);

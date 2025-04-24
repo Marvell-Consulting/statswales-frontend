@@ -37,11 +37,7 @@
                             <% for (const dataset of locals.data) { %>
                                 <tr class="govuk-table__row">
                                     <td class="govuk-table__cell">
-                                        <% if (dataset.publishing_status === 'incomplete') { %>
-                                            <a href="<%= buildUrl(`/publish/${dataset.id}/tasklist`, i18n.language) %>" class="govuk-link"><%= dataset.title || `${dataset.title_alt} [${t('homepage.table.not_translated')}]` %></a>
-                                        <% } else { %>
-                                            <a href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language) %>" class="govuk-link"><%= dataset.title || `${dataset.title_alt} [${t('homepage.table.not_translated')}]` %></a>
-                                        <% } %>
+                                        <a href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language) %>" class="govuk-link"><%= dataset.title || `${dataset.title_alt} [${t('homepage.table.not_translated')}]` %></a>
                                     </td>
                                     <td class="govuk-table__cell group"><%= dataset.group_name %></td>
                                     <td class="govuk-table__cell date"><%= dateFormat(dataset.last_updated, 'd MMMM yyyy', { locale: i18n.language }) %></td>
