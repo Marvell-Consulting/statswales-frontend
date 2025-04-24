@@ -30,7 +30,7 @@
 
                     <form enctype="multipart/form-data" method="post">
                         <div class="govuk-form-group">
-                            <textarea class="govuk-textarea <%= locals.errors?.find(e => e.field === 'summary') ? 'govuk-textarea--error' : '' %>" id="summary" name="summary" rows="4"><%= locals.summary %></textarea>
+                            <textarea class="govuk-textarea <%= locals.errors?.find(e => e.field === 'summary') ? 'govuk-textarea--error' : '' %>" id="summary" name="summary" rows="15"><%= locals.summary %></textarea>
                         </div>
                         <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
                     </form>
