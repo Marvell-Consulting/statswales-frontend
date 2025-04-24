@@ -117,6 +117,14 @@ export class PublisherApi {
     );
   }
 
+  public async moveDatasetGroup(datasetId: string, userGroupId: string): Promise<DatasetDTO> {
+    logger.debug(`Moving dataset ${datasetId} to user group ${userGroupId}...`);
+    const json = { user_group_id: userGroupId };
+    return this.fetch({ url: `dataset/${datasetId}/group`, method: HttpMethod.Patch, json }).then(
+      (response) => response.json() as unknown as DatasetDTO
+    );
+  }
+
   public async getDataset(datasetId: string, include?: DatasetInclude): Promise<DatasetDTO> {
     const url = include ? `dataset/${datasetId}/${include}` : `dataset/${datasetId}`;
     return this.fetch({ url }).then((response) => response.json() as unknown as DatasetDTO);

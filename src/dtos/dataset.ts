@@ -19,4 +19,5 @@ export interface DatasetDTO {
   published_revision?: RevisionDTO;
   start_date?: string;
   end_date?: string;
+  user_group_id?: string;
 }

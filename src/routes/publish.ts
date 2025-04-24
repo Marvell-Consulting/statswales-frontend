@@ -44,13 +44,17 @@ import {
   measureName,
   setupNumberDimension,
   deleteDraft,
-  provideDatasetGroup
+  provideDatasetGroup,
+  moveDatasetGroup
 } from '../controllers/publish';
 import { DatasetInclude as Include } from '../enums/dataset-include';
+import { flashMessages } from '../middleware/flash';
 
 export const publish = Router();
 
 const upload = multer({ storage: multer.memoryStorage() });
+
+publish.use(flashMessages);
 
 publish.get('/', start);
 
@@ -190,3 +194,7 @@ publish.post('/:datasetId/overview', fetchDataset(), upload.none(), overview);
 publish.get('/:datasetId/update', fetchDataset(), createNewUpdate);
 publish.get('/:datasetId/update-type', fetchDataset(), updateDatatable);
 publish.post('/:datasetId/update-type', fetchDataset(), updateDatatable);
+
+/* Move a dataset between groups */
+publish.get('/:datasetId/move', fetchDataset(), moveDatasetGroup);
+publish.post('/:datasetId/move', fetchDataset(), upload.none(), moveDatasetGroup);

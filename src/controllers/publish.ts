@@ -71,8 +71,9 @@ import slugify from 'slugify';
 import { DuckDBSupportFileFormats } from '../enums/support-fileformats';
 import { TZDate } from '@date-fns/tz';
 import { singleLangUserGroup } from '../utils/single-lang-user-group';
-import { getEditorUserGroups, isEditor } from '../utils/user-permissions';
+import { getApproverUserGroups, getEditorUserGroups, isEditor } from '../utils/user-permissions';
 import { PublishingStatus } from '../enums/publishing-status';
+import { NotAllowedException } from '../exceptions/not-allowed.exception';
 
 export const start = (req: Request, res: Response) => {
   req.session.errors = undefined;
@@ -123,7 +124,7 @@ export const provideDatasetGroup = async (req: Request, res: Response) => {
     }
   }
 
-  res.render('publish/group', { availableGroups, values, errors });
+  res.render('publish/select-group', { availableGroups, values, errors });
 };
 
 export const dimensionColumnNameRegex = /^[a-zA-ZÀ-ž0-9()\-_ £¢€$%+]+$/;
@@ -2552,6 +2553,7 @@ export const overview = async (req: Request, res: Response) => {
   const revision = singleLangRevision(getLatestRevision(dataset), req.language)!;
   const title = revision.metadata?.title;
   const justScheduled = req.query?.scheduled === 'true';
+  const canMoveGroup = getApproverUserGroups(req.user).length > 1;
   let errors: ViewError[] = [];
 
   if (req.query.withdraw) {
@@ -2571,6 +2573,7 @@ export const overview = async (req: Request, res: Response) => {
     justScheduled,
     datasetStatus,
     publishingStatus,
+    canMoveGroup,
     errors
   });
 };
@@ -2601,4 +2604,47 @@ export const updateDatatable = async (req: Request, res: Response) => {
     }
   }
   res.render('publish/update-type');
+};
+
+export const moveDatasetGroup = async (req: Request, res: Response, next: NextFunction) => {
+  const dataset = res.locals.dataset;
+  const availableGroups = getApproverUserGroups(req.user).map((g) => singleLangUserGroup(g.group, req.language)) || [];
+  const validGroupIds = availableGroups.map((group) => group.id) as string[];
+  let values = { group_id: dataset.user_group_id };
+  let errors: ViewError[] = [];
+
+  if (availableGroups.length < 2) {
+    next(new NotAllowedException('You must be an approver of more than one group to move a dataset'));
+    return;
+  }
+
+  if (req.method === 'POST') {
+    values = req.body;
+
+    try {
+      errors = (await getErrors(groupIdValidator(validGroupIds), req)).map((error: FieldValidationError) => {
+        return {
+          field: 'group_id',
+          message: { key: `publish.group.form.group_id.error.${error.value ? 'invalid' : 'missing'}` }
+        };
+      });
+
+      if (errors.length > 0) {
+        res.status(400);
+        throw new Error();
+      }
+
+      await req.pubapi.moveDatasetGroup(res.locals.datasetId, values.group_id);
+      const groupName = availableGroups.find((group) => group.id === values.group_id)?.name || '';
+      req.session.flash = [{ key: `publish.move_group.success`, params: { groupName } }];
+      res.redirect(req.buildUrl(`/publish/${dataset.id}/overview`, req.language));
+      return;
+    } catch (err) {
+      if (err instanceof ApiException) {
+        errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+      }
+    }
+  }
+
+  res.render('publish/move-group', { availableGroups, values, errors });
 };

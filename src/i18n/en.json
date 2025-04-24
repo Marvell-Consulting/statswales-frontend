@@ -965,16 +965,17 @@
           "content": "Dataset submitted successfully for publishing"
         },
         "publish_at": "Publishing scheduled: <strong>{{publish_at}}</strong>",
-        "what_next": "What do you want to do?",
-        "buttons": {
-          "view_published_dataset": "View published dataset (opens in new tab)",
-          "update_dataset": "Update this dataset",
-          "withdraw_first_revision": "Change dataset before publication",
-          "withdraw_update_revision": "Change update before publication",
-          "continue_update": "Continue update",
-          "continue": "Continue dataset",
-          "preview": "View dataset preview"
-        }
+        "what_next": "What do you want to do?"
+      },
+      "actions": {
+        "view_published_dataset": "View published dataset (opens in new tab)",
+        "update_dataset": "Update this dataset",
+        "withdraw_first_revision": "Change dataset before publication",
+        "withdraw_update_revision": "Change update before publication",
+        "continue_update": "Continue update",
+        "continue": "Continue creating dataset",
+        "preview": "View dataset preview",
+        "move": "Move dataset to another group"
       },
       "error": {
         "withdraw": "Could not withdraw dataset from publication. You should contact support."
@@ -989,6 +990,10 @@
       "errors": {
         "missing": "You need to select the type of update you wish to make"
       }
+    },
+    "move_group": {
+      "heading": "Which group do you want to move this dataset to?",
+      "success": "Dataset moved to {{groupName}}"
     }
   },
   "translations": {
