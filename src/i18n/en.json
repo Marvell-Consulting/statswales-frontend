@@ -816,7 +816,7 @@
         },
         "time": {
           "label": "Time",
-          "hint": "This will be 09:30 by default. Only change this if a different publication time is needed. Use 24 hour clock format, for example 15:00.",
+          "hint": "This will be 09:30 local UK time by default. Only change this if a different publication time is needed. Use 24 hour clock format, for example 15:00.",
           "error": {
             "invalid": "The time this dataset should be published must be a real time"
           }
