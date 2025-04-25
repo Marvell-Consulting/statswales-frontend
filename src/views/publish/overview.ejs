@@ -39,10 +39,11 @@
 
 						<% if (locals.publishingStatus === 'published') { %>
 							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/update`, i18n.language) %>"><%= t('publish.overview.actions.update_dataset') %></a></li>
-						<% } %>
+						<% } else { %>
+              <li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/cube-preview`, i18n.language) %>"><%= t('publish.overview.actions.preview') %></a></li>
+            <% } %>
 
 						<% if (locals.publishingStatus === 'scheduled') { %>
-							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/cube-preview`, i18n.language) %>"><%= t('publish.overview.actions.preview') %></a></li>
 							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language, { withdraw: 'true' }) %>"><%= t('publish.overview.actions.withdraw_first_revision') %></a></li>
 						<% } %>
 
