@@ -223,7 +223,9 @@ export const uploadDataTable = async (req: Request, res: Response) => {
         errors = body.errors || [{ field: 'csv', message: { key: 'errors.fact_table_validation.unknown_error' } }];
       } else {
         res.status(500);
-        errors = [{ field: 'csv', message: { key: 'errors.fact_table_validation.unknown_error' } }];
+        errors = errors.length
+          ? errors
+          : [{ field: 'csv', message: { key: 'errors.fact_table_validation.unknown_error' } }];
       }
     }
   }

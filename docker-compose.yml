@@ -30,6 +30,13 @@ services:
       - valkey
       - db
       - blobstorage
+    healthcheck:
+      test: curl --fail http://localhost:3001/healthcheck || exit 1
+      interval: 40s
+      timeout: 30s
+      retries: 5
+      start_period: 60s
+
     environment:
       APP_ENV: 'ci'
       LOG_LEVEL: 'debug'
@@ -37,4 +44,12 @@ services:
       TEST_DB_PORT: 5432
       TEST_DB_SYNC: 'false'
       AZURE_BLOB_STORAGE_URL: 'http://blobstorage:10000/devstoreaccount1'
-    command: sh -c "npm run migration:run && npm run seed:required && npm run seed:ci && exec npm run start"
+
+    command: sh -c "npm run migration:run && npm run seed:required && npm run seed:ci && npm run start"
+
+  ready-for-tests:
+    image: busybox
+    command: echo "ready for tests"
+    depends_on:
+      backend:
+        condition: service_healthy
