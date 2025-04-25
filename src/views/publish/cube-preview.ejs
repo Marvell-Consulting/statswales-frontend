@@ -114,7 +114,7 @@
                     </div>
                 </div>
                 <% locals.anchor = 'preview' %>
-                <%- include("../partials/pagination", locals.anchor, t, locals.current_page, locals.total_records, locals.pagaination); %>
+                <%- include("../partials/pagination", { showLineCount: true }); %>
             </div>
         </div>
         <% } else { %>

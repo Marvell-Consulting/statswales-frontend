@@ -34,7 +34,7 @@
                 </tbody>
               </table>
               <% if (locals.total_pages > 1) { %>
-                <%- include("../partials/pagination"); %>
+                  <%- include("../partials/pagination", { showLineCount: true }); %>
               <% } %>
             <% } %>
           </div>
