@@ -676,7 +676,7 @@
         },
         "time": {
           "label": "Amser",
-          "hint": "Y rhagosodiad fydd 09:30.  Dim ond os bydd angen amser cyhoeddi gwahanol y dylid newid hwn.  Defnyddiwch fformat cloc 24 awr, er enghraifft 15:00.",
+          "hint": "Y rhagosodiad fydd 09:30 yr amser lleol yn y DU.  Dim ond os bydd angen amser cyhoeddi gwahanol y dylid newid hwn.  Defnyddiwch fformat cloc 24 awr, er enghraifft 15:00.",
           "error": {
             "invalid": "Rhaid i'r amser y dylid cyhoeddi'r set ddata hon fod yn amser go iawn"
           }
