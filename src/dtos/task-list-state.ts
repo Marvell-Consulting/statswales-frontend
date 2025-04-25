@@ -1,31 +1,31 @@
-import { TaskStatus } from '../enums/task-status';
+import { TaskListStatus } from '../enums/task-list-status';
 import { DimensionStatus } from '../interfaces/dimension-status';
 
 export interface TaskListState {
-  datatable: TaskStatus;
+  datatable: TaskListStatus;
   measure?: DimensionStatus;
   dimensions?: DimensionStatus[];
 
   metadata: {
-    title: TaskStatus;
-    summary: TaskStatus;
-    quality: TaskStatus;
-    collection: TaskStatus;
-    frequency: TaskStatus;
-    designation: TaskStatus;
-    related: TaskStatus;
-    sources: TaskStatus;
-    topics: TaskStatus;
+    title: TaskListStatus;
+    summary: TaskListStatus;
+    quality: TaskListStatus;
+    collection: TaskListStatus;
+    frequency: TaskListStatus;
+    designation: TaskListStatus;
+    related: TaskListStatus;
+    sources: TaskListStatus;
+    topics: TaskListStatus;
   };
 
   translation: {
-    export: TaskStatus;
-    import: TaskStatus;
+    export: TaskListStatus;
+    import: TaskListStatus;
   };
 
   publishing: {
-    organisation: TaskStatus;
-    when: TaskStatus;
+    organisation: TaskListStatus;
+    when: TaskListStatus;
   };
 
   canPublish: boolean;
