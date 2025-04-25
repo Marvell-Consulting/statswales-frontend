@@ -21,7 +21,7 @@
                 <% if (data) { %>
                     <% if (data.length > 10) { %>
                         <details class="govuk-details" data-module="govuk-details">
-                            <summary class="govuk-details__summary"><%= t('fact_table_validation.incomplete_table_summary') %></summary>
+                            <summary class="govuk-details__summary"><%= t('errors.fact_table_validation.incomplete_table_summary', {rows: data.length}) %></summary>
                             <%- include("../partials/dimension-preview-table", headers, data);%>
                         </details>
                     <% } else { %>
