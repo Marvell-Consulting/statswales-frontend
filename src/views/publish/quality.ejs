@@ -34,7 +34,7 @@
                             <% if(locals.errors?.find(e => e.field === 'quality')) { %>
                                 <p id="quality-error" class="govuk-error-message"><%= t('publish.quality.form.quality.error.missing') %></p>
                             <% } %>
-                            <textarea class="govuk-textarea <%= locals.errors?.find(e => e.field === 'quality') ? 'govuk-textarea--error' : '' %>" id="quality" name="quality" rows="4"><%= locals.quality %></textarea>
+                            <textarea class="govuk-textarea <%= locals.errors?.find(e => e.field === 'quality') ? 'govuk-textarea--error' : '' %>" id="quality" name="quality" rows="15"><%= locals.quality %></textarea>
                         </div>
 
                         <div class="govuk-form-group <%= locals.errors?.find(e => e.field === 'rounding_applied') ? 'govuk-form-group--error' : '' %>">

@@ -24,6 +24,6 @@ export class UploadPage {
   }
 
   async submit() {
-    await this.page.getByRole('button', { name: 'Upload CSV File' }).click();
+    await this.page.getByRole('button', { name: 'Continue' }).click();
   }
 }
