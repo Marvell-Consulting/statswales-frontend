@@ -9,14 +9,16 @@ import { ConsumerApi } from '../services/consumer-api';
 
 import { localeUrl } from './language-switcher';
 import { statusToColour } from '../utils/status-to-colour';
+import { TZDate } from '@date-fns/tz';
 
 const config = appConfig();
 
 const dateFormat = (date: DateArg<Date> & {}, formatStr: string, options?: any): string => {
+  const tzDate = new TZDate(date as Date, 'Europe/London');
   if (options?.locale) {
     options.locale = options.locale.includes('cy') ? cy : enGB;
   }
-  return format(date, formatStr, options);
+  return format(tzDate, formatStr, options);
 };
 
 // initialise any request-scoped services required by the app. See @types/express/index.d.ts for details
