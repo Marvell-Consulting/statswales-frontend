@@ -86,7 +86,7 @@ _Sylwer mai enghraifft at ddibenion dangos yw hon, ac nid yw’n ddiweddariad go
 
 Gellir diweddaru unrhyw [adran o’r metadata](Data-preparation-‐-New-datasets#guidance-metadata) yn ôl yr angen. Gellir gwneud hyn os yw’r data ei hun yn cael ei ddiweddaru neu beidio. Yn ogystal, efallai y bydd angen esbonio pam bod y metadata wedi cael ei newid, yn yr adran berthnasol.
 
-## Diweddariadau nad ydynt yn bosibl ar hyn o bryd 
+## Diweddariadau nad ydynt yn bosibl ar hyn o bryd
 
 Yn y system bresennol, ni allwch:
 
