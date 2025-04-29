@@ -94,6 +94,11 @@ Ar ôl i chi lenwi’r holl feysydd cofnodi testun, byddwch yn gallu allgludo’
 
 Wrth agor y CSV cyfieithiadau a allgludwyd mewn meddalwedd fel Excel, efallai y bydd meysydd testun sy’n cynnwys paragraffau lluosog yn rhannu ar draws celloedd lluosog. Os bydd hyn yn digwydd, dylech sicrhau bod yr holl destun ar gyfer adran benodol, mewn un iaith, mewn un cell.
 
+Mae'r gwerthoedd yn y golofn 'allwedd' yn unigryw i bob set ddata.  Felly, dylech sicrhau:
+
+- eich bod yn defnyddio ffeil y cyfieithiad a allgludwyd ar gyfer y set ddata yr ydych yn ei chreu
+- nad ydych chi'n newid unrhyw rai o'r gwerthoedd yn y golofn allwedd
+
 Ar ôl i chi gwblhau’r CSV:
 
 1. dewiswch ‘Mewngludo cyfieithiadau’ o’r rhestr dasgau ar gyfer eich set ddata
@@ -103,15 +108,6 @@ Ar ôl i chi gwblhau’r CSV:
 Gallwch weld rhagolwg o’ch set ddata lawn nawr yn Gymraeg ac yn Saesneg.
 
 ## Cyhoeddi
-
-### Tîm a sefydliad cyhoeddi
-
-Dewiswch eich tîm a’ch sefydliad. Mae gan dimau gyfeiriad e-bost cysylltu penodedig sy’n gysylltiedig â nhw.
-
-Caiff \[rhestr y timau a’r cyfeiriadau e-bost cysylltiedig [link TBD](#)\] ei rheoli’n ganolog. Os bydd angen i chi ychwanegu tîm i’r rhestr neu newid tîm yn y rhestr, bydd angen i chi:
-
-- anfon e-bost at ... yn ... \[process TBD\]
-- nodi enw’r tîm a’i gyfeiriad e-bost yn Gymraeg ac yn Saesneg
 
 ### Pryd y dylid cyhoeddi’r set ddata
 

@@ -6,10 +6,12 @@ If you need to add or replace data in a dataset, you should prepare update data 
 
 These should be in the **same format as the originally uploaded data table** for this dataset. Using the **same columns and column headers**.
 
-You can check the formatting and columns of the originally uploaded data table in SW3 by:
+<!-- You can check the formatting of previously uploaded data files by downloading them from the 'History' tab on a dataset's overview page. -->
+
+<!-- You can check the formatting and columns of the originally uploaded data table in SW3 by:
 
 - selecting the dataset you need to update from your home screen
-- selecting ‘View originally uploaded data table’
+- selecting ‘View originally uploaded data table’ -->
 
 ## Adding new data only
 
@@ -83,3 +85,10 @@ _Please note this example is for demonstration purposes only and is not a genuin
 ## Updating metadata
 
 Any [section of the metadata](Data-preparation-‐-New-datasets#guidance-metadata) can be updated if needed. This can be done whether the data itself is being updated or not. It may also be necessary to explain why the metadata has been changed, within the relevant section.
+
+## Updates that are not currently possible
+
+In the current system, you cannot:
+
+- add a new dimension to a dataset
+- delete a dimension from a dataset

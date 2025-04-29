@@ -6,10 +6,12 @@ Os bydd angen i chi ychwanegu neu ddisodli data mewn set ddata, dylech baratoi t
 
 Dylai’r rhain fod yn yr **un fformat â’r tabl data a lanlwythwyd yn wreiddiol** ar gyfer y set ddata hon. Dylid defnyddio’r **un colofnau a phenawdau colofnau.**
 
-Gallwch archwilio’r fformatio a cholofnau’r tabl data a lanlwythwyd yn wreiddiol yn SW3 trwy:
+<!-- Gallwch wirio fformat ffeiliau data a lanlwythwyd yn flaenorol trwy eu lawrlwytho o'r tab 'Hanes' ar dudalen trosolwg set ddata. -->
+
+<!-- Gallwch archwilio’r fformatio a cholofnau’r tabl data a lanlwythwyd yn wreiddiol yn SW3 trwy:
 
 - ddewis y set ddata y mae angen i chi ei diweddaru o’ch sgrin hafan
-- dewis ‘Gweld tabl data a lanlwythwyd yn wreiddiol’
+- dewis ‘Gweld tabl data a lanlwythwyd yn wreiddiol’ -->
 
 ## Ychwanegu data newydd yn unig
 
@@ -83,3 +85,10 @@ _Sylwer mai enghraifft at ddibenion dangos yw hon, ac nid yw’n ddiweddariad go
 ## Diweddaru metadata
 
 Gellir diweddaru unrhyw [adran o’r metadata](Data-preparation-‐-New-datasets#guidance-metadata) yn ôl yr angen. Gellir gwneud hyn os yw’r data ei hun yn cael ei ddiweddaru neu beidio. Yn ogystal, efallai y bydd angen esbonio pam bod y metadata wedi cael ei newid, yn yr adran berthnasol.
+
+## Diweddariadau nad ydynt yn bosibl ar hyn o bryd 
+
+Yn y system bresennol, ni allwch:
+
+- ychwanegu dimensiwn newydd i set ddata
+- dileu dimensiwn o set ddata

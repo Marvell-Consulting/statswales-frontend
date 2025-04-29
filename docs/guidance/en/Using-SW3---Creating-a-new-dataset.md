@@ -94,6 +94,11 @@ Once you’ve completed all text entry fields, you’ll be able to export all th
 
 When opening the exported translation CSV in software such as Excel, text fields with multiple paragraphs may split across multiple cells. If this happens, you should ensure that all text for a specific section, in one language, is in a single cell.
 
+The values in the 'key' column are unique to each dataset. Therefore, ensure you:
+
+- use the exported translation file for the dataset you're creating
+- do not change any of the values in the key column
+
 Once you have the completed CSV:
 
 1. select ‘Import translations’ from your dataset tasklist
