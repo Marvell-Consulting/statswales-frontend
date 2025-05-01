@@ -5,13 +5,18 @@ import { DatasetStatus } from '../enums/dataset-status';
 import { PublishingStatus } from '../enums/publishing-status';
 
 import { getLatestRevision } from './revision';
+import { RevisionDTO } from '../dtos/revision';
+import { SingleLanguageRevision } from '../dtos/single-language/revision';
 
 export const getDatasetStatus = (dataset: DatasetDTO): DatasetStatus => {
   return dataset.live && isBefore(dataset.live, new Date()) ? DatasetStatus.Live : DatasetStatus.New;
 };
 
-export const getPublishingStatus = (dataset: DatasetDTO): PublishingStatus => {
-  const revision = getLatestRevision(dataset);
+export const getPublishingStatus = (
+  dataset: DatasetDTO,
+  revision?: RevisionDTO | SingleLanguageRevision
+): PublishingStatus => {
+  revision = revision ?? getLatestRevision(dataset);
 
   if (getDatasetStatus(dataset) === DatasetStatus.New) {
     return revision?.approved_at ? PublishingStatus.Scheduled : PublishingStatus.Incomplete;

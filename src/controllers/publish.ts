@@ -2548,36 +2548,48 @@ export const importTranslations = async (req: Request, res: Response) => {
   res.render('publish/translations/import', { preview, translations, errors, existingTranslations });
 };
 
-export const overview = async (req: Request, res: Response) => {
-  const dataset = await req.pubapi.getDataset(res.locals.datasetId, DatasetInclude.All);
-  const datasetStatus = getDatasetStatus(dataset);
-  const publishingStatus = getPublishingStatus(dataset);
-  const revision = singleLangRevision(getLatestRevision(dataset), req.language)!;
-  const title = revision.metadata?.title;
+export const overview = async (req: Request, res: Response, next: NextFunction) => {
+  let errors: ViewError[] = [];
   const justScheduled = req.query?.scheduled === 'true';
   const canMoveGroup = getApproverUserGroups(req.user).length > 1;
-  let errors: ViewError[] = [];
 
-  if (req.query.withdraw) {
-    try {
-      await req.pubapi.withdrawFromPublication(dataset.id, revision.id);
-      res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+  try {
+    const dataset = await req.pubapi.getDataset(res.locals.datasetId, DatasetInclude.Overview);
+    const revision = singleLangRevision(dataset.end_revision, req.language)!;
+    const title = revision?.metadata?.title;
+    const datasetStatus = getDatasetStatus(dataset);
+    const publishingStatus = getPublishingStatus(dataset, revision);
+
+    if (req.query.withdraw) {
+      try {
+        await req.pubapi.withdrawFromPublication(dataset.id, revision.id);
+        res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+        return;
+      } catch (err) {
+        logger.error(err, `Failed to withdraw dataset`);
+        errors = [{ field: 'withdraw', message: { key: 'publish.overview.error.withdraw' } }];
+      }
+    }
+
+    res.render('publish/overview', {
+      dataset,
+      revision,
+      title,
+      justScheduled,
+      datasetStatus,
+      publishingStatus,
+      canMoveGroup
+    });
+    return;
+  } catch (err) {
+    if (err instanceof ApiException) {
+      logger.error(err, `Failed to fetch the dataset overview`);
+      next(new NotFoundException());
       return;
-    } catch (_err) {
-      errors = [{ field: 'withdraw', message: { key: 'publish.overview.error.withdraw' } }];
     }
   }
 
-  res.render('publish/overview', {
-    dataset,
-    revision,
-    title,
-    justScheduled,
-    datasetStatus,
-    publishingStatus,
-    canMoveGroup,
-    errors
-  });
+  res.render('publish/overview', { errors });
 };
 
 export const createNewUpdate = async (req: Request, res: Response) => {
