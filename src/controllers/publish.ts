@@ -428,20 +428,15 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
 
   try {
     if (req.method === 'POST') {
-      // TODO: for MVP there is no approval process, so we are jumping straight to approve
-      // once we have approval process, there will be an interstitial status while the dataset is waiting to
-      // be approved by a suitable member of the team
-      const scheduledDataset = await req.pubapi.approveForPublication(dataset.id, revision.id);
-
-      if (scheduledDataset) {
-        res.redirect(req.buildUrl(`/publish/${scheduledDataset.id}/overview`, req.language, { scheduled: 'true' }));
-        return;
-      }
+      await req.pubapi.submitForPublication(dataset.id, revision.id);
+      res.redirect(req.buildUrl(`/publish/${dataset.id}/overview`, req.language, { submitted: 'true' }));
+      return;
     }
 
     const datasetTitle = revision.metadata?.title;
     const dimensions = dataset.dimensions;
     const taskList: TaskListState = await req.pubapi.getTaskList(dataset.id);
+
     res.render('publish/tasklist', {
       datasetTitle,
       taskList,
@@ -2527,7 +2522,7 @@ export const importTranslations = async (req: Request, res: Response) => {
 
 export const overview = async (req: Request, res: Response, next: NextFunction) => {
   let errors: ViewError[] = [];
-  const justScheduled = req.query?.scheduled === 'true';
+  const successfullySubmitted = req.query?.submitted === 'true';
   const canMoveGroup = getApproverUserGroups(req.user).length > 1;
 
   try {
@@ -2552,7 +2547,7 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
       dataset,
       revision,
       title,
-      justScheduled,
+      successfullySubmitted,
       datasetStatus,
       publishingStatus,
       canMoveGroup

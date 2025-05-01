@@ -17,8 +17,14 @@ export const getPublishingStatus = (
   revision?: RevisionDTO | SingleLanguageRevision
 ): PublishingStatus => {
   revision = revision ?? getLatestRevision(dataset);
+  const datasetStatus = getDatasetStatus(dataset);
+  const openTask = dataset.open_task;
 
-  if (getDatasetStatus(dataset) === DatasetStatus.New) {
+  if (openTask) {
+    // do something with the open task
+  }
+
+  if (datasetStatus === DatasetStatus.New) {
     return revision?.approved_at ? PublishingStatus.Scheduled : PublishingStatus.Incomplete;
   }
 

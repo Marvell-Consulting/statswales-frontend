@@ -934,14 +934,12 @@
       },
       "publishing": {
         "subheading": "Publishing",
-        "organisation": "Publisher organisation and contact",
         "when": "When this dataset should be published",
-        "when_update": "When this update should be published",
-        "submit": "Submit for approval"
+        "when_update": "When this update should be published"
       },
       "submit": {
         "subheading": "By continuing, you confirm that all data and metadata has been checked and is correct.",
-        "button": "Submit for publishing"
+        "button": "Submit for approval"
       }
     },
     "change_data": {
@@ -961,11 +959,13 @@
       "example": "For example: {{example}}"
     },
     "overview": {
-      "scheduled": {
+      "submitted": {
         "notification": {
           "header": "Success",
-          "content": "Dataset submitted successfully for publishing"
-        },
+          "content": "Dataset submitted for approval"
+        }
+      },
+      "scheduled": {
         "publish_at": "Publishing scheduled: <strong>{{publish_at}}</strong>",
         "what_next": "What do you want to do?"
       },
