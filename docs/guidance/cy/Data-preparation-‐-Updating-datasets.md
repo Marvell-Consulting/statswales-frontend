@@ -74,11 +74,11 @@ Rhesi enghreifftiol tabl data diweddariad ar gyfer bandiau treth gyngor, gan war
 
 | CodArdal  | CodBlwyddyn | CodBand | CodauNodiadau | Mesur neu fath data | Data |
 | :-------- | :---------- | :------ | :------------ | :------------------ | :--- |
-| W06000001 | 1996/97     | A-      | z,r           |                     |      |
-| W06000001 | 1997/98     | A-      | z,r           |                     |      |
-| W06000001 | 1998/99     | A-      | z,r           |                     |      |
-| W06000001 | 1999/00     | A-      | z,r           |                     |      |
-| W06000001 | 2000/01     | A-      | z,r           |                     |      |
+| W06000001 | 1996/97     | A-      | z,r           | 1                   |      |
+| W06000001 | 1997/98     | A-      | z,r           | 1                   |      |
+| W06000001 | 1998/99     | A-      | z,r           | 1                   |      |
+| W06000001 | 1999/00     | A-      | z,r           | 1                   |      |
+| W06000001 | 2000/01     | A-      | z,r           | 1                   |      |
 
 _Sylwer mai enghraifft at ddibenion dangos yw hon, ac nid yw’n ddiweddariad go iawn._
 
