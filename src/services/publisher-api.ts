@@ -573,10 +573,10 @@ export class PublisherApi {
     );
   }
 
-  public async approveForPublication(datasetId: string, revisionId: string): Promise<DatasetDTO> {
-    logger.debug(`Attempting to approve draft revision for publication`);
+  public async submitForPublication(datasetId: string, revisionId: string): Promise<DatasetDTO> {
+    logger.debug(`Attempting to submit draft revision for publication`);
     return this.fetch({
-      url: `dataset/${datasetId}/revision/by-id/${revisionId}/approve`,
+      url: `dataset/${datasetId}/revision/by-id/${revisionId}/submit`,
       method: HttpMethod.Post
     }).then((response) => response.json() as unknown as DatasetDTO);
   }
