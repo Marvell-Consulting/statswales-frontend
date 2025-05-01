@@ -33,7 +33,7 @@
   "header": {
     "product_name": "StatsCymru F3.0",
     "beta": "Beta",
-    "feedback": "Rydych chi'n edrych ar fersiwn newydd o StatsCymru.  Gallwch gael cymorth trwy droi at <a class=\"govuk-link\" href=\"mailto:{{support_email}}\">{{support_email}}</a>.",
+    "feedback": "Rydych chi'n edrych ar fersiwn newydd o StatsCymru.  Gallwch gael cymorth trwy droi at <a class=\"govuk-link\" href=\"http://statswales3support.slack.com\">Slack</a>.",
     "logo": "StatsCymru logo",
     "navigation": {
       "menu": "Dewislen",
