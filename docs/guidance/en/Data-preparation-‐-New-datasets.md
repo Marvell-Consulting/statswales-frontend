@@ -16,7 +16,7 @@ In this guidance, we’ll be using the example scenario of data for council tax 
 | AreaCode  | YearCode | BandCode | NoteCodes | Measure | Data   |
 | :-------- | :------- | :------- | :-------- | :------ | :----- |
 | W06000001 | 202425   | A-       |           | 1       | 256.88 |
-| W06000001 | 202425   | A        | x         |         |        |
+| W06000001 | 202425   | A        | x         | 1       |        |
 | W06000001 | 202425   | B        |           | 1       | 359.64 |
 | W06000001 | 202425   | C        | e         | 1       | 411.01 |
 | W06000001 | 202425   | D        |           | 1       | 462.39 |
