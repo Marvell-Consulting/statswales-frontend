@@ -1,122 +1,123 @@
 <%- include("../partials/header"); %>
-<div class="govuk-width-container app-width-container">
-    <main class="govuk-main-wrapper" id="main-content" role="main">
+<div class="form-background">
+    <div class="govuk-width-container app-width-container">
+        <main class="govuk-main-wrapper" id="main-content" role="main">
 
-        <div class="top-links">
-            <div class="govuk-width-container">
-                <a href="javascript:history.back()" class="govuk-back-link"><%= t('buttons.back') %></a>
-                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+            <div class="top-links">
+                <div class="govuk-width-container">
+                    <a href="javascript:history.back()" class="govuk-back-link"><%= t('buttons.back') %></a>
+                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+                </div>
             </div>
-        </div>
 
-        <div class="govuk-width-container">
-            <div class="govuk-grid-row">
-                <% if (locals.related_links.length > 0 && !locals.editId) { %>
+            <div class="govuk-width-container">
+                <div class="govuk-grid-row">
+                    <% if (locals.related_links.length > 0 && !locals.editId) { %>
 
-                    <div class="govuk-grid-column-two-thirds">
-                        <h1 class="govuk-heading-xl"><%= t('publish.related.list.heading') %></h1>
+                        <div class="govuk-grid-column-two-thirds">
+                            <h1 class="govuk-heading-xl"><%= t('publish.related.list.heading') %></h1>
 
-                        <%- include("../partials/error-handler"); %>
+                            <%- include("../partials/error-handler"); %>
 
-                        <table class="govuk-table">
-                            <thead class="govuk-table__head">
-                                <tr class="govuk-table__row">
-                                    <th scope="col" class="govuk-table__header"><%= t('publish.related.list.table.link') %></th>
-                                    <th scope="col" class="govuk-table__header"><%= t('publish.related.list.table.action_header') %></th>
-                                </tr>
-                            </thead>
-                            <tbody class="govuk-table__body">
-                                <% for (let link of locals.related_links) { %>
-                                    <% var label_en = link.label_en || `${link.label_cy} [${t('publish.related.list.not_translated')}]` %>
-                                    <% var label_cy = link.label_cy || `${link.label_en} [${t('publish.related.list.not_translated')}]` %>
+                            <table class="govuk-table">
+                                <thead class="govuk-table__head">
                                     <tr class="govuk-table__row">
-                                        <td class="govuk-table__cell"><a href="<%= link.url %>" class="govuk-link"><%= i18n.language.includes('en') ? label_en : label_cy %></a></td>
-                                        <td class="govuk-table__cell nowrap">
-                                            <ul class="govuk-summary-list__actions-list">
-                                                <li class="govuk-summary-list__actions-list-item">
-                                                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/related?edit=${link.id}`, i18n.language) %>" class="govuk-link">
-                                                        <%= t('publish.related.list.table.action_edit') %>
-                                                    </a>
-                                                </li>
-                                                <li class="govuk-summary-list__actions-list-item">
-                                                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/related?delete=${link.id}`, i18n.language) %>" class="govuk-link">
-                                                        <%= t('publish.related.list.table.action_delete') %>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </td>
+                                        <th scope="col" class="govuk-table__header"><%= t('publish.related.list.table.link') %></th>
+                                        <th scope="col" class="govuk-table__header"><%= t('publish.related.list.table.action_header') %></th>
                                     </tr>
-                                <% } %>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody class="govuk-table__body">
+                                    <% for (let link of locals.related_links) { %>
+                                        <% var label_en = link.label_en || `${link.label_cy} [${t('publish.related.list.not_translated')}]` %>
+                                        <% var label_cy = link.label_cy || `${link.label_en} [${t('publish.related.list.not_translated')}]` %>
+                                        <tr class="govuk-table__row">
+                                            <td class="govuk-table__cell"><a href="<%= link.url %>" class="govuk-link"><%= i18n.language.includes('en') ? label_en : label_cy %></a></td>
+                                            <td class="govuk-table__cell nowrap">
+                                                <ul class="govuk-summary-list__actions-list">
+                                                    <li class="govuk-summary-list__actions-list-item">
+                                                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/related?edit=${link.id}`, i18n.language) %>" class="govuk-link">
+                                                            <%= t('publish.related.list.table.action_edit') %>
+                                                        </a>
+                                                    </li>
+                                                    <li class="govuk-summary-list__actions-list-item">
+                                                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/related?delete=${link.id}`, i18n.language) %>" class="govuk-link">
+                                                            <%= t('publish.related.list.table.action_delete') %>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
 
-                        <form enctype="multipart/form-data" method="post">
-                            <input type="hidden" name="add_another" value="true" />
-                            <div class="govuk-form-group">
-                                <h2 class="govuk-heading-m" id="add-link"><%= t('publish.related.list.form.add_another.heading') %></h2>
-                                <fieldset class="govuk-fieldset" aria-describedby="add-link">
-                                    <div class="govuk-radios" data-module="govuk-radios">
-                                        <div class="govuk-radios__item">
-                                            <input class="govuk-radios__input" id="addYes" name="add_link" type="radio" value="true" />
-                                            <label class="govuk-label govuk-radios__label" for="addYes"><%= t('publish.related.list.form.add_another.options.yes.label') %></label>
+                            <form enctype="multipart/form-data" method="post">
+                                <input type="hidden" name="add_another" value="true" />
+                                <div class="govuk-form-group">
+                                    <h2 class="govuk-heading-m" id="add-link"><%= t('publish.related.list.form.add_another.heading') %></h2>
+                                    <fieldset class="govuk-fieldset" aria-describedby="add-link">
+                                        <div class="govuk-radios" data-module="govuk-radios">
+                                            <div class="govuk-radios__item">
+                                                <input class="govuk-radios__input" id="addYes" name="add_link" type="radio" value="true" />
+                                                <label class="govuk-label govuk-radios__label" for="addYes"><%= t('publish.related.list.form.add_another.options.yes.label') %></label>
+                                            </div>
+                                            <div class="govuk-radios__item">
+                                                <input class="govuk-radios__input" id="addNo" name="add_link" type="radio" value="false" />
+                                                <label class="govuk-label govuk-radios__label" for="addNo"><%= t('publish.related.list.form.add_another.options.no.label') %></label>
+                                            </div>
                                         </div>
-                                        <div class="govuk-radios__item">
-                                            <input class="govuk-radios__input" id="addNo" name="add_link" type="radio" value="false" />
-                                            <label class="govuk-label govuk-radios__label" for="addNo"><%= t('publish.related.list.form.add_another.options.no.label') %></label>
-                                        </div>
+                                    </fieldset>
+                                </div>
+                                <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
+                            </form>
+                        </div>
+
+                    <% } else { %>
+
+                        <div class="govuk-grid-column-two-thirds">
+                            <h1 class="govuk-heading-xl"><%= t('publish.related.add.heading') %></h1>
+
+                            <%- include("../partials/error-handler"); %>
+
+                            <p class="govuk-body"><%= t('publish.related.add.explain') %></p>
+
+                            <ul class="govuk-list govuk-list--bullet">
+                                <li><%= t('publish.related.add.explain_1') %></li>
+                                <li><%= t('publish.related.add.explain_2') %></li>
+                                <li><%= t('publish.related.add.explain_3') %></li>
+                            </ul>
+
+                            <form enctype="multipart/form-data" method="post">
+                                <fieldset class="govuk-fieldset">
+                                    <input type="hidden" name="link_id" value="<%= locals.link.id %>" />
+                                    <div class="govuk-form-group <%= locals.errors?.find(e => e.field === 'link_url') ? 'govuk-form-group--error' : '' %>">
+                                        <label class="govuk-label" for="link_url"><%= t('publish.related.add.form.link_url.label') %></label>
+                                        <div class="govuk-hint"><%= t('publish.related.add.form.link_url.hint') %></div>
+                                        <% if(locals.errors?.find(e => e.field === 'link_url')) { %>
+                                            <p id="link_url-error" class="govuk-error-message"><%= t(`publish.related.add.form.link_url.error.${locals.link?.url ? 'invalid' : 'missing'}`) %></p>
+                                        <% } %>
+                                        <input class="govuk-input <%= locals.errors?.find(e => e.field === 'link_url') ? 'govuk-input--error' : '' %>" id="link_url" name="link_url" type="text" value="<%= locals.link.url %>" />
+                                    </div>
+                                    <div class="govuk-form-group <%= locals.errors?.find(e => e.field === 'link_label') ? 'govuk-form-group--error' : '' %>">
+                                        <label class="govuk-label" for="link_label"><%= t('publish.related.add.form.link_label.label') %></label>
+                                        <div class="govuk-hint"><%= t('publish.related.add.form.link_label.hint') %></div>
+                                        <% if(locals.errors?.find(e => e.field === 'link_label')) { %>
+                                            <p id="link_label-error" class="govuk-error-message"><%= t('publish.related.add.form.link_label.error.missing') %></p>
+                                        <% } %>
+                                        <input class="govuk-input <%= locals.errors?.find(e => e.field === 'link_label') ? 'govuk-input--error' : '' %>" id="link_label" name="link_label" type="text" value="<%= locals.link.label %>" />
                                     </div>
                                 </fieldset>
-                            </div>
-                            <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
-                        </form>
-                    </div>
+                                <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
+                            </form>
+                        </div>
 
-                <% } else { %>
+                    <% } %>
 
-                    <div class="govuk-grid-column-two-thirds">
-                        <h1 class="govuk-heading-xl"><%= t('publish.related.add.heading') %></h1>
-
-                        <%- include("../partials/error-handler"); %>
-
-                        <p class="govuk-body"><%= t('publish.related.add.explain') %></p>
-
-                        <ul class="govuk-list govuk-list--bullet">
-                            <li><%= t('publish.related.add.explain_1') %></li>
-                            <li><%= t('publish.related.add.explain_2') %></li>
-                            <li><%= t('publish.related.add.explain_3') %></li>
-                        </ul>
-
-                        <form enctype="multipart/form-data" method="post">
-                            <fieldset class="govuk-fieldset">
-                                <input type="hidden" name="link_id" value="<%= locals.link.id %>" />
-                                <div class="govuk-form-group <%= locals.errors?.find(e => e.field === 'link_url') ? 'govuk-form-group--error' : '' %>">
-                                    <label class="govuk-label" for="link_url"><%= t('publish.related.add.form.link_url.label') %></label>
-                                    <div class="govuk-hint"><%= t('publish.related.add.form.link_url.hint') %></div>
-                                    <% if(locals.errors?.find(e => e.field === 'link_url')) { %>
-                                        <p id="link_url-error" class="govuk-error-message"><%= t(`publish.related.add.form.link_url.error.${locals.link?.url ? 'invalid' : 'missing'}`) %></p>
-                                    <% } %>
-                                    <input class="govuk-input <%= locals.errors?.find(e => e.field === 'link_url') ? 'govuk-input--error' : '' %>" id="link_url" name="link_url" type="text" value="<%= locals.link.url %>" />
-                                </div>
-                                <div class="govuk-form-group <%= locals.errors?.find(e => e.field === 'link_label') ? 'govuk-form-group--error' : '' %>">
-                                    <label class="govuk-label" for="link_label"><%= t('publish.related.add.form.link_label.label') %></label>
-                                    <div class="govuk-hint"><%= t('publish.related.add.form.link_label.hint') %></div>
-                                    <% if(locals.errors?.find(e => e.field === 'link_label')) { %>
-                                        <p id="link_label-error" class="govuk-error-message"><%= t('publish.related.add.form.link_label.error.missing') %></p>
-                                    <% } %>
-                                    <input class="govuk-input <%= locals.errors?.find(e => e.field === 'link_label') ? 'govuk-input--error' : '' %>" id="link_label" name="link_label" type="text" value="<%= locals.link.label %>" />
-                                </div>
-                            </fieldset>
-                            <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
-                        </form>
-                    </div>
-
-                <% } %>
-
+                </div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
 </div>
-
 <style>
     .nowrap {
         white-space: nowrap;

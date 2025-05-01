@@ -1,74 +1,74 @@
 <%- include("../partials/header"); %>
-
-<div class="govuk-width-container app-width-container">
-    <main class="govuk-main-wrapper" id="main-content" role="main">
-        <div class="top-links">
-            <div class="govuk-width-container">
-                <a href="<%= buildUrl(`/publish/${locals.datasetId}/dates/${dimension.id}`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
-                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+<div class="form-background">
+    <div class="govuk-width-container app-width-container">
+        <main class="govuk-main-wrapper" id="main-content" role="main">
+            <div class="top-links">
+                <div class="govuk-width-container">
+                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/dates/${dimension.id}`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+                </div>
             </div>
-        </div>
 
-        <span class="region-subhead"><%= dimension.metadata.name %></span>
-        <h1 class="govuk-heading-xl"><%= t('publish.point_in_time.heading') %></h1>
+            <span class="region-subhead"><%= dimension.metadata.name %></span>
+            <h1 class="govuk-heading-xl"><%= t('publish.point_in_time.heading') %></h1>
 
-        <%- include("../partials/error-handler"); %>
+            <%- include("../partials/error-handler"); %>
 
 
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-full">
-                <form method="post" role="continue">
-                    <div class="govuk-form-group">
-                        <fieldset class="govuk-fieldset">
-                            <div class="govuk-radios" data-module="govuk-radios">
-                                <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="quarter-format-2" name="dateFormat" type="radio" value="dd/MM/yyyy">
-                                    <label class="govuk-label govuk-radios__label" for="quarter-format-2">
-                                        DD/MM/YYYY
-                                    </label>
-                                    <div id="quarter-format-2-hint" class="govuk-hint govuk-radios__hint">
-                                        <%- t('publish.point_in_time.example', { example: '14/10/2024' })%>
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-full">
+                    <form method="post" role="continue">
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <div class="govuk-radios" data-module="govuk-radios">
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="quarter-format-2" name="dateFormat" type="radio" value="dd/MM/yyyy">
+                                        <label class="govuk-label govuk-radios__label" for="quarter-format-2">
+                                            DD/MM/YYYY
+                                        </label>
+                                        <div id="quarter-format-2-hint" class="govuk-hint govuk-radios__hint">
+                                            <%- t('publish.point_in_time.example', { example: '14/10/2024' })%>
+                                        </div>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="quarter-format-3" name="dateFormat" type="radio" value="dd-MM-yyyy">
+                                        <label class="govuk-label govuk-radios__label" for="quarter-format-3">
+                                            DD-MM-YYYY
+                                        </label>
+                                        <div id="quarter-format-4-hint" class="govuk-hint govuk-radios__hint">
+                                            <%- t('publish.point_in_time.example', { example: '14-10-2024' })%>
+                                        </div>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="quarter-format-4" name="dateFormat" type="radio" value="-yyyy-MM-dd">
+                                        <label class="govuk-label govuk-radios__label" for="quarter-format-4">
+                                            YYYY-MM-DD
+                                        </label>
+                                        <div id="quarter-format-4-hint" class="govuk-hint govuk-radios__hint">
+                                            <%- t('publish.point_in_time.example', { example: '2024-10-14' })%>
+                                        </div>
+                                    </div>
+                                    <div class="govuk-radios__item">
+                                        <input class="govuk-radios__input" id="quarter-format-5" name="dateFormat" type="radio" value="yyyyMMdd">
+                                        <label class="govuk-label govuk-radios__label" for="quarter-format-5">
+                                            YYYYMMDD
+                                        </label>
+                                        <div id="quarter-format-5-hint" class="govuk-hint govuk-radios__hint">
+                                            <%- t('publish.point_in_time.example', { example: '20241014' })%>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="quarter-format-3" name="dateFormat" type="radio" value="dd-MM-yyyy">
-                                    <label class="govuk-label govuk-radios__label" for="quarter-format-3">
-                                        DD-MM-YYYY
-                                    </label>
-                                    <div id="quarter-format-4-hint" class="govuk-hint govuk-radios__hint">
-                                        <%- t('publish.point_in_time.example', { example: '14-10-2024' })%>
-                                    </div>
-                                </div>
-                                <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="quarter-format-4" name="dateFormat" type="radio" value="-yyyy-MM-dd">
-                                    <label class="govuk-label govuk-radios__label" for="quarter-format-4">
-                                        YYYY-MM-DD
-                                    </label>
-                                    <div id="quarter-format-4-hint" class="govuk-hint govuk-radios__hint">
-                                        <%- t('publish.point_in_time.example', { example: '2024-10-14' })%>
-                                    </div>
-                                </div>
-                                <div class="govuk-radios__item">
-                                    <input class="govuk-radios__input" id="quarter-format-5" name="dateFormat" type="radio" value="yyyyMMdd">
-                                    <label class="govuk-label govuk-radios__label" for="quarter-format-5">
-                                        YYYYMMDD
-                                    </label>
-                                    <div id="quarter-format-5-hint" class="govuk-hint govuk-radios__hint">
-                                        <%- t('publish.point_in_time.example', { example: '20241014' })%>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
-                    <div class="govuk-button-group">
-                        <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
-                            <%= t('buttons.continue') %>
-                        </button>
-                    </div>
-                </form>
+                            </fieldset>
+                        </div>
+                        <div class="govuk-button-group">
+                            <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                                <%= t('buttons.continue') %>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
 </div>
-
 <%- include("../partials/footer"); %>

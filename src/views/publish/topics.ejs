@@ -1,50 +1,50 @@
 <%- include("../partials/header"); %>
+<div class="form-background">
+  <div class="govuk-width-container app-width-container">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
 
-<div class="govuk-width-container app-width-container">
-  <main class="govuk-main-wrapper" id="main-content" role="main">
-
-    <div class="top-links">
-      <div class="govuk-width-container">
-          <a href="javascript:history.back()" class="govuk-back-link"><%= t('buttons.back') %></a>
-          <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+      <div class="top-links">
+        <div class="govuk-width-container">
+            <a href="javascript:history.back()" class="govuk-back-link"><%= t('buttons.back') %></a>
+            <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+        </div>
       </div>
-    </div>
 
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-xl"><%= t('publish.topics.heading') %></h1>
-        <%- include("../partials/error-handler"); %>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-xl"><%= t('publish.topics.heading') %></h1>
+          <%- include("../partials/error-handler"); %>
 
-        <form enctype="multipart/form-data" method="post">
-          <input type="hidden" name="topics" value="">
-          <div class="govuk-form-group">
-            <fieldset class="govuk-fieldset" aria-describedby="topic-hint">
-              <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
-                <% for (let topic of locals.nestedTopics) { %>
-                  <div class="govuk-checkboxes__item">
-                    <input class="govuk-checkboxes__input" id="<%= `topic_${topic.id}` %>" name="topics" type="checkbox" value="<%= topic.id %>" aria-controls="<%= `conditional-topic-${topic.id}` %>" <%= locals.selectedTopics.includes(topic.id) ? 'checked' : '' %>>
-                    <label class="govuk-label govuk-checkboxes__label" for="<%= `topic_${topic.id}` %>"><%= topic.name %></label>
-                  </div>
-                  <% if (topic.children.length > 0) { %>
-                    <div class="govuk-checkboxes__conditional" id="<%= `conditional-topic-${topic.id}` %>">
-                      <% for (let childTopic of topic.children) { %>
-                        <div class="govuk-checkboxes__item">
-                          <input class="govuk-checkboxes__input" id="<%= `topic_${childTopic.id}` %>" name="topics" type="checkbox" value="<%= childTopic.id %>" <%= locals.selectedTopics.includes(childTopic.id) ? 'checked' : '' %>>
-                          <label class="govuk-label govuk-checkboxes__label" for="<%= `topic_${childTopic.id}` %>"><%= childTopic.name %></label>
-                        </div>
-                      <% } %>
+          <form enctype="multipart/form-data" method="post">
+            <input type="hidden" name="topics" value="">
+            <div class="govuk-form-group">
+              <fieldset class="govuk-fieldset" aria-describedby="topic-hint">
+                <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                  <% for (let topic of locals.nestedTopics) { %>
+                    <div class="govuk-checkboxes__item">
+                      <input class="govuk-checkboxes__input" id="<%= `topic_${topic.id}` %>" name="topics" type="checkbox" value="<%= topic.id %>" aria-controls="<%= `conditional-topic-${topic.id}` %>" <%= locals.selectedTopics.includes(topic.id) ? 'checked' : '' %>>
+                      <label class="govuk-label govuk-checkboxes__label" for="<%= `topic_${topic.id}` %>"><%= topic.name %></label>
                     </div>
+                    <% if (topic.children.length > 0) { %>
+                      <div class="govuk-checkboxes__conditional" id="<%= `conditional-topic-${topic.id}` %>">
+                        <% for (let childTopic of topic.children) { %>
+                          <div class="govuk-checkboxes__item">
+                            <input class="govuk-checkboxes__input" id="<%= `topic_${childTopic.id}` %>" name="topics" type="checkbox" value="<%= childTopic.id %>" <%= locals.selectedTopics.includes(childTopic.id) ? 'checked' : '' %>>
+                            <label class="govuk-label govuk-checkboxes__label" for="<%= `topic_${childTopic.id}` %>"><%= childTopic.name %></label>
+                          </div>
+                        <% } %>
+                      </div>
+                    <% } %>
                   <% } %>
-                <% } %>
-              </div>
-            </fieldset>
-          </div>
-          <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
-        </form>
+                </div>
+              </fieldset>
+            </div>
+            <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
+          </form>
+        </div>
       </div>
-    </div>
 
-  </main>
+    </main>
+  </div>
 </div>
-
 <%- include("../partials/footer"); %>

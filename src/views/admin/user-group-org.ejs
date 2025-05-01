@@ -1,38 +1,40 @@
 <%- include("../partials/header"); %>
-<div class="govuk-width-container app-width-container">
-    <main class="govuk-main-wrapper" id="main-content" role="main">
+<div class="form-background">
+    <div class="govuk-width-container app-width-container">
+        <main class="govuk-main-wrapper" id="main-content" role="main">
 
-        <div class="govuk-width-container">
-            <div class="govuk-grid-row">
-                <div class="govuk-grid-column-two-thirds">
-                    <h1 class="govuk-heading-xl"><%= t('admin.group.organisation.heading') %></h1>
+            <div class="govuk-width-container">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-two-thirds">
+                        <h1 class="govuk-heading-xl"><%= t('admin.group.organisation.heading') %></h1>
 
-                    <%- include("../partials/error-handler"); %>
+                        <%- include("../partials/error-handler"); %>
 
-                    <form enctype="multipart/form-data" method="post">
-                        <div class="govuk-form-group <%= locals.errors?.find(e => e.field === 'organisation_id') ? 'govuk-input--error' : '' %>">
-                            <fieldset class="govuk-fieldset" aria-describedby="designation">
-                                <% if (locals.errors?.find(e => e.field === 'organisation_id')) { %>
-                                    <p id="organisation-id-error" class="govuk-error-message">
-                                      <span class="govuk-visually-hidden">Error:</span> <%= t('admin.group.organisation.form.organisation_id.error') %>
-                                    </p>
-                                <% } %>
-                                <div class="govuk-radios" data-module="govuk-radios">
-                                    <% locals.organisations.forEach(org => { %>
-                                        <div class="govuk-radios__item">
-                                            <input class="govuk-radios__input" id="<%= `organisation_${org.id}` %>" name="organisation_id" type="radio" value="<%= org.id %>" <%= locals.values.organisation_id === org.id ? 'checked' : '' %> />
-                                            <label class="govuk-label govuk-radios__label" for="<%= `organisation_${org.id}` %>"><%= org.name %></label>
-                                        </div>
-                                    <% }) %>
-                                </div>
-                            </fieldset>
-                        </div>
-                        <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
-                    </form>
+                        <form enctype="multipart/form-data" method="post">
+                            <div class="govuk-form-group <%= locals.errors?.find(e => e.field === 'organisation_id') ? 'govuk-input--error' : '' %>">
+                                <fieldset class="govuk-fieldset" aria-describedby="designation">
+                                    <% if (locals.errors?.find(e => e.field === 'organisation_id')) { %>
+                                        <p id="organisation-id-error" class="govuk-error-message">
+                                        <span class="govuk-visually-hidden">Error:</span> <%= t('admin.group.organisation.form.organisation_id.error') %>
+                                        </p>
+                                    <% } %>
+                                    <div class="govuk-radios" data-module="govuk-radios">
+                                        <% locals.organisations.forEach(org => { %>
+                                            <div class="govuk-radios__item">
+                                                <input class="govuk-radios__input" id="<%= `organisation_${org.id}` %>" name="organisation_id" type="radio" value="<%= org.id %>" <%= locals.values.organisation_id === org.id ? 'checked' : '' %> />
+                                                <label class="govuk-label govuk-radios__label" for="<%= `organisation_${org.id}` %>"><%= org.name %></label>
+                                            </div>
+                                        <% }) %>
+                                    </div>
+                                </fieldset>
+                            </div>
+                            <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
 </div>
 
 <%- include("../partials/footer"); %>

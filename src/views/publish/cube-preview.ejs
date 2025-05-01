@@ -1,147 +1,147 @@
 <%- include("../partials/header"); %>
+<div class="form-background">
+    <div class="govuk-width-container app-width-container">
+        <main class="govuk-main-wrapper" id="main-content" role="main">
 
-<div class="govuk-width-container app-width-container">
-    <main class="govuk-main-wrapper" id="main-content" role="main">
-
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-full">
-                <h1 class="govuk-heading-xl govuk-!-margin-bottom-2"><%= datasetTitle %></h1>
-            </div>
-        </div>
-
-        <%- include("../partials/dataset/status", { datasetStatus, publishingStatus }); %>
-
-        <div class="govuk-panel">
-            <p class="govuk-panel__title-m">
-                <%= t('publish.cube_preview.panel') %>
-            </p>
-        </div>
-
-        <%- include("../partials/dataset/key-info", { keyInfo: preview.keyInfo }); %>
-        <% if (locals?.data) { %>
-        <div class="govuk-tabs" data-module="govuk-tabs">
-            <h2 class="govuk-tabs__title">
-                <%= t('dataset_view.contents') %>
-            </h2>
-            <ul class="govuk-tabs__list">
-                <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                    <a class="govuk-tabs__tab" href="#download">
-                        <%= t('dataset_view.download') %>
-                    </a>
-                </li>
-                <li class="govuk-tabs__list-item">
-                    <a class="govuk-tabs__tab" href="#preview">
-                        <%= t('dataset_view.table_preview') %>
-                    </a>
-                </li>
-            </ul>
-            <div class="govuk-tabs__panel" id="download">
-                <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview/download`, i18n.language, { format: 'csv' }) %>" class="govuk-button">
-                    <i class="fa-solid fa-file-csv"></i> <%= t('dataset_view.download_as.csv') %></a>
-                <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview/download`, i18n.language, { format: 'parquet' }) %>" class="govuk-button">
-                    <i class="fa-solid fa-table"></i> <%= t('dataset_view.download_as.parquet') %></a>
-                <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview/download`, i18n.language, { format: 'xlsx' }) %>" class="govuk-button">
-                    <i class="fa-solid fa-file-excel"></i> <%= t('dataset_view.download_as.excel') %></a>
-                <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview/download`, i18n.language, { format: 'duckdb' }) %>" class="govuk-button">
-                    <i class="fa-solid fa-database"></i> <%= t('dataset_view.download_as.duckdb') %></a>
-            </div>
-            <div class="govuk-tabs__panel govuk-tabs__panel--hidden" id="preview">
-                <div class="govuk-grid-row">
-                    <div class="govuk-grid-column-one-half">
-                        &nbsp;
-                    </div>
-                    <div class="govuk-grid-column-one-half" style="text-align: right;">
-                        <form action="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview`, i18n.language, undefined, 'preview') %>" method="get" role="page-size" class="govuk-!-margin-bottom-0">
-                            <label class="govuk-label govuk-!-display-inline" for="page_size">
-                                <%= t('pagination.page_size') %>
-                            </label>
-
-                            <select class="govuk-select govuk-!-display-inline" id="page_size" name="page_size">
-                                <option value="5" <% if (locals.page_size===5) { %>selected <% }; %>>5</option>
-                                <option value="10" <% if (locals.page_size===10) { %>selected <% }; %>>10</option>
-                                <option value="25" <% if (locals.page_size===25) { %>selected <% }; %>>25</option>
-                                <option value="50" <% if (locals.page_size===50) { %>selected <% }; %>>50</option>
-                                <option value="100" <% if (locals.page_size===100) { %>selected <% }; %>>100</option>
-                                <option value="250" <% if (locals.page_size===250) { %>selected <% }; %>>250</option>
-                                <option value="500" <% if (locals.page_size===500) { %>selected <% }; %>>500</option>
-                            </select>
-                            <input type="hidden" name="file" value="<%= locals.datafile_id %>">
-                            <input type="hidden" name="page_number" value="1">
-                            <button type="submit" class="govuk-button govuk-button-small govuk-!-display-inline" data-module="govuk-button">
-                                <%= t('pagination.update') %>
-                            </button>
-                        </form>
-                    </div>
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-full">
+                    <h1 class="govuk-heading-xl govuk-!-margin-bottom-2"><%= datasetTitle %></h1>
                 </div>
-                <div class="govuk-grid-row">
-                    <div class="table-display govuk-grid-column-full">
-                        <table class="govuk-table sticky-table">
-                            <colgroup>
-                                <% locals.headers.forEach(function(cell, idx) { %>
-                                    <col class="<%= cell.type === 'ignore' ? 'ignore-column' : '' %>" />
-                                <% }); %>
-                            </colgroup>
-                            <thead class="govuk-table__head">
-                            <tr class="govuk-table__row">
-                                <% locals.headers.forEach(function(cell, idx) { %>
-                                    <% if (cell.source_type === 'line_number') { %>
-                                        <th scope="col" class="govuk-table__header">
-                                            <span class="govuk-visually-hidden"><%= t('publish.preview.row_number') %></span>
-                                        </th>
-                                    <% } else { %>
-                                        <th scope="col" class="govuk-table__header">
-                                            <% if (cell.source_type && cell.source_type !== 'unknown' && cell.source_type !== 'line_number') { %>
-                                                <span class="region-subhead"><%= t(`publish.preview.source_type.${cell.source_type}`) %></span><br />
-                                            <% } %>
-                                            <%= cell.name || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %>
-                                        </th>
-                                    <% } %>
-                                <% }); %>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <% locals.data.forEach(function(row) { %>
-                                <tr>
-                                    <% row.forEach(function(cell, index) { %>
-                                        <td class="govuk-table__cell <%= locals.headers[index].source_type %>">
-                                            <%= cell %>
-                                        </td>
+            </div>
+
+            <%- include("../partials/dataset/status", { datasetStatus, publishingStatus }); %>
+
+            <div class="govuk-panel">
+                <p class="govuk-panel__title-m">
+                    <%= t('publish.cube_preview.panel') %>
+                </p>
+            </div>
+
+            <%- include("../partials/dataset/key-info", { keyInfo: preview.keyInfo }); %>
+            <% if (locals?.data) { %>
+            <div class="govuk-tabs" data-module="govuk-tabs">
+                <h2 class="govuk-tabs__title">
+                    <%= t('dataset_view.contents') %>
+                </h2>
+                <ul class="govuk-tabs__list">
+                    <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                        <a class="govuk-tabs__tab" href="#download">
+                            <%= t('dataset_view.download') %>
+                        </a>
+                    </li>
+                    <li class="govuk-tabs__list-item">
+                        <a class="govuk-tabs__tab" href="#preview">
+                            <%= t('dataset_view.table_preview') %>
+                        </a>
+                    </li>
+                </ul>
+                <div class="govuk-tabs__panel" id="download">
+                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview/download`, i18n.language, { format: 'csv' }) %>" class="govuk-button">
+                        <i class="fa-solid fa-file-csv"></i> <%= t('dataset_view.download_as.csv') %></a>
+                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview/download`, i18n.language, { format: 'parquet' }) %>" class="govuk-button">
+                        <i class="fa-solid fa-table"></i> <%= t('dataset_view.download_as.parquet') %></a>
+                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview/download`, i18n.language, { format: 'xlsx' }) %>" class="govuk-button">
+                        <i class="fa-solid fa-file-excel"></i> <%= t('dataset_view.download_as.excel') %></a>
+                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview/download`, i18n.language, { format: 'duckdb' }) %>" class="govuk-button">
+                        <i class="fa-solid fa-database"></i> <%= t('dataset_view.download_as.duckdb') %></a>
+                </div>
+                <div class="govuk-tabs__panel govuk-tabs__panel--hidden" id="preview">
+                    <div class="govuk-grid-row">
+                        <div class="govuk-grid-column-one-half">
+                            &nbsp;
+                        </div>
+                        <div class="govuk-grid-column-one-half" style="text-align: right;">
+                            <form action="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview`, i18n.language, undefined, 'preview') %>" method="get" role="page-size" class="govuk-!-margin-bottom-0">
+                                <label class="govuk-label govuk-!-display-inline" for="page_size">
+                                    <%= t('pagination.page_size') %>
+                                </label>
+
+                                <select class="govuk-select govuk-!-display-inline" id="page_size" name="page_size">
+                                    <option value="5" <% if (locals.page_size===5) { %>selected <% }; %>>5</option>
+                                    <option value="10" <% if (locals.page_size===10) { %>selected <% }; %>>10</option>
+                                    <option value="25" <% if (locals.page_size===25) { %>selected <% }; %>>25</option>
+                                    <option value="50" <% if (locals.page_size===50) { %>selected <% }; %>>50</option>
+                                    <option value="100" <% if (locals.page_size===100) { %>selected <% }; %>>100</option>
+                                    <option value="250" <% if (locals.page_size===250) { %>selected <% }; %>>250</option>
+                                    <option value="500" <% if (locals.page_size===500) { %>selected <% }; %>>500</option>
+                                </select>
+                                <input type="hidden" name="file" value="<%= locals.datafile_id %>">
+                                <input type="hidden" name="page_number" value="1">
+                                <button type="submit" class="govuk-button govuk-button-small govuk-!-display-inline" data-module="govuk-button">
+                                    <%= t('pagination.update') %>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="govuk-grid-row">
+                        <div class="table-display govuk-grid-column-full">
+                            <table class="govuk-table sticky-table">
+                                <colgroup>
+                                    <% locals.headers.forEach(function(cell, idx) { %>
+                                        <col class="<%= cell.type === 'ignore' ? 'ignore-column' : '' %>" />
+                                    <% }); %>
+                                </colgroup>
+                                <thead class="govuk-table__head">
+                                <tr class="govuk-table__row">
+                                    <% locals.headers.forEach(function(cell, idx) { %>
+                                        <% if (cell.source_type === 'line_number') { %>
+                                            <th scope="col" class="govuk-table__header">
+                                                <span class="govuk-visually-hidden"><%= t('publish.preview.row_number') %></span>
+                                            </th>
+                                        <% } else { %>
+                                            <th scope="col" class="govuk-table__header">
+                                                <% if (cell.source_type && cell.source_type !== 'unknown' && cell.source_type !== 'line_number') { %>
+                                                    <span class="region-subhead"><%= t(`publish.preview.source_type.${cell.source_type}`) %></span><br />
+                                                <% } %>
+                                                <%= cell.name || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %>
+                                            </th>
+                                        <% } %>
                                     <% }); %>
                                 </tr>
-                            <% }); %>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                <% locals.data.forEach(function(row) { %>
+                                    <tr>
+                                        <% row.forEach(function(cell, index) { %>
+                                            <td class="govuk-table__cell <%= locals.headers[index].source_type %>">
+                                                <%= cell %>
+                                            </td>
+                                        <% }); %>
+                                    </tr>
+                                <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+                    <% locals.anchor = 'preview' %>
+                    <%- include("../partials/pagination", locals.anchor, t, locals.current_page, locals.total_records, locals.pagaination); %>
                 </div>
-                <% locals.anchor = 'preview' %>
-                <%- include("../partials/pagination", locals.anchor, t, locals.current_page, locals.total_records, locals.pagaination); %>
             </div>
-        </div>
-        <% } else { %>
-        <div class="govuk-error-summary" data-module="govuk-error-summary">
-            <div class="govuk-error-summary__title">
-                <h2 class="govuk-heading-s"><%= t('errors.problem') %></h2>
+            <% } else { %>
+            <div class="govuk-error-summary" data-module="govuk-error-summary">
+                <div class="govuk-error-summary__title">
+                    <h2 class="govuk-heading-s"><%= t('errors.problem') %></h2>
+                </div>
+                <div class="govuk-error-summary__body">
+                    <p>
+                        <%= t('errors.preview_failure.no_preview') %>
+                    </p>
+                    <p>
+                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview`, i18n.language, undefined, 'preview') %>" class="govuk-link">
+                            <%= t('errors.preview_failure.try_again') %>
+                        </a>
+                    </p>
+                </div>
             </div>
-            <div class="govuk-error-summary__body">
-                <p>
-                    <%= t('errors.preview_failure.no_preview') %>
-                </p>
-                <p>
-                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview`, i18n.language, undefined, 'preview') %>" class="govuk-link">
-                        <%= t('errors.preview_failure.try_again') %>
-                    </a>
-                </p>
-            </div>
-        </div>
-        <% } %>
+            <% } %>
 
-        <%- include("../partials/dataset/notes", { notes: preview.notes }); %>
+            <%- include("../partials/dataset/notes", { notes: preview.notes }); %>
 
-        <%- include("../partials/dataset/about", { about: preview.about }); %>
+            <%- include("../partials/dataset/about", { about: preview.about }); %>
 
-        <%- include("../partials/dataset/published", { published: preview.published }); %>
+            <%- include("../partials/dataset/published", { published: preview.published }); %>
 
-    </main>
+        </main>
+    </div>
 </div>
-
 <%- include("../partials/footer"); %>

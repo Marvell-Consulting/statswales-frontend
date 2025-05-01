@@ -714,6 +714,14 @@ $whitepurple: #eed5e3;
     margin: 0 40px 0 0;
     margin-right: auto;
     margin-left: auto;
+
+    table.sticky-table thead {
+      background-color: $lightgrey_offwhite;
+    }
+
+    table.sticky-table th {
+      background-color: $lightgrey_offwhite;
+    }
   }
 
   .top-links {

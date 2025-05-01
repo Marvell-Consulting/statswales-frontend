@@ -580,6 +580,12 @@
   margin-right: auto;
   margin-left: auto;
 }
+.wg .form-background table.sticky-table thead {
+  background-color: #f1f1f1;
+}
+.wg .form-background table.sticky-table th {
+  background-color: #f1f1f1;
+}
 .wg .top-links {
   background-color: #ffffff;
   margin-top: -40px;
