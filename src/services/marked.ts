@@ -21,6 +21,10 @@ export const docRenderer: RendererObject = {
         return `<h2 id="guidance-${anchor}" class="govuk-heading-l">${parsedText}</h2>`;
       case 3:
         return `<h3 id="guidance-${anchor}" class="govuk-heading-m">${parsedText}</h3>`;
+      case 4:
+        return `<h4 id="guidance-${anchor}" class="govuk-heading-s">${parsedText}</h4>`;
+      case 5:
+        return `<h5 id="guidance-${anchor}" class="govuk-heading-xs">${parsedText}</h5>`;
       default:
         return `<h${depth} id="guidance-${anchor}"  class="govuk-heading-s">${parsedText}</h${depth + 1}>`;
     }
@@ -169,7 +173,7 @@ function createNestedList(document: Document, treeData: TreeNode[]) {
     const anchor = node.text.replaceAll('.', '').replaceAll(' ', '-').toLowerCase();
     li.innerHTML = `<a class="govuk-link" href="#guidance-${anchor}">${node.text}</a>`;
 
-    if (node.children && node.children.length > 0) {
+    if (node.children.length > 0 && node.depth < 3) {
       const childUl = createNestedList(document, node.children);
       li.appendChild(childUl);
     }
