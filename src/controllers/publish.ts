@@ -570,8 +570,8 @@ export const downloadDataset = async (req: Request, res: Response, next: NextFun
   }
 };
 
-export const redirectToTasklist = (req: Request, res: Response) => {
-  res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/tasklist`, req.language));
+export const redirectToOverview = (req: Request, res: Response) => {
+  res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/overview`, req.language));
 };
 
 export const measurePreview = async (req: Request, res: Response, next: NextFunction) => {

@@ -10,7 +10,7 @@ import {
   sources,
   taskList,
   changeData,
-  redirectToTasklist,
+  redirectToOverview,
   provideSummary,
   provideCollection,
   provideQuality,
@@ -65,7 +65,7 @@ publish.post('/group', upload.none(), provideDatasetGroup);
 publish.get('/title', provideTitle);
 publish.post('/title', upload.none(), provideTitle);
 
-publish.get('/:datasetId', redirectToTasklist);
+publish.get('/:datasetId', redirectToOverview);
 
 publish.get('/:datasetId/title', fetchDataset(Include.Meta), provideTitle);
 publish.post('/:datasetId/title', fetchDataset(Include.Meta), upload.none(), provideTitle);
