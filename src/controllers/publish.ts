@@ -576,30 +576,31 @@ export const redirectToOverview = (req: Request, res: Response) => {
 
 export const measurePreview = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const measure = dataset.measure;
+    const [dataset, preview] = await Promise.all([
+      req.pubapi.getDataset(res.locals.datasetId, DatasetInclude.Measure),
+      req.pubapi.getMeasurePreview(res.locals.datasetId)
+    ]);
+
+    const langDataset = singleLangDataset(dataset, req.language);
+    const measure = langDataset.measure;
+
     if (!measure) {
       logger.error('Measure not defined for this dataset');
       next(new UnknownException('errors.preview.measure_not_found'));
       return;
     }
 
-    const dataPreview = await req.pubapi.getMeasurePreview(res.locals.dataset.id);
-    const supportedFormats = Object.values(DuckDBSupportFileFormats).map((format) => format.toLowerCase());
+    const supportedFormats = Object.values(DuckDBSupportFileFormats)
+      .map((format) => format.toLowerCase())
+      .join(',');
+
     if (req.method === 'POST') {
       logger.debug('User is uploading a measure lookup table..');
       if (!req.file) {
         logger.error('No file attached to request');
-        const errors: ViewError[] = [
-          {
-            field: 'csv',
-            message: {
-              key: 'errors.upload.no_csv'
-            }
-          }
-        ];
+        const errors: ViewError[] = [{ field: 'csv', message: { key: 'errors.upload.no_csv' } }];
         res.status(400);
-        res.render('publish/measure-preview', { ...dataPreview, measure, errors });
+        res.render('publish/measure-preview', { ...preview, measure, errors });
         return;
       }
 
@@ -607,7 +608,6 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
         const fileName = req.file.originalname;
         req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
         const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
-        logger.debug('Sending file to backend.');
         await req.pubapi.uploadMeasureLookup(dataset.id, fileData, fileName);
         res.redirect(req.buildUrl(`/publish/${dataset.id}/measure/review`, req.language));
         return;
@@ -615,61 +615,38 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
         const error = err as ApiException;
         const viewErr = JSON.parse((error.body as string) || '{}') as ViewErrDTO;
         logger.debug(`Error is: ${JSON.stringify(viewErr, null, 2)}`);
+
         if (error.status === 400) {
           res.status(400);
           if (!(viewErr.extension as { mismatch: boolean }).mismatch) {
-            res.render('publish/measure-preview', {
-              ...dataPreview,
-              supportedFormats: supportedFormats.join(','),
-              measure,
-              errors: viewErr.errors
-            });
+            res.render('publish/measure-preview', { ...preview, supportedFormats, measure, errors: viewErr.errors });
             return;
           }
-          logger.error('Measure lookup table did not match data in the fact table.', err);
-          res.status(400);
-          res.render('publish/measure-match-failure', {
-            ...viewErr,
-            measure
-          });
+          logger.error(err, 'Measure lookup table did not match data in the fact table.');
+          res.render('publish/measure-match-failure', { ...viewErr, measure });
           return;
         }
         logger.error('Something went wrong other than not matching');
         logger.debug(`Full error JSON: ${JSON.stringify(error, null, 2)}`);
-        res.render('publish/measure-preview', {
-          ...dataPreview,
-          supportedFormats: supportedFormats.join(','),
-          measure,
-          errors: viewErr.errors
-        });
+        res.render('publish/measure-preview', { ...preview, supportedFormats, measure, errors: viewErr.errors });
         return;
       }
     }
 
-    let langCol = -1;
-    if (dataPreview.headers.find((header) => header.name.toLowerCase().indexOf('lang') > -1)) {
-      langCol = dataPreview.headers.findIndex((header) => header.name.toLowerCase().indexOf('lang') > -1);
-    }
-
+    const langCol = preview.headers.findIndex((header) => header.name.toLowerCase().includes('lang'));
     const revisit = Boolean(measure.measure_table && measure.measure_table.length > 0);
-    let page = 'publish/measure-preview';
-    if (req.path.indexOf('change') > -1) page = 'publish/measure-preview';
-    else if (revisit) page = 'publish/measure-revisit';
+    const template = revisit && !req.path.includes('change') ? 'publish/measure-revisit' : 'publish/measure-preview';
 
     if (req.session.errors) {
       const errors = req.session.errors;
       req.session.errors = undefined;
       req.session.save();
       res.status(500);
-      res.render(page, {
-        ...dataPreview,
-        langCol,
-        measure,
-        errors
-      });
-    } else {
-      res.render(page, { ...dataPreview, supportedFormats: supportedFormats.join(','), langCol, measure });
+      res.render(template, { ...preview, langCol, measure, errors });
+      return;
     }
+
+    res.render(template, { ...preview, supportedFormats, langCol, measure });
   } catch (err) {
     logger.error('Failed to get dimension preview', err);
     next(new NotFoundException());
@@ -680,11 +657,13 @@ export const measureReview = async (req: Request, res: Response, next: NextFunct
   try {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     const measure = dataset.measure;
+
     if (!measure) {
       logger.error('Failed to find measure in dataset');
       next(new NotFoundException());
       return;
     }
+
     let errors: ViewErrDTO | undefined;
 
     if (req.method === 'POST') {

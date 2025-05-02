@@ -91,16 +91,16 @@ publish.get('/:datasetId/cube-preview', fetchDataset(Include.All), cubePreview);
 publish.get('/:datasetId/cube-preview/download', fetchDataset(Include.All), downloadDataset);
 
 /* Measure creation */
-publish.get('/:datasetId/measure', fetchDataset(Include.Data), measurePreview);
-publish.post('/:datasetId/measure', fetchDataset(Include.Data), upload.single('csv'), measurePreview);
-publish.get('/:datasetId/measure/review', fetchDataset(Include.Data), measureReview);
-publish.post('/:datasetId/measure/review', fetchDataset(Include.Data), measureReview);
-publish.get('/:datasetId/measure/name', fetchDataset(Include.Data), measureName);
-publish.get('/:datasetId/measure/change-lookup', fetchDataset(Include.Data), measurePreview);
-publish.post('/:datasetId/measure/change-lookup', fetchDataset(Include.Data), upload.single('csv'), measurePreview);
-publish.get('/:datasetId/measure/change-name', fetchDataset(Include.Data), measureName);
-publish.post('/:datasetId/measure/name', upload.none(), fetchDataset(Include.Data), measureName);
-publish.post('/:datasetId/measure/change-name', upload.none(), fetchDataset(Include.Data), measureName);
+publish.get('/:datasetId/measure', fetchDataset(), measurePreview);
+publish.post('/:datasetId/measure', fetchDataset(), upload.single('csv'), measurePreview);
+publish.get('/:datasetId/measure/review', fetchDataset(Include.Measure), measureReview);
+publish.post('/:datasetId/measure/review', fetchDataset(Include.Measure), measureReview);
+publish.get('/:datasetId/measure/name', fetchDataset(Include.Measure), measureName);
+publish.get('/:datasetId/measure/change-lookup', fetchDataset(Include.Measure), measurePreview);
+publish.post('/:datasetId/measure/change-lookup', fetchDataset(Include.Measure), upload.single('csv'), measurePreview);
+publish.get('/:datasetId/measure/change-name', fetchDataset(Include.Measure), measureName);
+publish.post('/:datasetId/measure/name', upload.none(), fetchDataset(Include.Measure), measureName);
+publish.post('/:datasetId/measure/change-name', upload.none(), fetchDataset(Include.Measure), measureName);
 
 /* Dimension creation */
 publish.get('/:datasetId/dimension/:dimensionId', fetchDataset(Include.Data), fetchDimensionPreview);

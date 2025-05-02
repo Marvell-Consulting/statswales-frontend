@@ -1,4 +1,5 @@
 import { ReadableStream } from 'node:stream/web';
+import { performance } from 'node:perf_hooks';
 
 import { ViewDTO } from '../dtos/view-dto';
 import { DatasetDTO } from '../dtos/dataset';
@@ -42,6 +43,18 @@ const config = appConfig();
 
 const logger = parentLogger.child({ service: 'publisher-api' });
 
+const logRequestTime = (method: string, url: string, start: number) => {
+  const end = performance.now();
+  const time = Math.round(end - start);
+  const SLOW_RESPONSE_MS = 500;
+
+  if (time > SLOW_RESPONSE_MS) {
+    logger.warn(`SLOW: ${method} /${url} (${time}ms)`);
+  } else {
+    logger.debug(`${method} /${url} (${time}ms)`);
+  }
+};
+
 interface fetchParams {
   url: string;
   method?: HttpMethod;
@@ -73,10 +86,13 @@ export class PublisherApi {
 
     // if json is passed, then body will be ignored
     const data = json ? JSON.stringify(json) : body;
-
-    logger.debug(`API: ${method} /${url}`);
+    const start = performance.now();
 
     return fetch(`${this.backendUrl}/${url}`, { method, headers: head, body: data })
+      .then((response: Response) => {
+        logRequestTime(method, url, start);
+        return response;
+      })
       .then(async (response: Response) => {
         if (!response.ok) {
           const body = await new Response(response.body).text();
