@@ -1,56 +1,53 @@
 <%- include("../partials/header"); %>
-
-
-<main class="govuk-main-wrapper" id="main-content" role="main">
-    <div class="govuk-width-container app-width-container">
-        <div class="top-links">
-            <div class="govuk-width-container">
-                <a href="<%= buildUrl(`/publish/${locals.datasetId}/measure`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
-                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
-            </div>
-        </div>
-
-        <span class="region-subhead"><%= locals.measure.metadata.name %></span>
-        <h1 class="govuk-heading-xl"><%= t('publish.measure_preview.heading') %></h1>
-
-        <%- include("../partials/error-handler"); %>
-
-        <% if (locals?.data && !locals.errors) { %>
-            <div class="govuk-grid-row">
-                <div class="govuk-grid-column-full with-overflow">
-                    <%- include("../partials/measure-preview-table.ejs", { measure: locals.measure, headers: locals.headers, data: locals.data }) %>
-                    <% if (locals.page_info?.total_records > locals.page_size) { %>
-                        <p class="govuk-body govuk-hint"><%= t('publish.measure_review.showing', {rows: locals.page_size, total: locals.page_info.total_records}) %></p>
-                    <% } %>
+<div class="form-background">
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+        <div class="govuk-width-container app-width-container">
+            <div class="top-links">
+                <div class="govuk-width-container">
+                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/measure`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
                 </div>
             </div>
-        <% } %>
 
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-full">
-                <form method="post" role="continue" enctype="multipart/form-data">
-                    <fieldset class="govuk-fieldset">
-                        <div class="govuk-form-group">
-                            <label class="govuk-label govuk-label--m" for="csv">
-                                <%= t('publish.upload.form.file.label') %>
-                            </label>
-                            <input class="govuk-file-upload" id="csv" name="csv" type="file" placeholder="Upload Data Files!" accept="<%= locals.supportedFormats %>">
-                        </div>
-                        <div class="govuk-form-group">
-                            <div class="govuk-button-group">
-                                <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
-                                    <%= t('buttons.upload_csv') %>
-                                </button>
+            <span class="region-subhead"><%= locals.measure.metadata.name %></span>
+            <h1 class="govuk-heading-xl"><%= t('publish.measure_preview.heading') %></h1>
+
+            <%- include("../partials/error-handler"); %>
+
+            <% if (locals?.data && !locals.errors) { %>
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-full with-overflow">
+                        <%- include("../partials/measure-preview-table.ejs", { measure: locals.measure, headers: locals.headers, data: locals.data }) %>
+                        <% if (locals.page_info?.total_records > locals.page_size) { %>
+                            <p class="govuk-body govuk-hint"><%= t('publish.measure_review.showing', {rows: locals.page_size, total: locals.page_info.total_records}) %></p>
+                        <% } %>
+                    </div>
+                </div>
+            <% } %>
+
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-full">
+                    <form method="post" role="continue" enctype="multipart/form-data">
+                        <fieldset class="govuk-fieldset">
+                            <div class="govuk-form-group">
+                                <label class="govuk-label govuk-label--m" for="csv">
+                                    <%= t('publish.upload.form.file.label') %>
+                                </label>
+                                <input class="govuk-file-upload" id="csv" name="csv" type="file" placeholder="Upload Data Files!" accept="<%= locals.supportedFormats %>">
                             </div>
-                        </div>
-                    </fieldset>
-                </form>
+                            <div class="govuk-form-group">
+                                <div class="govuk-button-group">
+                                    <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                                        <%= t('buttons.upload_csv') %>
+                                    </button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</main>
-
-<style>
-</style>
+    </main>
+</div>
 
 <%- include("../partials/footer"); %>

@@ -1,82 +1,83 @@
 <%- include("../partials/header"); %>
-<div class="govuk-width-container app-width-container">
-    <main class="govuk-main-wrapper" id="main-content" role="main">
+<div class="form-background">
+  <div class="govuk-width-container app-width-container">
+      <main class="govuk-main-wrapper" id="main-content" role="main">
 
-        <div class="top-links">
-            <div class="govuk-width-container">
-                <a href="javascript:history.back()" class="govuk-back-link"><%= t('buttons.back') %></a>
-                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
-            </div>
-        </div>
+          <div class="top-links">
+              <div class="govuk-width-container">
+                  <a href="javascript:history.back()" class="govuk-back-link"><%= t('buttons.back') %></a>
+                  <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+              </div>
+          </div>
 
-        <div class="govuk-width-container">
-            <div class="govuk-grid-row">
-                <div class="govuk-grid-column-two-thirds">
-                    <h1 class="govuk-heading-xl"><%= t('publish.schedule.heading') %></h1>
+          <div class="govuk-width-container">
+              <div class="govuk-grid-row">
+                  <div class="govuk-grid-column-two-thirds">
+                      <h1 class="govuk-heading-xl"><%= t('publish.schedule.heading') %></h1>
 
-                    <%- include("../partials/error-handler"); %>
+                      <%- include("../partials/error-handler"); %>
 
-                    <form enctype="multipart/form-data" method="post">
-                        <div class="govuk-form-group <%= locals.dateError ? 'govuk-form-group--error' : '' %>">
-                            <fieldset class="govuk-fieldset" aria-describedby="publication-date-hint">
-                              <legend class="govuk-fieldset__legend govuk-fieldset__legend--s"><%= t('publish.schedule.form.date.label') %></legend>
-                              <div id="publication-date-hint" class="govuk-hint"><%= t('publish.schedule.form.date.hint') %></div>
-                              <% if (locals.dateError) { %>
-                                <p id="publication-date-error" class="govuk-error-message">
-                                  <span class="govuk-visually-hidden">Error:</span> <%= t(locals.dateError.message.key) %>
-                                </p>
-                              <% } %>
-                              <div class="govuk-date-input" id="publication-date">
-                                <div class="govuk-date-input__item">
-                                  <div class="govuk-form-group">
-                                    <label class="govuk-label govuk-date-input__label" for="publication-day"><%= t('publish.schedule.form.day.label') %></label>
-                                    <input class="govuk-input govuk-date-input__input govuk-input--width-3 <%= locals.errors?.find(e => e.field === 'day') ? 'govuk-input--error' : '' %>" id="publication-day" name="day" type="text" inputmode="numeric" value="<%= locals.values?.day ? locals.values.day : '' %>">
-                                  </div>
-                                </div>
-                                <div class="govuk-date-input__item">
-                                  <div class="govuk-form-group">
-                                    <label class="govuk-label govuk-date-input__label" for="publication-month"><%= t('publish.schedule.form.month.label') %></label>
-                                    <input class="govuk-input govuk-date-input__input govuk-input--width-3 <%= locals.errors?.find(e => e.field === 'month') ? 'govuk-input--error' : '' %>" id="publication-month" name="month" type="text" inputmode="numeric" value="<%= locals.values?.month ? locals.values.month : '' %>">
-                                  </div>
-                                </div>
-                                <div class="govuk-date-input__item">
-                                  <div class="govuk-form-group">
-                                    <label class="govuk-label govuk-date-input__label" for="publication-year"><%= t('publish.schedule.form.year.label') %></label>
-                                    <input class="govuk-input govuk-date-input__input govuk-input--width-5 <%= locals.errors?.find(e => e.field === 'year') ? 'govuk-input--error' : '' %>" id="publication-year" name="year" type="text" inputmode="numeric" value="<%= locals.values?.year ? locals.values.year : '' %>">
-                                  </div>
-                                </div>
-                              </div>
-                            </fieldset>
-                        </div>
-                        <div class="govuk-form-group <%= locals.timeError ? 'govuk-form-group--error' : '' %>">
-                            <fieldset class="govuk-fieldset" aria-describedby="publication-time-hint">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s"><%= t('publish.schedule.form.time.label') %></legend>
-                                <div id="publication-time-hint" class="govuk-hint"><%= t('publish.schedule.form.time.hint') %></div>
-                                <% if (locals.timeError) { %>
-                                  <p id="publication-time-error" class="govuk-error-message">
-                                    <span class="govuk-visually-hidden">Error:</span> <%= t(locals.timeError.message.key) %>
+                      <form enctype="multipart/form-data" method="post">
+                          <div class="govuk-form-group <%= locals.dateError ? 'govuk-form-group--error' : '' %>">
+                              <fieldset class="govuk-fieldset" aria-describedby="publication-date-hint">
+                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--s"><%= t('publish.schedule.form.date.label') %></legend>
+                                <div id="publication-date-hint" class="govuk-hint"><%= t('publish.schedule.form.date.hint') %></div>
+                                <% if (locals.dateError) { %>
+                                  <p id="publication-date-error" class="govuk-error-message">
+                                    <span class="govuk-visually-hidden">Error:</span> <%= t(locals.dateError.message.key) %>
                                   </p>
                                 <% } %>
-                                <div class="govuk-date-input__item">
+                                <div class="govuk-date-input" id="publication-date">
+                                  <div class="govuk-date-input__item">
                                     <div class="govuk-form-group">
-                                        <label class="govuk-label govuk-date-input__label" for="publication-hour"><%= t('publish.schedule.form.hour.label') %></label>
-                                        <input class="govuk-input govuk-date-input__input govuk-input--width-3 <%= locals.errors?.find(e => e.field === 'hour') ? 'govuk-input--error' : '' %>" id="publication-hour" name="hour" type="text" inputmode="numeric" value="<%= locals.values?.hour ? locals.values.hour : '' %>">
+                                      <label class="govuk-label govuk-date-input__label" for="publication-day"><%= t('publish.schedule.form.day.label') %></label>
+                                      <input class="govuk-input govuk-date-input__input govuk-input--width-3 <%= locals.errors?.find(e => e.field === 'day') ? 'govuk-input--error' : '' %>" id="publication-day" name="day" type="text" inputmode="numeric" value="<%= locals.values?.day ? locals.values.day : '' %>">
                                     </div>
-                                </div>
-                                <div class="govuk-date-input__item">
+                                  </div>
+                                  <div class="govuk-date-input__item">
                                     <div class="govuk-form-group">
-                                        <label class="govuk-label govuk-date-input__label" for="publication-minute"><%= t('publish.schedule.form.minute.label') %></label>
-                                        <input class="govuk-input govuk-date-input__input govuk-input--width-3 <%= locals.errors?.find(e => e.field === 'minute') ? 'govuk-input--error' : '' %>" id="publication-minute" name="minute" type="text" inputmode="numeric" value="<%= locals.values?.minute ? locals.values.minute : '' %>">
+                                      <label class="govuk-label govuk-date-input__label" for="publication-month"><%= t('publish.schedule.form.month.label') %></label>
+                                      <input class="govuk-input govuk-date-input__input govuk-input--width-3 <%= locals.errors?.find(e => e.field === 'month') ? 'govuk-input--error' : '' %>" id="publication-month" name="month" type="text" inputmode="numeric" value="<%= locals.values?.month ? locals.values.month : '' %>">
                                     </div>
+                                  </div>
+                                  <div class="govuk-date-input__item">
+                                    <div class="govuk-form-group">
+                                      <label class="govuk-label govuk-date-input__label" for="publication-year"><%= t('publish.schedule.form.year.label') %></label>
+                                      <input class="govuk-input govuk-date-input__input govuk-input--width-5 <%= locals.errors?.find(e => e.field === 'year') ? 'govuk-input--error' : '' %>" id="publication-year" name="year" type="text" inputmode="numeric" value="<%= locals.values?.year ? locals.values.year : '' %>">
+                                    </div>
+                                  </div>
                                 </div>
-                            </fieldset>
+                              </fieldset>
                           </div>
-                        <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </main>
+                          <div class="govuk-form-group <%= locals.timeError ? 'govuk-form-group--error' : '' %>">
+                              <fieldset class="govuk-fieldset" aria-describedby="publication-time-hint">
+                                  <legend class="govuk-fieldset__legend govuk-fieldset__legend--s"><%= t('publish.schedule.form.time.label') %></legend>
+                                  <div id="publication-time-hint" class="govuk-hint"><%= t('publish.schedule.form.time.hint') %></div>
+                                  <% if (locals.timeError) { %>
+                                    <p id="publication-time-error" class="govuk-error-message">
+                                      <span class="govuk-visually-hidden">Error:</span> <%= t(locals.timeError.message.key) %>
+                                    </p>
+                                  <% } %>
+                                  <div class="govuk-date-input__item">
+                                      <div class="govuk-form-group">
+                                          <label class="govuk-label govuk-date-input__label" for="publication-hour"><%= t('publish.schedule.form.hour.label') %></label>
+                                          <input class="govuk-input govuk-date-input__input govuk-input--width-3 <%= locals.errors?.find(e => e.field === 'hour') ? 'govuk-input--error' : '' %>" id="publication-hour" name="hour" type="text" inputmode="numeric" value="<%= locals.values?.hour ? locals.values.hour : '' %>">
+                                      </div>
+                                  </div>
+                                  <div class="govuk-date-input__item">
+                                      <div class="govuk-form-group">
+                                          <label class="govuk-label govuk-date-input__label" for="publication-minute"><%= t('publish.schedule.form.minute.label') %></label>
+                                          <input class="govuk-input govuk-date-input__input govuk-input--width-3 <%= locals.errors?.find(e => e.field === 'minute') ? 'govuk-input--error' : '' %>" id="publication-minute" name="minute" type="text" inputmode="numeric" value="<%= locals.values?.minute ? locals.values.minute : '' %>">
+                                      </div>
+                                  </div>
+                              </fieldset>
+                            </div>
+                          <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </main>
+  </div>
 </div>
-
 <%- include("../partials/footer"); %>

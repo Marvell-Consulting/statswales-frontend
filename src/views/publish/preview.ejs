@@ -1,128 +1,147 @@
 <%- include("../partials/header"); %>
+<div class="form-background">
+    <div class="govuk-width-container app-width-container">
+        <main class="govuk-main-wrapper" id="main-content" role="main">
+            <% if (locals.revisit) { %>
+                <div class="top-links">
+                    <div class="govuk-width-container">
+                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                        <% if (locals.datasetId) { %>
+                            <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
+                        <% } %>
+                    </div>
+                </div>
+            <% } %>
 
-<div class="govuk-width-container app-width-container">
-    <main class="govuk-main-wrapper" id="main-content" role="main">
-        <% if (locals.revisit) { %>
-            <div class="top-links">
-                <div class="govuk-width-container">
-                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
-                    <% if (locals.datasetId) { %>
-                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
-                    <% } %>
+            <h1 class="govuk-heading-xl"><%= locals.revisit ? t('publish.preview.heading_summary') : t('publish.preview.heading') %></h1>
+
+            <%- include("../partials/error-handler"); %>
+
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-one-half" style="padding-top: 7px">
+                    <p class="govuk-body">
+                        <% if (locals.revisit) { %>
+                            <%= t('publish.preview.upload_summary', {cols: locals.headers?.length - locals.ignoredCount, rows: locals.page_info?.total_records, ignored: locals.ignoredCount}) %>
+                        <% } else { %>
+                            <%= t('publish.preview.preview_summary', {cols: locals.headers.length, rows: locals.page_info.total_records}) %>
+                        <% } %>
+                    </p>
+                </div>
+                <div class="govuk-grid-column-one-half" style="text-align: right;">
+                    <form action="<%= buildUrl(`/publish/${locals.datasetId}/preview`, i18n.language) %>" method="get" role="page-size" class="govuk-!-margin-bottom-0">
+                        <label class="govuk-label govuk-!-display-inline" for="page_size">
+                            <%= t('pagination.page_size') %>
+                        </label>
+                        <select class="govuk-select govuk-!-display-inline" id="page_size" name="page_size">
+                            <option value="5" <% if (locals.page_size===5) { %>selected <% }; %>>5</option>
+                            <option value="10" <% if (locals.page_size===10) { %>selected <% }; %>>10</option>
+                            <option value="25" <% if (locals.page_size===25) { %>selected <% }; %>>25</option>
+                            <option value="50" <% if (locals.page_size===50) { %>selected <% }; %>>50</option>
+                            <option value="100" <% if (locals.page_size===100) { %>selected <% }; %>>100</option>
+                            <option value="250" <% if (locals.page_size===250) { %>selected <% }; %>>250</option>
+                            <option value="500" <% if (locals.page_size===500) { %>selected <% }; %>>500</option>
+                        </select>
+                        <input type="hidden" name="file" value="<%= locals.datafile_id %>">
+                        <input type="hidden" name="page_number" value="1">
+                        <button type="submit" class="govuk-button govuk-button-small govuk-!-display-inline" data-module="govuk-button">
+                            <%= t('pagination.update') %>
+                        </button>
+                    </form>
                 </div>
             </div>
-        <% } %>
-
-        <h1 class="govuk-heading-xl"><%= locals.revisit ? t('publish.preview.heading_summary') : t('publish.preview.heading') %></h1>
-
-        <%- include("../partials/error-handler"); %>
-
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-one-half" style="padding-top: 7px">
-                <p class="govuk-body">
-                    <% if (locals.revisit) { %>
-                        <%= t('publish.preview.upload_summary', {cols: locals.headers?.length - locals.ignoredCount, rows: locals.page_info?.total_records, ignored: locals.ignoredCount}) %>
-                    <% } else { %>
-                        <%= t('publish.preview.preview_summary', {cols: locals.headers.length, rows: locals.page_info.total_records}) %>
-                    <% } %>
-                </p>
-            </div>
-            <div class="govuk-grid-column-one-half" style="text-align: right;">
-                <form action="<%= buildUrl(`/publish/${locals.datasetId}/preview`, i18n.language) %>" method="get" role="page-size" class="govuk-!-margin-bottom-0">
-                    <label class="govuk-label govuk-!-display-inline" for="page_size">
-                        <%= t('pagination.page_size') %>
-                    </label>
-                    <select class="govuk-select govuk-!-display-inline" id="page_size" name="page_size">
-                        <option value="5" <% if (locals.page_size===5) { %>selected <% }; %>>5</option>
-                        <option value="10" <% if (locals.page_size===10) { %>selected <% }; %>>10</option>
-                        <option value="25" <% if (locals.page_size===25) { %>selected <% }; %>>25</option>
-                        <option value="50" <% if (locals.page_size===50) { %>selected <% }; %>>50</option>
-                        <option value="100" <% if (locals.page_size===100) { %>selected <% }; %>>100</option>
-                        <option value="250" <% if (locals.page_size===250) { %>selected <% }; %>>250</option>
-                        <option value="500" <% if (locals.page_size===500) { %>selected <% }; %>>500</option>
-                    </select>
-                    <input type="hidden" name="file" value="<%= locals.datafile_id %>">
-                    <input type="hidden" name="page_number" value="1">
-                    <button type="submit" class="govuk-button govuk-button-small govuk-!-display-inline" data-module="govuk-button">
-                        <%= t('pagination.update') %>
-                    </button>
-                </form>
-            </div>
-        </div>
-        <% if (locals?.data) { %>
-            <div class="govuk-grid-row">
-                <div class="govuk-grid-column-full with-overflow">
-                    <table class="govuk-table sticky-table">
-                        <colgroup>
-                            <% locals.headers.forEach(function(cell, idx) { %>
-                                <col class="<%= cell.type === 'ignore' ? 'ignore-column' : '' %>" />
-                            <% }); %>
-                        </colgroup>
-                        <thead class="govuk-table__head">
-                            <tr class="govuk-table__row">
+            <% if (locals?.data) { %>
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-full with-overflow">
+                        <table class="govuk-table sticky-table">
+                            <colgroup>
                                 <% locals.headers.forEach(function(cell, idx) { %>
-                                    <% if (cell.source_type === 'line_number') { %>
-                                        <th scope="col" class="govuk-table__header">
-                                            <span class="govuk-visually-hidden"><%= t('publish.preview.row_number') %></span>
-                                        </th>
-                                    <% } else { %>
-                                        <th scope="col" class="govuk-table__header">
-                                            <% if (cell.source_type && cell.source_type !== 'unknown' && cell.source_type !== 'line_number') { %>
-                                                <span class="region-subhead"><%= t(`publish.preview.source_type.${cell.source_type}`) %></span><br />
-                                            <% } %>
-                                            <%= cell.name || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %>
-                                        </th>
-                                    <% } %>
+                                    <col class="<%= cell.type === 'ignore' ? 'ignore-column' : '' %>" />
                                 <% }); %>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% locals.data.forEach(function(row) { %>
-                                <tr>
-                                    <% row.forEach(function(cell, index) { %>
-                                        <td class="govuk-table__cell <%= locals.headers[index].source_type %>">
-                                            <%= cell %>
-                                        </td>
+                            </colgroup>
+                            <thead class="govuk-table__head">
+                                <tr class="govuk-table__row">
+                                    <% locals.headers.forEach(function(cell, idx) { %>
+                                        <% if (cell.source_type === 'line_number') { %>
+                                            <th scope="col" class="govuk-table__header">
+                                                <span class="govuk-visually-hidden"><%= t('publish.preview.row_number') %></span>
+                                            </th>
+                                        <% } else { %>
+                                            <th scope="col" class="govuk-table__header">
+                                                <% if (cell.source_type && cell.source_type !== 'unknown' && cell.source_type !== 'line_number') { %>
+                                                    <span class="region-subhead"><%= t(`publish.preview.source_type.${cell.source_type}`) %></span><br />
+                                                <% } %>
+                                                <%= cell.name || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %>
+                                            </th>
+                                        <% } %>
                                     <% }); %>
                                 </tr>
-                                <% }); %>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <% locals.data.forEach(function(row) { %>
+                                    <tr>
+                                        <% row.forEach(function(cell, index) { %>
+                                            <td class="govuk-table__cell <%= locals.headers[index].source_type %>">
+                                                <%= cell %>
+                                            </td>
+                                        <% }); %>
+                                    </tr>
+                                    <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
 
-            <%- include("../partials/pagination"); %>
+                <%- include("../partials/pagination"); %>
 
-            <% if (locals.revisit) { %>
+                <% if (locals.revisit) { %>
+                        <div class="govuk-grid-row">
+                            <div class="govuk-grid-column-full">
+                                <form method="post" role="continue">
+                                    <fieldset class="govuk-fieldset">
+                                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                            <h2 class="govuk-fieldset__heading">
+                                                <%= t('publish.preview.revisit_question') %>
+                                            </h2>
+                                        </legend>
+                                        <div class="govuk-radios govuk-body govuk-!-margin-bottom-3" data-module="govuk-radios">
+                                            <div class="govuk-radios__item">
+                                                <input class="govuk-radios__input" id="actionChooserTable" name="actionChooser" type="radio" value="replace-table">
+                                                <label class="govuk-label govuk-radios__label" for="actionChooserTable">
+                                                    <%= t('publish.preview.upload_different')%>
+                                                </label>
+                                                <div id="actionChooserTable-hint" class="govuk-hint govuk-radios__hint">
+                                                    <%- t('publish.preview.upload_different_hint')%>
+                                                </div>
+                                            </div>
+                                            <div class="govuk-radios__item">
+                                                <input class="govuk-radios__input" id="actionChooserSources" name="actionChooser" type="radio" value="replace-sources">
+                                                <label class="govuk-label govuk-radios__label" for="actionChooserSources">
+                                                    <%= t('publish.preview.change_source')%>
+                                                </label>
+                                                <div id="actionChooserSources-hint" class="govuk-hint govuk-radios__hint">
+                                                    <%- t('publish.preview.change_source_hint')%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="govuk-button-group">
+                                            <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                                                <%= t('buttons.continue') %>
+                                            </button>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                <% } else { %>
                     <div class="govuk-grid-row">
                         <div class="govuk-grid-column-full">
                             <form method="post" role="continue">
                                 <fieldset class="govuk-fieldset">
                                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                                         <h2 class="govuk-fieldset__heading">
-                                            <%= t('publish.preview.revisit_question') %>
+                                            <%= t('publish.preview.confirm_correct') %>
                                         </h2>
                                     </legend>
-                                    <div class="govuk-radios govuk-body govuk-!-margin-bottom-3" data-module="govuk-radios">
-                                        <div class="govuk-radios__item">
-                                            <input class="govuk-radios__input" id="actionChooserTable" name="actionChooser" type="radio" value="replace-table">
-                                            <label class="govuk-label govuk-radios__label" for="actionChooserTable">
-                                                <%= t('publish.preview.upload_different')%>
-                                            </label>
-                                            <div id="actionChooserTable-hint" class="govuk-hint govuk-radios__hint">
-                                                <%- t('publish.preview.upload_different_hint')%>
-                                            </div>
-                                        </div>
-                                        <div class="govuk-radios__item">
-                                            <input class="govuk-radios__input" id="actionChooserSources" name="actionChooser" type="radio" value="replace-sources">
-                                            <label class="govuk-label govuk-radios__label" for="actionChooserSources">
-                                                <%= t('publish.preview.change_source')%>
-                                            </label>
-                                            <div id="actionChooserSources-hint" class="govuk-hint govuk-radios__hint">
-                                                <%- t('publish.preview.change_source_hint')%>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="govuk-button-group">
                                         <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
                                             <%= t('buttons.continue') %>
@@ -132,60 +151,10 @@
                             </form>
                         </div>
                     </div>
-            <% } else { %>
-                <div class="govuk-grid-row">
-                    <div class="govuk-grid-column-full">
-                        <form method="post" role="continue">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                    <h2 class="govuk-fieldset__heading">
-                                        <%= t('publish.preview.confirm_correct') %>
-                                    </h2>
-                                </legend>
-                                <div class="govuk-button-group">
-                                    <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
-                                        <%= t('buttons.continue') %>
-                                    </button>
-                                </div>
-                            </fieldset>
-                        </form>
-                    </div>
-                </div>
-            <% } %>
-        <% } %> <!-- Do I have data? -->
-    </main>
+                <% } %>
+            <% } %> <!-- Do I have data? -->
+        </main>
+    </div>
 </div>
 
-<style>
-    table {
-        position: relative;
-    }
-
-    th {
-        background: white;
-        position: sticky;
-        top: 0; /* Don't forget this, required for the stickiness */
-        box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
-        vertical-align: bottom !important;
-    }
-
-    .ignore-column {
-        background-color: #eeeeee;
-    }
-
-    tbody > tr > td.line_number {
-        text-align: right;
-        font-family: monospace;
-        color: #7f7f7f;
-    }
-
-    .region-subhead {
-        color: #aa1111;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 14px;
-        letter-spacing: 0.08em;
-        line-height: 20px;
-        text-transform: uppercase;
-    }
-    </style>
 <%- include("../partials/footer"); %>

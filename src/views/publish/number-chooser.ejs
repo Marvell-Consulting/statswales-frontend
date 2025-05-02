@@ -1,110 +1,108 @@
 <%- include("../partials/header"); %>
-
-<div class="govuk-width-container app-width-container">
-    <!-- <a href="#" class="govuk-back-link">Back</a> -->
-    <main class="govuk-main-wrapper" id="main-content" role="main">
-        <div class="top-links">
-            <div class="govuk-width-container">
-                <a href="<%= locals.referrer %>" class="govuk-back-link"><%= t('buttons.back') %></a>
-                <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
-            </div>
-        </div>
-
-        <span class="region-subhead"><%= dimension.metadata.name %></span>
-        <% if (locals.review) { %>
-            <h1 class="govuk-heading-xl"><%= t('publish.number_chooser.heading') %></h1>
-        <% } else { %>
-            <h1 class="govuk-heading-xl"><%= t('publish.number_chooser.review_heading') %></h1>
-        <% } %>
-
-        <%- include("../partials/error-handler"); %>
-
-        <% if (locals?.data) { %>
-            <div class="govuk-grid-row">
-                <div class="govuk-grid-column-full with-overflow">
-                    <%- include("../partials/dimension-preview-table", { dimension: locals.dimension, headers: locals.headers, data: locals.data }) %>
-                    <% if (locals.page_info?.total_records > locals.page_size) { %>
-                        <p class="govuk-body govuk-hint"><%= t('publish.number_chooser.showing', { rows: locals.page_size, total: locals.page_info.total_records }) %></p>
-                    <% } %>
+<div class="form-background">
+    <div class="govuk-width-container app-width-container">
+        <!-- <a href="#" class="govuk-back-link">Back</a> -->
+        <main class="govuk-main-wrapper" id="main-content" role="main">
+            <div class="top-links">
+                <div class="govuk-width-container">
+                    <a href="<%= locals.referrer %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
                 </div>
             </div>
 
+            <span class="region-subhead"><%= dimension.metadata.name %></span>
             <% if (locals.review) { %>
+                <h1 class="govuk-heading-xl"><%= t('publish.number_chooser.heading') %></h1>
+            <% } else { %>
+                <h1 class="govuk-heading-xl"><%= t('publish.number_chooser.review_heading') %></h1>
+            <% } %>
+
+            <%- include("../partials/error-handler"); %>
+
+            <% if (locals?.data) { %>
                 <div class="govuk-grid-row">
-                    <div class="govuk-grid-column-full">
-                        <form method="post" role="continue">
-                            <fieldset class="govuk-fieldset">
-                                <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                    <h2 class="govuk-fieldset__heading">
-                                        <%= t('publish.number_chooser.confirm') %>
-                                    </h2>
-                                </legend>
+                    <div class="govuk-grid-column-full with-overflow">
+                        <%- include("../partials/dimension-preview-table", { dimension: locals.dimension, headers: locals.headers, data: locals.data }) %>
+                        <% if (locals.page_info?.total_records > locals.page_size) { %>
+                            <p class="govuk-body govuk-hint"><%= t('publish.number_chooser.showing', { rows: locals.page_size, total: locals.page_info.total_records }) %></p>
+                        <% } %>
+                    </div>
+                </div>
+
+                <% if (locals.review) { %>
+                    <div class="govuk-grid-row">
+                        <div class="govuk-grid-column-full">
+                            <form method="post" role="continue">
+                                <fieldset class="govuk-fieldset">
+                                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                        <h2 class="govuk-fieldset__heading">
+                                            <%= t('publish.number_chooser.confirm') %>
+                                        </h2>
+                                    </legend>
+                                    <div class="govuk-button-group">
+                                        <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
+                                            <%= t('buttons.continue') %>
+                                        </button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <div class="govuk-grid-row">
+                        <div class="govuk-grid-column-full">
+                            <form method="post" role="continue">
+                                <div class="govuk-form-group">
+                                    <fieldset class="govuk-fieldset">
+                                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+                                            <h2 class="govuk-fieldset__heading">
+                                                <%= t('publish.number_chooser.question') %>
+                                            </h2>
+                                        </legend>
+                                        <div class="govuk-radios" data-module="govuk-radios">
+                                            <div class="govuk-radios__item">
+                                                <input class="govuk-radios__input" id="numberTypeInteger" name="numberType" type="radio" value="integer">
+                                                <label class="govuk-label govuk-radios__label" for="numberTypeInteger">
+                                                    <%= t('publish.number_chooser.chooser.integer')%>
+                                                </label>
+                                            </div>
+                                            <div class="govuk-radios__item">
+                                                <input class="govuk-radios__input" id="numberTypeDecimal" name="numberType" type="radio" value="decimal" data-aria-controls="conditional-numberTypeDecimal">
+                                                <label class="govuk-label govuk-radios__label" for="numberTypeDecimal">
+                                                    <%= t('publish.number_chooser.chooser.decimal')%>
+                                                </label>
+                                            </div>
+                                            <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-numberTypeDecimal">
+                                                <div class="govuk-form-group">
+                                                    <label class="govuk-label" for="decimalPlaces">
+                                                        <%= t('publish.number_chooser.chooser.decimal_places')%>
+                                                    </label>
+                                                    <select class="govuk-select" id="decimalPlaces" name="decimalPlaces">
+                                                        <option value="1">1</option>
+                                                        <option value="2" selected>2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
                                 <div class="govuk-button-group">
                                     <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
                                         <%= t('buttons.continue') %>
                                     </button>
                                 </div>
-                            </fieldset>
-                        </form>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            <% } else { %>
-                <div class="govuk-grid-row">
-                    <div class="govuk-grid-column-full">
-                        <form method="post" role="continue">
-                            <div class="govuk-form-group">
-                                <fieldset class="govuk-fieldset">
-                                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                                        <h2 class="govuk-fieldset__heading">
-                                            <%= t('publish.number_chooser.question') %>
-                                        </h2>
-                                    </legend>
-                                    <div class="govuk-radios" data-module="govuk-radios">
-                                        <div class="govuk-radios__item">
-                                            <input class="govuk-radios__input" id="numberTypeInteger" name="numberType" type="radio" value="integer">
-                                            <label class="govuk-label govuk-radios__label" for="numberTypeInteger">
-                                                <%= t('publish.number_chooser.chooser.integer')%>
-                                            </label>
-                                        </div>
-                                        <div class="govuk-radios__item">
-                                            <input class="govuk-radios__input" id="numberTypeDecimal" name="numberType" type="radio" value="decimal" data-aria-controls="conditional-numberTypeDecimal">
-                                            <label class="govuk-label govuk-radios__label" for="numberTypeDecimal">
-                                                <%= t('publish.number_chooser.chooser.decimal')%>
-                                            </label>
-                                        </div>
-                                        <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-numberTypeDecimal">
-                                            <div class="govuk-form-group">
-                                                <label class="govuk-label" for="decimalPlaces">
-                                                    <%= t('publish.number_chooser.chooser.decimal_places')%>
-                                                </label>
-                                                <select class="govuk-select" id="decimalPlaces" name="decimalPlaces">
-                                                    <option value="1">1</option>
-                                                    <option value="2" selected>2</option>
-                                                    <option value="3">3</option>
-                                                    <option value="4">4</option>
-                                                    <option value="5">5</option>
-                                                    <option value="6">6</option>
-                                                    <option value="7">7</option>
-                                                    <option value="8">8</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </div>
-                            <div class="govuk-button-group">
-                                <button type="submit" name="confirm" value="true" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
-                                    <%= t('buttons.continue') %>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            <% } %>
-        <% } %> <!-- Do I have data? -->
-    </main>
+                <% } %>
+            <% } %> <!-- Do I have data? -->
+        </main>
+    </div>
 </div>
-
-<style>
-</style>
 <%- include("../partials/footer"); %>
