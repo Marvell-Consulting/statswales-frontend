@@ -353,6 +353,11 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
         error = { field: 'source', message: { key: 'errors.sources.unknowns_found' } };
       }
 
+      if (counts.footnotes === 0) {
+        logger.error('User failed to identify the mandated footnotes column');
+        error = { field: 'source', message: { key: 'errors.sources.no_notes_column' } };
+      }
+
       if (counts.dataValues > 1) {
         logger.error('User tried to specify multiple data value sources');
         error = { field: 'source', message: { key: 'errors.sources.multiple_datavalues' } };

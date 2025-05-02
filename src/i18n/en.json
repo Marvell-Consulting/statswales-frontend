@@ -1131,6 +1131,7 @@
     },
     "sources": {
       "unknowns_found": "Select what each column in the data table contains",
+      "no_notes_column": "There should be one column in the data table for note codes. Check you've selected the correct options or check the data table is correct.",
       "multiple_datavalues": "There should only be one column in the data table for data values. Check you've selected the correct options or check the data table is correct.",
       "multiple_footnotes": "There should only be one column in the data table for note codes. Check you've selected the correct options or check the data table is correct.",
       "multiple_measures": "There should only be one column in the data table for measure or data types. Check you've selected the correct options or check the data table is correct.",
