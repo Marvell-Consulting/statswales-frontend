@@ -6,7 +6,7 @@
             <div class="govuk-grid-column-two-thirds">
                 <%- locals.content %>
             </div>
-            <div class="govuk-grid-column-one-third">
+            <div style="position:sticky; top:10px;" class="govuk-grid-column-one-third">
                 <% if (locals.tableOfContents) { %><h2 class="govuk-heading-s"><%= t('toc') %></h2><% } %>
                 <%- locals.tableOfContents %>
             </div>
