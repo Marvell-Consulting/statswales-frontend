@@ -59,7 +59,7 @@ app.use('/healthcheck', rateLimiter, healthcheck);
 app.use('/:lang/auth', rateLimiter, auth);
 app.use('/:lang/published', rateLimiter, consumer);
 app.use('/:lang/guidance', rateLimiter, guidance);
-app.use('/:lang/cookies', rateLimiter, ensureAuthenticated, cookies);
+app.use('/:lang/cookies', rateLimiter, cookies);
 
 // authenticated routes
 app.use('/:lang/publish', rateLimiter, ensureAuthenticated, publish);
