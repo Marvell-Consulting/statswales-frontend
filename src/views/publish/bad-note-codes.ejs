@@ -3,39 +3,40 @@
 <div class="govuk-width-container">
     <main class="govuk-main-wrapper " id="main-content" role="main">
 
-        <div class="govuk-grid-row  govuk-!-margin-bottom-4">
+        <div class="govuk-grid-row govuk-!-margin-bottom-4">
             <div class="govuk-grid-column-full">
                 <div class="warning-background">
                     <div class="govuk-error-message alert-warning">
                         <h1 class="govuk-heading-xl">
                             <% if (data.length > 499) { %>
-                                <%= t('errors.fact_table_validation.incomplete_fact_500', { count: data.length }) %>
+                                <%= t('errors.fact_table_validation.bad_note_codes_500', {count: data.length}) %>
                             <% } else if (data) { %>
-                                    <%= t('errors.fact_table_validation.incomplete_fact', { count: data.length }) %>
+                                <%= t('errors.fact_table_validation.bad_note_codes', {count: data.length}) %>
                             <% } else { %>
-                                <%= t('errors.fact_table_validation.incomplete_fact_missing') %>
+                                <%= t('errors.fact_table_validation.bad_note_codes_missing') %>
                             <% } %>
                         </h1>
 
-                        <p class="govuk-heading-s"><%= t('errors.fact_table_validation.incomplete_fact_info') %></p>
+                        <p class="govuk-body"><%= t('errors.fact_table_validation.bad_node_code_info') %></p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
-                <h2 class="govuk-heading-m"><%= t('errors.fact_table_validation.duplicate_fact_summary') %></h2>
+                <h2 class="govuk-heading-m"><%= t('errors.fact_table_validation.bad_node_code_fact_summary') %></h2>
 
                 <% if (data) { %>
                     <% if (data.length > 10) { %>
                         <details class="govuk-details" data-module="govuk-details">
                             <summary class="govuk-details__summary">
                                 <% if (data.length > 499) { %>
-                                    <%= t('errors.fact_table_validation.incomplete_table_summary_500', {rows: data.length}) %>
+                                    <%= t('errors.fact_table_validation.bad_node_code_table_summary_500', {rows: data.length}) %>
                                 <% } else { %>
-                                    <%= t('errors.fact_table_validation.incomplete_table_summary', {rows: data.length}) %>
+                                        <%= t('errors.fact_table_validation.bad_node_code_table_summary', {rows: data.length}) %>
                                 <% } %>
                             </summary>
+                            <summary class="govuk-details__summary"></summary>
                             <%- include("../partials/dimension-preview-table", headers, data);%>
                         </details>
                     <% } else { %>
@@ -45,6 +46,11 @@
 
                 <p class="govuk-heading-s"><%= t('publish.time_dimension_review.actions') %></p>
                 <ul class="govuk-list">
+                    <li>
+                        <a href="<%= buildUrl(`/publish/${locals.dataset.id}/sources`, i18n.language) %>">
+                            <%= t('errors.fact_table_validation.change_sources_action') %>
+                        </a>
+                    </li>
                     <li>
                         <a href="<%= buildUrl(`/publish/${locals.dataset.id}/upload`, i18n.language) %>">
                             <%= t('errors.fact_table_validation.change_data_table') %>

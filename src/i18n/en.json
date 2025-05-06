@@ -1233,16 +1233,29 @@
     },
     "dimension_reset": "Something went wrong trying to reset the dimension",
     "fact_table_validation": {
-      "incomplete_fact": "Data table has {{count}} incomplete facts",
+      "incomplete_fact": "Data table has {{count}} instances incomplete facts",
+      "incomplete_fact_500": "Data table has {{count}} or more instances incomplete facts",
+      "incomplete_fact_missing": "Data table has an unknown number of incomplete facts",
       "incomplete_fact_info": "You should correct your data table and upload it again.",
-      "incomplete_table_summary": "Table containing {{rows}} incomplete facts.",
+      "incomplete_table_summary": "Table containing {{rows}} lines of incomplete facts.",
+      "incomplete_table_summary_500": "Table containing the first {{rows}} lines of incomplete facts.",
       "change_data_table": "Replace the data table",
-      "duplicate_fact": "Data table has {{count}} duplicate facts",
+      "duplicate_fact": "Data table has {{count}} or more instances duplicate facts",
+      "duplicate_fact_500": "Data table has {{count}} instances duplicate facts",
+      "duplicate_fact_missing": "Data table has an unknown number of duplicate facts",
       "unknown_duplicate_fact": "The data table has one or more duplicate facts already in the cube.",
       "duplicate_fact_info": "You should correct your data table and upload it again.",
       "change_sources_action": "Change what each column contains",
       "duplicate_fact_summary": "Duplicate facts",
-      "duplicate_table_summary": "Show all duplicate facts"
+      "duplicate_table_summary": "Show Table containing {{rows}} lines of duplicate facts",
+      "duplicate_table_summary_500": "Show Table containing the first {{rows}} lines of duplicate facts",
+      "bad_note_codes": "Date table has {{count}} instances of unrecognised note codes",
+      "bad_note_codes_500": "Date table has {{count}} or more instances of unrecognised note codes",
+      "bad_note_codes_missing": "Date table has unknown number of unrecognised note codes",
+      "bad_node_code_fact_summary": "Facts with unrecognised notes codes",
+      "bad_node_code_table_summary": "Show Table containing {{rows}} lines with unrecognised codes",
+      "bad_node_code_table_summary_500": "Show Table containing the first {{rows}} lines with unrecognised codes",
+      "bad_node_code_info": "You should check you have used standard note codes.  Correct your data table and upload it again."
     }
   },
   "consumer_view": {
