@@ -986,8 +986,6 @@ export const setupNumberDimension = async (req: Request, res: Response, next: Ne
 };
 
 export const fetchDimensionPreview = async (req: Request, res: Response, next: NextFunction) => {
-  console.log('fetchDimensionPreview');
-
   try {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
     const dimension = dataset.dimensions?.find((dim) => dim.id === req.params.dimensionId);
