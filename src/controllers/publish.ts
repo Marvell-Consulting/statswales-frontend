@@ -74,6 +74,7 @@ import { singleLangUserGroup } from '../utils/single-lang-user-group';
 import { getApproverUserGroups, getEditorUserGroups, isEditor } from '../utils/user-permissions';
 import { PublishingStatus } from '../enums/publishing-status';
 import { NotAllowedException } from '../exceptions/not-allowed.exception';
+import { DatasetDTO } from '../dtos/dataset';
 
 export const start = (req: Request, res: Response) => {
   req.session.errors = undefined;
@@ -576,13 +577,12 @@ export const redirectToOverview = (req: Request, res: Response) => {
 
 export const measurePreview = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const [dataset, preview] = await Promise.all([
+    const [dataset, preview]: [DatasetDTO, ViewDTO] = await Promise.all([
       req.pubapi.getDataset(res.locals.datasetId, DatasetInclude.Measure),
       req.pubapi.getMeasurePreview(res.locals.datasetId)
     ]);
 
-    const langDataset = singleLangDataset(dataset, req.language);
-    const measure = langDataset.measure;
+    const measure = singleLangDataset(dataset, req.language).measure;
 
     if (!measure) {
       logger.error('Measure not defined for this dataset');
@@ -623,7 +623,8 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
             return;
           }
           logger.error(err, 'Measure lookup table did not match data in the fact table.');
-          res.render('publish/measure-match-failure', { ...viewErr, measure });
+          const { errors, extension } = viewErr;
+          res.render('publish/measure-match-failure', { measure, errors, extension });
           return;
         }
         logger.error('Something went wrong other than not matching');

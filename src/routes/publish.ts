@@ -190,7 +190,7 @@ publish.post('/:datasetId/translation/import', fetchDataset(), upload.single('cs
 publish.get('/:datasetId/overview', fetchDataset(), overview);
 publish.post('/:datasetId/overview', fetchDataset(), upload.none(), overview);
 
-/* Update Dataset */
+/* Start new dataset revision */
 publish.get('/:datasetId/update', fetchDataset(), createNewUpdate);
 publish.get('/:datasetId/update-type', fetchDataset(), updateDatatable);
 publish.post('/:datasetId/update-type', fetchDataset(), updateDatatable);
