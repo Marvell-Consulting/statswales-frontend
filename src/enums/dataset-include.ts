@@ -3,6 +3,6 @@ export enum DatasetInclude {
   Meta = 'metadata',
   Data = 'data',
   Measure = 'measure',
-  Dimension = 'dimension',
+  Dimensions = 'dimensions',
   Overview = 'overview'
 }

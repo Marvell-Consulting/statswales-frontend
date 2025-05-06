@@ -103,49 +103,67 @@ publish.post('/:datasetId/measure/name', upload.none(), fetchDataset(Include.Mea
 publish.post('/:datasetId/measure/change-name', upload.none(), fetchDataset(Include.Measure), measureName);
 
 /* Dimension creation */
-publish.get('/:datasetId/dimension/:dimensionId', fetchDataset(Include.Data), fetchDimensionPreview);
-publish.post('/:datasetId/dimension/:dimensionId', fetchDataset(Include.Data), fetchDimensionPreview);
-publish.get('/:datasetId/dimension/:dimensionId/change-type', fetchDataset(Include.Data), fetchDimensionPreview);
-publish.post('/:datasetId/dimension/:dimensionId/change-type', fetchDataset(Include.Data), fetchDimensionPreview);
+publish.get('/:datasetId/dimension/:dimensionId', fetchDataset(Include.Dimensions), fetchDimensionPreview);
+publish.post('/:datasetId/dimension/:dimensionId', fetchDataset(Include.Dimensions), fetchDimensionPreview);
+publish.get('/:datasetId/dimension/:dimensionId/change-type', fetchDataset(Include.Dimensions), fetchDimensionPreview);
+publish.post('/:datasetId/dimension/:dimensionId/change-type', fetchDataset(Include.Dimensions), fetchDimensionPreview);
 
-publish.get('/:datasetId/numbers/:dimensionId', fetchDataset(Include.Data), setupNumberDimension);
-publish.post('/:datasetId/numbers/:dimensionId', fetchDataset(Include.Data), upload.none(), setupNumberDimension);
+publish.get('/:datasetId/numbers/:dimensionId', fetchDataset(Include.Dimensions), setupNumberDimension);
+publish.post('/:datasetId/numbers/:dimensionId', fetchDataset(Include.Dimensions), upload.none(), setupNumberDimension);
 
 /* lookup table handlers */
-publish.get('/:datasetId/lookup/:dimensionId', fetchDataset(Include.Data), uploadLookupTable);
-publish.post('/:datasetId/lookup/:dimensionId', fetchDataset(Include.Data), upload.single('csv'), uploadLookupTable);
-publish.get('/:datasetId/lookup/:dimensionId/review', fetchDataset(Include.Data), lookupReview);
-publish.post('/:datasetId/lookup/:dimensionId/review', fetchDataset(Include.Data), lookupReview);
+publish.get('/:datasetId/lookup/:dimensionId', fetchDataset(Include.Dimensions), uploadLookupTable);
+publish.post(
+  '/:datasetId/lookup/:dimensionId',
+  fetchDataset(Include.Dimensions),
+  upload.single('csv'),
+  uploadLookupTable
+);
+publish.get('/:datasetId/lookup/:dimensionId/review', fetchDataset(Include.Dimensions), lookupReview);
+publish.post('/:datasetId/lookup/:dimensionId/review', fetchDataset(Include.Dimensions), lookupReview);
 
-publish.get('/:datasetId/dates/:dimensionId', fetchDataset(Include.Data), fetchTimeDimensionPreview);
-publish.post('/:datasetId/dates/:dimensionId', fetchDataset(Include.Data), fetchTimeDimensionPreview);
-publish.get('/:datasetId/dates/:dimensionId/change-format', fetchDataset(Include.Data), fetchTimeDimensionPreview);
-publish.post('/:datasetId/dates/:dimensionId/change-format', fetchDataset(Include.Data), fetchTimeDimensionPreview);
-publish.get('/:datasetId/dates/:dimensionId/point-in-time', fetchDataset(Include.Data), pointInTimeChooser);
-publish.post('/:datasetId/dates/:dimensionId/point-in-time', fetchDataset(Include.Data), pointInTimeChooser);
+publish.get('/:datasetId/dates/:dimensionId', fetchDataset(Include.Dimensions), fetchTimeDimensionPreview);
+publish.post('/:datasetId/dates/:dimensionId', fetchDataset(Include.Dimensions), fetchTimeDimensionPreview);
+publish.get(
+  '/:datasetId/dates/:dimensionId/change-format',
+  fetchDataset(Include.Dimensions),
+  fetchTimeDimensionPreview
+);
+publish.post(
+  '/:datasetId/dates/:dimensionId/change-format',
+  fetchDataset(Include.Dimensions),
+  fetchTimeDimensionPreview
+);
+publish.get('/:datasetId/dates/:dimensionId/point-in-time', fetchDataset(Include.Dimensions), pointInTimeChooser);
+publish.post('/:datasetId/dates/:dimensionId/point-in-time', fetchDataset(Include.Dimensions), pointInTimeChooser);
 
 /* date period flow */
-publish.get('/:datasetId/dates/:dimensionId/period', fetchDataset(Include.Data), yearTypeChooser);
-publish.post('/:datasetId/dates/:dimensionId/period', fetchDataset(Include.Data), yearTypeChooser);
-publish.get('/:datasetId/dates/:dimensionId/period/year-format', fetchDataset(Include.Data), yearFormat);
-publish.post('/:datasetId/dates/:dimensionId/period/year-format', fetchDataset(Include.Data), yearFormat);
-publish.get('/:datasetId/dates/:dimensionId/period/type', fetchDataset(Include.Data), periodType);
-publish.post('/:datasetId/dates/:dimensionId/period/type', fetchDataset(Include.Data), periodType);
-publish.get('/:datasetId/dates/:dimensionId/period/quarters', fetchDataset(Include.Data), quarterChooser);
-publish.post('/:datasetId/dates/:dimensionId/period/quarters', fetchDataset(Include.Data), quarterChooser);
-publish.get('/:datasetId/dates/:dimensionId/period/months', fetchDataset(Include.Data), monthChooser);
-publish.post('/:datasetId/dates/:dimensionId/period/months', fetchDataset(Include.Data), monthChooser);
-publish.get('/:datasetId/dates/:dimensionId/review', fetchDataset(Include.Data), periodReview);
-publish.post('/:datasetId/dates/:dimensionId/review', fetchDataset(Include.Data), periodReview);
+publish.get('/:datasetId/dates/:dimensionId/period', fetchDataset(Include.Dimensions), yearTypeChooser);
+publish.post('/:datasetId/dates/:dimensionId/period', fetchDataset(Include.Dimensions), yearTypeChooser);
+publish.get('/:datasetId/dates/:dimensionId/period/year-format', fetchDataset(Include.Dimensions), yearFormat);
+publish.post('/:datasetId/dates/:dimensionId/period/year-format', fetchDataset(Include.Dimensions), yearFormat);
+publish.get('/:datasetId/dates/:dimensionId/period/type', fetchDataset(Include.Dimensions), periodType);
+publish.post('/:datasetId/dates/:dimensionId/period/type', fetchDataset(Include.Dimensions), periodType);
+publish.get('/:datasetId/dates/:dimensionId/period/quarters', fetchDataset(Include.Dimensions), quarterChooser);
+publish.post('/:datasetId/dates/:dimensionId/period/quarters', fetchDataset(Include.Dimensions), quarterChooser);
+publish.get('/:datasetId/dates/:dimensionId/period/months', fetchDataset(Include.Dimensions), monthChooser);
+publish.post('/:datasetId/dates/:dimensionId/period/months', fetchDataset(Include.Dimensions), monthChooser);
+publish.get('/:datasetId/dates/:dimensionId/review', fetchDataset(Include.Dimensions), periodReview);
+publish.post('/:datasetId/dates/:dimensionId/review', fetchDataset(Include.Dimensions), periodReview);
 
 /* Applies to all dimensions */
-publish.get('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchDataset(Include.Data), dimensionName);
-publish.post('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchDataset(Include.Data), dimensionName);
-publish.get('/:datasetId/dimension/:dimensionId/change-name', upload.none(), fetchDataset(Include.Data), dimensionName);
+publish.get('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchDataset(Include.Dimensions), dimensionName);
+publish.post('/:datasetId/dimension/:dimensionId/name', upload.none(), fetchDataset(Include.Dimensions), dimensionName);
+publish.get(
+  '/:datasetId/dimension/:dimensionId/change-name',
+  upload.none(),
+  fetchDataset(Include.Dimensions),
+  dimensionName
+);
 publish.post(
   '/:datasetId/dimension/:dimensionId/change-name',
   upload.none(),
-  fetchDataset(Include.Data),
+  fetchDataset(Include.Dimensions),
   dimensionName
 );
 
