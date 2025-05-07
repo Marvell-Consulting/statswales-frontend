@@ -7,7 +7,15 @@
             <div class="govuk-grid-column-full">
                 <div class="warning-background">
                     <div class="govuk-error-message alert-warning">
-                        <h1 class="govuk-heading-xl"><%= t('errors.fact_table_validation.duplicate_fact', {count: data.length}) %></h1>
+                        <h1 class="govuk-heading-xl">
+                            <% if (data.length > 499) { %>
+                                <%= t('errors.fact_table_validation.duplicate_fact_500', {count: data.length}) %>
+                            <% } else if (data) { %>
+                                    <%= t('errors.fact_table_validation.duplicate_fact', {count: data.length}) %>
+                            <% } else { %>
+                                    <%= t('errors.fact_table_validation.duplicate_fact_missing') %>
+                            <% } %>
+                        </h1>
 
                         <p class="govuk-body"><%= t('errors.fact_table_validation.duplicate_fact_info') %></p>
                     </div>
@@ -21,7 +29,14 @@
                 <% if (data) { %>
                     <% if (data.length > 10) { %>
                         <details class="govuk-details" data-module="govuk-details">
-                            <summary class="govuk-details__summary"><%= t('errors.fact_table_validation.duplicate_table_summary') %></summary>
+                            <summary class="govuk-details__summary">
+                                <% if (data.length > 499) { %>
+                                    <%= t('errors.fact_table_validation.duplicate_table_summary_500', {rows: data.length}) %>
+                                <% } else { %>
+                                        <%= t('errors.fact_table_validation.duplicate_table_summary') %>
+                                <% } %>
+                            </summary>
+                            <summary class="govuk-details__summary"></summary>
                             <%- include("../partials/dimension-preview-table", headers, data);%>
                         </details>
                     <% } else { %>

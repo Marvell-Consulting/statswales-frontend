@@ -401,6 +401,9 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
     } else if (errors[0].message.key === 'errors.fact_table_validation.duplicate_fact') {
       res.render('publish/duplicate-fact', { ...viewErr, dimension: { factTableColumn: '' } });
       return;
+    } else if (errors[0].message.key === 'errors.fact_table_validation.bad_note_codes') {
+      res.render('publish/bad-note-codes', { ...viewErr, dimension: { factTableColumn: '' } });
+      return;
     }
   }
 
