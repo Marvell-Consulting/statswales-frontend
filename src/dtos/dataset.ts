@@ -16,6 +16,7 @@ export interface DatasetDTO {
   start_revision?: RevisionDTO;
   end_revision?: RevisionDTO;
   draft_revision?: RevisionDTO;
+  draft_revision_id?: string;
   published_revision?: RevisionDTO;
   start_date?: string;
   end_date?: string;
