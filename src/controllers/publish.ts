@@ -63,7 +63,6 @@ import { getDownloadHeaders } from '../utils/download-headers';
 import { FactTableColumnDto } from '../dtos/fact-table-column-dto';
 import { ProviderDTO } from '../dtos/provider';
 import { Locale } from '../enums/locale';
-import { getLatestRevision } from '../utils/revision';
 import { DatasetInclude } from '../enums/dataset-include';
 import { NumberType } from '../enums/number-type';
 import { PreviewMetadata } from '../interfaces/preview-metadata';
@@ -75,6 +74,7 @@ import { getApproverUserGroups, getEditorUserGroups, isEditor } from '../utils/u
 import { PublishingStatus } from '../enums/publishing-status';
 import { NotAllowedException } from '../exceptions/not-allowed.exception';
 import { DatasetDTO } from '../dtos/dataset';
+import { RevisionDTO } from '../dtos/revision';
 
 export const start = (req: Request, res: Response) => {
   req.session.errors = undefined;
@@ -482,84 +482,69 @@ export const deleteDraft = async (req: Request, res: Response) => {
 };
 
 export const cubePreview = async (req: Request, res: Response) => {
-  const dataset = singleLangDataset(res.locals.dataset, req.language);
-  let revision = dataset.draft_revision;
+  const datasetId: string = res.locals.datasetId;
+  const draftRevisionId: string = res.locals.dataset?.draft_revision_id;
+  const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
+  const pageSize = Number.parseInt(req.query.page_size as string, 10) || 10;
+
   let errors: ViewError[] | undefined;
   let previewData: ViewDTO | ViewErrDTO | undefined;
   let pagination: (string | number)[] = [];
   let previewMetadata: PreviewMetadata | undefined;
-  let status = 200;
-
-  if (!revision) {
-    const revisionId = getLatestRevision(res.locals.dataset)?.id;
-    const revWithMeta = await req.pubapi.getRevision(dataset.id, revisionId!);
-    revision = singleLangRevision(revWithMeta, req.language)!;
-  }
-
-  const datasetStatus = getDatasetStatus(res.locals.dataset);
-  const publishingStatus = getPublishingStatus(res.locals.dataset);
-  const datasetTitle = revision.metadata?.title;
 
   try {
-    const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
-    const pageSize = Number.parseInt(req.query.page_size as string, 10) || 10;
-    previewData = await req.pubapi.getRevisionPreview(dataset.id, revision.id, pageNumber, pageSize);
-    pagination = generateSequenceForNumber(previewData.current_page, previewData.total_pages);
-  } catch (error) {
-    logger.error(error, `Failed to get preview data for revision ${revision.id}`);
-    status = 500;
-  }
+    const [datasetDTO, revisionDTO, previewDTO]: [DatasetDTO, RevisionDTO, ViewDTO] = await Promise.all([
+      req.pubapi.getDataset(datasetId, DatasetInclude.All),
+      req.pubapi.getRevision(datasetId, draftRevisionId),
+      req.pubapi.getRevisionPreview(datasetId, draftRevisionId, pageNumber, pageSize)
+    ]);
 
-  try {
+    const dataset = singleLangDataset(datasetDTO, req.language)!;
+    const revision = singleLangRevision(revisionDTO, req.language)!;
+    const datasetStatus = getDatasetStatus(datasetDTO);
+    const publishingStatus = getPublishingStatus(datasetDTO);
+    const datasetTitle = revision?.metadata?.title;
+
+    pagination = generateSequenceForNumber(previewDTO.current_page, previewDTO.total_pages);
     previewMetadata = await getDatasetPreview(dataset, revision);
-  } catch (error) {
-    logger.error(error, `Failed to get preview metadata for revision ${revision.id}`);
-    status = 500;
-  }
-  res.status(status);
-  if (previewMetadata) {
-    errors = [{ field: 'preview', message: { key: 'errors.preview.failed_to_get_preview' } }];
-    if (!previewData) {
-      previewData = {
-        status: 500,
-        errors,
-        dataset_id: dataset.id
-      };
-    }
-    res.render('publish/cube-preview', {
-      ...previewData,
-      preview: previewMetadata,
-      dataset,
-      pagination,
-      errors,
-      datasetStatus,
-      publishingStatus,
-      datasetTitle
-    });
-    return;
-  }
+    previewData = previewDTO;
 
-  res.render('publish/preview-failure', { datasetStatus, publishingStatus, datasetTitle });
+    if (previewMetadata) {
+      errors = [{ field: 'preview', message: { key: 'errors.preview.failed_to_get_preview' } }];
+      if (!previewData) {
+        previewData = { status: 500, errors, dataset_id: datasetId };
+      }
+      res.render('publish/cube-preview', {
+        ...previewData,
+        preview: previewMetadata,
+        dataset,
+        pagination,
+        errors,
+        datasetStatus,
+        publishingStatus,
+        datasetTitle
+      });
+      return;
+    }
+
+    res.render('publish/preview-failure', { datasetStatus, publishingStatus, datasetTitle });
+  } catch (error) {
+    logger.error(error, `Failed to get preview data for revision ${draftRevisionId}`);
+    res.status(500);
+  }
 };
 
 export const downloadDataset = async (req: Request, res: Response, next: NextFunction) => {
-  const dataset = singleLangDataset(res.locals.dataset, req.language);
-  let revision = dataset.draft_revision;
+  const datasetId = res.locals.datasetId;
+  const draftRevisionId: string = res.locals.dataset?.draft_revision_id;
 
   try {
-    if (!revision) {
-      const revisionId = getLatestRevision(res.locals.dataset)?.id;
-      const revWithMeta = await req.pubapi.getRevision(dataset.id, revisionId!);
-      revision = singleLangRevision(revWithMeta, req.language)!;
-    }
-
-    let attachmentName: string;
-    if (revision.metadata?.title) {
-      attachmentName = `${slugify(revision.metadata?.title, { lower: true })}-${revision.revision_index > 0 ? `v${revision.revision_index}` : 'draft'}`;
-    } else {
-      attachmentName = `${dataset.id}-${revision.revision_index > 0 ? `v${revision.revision_index}` : 'draft'}`;
-    }
-
+    const revisionDTO: RevisionDTO = await req.pubapi.getRevision(datasetId, draftRevisionId);
+    const revision = singleLangRevision(revisionDTO, req.language)!;
+    const revIndex = revision.revision_index;
+    const isDraft = revIndex === 0;
+    const datasetTitle = revision.metadata?.title ? slugify(revision.metadata.title, { lower: true }) : datasetId;
+    const attachmentName = `${datasetTitle}-${isDraft ? 'draft' : `v${revIndex}`}`;
     const format = req.query.format as FileFormat;
     const headers = getDownloadHeaders(format, attachmentName);
 
@@ -567,7 +552,7 @@ export const downloadDataset = async (req: Request, res: Response, next: NextFun
       throw new NotFoundException('errors.preview.invalid_download_format');
     }
     logger.debug(`Getting file from backend...`);
-    const fileStream = await req.pubapi.getCubeFileStream(dataset.id, revision.id, format);
+    const fileStream = await req.pubapi.getCubeFileStream(datasetId, revision.id, format);
     res.writeHead(200, headers);
     const readable: Readable = Readable.from(fileStream);
     readable.pipe(res);
