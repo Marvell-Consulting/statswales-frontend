@@ -988,9 +988,8 @@ export const setupNumberDimension = async (req: Request, res: Response, next: Ne
 export const fetchDimensionPreview = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const dimension = singleLangDataset(res.locals.dataset, req.language).dimensions?.find(
-      (dim) => dim.id === req.params.dimensionId
-    );
+    const dimension = dataset.dimensions?.find((dim) => dim.id === req.params.dimensionId);
+
     if (!dimension) {
       logger.error('Failed to find dimension in dataset');
       next(new NotFoundException());
