@@ -1,30 +1,23 @@
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-        <nav class="govuk-pagination" aria-label="Pagination">
-            <% if (locals.total_pages === 1) { %>
-                <div class="govuk-pagination__prev govuk-pagination__prev-none">&nbsp;</div>
-                <ul class="govuk-pagination__list">
-                    <li class="govuk-pagination__item govuk-pagination__item--current">
-                        <a href="#" aria-current="page" class="govuk-link govuk-pagination__link">
-                            <%= locals.current_page %>
-                        </a>
-                    </li>
-                </ul>
-                <div class="govuk-pagination__next govuk-pagination__next-none">&nbsp;</div>
-            <% } else { %>
-                <% if (locals.current_page > 1) { %>
-                    <div class="govuk-pagination__prev">
+<% if (locals.total_pages > 1) { %>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <nav class="govuk-pagination" aria-label="Pagination">
+                <div class="govuk-pagination__prev<%= (current_page === 1) ? ' govuk-pagination__inactive' : '' %>">
+                    <% if (current_page === 1) { %>
+                        <span class="govuk-pagination__link-title">
+                            <%= t('pagination.previous') %>
+                        </span>
+                    <% } else { %>
                         <a class="govuk-link govuk-pagination__link"
-                           href="<%= buildUrl(url.split('?')[0], i18n.language, { page_number: locals.current_page - 1, page_size: locals.page_size }, locals.anchor) %>"
-                           rel="prev">
+                            href="<%= buildUrl(url.split('?')[0], i18n.language, { page_number: locals.current_page - 1, page_size: locals.page_size }, locals.anchor) %>"
+                            rel="prev">
                             <span class="govuk-pagination__link-title">
                                 <%= t('pagination.previous') %>
                             </span>
                         </a>
-                    </div>
-                <% } else { %>
-                        <div class="govuk-pagination__prev govuk-pagination__prev-none">&nbsp;</div>
-                <% } %>
+                    <% } %>
+                </div>
                 <ul class="govuk-pagination__list">
                     <% locals.pagination.forEach((item) => { %>
                         <% if (item === '...') { %>
@@ -32,48 +25,53 @@
                                 &ctdot;
                             </li>
                         <% } else if(item === locals.current_page) { %>
-                            <li class="govuk-pagination__item govuk-pagination__item--current">
-                                            <a href="#" aria-current="page" class="govuk-link govuk-pagination__link">
-                                                <%= item %>
-                                            </a>
+                            <li class="govuk-pagination__item govuk-pagination__item--current govuk-pagination__inactive">
+                                <span aria-current="page">
+                                    <%= item %>
+                                </span>
                             </li>
                         <% } else { %>
                             <li class="govuk-pagination__item">
                                 <a class="govuk-link govuk-pagination__link"
-                                   href="<%= buildUrl(url.split('?')[0], i18n.language, { page_number: item, page_size: locals.page_size }, locals.anchor) %>"
-                                   aria-label="Page <%= item %>">
+                                    href="<%= buildUrl(url.split('?')[0], i18n.language, { page_number: item, page_size: locals.page_size }, locals.anchor) %>"
+                                    aria-label="Page <%= item %>">
                                     <%= item %>
                                 </a>
                             </li>
                         <% }%>
                     <% }); %>
                 </ul>
-                <% if (locals.current_page < locals.total_pages) { %>
-                    <div class="govuk-pagination__next">
+                
+                <div class="govuk-pagination__next<%= (locals.current_page >= locals.total_pages) ? ' govuk-pagination__inactive' : '' %>">
+                    <% if (locals.current_page < locals.total_pages) { %>
                         <a class="govuk-link govuk-pagination__link"
-                           href="<%= buildUrl(url.split('?')[0], i18n.language, { page_number: locals.current_page + 1, page_size: locals.page_size }, locals.anchor) %>"
-                           rel="next">
-                                    <span class="govuk-pagination__link-title">
-                                        <%= t('pagination.next') %>
-                                    </span>
+                            href="<%= buildUrl(url.split('?')[0], i18n.language, { page_number: locals.current_page + 1, page_size: locals.page_size }, locals.anchor) %>"
+                            rel="next">
+                            <span class="govuk-pagination__link-title">
+                                <%= t('pagination.next') %>
+                            </span>
                         </a>
-                    </div>
-                <% } else { %>
-                    <div class="govuk-pagination__next govuk-pagination__next-none">&nbsp;</div>
-                <% } %>
-            <% } %>
-        </nav>
+                    <% } else { %>
+                        <span class="govuk-pagination__link-title">
+                            <%= t('pagination.next') %>
+                        </span>
+                    <% } %>
+                </div>
+            </nav>
+        </div>
     </div>
-</div>
 
-<% if (locals.hideLineCount) { %>
+    <div class="govuk-pagination__summary">
+        Page <%= locals.current_page %> of <%= locals.total_pages %>
+    </div>
 
-<% } else { %>
-<div class="govuk-grid-row govuk-!-margin-bottom-2">
-    <% if (!locals.hide_pagination_hint) { %>
-        <div class="govuk-grid-column-full govuk-!-text-align-centre govuk-hint">
-            <%= t('publish.preview.showing_rows', {start: locals.page_info.start_record, end: locals.page_info.end_record, total: locals.page_info.total_records}) %>
+    <% if (!locals.hideLineCount) { %>
+        <div class="govuk-grid-row govuk-!-margin-bottom-2">
+            <% if (!locals.hide_pagination_hint) { %>
+                <div class="govuk-grid-column-full govuk-!-text-align-centre govuk-hint">
+                    <%= t('publish.preview.showing_rows', {start: locals.page_info.start_record, end: locals.page_info.end_record, total: locals.page_info.total_records}) %>
+                </div>
+            <% } %>
         </div>
     <% } %>
-</div>
 <% } %>
