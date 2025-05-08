@@ -1,0 +1,17 @@
+<div class="govuk-accordion__section">
+    <div class="govuk-accordion__section-header">
+        <h2 class="govuk-accordion__section-heading">
+                                <span class="govuk-accordion__section-button" id="accordion-default-heading-4">
+                                  <%= t('developer.display.revision') %>
+                                </span>
+        </h2>
+    </div>
+    <div id="accordion-default-content-4" class="govuk-accordion__section-content">
+        <% locals.dataset?.revisions?.forEach((rev) => { %>
+            <p class="govuk-body"><strong>ID:</strong> <%= rev.id %></p>
+            <p class="govuk-body"><strong><%- t('developer.display.index') %>:</strong> <%= rev.revision_index %></p>
+            <p class="govuk-body"><strong><%- t('developer.display.created_at') %>:</strong> <%= rev.created_at %></p>
+            <p class="govuk-body"><strong><%- t('developer.display.created_by') %>:</strong> <%= rev.created_by %></p>
+        <% });%>
+    </div>
+</div>

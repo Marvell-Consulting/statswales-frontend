@@ -517,9 +517,10 @@ export const cubePreview = async (req: Request, res: Response) => {
       if (!previewData) {
         previewData = { status: 500, errors, dataset_id: datasetId };
       }
-      res.render('publish/cube-preview', {
+      res.render('consumer/view', {
         ...previewData,
-        preview: previewMetadata,
+        datasetMetadata: previewMetadata,
+        preview: true,
         dataset,
         pagination,
         errors,

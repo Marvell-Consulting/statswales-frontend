@@ -2,9 +2,15 @@
     <thead class="govuk-table__head">
         <tr class="govuk-table__row">
             <% headers.forEach(function(cell, idx) { %>
-                <th scope="col" class="govuk-table__header <%= cell.source_type === 'line_number' ? 'line-number' :'' %>">
+                <% if (cell.source_type === 'line_number') { %>
+                    <th scope="col" class="govuk-table__header line-number">
+                        <span class="govuk-visually-hidden"><%= t('publish.preview.row_number') %></span>
+                    </th>
+                <% } else { %>
+                    <th scope="col" class="govuk-table__header">
                         <%= cell.name %>
-                </th>
+                    </th>
+                <% } %>
             <% }); %>
         </tr>
     </thead>
