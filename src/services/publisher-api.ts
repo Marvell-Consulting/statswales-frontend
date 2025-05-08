@@ -142,7 +142,8 @@ export class PublisherApi {
   }
 
   public async getDataset(datasetId: string, include?: DatasetInclude): Promise<DatasetDTO> {
-    const url = include ? `dataset/${datasetId}/${include}` : `dataset/${datasetId}`;
+    const qs = include ? `${new URLSearchParams({ hydrate: include }).toString()}` : undefined;
+    const url = `dataset/${datasetId}${qs ? `?${qs}` : ''}`;
     return this.fetch({ url }).then((response) => response.json() as unknown as DatasetDTO);
   }
 
