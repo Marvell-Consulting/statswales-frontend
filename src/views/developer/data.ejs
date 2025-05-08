@@ -1,431 +1,429 @@
 <%- include("../partials/header", { developerPage: true }); %>
-<div class="form-background">
-    <div class="govuk-width-container app-width-container">
+<div class="govuk-width-container app-width-container">
 
-        <main class="govuk-main-wrapper" id="main-content" role="main">
-                <div class="govuk-grid-row">
-                    <div class="govuk-grid-column-two-thirds">
-                        <h1 class="govuk-heading-xl govuk-!-margin-bottom-2"><%= datasetTitle %></h1>
-                    </div>
+    <main class="govuk-main-wrapper" id="main-content" role="main">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h1 class="govuk-heading-xl govuk-!-margin-bottom-2"><%= datasetTitle %></h1>
                 </div>
+            </div>
 
-                <%- include("../partials/dataset/status", { datasetStatus, publishingStatus }); %>
+            <%- include("../partials/dataset/status", { datasetStatus, publishingStatus }); %>
 
-                <%= include('../partials/error-handler') %>
+            <%= include('../partials/error-handler') %>
 
-                <div class="govuk-grid-row">
-                    <div class="govuk-grid-column-full">
-                        <div class="govuk-tabs" data-module="govuk-tabs">
-                            <h2 class="govuk-tabs__title">
-                                <%= t('developer.display.contents') %>
-                            </h2>
-                            <ul class="govuk-tabs__list">
-                                <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                                    <a class="govuk-tabs__tab" href="#summary">
-                                        <%= t('developer.display.summary') %>
-                                    </a>
-                                </li>
-                                <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                                    <a class="govuk-tabs__tab" href="#fact_table">
-                                        <%= t('developer.display.fact_table') %>
-                                    </a>
-                                </li>
-                                <% if (dataset.measure) { %>
-                                <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                                    <a class="govuk-tabs__tab" href="#measure">
-                                        <%= t('developer.display.measure') %>
-                                    </a>
-                                </li>
-                                <% } %>
-                                <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                                    <a class="govuk-tabs__tab" href="#dimension">
-                                        <%= t('developer.display.dimension') %>
-                                    </a>
-                                </li>
-                                <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                                    <a class="govuk-tabs__tab" href="#revision">
-                                        <%= t('developer.display.revision') %>
-                                    </a>
-                                </li>
-                                <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                                    <a class="govuk-tabs__tab" href="#files">
-                                        <%- t('developer.display.files') %>
-                                    </a>
-                                </li>
-                                <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                                    <a class="govuk-tabs__tab" href="#json">
-                                        JSON
-                                    </a>
-                                </li>
-                            </ul>
-                            <div class="govuk-tabs__panel" id="summary">
-                                <h2 class="govuk-heading-m"><%= t('developer.display.summary') %></h2>
-                                <div class="govuk-grid-row">
-                                    <div class="govuk-grid-column-one-half">
-                                        <table class="govuk-table">
-                                            <tbody class="govuk-table__body">
-                                                <tr>
-                                                    <th scope="row" class="govuk-table__header"><%- t('developer.display.title') %></th>
-                                                    <td class="govuk-table__cell"><%= locals.dataset?.revisions[0].metadata.title || `<${t('errors.name_missing')}>` %></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="govuk-table__header"><%- t('developer.display.id') %></th>
-                                                    <td class="govuk-table__cell"><%= locals.dataset.id %></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="govuk-table__header"><%- t('developer.display.created_by_id') %></th>
-                                                    <td class="govuk-table__cell"><%= locals.dataset.created_by_id %></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="govuk-grid-column-one-half">
-                                        <table class="govuk-table">
-                                            <tbody class="govuk-table__body">
-                                                <tr>
-                                                    <th scope="row" class="govuk-table__header"><%- t('developer.display.created_at') %></th>
-                                                    <td class="govuk-table__cell">
-                                                        <%if (locals.dataset.created_at) {%>
-                                                            <%= dateFormat(locals.dataset.created_at, 'd MMMM yyyy h:mm a', { locale: i18n.language }) %>
-                                                        <% } %>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="govuk-table__header"><%- t('developer.display.live') %></th>
-                                                    <td class="govuk-table__cell">
-                                                        <%if (locals.dataset.live) { %>
-                                                            <%= dateFormat(locals.dataset.live, 'd MMMM yyyy h:mm a', { locale: i18n.language }) %>
-                                                        <% } %>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-full">
+                    <div class="govuk-tabs" data-module="govuk-tabs">
+                        <h2 class="govuk-tabs__title">
+                            <%= t('developer.display.contents') %>
+                        </h2>
+                        <ul class="govuk-tabs__list">
+                            <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                                <a class="govuk-tabs__tab" href="#summary">
+                                    <%= t('developer.display.summary') %>
+                                </a>
+                            </li>
+                            <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                                <a class="govuk-tabs__tab" href="#fact_table">
+                                    <%= t('developer.display.fact_table') %>
+                                </a>
+                            </li>
+                            <% if (dataset.measure) { %>
+                            <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                                <a class="govuk-tabs__tab" href="#measure">
+                                    <%= t('developer.display.measure') %>
+                                </a>
+                            </li>
+                            <% } %>
+                            <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                                <a class="govuk-tabs__tab" href="#dimension">
+                                    <%= t('developer.display.dimension') %>
+                                </a>
+                            </li>
+                            <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                                <a class="govuk-tabs__tab" href="#revision">
+                                    <%= t('developer.display.revision') %>
+                                </a>
+                            </li>
+                            <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                                <a class="govuk-tabs__tab" href="#files">
+                                    <%- t('developer.display.files') %>
+                                </a>
+                            </li>
+                            <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
+                                <a class="govuk-tabs__tab" href="#json">
+                                    JSON
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="govuk-tabs__panel" id="summary">
+                            <h2 class="govuk-heading-m"><%= t('developer.display.summary') %></h2>
+                            <div class="govuk-grid-row">
+                                <div class="govuk-grid-column-one-half">
+                                    <table class="govuk-table">
+                                        <tbody class="govuk-table__body">
+                                            <tr>
+                                                <th scope="row" class="govuk-table__header"><%- t('developer.display.title') %></th>
+                                                <td class="govuk-table__cell"><%= locals.dataset?.revisions[0].metadata.title || `<${t('errors.name_missing')}>` %></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="govuk-table__header"><%- t('developer.display.id') %></th>
+                                                <td class="govuk-table__cell"><%= locals.dataset.id %></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="govuk-table__header"><%- t('developer.display.created_by_id') %></th>
+                                                <td class="govuk-table__cell"><%= locals.dataset.created_by_id %></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="govuk-grid-column-one-half">
+                                    <table class="govuk-table">
+                                        <tbody class="govuk-table__body">
+                                            <tr>
+                                                <th scope="row" class="govuk-table__header"><%- t('developer.display.created_at') %></th>
+                                                <td class="govuk-table__cell">
+                                                    <%if (locals.dataset.created_at) {%>
+                                                        <%= dateFormat(locals.dataset.created_at, 'd MMMM yyyy h:mm a', { locale: i18n.language }) %>
+                                                    <% } %>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row" class="govuk-table__header"><%- t('developer.display.live') %></th>
+                                                <td class="govuk-table__cell">
+                                                    <%if (locals.dataset.live) { %>
+                                                        <%= dateFormat(locals.dataset.live, 'd MMMM yyyy h:mm a', { locale: i18n.language }) %>
+                                                    <% } %>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                            <div class="govuk-tabs__panel" id="fact_table">
-                                <h2 class="govuk-heading-m"><%= t('developer.display.fact_table') %></h2>
-                                <% if (locals.dataset?.fact_table?.length > 0) { %>
+                        </div>
+                        <div class="govuk-tabs__panel" id="fact_table">
+                            <h2 class="govuk-heading-m"><%= t('developer.display.fact_table') %></h2>
+                            <% if (locals.dataset?.fact_table?.length > 0) { %>
+                                <table class="govuk-table">
+                                    <thead class="govuk-table__head">
+                                    <tr class="govuk-table__row">
+                                        <th scope="col" class="govuk-table__header"><%- t('developer.display.name') %></th>
+                                        <th scope="col" class="govuk-table__header"><%- t('developer.display.index') %></th>
+                                        <th scope="col" class="govuk-table__header"><%- t('developer.display.type') %></th>
+                                        <th scope="col" class="govuk-table__header"><%- t('developer.display.data_type') %></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <% locals.dataset?.fact_table?.forEach((row) => { %>
+                                        <tr class="govuk-table__row">
+                                            <td class="govuk-table__cell"><%= row.name %></td>
+                                            <td class="govuk-table__cell"><%= row.index %></td>
+                                            <td class="govuk-table__cell"><%= row.type %></td>
+                                            <td class="govuk-table__cell"><%= row.datatype %></td>
+                                        </tr>
+                                    <% }) %>
+                                    </tbody>
+                                </table>
+                            <% } else { %>
+                                <p class="govuk-body-l"><%= t('developer.display.error.no_fact_table') %></p>
+                            <% } %>
+                        </div>
+                        <% if (dataset.measure) { %>
+                        <div class="govuk-tabs__panel" id="measure">
+                            <h2 class="govuk-heading-m"><%= t('developer.display.measure') %></h2>
+                            <div class="govuk-grid-row">
+                                <div class="govuk-grid-column-full">
+                                    <p class="govuk-body-m"></p>
                                     <table class="govuk-table">
                                         <thead class="govuk-table__head">
                                         <tr class="govuk-table__row">
-                                            <th scope="col" class="govuk-table__header"><%- t('developer.display.name') %></th>
-                                            <th scope="col" class="govuk-table__header"><%- t('developer.display.index') %></th>
-                                            <th scope="col" class="govuk-table__header"><%- t('developer.display.type') %></th>
-                                            <th scope="col" class="govuk-table__header"><%- t('developer.display.data_type') %></th>
+                                            <th scope="col" class="govuk-table__header"><%- t('developer.display.id') %></th>
+                                            <th scope="col" class="govuk-table__header"><%- t('developer.display.fact_table_column') %></th>
+                                            <th scope="col" class="govuk-table__header"><%- t('developer.display.join_column') %></th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <% locals.dataset?.fact_table?.forEach((row) => { %>
                                             <tr class="govuk-table__row">
-                                                <td class="govuk-table__cell"><%= row.name %></td>
-                                                <td class="govuk-table__cell"><%= row.index %></td>
-                                                <td class="govuk-table__cell"><%= row.type %></td>
-                                                <td class="govuk-table__cell"><%= row.datatype %></td>
+                                                <td class="govuk-table__cell"><%= locals.dataset?.measure.id %></td>
+                                                <td class="govuk-table__cell"><%= locals.dataset?.measure.fact_table_column %></td>
+                                                <td class="govuk-table__cell"><%= locals.dataset?.measure.join_column %></td>
                                             </tr>
-                                        <% }) %>
                                         </tbody>
                                     </table>
-                                <% } else { %>
-                                    <p class="govuk-body-l"><%= t('developer.display.error.no_fact_table') %></p>
-                                <% } %>
+                                </div>
                             </div>
-                            <% if (dataset.measure) { %>
-                            <div class="govuk-tabs__panel" id="measure">
-                                <h2 class="govuk-heading-m"><%= t('developer.display.measure') %></h2>
-                                <div class="govuk-grid-row">
-                                    <div class="govuk-grid-column-full">
-                                        <p class="govuk-body-m"></p>
+                            <div class="govuk-grid-row">
+                                <div class="govuk-grid-column-one-full">
+                                    <details class="govuk-details" data-module="govuk-details">
+                                        <summary class="govuk-details__summary">
+                                            <span class="govuk-details__summary-text">
+                                                <%= t('developer.display.show_measure_table') %>
+                                            </span>
+                                        </summary>
                                         <table class="govuk-table">
                                             <thead class="govuk-table__head">
                                             <tr class="govuk-table__row">
-                                                <th scope="col" class="govuk-table__header"><%- t('developer.display.id') %></th>
-                                                <th scope="col" class="govuk-table__header"><%- t('developer.display.fact_table_column') %></th>
-                                                <th scope="col" class="govuk-table__header"><%- t('developer.display.join_column') %></th>
+                                                <th scope="col" class="govuk-table__header"><%- t('developer.display.reference') %></th>
+                                                <th scope="col" class="govuk-table__header"><%- t('developer.display.format') %></th>
+                                                <th scope="col" class="govuk-table__header"><%- t('developer.display.decimals') %></th>
+                                                <th scope="col" class="govuk-table__header"><%- t('developer.display.description') %></th>
+                                                <th scope="col" class="govuk-table__header"><%- t('developer.display.notes') %></th>
+                                                <th scope="col" class="govuk-table__header"><%- t('developer.display.sort_order') %></th>
+                                                <th scope="col" class="govuk-table__header"><%- t('developer.display.hierarchy') %></th>
                                             </tr>
                                             </thead>
                                             <tbody>
+                                            <% dataset.measure.measure_table.map((row) => { %>
                                                 <tr class="govuk-table__row">
-                                                    <td class="govuk-table__cell"><%= locals.dataset?.measure.id %></td>
-                                                    <td class="govuk-table__cell"><%= locals.dataset?.measure.fact_table_column %></td>
-                                                    <td class="govuk-table__cell"><%= locals.dataset?.measure.join_column %></td>
+                                                    <td class="govuk-table__cell"><%= row.reference %></td>
+                                                    <td class="govuk-table__cell"><%= row.format %></td>
+                                                    <td class="govuk-table__cell"><%= row.decimals %></td>
+                                                    <td class="govuk-table__cell"><%= row.description %></td>
+                                                    <td class="govuk-table__cell"><%= row.notes %></td>
+                                                    <td class="govuk-table__cell"><%= row.sort_order %></td>
+                                                    <td class="govuk-table__cell"><%= row.hierarchy %></td>
+                                                </tr>
+                                            <% }); %>
+                                            </tbody>
+                                        </table>
+                                    </details>
+                                </div>
+                            </div>
+                            <% if (locals.dataset?.measure && locals.dataset?.measure.lookup_table) { %>
+                            <div class="govuk-grid-row">
+                                <div class="govuk-grid-column-one-full">
+                                    <details class="govuk-details" data-module="govuk-details">
+                                        <summary class="govuk-details__summary">
+                                        <span class="govuk-details__summary-text">
+                                            <%= t('developer.display.show_lookup_table_details') %>
+                                        </span>
+                                        </summary>
+                                        <table class="govuk-table">
+                                            <tbody class="govuk-table__body">
+                                                <tr>
+                                                    <th scope="row" class="govuk-table__header"><%- t('developer.display.id') %></th>
+                                                    <td class="govuk-table__cell"><%= locals.dataset?.measure.lookup_table.id %></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="govuk-table__header"><%- t('developer.display.mime_type') %></th>
+                                                    <td class="govuk-table__cell"><%= locals.dataset?.measure.lookup_table.mime_type %></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="govuk-table__header"><%- t('developer.display.file_type') %></th>
+                                                    <td class="govuk-table__cell"><%= locals.dataset?.measure.lookup_table.file_type %></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="govuk-table__header"><%- t('developer.display.filename') %></th>
+                                                    <td class="govuk-table__cell"><%= locals.dataset?.measure.lookup_table.filename %></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="govuk-table__header"><%- t('developer.display.hash') %></th>
+                                                    <td class="govuk-table__cell"><%= locals.dataset?.measure.lookup_table.hash %></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="govuk-table__header"><%- t('developer.display.uploaded_at') %></th>
+                                                    <td class="govuk-table__cell"><%= dateFormat(locals.dataset?.measure.lookup_table.uploaded_at, 'd MMMM yyyy h:mm a', { locale: i18n.language }) %></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="govuk-table__header"><%- t('developer.display.download') %></th>
+                                                    <td class="govuk-table__cell"></td>
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    </div>
+                                    </details>
                                 </div>
-                                <div class="govuk-grid-row">
-                                    <div class="govuk-grid-column-one-full">
-                                        <details class="govuk-details" data-module="govuk-details">
-                                            <summary class="govuk-details__summary">
-                                                <span class="govuk-details__summary-text">
-                                                    <%= t('developer.display.show_measure_table') %>
-                                                </span>
-                                            </summary>
-                                            <table class="govuk-table">
-                                                <thead class="govuk-table__head">
-                                                <tr class="govuk-table__row">
-                                                    <th scope="col" class="govuk-table__header"><%- t('developer.display.reference') %></th>
-                                                    <th scope="col" class="govuk-table__header"><%- t('developer.display.format') %></th>
-                                                    <th scope="col" class="govuk-table__header"><%- t('developer.display.decimals') %></th>
-                                                    <th scope="col" class="govuk-table__header"><%- t('developer.display.description') %></th>
-                                                    <th scope="col" class="govuk-table__header"><%- t('developer.display.notes') %></th>
-                                                    <th scope="col" class="govuk-table__header"><%- t('developer.display.sort_order') %></th>
-                                                    <th scope="col" class="govuk-table__header"><%- t('developer.display.hierarchy') %></th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <% dataset.measure.measure_table.map((row) => { %>
-                                                    <tr class="govuk-table__row">
-                                                        <td class="govuk-table__cell"><%= row.reference %></td>
-                                                        <td class="govuk-table__cell"><%= row.format %></td>
-                                                        <td class="govuk-table__cell"><%= row.decimals %></td>
-                                                        <td class="govuk-table__cell"><%= row.description %></td>
-                                                        <td class="govuk-table__cell"><%= row.notes %></td>
-                                                        <td class="govuk-table__cell"><%= row.sort_order %></td>
-                                                        <td class="govuk-table__cell"><%= row.hierarchy %></td>
-                                                    </tr>
-                                                <% }); %>
-                                                </tbody>
-                                            </table>
-                                        </details>
-                                    </div>
-                                </div>
-                                <% if (locals.dataset?.measure && locals.dataset?.measure.lookup_table) { %>
-                                <div class="govuk-grid-row">
-                                    <div class="govuk-grid-column-one-full">
-                                        <details class="govuk-details" data-module="govuk-details">
-                                            <summary class="govuk-details__summary">
-                                            <span class="govuk-details__summary-text">
-                                                <%= t('developer.display.show_lookup_table_details') %>
-                                            </span>
-                                            </summary>
-                                            <table class="govuk-table">
-                                                <tbody class="govuk-table__body">
-                                                    <tr>
-                                                        <th scope="row" class="govuk-table__header"><%- t('developer.display.id') %></th>
-                                                        <td class="govuk-table__cell"><%= locals.dataset?.measure.lookup_table.id %></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row" class="govuk-table__header"><%- t('developer.display.mime_type') %></th>
-                                                        <td class="govuk-table__cell"><%= locals.dataset?.measure.lookup_table.mime_type %></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row" class="govuk-table__header"><%- t('developer.display.file_type') %></th>
-                                                        <td class="govuk-table__cell"><%= locals.dataset?.measure.lookup_table.file_type %></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row" class="govuk-table__header"><%- t('developer.display.filename') %></th>
-                                                        <td class="govuk-table__cell"><%= locals.dataset?.measure.lookup_table.filename %></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row" class="govuk-table__header"><%- t('developer.display.hash') %></th>
-                                                        <td class="govuk-table__cell"><%= locals.dataset?.measure.lookup_table.hash %></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row" class="govuk-table__header"><%- t('developer.display.uploaded_at') %></th>
-                                                        <td class="govuk-table__cell"><%= dateFormat(locals.dataset?.measure.lookup_table.uploaded_at, 'd MMMM yyyy h:mm a', { locale: i18n.language }) %></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row" class="govuk-table__header"><%- t('developer.display.download') %></th>
-                                                        <td class="govuk-table__cell"></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </details>
-                                    </div>
-                                </div>
-                                <<% } %>
                             </div>
-                            <% } %>
-                            <div class="govuk-tabs__panel" id="dimension">
-                                <h2 class="govuk-heading-m"><%= t('developer.display.dimension') %></h2>
-                                <% if (locals.dataset?.dimensions?.length > 0) { %>
-                                <div class="govuk-grid-row">
-                                    <div class="govuk-grid-column-full">
+                            <<% } %>
+                        </div>
+                        <% } %>
+                        <div class="govuk-tabs__panel" id="dimension">
+                            <h2 class="govuk-heading-m"><%= t('developer.display.dimension') %></h2>
+                            <% if (locals.dataset?.dimensions?.length > 0) { %>
+                            <div class="govuk-grid-row">
+                                <div class="govuk-grid-column-full">
+                                    <table class="govuk-table dimension-table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" class="govuk-table__header"><%- t('developer.display.id') %></th>
+                                            <th scope="col" class="govuk-table__header"><%- t('developer.display.type') %></th>
+                                            <th scope="col" class="govuk-table__header"><%- t('developer.display.fact_table_column') %></th>
+                                            <th scope="col" class="govuk-table__header"><%- t('developer.display.join_column') %></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <% locals.dataset?.dimensions?.forEach((dim) => { %>
+                                            <tr>
+                                                <td class="govuk-table__cell" rowspan="2"><%= dim.id %></td>
+                                                <td class="govuk-table__cell"><%= dim.type %></td>
+                                                <td class="govuk-table__cell"><%= dim.factTableColumn%></td>
+                                                <td class="govuk-table__cell"><%= dim.joinColumn %></td>
+                                                <td class="govuk-table__cell">
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="govuk-table__cell" scope="row"><%- t('developer.display.extractor') %></td>
+                                                <td colspan="2" class="govuk-table__cell"><details class="govuk-details" data-module="govuk-details">
+                                                        <summary class="govuk-details__summary">
+                                                    <span class="govuk-details__summary-text">
+                                                        <%= t('developer.display.show_extractor') %>
+                                                    </span>
+                                                        </summary>
+                                                        <pre><code><%= JSON.stringify(dim.extractor, null, 2)%></code></pre>
+                                                    </details></td>
+                                            </tr>
+                                        <% });%>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="govuk-grid-row">
+                                <div class="govuk-grid-column-one-full">
+                                    <details class="govuk-details" data-module="govuk-details">
+                                        <summary class="govuk-details__summary">
+                                        <span class="govuk-details__summary-text">
+                                            <%= t('developer.display.show_metadata') %>
+                                        </span>
+                                        </summary>
                                         <table class="govuk-table dimension-table">
                                             <thead>
                                             <tr>
                                                 <th scope="col" class="govuk-table__header"><%- t('developer.display.id') %></th>
-                                                <th scope="col" class="govuk-table__header"><%- t('developer.display.type') %></th>
                                                 <th scope="col" class="govuk-table__header"><%- t('developer.display.fact_table_column') %></th>
-                                                <th scope="col" class="govuk-table__header"><%- t('developer.display.join_column') %></th>
+                                                <th scope="col" class="govuk-table__header"><%- t('developer.display.name') %></th>
+                                                <th scope="col" class="govuk-table__header"><%- t('developer.display.description') %></th>
+                                                <th scope="col" class="govuk-table__header"><%- t('developer.display.notes') %></th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <% locals.dataset?.dimensions?.forEach((dim) => { %>
                                                 <tr>
-                                                    <td class="govuk-table__cell" rowspan="2"><%= dim.id %></td>
-                                                    <td class="govuk-table__cell"><%= dim.type %></td>
+                                                    <td class="govuk-table__cell"><%= dim.id %></td>
                                                     <td class="govuk-table__cell"><%= dim.factTableColumn%></td>
-                                                    <td class="govuk-table__cell"><%= dim.joinColumn %></td>
-                                                    <td class="govuk-table__cell">
-
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="govuk-table__cell" scope="row"><%- t('developer.display.extractor') %></td>
-                                                    <td colspan="2" class="govuk-table__cell"><details class="govuk-details" data-module="govuk-details">
-                                                            <summary class="govuk-details__summary">
-                                                        <span class="govuk-details__summary-text">
-                                                            <%= t('developer.display.show_extractor') %>
-                                                        </span>
-                                                            </summary>
-                                                            <pre><code><%= JSON.stringify(dim.extractor, null, 2)%></code></pre>
-                                                        </details></td>
+                                                    <td class="govuk-table__cell"><%= dim.metadata.name %></td>
+                                                    <td class="govuk-table__cell"><%= dim.metadata.description %></td>
+                                                    <td class="govuk-table__cell"><%= dim.metadata.notes%></td>
                                                 </tr>
                                             <% });%>
                                             </tbody>
                                         </table>
-                                    </div>
+                                    </details>
                                 </div>
-                                <div class="govuk-grid-row">
-                                    <div class="govuk-grid-column-one-full">
-                                        <details class="govuk-details" data-module="govuk-details">
-                                            <summary class="govuk-details__summary">
-                                            <span class="govuk-details__summary-text">
-                                                <%= t('developer.display.show_metadata') %>
-                                            </span>
-                                            </summary>
-                                            <table class="govuk-table dimension-table">
-                                                <thead>
-                                                <tr>
-                                                    <th scope="col" class="govuk-table__header"><%- t('developer.display.id') %></th>
-                                                    <th scope="col" class="govuk-table__header"><%- t('developer.display.fact_table_column') %></th>
-                                                    <th scope="col" class="govuk-table__header"><%- t('developer.display.name') %></th>
-                                                    <th scope="col" class="govuk-table__header"><%- t('developer.display.description') %></th>
-                                                    <th scope="col" class="govuk-table__header"><%- t('developer.display.notes') %></th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <% locals.dataset?.dimensions?.forEach((dim) => { %>
-                                                    <tr>
-                                                        <td class="govuk-table__cell"><%= dim.id %></td>
-                                                        <td class="govuk-table__cell"><%= dim.factTableColumn%></td>
-                                                        <td class="govuk-table__cell"><%= dim.metadata.name %></td>
-                                                        <td class="govuk-table__cell"><%= dim.metadata.description %></td>
-                                                        <td class="govuk-table__cell"><%= dim.metadata.notes%></td>
-                                                    </tr>
-                                                <% });%>
-                                                </tbody>
-                                            </table>
-                                        </details>
-                                    </div>
-                                </div>
+                            </div>
 
-                                <style>
-                                    .dimension-table td {
-                                        padding-top: 10px;
-                                        padding-bottom: 10px;
-                                    }
+                            <style>
+                                .dimension-table td {
+                                    padding-top: 10px;
+                                    padding-bottom: 10px;
+                                }
 
-                                    .dimension-table details {
-                                        border: none !important;
-                                        padding: 0 !important;
-                                    }
-                                </style>
-                                <% } else { %>
-                                    <p class="govuk-body-l"><%= t('developer.display.error.display.no_dimensions') %></p>
-                                <% } %>
-                            </div>
-                            <div class="govuk-tabs__panel" id="revision">
-                                <h2 class="govuk-heading-m"><%= t('developer.display.revision') %></h2>
-                                <% if (locals.dataset?.revisions?.length > 0) { %>
-                                    <% locals.dataset?.revisions?.forEach((rev) => { %>
-                                        <p class="govuk-body"><strong>ID:</strong> <%= rev.id %></p>
-                                        <p class="govuk-body"><strong><%- t('developer.display.index') %>:</strong> <%= rev.revision_index %></p>
-                                        <p class="govuk-body"><strong><%- t('developer.display.created_at') %>:</strong> <%= rev.created_at %></p>
-                                        <p class="govuk-body"><strong><%- t('developer.display.created_by') %>:</strong> <%= rev.created_by %></p>
-                                    <% });%>
-                                <% } else { %>
-                                    <p class="govuk-body-l"><%= t('developer.display.error.no_revisions') %></p>
-                                <% } %>
-                            </div>
-                            <div class="govuk-tabs__panel" id="files">
-                                <h2 class="govuk-heading-m"><%- t('developer.display.download_files') %></h2>
-                                <% fileList.forEach((sublist) => { %>
-                                <div class="govuk-grid-row">
-                                    <% sublist.forEach((file) => { %>
-                                    <div class="govuk-grid-column-one-quarter" style="text-align: center;">
-                                        <p>
-                                            <a href="<%= file.link %> %>">
-                                            <img src="/assets/images/dev-icons/<%= file.file_type %>-icon.svg" alt="<%= file.type %> Icon" width="64" height="64" style="margin-bottom: 10px"><br>
-                                            <%= file.filename.replaceAll('_', ' ').replaceAll('-', ' ') %> (<%= file.type %>)</a>
-                                        </p>
-                                    </div>
-                                    <% });%>
+                                .dimension-table details {
+                                    border: none !important;
+                                    padding: 0 !important;
+                                }
+                            </style>
+                            <% } else { %>
+                                <p class="govuk-body-l"><%= t('developer.display.error.display.no_dimensions') %></p>
+                            <% } %>
+                        </div>
+                        <div class="govuk-tabs__panel" id="revision">
+                            <h2 class="govuk-heading-m"><%= t('developer.display.revision') %></h2>
+                            <% if (locals.dataset?.revisions?.length > 0) { %>
+                                <% locals.dataset?.revisions?.forEach((rev) => { %>
+                                    <p class="govuk-body"><strong>ID:</strong> <%= rev.id %></p>
+                                    <p class="govuk-body"><strong><%- t('developer.display.index') %>:</strong> <%= rev.revision_index %></p>
+                                    <p class="govuk-body"><strong><%- t('developer.display.created_at') %>:</strong> <%= rev.created_at %></p>
+                                    <p class="govuk-body"><strong><%- t('developer.display.created_by') %>:</strong> <%= rev.created_by %></p>
+                                <% });%>
+                            <% } else { %>
+                                <p class="govuk-body-l"><%= t('developer.display.error.no_revisions') %></p>
+                            <% } %>
+                        </div>
+                        <div class="govuk-tabs__panel" id="files">
+                            <h2 class="govuk-heading-m"><%- t('developer.display.download_files') %></h2>
+                            <% fileList.forEach((sublist) => { %>
+                            <div class="govuk-grid-row">
+                                <% sublist.forEach((file) => { %>
+                                <div class="govuk-grid-column-one-quarter" style="text-align: center;">
+                                    <p>
+                                        <a href="<%= file.link %> %>">
+                                        <img src="/assets/images/dev-icons/<%= file.file_type %>-icon.svg" alt="<%= file.type %> Icon" width="64" height="64" style="margin-bottom: 10px"><br>
+                                        <%= file.filename.replaceAll('_', ' ').replaceAll('-', ' ') %> (<%= file.type %>)</a>
+                                    </p>
                                 </div>
-                            <% }); %>
+                                <% });%>
                             </div>
-                            <div class="govuk-tabs__panel" id="json">
-                                <h2 class="govuk-heading-m">JSON</h2>
-                                <textarea rows="20" cols="80"><%= JSON.stringify(locals.dataset, null, 2) %></textarea>
-                            </div>
+                        <% }); %>
+                        </div>
+                        <div class="govuk-tabs__panel" id="json">
+                            <h2 class="govuk-heading-m">JSON</h2>
+                            <textarea rows="20" cols="80"><%= JSON.stringify(locals.dataset, null, 2) %></textarea>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <hr>
-            <% if (locals?.data) { %>
-                <div class="govuk-grid-row">
-                    <div class="govuk-grid-column-full" style="text-align: right;">
-                        <form method="get" role="page-size" class="govuk-!-margin-bottom-0">
-                            <label class="govuk-label govuk-!-display-inline" for="page_size">
-                                Page Size
-                            </label>
-                            <select class="govuk-select govuk-!-display-inline" id="page_size" name="page_size">
-                                <option value="5" <% if (locals.page_size===5) { %>selected <% }; %>>5</option>
-                                <option value="10" <% if (locals.page_size===10) { %>selected <% }; %>>10</option>
-                                <option value="25" <% if (locals.page_size===25) { %>selected <% }; %>>25</option>
-                                <option value="50" <% if (locals.page_size===50) { %>selected <% }; %>>50</option>
-                                <option value="100" <% if (locals.page_size===100) { %>selected <% }; %>>100</option>
-                                <option value="250" <% if (locals.page_size===250) { %>selected <% }; %>>250</option>
-                                <option value="500" <% if (locals.page_size===500) { %>selected <% }; %>>500</option>
-                            </select>
-                            <input type="hidden" name="file" value="<%= locals.datafile_id %>">
-                            <input type="hidden" name="page_number" value="1">
-                            <button type="submit" class="govuk-button govuk-button-small govuk-!-display-inline" data-module="govuk-button">
-                                <%= t('pagination.update') %>
-                            </button>
-                        </form>
-                    </div>
+            <hr>
+        <% if (locals?.data) { %>
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-full" style="text-align: right;">
+                    <form method="get" role="page-size" class="govuk-!-margin-bottom-0">
+                        <label class="govuk-label govuk-!-display-inline" for="page_size">
+                            Page Size
+                        </label>
+                        <select class="govuk-select govuk-!-display-inline" id="page_size" name="page_size">
+                            <option value="5" <% if (locals.page_size===5) { %>selected <% }; %>>5</option>
+                            <option value="10" <% if (locals.page_size===10) { %>selected <% }; %>>10</option>
+                            <option value="25" <% if (locals.page_size===25) { %>selected <% }; %>>25</option>
+                            <option value="50" <% if (locals.page_size===50) { %>selected <% }; %>>50</option>
+                            <option value="100" <% if (locals.page_size===100) { %>selected <% }; %>>100</option>
+                            <option value="250" <% if (locals.page_size===250) { %>selected <% }; %>>250</option>
+                            <option value="500" <% if (locals.page_size===500) { %>selected <% }; %>>500</option>
+                        </select>
+                        <input type="hidden" name="file" value="<%= locals.datafile_id %>">
+                        <input type="hidden" name="page_number" value="1">
+                        <button type="submit" class="govuk-button govuk-button-small govuk-!-display-inline" data-module="govuk-button">
+                            <%= t('pagination.update') %>
+                        </button>
+                    </form>
                 </div>
-                <div class="table-display">
-                    <table class="govuk-table sticky-table">
-                        <thead class="govuk-table__head">
-                            <tr class="govuk-table__row">
+            </div>
+            <div class="table-display">
+                <table class="govuk-table sticky-table">
+                    <thead class="govuk-table__head">
+                        <tr class="govuk-table__row">
+                        <tr>
+                        <% locals.headers?.forEach(function(cell, index) { %>
+
+                            <th scope="col" class="govuk-table__header <%= cell.source_type === 'line_number' ? 'line-number' :'' %>">
+                                <% if (cell.source_type !== 'line_number') { %>
+                                    <%= cell.name || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %>
+                                <% } else { %>
+                                    <%= t('publish.preview.row_number') %>
+                                <% } %>
+                            </th>
+                        <% }); %>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% locals.data?.forEach(function(row) { %>
                             <tr>
-                            <% locals.headers?.forEach(function(cell, index) { %>
-
-                                <th scope="col" class="govuk-table__header <%= cell.source_type === 'line_number' ? 'line-number' :'' %>">
-                                    <% if (cell.source_type !== 'line_number') { %>
-                                        <%= cell.name || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %>
+                                <% row.forEach(function(cell, index) { %>
+                                    <% if (locals.headers[index].source_type === 'line_number') { %>
+                                        <td class="govuk-table__cell line-number"><%= cell %></td>
                                     <% } else { %>
-                                        <%= t('publish.preview.row_number') %>
+                                        <td class="govuk-table__cell"><%= cell %></td>
                                     <% } %>
-                                </th>
-                            <% }); %>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% locals.data?.forEach(function(row) { %>
-                                <tr>
-                                    <% row.forEach(function(cell, index) { %>
-                                        <% if (locals.headers[index].source_type === 'line_number') { %>
-                                            <td class="govuk-table__cell line-number"><%= cell %></td>
-                                        <% } else { %>
-                                            <td class="govuk-table__cell"><%= cell %></td>
-                                        <% } %>
-                                    <% }); %>
-                                </tr>
                                 <% }); %>
-                        </tbody>
-                    </table>
-                </div>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
 
-                <%- include("../partials/pagination", t, locals.current_page, locals.total_records, locals.pagaination); %>
-            <% } %>
-        </main>
-    </div>
+            <%- include("../partials/pagination", t, locals.current_page, locals.total_records, locals.pagaination); %>
+        <% } %>
+    </main>
 </div>
 <%- include("../partials/footer"); %>
