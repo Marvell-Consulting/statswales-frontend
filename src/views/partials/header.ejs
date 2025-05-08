@@ -24,6 +24,10 @@
     <link rel="stylesheet" href="/css/govuk-frontend.min.css">
     <link rel="stylesheet" href="/css/accessible-autocomplete.min.css">
     <link rel="stylesheet" href="/css/app.css">
+    <% if (locals?.isDeveloper) { %>
+        <link rel="stylesheet" href="/css/highlight.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/fira_code.min.css">
+    <% } %>
     <meta property="og:image" content="/images/govuk-opengraph-image.png">
     <meta name="theme-color" content="#323232">
     <meta name="theme-color" content="#323232" media="(prefers-color-scheme: light)">
