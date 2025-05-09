@@ -3,7 +3,8 @@ import { Readable } from 'node:stream';
 import { NextFunction, Request, Response } from 'express';
 import { get, set, sortBy } from 'lodash';
 import { FieldValidationError, matchedData } from 'express-validator';
-import { nanoid } from 'nanoid';
+import { customAlphabet } from 'nanoid';
+import { alphanumeric } from 'nanoid-dictionary';
 import { v4 as uuid } from 'uuid';
 import { isBefore, isValid } from 'date-fns';
 import { parse } from 'csv-parse';
@@ -75,6 +76,10 @@ import { PublishingStatus } from '../enums/publishing-status';
 import { NotAllowedException } from '../exceptions/not-allowed.exception';
 import { DatasetDTO } from '../dtos/dataset';
 import { RevisionDTO } from '../dtos/revision';
+
+// the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
+// - it tries to be smart and interprets strings that start with a hypen as a formula.
+const nanoid = customAlphabet(alphanumeric, 5);
 
 export const start = (req: Request, res: Response) => {
   req.session.errors = undefined;
@@ -2203,7 +2208,7 @@ export const provideRelatedLinks = async (req: Request, res: Response, next: Nex
 
   let errors: ViewError[] | undefined;
   let related_links = sortBy(revision?.related_links || [], 'created_at');
-  let link: RelatedLinkDTO = { id: nanoid(4), url: '', label_en: '', label_cy: '', created_at: now };
+  let link: RelatedLinkDTO = { id: nanoid(), url: '', label_en: '', label_cy: '', created_at: now };
 
   if (deleteId) {
     try {
