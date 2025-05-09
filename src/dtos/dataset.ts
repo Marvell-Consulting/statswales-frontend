@@ -14,7 +14,9 @@ export interface DatasetDTO {
   dimensions?: DimensionDTO[];
   revisions: RevisionDTO[];
   start_revision?: RevisionDTO;
+  start_revision_id?: string;
   end_revision?: RevisionDTO;
+  end_revision_id?: string;
   draft_revision?: RevisionDTO;
   draft_revision_id?: string;
   published_revision?: RevisionDTO;

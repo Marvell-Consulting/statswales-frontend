@@ -484,9 +484,8 @@ export const deleteDraft = async (req: Request, res: Response) => {
   res.render('publish/delete-draft', { datasetTitle, datasetStatus, publishingStatus, errors });
 };
 
-export const cubePreview = async (req: Request, res: Response) => {
-  const datasetId: string = res.locals.datasetId;
-  const draftRevisionId: string = res.locals.dataset?.draft_revision_id;
+export const cubePreview = async (req: Request, res: Response, next: NextFunction) => {
+  const { id: datasetId, end_revision_id: endRevisionId } = res.locals.dataset;
   const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
   const pageSize = Number.parseInt(req.query.page_size as string, 10) || 10;
 
@@ -498,14 +497,14 @@ export const cubePreview = async (req: Request, res: Response) => {
   try {
     const [datasetDTO, revisionDTO, previewDTO]: [DatasetDTO, RevisionDTO, ViewDTO] = await Promise.all([
       req.pubapi.getDataset(datasetId, DatasetInclude.All),
-      req.pubapi.getRevision(datasetId, draftRevisionId),
-      req.pubapi.getRevisionPreview(datasetId, draftRevisionId, pageNumber, pageSize)
+      req.pubapi.getRevision(datasetId, endRevisionId),
+      req.pubapi.getRevisionPreview(datasetId, endRevisionId, pageNumber, pageSize)
     ]);
 
     const dataset = singleLangDataset(datasetDTO, req.language)!;
     const revision = singleLangRevision(revisionDTO, req.language)!;
     const datasetStatus = getDatasetStatus(datasetDTO);
-    const publishingStatus = getPublishingStatus(datasetDTO);
+    const publishingStatus = getPublishingStatus(datasetDTO, revision);
     const datasetTitle = revision?.metadata?.title;
 
     pagination = generateSequenceForNumber(previewDTO.current_page, previewDTO.total_pages);
@@ -532,8 +531,8 @@ export const cubePreview = async (req: Request, res: Response) => {
 
     res.render('publish/preview-failure', { datasetStatus, publishingStatus, datasetTitle });
   } catch (error) {
-    logger.error(error, `Failed to get preview data for revision ${draftRevisionId}`);
-    res.status(500);
+    logger.error(error, `Failed to get preview data for revision ${endRevisionId}`);
+    next(new UnknownException());
   }
 };
 
