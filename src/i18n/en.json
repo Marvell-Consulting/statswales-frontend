@@ -896,6 +896,7 @@
     "tasklist": {
       "no_title": "No title available",
       "preview": "Preview (opens in new tab)",
+      "open_developer_view": "Developer view (opens in new tab)",
       "delete": {
         "dataset": "Delete this dataset",
         "update": "Delete this update"

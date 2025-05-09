@@ -1,9 +1,23 @@
-<%- include("partials/header"); %>
-<div class="form-background">
+<% if (locals?.isDeveloper) { %>
+    <%- include("../partials/header"); %>
+<% } else { %>
+    <%- include("partials/header"); %>
+<% } %>
+
     <div class="govuk-width-container">
       <main class="govuk-main-wrapper" id="main-content" role="main">
 
         <h1 class="govuk-heading-xl"><%= datasetMetadata.title %></h1>
+        <% if (locals.preview || (locals?.isDeveloper && locals?.ShowDeveloperTab)) { %>
+              <%- include("../partials/dataset/status", { datasetStatus, publishingStatus }); %>
+        <% } %>
+        <% if (locals.preview) { %>
+              <div class="govuk-panel">
+                  <p class="govuk-panel__title-m">
+                      <%= t('publish.cube_preview.panel') %>
+                  </p>
+              </div>
+        <%} %>
 
           <div class="govuk-tabs" data-module="govuk-tabs">
               <h2 class="govuk-tabs__title">
@@ -14,6 +28,13 @@
                       <div class="govuk-main-wrapper govuk-!-padding-bottom-0" id="main-content">
 
                           <ul class="govuk-tabs__list" role="tablist">
+                              <% if (locals?.isDeveloper && locals?.ShowDeveloperTab) { %>
+                                  <li class="govuk-tabs__list-item govuk-tabs__list-item--selected" role="presentation">
+                                      <a class="govuk-tabs__tab" href="#developer" id="tab_developer" role="tab" aria-controls="developer" aria-selected="true" tabindex="0">
+                                          <%= t('developer.heading') %>
+                                      </a>
+                                  </li>
+                              <% } %>
                               <li class="govuk-tabs__list-item govuk-tabs__list-item--selected" role="presentation">
                                   <a class="govuk-tabs__tab" href="#data" id="tab_data" role="tab" aria-controls="data" aria-selected="true" tabindex="0">
                                       <%= t('consumer_view.data') %>
@@ -40,6 +61,9 @@
                   </div>
               </div>
 
+              <% if (locals?.isDeveloper && locals?.ShowDeveloperTab) { %>
+                <%- include("../developer/view.ejs"); %>
+              <% } %>
               <div class="govuk-tabs__panel" id="data" role="tabpanel" aria-labelledby="tab_data">
                   <div class="govuk-width-container">
                       <div class="govuk-main-wrapper govuk-!-padding-top-0">
@@ -171,7 +195,7 @@
                   <div class="govuk-grid-row">
 
                       <div class="govuk-grid-column-full">
-                        <form method="get" action="<%= buildUrl(`/published/${dataset.id}/download`, i18n.language) %>">
+                        <form method="get" action="<%= buildUrl(`/${locals.preview ? 'publish' : 'published'}/${dataset.id}/download`, i18n.language) %>">
                           <div class="govuk-form-group">
                               <fieldset class="govuk-fieldset">
                                   <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -310,5 +334,5 @@
           </div>
       </main>
     </div>
-</div>
+
 <%- include("partials/footer"); %>
