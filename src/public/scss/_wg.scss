@@ -865,13 +865,24 @@ $whitepurple: #eed5e3;
     font-size: 16px;
   }
 
-  .govuk-pagination .govuk-pagination__prev a {
-    color: $black;
+  .govuk-pagination .govuk-pagination__prev,
+  .govuk-pagination .govuk-pagination__item,
+  .govuk-pagination .govuk-pagination__next {
+    color: $red;
+
+    &.govuk-pagination__inactive {
+      color: $black;
+    }
+
+    a {
+      color: inherit;
+    }
   }
 
-  .govuk-pagination .govuk-pagination__item a,
-  .govuk-pagination .govuk-pagination__next a {
-    color: $red;
+  .govuk-pagination__summary {
+    display: none;
+    color: $darkgrey;
+    font-size: 14px;
   }
 
   .govuk-pagination {
@@ -1147,20 +1158,52 @@ $whitepurple: #eed5e3;
 
   /* Pagination styles for screens below 768px */
   @media screen and (max-width: 768px) {
-    .govuk-pagination__list {
-      display: none;
+    .govuk-pagination__summary {
+      display: block;
     }
 
-    .govuk-pagination__prev {
-      background-color: $black;
-      color: $white;
-      padding-left: 35px;
-    }
+    .govuk-pagination {
+      justify-content: left;
+      gap: 20px;
+      margin-bottom: 15px;
 
-    .govuk-pagination__next {
-      background-color: $black;
-      color: $white;
-      padding-right: 35px;
+      .govuk-pagination__list {
+        display: none;
+      }
+
+      .govuk-pagination__prev {
+        background-color: $black;
+        color: $white;
+        padding-left: 35px;
+
+        &.govuk-pagination__inactive {
+          display: none;
+        }
+
+        &::before {
+          border-width: 5px 5px 0 0;
+          width: 0.5em;
+          height: 0.5em;
+          left: 0.75em;
+        }
+      }
+
+      .govuk-pagination__next {
+        background-color: $black;
+        color: $white;
+        padding-right: 35px;
+
+        &::after {
+          border-width: 5px 5px 0 0;
+          width: 0.5em;
+          height: 0.5em;
+          right: 0.75em;
+        }
+
+        &.govuk-pagination__inactive {
+          display: none;
+        }
+      }
     }
 
     .govuk-pagination .govuk-pagination__prev a,
@@ -2474,6 +2517,7 @@ $whitepurple: #eed5e3;
   }
 
   .govuk-pagination__prev::before {
+    color: inherit;
     border-width: max(2px, 0.0625em) max(2px, 0.0625em) 0 0;
     width: 0.35em;
     height: 0.35em;
@@ -2489,6 +2533,7 @@ $whitepurple: #eed5e3;
   }
 
   .govuk-pagination__next::after {
+    color: inherit;
     border-width: max(2px, 0.0625em) max(2px, 0.0625em) 0 0;
     width: 0.35em;
     height: 0.35em;
