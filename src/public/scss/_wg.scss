@@ -133,7 +133,7 @@ $whitepurple: #eed5e3;
     }
 
     &.govuk-button--secondary {
-      background: $darkgrey;
+      background-color: $darkgrey;
       color: $white;
       font-size: 20px;
       font-weight: bold;
@@ -144,11 +144,11 @@ $whitepurple: #eed5e3;
       border-color: rgba(0, 0, 0, 0);
 
       &:focus {
-        background: $midgrey;
+        background-color: $midgrey;
       }
 
       &:hover {
-        background: $charcoal;
+        background-color: $charcoal;
       }
     }
   }
@@ -2380,9 +2380,13 @@ $whitepurple: #eed5e3;
     color: $charcoal;
     background-color: transparent;
     border: 1px solid $midgrey;
-    padding: 10px 20px 10px 35px;
+    padding: 10px 20px 10px 36px;
     font-size: 14px;
     margin-bottom: 0px;
+    background-image: url('data:image/svg+xml;charset=utf8,%3Csvg id=%22Layer_1%22 data-name=%22Layer 1%22 xmlns=%22http://www.w3.org/2000/svg%22 width=%22159.5%22 height=%22102.4%22 viewBox=%220 0 159.5 102.4%22%3E%3Ctitle%3Eblack-arrow-up%3C/title%3E%3Cpath d=%22M159.5,79.8,79.8,0,0,79.8l22.6,22.6L79.7,45.3l57.1,57.1Z%22/%3E%3C/svg%3E');
+    background-size: 18px 13px;
+    background-position: 10px center;
+    background-repeat: no-repeat;
   }
 
   a.govuk-button.govuk-button--secondary.govuk-button--top:hover {
