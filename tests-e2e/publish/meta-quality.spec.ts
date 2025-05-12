@@ -33,11 +33,10 @@ test.describe('Metadata Quality', () => {
       ).toBeVisible();
     });
 
-    test.fixme('Can switch to Welsh', async ({ page }) => {
-      // TODO: waiting on translations
+    test('Can switch to Welsh', async ({ page }) => {
       await qualityPage.goto(dataset.id);
       await page.getByText('Cymraeg').click();
-      await expect(page.getByRole('heading', { name: '' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Beth yw ansawdd ystadegol y set ddata hon?' })).toBeVisible();
     });
 
     test.describe('Form validation', () => {

@@ -9,7 +9,7 @@ export class SummaryPage {
   private readonly inputBox: Locator;
 
   constructor(public readonly page: Page) {
-    this.inputBox = this.page.locator('textarea#description');
+    this.inputBox = this.page.locator('textarea#summary');
   }
 
   async goto(datasetId: string) {

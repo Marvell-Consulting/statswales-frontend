@@ -14,7 +14,11 @@ export class TopicsPage {
 
   async fillForm(topics: string[]) {
     for (const topic of topics) {
-      await this.page.getByText(topic, { exact: true }).click();
+      const checkbox = await this.page.getByLabel(topic, { exact: true });
+
+      if (!(await checkbox.isChecked())) {
+        await checkbox.check();
+      }
     }
   }
 

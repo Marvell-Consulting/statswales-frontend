@@ -30,24 +30,21 @@ test.describe('Metadata Related Links', () => {
 
     test('Has a heading', async ({ page }) => {
       await relatedPage.goto(dataset.id);
+      await relatedPage.removeAllLinks();
       await expect(page.getByRole('heading', { name: 'Add a link to a report' })).toBeVisible();
     });
 
-    test.fixme('Can switch to Welsh', async ({ page }) => {
-      // TODO: waiting on translations
+    test('Can switch to Welsh', async ({ page }) => {
       await relatedPage.goto(dataset.id);
+      await relatedPage.removeAllLinks();
       await page.getByText('Cymraeg').click();
-      await expect(page.getByRole('heading', { name: '' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Ychwanegu dolen i adroddiad' })).toBeVisible();
     });
 
     test.describe('Form validation', () => {
-      test.beforeEach(async ({ page }) => {
+      test.beforeEach(async () => {
         await relatedPage.goto(dataset.id);
-
-        // clean up any existing links before each test
-        while (await page.getByRole('link', { name: 'Remove' }).first().isVisible()) {
-          await page.getByRole('link', { name: 'Remove' }).first().click();
-        }
+        await relatedPage.removeAllLinks();
       });
 
       test('Displays a validation error when no input is provided', async ({ page }) => {
@@ -90,6 +87,8 @@ test.describe('Metadata Related Links', () => {
       });
 
       test('Can successfully add multiple related links', async ({ page }) => {
+        await relatedPage.removeAllLinks();
+
         await relatedPage.fillForm('http://example.com/1', 'Link 1');
         await relatedPage.submit();
 
