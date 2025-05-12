@@ -271,15 +271,15 @@ Ar gyfer dimensiwn sy’n cynnwys mesurau, dylech baratoi eich tabl am-edrych ei
 | :------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | math    | Unrhyw rai o’r canlynol: <ul><li>cyfrif</li><li>canran</li><li>cyfradd</li><li>safle</li><li>rhifiadur</li><li>enwadur</li><li>gwerth mynegai</li><li>modd</li><li>canolrif</li><li>cymedr</li><li>gwyriad safonol</li><li>amrywiant</li><li>chwartel</li><li>cwintel</li><li>degradd</li><li>canradd</li></ul> |
 | fformat | Unrhyw rai o’r canlynol: <ul><li>degol</li><li>arnawf</li><li>cyfanrif</li><li>hir</li><li>canran</li><li>llinyn</li><li>testun</li><li>dyddiad</li><li>dyddiadamser</li><li>amser</li></ul>                                                                                                                    |
-| degol   | Os nodwyd 'degol' ar gyfer 'fformat':<ul><li>nodwch nifer y lleoedd degol i'w dangos</li><li>os na nodir unrhyw beth, caiff rhifau eu talgrynnu i'r rhif cyfan agosaf</li><ul>                                                                                                                                  |
+| degol   | Os nodwyd 'degol' neu 'arnawf' ar gyfer 'fformat':<ul><li>nodwch nifer y lleoedd degol i'w dangos</li><li>os na nodir unrhyw beth, caiff rhifau eu talgrynnu i'r rhif cyfan agosaf</li><ul>                                                                                                                                  |
 
 Tabl am-edrych mesur enghreifftiol ar gyfer ein henghraifft treth gyngor:
 
-| codcyf | math   | fformat  | trefn | disgrifiad_en              | disgrifiad_cy               |
-| :----- | :----- | :------- | :---- | :------------------------- | :-------------------------- |
-| 1      | cyfrif | degol    | 1     | Council tax in £           | Treth gyngor mewn £         |
-| 2      | canran | canran   | 2     | % of median monthly salary | % y cyflog misol canolrifol |
-| 3      | safle  | cyfanrif | 3     | Rank of council tax band   | Safle band treth gyngor     |
+| codcyf | math   | fformat  | degol | trefn | disgrifiad_en              | disgrifiad_cy               |
+| :----- | :----- | :------- | :---- | :---- | :------------------------- | :-------------------------- |
+| 1      | cyfrif | degol    | 2     | 1     | Council tax in £           | Treth gyngor mewn £         |
+| 2      | canran | canran   |       | 2     | % of median monthly salary | % y cyflog misol canolrifol |
+| 3      | safle  | cyfanrif |       | 3     | Rank of council tax band   | Safle band treth gyngor     |
 
 _Sylwer mai enghraifft yw hon at ddibenion arddangos, ac nad yw’n dabl am-edrych go iawn ar gyfer data treth gyngor._
 

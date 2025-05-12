@@ -271,15 +271,15 @@ For a dimension containing measures, you should prepare your own lookup table. Y
 | :------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | type    | Any of the following:<ul><li>count</li><li>percentage</li><li>rate</li><li>rank</li><li>numerator</li><li>denominator</li><li>index value</li><li>mode</li><li>median</li><li>mean</li><li>standard deviation</li><li>variance</li><li>quartile</li><li>quintile</li><li>decile</li><li>percentile</li></ul> |
 | format  | Any of the following:<ul><li>decimal</li><li>float</li><li>integer</li><li>long</li><li>percentage</li><li>string</li><li>text</li><li>date</li><li>datetime</li><li>time</li></ul>                                                                                                                          |
-| decimal | If 'decimal' has been entered for 'format':<ul><li>enter the number of decimal places to show</li><li>if nothing is entered, numbers will be rounded to the nearest whole number</li><ul>                                                                                                                    |
+| decimal | If 'decimal' or 'float' has been entered for 'format':<ul><li>enter the number of decimal places to show</li><li>if nothing is entered, numbers will be rounded to the nearest whole number</li><ul>                                                                                                                    |
 
 Example measure lookup table for our council tax example:
 
-| refcode | type       | format     | sort | description_en             | description_cy              |
-| :------ | :--------- | :--------- | :--- | :------------------------- | :-------------------------- |
-| 1       | count      | decimal    | 1    | Council tax in £           | Treth gyngor mewn £         |
-| 2       | percentage | percentage | 2    | % of median monthly salary | % y cyflog misol canolrifol |
-| 3       | rank       | integer    | 3    | Rank of council tax band   | Safle band treth gyngor     |
+| refcode | type       | format     | decimal | sort | description_en             | description_cy              |
+| :------ | :--------- | :--------- | :------ | :--- | :------------------------- | :-------------------------- |
+| 1       | count      | decimal    | 2       | 1    | Council tax in £           | Treth gyngor mewn £         |
+| 2       | percentage | percentage |         | 2    | % of median monthly salary | % y cyflog misol canolrifol |
+| 3       | rank       | integer    |         | 3    | Rank of council tax band   | Safle band treth gyngor     |
 
 _Please note this example is for demonstration purposes only and is not a genuine lookup table for council tax data._
 
