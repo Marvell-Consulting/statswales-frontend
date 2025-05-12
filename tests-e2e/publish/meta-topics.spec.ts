@@ -57,7 +57,7 @@ test.describe('Metadata Topics', () => {
         await topicsPage.goto(datasetB.id);
       });
 
-      test('Can select dataset designation then return to the tasklist', async ({ page }) => {
+      test('Can select dataset topics then return to the tasklist', async ({ page }) => {
         await topicsPage.fillForm(['Finance and tax', 'Council tax']);
         await topicsPage.submit();
         await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetB.id}/tasklist`);
