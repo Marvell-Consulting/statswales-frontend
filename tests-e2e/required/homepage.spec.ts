@@ -17,7 +17,6 @@ test.describe('Authed as a publisher', () => {
   });
 
   test('Can switch to Welsh', async ({ page }) => {
-    // TODO: waiting on translations
     await page.goto('/en-GB');
     await page.getByText('Cymraeg').click();
     await expect(page.getByRole('heading', { name: 'Setiau data' })).toBeVisible();

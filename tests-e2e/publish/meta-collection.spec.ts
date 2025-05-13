@@ -31,11 +31,12 @@ test.describe('Metadata Data Collection', () => {
       await expect(page.getByRole('heading', { name: 'How was the data collected or calculated?' })).toBeVisible();
     });
 
-    test.fixme('Can switch to Welsh', async ({ page }) => {
-      // TODO: waiting on translations
+    test('Can switch to Welsh', async ({ page }) => {
       await collectionPage.goto(dataset.id);
       await page.getByText('Cymraeg').click();
-      await expect(page.getByRole('heading', { name: '' })).toBeVisible();
+      await expect(
+        page.getByRole('heading', { name: 'Sut oedd y data wedi cael ei gasglu neu ei gyfrifo?' })
+      ).toBeVisible();
     });
 
     test.describe('Form validation', () => {

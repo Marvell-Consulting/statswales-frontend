@@ -36,7 +36,7 @@ test.describe('Metadata Title', () => {
 
     test('Can switch to Welsh', async ({ page }) => {
       await page.getByText('Cymraeg').click();
-      await expect(page.getByRole('heading', { name: 'Beth yw teitl y set ddata?' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Beth yw teitl y set ddata hon?' })).toBeVisible();
     });
 
     test.describe('Form', () => {
@@ -58,15 +58,6 @@ test.describe('Metadata Title', () => {
         await titlePage.fillForm('Test - Metadata Updated');
         await titlePage.submit();
         await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetA.id}/tasklist`);
-      });
-
-      test.fixme('Displays a validation error when the title already exists', async ({ page }) => {
-        // TODO: implement title uniqueness check
-        await titlePage.fillForm('Test - Metadata B');
-        await titlePage.submit();
-
-        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/title`);
-        await expect(page.getByText('Enter the title of this dataset')).toBeVisible();
       });
     });
   });

@@ -36,6 +36,12 @@ export class RelatedLinksPage {
     }
   }
 
+  async removeAllLinks() {
+    while (await this.page.getByRole('link', { name: 'Remove' }).first().isVisible()) {
+      await this.page.getByRole('link', { name: 'Remove' }).first().click();
+    }
+  }
+
   async submit() {
     await this.page.getByRole('button', { name: 'Continue' }).click();
   }

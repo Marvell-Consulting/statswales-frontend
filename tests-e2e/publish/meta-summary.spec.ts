@@ -31,11 +31,10 @@ test.describe('Metadata Summary', () => {
       await expect(page.getByRole('heading', { name: 'What is the summary of this dataset?' })).toBeVisible();
     });
 
-    test.fixme('Can switch to Welsh', async ({ page }) => {
-      // TODO: waiting on translations
+    test('Can switch to Welsh', async ({ page }) => {
       await summaryPage.goto(dataset.id);
       await page.getByText('Cymraeg').click();
-      await expect(page.getByRole('heading', { name: '' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: `Beth yw'r crynodeb o'r set ddata hon?` })).toBeVisible();
     });
 
     test.describe('Form validation', () => {

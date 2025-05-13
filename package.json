@@ -16,7 +16,7 @@
     "test": "jest",
     "test:ci": "jest --ci --coverage --config=jest.config.ts",
     "pretest:e2e": "mkdir -p playwright/.auth",
-    "test:e2e": "npx playwright test tests-e2e/required",
+    "test:e2e": "npx playwright test tests-e2e",
     "posttest:e2e": "rm -rf playwright/.auth",
     "check": "npm-run-all prettier:fix lint:fix test build",
     "dev:check": "npm-run-all check dev",

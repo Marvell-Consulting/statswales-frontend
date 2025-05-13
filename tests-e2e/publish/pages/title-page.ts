@@ -12,9 +12,8 @@ export class TitlePage {
     this.inputBox = this.page.locator('input#title');
   }
 
-  async goto(datasetId?: string) {
-    const url = datasetId ? `${baseUrl}/en-GB/publish/${datasetId}/title` : `${baseUrl}/en-GB/publish/title`;
-    await this.page.goto(url);
+  async goto(datasetId: string) {
+    await this.page.goto(`${baseUrl}/en-GB/publish/${datasetId}/title`);
   }
 
   async fillForm(text: string) {

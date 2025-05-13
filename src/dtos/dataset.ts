@@ -9,7 +9,7 @@ export interface DatasetDTO {
   created_by: string;
   live?: string;
   archive?: string;
-  fact_table: FactTableColumnDto[];
+  fact_table?: FactTableColumnDto[];
   measure?: MeasureDTO;
   dimensions?: DimensionDTO[];
   revisions: RevisionDTO[];
