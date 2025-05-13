@@ -422,25 +422,30 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
 
 export const taskList = async (req: Request, res: Response, next: NextFunction) => {
   const dataset = singleLangDataset(res.locals.dataset, req.language);
-  const revision = dataset.draft_revision!;
+  const draftRevision = dataset.draft_revision!;
   const datasetStatus = getDatasetStatus(res.locals.dataset);
   const publishingStatus = getPublishingStatus(res.locals.dataset);
 
+  if (!draftRevision) {
+    res.redirect(req.buildUrl(`/publish/${dataset.id}/overview`, req.language));
+    return;
+  }
+
   try {
     if (req.method === 'POST') {
-      await req.pubapi.submitForPublication(dataset.id, revision.id);
+      await req.pubapi.submitForPublication(dataset.id, draftRevision.id);
       res.redirect(req.buildUrl(`/publish/${dataset.id}/overview`, req.language, { submitted: 'true' }));
       return;
     }
 
-    const datasetTitle = revision.metadata?.title;
+    const datasetTitle = draftRevision.metadata?.title;
     const dimensions = dataset.dimensions;
     const taskList: TaskListState = await req.pubapi.getTaskList(dataset.id);
 
     res.render('publish/tasklist', {
       datasetTitle,
       taskList,
-      revision,
+      revision: draftRevision,
       dimensions,
       datasetStatus,
       publishingStatus
