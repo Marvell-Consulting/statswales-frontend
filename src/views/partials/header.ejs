@@ -99,3 +99,16 @@
             </div>
         </div>
     </nav>
+
+    <% if (typeof backLink !== "undefined" || typeof returnLink !== "undefined") { %>
+        <div class="top-links">
+            <div class="govuk-width-container">
+                <% if (typeof backLink !== "undefined" && backLink) { %>
+                    <a href="<%= backLink %>" class="govuk-back-link"><%= t('buttons.back') %></a>
+                <% } %>
+                <% if (typeof returnLink !== "undefined" && returnLink) { %>
+                    <a href="<%= returnLink %>" class="govuk-link return-link %>"><%= t('publish.header.overview') %></a>
+                <% } %>
+            </div>
+        </div>
+    <% } %>

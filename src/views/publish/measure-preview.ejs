@@ -1,14 +1,10 @@
-<%- include("../partials/header"); %>
+<%- include("../partials/header", {
+    backLink: buildUrl(`/publish/${locals.datasetId}/measure`, i18n.language),
+    returnLink: buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language)
+}); %>
 <div class="form-background">
     <main class="govuk-main-wrapper" id="main-content" role="main">
         <div class="govuk-width-container app-width-container">
-            <div class="top-links">
-                <div class="govuk-width-container">
-                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/measure`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
-                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
-                </div>
-            </div>
-
             <span class="region-subhead"><%= locals.measure.metadata.name %></span>
             <h1 class="govuk-heading-xl"><%= t('publish.measure_preview.heading') %></h1>
 
