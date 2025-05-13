@@ -1177,34 +1177,72 @@
   padding: 10px 0px;
 }
 .wg .govuk-frontend-supported .govuk-tabs__list {
+  padding: 0;
   border-bottom: none;
 }
 .wg .govuk-frontend-supported .govuk-tabs__list-item {
   background-color: #1f446d;
-  bottom: -10px;
+  margin-right: 15px;
+  padding: 20px;
+}
+.wg .govuk-frontend-supported .govuk-tabs__list-item:not(.govuk-tabs__list-item--selected):hover {
+  background-color: #3b7dc5;
+}
+.wg .govuk-frontend-supported .govuk-tabs__list-item:not(.govuk-tabs__list-item--selected):hover a {
+  color: #ffffff;
+}
+.wg .govuk-frontend-supported .govuk-tabs__list-item .govuk-tabs__tab:link {
+  padding: 0;
+  color: #99ccff;
 }
 .wg .govuk-tabs__list-item a,
 .wg .govuk-tabs__list-item a:visited {
   color: #99ccff;
 }
-.wg .govuk-tabs__list-item--selected a,
-.wg .govuk-tabs__list-item--selected a:visited {
+.wg .govuk-frontend-supported .govuk-tabs__list-item--selected .govuk-tabs__tab:link,
+.wg .govuk-frontend-supported .govuk-tabs__list-item--selected .govuk-tabs__tab:visited {
   color: #1f1f1f;
   font-weight: normal;
 }
 .wg .govuk-frontend-supported .govuk-tabs__list-item--selected {
   margin-bottom: 0;
   border: none;
-  border-bottom: 0;
   background-color: #ffffff;
   border-top: #cccccc 6px solid;
-  bottom: -5px;
-  padding-right: 20px;
-  padding-left: 20px;
 }
 .wg .govuk-frontend-supported .govuk-tabs__panel {
   padding: 30px 0;
   border: none;
+}
+@media screen and (max-width: 768px) {
+  .wg .govuk-frontend-supported .govuk-tabs__list-item {
+    margin-right: 10px;
+    padding: 15px;
+  }
+  .wg .govuk-tabs__tab {
+    font-size: 20px;
+  }
+}
+@media screen and (max-width: 640px) {
+  .wg .govuk-tabs__title {
+    display: none;
+  }
+  .wg .govuk-frontend-supported .govuk-tabs__list-item:before {
+    content: none;
+  }
+  .wg .govuk-frontend-supported .govuk-tabs__list-item--selected,
+  .wg .govuk-frontend-supported .govuk-tabs__list-item,
+  .wg .govuk-frontend-supported .govuk-tabs__list-item:hover {
+    border: none;
+    border-bottom: 0;
+    background-color: #0360a6 !important;
+  }
+  .wg .govuk-frontend-supported .govuk-tabs__list-item--selected .govuk-tabs__tab,
+  .wg .govuk-frontend-supported .govuk-tabs__list-item .govuk-tabs__tab,
+  .wg .govuk-frontend-supported .govuk-tabs__list-item:hover .govuk-tabs__tab {
+    font-weight: bold !important;
+    color: #ffffff !important;
+  }
 }
 .wg .checkboxes__filter {
   background-color: white;

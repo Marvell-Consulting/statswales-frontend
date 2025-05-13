@@ -18,45 +18,38 @@
                         <h2 class="govuk-tabs__title">
                             <%= t('developer.display.contents') %>
                         </h2>
-                        <ul class="govuk-tabs__list">
-                            <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                                <a class="govuk-tabs__tab" href="#summary">
-                                    <%= t('developer.display.summary') %>
-                                </a>
-                            </li>
-                            <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                                <a class="govuk-tabs__tab" href="#fact_table">
-                                    <%= t('developer.display.fact_table') %>
-                                </a>
-                            </li>
-                            <% if (dataset.measure) { %>
-                            <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                                <a class="govuk-tabs__tab" href="#measure">
-                                    <%= t('developer.display.measure') %>
-                                </a>
-                            </li>
-                            <% } %>
-                            <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                                <a class="govuk-tabs__tab" href="#dimension">
-                                    <%= t('developer.display.dimension') %>
-                                </a>
-                            </li>
-                            <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                                <a class="govuk-tabs__tab" href="#revision">
-                                    <%= t('developer.display.revision') %>
-                                </a>
-                            </li>
-                            <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                                <a class="govuk-tabs__tab" href="#files">
-                                    <%- t('developer.display.files') %>
-                                </a>
-                            </li>
-                            <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                                <a class="govuk-tabs__tab" href="#json">
-                                    JSON
-                                </a>
-                            </li>
-                        </ul>
+                        <%- include("../partials/tabs", {
+                            tabs: [{ 
+                                id: 'summary',
+                                label: t('developer.display.summary')
+                            }, { 
+                                id: 'fact_table', 
+                                label: t('developer.display.fact_table')
+                            },
+                            ...(dataset.measure
+                                ? [{
+                                    id: 'measure',
+                                    label: t('developer.display.measure')
+                                }] 
+                                : []
+                            ),
+                            {
+                                id: 'dimension',
+                                label: t('developer.display.dimension')
+                            },
+                            {
+                                id: 'revision',
+                                label: t('developer.display.revision')
+                            },
+                            {
+                                id: 'files',
+                                label: t('developer.display.files')
+                            },
+                            {
+                                id: 'json',
+                                label: 'JSON'
+                            }
+                        ]}) %>
                         <div class="govuk-tabs__panel" id="summary">
                             <h2 class="govuk-heading-m"><%= t('developer.display.summary') %></h2>
                             <div class="govuk-grid-row">
