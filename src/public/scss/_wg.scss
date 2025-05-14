@@ -89,7 +89,7 @@ $whitepurple: #eed5e3;
 
   tr {
     color: $black;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 20px;
     border-bottom: 1px solid $lightgrey_semi;
     padding: 15px 10px 15px 0;
@@ -726,10 +726,6 @@ $whitepurple: #eed5e3;
 
   .top-links {
     background-color: $white;
-    margin-top: -40px;
-    margin-bottom: 40px;
-    margin-left: -100%;
-    margin-right: -100%;
   }
 
   .return-link {

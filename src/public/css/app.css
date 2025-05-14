@@ -55,7 +55,7 @@
 }
 .wg tr {
   color: #1f1f1f;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 20px;
   border-bottom: 1px solid #e5e5e5;
   padding: 15px 10px 15px 0;
@@ -588,10 +588,6 @@
 }
 .wg .top-links {
   background-color: #ffffff;
-  margin-top: -40px;
-  margin-bottom: 40px;
-  margin-left: -100%;
-  margin-right: -100%;
 }
 .wg .return-link {
   margin-top: 15px;

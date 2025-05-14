@@ -1,18 +1,10 @@
-<%- include("../partials/header"); %>
+<%- include("../partials/header", {
+    backLink: locals.revisit && buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language),
+    returnLink: locals.revisit && locals.datasetId && buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language)
+}); %>
 <div class="form-background">
     <div class="govuk-width-container app-width-container">
         <main class="govuk-main-wrapper" id="main-content" role="main">
-            <% if (locals.revisit) { %>
-                <div class="top-links">
-                    <div class="govuk-width-container">
-                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
-                        <% if (locals.datasetId) { %>
-                            <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
-                        <% } %>
-                    </div>
-                </div>
-            <% } %>
-
             <h1 class="govuk-heading-xl"><%= locals.revisit ? t('publish.preview.heading_summary') : t('publish.preview.heading') %></h1>
 
             <%- include("../partials/error-handler"); %>

@@ -1,18 +1,12 @@
-<%- include("../partials/header"); %>
+<%- include("../partials/header", {
+    backLink: locals.quarterTotals
+        ? buildUrl(`/publish/${locals.datasetId}/dates/${dimension.id}/period/months`, i18n.language)
+        : buildUrl(`/publish/${locals.datasetId}/dates/${dimension.id}/period/type`, i18n.language),
+    returnLink: buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language)
+}); %>
 <div class="form-background">
     <div class="govuk-width-container app-width-container">
         <main class="govuk-main-wrapper" id="main-content" role="main">
-            <div class="top-links">
-                <div class="govuk-width-container">
-                    <% if (locals.quarterTotals) { %>
-                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/dates/${dimension.id}/period/months`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
-                    <% } else { %>
-                            <a href="<%= buildUrl(`/publish/${locals.datasetId}/dates/${dimension.id}/period/type`, i18n.language) %>" class="govuk-back-link"><%= t('buttons.back') %></a>
-                    <% } %>
-                    <a href="<%= buildUrl(`/publish/${locals.datasetId}/tasklist`, i18n.language) %>" class="govuk-link return-link"><%= t('publish.header.overview') %></a>
-                </div>
-            </div>
-
             <span class="region-subhead"><%= dimension.metadata.name %></span>
             <% if (locals.quarterTotals) { %>
                 <h1 class="govuk-heading-xl"><%= t('publish.quarter_format.heading-alt') %></h1>
