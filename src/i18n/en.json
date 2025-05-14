@@ -23,11 +23,12 @@
       "live": "Live dataset"
     },
     "publishing_status": {
-      "published": "Published",
       "incomplete": "Incomplete",
-      "scheduled": "Scheduled",
       "update_incomplete": "Update incomplete",
-      "update_scheduled": "Update scheduled"
+      "pending_approval": "Pending approval",
+      "scheduled": "Scheduled",
+      "update_scheduled": "Update scheduled",
+      "published": "Published"
     }
   },
   "pagination": {
@@ -79,6 +80,7 @@
       "expired": "Your session has expired. You need to sign in again."
     },
     "form": {
+      "notice_header": "Important",
       "notice_1": "The username we've given you is temporary. You'll only be able to log in with it whilst we run this round of testing.",
       "notice_2": "Do not upload any sensitive data or data that other StatsWales users should not have access to.",
       "username": {
@@ -111,6 +113,7 @@
     "publishing_status": {
       "incomplete": "Incomplete",
       "update_incomplete": "Update incomplete",
+      "pending_approval": "Pending approval",
       "scheduled": "Scheduled",
       "update_scheduled": "Update scheduled",
       "published": "Published"
@@ -959,15 +962,23 @@
       "example": "For example: {{example}}"
     },
     "overview": {
+      "subheading": "Dataset overview",
       "submitted": {
         "notification": {
           "header": "Success",
           "content": "Dataset submitted for approval"
         }
       },
+      "pending": {
+        "publish_at": "Proposed publication date: <strong>{{publishAt}}</strong>",
+        "requested_by": "Publishing requested by: <strong>{{userName}}</strong>"
+      },
       "scheduled": {
-        "publish_at": "Publishing scheduled: <strong>{{publish_at}}</strong>",
-        "what_next": "What do you want to do?"
+        "publish_at": "Publishing scheduled: <strong>{{publishAt}}</strong>"
+      },
+      "tabs": {
+        "actions": "Actions",
+        "history": "History"
       },
       "actions": {
         "view_published_dataset": "View published dataset (opens in new tab)",

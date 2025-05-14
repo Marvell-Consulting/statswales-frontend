@@ -76,6 +76,8 @@ import { PublishingStatus } from '../enums/publishing-status';
 import { NotAllowedException } from '../exceptions/not-allowed.exception';
 import { DatasetDTO } from '../dtos/dataset';
 import { RevisionDTO } from '../dtos/revision';
+import { TaskAction } from '../enums/task-action';
+import { TaskStatus } from '../enums/task-status';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -427,6 +429,7 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
   const publishingStatus = getPublishingStatus(res.locals.dataset);
 
   if (!draftRevision) {
+    // tasklist only available for draft revisions
     res.redirect(req.buildUrl(`/publish/${dataset.id}/overview`, req.language));
     return;
   }
@@ -2533,9 +2536,6 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
   try {
     const dataset = await req.pubapi.getDataset(res.locals.datasetId, DatasetInclude.Overview);
     const revision = singleLangRevision(dataset.end_revision, req.language)!;
-    const title = revision?.metadata?.title;
-    const datasetStatus = getDatasetStatus(dataset);
-    const publishingStatus = getPublishingStatus(dataset, revision);
 
     if (req.query.withdraw) {
       try {
@@ -2548,6 +2548,14 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
       }
     }
 
+    const title = revision?.metadata?.title;
+    const datasetStatus = getDatasetStatus(dataset);
+    const publishingStatus = getPublishingStatus(dataset, revision);
+
+    const publishRequest = dataset.tasks?.find(
+      (task) => task.open && task.action === TaskAction.Publish && task.status === TaskStatus.Requested
+    );
+
     res.render('publish/overview', {
       dataset,
       revision,
@@ -2555,7 +2563,8 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
       successfullySubmitted,
       datasetStatus,
       publishingStatus,
-      canMoveGroup
+      canMoveGroup,
+      publishRequest
     });
     return;
   } catch (err) {

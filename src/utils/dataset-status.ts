@@ -7,6 +7,8 @@ import { PublishingStatus } from '../enums/publishing-status';
 import { getLatestRevision } from './revision';
 import { RevisionDTO } from '../dtos/revision';
 import { SingleLanguageRevision } from '../dtos/single-language/revision';
+import { TaskAction } from '../enums/task-action';
+import { TaskStatus } from '../enums/task-status';
 
 export const getDatasetStatus = (dataset: DatasetDTO): DatasetStatus => {
   return dataset.live && isBefore(dataset.live, new Date()) ? DatasetStatus.Live : DatasetStatus.New;
@@ -18,10 +20,13 @@ export const getPublishingStatus = (
 ): PublishingStatus => {
   revision = revision ?? getLatestRevision(dataset);
   const datasetStatus = getDatasetStatus(dataset);
-  const openTask = dataset.open_task;
 
-  if (openTask) {
-    // do something with the open task
+  const pendingApproval = dataset.tasks?.some(
+    (task) => task.open && task.action === TaskAction.Publish && task.status === TaskStatus.Requested
+  );
+
+  if (pendingApproval) {
+    return PublishingStatus.PendingApproval;
   }
 
   if (datasetStatus === DatasetStatus.New) {
