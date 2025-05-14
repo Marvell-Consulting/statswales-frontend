@@ -6,5 +6,9 @@ export const handleAsset404: RequestHandler = (req, res, next) => {
     res.status(404).send('Not found');
     return;
   }
+  if (/com.chrome.devtools.json$/.test(req.originalUrl)) {
+    res.status(404).send('Not found');
+    return;
+  }
   next();
 };
