@@ -399,7 +399,9 @@ Mae’r adran ansawdd ystadegol yn cynnwys is-adran hefyd er mwyn dynodi a oes u
 
 #### Ffynonellau data
 
-Rhennir hwn yn ddarparwyr data, megis y ‘Swyddfa Ystadegau Gwladol (SYG)’, a ffynonellau gan y darparwyr hynny, megis ‘Cyfrifiad 2021’. Mewn rhai achosion, efallai y byddwch yn gwybod darparwr y data yn unig, ac nid ffynhonnell benodol gan y darparwr hwnnw. Er enghraifft, ‘Ymddygiad Iechyd mewn Plant Oedran Ysgol (HBSC)’.
+Rhennir hwn yn ddarparwyr data a ffynonellau data penodol. Darparwyr data yw'r sefydliadau sy'n cynnig mynediad i'r data yr ydych yn ei ddefnyddio i greu eich setiau data. Megis y 'Swyddfa Ystadegau Gwladol (SYG)'. Dylai'r darparwr data ddweud wrthych beth yw ffynhonnell benodol y data, megis 'Cyfrifiad 2021'.
+
+Mewn rhai achosion, efallai y byddwch yn gwybod darparwr y data yn unig, ac nid ffynhonnell benodol gan y darparwr hwnnw. Er enghraifft, ‘Ymddygiad Iechyd mewn Plant Oedran Ysgol (HBSC)’.
 
 Gallwch ychwanegu ffynonellau lluosog yn ôl y gofyn.
 

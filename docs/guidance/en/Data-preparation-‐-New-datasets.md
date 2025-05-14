@@ -400,7 +400,9 @@ There is also a subsection within the statistical quality section to indicate if
 
 #### Data sources
 
-This is split into data providers, such as ‘Office for National Statistics (ONS)’, and sources from those data providers, such as ‘2021 Census’. In some instances, you may only know the data provider and not a specific source from that provider. For example ‘Health Behaviours in School-aged Children (HBSC)’.
+This is split into data providers and specific data sources. Data providers are the organisations that provide access to the data you use to create your datasets. Such as ‘Office for National Statistics (ONS)’. The data provider should tell you what the specific data source is, such as ‘2021 Census’.
+
+In some instances, you may only know the data provider and not a specific source from that provider. For example ‘Health Behaviours in School-aged Children (HBSC)’.
 
 You can add multiple sources if required.
 
