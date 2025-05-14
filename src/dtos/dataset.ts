@@ -24,5 +24,5 @@ export interface DatasetDTO {
   start_date?: string;
   end_date?: string;
   user_group_id?: string;
-  open_task?: TaskDTO;
+  tasks?: TaskDTO[];
 }

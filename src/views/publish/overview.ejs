@@ -4,67 +4,88 @@
 	<main class="govuk-main-wrapper" id="main-content" role="main">
 
 		<div class="govuk-grid-row">
-			<div class="govuk-grid-column-two-thirds">
+			<div class="govuk-grid-column-full">
 
 				<%- include("../partials/flash-messages"); %>
 
 				<% if (locals.successfullySubmitted) { %>
 					<div class="govuk-notification-banner govuk-notification-banner--success" role="alert" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
-						<div class="govuk-notification-banner__header">
-							<h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title"><%= t('publish.overview.submitted.notification.header') %></h2>
-						</div>
 						<div class="govuk-notification-banner__content">
-							<h3 class="govuk-notification-banner__heading"><%= t('publish.overview.submitted.notification.content') %></h3>
+							<p class="govuk-notification-banner__heading"><%= t('publish.overview.submitted.notification.content') %></p>
 						</div>
 					</div>
 				<% } %>
 
+        <span class="region-subhead"><%= t('publish.overview.subheading') %></span>
 				<h1 class="govuk-heading-xl govuk-!-margin-bottom-2"><%= locals.title %></h1>
 
 				<%- include("../partials/dataset/status", { datasetStatus: locals.datasetStatus, publishingStatus: locals.publishingStatus }); %>
 
 				<%- include("../partials/error-handler"); %>
 
-				<% if (locals.publishingStatus === 'scheduled') { %>
-					<p class="govuk-body"><%- t('publish.overview.scheduled.publish_at', { publish_at: dateFormat(locals.revision?.publish_at, 'h:mmaaa, d MMMM yyyy') }) %></p>
-				<% } %>
+        <div class="overview-details">
+          <% if (locals.publishingStatus === 'pending_approval') { %>
+            <p class="govuk-body govuk-!-margin-0"><%- t('publish.overview.pending.publish_at', { publishAt: dateFormat(locals.revision?.publish_at, 'h:mmaaa, d MMMM yyyy') }) %></p>
+            <p class="govuk-body govuk-!-margin-0"><%- t('publish.overview.pending.requested_by', { userName: locals.publishRequest.created_by_name }) %></p>
+          <% } %>
 
-				<h2 class="govuk-heading-m"><%= t('publish.overview.scheduled.what_next') %></h2>
+          <% if (locals.publishingStatus === 'scheduled') { %>
+            <p class="govuk-body"><%- t('publish.overview.scheduled.publish_at', { publishAt: dateFormat(locals.revision?.publish_at, 'h:mmaaa, d MMMM yyyy') }) %></p>
+          <% } %>
+        </div>
 
-				<div class="actions">
-					<ul class="govuk-list">
-            <% if (locals.publishingStatus === 'incomplete') { %>
-							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/tasklist`, i18n.language) %>"><%= t('publish.overview.actions.continue') %></a></li>
-						<% } %>
 
-            <% if (locals.publishingStatus === 'update_incomplete') { %>
-							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/tasklist`, i18n.language) %>"><%= t('publish.overview.actions.continue_update') %></a></li>
-						<% } %>
+        <div class="govuk-tabs" data-module="govuk-tabs">
+          <div class="tabs">
+            <div class="govuk-width-container">
+              <ul class="govuk-tabs__list">
+                <li class="govuk-tabs__list-item">
+                  <a class="govuk-tabs__tab" href="#actions" id="tab_actions" role="tab" aria-controls="actions" aria-selected="true" tabindex="0"><%= t('publish.overview.tabs.actions') %></a>
+                </li>
+                <li class="govuk-tabs__list-item">
+                  <a class="govuk-tabs__tab" href="#history" id="tab_history" role="tab" aria-controls="history" aria-selected="false" tabindex="-1"><%= t('publish.overview.tabs.history') %></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="govuk-tabs__panel" id="actions" role="tabpanel" aria-labelledby="tab_actions">
+            <ul class="govuk-list">
+              <% if (locals.publishingStatus === 'incomplete') { %>
+                <li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/tasklist`, i18n.language) %>"><%= t('publish.overview.actions.continue') %></a></li>
+              <% } %>
 
-						<% if (locals.datasetStatus === 'live') { %>
-							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/published/${dataset.id}`, i18n.language) %>" target="_blank"><%= t('publish.overview.actions.view_published_dataset') %></a></li>
-						<% } %>
+              <% if (locals.publishingStatus === 'update_incomplete') { %>
+                <li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/tasklist`, i18n.language) %>"><%= t('publish.overview.actions.continue_update') %></a></li>
+              <% } %>
 
-						<% if (locals.publishingStatus === 'published') { %>
-							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/update`, i18n.language) %>"><%= t('publish.overview.actions.update_dataset') %></a></li>
-						<% } else { %>
-              <li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/cube-preview`, i18n.language) %>"><%= t('publish.overview.actions.preview') %></a></li>
-            <% } %>
+              <% if (locals.datasetStatus === 'live') { %>
+                <li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/published/${dataset.id}`, i18n.language) %>" target="_blank"><%= t('publish.overview.actions.view_published_dataset') %></a></li>
+              <% } %>
 
-						<% if (locals.publishingStatus === 'scheduled') { %>
-							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language, { withdraw: 'true' }) %>"><%= t('publish.overview.actions.withdraw_first_revision') %></a></li>
-						<% } %>
+              <% if (locals.publishingStatus === 'published') { %>
+                <li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/update`, i18n.language) %>"><%= t('publish.overview.actions.update_dataset') %></a></li>
+              <% } else { %>
+                <li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/cube-preview`, i18n.language) %>"><%= t('publish.overview.actions.preview') %></a></li>
+              <% } %>
 
-						<% if (locals.publishingStatus === 'update_scheduled') { %>
-							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/cube-preview`, i18n.language) %>"><%= t('publish.overview.actions.preview') %></a></li>
-							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language, { withdraw: 'true' }) %>"><%= t('publish.overview.actions.withdraw_update_revision') %></a></li>
-						<% } %>
+              <% if (['scheduled', 'pending_approval'].includes(locals.publishingStatus)) { %>
+                <li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language, { withdraw: 'true' }) %>"><%= t('publish.overview.actions.withdraw_first_revision') %></a></li>
+              <% } %>
 
-						<% if (locals.canMoveGroup) { %>
-							<li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/move`, i18n.language) %>"><%= t('publish.overview.actions.move') %></a></li>
-						<% } %>
-					</ul>
-				</div>
+              <% if (locals.publishingStatus === 'update_scheduled') { %>
+                <li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/cube-preview`, i18n.language) %>"><%= t('publish.overview.actions.preview') %></a></li>
+                <li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language, { withdraw: 'true' }) %>"><%= t('publish.overview.actions.withdraw_update_revision') %></a></li>
+              <% } %>
+
+              <% if (locals.canMoveGroup) { %>
+                <li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/move`, i18n.language) %>"><%= t('publish.overview.actions.move') %></a></li>
+              <% } %>
+            </ul>
+          </div>
+          <div class="govuk-tabs__panel" id="history" role="tabpanel" aria-labelledby="tab_history">
+            <p class="govuk-body">Coming soon...</p>
+          </div>
+        </div>
 
 			</div>
 		</div>

@@ -463,27 +463,21 @@
   background-color: #eed5e3;
   color: #1f1f1f;
 }
-.wg .govuk-notification-banner--success {
-  border-color: transparent;
-  background-color: transparent;
-  background: #cdf7d4;
+.wg .govuk-notification-banner {
   border: none;
-  border-left: 10px solid #019e1e;
-  display: block;
   font-size: 18px;
-  padding: 10px 0px 15px 0px;
 }
-.wg h3.govuk-notification-banner__heading {
-  font-size: 18px;
-  font-weight: normal;
+.wg .govuk-notification-banner--success {
+  background: #cdf7d4;
+  border-left: 10px solid #019e1e;
 }
 .wg .govuk-notification-banner__content {
   background-color: transparent;
-  padding: 20px 20px;
+  padding: 20px;
 }
-.wg .govuk-notification-banner--success h2 {
-  color: #1f1f1f;
-  font-size: 28px;
+.wg .govuk-notification-banner__heading {
+  font-size: 18px;
+  font-weight: normal;
 }
 .wg .govuk-notification-banner:focus {
   outline: none;
