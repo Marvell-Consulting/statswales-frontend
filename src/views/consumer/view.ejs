@@ -9,36 +9,8 @@
               <h2 class="govuk-tabs__title">
                   <%= t('toc') %>
               </h2>
-              <div class="tabs">
-                  <div class="govuk-width-container">
-                      <div class="govuk-main-wrapper govuk-!-padding-bottom-0" id="main-content">
 
-                          <ul class="govuk-tabs__list" role="tablist">
-                              <li class="govuk-tabs__list-item govuk-tabs__list-item--selected" role="presentation">
-                                  <a class="govuk-tabs__tab" href="#data" id="tab_data" role="tab" aria-controls="data" aria-selected="true" tabindex="0">
-                                      <%= t('consumer_view.data') %>
-                                  </a>
-                              </li>
-                              <!-- Commented out until we implement dataset history -->
-<!--                              <li class="govuk-tabs__list-item" role="presentation">-->
-<!--                                  <a class="govuk-tabs__tab" href="#history" id="tab_history" role="tab" aria-controls="history" aria-selected="false" tabindex="-1">-->
-<!--                                      Dataset history-->
-<!--                                  </a>-->
-<!--                              </li>-->
-                              <li class="govuk-tabs__list-item" role="presentation">
-                                  <a class="govuk-tabs__tab" href="#about_dataset" id="tab_about" role="tab" aria-controls="about" aria-selected="false" tabindex="-1">
-                                      <%= t('consumer_view.about_this_dataset') %>
-                                  </a>
-                              </li>
-                              <li class="govuk-tabs__list-item" role="presentation">
-                                  <a class="govuk-tabs__tab" href="#download_dataset" id="tab_download" role="tab" aria-controls="download" aria-selected="false" tabindex="-1">
-                                      <%= t('consumer_view.download') %>
-                                  </a>
-                              </li>
-                          </ul>
-                      </div>
-                  </div>
-              </div>
+              <%- include("../partials/tabs", { tabs: [{ label: t('consumer_view.data'), id: "data" }, { label: t('consumer_view.about_this_dataset'), id: "about_dataset" }, { label: t('consumer_view.download'), id: 'download_dataset' }],  }) %>
 
               <div class="govuk-tabs__panel" id="data" role="tabpanel" aria-labelledby="tab_data">
                   <div class="govuk-width-container">

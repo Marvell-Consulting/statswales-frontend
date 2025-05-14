@@ -23,18 +23,7 @@
                 <h2 class="govuk-tabs__title">
                     <%= t('dataset_view.contents') %>
                 </h2>
-                <ul class="govuk-tabs__list">
-                    <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                        <a class="govuk-tabs__tab" href="#download">
-                            <%= t('dataset_view.download') %>
-                        </a>
-                    </li>
-                    <li class="govuk-tabs__list-item">
-                        <a class="govuk-tabs__tab" href="#preview">
-                            <%= t('dataset_view.table_preview') %>
-                        </a>
-                    </li>
-                </ul>
+                <%- include("../partials/tabs", { tabs: [{ id: 'download', label: t('dataset_view.download') }, { id: 'preview', label: t('dataset_view.table_preview') }]}) %>
                 <div class="govuk-tabs__panel" id="download">
                     <a href="<%= buildUrl(`/publish/${locals.datasetId}/cube-preview/download`, i18n.language, { format: 'csv' }) %>" class="govuk-button">
                         <i class="fa-solid fa-file-csv"></i> <%= t('dataset_view.download_as.csv') %></a>
