@@ -6,6 +6,7 @@ import { stringify } from 'csv-stringify/sync';
 import { test, expect, Page } from '@playwright/test';
 import { users } from '../fixtures/logins';
 import { appConfig } from '../../src/config';
+import { escapeRegExp } from 'lodash';
 
 const config = appConfig();
 const baseUrl = config.frontend.url;
@@ -38,8 +39,8 @@ test.describe('Happy path', () => {
     // title
     await page.getByRole('textbox').fill(title);
     await page.getByRole('button', { name: 'Continue' }).click();
-    let pageUrl = page.url();
-    let match = pageUrl.match(new RegExp(`^${baseUrl}\/en-GB\/publish\/(.*)\/upload$`));
+    const pageUrl = page.url();
+    const match = pageUrl.match(new RegExp(`^${escapeRegExp(baseUrl)}/en-GB/publish/(.*)/upload$`));
     if (match) {
       id = match[1];
     }
@@ -79,7 +80,9 @@ test.describe('Happy path', () => {
     // year code
     await page.getByRole('link', { name: 'YearCode' }).click();
     const yearCodeUrl = page.url();
-    const yearCodeMatch = yearCodeUrl.match(new RegExp(`^${baseUrl}\/en-GB\/publish\/${id}\/dimension\/(.*)$`));
+    const yearCodeMatch = yearCodeUrl.match(
+      new RegExp(`^${escapeRegExp(baseUrl)}/en-GB/publish/${id}/dimension/(.*)$`)
+    );
     if (yearCodeMatch) {
       yearCodeId = yearCodeMatch[1];
     }
@@ -108,7 +111,7 @@ test.describe('Happy path', () => {
     // row ref
     await page.getByRole('link', { name: 'RowRef' }).click();
     const rowRefUrl = page.url();
-    const rowRefMatch = rowRefUrl.match(new RegExp(`^${baseUrl}\/en-GB\/publish\/${id}\/dimension\/(.*)$`));
+    const rowRefMatch = rowRefUrl.match(new RegExp(`^${escapeRegExp(baseUrl)}/en-GB/publish/${id}/dimension/(.*)$`));
     if (rowRefMatch) {
       rowRefId = rowRefMatch[1];
     }
@@ -128,7 +131,9 @@ test.describe('Happy path', () => {
     // area code
     await page.getByRole('link', { name: 'AreaCode' }).click();
     const areaCodeUrl = page.url();
-    const areaCodeMatch = areaCodeUrl.match(new RegExp(`^${baseUrl}\/en-GB\/publish\/${id}\/dimension\/(.*)$`));
+    const areaCodeMatch = areaCodeUrl.match(
+      new RegExp(`^${escapeRegExp(baseUrl)}/en-GB/publish/${id}/dimension/(.*)$`)
+    );
     if (areaCodeMatch) {
       areaCodeId = areaCodeMatch[1];
     }
