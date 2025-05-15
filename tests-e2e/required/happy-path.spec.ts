@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import { parse } from 'csv-parse/sync';
 import { stringify } from 'csv-stringify/sync';
 
-import { test, expect, Page } from '@playwright/test';
+import { test, expect, Page, Locator, Download, TestInfo } from '@playwright/test';
 import { users } from '../fixtures/logins';
 import { appConfig } from '../../src/config';
 import { escapeRegExp } from 'lodash';
@@ -21,6 +21,18 @@ test.describe('Happy path', () => {
   let rowRefId: string;
   let areaCodeId: string;
 
+  const content = {
+    measureTable: 'Measure table title',
+    dateField: 'Date title',
+    areaCodeField: 'Area code title',
+    rowRefField: 'Row ref title',
+    summary: 'Summary text',
+    dataCollection: 'Data collection text',
+    statisticalQuality: 'Statistical quality text',
+    relatedReportLink: 'http://example.com',
+    relatedReportLinkText: 'Example website'
+  };
+
   async function setFile(page: Page, filepath: string) {
     const fileChooserPromise = page.waitForEvent('filechooser');
     await page.locator('input[type="file"]').click();
@@ -28,7 +40,20 @@ test.describe('Happy path', () => {
     await fileChooser.setFiles(filepath);
   }
 
-  test('Can fully create a new dataset', async ({ page }, testInfo) => {
+  async function downloadFile(page: Page, downloadButton: Locator) {
+    const downloadPromise = page.waitForEvent('download');
+    await downloadButton.click();
+    return await downloadPromise;
+  }
+
+  async function checkFile(testInfo: TestInfo, download: Download) {
+    const filepath = path.join(testInfo.outputDir, download.suggestedFilename());
+    await download.saveAs(filepath);
+    const file = fs.readFileSync(filepath);
+    expect(file).toBeTruthy();
+  }
+
+  test('Can fully create a new dataset', async ({ page, context }, testInfo) => {
     // start
     await page.goto('/en-GB');
     await page.getByRole('link', { name: 'Create new dataset' }).click();
@@ -73,7 +98,7 @@ test.describe('Happy path', () => {
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/measure/review`);
     await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/measure/name`);
-    await page.getByRole('textbox').fill('Measure table title');
+    await page.getByRole('textbox').fill(content.measureTable);
     await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
@@ -104,7 +129,7 @@ test.describe('Happy path', () => {
     await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dates/${yearCodeId}/review`);
     await page.getByRole('button', { name: 'Continue' }).click();
-    await page.getByRole('textbox').fill('Date title');
+    await page.getByRole('textbox').fill(content.dateField);
     await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
@@ -124,7 +149,7 @@ test.describe('Happy path', () => {
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/lookup/${rowRefId}/review`);
     await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${rowRefId}/name`);
-    await page.getByRole('textbox').fill('Row ref title');
+    await page.getByRole('textbox').fill(content.rowRefField);
     await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
@@ -143,28 +168,28 @@ test.describe('Happy path', () => {
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/lookup/${areaCodeId}/review`);
     await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${areaCodeId}/name`);
-    await page.getByRole('textbox').fill('Area code title');
+    await page.getByRole('textbox').fill(content.areaCodeField);
     await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
     // summary
     await page.getByRole('link', { name: 'Summary' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/summary`);
-    await page.getByRole('textbox').fill('Summary text');
+    await page.getByRole('textbox').fill(content.summary);
     await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
     // data collection
     await page.getByRole('link', { name: 'Data collection' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/collection`);
-    await page.getByRole('textbox').fill('Data collection text');
+    await page.getByRole('textbox').fill(content.dataCollection);
     await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
     // statistical quality
     await page.getByRole('link', { name: 'Statistical quality' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/quality`);
-    await page.getByRole('textbox').fill('Statistical quality text');
+    await page.getByRole('textbox').fill(content.statisticalQuality);
     await page.getByLabel('No').click({ force: true });
     await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
@@ -186,8 +211,8 @@ test.describe('Happy path', () => {
     // related reports
     await page.getByRole('link', { name: 'Related reports' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/related`);
-    await page.getByRole('textbox', { name: 'Link URL' }).fill('http://example.com');
-    await page.getByRole('textbox', { name: 'Link text to appear on the webpage' }).fill('example website');
+    await page.getByRole('textbox', { name: 'Link URL' }).fill(content.relatedReportLink);
+    await page.getByRole('textbox', { name: 'Link text to appear on the webpage' }).fill(content.relatedReportLinkText);
     await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/related`);
     await page.getByLabel('No').click({ force: true });
@@ -219,9 +244,8 @@ test.describe('Happy path', () => {
     // export translation
     await page.getByRole('link', { name: 'Export text fields for translation' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/translation/export`);
-    const downloadPromise = page.waitForEvent('download');
-    await page.getByRole('link', { name: 'Export CSV' }).click();
-    const download = await downloadPromise;
+
+    const download = await downloadFile(page, page.getByRole('link', { name: 'Export CSV' }));
     const filename = download.suggestedFilename();
     await download.saveAs(path.join(testInfo.outputDir, filename));
     await page.goto(`/en-GB/publish/${id}/tasklist`);
@@ -233,7 +257,7 @@ test.describe('Happy path', () => {
       bom: true
     });
 
-    const mapped = parsed.map((row) => {
+    const mapped = parsed.map((row: Record<string, string>) => {
       return {
         ...row,
         cymraeg: `${row.english} - CY`
@@ -252,6 +276,52 @@ test.describe('Happy path', () => {
     expect(page.getByRole('heading')).toContainText('Check the translated text');
     await page.getByRole('link', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+
+    // preview dataset
+    const pagePromise = context.waitForEvent('page');
+    await page.getByRole('link', { name: 'Preview (opens in new tab)' }).click();
+    const previewPage = await pagePromise;
+    expect(previewPage.url()).toContain(`${baseUrl}/en-GB/publish/${id}/cube-preview`);
+
+    // check contents
+    expect(previewPage.getByText(title)).toBeTruthy();
+    expect(previewPage.getByText('This is a preview of this dataset.')).toBeTruthy();
+    expect(previewPage.getByText('Main information', { exact: true })).toBeTruthy();
+    expect(previewPage.getByText('Overview', { exact: true })).toBeTruthy();
+    expect(previewPage.getByText('Published by', { exact: true })).toBeTruthy();
+    expect(previewPage.getByText(content.summary, { exact: true })).toBeTruthy();
+    expect(previewPage.getByText(content.dataCollection, { exact: true })).toBeTruthy();
+    expect(previewPage.getByText(content.statisticalQuality, { exact: true })).toBeTruthy();
+    expect(previewPage.getByText(content.relatedReportLinkText, { exact: true })).toBeTruthy();
+
+    // download files;
+    const csvDownload = await downloadFile(previewPage, previewPage.getByRole('link', { name: 'Download as CSV' }));
+    await checkFile(testInfo, csvDownload);
+    const parquestDownload = await downloadFile(
+      previewPage,
+      previewPage.getByRole('link', { name: 'Download as Parquet' })
+    );
+    await checkFile(testInfo, parquestDownload);
+    const excelDownload = await downloadFile(previewPage, previewPage.getByRole('link', { name: 'Download as Excel' }));
+    await checkFile(testInfo, excelDownload);
+    const duckDBDownload = await downloadFile(
+      previewPage,
+      previewPage.getByRole('link', { name: 'Download as DuckDB' })
+    );
+    await checkFile(testInfo, duckDBDownload);
+
+    // data table
+    // TODO: link has a leading space
+    await previewPage.getByText(' Table preview [Publisher use only]').click({ force: true });
+    const heading = previewPage.locator('table > thead > tr');
+    expect(heading.getByText('Data Values')).toBeTruthy();
+    expect(heading.getByText(content.measureTable)).toBeTruthy();
+    expect(heading.getByText(content.dateField)).toBeTruthy();
+    expect(heading.getByText('Start Date')).toBeTruthy();
+    expect(heading.getByText('End Date')).toBeTruthy();
+    expect(heading.getByText(content.areaCodeField)).toBeTruthy();
+    expect(heading.getByText(content.rowRefField)).toBeTruthy();
+    expect(heading.getByText('Notes')).toBeTruthy();
 
     // publishing
     await page.getByRole('link', { name: 'When this dataset should be published' }).click();
