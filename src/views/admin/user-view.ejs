@@ -37,22 +37,24 @@
             <h2 class="govuk-heading-l"><%= t('admin.user.view.groups.heading') %></h2>
 
             <% if (locals.groups && locals.groups.length > 0) { %>
-              <table class="govuk-table">
-                <thead class="govuk-table__head">
-                  <tr class="govuk-table__row">
-                    <th class="govuk-table__header" scope="col"><%= t('admin.user.view.groups.table.name') %></th>
-                    <th class="govuk-table__header" scope="col"><%= t('admin.user.view.groups.table.roles') %></th>
-                  </tr>
-                </thead>
-                <tbody class="govuk-table__body">
-                  <% locals.groups.forEach(group => { %>
-                    <tr class="govuk-table__row">
-                      <td class="govuk-table__cell"><a href="<%= buildUrl(`/admin/group/${group.id}`, i18n.language) %>"><%= group.name %></a></td>
-                      <td class="govuk-table__cell"><%= group.roles?.map(r => t(`user_roles.${r}`)).join(', ') %></td>
-                    </tr>
-                  <% }) %>
-                </tbody>
-              </table>
+              <%- include("../partials/table", {
+                columns: [
+                  {
+                    key: 'name',
+                    label: t('admin.user.view.groups.table.name'),
+                    format: (value, row) => {
+                      const url = buildUrl(`/admin/group/${row.id}`, i18n.language);
+                      return `<a href="${url}">${value}</a>`
+                    }
+                  },
+                  {
+                    key: 'roles',
+                    label: t('admin.user.view.groups.table.roles'),
+                    format: value => value?.map(r => t(`user_roles.${r}`)).join(', ')
+                  }
+                ],
+                rows: locals.groups
+              }); %>
             <% } else { %>
               <p class="govuk-body"><%= t('admin.user.view.groups.empty') %></p>
             <% } %>

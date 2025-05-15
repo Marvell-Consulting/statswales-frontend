@@ -1,0 +1,46 @@
+<div class="govuk-table__container">
+  <table class="govuk-table<%= typeof isSticky !== 'undefined' && isSticky ? ' sticky-table' : '' %>">
+    <% if (typeof colgroup !== "undefined") { %>
+      <colgroup>
+        <%- colgroup %>
+      </colgroup>
+    <% } %>
+    <% if (typeof inverted !== "undefined" && inverted) { %>
+      <tbody class="govuk-table__body">
+        <% for (const row of rows) { %>
+          <% for (const col of columns) { %>
+            <tr>
+              <th scope="row" class="govuk-table__header">
+                <%- typeof col === 'string' ? t(`${locals.i18nBase}.${col}`) : col.label %>
+              </th>
+              <td class="govuk-table__cell"><%- typeof col === 'string' ? row[col] : col.format ? col.format(row[col.key], row) : row[col.key] %></td>
+            </tr>
+          <% } %>
+        <% } %>
+      </tbody>
+    <% } else { %>
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <% for (const col of columns) { %>
+            <th scope="col" class="govuk-table__header<%= col.className ? ` ${col.className}` : '' %>" <% if (col.style) { %> 
+              style="<%= col.style %>"
+            <% } %>>
+              <%- typeof col === 'string' ? t(`${locals.i18nBase}.${col}`) : col.label %>
+            </th>
+          <% } %>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+        <% for (const row of rows) { %>
+          <tr class="govuk-table__row">
+            <% for (const col of columns) { %>
+              <td class="govuk-table__cell<%= col.cellClassName ? ` ${col.cellClassName}` : '' %>">
+                <%- typeof col === 'string' ? row[col] : col.format ? col.format(row[col.key], row) : row[col.key] %>
+              </td>
+            <% } %>
+          </tr>
+        <% } %>
+      </tbody>
+    <% } %>
+  </table>  
+</div>

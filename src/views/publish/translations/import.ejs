@@ -9,30 +9,7 @@
                 <% if (locals.preview) { %>
                     <h1 class="govuk-heading-xl"><%= t('translations.import.heading_preview') %></h1>
 
-                    <table class="govuk-table translation-import">
-                        <thead class="govuk-table__head">
-                            <tr class="govuk-table__row">
-                                <th scope="col" class="govuk-table__header"><%= t('translations.import.table.field') %></th>
-                                <th scope="col" class="govuk-table__header"><%= t('translations.import.table.english') %></th>
-                                <th scope="col" class="govuk-table__header"><%= t('translations.import.table.welsh') %></th>
-                            </tr>
-                        </thead>
-                        <tbody class="govuk-table__body">
-                            <% translations.forEach(function(translation) { %>
-                                <tr class="govuk-table__row">
-                                    <% if (translation.type === 'dimension') { %>
-                                        <td class="govuk-table__cell"><%= t(`translations.export.dimension`, { key: translation.key }) %></td>
-                                    <% } else if (translation.type === 'metadata') { %>
-                                        <td class="govuk-table__cell"><%= t(`translations.export.field.${translation.key}`) %></td>
-                                    <% } else if (translation.type === 'link') { %>
-                                        <td class="govuk-table__cell"><%= t(`translations.export.link`, { key: translation.key }) %></td>
-                                    <% } %>
-                                    <td class="govuk-table__cell"><%= translation.english %></td>
-                                    <td class="govuk-table__cell"><%= translation.cymraeg %></td>
-                                </tr>
-                            <% }); %>
-                        </tbody>
-                    </table>
+                    <%- include("../../partials/translations-preview-table", { translations, isImport: true }) %>
 
                     <a href="<%= buildUrl(`/publish/${locals.datasetId}/translation/import?confirm=true`, i18n.language) %>" class="govuk-button" data-module="govuk-button" style="vertical-align: unset;" data-prevent-double-click="true">
                         <%= t('buttons.continue') %>

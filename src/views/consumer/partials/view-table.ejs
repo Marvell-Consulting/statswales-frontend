@@ -1,30 +1,15 @@
-<table class="govuk-table sticky-table">
-    <thead class="govuk-table__head">
-        <tr class="govuk-table__row">
-            <% headers.forEach(function(cell, idx) { %>
-                <th scope="col" class="govuk-table__header <%= cell.source_type === 'line_number' ? 'line-number' :'' %>">
-                        <%= cell.name %>
-                </th>
-            <% }); %>
-        </tr>
-    </thead>
-    <tbody>
-    <% data.forEach(function(row) { %>
-        <tr>
-            <% row.forEach(function(cell, index) { %>
-                <% if (headers[index].source_type === 'line_number') { %>
-                    <td class="govuk-table__cell line-number"><span class="linespan"><%= cell %></span></td>
-                <% } else { %>
-                    <td class="govuk-table__cell">
-                        <% if(headers[index].name === t('consumer_view.start_data') || headers[index].name === t('consumer_view.end_data')) { %>
-                            <%= locals.dateFormat(locals.parseISO(cell.split('T')[0]), 'do MMMM yyyy') %>
-                        <% } else { %>
-                            <%= cell %>
-                        <% } %>
-                    </td>
-                <% } %>
-            <% }); %>
-        </tr>
-    <% }); %>
-    </tbody>
-</table>
+<%- include("../../partials/table", {
+    isSticky: true,
+    columns: headers.map((col, index) => ({
+        key: index,
+        label: col.name,
+        format: (value) => col.source_type === 'line_number'
+            ? `<span class="linespan">${value}</span>`
+            : col.name === t('consumer_view.start_data') || col.name === t('consumer_view.end_data')
+                ? dateFormat(parseISO(value.split('T')[0]), 'do MMMM yyyy')
+                : value,
+        className: col.source_type === 'line_number' ? 'line-number' :'',
+        cellClassName: col.source_type === 'line_number' ? 'line-number' :''
+    })),
+    rows: data
+}); %>
