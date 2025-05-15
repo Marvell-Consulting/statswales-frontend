@@ -296,19 +296,19 @@ test.describe('Happy path', () => {
     expect(previewPage.getByText(content.relatedReportLinkText, { exact: true })).toBeTruthy();
 
     // download files;
-    const csvDownload = await downloadFile(previewPage, previewPage.getByRole('link', { name: 'Download as CSV' }));
+    await previewPage.click('#tab_download_dataset');
+    await previewPage.click('#csv');
+    await previewPage.click('#en-GB');
+    const csvDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
     await checkFile(testInfo, csvDownload);
-    const parquestDownload = await downloadFile(
-      previewPage,
-      previewPage.getByRole('link', { name: 'Download as Parquet' })
-    );
-    await checkFile(testInfo, parquestDownload);
-    const excelDownload = await downloadFile(previewPage, previewPage.getByRole('link', { name: 'Download as Excel' }));
+    await previewPage.click('#parquet');
+    const parquetDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
+    await checkFile(testInfo, parquetDownload);
+    await previewPage.click('#excel');
+    const excelDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
     await checkFile(testInfo, excelDownload);
-    const duckDBDownload = await downloadFile(
-      previewPage,
-      previewPage.getByRole('link', { name: 'Download as DuckDB' })
-    );
+    await previewPage.click('#duckdb');
+    const duckDBDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
     await checkFile(testInfo, duckDBDownload);
 
     // data table
