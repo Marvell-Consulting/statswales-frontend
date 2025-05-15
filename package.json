@@ -76,6 +76,7 @@
     "@date-fns/tz": "^1.2.0",
     "connect-redis": "^7.1.1",
     "cookie-parser": "^1.4.6",
+    "csv": "^6.3.11",
     "csv-parse": "^5.6.0",
     "date-fns": "^4.1.0",
     "dompurify": "^3.2.4",
