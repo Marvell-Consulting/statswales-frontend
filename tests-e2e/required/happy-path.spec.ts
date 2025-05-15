@@ -7,6 +7,7 @@ import { test, expect, Page, Locator, Download, TestInfo } from '@playwright/tes
 import { users } from '../fixtures/logins';
 import { appConfig } from '../../src/config';
 import { escapeRegExp } from 'lodash';
+import { TZDate } from '@date-fns/tz';
 
 const config = appConfig();
 const baseUrl = config.frontend.url;
@@ -326,7 +327,8 @@ test.describe('Happy path', () => {
     // publishing
     await page.getByRole('link', { name: 'When this dataset should be published' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/schedule`);
-    const now = new Date();
+
+    const now = new TZDate(new Date().toISOString(), 'Europe/London');
     const day = now.getDate();
     const month = now.getMonth() + 1;
     const year = now.getFullYear();
