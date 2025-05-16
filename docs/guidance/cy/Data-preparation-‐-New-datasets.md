@@ -29,12 +29,12 @@ Y fformat a ffefrir ar gyfer ffeil yw CSV gyda:
 - penawdau yn y rhes gyntaf
 - " " yn cael eu defnyddio ar gyfer dyfynodau, yn ôl yr angen
 - colofnau mewn unrhyw drefn
-- gwerthoedd data fel gwerthoedd rhifol yn unig
+- gwerthoedd data rhifol – gall y rhain gynnwys pwyntiau degol a symbolau minws ond ni chânt gynnwys unrhyw nodau eraill fel comas neu arwyddion canran
 
-Os bydd gwerth data ar goll neu heb fod yn berthnasol, dylech:
+Os bydd gwerth data ar ddim ar gael neu heb fod yn berthnasol, dylech:
 
 - adael y gell yn wag
-- nodi [cod nodyn safonol](#guidance-nodiadau) yn y golofn codau nodiadau, gan nodi a yw'r gwerth data ar goll (x) neu heb fod yn berthnasol (z)
+- nodi [cod nodyn safonol](#guidance-nodiadau) yn y golofn codau nodiadau, gan nodi a yw'r gwerth data ar ddim ar gael (x) neu heb fod yn berthnasol (z)
 
 Y fformat a ffefrir ar gyfer CSVs yw UTF-8, gan bod hwn yn gweithio’n well gydag unrhyw nodau arbennig a ddefnyddir. Dylai’r fformat hwn fod yn ddewis yn y feddalwedd yr ydych chi’n ei defnyddio er mwyn creu CSVs, ac fe allai fod dan ‘amgodio testun’ neu rywbeth tebyg. Yn Excel, mae 'CSV UTF-8' dan fformatau cyffredin yn newis 'Save as'.
 
@@ -43,6 +43,14 @@ Er mai CSVs yw’r fformat a argymhellir, gall y system dderbyn fformatau JSON, 
 ### Penawdau
 
 Dylai enwau penawdau colofnau fod yn ystyrlon, fel eich bod yn gwybod yr hyn y mae pob colofn yn ei gynnwys. Bydd hyn yn bwysig wrth [lanlwytho eich CSV](Using-SW3---Creating-a-new-dataset) i SW3. Gallant gynnwys bylchau rhwng geiriau yn ôl y gofyn.
+
+### Ffeithiau anghyflawn neu ddyblyg
+
+Mae ffaith yn gyfuniad unigryw o werthoedd dimensiynol mewn 1 rhes o'r tabl data. Er enghraifft, CodArdal W06000001, CodBlwyddyn 202425, CodBand A- a Mesur 1. Dim ond un gwerth data unigol sy'n gallu bod am bob ffaith unigryw.
+
+Ni all y tabl data gynnwys ffeithiau anghyflawn. Rhaid llenwi pob ffaith ar gyfer pob dimensiwn, ac eithrio [codau nodiadau](#guidance-nodiadau) a gwerthoedd data, y dylid eu llenwi mewn ffordd briodol.
+
+Os byddwch yn lanlwytho tabl data gyda ffeithiau anghyflawn neu ddyblyg, bydd y system yn nodi pa ffeithiau y bydd angen eu gwaredu neu eu cywiro.”
 
 ### Cyfansymiau a chyfartaleddau
 
@@ -307,8 +315,8 @@ Mae SW3 yn defnyddio codau nodiadau llaw-fer, gydag esboniadau safonol, sy’n d
 | sss      | Yn arwyddocaol yn ystadegol ar lefel 0.1% neu 0.001 | Pan fydd y siawns bod gwerth data yn annibynadwy yn llai na 0.1%                                                                                                                                                                   |
 | t        | Cyfanswm                                            | Pan fydd gwerth data yn gyfanswm gwerthoedd eraill                                                                                                                                                                                 |
 | u        | Dibynadwyedd isel                                   | Pan fydd ansawdd ystadegol isel i werth data                                                                                                                                                                                       |
-| x        | Data coll                                           | Er enghraifft, pan na chaiff gwerth data ei gasglu mewn rhanbarth                                                                                                                                                                  |
-| z        | Amherthnasol                                        | Er enghraifft, mewn tablau cyflogaeth pan na ellir cyflogi pobl dan 16 oed yn gyfreithlon                                                                                                                                          |
+| x        | Ddim ar gael                                        | Er enghraifft, pan na chaiff gwerth data ei gasglu mewn rhanbarth                                                                                                                                                                  |
+| z        | Heb fod yn berthnasol                               | Er enghraifft, mewn tablau cyflogaeth pan na ellir cyflogi pobl dan 16 oed yn gyfreithlon                                                                                                                                          |
 
 Dylid darparu unrhyw esboniadau wedi’u haddasu yr ydych chi’n teimlo eu bod yn angenrheidiol er mwyn egluro unrhyw godau nodiadau, yn yr [adran metadata](#guidance-metadata) mwyaf priodol. Er enghraifft, os bydd angen i chi esbonio rhesymau lluosog pam bod gwerthoedd data wedi cael eu hatal.
 
