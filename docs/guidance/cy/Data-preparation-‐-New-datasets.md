@@ -46,7 +46,7 @@ Dylai enwau penawdau colofnau fod yn ystyrlon, fel eich bod yn gwybod yr hyn y m
 
 ### Ffeithiau anghyflawn neu ddyblyg
 
-Mae ffaith yn gyfuniad unigryw o werthoedd dimensiynol mewn 1 rhes o'r tabl data.  Er enghraifft, CodArdal W06000001, CodBlwyddyn 202425, CodBand A- a Mesur 1. Dim ond un gwerth data unigol sy'n gallu bod am bob ffaith unigryw.
+Mae ffaith yn gyfuniad unigryw o werthoedd dimensiynol mewn 1 rhes o'r tabl data. Er enghraifft, CodArdal W06000001, CodBlwyddyn 202425, CodBand A- a Mesur 1. Dim ond un gwerth data unigol sy'n gallu bod am bob ffaith unigryw.
 
 Ni all y tabl data gynnwys ffeithiau anghyflawn. Rhaid llenwi pob ffaith ar gyfer pob dimensiwn, ac eithrio [codau nodiadau](#guidance-nodiadau) a gwerthoedd data, y dylid eu llenwi mewn ffordd briodol.
 
