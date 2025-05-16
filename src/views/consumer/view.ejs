@@ -24,7 +24,7 @@
                   <%= t('toc') %>
               </h2>
 
-              <% if (locals?.isDeveloper && locals?.ShowDeveloperTab) { %>
+              <% if (locals?.isDeveloper && locals?.showDeveloperTab) { %>
                   <%- include("../partials/tabs", { tabs: [
                     { label: t('developer.heading'), id: "developer" },
                     { label: t('consumer_view.data'), id: "data" },

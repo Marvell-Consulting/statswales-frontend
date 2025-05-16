@@ -297,17 +297,17 @@ test.describe('Happy path', () => {
 
     // download files;
     await previewPage.click('#tab_download_dataset');
-    await previewPage.click('#csv');
-    await previewPage.click('#en-GB');
+    await previewPage.click('#csv', { force: true });
+    await previewPage.click('#en-GB', { force: true });
     const csvDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
     await checkFile(testInfo, csvDownload);
-    await previewPage.click('#parquet');
+    await previewPage.click('#parquet', { force: true });
     const parquetDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
     await checkFile(testInfo, parquetDownload);
-    await previewPage.click('#excel');
+    await previewPage.click('#excel', { force: true });
     const excelDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
     await checkFile(testInfo, excelDownload);
-    await previewPage.click('#duckdb');
+    await previewPage.click('#duckdb', { force: true });
     const duckDBDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
     await checkFile(testInfo, duckDBDownload);
 

@@ -114,7 +114,7 @@ export const displayDatasetPreview = async (req: Request, res: Response) => {
   res.render('consumer/view', {
     ...datasetView,
     datasetMetadata: previewMetadata,
-    ShowDeveloperTab: true,
+    showDeveloperTab: true,
     datasetJson,
     fileList,
     dataset,
