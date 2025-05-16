@@ -29,12 +29,12 @@ The preferred file format is a CSV with:
 - headings in the first row
 - " " used for quote marks, if needed
 - columns in any order
-- data values as numeric values only
+- numeric data values - these can contain decimal points and minus symbols but no other characters such as commas or percentage signs
 
-If a data value is missing or not applicable, you should:
+If a data value is not available or not applicable, you should:
 
 - leave the cell blank
-- enter a [standard note code](#guidance-notes) in the note codes column, indicating whether the data value is missing (x) or not applicable (z)
+- enter a [standard note code](#guidance-notes) in the note codes column, indicating whether the data value is not available (x) or not applicable (z)
 
 The preferred format for CSVs is UTF-8, as this works better with any special characters used. This format should be an option in the software you use to generate CSVs, and may be under 'text encoding' or similar. In Excel, 'CSV UTF-8' is under common formats in the 'Save as' options.
 
@@ -43,6 +43,14 @@ Whilst CSVs are the recommended format, the system can also accept JSON, Parquet
 ### Headings
 
 Column headings should have meaningful names, so that you know what each column contains. This will be important when [uploading your CSV](Using-SW3---Creating-a-new-dataset) into SW3. They can have spaces between words if required.
+
+### Duplicate or incomplete facts
+
+A fact is a unique combination of dimensional values in 1 row of the data table. For example, AreaCode W06000001, YearCode 202425, BandCode A- and Measure 1. There can only be a single data value for each unique fact.
+
+The data table cannot contain incomplete facts. All facts must be populated for all dimensions, except [note codes](#guidance-notes) and data values which should be populated as appropriate.
+
+If you upload a data table with duplicate or incomplete facts, the system will detail which facts need removing or correcting.
 
 ### Totals and averages
 
@@ -308,7 +316,7 @@ SW3 uses shorthand note codes, with standardised explanations, closely following
 | t         | Total                                            | When a data value is a total of other values                                                                                                                                                                                   |
 | u         | Low reliability                                  | When a data value is of low statistical quality                                                                                                                                                                                |
 | w         | None recorded in survey                          | When no people are estimated to be in a category                                                                                                                                                                               |
-| x         | Missing data                                     | For example, where a data value is not collected in a region                                                                                                                                                                   |
+| x         | Not available                                    | For example, where a data value is not collected in a region                                                                                                                                                                   |
 | z         | Not applicable                                   | For example, in tables of employment where people under 16 cannot legally be employed                                                                                                                                          |
 
 Any custom explanations you feel are needed to clarify any note codes, should be provided in the most appropriate [metadata section](#guidance-metadata). For example, if you need to explain multiple reasons why data values have been suppressed.
