@@ -1013,6 +1013,7 @@
         "roundingDescription": "Rounding applied"
       },
       "dimension": "{{key}} dimension name",
+      "measure": "{{key}} measure name",
       "link": "Related report",
       "buttons": {
         "export": "Export CSV",
