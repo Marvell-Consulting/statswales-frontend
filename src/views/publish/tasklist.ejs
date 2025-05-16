@@ -184,6 +184,15 @@
               </a>
             </div>
           </li>
+            <% if (locals?.isDeveloper) { %>
+                <li class="govuk-task-list__item govuk-task-list__item--with-link tasklist-no-border">
+                    <div class="govuk-task-list__name-and-hint">
+                        <a href="<%= buildUrl(`/developer/${locals.datasetId}`, i18n.language) %>" target="_blank">
+                            <%= t('publish.tasklist.open_developer_view') %>
+                        </a>
+                    </div>
+                </li>
+            <% } %>
           <% if (['incomplete', 'update_incomplete'].includes(publishingStatus)) { %>
             <li class="govuk-task-list__item govuk-task-list__item--with-link tasklist-no-border">
               <div class="govuk-task-list__name-and-hint">

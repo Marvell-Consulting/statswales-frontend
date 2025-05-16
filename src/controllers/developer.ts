@@ -8,7 +8,7 @@ import { generateSequenceForNumber, getPaginationProps } from '../utils/paginati
 import { DataTableDto } from '../dtos/data-table';
 import { RevisionDTO } from '../dtos/revision';
 import { Readable } from 'node:stream';
-import { singleLangDataset } from '../utils/single-lang-dataset';
+import { singleLangDataset, singleLangRevision } from '../utils/single-lang-dataset';
 import { statusToColour } from '../utils/status-to-colour';
 import { getDatasetStatus, getPublishingStatus } from '../utils/dataset-status';
 import { FileImportDto } from '../dtos/file-import';
@@ -18,6 +18,11 @@ import { getDownloadHeaders } from '../utils/download-headers';
 import { LookupTableDTO } from '../dtos/lookup-table';
 import { t } from 'i18next';
 import { DatasetDTO } from '../dtos/dataset';
+import { getLatestRevision } from '../utils/revision';
+import { getDatasetPreview } from '../utils/dataset-preview';
+import { PreviewMetadata } from '../interfaces/preview-metadata';
+import { ViewError } from '../dtos/view-error';
+import hljs from 'highlight.js';
 
 export const listAllDatasets = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -35,25 +40,29 @@ export const listAllDatasets = async (req: Request, res: Response, next: NextFun
 
 export const displayDatasetPreview = async (req: Request, res: Response) => {
   const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const revisionId = getLatestRevision(res.locals.dataset)?.id;
+  let pagination: (string | number)[] = [];
+  let errors: ViewError[] | undefined;
+  const revWithMeta = await req.pubapi.getRevision(dataset.id, revisionId!);
+  const revision = singleLangRevision(revWithMeta, req.language)!;
   const datasetStatus = getDatasetStatus(res.locals.dataset);
   const publishingStatus = getPublishingStatus(res.locals.dataset);
-  const revision = dataset.revisions?.sort((a, b) => {
-    if (a.revision_index < b.revision_index) return -1;
-    if (a.revision_index > b.revision_index) return 1;
-    return 0;
-  })[0];
   const datasetTitle = revision?.metadata?.title || dataset.id;
+  let status = 200;
 
-  const page: number = Number.parseInt(req.query.page_number as string, 10) || 1;
-  const pageSize: number = Number.parseInt(req.query.page_size as string, 10) || 10;
   let datasetView: ViewDTO | undefined;
   let unProcessedFilelist: FileImportDto[] = [];
+  let previewMetadata: PreviewMetadata | undefined = undefined;
 
   try {
-    logger.debug(`Sending request to backend for preview of dataset ${dataset.id}...`);
-    datasetView = await req.pubapi.getDatasetView(dataset.id, page, pageSize);
-  } catch (err) {
-    logger.error(err);
+    const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
+    const pageSize = Number.parseInt(req.query.page_size as string, 10) || 100;
+    datasetView = await req.pubapi.getRevisionPreview(dataset.id, revision.id, pageNumber, pageSize);
+    previewMetadata = await getDatasetPreview(dataset, revision);
+    pagination = generateSequenceForNumber(datasetView.current_page, datasetView.total_pages);
+  } catch (error) {
+    logger.error(error, `Failed to get preview data for revision ${revision.id}`);
+    status = 500;
   }
 
   try {
@@ -96,21 +105,24 @@ export const displayDatasetPreview = async (req: Request, res: Response) => {
     }
   });
 
-  if (datasetView) {
-    res.locals.pagination = generateSequenceForNumber(datasetView?.current_page, datasetView?.total_pages);
-  }
+  const datasetJson = hljs.highlight(JSON.stringify(dataset, null, 2), {
+    language: 'json',
+    ignoreIllegals: true
+  }).value;
 
-  logger.debug(`Developer view details:\n${JSON.stringify({ ...datasetView, dataset, page, pageSize }, null, 2)}`);
-  res.render('developer/data', {
+  res.status(status);
+  res.render('consumer/view', {
     ...datasetView,
+    datasetMetadata: previewMetadata,
+    showDeveloperTab: true,
+    datasetJson,
     fileList,
-    statusToColour,
+    dataset,
+    pagination,
+    errors,
     datasetStatus,
     publishingStatus,
-    datasetTitle,
-    dataset,
-    page,
-    pageSize
+    datasetTitle
   });
 };
 
