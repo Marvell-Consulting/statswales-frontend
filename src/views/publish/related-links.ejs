@@ -14,37 +14,43 @@
 
                             <%- include("../partials/error-handler"); %>
 
-                            <table class="govuk-table">
-                                <thead class="govuk-table__head">
-                                    <tr class="govuk-table__row">
-                                        <th scope="col" class="govuk-table__header"><%= t('publish.related.list.table.link') %></th>
-                                        <th scope="col" class="govuk-table__header"><%= t('publish.related.list.table.action_header') %></th>
-                                    </tr>
-                                </thead>
-                                <tbody class="govuk-table__body">
-                                    <% for (let link of locals.related_links) { %>
-                                        <% var label_en = link.label_en || `${link.label_cy} [${t('publish.related.list.not_translated')}]` %>
-                                        <% var label_cy = link.label_cy || `${link.label_en} [${t('publish.related.list.not_translated')}]` %>
-                                        <tr class="govuk-table__row">
-                                            <td class="govuk-table__cell"><a href="<%= link.url %>" class="govuk-link"><%= i18n.language.includes('en') ? label_en : label_cy %></a></td>
-                                            <td class="govuk-table__cell nowrap">
-                                                <ul class="govuk-summary-list__actions-list">
-                                                    <li class="govuk-summary-list__actions-list-item">
-                                                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/related?edit=${link.id}`, i18n.language) %>" class="govuk-link">
-                                                            <%= t('publish.related.list.table.action_edit') %>
-                                                        </a>
-                                                    </li>
-                                                    <li class="govuk-summary-list__actions-list-item">
-                                                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/related?delete=${link.id}`, i18n.language) %>" class="govuk-link">
-                                                            <%= t('publish.related.list.table.action_delete') %>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
+                            <%- include("../partials/table", {
+                                columns: [
+                                    {
+                                        key: 'url',
+                                        label: t('publish.related.list.table.link'),
+                                        format: (value, row) => {
+                                            const notTranslated = `[${t('publish.related.list.not_translated')}]`
+                                            const label = i18n.language.includes('en')
+                                                ? row.label_en || `${row.label_cy} ${notTranslated}`
+                                                : row.label_cy || `${row.label_en} ${notTranslated}`
+                                            return `<a href="${value}" class="govuk-link">${label}</a>`
+                                        }
+                                    },
+                                    {
+                                        key: 'id',
+                                        label: t('publish.related.list.table.action_header'),
+                                        format: (value) => {
+                                            const editLink = buildUrl(`/publish/${locals.datasetId}/related?edit=${value}`, i18n.language)
+                                            const deleteLink = buildUrl(`/publish/${locals.datasetId}/related?delete=${value}`, i18n.language)
+                                            return `<ul class="govuk-summary-list__actions-list">
+                                                <li class="govuk-summary-list__actions-list-item">
+                                                    <a href="${editLink}" class="govuk-link">
+                                                        ${t('publish.related.list.table.action_edit')}
+                                                    </a>
+                                                </li>
+                                                <li class="govuk-summary-list__actions-list-item">
+                                                    <a href="${deleteLink}" class="govuk-link">
+                                                        ${t('publish.related.list.table.action_delete')}
+                                                    </a>
+                                                </li>
+                                            </ul>`
+                                        },
+                                        cellClassName: 'nowrap'
+                                    },
+                                ],
+                                rows: locals.related_links
+                            }) %>
 
                             <form enctype="multipart/form-data" method="post">
                                 <input type="hidden" name="add_another" value="true" />

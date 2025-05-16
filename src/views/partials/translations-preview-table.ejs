@@ -1,37 +1,40 @@
-<table class="govuk-table translation-export">
-  <thead class="govuk-table__head">
-    <tr class="govuk-table__row">
-      <th scope="col" class="govuk-table__header"><%= t('translations.export.table.field') %></th>
-      <% if (isImport) { %>
-        <th scope="col" class="govuk-table__header">
-          <%= i18n.language.includes('en') ? t('translations.import.table.english') : t('translations.import.table.welsh') %>
-        </th>
-        <th scope="col" class="govuk-table__header">
-          <%= i18n.language.includes('en') ? t('translations.import.table.welsh') : t('translations.import.table.english') %>
-        </th>
-      <% } else { %>
-        <th scope="col" class="govuk-table__header"><%= t('translations.export.table.value') %></th>
-        <th scope="col" class="govuk-table__header"><%= t('translations.export.table.action') %></th>
-      <% } %>
-    </tr>
-  </thead>
-  <tbody class="govuk-table__body">
-    <% translations.forEach(function(translation) { %>
-      <tr class="govuk-table__row">
-        <% if (translation.type === 'dimension') { %>
-          <td class="govuk-table__cell"><%= t(`translations.export.dimension`, { key: translation.key }) %></td>
-        <% } else if (translation.type === 'metadata') { %>
-          <td class="govuk-table__cell"><%= t(`translations.export.field.${translation.key}`) %></td>
-        <% } else if (translation.type === 'link') { %>
-          <td class="govuk-table__cell"><%= t(`translations.export.link`, { key: translation.key }) %></td>
-        <% } %>
-        <td class="govuk-table__cell"><%= i18n.language.includes('en') ? translation.english : translation.cymraeg %></td>
-        <% if (isImport) { %>
-          <td class="govuk-table__cell"><%= i18n.language.includes('en') ? translation.cymraeg : translation.english %></td>
-        <% } else { %>
-          <td class="govuk-table__cell"><a href="<%= translation.edit_link %>"><%= t('translations.export.buttons.change') %></a></td>
-        <% } %>
-      </tr>
-    <% }); %>
-  </tbody>
-</table>
+<%- include("./table", {
+  columns: [
+    {
+      key: 'key',
+      label: t('translations.export.table.field'),
+      format: (value, row) => {
+        if (row.type === 'dimension') {
+          return t(`translations.export.dimension`, { key: value })
+        } else if (row.type === 'metadata') {
+          return t(`translations.export.field.${value}`)
+        } else if (row.type === 'link') {
+          return t(`translations.export.link`, { key: value })
+        }
+      }
+    },
+    {
+      key: i18n.language.includes('en') ? 'english' : 'cymraeg',
+      label: isImport
+        ? i18n.language.includes('en') ? t('translations.import.table.english') : t('translations.import.table.welsh')
+        : t('translations.export.table.value')
+    },
+    ...(isImport 
+      ? [
+        {
+          key: i18n.language.includes('en') ? 'cymraeg' : 'english',
+          label: i18n.language.includes('en') ? t('translations.import.table.welsh') : t('translations.import.table.english')
+        }
+      ] 
+      : [
+        {
+          key: 'edit_link',
+          label: t('translations.export.table.action'),
+          format: (value) =>
+            `<a href="${value}">${t('translations.export.buttons.change')}</a>`
+        }
+      ]
+    ),
+  ],
+  rows: translations
+}) %>

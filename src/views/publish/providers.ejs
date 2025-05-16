@@ -47,32 +47,34 @@
                             <h1 class="govuk-heading-xl"><%= t('publish.providers.list.heading') %></h1>
                             <%- include("../partials/error-handler"); %>
 
-                            <table class="govuk-table">
-                                <thead class="govuk-table__head">
-                                    <tr class="govuk-table__row">
-                                        <th scope="col" class="govuk-table__header"><%= t('publish.providers.list.table.provider') %></th>
-                                        <th scope="col" class="govuk-table__header"><%= t('publish.providers.list.table.source') %></th>
-                                        <th scope="col" class="govuk-table__header"><%= t('publish.providers.list.table.action_header') %></th>
-                                    </tr>
-                                </thead>
-                                <tbody class="govuk-table__body">
-                                    <% for (let provider of locals.dataProviders) { %>
-                                        <tr class="govuk-table__row">
-                                            <td class="govuk-table__cell"><%= provider.provider_name %></td>
-                                            <td class="govuk-table__cell"><%= provider.source_name || t('publish.providers.list.table.no_source') %></td>
-                                            <td class="govuk-table__cell nowrap">
-                                                <ul class="govuk-summary-list__actions-list">
-                                                    <li class="govuk-summary-list__actions-list-item">
-                                                        <a href="<%= buildUrl(`/publish/${locals.datasetId}/providers?delete=${provider.id}`, i18n.language) %>" class="govuk-link">
-                                                            <%= t('publish.providers.list.table.action_delete') %>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
+                            <%- include("../partials/table", {
+                                i18nBase: 'publish.providers.list.table',
+                                columns: [
+                                    'provider',
+                                    {
+                                        key: 'source',
+                                        label: t('publish.providers.list.table.source'),
+                                        format: value => value || t('publish.providers.list.table.no_source')
+                                    },
+                                    {
+                                        key: 'id',
+                                        label: t('publish.providers.list.table.action_header'),
+                                        format: (value) => {
+                                            const url = buildUrl(`/publish/${locals.datasetId}/providers?delete=${value}`, i18n.language);
+                                            return `<ul class="govuk-summary-list__actions-list">
+                                                <li class="govuk-summary-list__actions-list-item">
+                                                    <a href="${url}" class="govuk-link">
+                                                        ${t('publish.providers.list.table.action_delete')}
+                                                    </a>
+                                                </li>
+                                            </ul>`
+                                        },
+                                        cellClassName: 'nowrap'
+                                    }
+                                    
+                                ],
+                                rows: locals.dataProviders.map(p => ({ ...p, provider: p.provider_name, source: p.source_name }))
+                            }); %>
                         </div>
                     </div>
 

@@ -2451,6 +2451,11 @@ $whitepurple: #eed5e3;
     animation: rotation 2s linear infinite;
   }
 
+  .govuk-table__container {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
   .source-list-item,
   .govuk-table__header,
   .govuk-table__cell {

@@ -14,50 +14,71 @@
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
                 <% if (locals.data && locals.data.length > 0) { %>
-                    <table class="govuk-table">
-                        <thead class="govuk-table__head">
-                        <tr class="govuk-table__row">
-                            <th scope="col" class="govuk-table__header"><%= t('developer.list.table.title') %></th>
-                            <th scope="col" class="govuk-table__header"><%= t('developer.list.table.group') %></th>
-                            <th scope="col" class="govuk-table__header"><%= t('developer.list.table.revision_by') %></th>
-                            <th scope="col" class="govuk-table__header" style="width:15%"><%= t('developer.list.table.last_updated') %></th>
-                            <th scope="col" class="govuk-table__header"><%= t('developer.list.table.dataset_status') %></th>
-                            <th scope="col" class="govuk-table__header"><%= t('developer.list.table.publish_status') %></th>
-                            <th scope="col" class="govuk-table__header"></th>
-                        </tr>
-                        </thead>
-                        <tbody class="govuk-table__body">
-                        <% for (const dataset of locals.data) { %>
-                            <tr class="govuk-table__row">
-                                <td class="govuk-table__cell">
-                                    <a href="/<%= i18n.language %>/developer/<%= dataset.id %>" class="govuk-link"><%= dataset.title || `${dataset.title_alt} [${t('homepage.table.not_translated')}]` %></a>
-                                </td>
-                                <td class="govuk-table__cell group"><%= dataset.group_name %></td>
-                                <td class="govuk-table__cell group"><%= dataset.revision_by %></td>
-                                <td class="govuk-table__cell date"><%= dateFormat(dataset.last_updated, 'd MMMM yyyy', { locale: i18n.language }) %></td>
-                                <td class="govuk-table__cell status">
-                                    <% if (dataset.status) { %>
-                                        <strong class="govuk-tag govuk-tag--<%= statusToColour(dataset.status) %>">
-                                            <%= t(`homepage.status.${dataset.status}`) %>
-                                        </strong>
-                                    <% } %>
-                                </td>
-                                <td class="govuk-table__cell status">
-                                    <% if (dataset.publishing_status) { %>
-                                        <strong class="govuk-tag govuk-tag--<%= statusToColour(dataset.publishing_status) %>">
-                                            <%= t(`homepage.publishing_status.${dataset.publishing_status}`) %>
-                                        </strong>
-                                    <% } %>
-                                </td>
-                                <td class="govuk-table__cell">
-                                    <a href="/<%= i18n.language %>/publish/<%= dataset.id %>/tasklist" class="govuk-link">
-                                        <i class="fa-solid fa-list-check"></i> <%= t('developer.list.tasklist') %>
-                                    </a>
-                                </td>
-                            </tr>
-                        <% } %>
-                        </tbody>
-                    </table>
+                    <%- include("../partials/table", {
+                        columns: [
+                            {
+                                key: 'title',
+                                label: t('developer.list.table.title'),
+                                format: (value, row) => {
+                                    const url = `/${i18n.language}/developer/${row.id}`
+                                    const label = value || `${dataset.title_alt} [${t('homepage.table.not_translated')}]`
+                                    return `<a href="${url}" class="govuk-link">${label}</a>`
+                                }
+                            },
+                            {
+                                key: 'group_name',
+                                label: t('developer.list.table.group'),
+                                cellClassName: 'group'
+                            },
+                            {
+                                key: 'revision_by',
+                                label: t('developer.list.table.revision_by'),
+                                cellClassName: 'group'
+                            },
+                            {
+                                key: 'last_updated',
+                                label: t('developer.list.table.last_updated'),
+                                style: 'width: 15%',
+                                format: (value) => dateFormat(value, 'd MMMM yyyy', { locale: i18n.language }),
+                                cellClassName: 'date'
+                            },
+                            {
+                                key: 'status',
+                                label: t('developer.list.table.dataset_status'),
+                                format: (value) => {
+                                    if (!value) {
+                                        return
+                                    }
+                                    const label = t(`homepage.status.${value}`)
+                                    return `<strong class="govuk-tag govuk-tag--${statusToColour(value)}">${label}</strong>`
+                                },
+                                cellClassName: 'status'
+                            },
+                            {
+                                key: 'publishing_status',
+                                label: t('developer.list.table.publish_status'),
+                                format: (value) => {
+                                    if (!value) {
+                                        return
+                                    }
+                                    const label = t(`homepage.publishing_status.${value}`)
+                                    return `<strong class="govuk-tag govuk-tag--${statusToColour(value)}">${label}</strong>`
+                                },
+                                cellClassName: 'status'
+                            },
+                            {
+                                key: 'id',
+                                label: '',
+                                format: (value) => {
+                                    const url = `/${i18n.language}/publish/${value}/tasklist`
+                                    return `<a href="${url}" class="govuk-link">
+                                        <i class="fa-solid fa-list-check"></i> ${t('developer.list.tasklist') }
+                                    </a>`
+                                }
+                            }
+                        ],
+                        rows: locals.data
+                    }); %>
 
                     <% if (locals.total_pages > 1) { %>
                         <%- include("../partials/pagination"); %>

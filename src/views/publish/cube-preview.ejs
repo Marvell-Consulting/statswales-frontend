@@ -64,42 +64,25 @@
                     </div>
                     <div class="govuk-grid-row">
                         <div class="table-display govuk-grid-column-full">
-                            <table class="govuk-table sticky-table">
-                                <colgroup>
-                                    <% locals.headers.forEach(function(cell, idx) { %>
-                                        <col class="<%= cell.type === 'ignore' ? 'ignore-column' : '' %>" />
-                                    <% }); %>
-                                </colgroup>
-                                <thead class="govuk-table__head">
-                                <tr class="govuk-table__row">
-                                    <% locals.headers.forEach(function(cell, idx) { %>
-                                        <% if (cell.source_type === 'line_number') { %>
-                                            <th scope="col" class="govuk-table__header">
-                                                <span class="govuk-visually-hidden"><%= t('publish.preview.row_number') %></span>
-                                            </th>
-                                        <% } else { %>
-                                            <th scope="col" class="govuk-table__header">
-                                                <% if (cell.source_type && cell.source_type !== 'unknown' && cell.source_type !== 'line_number') { %>
-                                                    <span class="region-subhead"><%= t(`publish.preview.source_type.${cell.source_type}`) %></span><br />
-                                                <% } %>
-                                                <%= cell.name || t('publish.preview.unnamed_column', { colNum: idx + 1 }) %>
-                                            </th>
-                                        <% } %>
-                                    <% }); %>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <% locals.data.forEach(function(row) { %>
-                                    <tr>
-                                        <% row.forEach(function(cell, index) { %>
-                                            <td class="govuk-table__cell <%= locals.headers[index].source_type %>">
-                                                <%= cell %>
-                                            </td>
-                                        <% }); %>
-                                    </tr>
-                                <% }); %>
-                                </tbody>
-                            </table>
+                            <%- include("../partials/table", {
+                                colgroup: locals.headers.reduce((out, header) => {
+                                    return out + `<col class="${header.type === 'ignore' ? 'ignore-column' : ''}" />`
+                                }, ''),
+                                columns: locals.headers.map((col, index) => ({
+                                    key: index,
+                                    label: col.source_type === 'line_number'
+                                        ? `<span class="govuk-visually-hidden">${t('publish.preview.row_number')}</span>`
+                                        : (() => {
+                                            if (col.source_type && col.source_type !== 'unknown' && col.source_type !== 'line_number') {
+                                                const label = t(`publish.preview.source_type.${col.source_type}`)
+                                                return `<span class="region-subhead">${label}</span><br />`
+                                            }
+                                            return col.name || t('publish.preview.unnamed_column', { colNum: index + 1 })
+                                        })(),
+                                    cellClassName: col.source_type
+                                })),
+                                rows: data
+                            }); %>
                         </div>
                     </div>
                     <% locals.anchor = 'preview' %>

@@ -2042,6 +2042,10 @@
   -webkit-animation: 2s linear infinite;
   animation: rotation 2s linear infinite;
 }
+.wg .govuk-table__container {
+  max-width: 100%;
+  overflow-x: auto;
+}
 .wg .source-list-item,
 .wg .govuk-table__header,
 .wg .govuk-table__cell {
