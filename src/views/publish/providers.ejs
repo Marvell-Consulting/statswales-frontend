@@ -51,7 +51,11 @@
                                 i18nBase: 'publish.providers.list.table',
                                 columns: [
                                     'provider',
-                                    'source',
+                                    {
+                                        key: 'source',
+                                        label: t('publish.providers.list.table.source'),
+                                        format: value => value || t('publish.providers.list.table.no_source')
+                                    },
                                     {
                                         key: 'id',
                                         label: t('publish.providers.list.table.action_header'),
