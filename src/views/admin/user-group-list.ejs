@@ -11,26 +11,31 @@
         <div class="govuk-grid-row">
           <div class="govuk-grid-column-full">
             <% if (locals?.groups && locals?.groups.length > 0) {%>
-              <table class="govuk-table">
-                <thead class="govuk-table__head">
-                  <tr class="govuk-table__row">
-                    <th class="govuk-table__header"><%= t('admin.group.list.table.name') %></th>
-                    <th class="govuk-table__header"><%= t('admin.group.list.table.email') %></th>
-                    <th class="govuk-table__header"><%= t('admin.group.list.table.user_count') %></th>
-                    <th class="govuk-table__header"><%= t('admin.group.list.table.dataset_count') %></th>
-                  </tr>
-                </thead>
-                <tbody class="govuk-table__body">
-                  <% locals?.groups.forEach(function(group) { %>
-                    <tr class="govuk-table__row">
-                      <td class="govuk-table__cell"><a href="<%= buildUrl(`/admin/group/${group.id}`, i18n.language) %>" class="govuk-link"><%= group.name %></a></td>
-                      <td class="govuk-table__cell"><%= group.email %></td>
-                      <td class="govuk-table__cell"><%= group.user_count %></td>
-                      <td class="govuk-table__cell"><%= group.dataset_count %></td>
-                    </tr>
-                  <% }); %>
-                </tbody>
-              </table>
+              <%- include("../partials/table", {
+                columns: [
+                  {
+                    key: 'name',
+                    label: t('admin.group.list.table.name'),
+                    format: (value, row) => {
+                      const url = buildUrl(`/admin/group/${row.id}`, i18n.language);
+                      return `<a href="${url}" class="govuk-link">${value}</a>`
+                    }
+                  },
+                  {
+                    key: 'email',
+                    label: t('admin.group.list.table.email')
+                  },
+                  {
+                    key: 'user_count',
+                    label: t('admin.group.list.table.user_count')
+                  },
+                  {
+                    key: 'dataset_count',
+                    label: t('admin.group.list.table.dataset_count')
+                  }
+                ],
+                rows: locals.groups
+              }); %>
               <% if (locals.total_pages > 1) { %>
                 <%- include("../partials/pagination"); %>
               <% } %>

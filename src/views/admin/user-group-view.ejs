@@ -29,30 +29,34 @@
             <% if (!locals.group?.users || locals.group.users.length === 0) { %>
               <p><%= t('admin.group.view.users.none') %></p>
             <% } else { %>
-              <table class="govuk-table">
-                <thead class="govuk-table__head">
-                  <tr class="govuk-table__row">
-                    <th class="govuk-table__header" scope="col"><%= t('admin.group.view.users.table.name') %></th>
-                    <th class="govuk-table__header" scope="col"><%= t('admin.group.view.users.table.roles') %></th>
-                    <th class="govuk-table__header" scope="col"><%= t('admin.group.view.users.table.status') %></th>
-                  </tr>
-                </thead>
-                <tbody class="govuk-table__body">
-                  <% locals.group.users.forEach(function(userWithRoles) { %>
-                    <% var user = userWithRoles.user %>
-                    <% var roles = userWithRoles.roles %>
-                    <tr class="govuk-table__row">
-                      <td class="govuk-table__cell">
-                        <a href="<%= buildUrl(`/admin/user/${user.id}`, i18n.language) %>" class="govuk-link"><%= user.full_name || user.email %></a>
-                      </td>
-                      <td class="govuk-table__cell"><%= roles?.map(r => t(`user_roles.${r}`)).join(', ') %></td>
-                      <td class="govuk-table__cell">
-                        <strong class="govuk-tag govuk-tag--<%= statusToColour(user.status) %>"><%= t(`admin.user.badge.status.${user.status}`) %></strong>
-                      </td>
-                    </tr>
-                  <% }) %>
-                </tbody>
-              </table>
+              <%- include("../partials/table", {
+                columns: [
+                  {
+                    key: 'name',
+                    label: t('admin.group.view.users.table.name'),
+                    format: (value, row) => {
+                      const url = buildUrl(`/admin/user/${row.id}`, i18n.language);
+                      return `<a href="${url}" class="govuk-link">${row.full_name || row.email}</a>`
+                    }
+                  },
+                  {
+                    key: 'roles',
+                    label: t('admin.group.view.users.table.roles'),
+                    format: (value) => value?.map(r => t(`user_roles.${r}`)).join(', ')
+                  },
+                  {
+                    key: 'status',
+                    label: t('admin.group.view.users.table.status'),
+                    format: (value) => `<strong class="govuk-tag govuk-tag--${statusToColour(value)}">${t(`admin.user.badge.status.${value}`)}</strong>`
+                  }
+                ],
+                rows: locals.group.users.map(userWithRoles => {
+                  return {
+                    ...userWithRoles.user,
+                    roles: userWithRoles.roles
+                  }
+                })
+              }); %>
             <% } %>
           </div>
         </div>
