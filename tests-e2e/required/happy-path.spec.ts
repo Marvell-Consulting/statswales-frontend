@@ -313,7 +313,7 @@ test.describe('Happy path', () => {
 
     // data table
     // TODO: link has a leading space
-    await previewPage.getByText(' Table preview [Publisher use only]').click({ force: true });
+    await previewPage.click('#tab_data');
     const heading = previewPage.locator('table > thead > tr');
     expect(heading.getByText('Data Values')).toBeTruthy();
     expect(heading.getByText(content.measureTable)).toBeTruthy();
