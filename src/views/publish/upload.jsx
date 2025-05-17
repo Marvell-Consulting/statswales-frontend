@@ -7,49 +7,43 @@ export default function Title(props) {
   const returnLink =
     props.revisit && props.datasetId && props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink}>
-      <div className="form-background">
-        <div className="govuk-width-container app-width-container">
-          <main className="govuk-main-wrapper" id="main-content" role="main">
-            <h1 className="govuk-heading-xl">
-              {props.uploadType === 'lookup'
-                ? props.t('publish.upload.lookup_heading')
-                : props.uploadType === 'measure'
-                  ? props.t('publish.upload.measure_heading')
-                  : props.t('publish.upload.title')}
-            </h1>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+      <h1 className="govuk-heading-xl">
+        {props.uploadType === 'lookup'
+          ? props.t('publish.upload.lookup_heading')
+          : props.uploadType === 'measure'
+            ? props.t('publish.upload.measure_heading')
+            : props.t('publish.upload.title')}
+      </h1>
 
-            <ErrorHandler {...props} />
+      <ErrorHandler {...props} />
 
-            <form method="post" encType="multipart/form-data">
-              <div className="govuk-form-group">
-                <label className="govuk-label govuk-label--m" htmlFor="csv">
-                  {props.t('publish.upload.form.file.label')}
-                </label>
-                <input
-                  className="govuk-file-upload"
-                  id="csv"
-                  name="csv"
-                  type="file"
-                  placeholder="Upload file"
-                  accept={props.supportedFormats}
-                />
-              </div>
-              <div className="govuk-button-group">
-                <button
-                  type="submit"
-                  className="govuk-button"
-                  data-module="govuk-button"
-                  style={{ verticalAlign: 'unset' }}
-                  data-prevent-double-click="true"
-                >
-                  {props.t('publish.upload.buttons.upload')}
-                </button>
-              </div>
-            </form>
-          </main>
+      <form method="post" encType="multipart/form-data">
+        <div className="govuk-form-group">
+          <label className="govuk-label govuk-label--m" htmlFor="csv">
+            {props.t('publish.upload.form.file.label')}
+          </label>
+          <input
+            className="govuk-file-upload"
+            id="csv"
+            name="csv"
+            type="file"
+            placeholder="Upload file"
+            accept={props.supportedFormats}
+          />
         </div>
-      </div>
+        <div className="govuk-button-group">
+          <button
+            type="submit"
+            className="govuk-button"
+            data-module="govuk-button"
+            style={{ verticalAlign: 'unset' }}
+            data-prevent-double-click="true"
+          >
+            {props.t('publish.upload.buttons.upload')}
+          </button>
+        </div>
+      </form>
     </Layout>
   );
 }

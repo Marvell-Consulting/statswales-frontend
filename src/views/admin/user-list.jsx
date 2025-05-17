@@ -38,24 +38,20 @@ export default function UserList(props) {
   ];
   return (
     <Layout {...props}>
-      <div className="govuk-width-container app-width-container">
-        <main className="govuk-main-wrapper" id="main-content" role="main">
-          <FlashMessages {...props} />
+      <FlashMessages {...props} />
 
-          <h1 className="govuk-heading-xl">{props.t('admin.user.list.heading')}</h1>
+      <h1 className="govuk-heading-xl">{props.t('admin.user.list.heading')}</h1>
 
-          <a href={props.buildUrl(`/admin/user/create`, props.i18n.language)} className="govuk-button">
-            {props.t('admin.user.list.buttons.add')}
-          </a>
+      <a href={props.buildUrl(`/admin/user/create`, props.i18n.language)} className="govuk-button">
+        {props.t('admin.user.list.buttons.add')}
+      </a>
 
-          <div className="govuk-grid-row">
-            <div className="govuk-grid-column-full">
-              {props?.users && props?.users.length > 0 && (
-                <Table {...props} i18nBase="admin.user.list.table" columns={columns} rows={props.users} />
-              )}
-            </div>
-          </div>
-        </main>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-full">
+          {props?.users && props?.users.length > 0 && (
+            <Table {...props} i18nBase="admin.user.list.table" columns={columns} rows={props.users} />
+          )}
+        </div>
       </div>
     </Layout>
   );

@@ -24,28 +24,24 @@ export default function UserGroupList(props) {
 
   return (
     <Layout {...props}>
-      <div className="govuk-width-container app-width-container">
-        <main className="govuk-main-wrapper" id="main-content" role="main">
-          {console.log(props.flash)}
-          <FlashMessages {...props} />
+      {console.log(props.flash)}
+      <FlashMessages {...props} />
 
-          <h1 className="govuk-heading-xl">{props.t('admin.group.list.heading')}</h1>
+      <h1 className="govuk-heading-xl">{props.t('admin.group.list.heading')}</h1>
 
-          <a href={props.buildUrl(`/admin/group/create`, props.i18n.language)} className="govuk-button">
-            {props.t('admin.group.list.buttons.add')}
-          </a>
+      <a href={props.buildUrl(`/admin/group/create`, props.i18n.language)} className="govuk-button">
+        {props.t('admin.group.list.buttons.add')}
+      </a>
 
-          <div className="govuk-grid-row">
-            <div className="govuk-grid-column-full">
-              {props?.groups && props?.groups.length > 0 && (
-                <>
-                  <Table {...props} i18nBase="admin.group.list.table" columns={columns} rows={props.groups} />
-                  {props.total_pages > 1 && <Pagination {...props} />}
-                </>
-              )}
-            </div>
-          </div>
-        </main>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-full">
+          {props?.groups && props?.groups.length > 0 && (
+            <>
+              <Table {...props} i18nBase="admin.group.list.table" columns={columns} rows={props.groups} />
+              {props.total_pages > 1 && <Pagination {...props} />}
+            </>
+          )}
+        </div>
       </div>
     </Layout>
   );

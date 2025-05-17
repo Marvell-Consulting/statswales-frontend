@@ -59,46 +59,42 @@ export default function Homepage(props) {
 
   return (
     <Layout {...props}>
-      <div className="govuk-width-container app-width-container">
-        <main className="govuk-main-wrapper" id="main-content" role="main">
-          <FlashMessages />
-          <ErrorHandler />
+      <FlashMessages />
+      <ErrorHandler />
 
-          <div className="govuk-grid-row">
-            <div className="govuk-grid-column-full">
-              <h1 className="govuk-heading-xl">{props.t('homepage.heading')}</h1>
-            </div>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-full">
+          <h1 className="govuk-heading-xl">{props.t('homepage.heading')}</h1>
+        </div>
+      </div>
+
+      {props.canCreate && (
+        <div className="govuk-grid-row">
+          <div className="govuk-grid-column-one-half">
+            <a className="govuk-button" href={`${props.buildUrl(`/publish`, props.i18n.language)}`}>
+              {props.t('homepage.buttons.create')}
+            </a>
           </div>
+        </div>
+      )}
 
-          {props.canCreate && (
-            <div className="govuk-grid-row">
-              <div className="govuk-grid-column-one-half">
-                <a className="govuk-button" href={`${props.buildUrl(`/publish`, props.i18n.language)}`}>
-                  {props.t('homepage.buttons.create')}
-                </a>
-              </div>
-            </div>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-full">
+          {props.data && props.data.length > 0 ? (
+            <>
+              <Table columns={columns} rows={props.data} />
+              <Pagination {...props} />
+            </>
+          ) : (
+            <>
+              <p className="govuk-body">{props.t('homepage.no_results.summary')}</p>
+              <ul className="govuk-list govuk-list--bullet">
+                <li>{props.t('homepage.no_results.summary_1')}</li>
+                <li>{props.t('homepage.no_results.summary_2')}</li>
+              </ul>
+            </>
           )}
-
-          <div className="govuk-grid-row">
-            <div className="govuk-grid-column-full">
-              {props.data && props.data.length > 0 ? (
-                <>
-                  <Table columns={columns} rows={props.data} />
-                  <Pagination {...props} />
-                </>
-              ) : (
-                <>
-                  <p className="govuk-body">{props.t('homepage.no_results.summary')}</p>
-                  <ul className="govuk-list govuk-list--bullet">
-                    <li>{props.t('homepage.no_results.summary_1')}</li>
-                    <li>{props.t('homepage.no_results.summary_2')}</li>
-                  </ul>
-                </>
-              )}
-            </div>
-          </div>
-        </main>
+        </div>
       </div>
     </Layout>
   );

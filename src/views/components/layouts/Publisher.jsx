@@ -13,7 +13,8 @@ export default function Layout({
   activePage,
   isAdmin,
   backLink,
-  returnLink
+  returnLink,
+  formPage
 }) {
   return (
     <html lang={i18n.language} className="govuk-template wg">
@@ -241,13 +242,16 @@ export default function Layout({
           </div>
         )}
 
-        {children}
-
-        {returnLink && (
-          <a href={returnLink} className="govuk-link return-link">
-            {t('publish.header.overview')}
-          </a>
-        )}
+        <main className={clsx('govuk-main-wrapper', { 'form-background': formPage })} id="main-content" role="main">
+          <div className="govuk-width-container">
+            {children}
+            {returnLink && (
+              <a href={returnLink} className="govuk-link return-link">
+                {t('publish.header.overview')}
+              </a>
+            )}
+          </div>
+        </main>
 
         <footer className="wg-footer">
           <div className="footer-top">
