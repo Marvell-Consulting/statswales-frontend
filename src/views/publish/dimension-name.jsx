@@ -25,39 +25,33 @@ export default function DimensionName(props) {
   const backLink = getBackLink();
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink}>
-      <div className="form-background">
-        <div className="govuk-width-container app-width-container">
-          <main className="govuk-main-wrapper" id="main-content" role="main">
-            <p className="govuk-body-l region-subhead govuk-!-font-weight-bold">{props.columnName}</p>
-            <h1 className="govuk-heading-xl">
-              {props.dimensionType === 'measure'
-                ? props.t('publish.dimension_name.measure_heading')
-                : props.t('publish.dimension_name.dimension_heading')}
-            </h1>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+      <p className="govuk-body-l region-subhead govuk-!-font-weight-bold">{props.columnName}</p>
+      <h1 className="govuk-heading-xl">
+        {props.dimensionType === 'measure'
+          ? props.t('publish.dimension_name.measure_heading')
+          : props.t('publish.dimension_name.dimension_heading')}
+      </h1>
 
-            <ErrorHandler {...props} />
+      <ErrorHandler {...props} />
 
-            <p className="govuk-body">{props.t('publish.dimension_name.hint')}</p>
-            <ul className="govuk-list govuk-list--bullet">
-              <li>{props.t('publish.dimension_name.concise')}</li>
-              <li>{props.t('publish.dimension_name.unique')}</li>
-              <li>{props.t('publish.dimension_name.language')}</li>
-            </ul>
+      <p className="govuk-body">{props.t('publish.dimension_name.hint')}</p>
+      <ul className="govuk-list govuk-list--bullet">
+        <li>{props.t('publish.dimension_name.concise')}</li>
+        <li>{props.t('publish.dimension_name.unique')}</li>
+        <li>{props.t('publish.dimension_name.language')}</li>
+      </ul>
 
-            <form encType="multipart/form-data" method="post">
-              <div className="govuk-form-group">
-                <input className="govuk-input" id="name" name="name" type="text" value={props.dimensionName} />
-              </div>
-              <div className="govuk-button-group">
-                <button type="submit" className="govuk-button" data-module="govuk-button">
-                  {props.t('buttons.continue')}
-                </button>
-              </div>
-            </form>
-          </main>
+      <form encType="multipart/form-data" method="post">
+        <div className="govuk-form-group">
+          <input className="govuk-input" id="name" name="name" type="text" value={props.dimensionName} />
         </div>
-      </div>
+        <div className="govuk-button-group">
+          <button type="submit" className="govuk-button" data-module="govuk-button">
+            {props.t('buttons.continue')}
+          </button>
+        </div>
+      </form>
     </Layout>
   );
 }

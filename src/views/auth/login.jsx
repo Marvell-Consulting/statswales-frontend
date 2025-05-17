@@ -4,35 +4,31 @@ import Layout from '../components/layouts/Publisher';
 export default function Login(props) {
   return (
     <Layout {...props}>
-      <div className="govuk-width-container app-width-container">
-        <main className="govuk-main-wrapper" id="main-content" role="main">
-          <h1 className="govuk-heading-xl">{props.t('login.heading')}</h1>
+      <h1 className="govuk-heading-xl">{props.t('login.heading')}</h1>
 
-          {props.errors && (
-            <div className="govuk-error-summary" data-module="govuk-error-summary">
-              <div role="alert">
-                <h2 className="govuk-error-summary__title">{props.t('errors.problem')}</h2>
-                <div className="govuk-error-summary__body">
-                  <ul className="govuk-list govuk-error-summary__list">
-                    {props.errors.map((error) => (
-                      <li>
-                        <a href="#">{props.t(error)}</a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+      {props.errors && (
+        <div className="govuk-error-summary" data-module="govuk-error-summary">
+          <div role="alert">
+            <h2 className="govuk-error-summary__title">{props.t('errors.problem')}</h2>
+            <div className="govuk-error-summary__body">
+              <ul className="govuk-list govuk-error-summary__list">
+                {props.errors.map((error) => (
+                  <li>
+                    <a href="#">{props.t(error)}</a>
+                  </li>
+                ))}
+              </ul>
             </div>
-          )}
-
-          <div className="govuk-button-group">
-            {props.providers.map((provider) => (
-              <a href={`/${props.i18n.language}/auth/${provider}`} className="govuk-button">
-                {props.t(`login.buttons.${provider}`)}
-              </a>
-            ))}
           </div>
-        </main>
+        </div>
+      )}
+
+      <div className="govuk-button-group">
+        {props.providers.map((provider) => (
+          <a href={`/${props.i18n.language}/auth/${provider}`} className="govuk-button">
+            {props.t(`login.buttons.${provider}`)}
+          </a>
+        ))}
       </div>
     </Layout>
   );

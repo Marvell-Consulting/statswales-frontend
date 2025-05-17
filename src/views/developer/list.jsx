@@ -79,27 +79,23 @@ export default function DeveloperList(props) {
   ];
   return (
     <Layout {...props}>
-      <div className="govuk-width-container app-width-container">
-        <main className="govuk-main-wrapper" id="main-content" role="main">
-          <FlashMessages {...props} />
+      <FlashMessages {...props} />
 
-          <div className="govuk-grid-row">
-            <div className="govuk-grid-column-full">
-              <h1 className="govuk-heading-xl">{props.t('developer.heading')}</h1>
-            </div>
-          </div>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-full">
+          <h1 className="govuk-heading-xl">{props.t('developer.heading')}</h1>
+        </div>
+      </div>
 
-          <div className="govuk-grid-row">
-            <div className="govuk-grid-column-full">
-              {props.data && props.data.length > 0 && (
-                <>
-                  <Table {...props} columns={columns} rows={props.data} />
-                  {props.total_pages > 1 && <Pagination {...props} />}
-                </>
-              )}
-            </div>
-          </div>
-        </main>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-full">
+          {props.data && props.data.length > 0 && (
+            <>
+              <Table {...props} columns={columns} rows={props.data} />
+              {props.total_pages > 1 && <Pagination {...props} />}
+            </>
+          )}
+        </div>
       </div>
     </Layout>
   );

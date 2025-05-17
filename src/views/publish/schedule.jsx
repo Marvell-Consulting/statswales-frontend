@@ -30,65 +30,59 @@ export default function Schedule(props) {
   }
 
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink}>
-      <div className="form-background">
-        <div className="govuk-width-container app-width-container">
-          <main className="govuk-main-wrapper" id="main-content" role="main">
-            <div className="govuk-width-container">
-              <div className="govuk-grid-row">
-                <div className="govuk-grid-column-two-thirds">
-                  <h1 className="govuk-heading-xl">{props.t('publish.schedule.heading')}</h1>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+      <div className="govuk-width-container">
+        <div className="govuk-grid-row">
+          <div className="govuk-grid-column-two-thirds">
+            <h1 className="govuk-heading-xl">{props.t('publish.schedule.heading')}</h1>
 
-                  <ErrorHandler {...props} />
+            <ErrorHandler {...props} />
 
-                  <form encType="multipart/form-data" method="post">
-                    <div className={clsx('govuk-form-group', { 'govuk-form-group--error': props.dateError })}>
-                      <fieldset className="govuk-fieldset" aria-describedby="publication-date-hint">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
-                          {props.t('publish.schedule.form.date.label')}
-                        </legend>
-                        <div id="publication-date-hint" className="govuk-hint">
-                          {props.t('publish.schedule.form.date.hint')}
-                        </div>
-                        {props.dateError && (
-                          <p id="publication-date-error" className="govuk-error-message">
-                            <span className="govuk-visually-hidden">Error:</span> {props.t(props.dateError.message.key)}
-                          </p>
-                        )}
+            <form encType="multipart/form-data" method="post">
+              <div className={clsx('govuk-form-group', { 'govuk-form-group--error': props.dateError })}>
+                <fieldset className="govuk-fieldset" aria-describedby="publication-date-hint">
+                  <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
+                    {props.t('publish.schedule.form.date.label')}
+                  </legend>
+                  <div id="publication-date-hint" className="govuk-hint">
+                    {props.t('publish.schedule.form.date.hint')}
+                  </div>
+                  {props.dateError && (
+                    <p id="publication-date-error" className="govuk-error-message">
+                      <span className="govuk-visually-hidden">Error:</span> {props.t(props.dateError.message.key)}
+                    </p>
+                  )}
 
-                        <div className="govuk-date-input" id="publication-date">
-                          <Field name="day" />
-                          <Field name="month" />
-                          <Field name="year" width={5} />
-                        </div>
-                      </fieldset>
-                    </div>
-                    <div className={clsx('govuk-form-group', { 'govuk-form-group--error': props.timeError })}>
-                      <fieldset className="govuk-fieldset" aria-describedby="publication-time-hint">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
-                          {props.t('publish.schedule.form.time.label')}
-                        </legend>
-                        <div id="publication-time-hint" className="govuk-hint">
-                          {props.t('publish.schedule.form.time.hint')}
-                        </div>
-                        {props.timeError && (
-                          <p id="publication-time-error" className="govuk-error-message">
-                            <span className="govuk-visually-hidden">Error:</span> {props.t(props.timeError.message.key)}
-                          </p>
-                        )}
-
-                        <Field name="hour" />
-                        <Field name="minute" />
-                      </fieldset>
-                    </div>
-                    <button type="submit" className="govuk-button" data-module="govuk-button">
-                      {props.t('buttons.continue')}
-                    </button>
-                  </form>
-                </div>
+                  <div className="govuk-date-input" id="publication-date">
+                    <Field name="day" />
+                    <Field name="month" />
+                    <Field name="year" width={5} />
+                  </div>
+                </fieldset>
               </div>
-            </div>
-          </main>
+              <div className={clsx('govuk-form-group', { 'govuk-form-group--error': props.timeError })}>
+                <fieldset className="govuk-fieldset" aria-describedby="publication-time-hint">
+                  <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
+                    {props.t('publish.schedule.form.time.label')}
+                  </legend>
+                  <div id="publication-time-hint" className="govuk-hint">
+                    {props.t('publish.schedule.form.time.hint')}
+                  </div>
+                  {props.timeError && (
+                    <p id="publication-time-error" className="govuk-error-message">
+                      <span className="govuk-visually-hidden">Error:</span> {props.t(props.timeError.message.key)}
+                    </p>
+                  )}
+
+                  <Field name="hour" />
+                  <Field name="minute" />
+                </fieldset>
+              </div>
+              <button type="submit" className="govuk-button" data-module="govuk-button">
+                {props.t('buttons.continue')}
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </Layout>
