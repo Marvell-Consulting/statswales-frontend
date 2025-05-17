@@ -2442,6 +2442,19 @@ $whitepurple: #eed5e3;
     }
   }
 
+  .nowrap {
+    white-space: nowrap !important;
+  }
+
+  .max-width-none {
+    max-width: none !important;
+  }
+
+  .translation-export td,
+  .translation-import td {
+    white-space: pre-line !important;
+  }
+
   .loader {
     border: 12px solid $lightgrey_light;
     border-bottom-color: $brightred;

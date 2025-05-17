@@ -96,6 +96,7 @@ export class PublisherApi {
         return response;
       })
       .then(async (response: Response) => {
+        console.log(response);
         if (!response.ok) {
           const body = await new Response(response.body).text();
           if (body) {

@@ -2027,6 +2027,16 @@
     transform: rotate(360deg);
   }
 }
+.wg .nowrap {
+  white-space: nowrap !important;
+}
+.wg .max-width-none {
+  max-width: none !important;
+}
+.wg .translation-export td,
+.wg .translation-import td {
+  white-space: pre-line !important;
+}
 .wg .loader {
   border: 12px solid #eeeeee;
   border-bottom-color: #d81f1f;
