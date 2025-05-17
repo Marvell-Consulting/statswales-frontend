@@ -6,6 +6,8 @@
       format: (value, row) => {
         if (row.type === 'dimension') {
           return t(`translations.export.dimension`, { key: value })
+        } else if (row.type === 'measure') {
+          return t(`translations.export.measure`, { key: value })
         } else if (row.type === 'metadata') {
           return t(`translations.export.field.${value}`)
         } else if (row.type === 'link') {
