@@ -52,7 +52,8 @@ app.use(initServices);
 
 // configure the view engine
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set('view engine', 'jsx');
+app.engine('jsx', require('express-react-views').createEngine());
 
 // public routes
 app.use('/healthcheck', rateLimiter, healthcheck);
