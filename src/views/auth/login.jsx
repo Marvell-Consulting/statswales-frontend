@@ -24,8 +24,8 @@ export default function Login(props) {
       )}
 
       <div className="govuk-button-group">
-        {props.providers.map((provider) => (
-          <a href={`/${props.i18n.language}/auth/${provider}`} className="govuk-button">
+        {props.providers.map((provider, index) => (
+          <a key={index} href={`/${props.i18n.language}/auth/${provider}`} className="govuk-button">
             {props.t(`login.buttons.${provider}`)}
           </a>
         ))}
