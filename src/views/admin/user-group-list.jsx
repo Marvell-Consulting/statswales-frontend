@@ -24,7 +24,6 @@ export default function UserGroupList(props) {
 
   return (
     <Layout {...props}>
-      {console.log(props.flash)}
       <FlashMessages {...props} />
 
       <h1 className="govuk-heading-xl">{props.t('admin.group.list.heading')}</h1>
