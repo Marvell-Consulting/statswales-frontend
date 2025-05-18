@@ -34,9 +34,8 @@ export default function Collection(props) {
                   id="collection"
                   name="collection"
                   rows="15"
-                >
-                  {props.collection}
-                </textarea>
+                  defaultValue={props.collection}
+                />
               </div>
               <button type="submit" className="govuk-button" data-module="govuk-button">
                 {props.t('buttons.continue')}

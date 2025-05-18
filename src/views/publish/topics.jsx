@@ -35,8 +35,8 @@ export default function Topics(props) {
                       </div>
                       {topic.children.length > 0 && (
                         <div className="govuk-checkboxes__conditional" id={`conditional-topic-${topic.id}`}>
-                          {topic.children.map((childTopic) => (
-                            <div className="govuk-checkboxes__item">
+                          {topic.children.map((childTopic, index) => (
+                            <div key={index} className="govuk-checkboxes__item">
                               <input
                                 className="govuk-checkboxes__input"
                                 id={`topic_${childTopic.id}`}

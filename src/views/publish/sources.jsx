@@ -19,6 +19,7 @@ export default function Sources(props) {
         >
           {props.factTable.map((source, idx) => (
             <div
+              key={idx}
               className="source-list-item"
               style={{
                 borderBottom: '1px solid #0b0c0c',
@@ -44,7 +45,7 @@ export default function Sources(props) {
                     name={`column-${source.index}`}
                   >
                     {props.sourceTypes.map((val) => (
-                      <option value={val} selected={source.type === val}>
+                      <option key={val} value={val} selected={source.type === val}>
                         {props.t(`publish.sources.types.${val}`)}
                       </option>
                     ))}
