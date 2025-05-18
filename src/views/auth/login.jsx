@@ -12,8 +12,8 @@ export default function Login(props) {
             <h2 className="govuk-error-summary__title">{props.t('errors.problem')}</h2>
             <div className="govuk-error-summary__body">
               <ul className="govuk-list govuk-error-summary__list">
-                {props.errors.map((error) => (
-                  <li>
+                {props.errors.map((error, index) => (
+                  <li key={index}>
                     <a href="#">{props.t(error)}</a>
                   </li>
                 ))}
