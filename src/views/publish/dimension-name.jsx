@@ -44,7 +44,7 @@ export default function DimensionName(props) {
 
       <form encType="multipart/form-data" method="post">
         <div className="govuk-form-group">
-          <input className="govuk-input" id="name" name="name" type="text" value={props.dimensionName} />
+          <input className="govuk-input" id="name" name="name" type="text" defaultValue={props.dimensionName} />
         </div>
         <div className="govuk-button-group">
           <button type="submit" className="govuk-button" data-module="govuk-button">

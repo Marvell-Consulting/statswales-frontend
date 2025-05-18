@@ -13,7 +13,7 @@ export default function ConsumerLayout({ children, i18n, t, buildUrl }) {
   return (
     <html lang={i18n.language} className="govuk-template wg">
       <head>
-        <meta charset="utf-8" />
+        <meta charSet="utf-8" />
         <title>StatsWales {t('beta')}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="theme-color" content="#0b0c0c" />
@@ -82,13 +82,13 @@ export default function ConsumerLayout({ children, i18n, t, buildUrl }) {
                   <ul className="links">
                     {i18n.language === 'en-GB' ? (
                       <li className="cy">
-                        <a className="language-link" lang="cy" hreflang="cy" href="?lang=cy-GB" role="button">
+                        <a className="language-link" lang="cy" hrefLang="cy" href="?lang=cy-GB" role="button">
                           Cymraeg
                         </a>
                       </li>
                     ) : (
                       <li className="en">
-                        <a className="language-link" lang="en" hreflang="en" href="?lang=en-GB" role="button">
+                        <a className="language-link" lang="en" hrefLang="en" href="?lang=en-GB" role="button">
                           English
                         </a>
                       </li>
@@ -147,7 +147,7 @@ export default function ConsumerLayout({ children, i18n, t, buildUrl }) {
             initAll();`
           }}
         />
-        <script src="https://kit.fontawesome.com/f6f4af2d4c.js" crossorigin="anonymous" />
+        <script src="https://kit.fontawesome.com/f6f4af2d4c.js" crossOrigin="anonymous" />
       </body>
     </html>
   );

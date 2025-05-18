@@ -3,7 +3,6 @@ import type { Config } from 'jest';
 const config: Config = {
   verbose: true,
   reporters: ['default', ['jest-junit', { outputDirectory: 'coverage/test-report', outputName: 'junit-report.xml' }]],
-  // preset: 'babel',
   testEnvironment: 'node',
   testPathIgnorePatterns: ['/node_modules/', '/tests-e2e/'],
   coverageDirectory: './coverage',

@@ -58,9 +58,11 @@ export default function Providers(props) {
                     {props.t('publish.providers.add.form.provider.hint')}
                   </div>
                   <select id="provider" name="provider_id" className="govuk-select" aria-describedby="provider-hint">
-                    <option value="" selected disabled></option>
-                    {props.availableProviders.map((provider) => (
-                      <option value={provider.id}>{provider.name}</option>
+                    <option key={0} value="" selected disabled></option>
+                    {props.availableProviders.map((provider, index) => (
+                      <option key={index + 1} value={provider.id}>
+                        {provider.name}
+                      </option>
                     ))}
                   </select>
                   <script

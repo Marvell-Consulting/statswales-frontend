@@ -76,7 +76,7 @@ export default function Preview(props) {
             </label>{' '}
             <select className="govuk-select govuk-!-display-inline" id="page_size" name="page_size">
               {[5, 10, 25, 50, 100, 250, 500].map((num) => (
-                <option value={num} selected={props.page_size === num}>
+                <option key={num} value={num} selected={props.page_size === num}>
                   {num}
                 </option>
               ))}

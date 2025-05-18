@@ -33,9 +33,8 @@ export default function Summary(props) {
                   id="summary"
                   name="summary"
                   rows="15"
-                >
-                  {props.summary}
-                </textarea>
+                  defaultValue={props.summary}
+                />
               </div>
               <button type="submit" className="govuk-button" data-module="govuk-button">
                 {props.t('buttons.continue')}
