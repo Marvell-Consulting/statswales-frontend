@@ -16,6 +16,7 @@ export const statusToColour = (status: TaskListStatus | DatasetStatus | Publishi
 
     case TaskListStatus.NotStarted:
     case UserStatus.Inactive:
+    case PublishingStatus.ChangesRequested:
       return 'red';
 
     case TaskListStatus.Updated:

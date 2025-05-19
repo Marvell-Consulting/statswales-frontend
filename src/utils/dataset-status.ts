@@ -20,13 +20,11 @@ export const getPublishingStatus = (
 ): PublishingStatus => {
   revision = revision ?? getLatestRevision(dataset);
   const datasetStatus = getDatasetStatus(dataset);
+  const openPublishingTask = dataset.tasks?.find((task) => task.open && task.action === TaskAction.Publish);
 
-  const pendingApproval = dataset.tasks?.some(
-    (task) => task.open && task.action === TaskAction.Publish && task.status === TaskStatus.Requested
-  );
-
-  if (pendingApproval) {
-    return PublishingStatus.PendingApproval;
+  if (openPublishingTask) {
+    if (openPublishingTask.status === TaskStatus.Requested) return PublishingStatus.PendingApproval;
+    if (openPublishingTask.status === TaskStatus.Rejected) return PublishingStatus.ChangesRequested;
   }
 
   if (datasetStatus === DatasetStatus.New) {

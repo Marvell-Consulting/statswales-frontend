@@ -26,6 +26,7 @@
       "incomplete": "Incomplete",
       "update_incomplete": "Update incomplete",
       "pending_approval": "Pending approval",
+      "changes_requested": "Issues to fix",
       "scheduled": "Scheduled",
       "update_scheduled": "Update scheduled",
       "published": "Published"
@@ -114,6 +115,7 @@
       "incomplete": "Incomplete",
       "update_incomplete": "Update incomplete",
       "pending_approval": "Pending approval",
+      "changes_requested": "Issues to fix",
       "scheduled": "Scheduled",
       "update_scheduled": "Update scheduled",
       "published": "Published"
