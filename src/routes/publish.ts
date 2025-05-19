@@ -45,7 +45,8 @@ import {
   setupNumberDimension,
   deleteDraft,
   provideDatasetGroup,
-  moveDatasetGroup
+  moveDatasetGroup,
+  taskDecision
 } from '../controllers/publish';
 import { DatasetInclude as Include } from '../enums/dataset-include';
 import { flashMessages } from '../middleware/flash';
@@ -216,3 +217,6 @@ publish.post('/:datasetId/update-type', fetchDataset(), updateDatatable);
 /* Move a dataset between groups */
 publish.get('/:datasetId/move', fetchDataset(), moveDatasetGroup);
 publish.post('/:datasetId/move', fetchDataset(), upload.none(), moveDatasetGroup);
+
+publish.get('/:datasetId/task-decision/:taskId', fetchDataset(), taskDecision);
+publish.post('/:datasetId/task-decision/:taskId', fetchDataset(), upload.none(), taskDecision);

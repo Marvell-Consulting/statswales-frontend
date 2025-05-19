@@ -17,6 +17,7 @@ import {
   frequencyValueValidator,
   getErrors,
   groupIdValidator,
+  hasError,
   hourValidator,
   isUpdatedValidator,
   linkIdValidator,
@@ -28,8 +29,11 @@ import {
   roundingAppliedValidator,
   roundingDescriptionValidator,
   summaryValidator,
+  taskDecisionReasonValidator,
+  taskDecisionValidator,
   titleValidator,
   topicIdValidator,
+  uuidValidator,
   yearValidator
 } from '../validators';
 import { ViewError } from '../dtos/view-error';
@@ -71,13 +75,21 @@ import slugify from 'slugify';
 import { DuckDBSupportFileFormats } from '../enums/support-fileformats';
 import { TZDate } from '@date-fns/tz';
 import { singleLangUserGroup } from '../utils/single-lang-user-group';
-import { getApproverUserGroups, getEditorUserGroups, isEditor } from '../utils/user-permissions';
+import {
+  getApproverUserGroups,
+  getEditorUserGroups,
+  isApproverForDataset,
+  isEditor,
+  isEditorForDataset
+} from '../utils/user-permissions';
 import { PublishingStatus } from '../enums/publishing-status';
 import { NotAllowedException } from '../exceptions/not-allowed.exception';
 import { DatasetDTO } from '../dtos/dataset';
 import { RevisionDTO } from '../dtos/revision';
 import { TaskAction } from '../enums/task-action';
-import { TaskStatus } from '../enums/task-status';
+import { UserDTO } from '../dtos/user/user';
+import { TaskDTO } from '../dtos/task';
+import { TaskDecisionDTO } from '../dtos/task-decision';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -86,9 +98,10 @@ const nanoid = customAlphabet(alphanumeric, 5);
 export const start = (req: Request, res: Response) => {
   req.session.errors = undefined;
   req.session.save();
+  const user = req.user! as UserDTO;
 
   // user must be in at least one group to start a new dataset
-  if (!isEditor(req.user)) {
+  if (!isEditor(user)) {
     req.session.errors = [{ field: '', message: { key: 'publish.start.errors.no_groups' } }];
     req.session.save();
     res.redirect(req.buildUrl('/', req.language));
@@ -427,11 +440,12 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
   const draftRevision = dataset.draft_revision!;
   const datasetStatus = getDatasetStatus(res.locals.dataset);
   const publishingStatus = getPublishingStatus(res.locals.dataset);
+  const user = req.user! as UserDTO;
+  const canEdit = isEditorForDataset(user, res.locals.dataset);
 
-  if (!draftRevision) {
-    // tasklist only available for draft revisions
+  if (!draftRevision || !canEdit) {
     res.redirect(req.buildUrl(`/publish/${dataset.id}/overview`, req.language));
-    return;
+    return; // tasklist only available for draft revisions and editors
   }
 
   try {
@@ -444,6 +458,7 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
     const datasetTitle = draftRevision.metadata?.title;
     const dimensions = dataset.dimensions;
     const taskList: TaskListState = await req.pubapi.getTaskList(dataset.id);
+    const canSubmit = canEdit && taskList.canPublish;
 
     res.render('publish/tasklist', {
       datasetTitle,
@@ -451,7 +466,8 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
       revision: draftRevision,
       dimensions,
       datasetStatus,
-      publishingStatus
+      publishingStatus,
+      canSubmit
     });
   } catch (err) {
     logger.error(err, `Failed to fetch the tasklist`);
@@ -2532,6 +2548,9 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
   let errors: ViewError[] = [];
   const successfullySubmitted = req.query?.submitted === 'true';
   const canMoveGroup = getApproverUserGroups(req.user).length > 1;
+  const user = req.user as UserDTO;
+  const canEdit = isEditorForDataset(user, res.locals.dataset);
+  const canApprove = isApproverForDataset(user, res.locals.dataset);
 
   try {
     const dataset = await req.pubapi.getDataset(res.locals.datasetId, DatasetInclude.Overview);
@@ -2551,10 +2570,7 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
     const title = revision?.metadata?.title;
     const datasetStatus = getDatasetStatus(dataset);
     const publishingStatus = getPublishingStatus(dataset, revision);
-
-    const publishRequest = dataset.tasks?.find(
-      (task) => task.open && task.action === TaskAction.Publish && task.status === TaskStatus.Requested
-    );
+    const openPublishTask = dataset.tasks?.find((task) => task.open && task.action === TaskAction.Publish);
 
     res.render('publish/overview', {
       dataset,
@@ -2564,7 +2580,9 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
       datasetStatus,
       publishingStatus,
       canMoveGroup,
-      publishRequest
+      canEdit,
+      canApprove,
+      openPublishTask
     });
     return;
   } catch (err) {
@@ -2647,4 +2665,61 @@ export const moveDatasetGroup = async (req: Request, res: Response, next: NextFu
   }
 
   res.render('publish/move-group', { availableGroups, values, errors });
+};
+
+export const taskDecision = async (req: Request, res: Response, next: NextFunction) => {
+  let task: TaskDTO | undefined;
+  let taskType = '';
+  let values: TaskDecisionDTO = {};
+  let errors: ViewError[] = [];
+
+  const taskIdError = await hasError(uuidValidator('taskId'), req);
+
+  if (taskIdError) {
+    logger.error('Invalid or missing taskId');
+    next(new NotFoundException('errors.task_missing'));
+    return;
+  }
+
+  try {
+    const task = await req.pubapi.getTaskById(req.params.taskId);
+
+    if (!task || task.dataset_id !== res.locals.datasetId) {
+      logger.error('Failed to find task');
+      next(new NotFoundException('errors.task_missing'));
+      return;
+    }
+
+    taskType = `${task.action}.${task.status}`;
+
+    if (req.method === 'POST') {
+      values = req.body;
+      const validators = [taskDecisionValidator(), taskDecisionReasonValidator()];
+
+      errors = (await getErrors(validators, req)).map((error: FieldValidationError) => {
+        return {
+          field: error.path,
+          message: { key: `publish.task.decision.${taskType}.form.${error.path}.error.missing` }
+        };
+      });
+
+      if (errors.length > 0) {
+        res.status(400);
+        throw new Error();
+      }
+
+      const decision = values.decision!;
+      await req.pubapi.taskDecision(task.id, { decision, reason: values.reason || undefined });
+      req.session.flash = [`publish.task.decision.publish.flash.${decision}`];
+      req.session.save();
+      res.redirect(req.buildUrl(`/publish/${res.locals.datasetId}/overview`, req.language));
+      return;
+    }
+  } catch (err) {
+    if (err instanceof ApiException) {
+      errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+    }
+  }
+
+  res.render('publish/task-decision', { task, taskType, values, errors });
 };

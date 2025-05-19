@@ -26,14 +26,23 @@
         <div class="overview-details">
           <% if (locals.publishingStatus === 'pending_approval') { %>
             <p class="govuk-body govuk-!-margin-0"><%- t('publish.overview.pending.publish_at', { publishAt: dateFormat(locals.revision?.publish_at, 'h:mmaaa, d MMMM yyyy') }) %></p>
-            <p class="govuk-body govuk-!-margin-0"><%- t('publish.overview.pending.requested_by', { userName: locals.publishRequest.created_by_name }) %></p>
+            <p class="govuk-body govuk-!-margin-0"><%- t('publish.overview.pending.requested_by', { userName: locals.openPublishTask?.created_by_name }) %></p>
+
+            <% if (locals.canApprove) { %>
+              <a class="govuk-button govuk-!-margin-top-4" href="<%= buildUrl(`/publish/${dataset.id}/task-decision/${locals.openPublishTask?.id}`, i18n.language) %>"><%= t('publish.overview.buttons.pending_approval') %></a>
+            <% } %>
+          <% } %>
+
+          <% if (locals.openPublishTask?.status === 'rejected' && locals.canEdit) { %>
+            <p class="govuk-body"><%= t('publish.overview.rejected.summary') %></p>
+            <p class="govuk-body"><%= locals.openPublishTask?.comment %></p>
+            <a class="govuk-button govuk-!-margin-top-4" href="<%= buildUrl(`/publish/${dataset.id}/tasklist`, i18n.language) %>"><%= t('publish.overview.buttons.fix') %></a>
           <% } %>
 
           <% if (locals.publishingStatus === 'scheduled') { %>
             <p class="govuk-body"><%- t('publish.overview.scheduled.publish_at', { publishAt: dateFormat(locals.revision?.publish_at, 'h:mmaaa, d MMMM yyyy') }) %></p>
           <% } %>
         </div>
-
 
         <div class="govuk-tabs" data-module="govuk-tabs">
           <div class="tabs">
@@ -50,11 +59,11 @@
           </div>
           <div class="govuk-tabs__panel" id="actions" role="tabpanel" aria-labelledby="tab_actions">
             <ul class="govuk-list">
-              <% if (locals.publishingStatus === 'incomplete') { %>
+              <% if (locals.canEdit && locals.publishingStatus === 'incomplete') { %>
                 <li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/tasklist`, i18n.language) %>"><%= t('publish.overview.actions.continue') %></a></li>
               <% } %>
 
-              <% if (locals.publishingStatus === 'update_incomplete') { %>
+              <% if (locals.canEdit && locals.publishingStatus === 'update_incomplete') { %>
                 <li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/tasklist`, i18n.language) %>"><%= t('publish.overview.actions.continue_update') %></a></li>
               <% } %>
 
@@ -68,13 +77,12 @@
                 <li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/cube-preview`, i18n.language) %>"><%= t('publish.overview.actions.preview') %></a></li>
               <% } %>
 
-              <% if (['scheduled', 'pending_approval'].includes(locals.publishingStatus)) { %>
-                <li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language, { withdraw: 'true' }) %>"><%= t('publish.overview.actions.withdraw_first_revision') %></a></li>
-              <% } %>
-
-              <% if (locals.publishingStatus === 'update_scheduled') { %>
-                <li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/cube-preview`, i18n.language) %>"><%= t('publish.overview.actions.preview') %></a></li>
-                <li><a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language, { withdraw: 'true' }) %>"><%= t('publish.overview.actions.withdraw_update_revision') %></a></li>
+              <% if (locals.canEdit && ['pending_approval', 'scheduled', 'update_scheduled'].includes(locals.publishingStatus)) { %>
+                <li>
+                  <a class="govuk-link govuk-link--no-underline" href="<%= buildUrl(`/publish/${dataset.id}/overview`, i18n.language, { withdraw: 'true' }) %>">
+                    <%= t(`publish.overview.actions.${locals.publishingStatus === 'update_scheduled' ? 'withdraw_update_revision' : 'withdraw_first_revision'}`) %>
+                  </a>
+                </li>
               <% } %>
 
               <% if (locals.canMoveGroup) { %>

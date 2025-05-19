@@ -976,6 +976,9 @@
       "scheduled": {
         "publish_at": "Publishing scheduled: <strong>{{publishAt}}</strong>"
       },
+      "rejected": {
+        "summary": "Dataset was not approved for publishing because it has issues to fix:"
+      },
       "tabs": {
         "actions": "Actions",
         "history": "History"
@@ -989,6 +992,10 @@
         "continue": "Continue creating dataset",
         "preview": "View dataset preview",
         "move": "Move dataset to another group"
+      },
+      "buttons": {
+        "pending_approval": "Respond to publishing request",
+        "fix": "Fix issues with dataset"
       },
       "error": {
         "withdraw": "Could not withdraw dataset from publication. You should contact support."
@@ -1007,6 +1014,40 @@
     "move_group": {
       "heading": "Which group do you want to move this dataset to?",
       "success": "Dataset moved to {{groupName}}"
+    },
+    "task": {
+      "decision": {
+        "publish": {
+          "requested": {
+            "heading": "Do you approve this dataset for publishing?",
+            "form": {
+              "decision": {
+                "options": {
+                  "yes": {
+                    "label": "Yes"
+                  },
+                  "no": {
+                    "label": "No"
+                  }
+                },
+                "error": {
+                  "missing": "Select yes if you approve this dataset for publishing"
+                }
+              },
+              "reason": {
+                "label": "Enter reason and required actions",
+                "error": {
+                  "missing": "Enter why you do not approve this dataset for publishing and the required actions"
+                }
+              }
+            }
+          },
+          "flash": {
+            "approve": "Dataset approved for publishing",
+            "reject": "Dataset not approved for publishing"
+          }
+        }
+      }
     }
   },
   "translations": {
