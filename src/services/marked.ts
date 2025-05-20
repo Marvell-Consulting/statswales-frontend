@@ -54,7 +54,7 @@ export const docRenderer: RendererObject = {
       text += '</tr>';
     }
     text += '</tbody>';
-    return `<table class="govuk-table">${text}</table>`;
+    return `<div class="govuk-table__container"><table class="govuk-table">${text}</table></div>`;
   },
   tablecell({ tokens, align, header }: Tokens.TableCell) {
     const text = this.parser.parseInline(tokens);
