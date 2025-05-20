@@ -345,7 +345,7 @@ test.describe('Happy path', () => {
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
     // submit
-    await page.getByRole('button', { name: 'Submit for publishing' }).click();
+    await page.getByRole('button', { name: 'Submit for approval' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview?scheduled=true`);
   });
 });
