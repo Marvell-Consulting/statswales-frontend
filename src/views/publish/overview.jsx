@@ -9,7 +9,7 @@ export default function Overview(props) {
     return (
       <a
         className="govuk-link govuk-link--no-underline"
-        href={props.buildUrl(path, props.i18n.language, queryParams )}
+        href={props.buildUrl(path, props.i18n.language, queryParams)}
         target={newTab ? '_blank' : undefined}
       >
         {props.t(`publish.overview.actions.${action}`)}
@@ -51,21 +51,30 @@ export default function Overview(props) {
               <>
                 <p
                   className="govuk-body govuk-!-margin-0"
-                  dangerouslySetInnerHTML={{ __html: props.t('publish.overview.pending.publish_at', { publishAt: props.dateFormat(props.revision?.publish_at, 'h:mmaaa, d MMMM yyyy') })}}
-                >
-                </p>
+                  dangerouslySetInnerHTML={{
+                    __html: props.t('publish.overview.pending.publish_at', {
+                      publishAt: props.dateFormat(props.revision?.publish_at, 'h:mmaaa, d MMMM yyyy')
+                    })
+                  }}
+                ></p>
                 <p
                   className="govuk-body govuk-!-margin-0"
-                  dangerouslySetInnerHTML={{ __html: props.t('publish.overview.pending.requested_by', { userName: props.openPublishTask?.created_by_name })}}
-                >
-                </p>
+                  dangerouslySetInnerHTML={{
+                    __html: props.t('publish.overview.pending.requested_by', {
+                      userName: props.openPublishTask?.created_by_name
+                    })
+                  }}
+                ></p>
               </>
             )}
 
             {props.canApprove && (
               <a
                 className="govuk-button govuk-!-margin-top-4"
-                href={props.buildUrl(`/publish/${datasetId}/task-decision/${props.openPublishTask?.id}`, props.i18n.language)}
+                href={props.buildUrl(
+                  `/publish/${datasetId}/task-decision/${props.openPublishTask?.id}`,
+                  props.i18n.language
+                )}
               >
                 {props.t('publish.overview.buttons.pending_approval')}
               </a>
@@ -85,7 +94,11 @@ export default function Overview(props) {
             )}
 
             {props.publishingStatus === 'scheduled' && (
-              <p className="govuk-body">{props.t('publish.overview.scheduled.publish_at', { publishAt: props.dateFormat(props.revision?.publish_at, 'h:mmaaa, d MMMM yyyy') })}</p>
+              <p className="govuk-body">
+                {props.t('publish.overview.scheduled.publish_at', {
+                  publishAt: props.dateFormat(props.revision?.publish_at, 'h:mmaaa, d MMMM yyyy')
+                })}
+              </p>
             )}
           </div>
 
@@ -94,12 +107,28 @@ export default function Overview(props) {
               <div className="govuk-width-container">
                 <ul className="govuk-tabs__list">
                   <li className="govuk-tabs__list-item">
-                    <a className="govuk-tabs__tab" href="#actions" id="tab_actions" role="tab" aria-controls="actions" aria-selected="true" tabIndex="0">
+                    <a
+                      className="govuk-tabs__tab"
+                      href="#actions"
+                      id="tab_actions"
+                      role="tab"
+                      aria-controls="actions"
+                      aria-selected="true"
+                      tabIndex="0"
+                    >
                       {props.t('publish.overview.tabs.actions')}
                     </a>
                   </li>
                   <li className="govuk-tabs__list-item">
-                    <a className="govuk-tabs__tab" href="#history" id="tab_history" role="tab" aria-controls="history" aria-selected="false" tabIndex="-1">
+                    <a
+                      className="govuk-tabs__tab"
+                      href="#history"
+                      id="tab_history"
+                      role="tab"
+                      aria-controls="history"
+                      aria-selected="false"
+                      tabIndex="-1"
+                    >
                       {props.t('publish.overview.tabs.history')}
                     </a>
                   </li>
@@ -109,37 +138,54 @@ export default function Overview(props) {
             <div className="govuk-tabs__panel" id="actions" role="tabpanel" aria-labelledby="tab_actions">
               <ul className="govuk-list">
                 {props.canEdit && props.publishingStatus === 'incomplete' && (
-                  <li><DatasetLink path={`/publish/${datasetId}/tasklist`} action="continue" /></li>
-                )}
-
-                {props.canEdit && props.publishingStatus === 'update_incomplete' && (
-                  <li><DatasetLink path={`/publish/${datasetId}/tasklist`} action="continue_update" /></li>
-                )}
-
-                {props.datasetStatus === 'live' && (
-                  <li><DatasetLink path={`/published/${datasetId}`} action="view_published_dataset" newTab /></li>
-                )}
-
-                {props.canEdit && props.publishingStatus === 'published' && (
-                  <li><DatasetLink path={`/publish/${datasetId}/update`} action="update_dataset" /></li>
-                )}
-
-                {props.publishingStatus !== 'published' && (
-                  <li><DatasetLink path={`/publish/${datasetId}/cube-preview`} action="preview" /></li>
-                )}
-
-                {props.canEdit && ['pending_approval', 'scheduled', 'update_scheduled'].includes(props.publishingStatus) && (
                   <li>
-                    <DatasetLink
-                      path={`/publish/${datasetId}/overview`}
-                      action={props.publishingStatus === 'update_scheduled' ? 'withdraw_update_revision' : 'withdraw_first_revision'}
-                      queryParams={{ withdraw: 'true' }}
-                    />
+                    <DatasetLink path={`/publish/${datasetId}/tasklist`} action="continue" />
                   </li>
                 )}
 
+                {props.canEdit && props.publishingStatus === 'update_incomplete' && (
+                  <li>
+                    <DatasetLink path={`/publish/${datasetId}/tasklist`} action="continue_update" />
+                  </li>
+                )}
+
+                {props.datasetStatus === 'live' && (
+                  <li>
+                    <DatasetLink path={`/published/${datasetId}`} action="view_published_dataset" newTab />
+                  </li>
+                )}
+
+                {props.canEdit && props.publishingStatus === 'published' && (
+                  <li>
+                    <DatasetLink path={`/publish/${datasetId}/update`} action="update_dataset" />
+                  </li>
+                )}
+
+                {props.publishingStatus !== 'published' && (
+                  <li>
+                    <DatasetLink path={`/publish/${datasetId}/cube-preview`} action="preview" />
+                  </li>
+                )}
+
+                {props.canEdit &&
+                  ['pending_approval', 'scheduled', 'update_scheduled'].includes(props.publishingStatus) && (
+                    <li>
+                      <DatasetLink
+                        path={`/publish/${datasetId}/overview`}
+                        action={
+                          props.publishingStatus === 'update_scheduled'
+                            ? 'withdraw_update_revision'
+                            : 'withdraw_first_revision'
+                        }
+                        queryParams={{ withdraw: 'true' }}
+                      />
+                    </li>
+                  )}
+
                 {props.canMoveGroup && (
-                  <li><DatasetLink path="move" action="move" /></li>
+                  <li>
+                    <DatasetLink path="move" action="move" />
+                  </li>
                 )}
               </ul>
             </div>
@@ -147,7 +193,6 @@ export default function Overview(props) {
               <p className="govuk-body">Coming soon...</p>
             </div>
           </div>
-
         </div>
       </div>
     </Layout>
