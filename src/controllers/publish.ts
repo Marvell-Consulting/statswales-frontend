@@ -2682,7 +2682,7 @@ export const taskDecision = async (req: Request, res: Response, next: NextFuncti
   }
 
   try {
-    const task = await req.pubapi.getTaskById(req.params.taskId);
+    task = await req.pubapi.getTaskById(req.params.taskId);
 
     if (!task || task.dataset_id !== res.locals.datasetId) {
       logger.error('Failed to find task');
