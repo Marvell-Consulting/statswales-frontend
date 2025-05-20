@@ -23,7 +23,11 @@ export const getPublishingStatus = (
   const openPublishingTask = dataset.tasks?.find((task) => task.open && task.action === TaskAction.Publish);
 
   if (openPublishingTask) {
-    if (openPublishingTask.status === TaskStatus.Requested) return PublishingStatus.PendingApproval;
+    if (openPublishingTask.status === TaskStatus.Requested) {
+      return datasetStatus === DatasetStatus.Live
+        ? PublishingStatus.UpdatePendingApproval
+        : PublishingStatus.PendingApproval;
+    }
     if (openPublishingTask.status === TaskStatus.Rejected) return PublishingStatus.ChangesRequested;
   }
 

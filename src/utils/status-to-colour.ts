@@ -21,6 +21,7 @@ export const statusToColour = (status: TaskListStatus | DatasetStatus | Publishi
 
     case TaskListStatus.Updated:
     case PublishingStatus.PendingApproval:
+    case PublishingStatus.UpdatePendingApproval:
     case PublishingStatus.Scheduled:
     case PublishingStatus.UpdateScheduled:
       return 'orange';
