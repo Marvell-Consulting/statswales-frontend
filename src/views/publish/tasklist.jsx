@@ -175,7 +175,7 @@ export default function Tasklist(props) {
               describedBy="prepare-application-5-status"
             />
           </ul>
-          {props.taskList.canPublish && (
+          {props.canSubmit && (
             <div>
               <h2 className="govuk-heading-l govuk-!-margin-top-5">{props.t('publish.tasklist.submit.subheading')}</h2>
               <form encType="multipart/form-data" method="post">

@@ -5,100 +5,139 @@ import DatasetStatus from '../components/dataset/DatasetStatus';
 import ErrorHandler from '../components/ErrorHandler';
 
 export default function Overview(props) {
-  function DatasetLink({ path = '', translationKey, action, translationProps = {}, newTab }) {
+  function DatasetLink({ path, action, queryParams = {}, newTab }) {
     return (
-      <li>
-        <a
-          className="govuk-link govuk-link--no-underline"
-          href={props.buildUrl(
-            translationKey || `/publish/${props.dataset.id}/${path}`,
-            props.i18n.language,
-            translationProps
-          )}
-          target={newTab ? '_blank' : undefined}
-        >
-          {props.t(`publish.overview.actions.${action}`)}
-        </a>
-      </li>
+      <a
+        className="govuk-link govuk-link--no-underline"
+        href={props.buildUrl(path, props.i18n.language, queryParams )}
+        target={newTab ? '_blank' : undefined}
+      >
+        {props.t(`publish.overview.actions.${action}`)}
+      </a>
     );
   }
 
   return (
     <Layout {...props}>
       <div className="govuk-grid-row">
-        <div className="govuk-grid-column-two-thirds">
+        <div className="govuk-grid-column-full">
           <FlashMessages {...props} />
 
-          {props.publishingStatus === 'scheduled' && props.justScheduled && (
+          {props.successfullySubmitted && (
             <div
               className="govuk-notification-banner govuk-notification-banner--success"
               role="alert"
               aria-labelledby="govuk-notification-banner-title"
               data-module="govuk-notification-banner"
             >
-              <div className="govuk-notification-banner__header">
-                <h2 className="govuk-notification-banner__title" id="govuk-notification-banner-title">
-                  {props.t('publish.overview.scheduled.notification.header')}
-                </h2>
-              </div>
               <div className="govuk-notification-banner__content">
-                <h3 className="govuk-notification-banner__heading">
+                <p className="govuk-notification-banner__heading">
                   {props.t('publish.overview.scheduled.notification.content')}
-                </h3>
+                </p>
               </div>
             </div>
           )}
 
+          <span className="region-subhead">{props.t('publish.overview.subheading')}</span>
           <h1 className="govuk-heading-xl govuk-!-margin-bottom-2">{props.title}</h1>
 
           <DatasetStatus {...props} />
           <ErrorHandler {...props} />
 
-          {props.publishingStatus === 'scheduled' && (
-            <p
-              className="govuk-body"
-              dangerouslySetInnerHTML={{
-                __html: props.t('publish.overview.scheduled.publish_at', {
-                  publish_at: props.dateFormat(props.revision?.publish_at, 'h:mmaaa, d MMMM yyyy')
-                })
-              }}
-            />
-          )}
+          <div className="overview-details">
+            {props.publishingStatus === 'pending_approval' && (
+              <>
+                <p className="govuk-body govuk-!-margin-0">{props.t('publish.overview.pending.publish_at', { publishAt: props.dateFormat(props.revision?.publish_at, 'h:mmaaa, d MMMM yyyy') })}</p>
+                <p className="govuk-body govuk-!-margin-0">{props.t('publish.overview.pending.requested_by', { userName: props.openPublishTask?.created_by_name })}</p>
+              </>
+            )}
 
-          <h2 className="govuk-heading-m">{props.t('publish.overview.scheduled.what_next')}</h2>
+            {props.canApprove && (
+              <a
+                className="govuk-button govuk-!-margin-top-4"
+                href={props.buildUrl(`/publish/${dataset.id}/task-decision/${props.openPublishTask?.id}`, props.i18n.language)}
+              >
+                {props.t('publish.overview.buttons.pending_approval')}
+              </a>
+            )}
 
-          <div className="actions">
-            <ul className="govuk-list">
-              {props.publishingStatus === 'incomplete' && <DatasetLink path="tasklist" action="continue" />}
-              {props.publishingStatus === 'update_incomplete' && (
-                <DatasetLink path="tasklist" action="continue_update" />
-              )}
-              {props.datasetStatus === 'live' && (
-                <DatasetLink translationKey={`/published/${props.dataset.id}`} action="view_published_dataset" newTab />
-              )}
-              {props.publishingStatus === 'published' ? (
-                <DatasetLink path="update" action="update_dataset" />
-              ) : (
-                <DatasetLink path="cube_preview" action="preview" />
-              )}
-              {props.publishingStatus === 'scheduled' && (
-                <DatasetLink path="overview" action="withdraw_first_revision" translationProps={{ withdraw: 'true' }} />
-              )}
+            {props.openPublishTask?.status === 'rejected' && props.canEdit && (
+              <>
+                <p className="govuk-body">{props.t('publish.overview.rejected.summary')}</p>
+                <p className="govuk-body">{props.openPublishTask?.comment}</p>
+                <a
+                  className="govuk-button govuk-!-margin-top-4"
+                  href={props.buildUrl(`/publish/${props.dataset.id}/tasklist`, props.i18n.language)}
+                >
+                  {props.t('publish.overview.buttons.fix')}
+                </a>
+              </>
+            )}
 
-              {props.publishingStatus === 'update_scheduled' && (
-                <>
-                  <DatasetLink path="cube-preview" action="preview" />
-                  <DatasetLink
-                    path="overview"
-                    action="withdraw_update_revision"
-                    translationProps={{ withdraw: 'true' }}
-                  />
-                </>
-              )}
-
-              {props.canMoveGroup && <DatasetLink path="move" action="move" />}
-            </ul>
+            {props.publishingStatus === 'scheduled' && (
+              <p className="govuk-body">{props.t('publish.overview.scheduled.publish_at', { publishAt: props.dateFormat(props.revision?.publish_at, 'h:mmaaa, d MMMM yyyy') })}</p>
+            )}
           </div>
+
+          <div className="govuk-tabs" data-module="govuk-tabs">
+            <div className="tabs">
+              <div className="govuk-width-container">
+                <ul className="govuk-tabs__list">
+                  <li className="govuk-tabs__list-item">
+                    <a className="govuk-tabs__tab" href="#actions" id="tab_actions" role="tab" aria-controls="actions" aria-selected="true" tabIndex="0">
+                      {props.t('publish.overview.tabs.actions')}
+                    </a>
+                  </li>
+                  <li className="govuk-tabs__list-item">
+                    <a className="govuk-tabs__tab" href="#history" id="tab_history" role="tab" aria-controls="history" aria-selected="false" tabIndex="-1">
+                      {props.t('publish.overview.tabs.history')}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div className="govuk-tabs__panel" id="actions" role="tabpanel" aria-labelledby="tab_actions">
+              <ul className="govuk-list">
+                {props.canEdit && props.publishingStatus === 'incomplete' && (
+                  <li><DatasetLink path={`/publish/${props.dataset.id}/tasklist`} action="continue" /></li>
+                )}
+
+                {props.canEdit && props.publishingStatus === 'update_incomplete' && (
+                  <li><DatasetLink path={`/publish/${props.dataset.id}/tasklist`} action="continue_update" /></li>
+                )}
+
+                {props.datasetStatus === 'live' && (
+                  <li><DatasetLink path={`/published/${props.dataset.id}`} action="view_published_dataset" newTab /></li>
+                )}
+
+                {props.canEdit && props.publishingStatus === 'published' && (
+                  <li><DatasetLink path={`/publish/${props.dataset.id}/update`} action="update_dataset" /></li>
+                )}
+
+                {props.publishingStatus !== 'published' && (
+                  <li><DatasetLink path={`/publish/${props.dataset.id}/cube-preview`} action="preview" /></li>
+                )}
+
+                {props.canEdit && ['pending_approval', 'scheduled', 'update_scheduled'].includes(props.publishingStatus) && (
+                  <li>
+                    <DatasetLink
+                      path={`/publish/${props.dataset.id}/overview`}
+                      action={props.publishingStatus === 'update_scheduled' ? 'withdraw_update_revision' : 'withdraw_first_revision'}
+                      queryParams={{ withdraw: 'true' }}
+                    />
+                  </li>
+                )}
+
+                {props.canMoveGroup && (
+                  <li><DatasetLink path="move" action="move" /></li>
+                )}
+              </ul>
+            </div>
+            <div className="govuk-tabs__panel" id="history" role="tabpanel" aria-labelledby="tab_history">
+              <p className="govuk-body">Coming soon...</p>
+            </div>
+          </div>
+
         </div>
       </div>
     </Layout>
