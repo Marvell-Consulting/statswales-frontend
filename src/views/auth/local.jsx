@@ -15,7 +15,7 @@ export default function LocalAuth(props) {
           >
             <div className="govuk-notification-banner__header">
               <h2 className="govuk-notification-banner__title" id="govuk-notification-banner-title">
-                Important
+                {props.t('login.form.notice_header')}
               </h2>
             </div>
             <div className="govuk-notification-banner__content">
