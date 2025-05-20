@@ -2,12 +2,13 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { parse } from 'csv-parse/sync';
 import { stringify } from 'csv-stringify/sync';
-
+import { escapeRegExp } from 'lodash';
 import { test, expect, Page, Locator, Download, TestInfo } from '@playwright/test';
+import { TZDate } from '@date-fns/tz';
+import { add } from 'date-fns';
+
 import { users } from '../fixtures/logins';
 import { appConfig } from '../../src/config';
-import { escapeRegExp } from 'lodash';
-import { TZDate } from '@date-fns/tz';
 
 const config = appConfig();
 const baseUrl = config.frontend.url;
@@ -297,6 +298,7 @@ test.describe('Happy path', () => {
 
     // download files;
     await previewPage.click('#tab_download_dataset');
+    await previewPage.locator('#csv').waitFor({ state: 'visible' });
     await previewPage.click('#csv', { force: true });
     await previewPage.click('#en-GB', { force: true });
     const csvDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
@@ -329,11 +331,13 @@ test.describe('Happy path', () => {
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/schedule`);
 
     const now = new TZDate(new Date().toISOString(), 'Europe/London');
-    const day = now.getDate();
-    const month = now.getMonth() + 1;
-    const year = now.getFullYear();
-    const hours = now.getHours();
-    const mins = now.getMinutes() + 5;
+    const theFuture = add(now, { minutes: 5 });
+
+    const day = theFuture.getDate();
+    const month = theFuture.getMonth() + 1;
+    const year = theFuture.getFullYear();
+    const hours = theFuture.getHours();
+    const mins = theFuture.getMinutes();
 
     await page.getByRole('textbox', { name: 'Day' }).fill(String(day));
     await page.getByRole('textbox', { name: 'Month' }).fill(String(month));
@@ -346,6 +350,6 @@ test.describe('Happy path', () => {
 
     // submit
     await page.getByRole('button', { name: 'Submit for approval' }).click();
-    expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview?scheduled=true`);
+    expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview?submitted=true`);
   });
 });
