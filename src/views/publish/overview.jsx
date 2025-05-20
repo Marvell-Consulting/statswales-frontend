@@ -17,6 +17,8 @@ export default function Overview(props) {
     );
   }
 
+  const datasetId = props.dataset.id;
+
   return (
     <Layout {...props}>
       <div className="govuk-grid-row">
@@ -45,17 +47,25 @@ export default function Overview(props) {
           <ErrorHandler {...props} />
 
           <div className="overview-details">
-            {props.publishingStatus === 'pending_approval' && (
+            {['pending_approval', 'update_pending_approval'].includes(props.publishingStatus) && (
               <>
-                <p className="govuk-body govuk-!-margin-0">{props.t('publish.overview.pending.publish_at', { publishAt: props.dateFormat(props.revision?.publish_at, 'h:mmaaa, d MMMM yyyy') })}</p>
-                <p className="govuk-body govuk-!-margin-0">{props.t('publish.overview.pending.requested_by', { userName: props.openPublishTask?.created_by_name })}</p>
+                <p
+                  className="govuk-body govuk-!-margin-0"
+                  dangerouslySetInnerHTML={{ __html: props.t('publish.overview.pending.publish_at', { publishAt: props.dateFormat(props.revision?.publish_at, 'h:mmaaa, d MMMM yyyy') })}}
+                >
+                </p>
+                <p
+                  className="govuk-body govuk-!-margin-0"
+                  dangerouslySetInnerHTML={{ __html: props.t('publish.overview.pending.requested_by', { userName: props.openPublishTask?.created_by_name })}}
+                >
+                </p>
               </>
             )}
 
             {props.canApprove && (
               <a
                 className="govuk-button govuk-!-margin-top-4"
-                href={props.buildUrl(`/publish/${dataset.id}/task-decision/${props.openPublishTask?.id}`, props.i18n.language)}
+                href={props.buildUrl(`/publish/${datasetId}/task-decision/${props.openPublishTask?.id}`, props.i18n.language)}
               >
                 {props.t('publish.overview.buttons.pending_approval')}
               </a>
@@ -67,7 +77,7 @@ export default function Overview(props) {
                 <p className="govuk-body">{props.openPublishTask?.comment}</p>
                 <a
                   className="govuk-button govuk-!-margin-top-4"
-                  href={props.buildUrl(`/publish/${props.dataset.id}/tasklist`, props.i18n.language)}
+                  href={props.buildUrl(`/publish/${datasetId}/tasklist`, props.i18n.language)}
                 >
                   {props.t('publish.overview.buttons.fix')}
                 </a>
@@ -99,29 +109,29 @@ export default function Overview(props) {
             <div className="govuk-tabs__panel" id="actions" role="tabpanel" aria-labelledby="tab_actions">
               <ul className="govuk-list">
                 {props.canEdit && props.publishingStatus === 'incomplete' && (
-                  <li><DatasetLink path={`/publish/${props.dataset.id}/tasklist`} action="continue" /></li>
+                  <li><DatasetLink path={`/publish/${datasetId}/tasklist`} action="continue" /></li>
                 )}
 
                 {props.canEdit && props.publishingStatus === 'update_incomplete' && (
-                  <li><DatasetLink path={`/publish/${props.dataset.id}/tasklist`} action="continue_update" /></li>
+                  <li><DatasetLink path={`/publish/${datasetId}/tasklist`} action="continue_update" /></li>
                 )}
 
                 {props.datasetStatus === 'live' && (
-                  <li><DatasetLink path={`/published/${props.dataset.id}`} action="view_published_dataset" newTab /></li>
+                  <li><DatasetLink path={`/published/${datasetId}`} action="view_published_dataset" newTab /></li>
                 )}
 
                 {props.canEdit && props.publishingStatus === 'published' && (
-                  <li><DatasetLink path={`/publish/${props.dataset.id}/update`} action="update_dataset" /></li>
+                  <li><DatasetLink path={`/publish/${datasetId}/update`} action="update_dataset" /></li>
                 )}
 
                 {props.publishingStatus !== 'published' && (
-                  <li><DatasetLink path={`/publish/${props.dataset.id}/cube-preview`} action="preview" /></li>
+                  <li><DatasetLink path={`/publish/${datasetId}/cube-preview`} action="preview" /></li>
                 )}
 
                 {props.canEdit && ['pending_approval', 'scheduled', 'update_scheduled'].includes(props.publishingStatus) && (
                   <li>
                     <DatasetLink
-                      path={`/publish/${props.dataset.id}/overview`}
+                      path={`/publish/${datasetId}/overview`}
                       action={props.publishingStatus === 'update_scheduled' ? 'withdraw_update_revision' : 'withdraw_first_revision'}
                       queryParams={{ withdraw: 'true' }}
                     />
