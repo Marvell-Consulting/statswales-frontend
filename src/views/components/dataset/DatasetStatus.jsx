@@ -4,7 +4,7 @@ import React from 'react';
 export default function DatasetStatus({ statusToColour, t, publishingStatus, datasetStatus }) {
   return (
     <div className="govuk-!-margin-bottom-8">
-      <strong className={clsx('govuk-tag', `govuk-tag--{${statusToColour(datasetStatus)}`)}>
+      <strong className={clsx('govuk-tag', `govuk-tag--${statusToColour(datasetStatus)}`)}>
         {t(`badge.dataset_status.${datasetStatus}`)}
       </strong>{' '}
       {publishingStatus && (
