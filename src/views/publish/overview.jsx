@@ -3,10 +3,11 @@ import Layout from '../components/layouts/Publisher';
 import FlashMessages from '../components/FlashMessages';
 import ErrorHandler from '../components/ErrorHandler';
 import DatasetStatus from '../components/dataset/DatasetStatus';
+import Tabs from '../components/Tabs';
 
 export default function Overview(props) {
   return (
-    <Layout>
+    <Layout {...props}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
           <FlashMessages {...props} />
@@ -88,129 +89,105 @@ export default function Overview(props) {
             )}
           </div>
 
-          <div className="govuk-tabs" data-module="govuk-tabs">
-            <div className="tabs">
-              <div className="govuk-width-container">
-                <ul className="govuk-tabs__list">
-                  <li className="govuk-tabs__list-item">
-                    <a
-                      className="govuk-tabs__tab"
-                      href="#actions"
-                      id="tab_actions"
-                      role="tab"
-                      aria-controls="actions"
-                      aria-selected="true"
-                      tabindex="0"
-                    >
-                      {props.t('publish.overview.tabs.actions')}
-                    </a>
-                  </li>
-                  <li className="govuk-tabs__list-item">
-                    <a
-                      className="govuk-tabs__tab"
-                      href="#history"
-                      id="tab_history"
-                      role="tab"
-                      aria-controls="history"
-                      aria-selected="false"
-                      tabindex="-1"
-                    >
-                      {props.t('publish.overview.tabs.history')}
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="govuk-tabs__panel" id="actions" role="tabpanel" aria-labelledby="tab_actions">
-              <ul className="govuk-list">
-                {props.canEdit && props.publishingStatus === 'incomplete' && (
-                  <li>
-                    <a
-                      className="govuk-link govuk-link--no-underline"
-                      href={props.buildUrl(`/publish/${props.dataset.id}/tasklist`, props.i18n.language)}
-                    >
-                      {props.t('publish.overview.actions.continue')}
-                    </a>
-                  </li>
-                )}
+          <Tabs
+            tabs={[
+              {
+                id: 'actions',
+                label: props.t('publish.overview.tabs.actions'),
+                children: (
+                  <ul className="govuk-list">
+                    {props.canEdit && props.publishingStatus === 'incomplete' && (
+                      <li>
+                        <a
+                          className="govuk-link govuk-link--no-underline"
+                          href={props.buildUrl(`/publish/${props.dataset.id}/tasklist`, props.i18n.language)}
+                        >
+                          {props.t('publish.overview.actions.continue')}
+                        </a>
+                      </li>
+                    )}
 
-                {props.canEdit && props.publishingStatus === 'update_incomplete' && (
-                  <li>
-                    <a
-                      className="govuk-link govuk-link--no-underline"
-                      href={props.buildUrl(`/publish/${props.dataset.id}/tasklist`, props.i18n.language)}
-                    >
-                      {props.t('publish.overview.actions.continue_update')}
-                    </a>
-                  </li>
-                )}
+                    {props.canEdit && props.publishingStatus === 'update_incomplete' && (
+                      <li>
+                        <a
+                          className="govuk-link govuk-link--no-underline"
+                          href={props.buildUrl(`/publish/${props.dataset.id}/tasklist`, props.i18n.language)}
+                        >
+                          {props.t('publish.overview.actions.continue_update')}
+                        </a>
+                      </li>
+                    )}
 
-                {props.datasetStatus === 'live' && (
-                  <li>
-                    <a
-                      className="govuk-link govuk-link--no-underline"
-                      href={props.buildUrl(`/published/${props.dataset.id}`, props.i18n.language)}
-                      target="_blank"
-                    >
-                      {props.t('publish.overview.actions.view_published_dataset')}
-                    </a>
-                  </li>
-                )}
+                    {props.datasetStatus === 'live' && (
+                      <li>
+                        <a
+                          className="govuk-link govuk-link--no-underline"
+                          href={props.buildUrl(`/published/${props.dataset.id}`, props.i18n.language)}
+                          target="_blank"
+                        >
+                          {props.t('publish.overview.actions.view_published_dataset')}
+                        </a>
+                      </li>
+                    )}
 
-                {props.canEdit && props.publishingStatus === 'published' && (
-                  <li>
-                    <a
-                      className="govuk-link govuk-link--no-underline"
-                      href={props.buildUrl(`/publish/${props.dataset.id}/update`, props.i18n.language)}
-                    >
-                      {props.t('publish.overview.actions.update_dataset')}
-                    </a>
-                  </li>
-                )}
+                    {props.canEdit && props.publishingStatus === 'published' && (
+                      <li>
+                        <a
+                          className="govuk-link govuk-link--no-underline"
+                          href={props.buildUrl(`/publish/${props.dataset.id}/update`, props.i18n.language)}
+                        >
+                          {props.t('publish.overview.actions.update_dataset')}
+                        </a>
+                      </li>
+                    )}
 
-                {props.publishingStatus !== 'published' && (
-                  <li>
-                    <a
-                      className="govuk-link govuk-link--no-underline"
-                      href={props.buildUrl(`/publish/${props.dataset.id}/cube-preview`, props.i18n.language)}
-                    >
-                      {props.t('publish.overview.actions.preview')}
-                    </a>
-                  </li>
-                )}
+                    {props.publishingStatus !== 'published' && (
+                      <li>
+                        <a
+                          className="govuk-link govuk-link--no-underline"
+                          href={props.buildUrl(`/publish/${props.dataset.id}/cube-preview`, props.i18n.language)}
+                        >
+                          {props.t('publish.overview.actions.preview')}
+                        </a>
+                      </li>
+                    )}
 
-                {props.canEdit &&
-                  ['pending_approval', 'scheduled', 'update_scheduled'].includes(props.publishingStatus) && (
-                    <li>
-                      <a
-                        className="govuk-link govuk-link--no-underline"
-                        href={props.buildUrl(`/publish/${props.dataset.id}/overview`, props.i18n.language, {
-                          withdraw: 'true'
-                        })}
-                      >
-                        {props.t(
-                          `publish.overview.actions.${props.publishingStatus === 'update_scheduled' ? 'withdraw_update_revision' : 'withdraw_first_revision'}`
-                        )}
-                      </a>
-                    </li>
-                  )}
+                    {props.canEdit &&
+                      ['pending_approval', 'scheduled', 'update_scheduled'].includes(props.publishingStatus) && (
+                        <li>
+                          <a
+                            className="govuk-link govuk-link--no-underline"
+                            href={props.buildUrl(`/publish/${props.dataset.id}/overview`, props.i18n.language, {
+                              withdraw: 'true'
+                            })}
+                          >
+                            {props.t(
+                              `publish.overview.actions.${props.publishingStatus === 'update_scheduled' ? 'withdraw_update_revision' : 'withdraw_first_revision'}`
+                            )}
+                          </a>
+                        </li>
+                      )}
 
-                {props.canMoveGroup && (
-                  <li>
-                    <a
-                      className="govuk-link govuk-link--no-underline"
-                      href={props.buildUrl(`/publish/${props.dataset.id}/move`, props.i18n.language)}
-                    >
-                      {props.t('publish.overview.actions.move')}
-                    </a>
-                  </li>
-                )}
-              </ul>
-            </div>
-            <div className="govuk-tabs__panel" id="history" role="tabpanel" aria-labelledby="tab_history">
-              <p className="govuk-body">Coming soon...</p>
-            </div>
-          </div>
+                    {props.canMoveGroup && (
+                      <li>
+                        <a
+                          className="govuk-link govuk-link--no-underline"
+                          href={props.buildUrl(`/publish/${props.dataset.id}/move`, props.i18n.language)}
+                        >
+                          {props.t('publish.overview.actions.move')}
+                        </a>
+                      </li>
+                    )}
+                  </ul>
+                )
+              },
+              {
+                id: 'history',
+                label: props.t('publish.overview.tabs.history'),
+                children: <p className="govuk-body">Coming soon...</p>
+              }
+            ]}
+          />
         </div>
       </div>
     </Layout>
