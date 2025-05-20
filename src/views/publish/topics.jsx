@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Layout from '../components/layouts/Publisher';
 import ErrorHandler from '../components/ErrorHandler';
 
@@ -17,8 +17,8 @@ export default function Topics(props) {
             <div className="govuk-form-group">
               <fieldset className="govuk-fieldset" aria-describedby="topic-hint">
                 <div className="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
-                  {props.nestedTopics.map((topic) => (
-                    <>
+                  {props.nestedTopics.map((topic, index) => (
+                    <Fragment key={index}>
                       <div className="govuk-checkboxes__item">
                         <input
                           className="govuk-checkboxes__input"
@@ -52,7 +52,7 @@ export default function Topics(props) {
                           ))}
                         </div>
                       )}
-                    </>
+                    </Fragment>
                   ))}
                 </div>
               </fieldset>

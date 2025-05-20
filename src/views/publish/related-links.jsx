@@ -126,7 +126,7 @@ export default function RelatedLinks(props) {
                       id="link_url"
                       name="link_url"
                       type="text"
-                      value={props.link.url}
+                      defaultValue={props.link.url}
                     />
                   </div>
                   <div
