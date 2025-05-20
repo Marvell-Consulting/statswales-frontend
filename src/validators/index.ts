@@ -36,8 +36,7 @@ export async function getErrorFields(validators: ValidationChain | ValidationCha
 }
 
 export const datasetIdValidator = () => param('datasetId').trim().notEmpty().isUUID(4);
-export const revisionIdValidator = () => param('revisionId').trim().notEmpty().isUUID(4);
-export const factTableIdValidator = () => param('factTableId').trim().notEmpty().isUUID(4);
+export const uuidValidator = (paramName: string) => param(paramName).trim().notEmpty().isUUID(4);
 
 export const titleValidator = () =>
   body('title')
@@ -85,3 +84,7 @@ export const minuteValidator = () => body('minute').isInt({ min: 0, max: 59, all
 export const organisationIdValidator = () => body('organisation').trim().notEmpty().isUUID(4);
 
 export const groupIdValidator = (groupIds: string[]) => body('group_id').trim().isIn(groupIds);
+
+export const taskDecisionValidator = () => body('decision').isIn(['approve', 'reject']);
+
+export const taskDecisionReasonValidator = () => body('reason').if(body('decision').equals('reject')).trim().notEmpty();

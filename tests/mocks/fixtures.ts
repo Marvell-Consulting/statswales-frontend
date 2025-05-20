@@ -2,7 +2,7 @@ import { DatasetDTO } from '../../src/dtos/dataset';
 import { DataTableDto } from '../../src/dtos/data-table';
 import { TaskListState } from '../../src/dtos/task-list-state';
 import { ViewDTO } from '../../src/dtos/view-dto';
-import { TaskStatus } from '../../src/enums/task-status';
+import { TaskListStatus } from '../../src/enums/task-list-status';
 
 export const datasetWithTitle: DatasetDTO = {
   id: '5caeb8ed-ea64-4a58-8cf0-b728308833e5',
@@ -282,26 +282,26 @@ export const importWithDraftSources: DataTableDto = {
 };
 
 export const tasklistInProgress: TaskListState = {
-  datatable: TaskStatus.Completed,
+  datatable: TaskListStatus.Completed,
   dimensions: [],
   metadata: {
-    title: TaskStatus.NotStarted,
-    summary: TaskStatus.NotStarted,
-    quality: TaskStatus.NotStarted,
-    sources: TaskStatus.NotStarted,
-    related: TaskStatus.NotStarted,
-    frequency: TaskStatus.NotStarted,
-    designation: TaskStatus.NotStarted,
-    collection: TaskStatus.NotStarted,
-    topics: TaskStatus.NotStarted
+    title: TaskListStatus.NotStarted,
+    summary: TaskListStatus.NotStarted,
+    quality: TaskListStatus.NotStarted,
+    sources: TaskListStatus.NotStarted,
+    related: TaskListStatus.NotStarted,
+    frequency: TaskListStatus.NotStarted,
+    designation: TaskListStatus.NotStarted,
+    collection: TaskListStatus.NotStarted,
+    topics: TaskListStatus.NotStarted
   },
   translation: {
-    export: TaskStatus.NotStarted,
-    import: TaskStatus.NotStarted
+    export: TaskListStatus.NotStarted,
+    import: TaskListStatus.NotStarted
   },
   publishing: {
-    when: TaskStatus.NotStarted,
-    organisation: TaskStatus.NotStarted
+    when: TaskListStatus.NotStarted,
+    organisation: TaskListStatus.NotStarted
   },
   canPublish: false,
   isUpdate: false

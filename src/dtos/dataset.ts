@@ -2,6 +2,7 @@ import { DimensionDTO } from './dimension';
 import { RevisionDTO } from './revision';
 import { MeasureDTO } from './measure';
 import { FactTableColumnDto } from './fact-table-column-dto';
+import { TaskDTO } from './task';
 
 export interface DatasetDTO {
   id: string;
@@ -23,4 +24,5 @@ export interface DatasetDTO {
   start_date?: string;
   end_date?: string;
   user_group_id?: string;
+  tasks?: TaskDTO[];
 }

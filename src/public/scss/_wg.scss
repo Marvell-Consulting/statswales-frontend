@@ -574,30 +574,31 @@ $whitepurple: #eed5e3;
     color: $black;
   }
 
-  .govuk-notification-banner--success {
-    border-color: transparent;
-    background-color: transparent;
-    background: $whitegreen;
+  .govuk-notification-banner {
     border: none;
-    border-left: 10px solid $green;
-    display: block;
     font-size: 18px;
-    padding: 10px 0px 15px 0px;
-  }
 
-  h3.govuk-notification-banner__heading {
-    font-size: 18px;
-    font-weight: normal;
-  }
+    &--success {
+      background: $whitegreen;
+      border-left: 10px solid $green;
+    }
 
-  .govuk-notification-banner__content {
-    background-color: transparent;
-    padding: 20px 20px;
-  }
+    &__title {
+      // color: $black;
+    }
 
-  .govuk-notification-banner--success h2 {
-    color: $black;
-    font-size: 28px;
+    &__header {
+    }
+
+    &__content {
+      background-color: transparent;
+      padding: 20px;
+    }
+
+    &__heading {
+      font-size: 18px;
+      font-weight: normal;
+    }
   }
 
   .govuk-notification-banner:focus {

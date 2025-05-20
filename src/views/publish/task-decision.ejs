@@ -1,0 +1,51 @@
+<%- include("../partials/header"); %>
+
+<div class="govuk-width-container app-width-container">
+	<main class="govuk-main-wrapper" id="main-content" role="main">
+
+		<div class="govuk-grid-row">
+			<div class="govuk-grid-column-two-thirds">
+        <form enctype="multipart/form-data" method="post">
+          <h1 class="govuk-heading-xl"><%= t(`publish.task.decision.${locals.taskType}.heading`) %></h1>
+          <%- include("../partials/error-handler"); %>
+
+          <div class="govuk-form-group <%= locals.errors?.find(e => e.field === 'decision') ? 'govuk-form-group--error' : '' %>">
+            <fieldset class="govuk-fieldset">
+              <% if(locals.errors?.find(e => e.field === 'decision')) { %>
+                  <p id="decision-error" class="govuk-error-message"><%= t(`publish.task.decision.${locals.taskType}.form.decision.error.missing`) %></p>
+              <% } %>
+              <div class="govuk-radios" data-module="govuk-radios">
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="decisionYes" name="decision" type="radio" value="approve" <%= locals.values?.decision === 'approve' ? 'checked' : '' %> />
+                  <label class="govuk-label govuk-radios__label" for="decisionYes"><%= t(`publish.task.decision.${locals.taskType}.form.decision.options.yes.label`) %></label>
+                </div>
+                <div class="govuk-radios__item">
+                  <input class="govuk-radios__input" id="decisionNo" name="decision" data-aria-controls="conditional-decisionNo" type="radio" value="reject" <%= locals.values?.decision === 'reject' ? 'checked' : '' %> />
+                  <label class="govuk-label govuk-radios__label" for="decisionNo"><%= t(`publish.task.decision.${locals.taskType}.form.decision.options.no.label`) %></label>
+                </div>
+                <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-decisionNo">
+                  <div class="govuk-form-group <%= locals.errors?.find(e => e.field === 'reason') ? 'govuk-form-group--error' : '' %>">
+                    <fieldset class="govuk-fieldset" role="group" aria-describedby="decisionNo">
+                      <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                          <%= t(`publish.task.decision.${locals.taskType}.form.reason.label`) %>
+                      </legend>
+                      <% if(locals.errors?.find(e => e.field === 'reason')) { %>
+                          <p id="reason-error" class="govuk-error-message"><%= t(`publish.task.decision.${locals.taskType}.form.reason.error.missing`) %></p>
+                      <% } %>
+                      <textarea class="govuk-textarea" id="roundingDescription" name="reason" rows="4" aria-describedby="roundingDescription-hint"><%= locals.values?.reason %></textarea>
+                    </fieldset>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <button type="submit" class="govuk-button" data-module="govuk-button"><%= t('buttons.continue') %></button>
+        </form>
+      </div>
+		</div>
+
+	</main>
+</div>
+
+<%- include("../partials/footer"); %>

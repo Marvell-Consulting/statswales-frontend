@@ -166,7 +166,7 @@
             <%- include("../partials/tasklist-status", { status: taskList.publishing.when }) %>
           </li>
         </ul>
-        <% if (taskList.canPublish) { %>
+        <% if (locals.canSubmit) { %>
           <div>
             <h2 class="govuk-heading-l govuk-!-margin-top-5"><%= t('publish.tasklist.submit.subheading') %></h2>
             <form enctype="multipart/form-data" method="post">

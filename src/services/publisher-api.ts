@@ -38,6 +38,8 @@ import { AvailableRoles } from '../interfaces/available-roles';
 import { RoleSelectionDTO } from '../dtos/user/role-selection-dto';
 import { UserStatus } from '../enums/user-status';
 import { AuthProvider } from '../enums/auth-providers';
+import { TaskDTO } from '../dtos/task';
+import { TaskDecisionDTO } from '../dtos/task-decision';
 
 const config = appConfig();
 
@@ -573,10 +575,10 @@ export class PublisherApi {
     );
   }
 
-  public async approveForPublication(datasetId: string, revisionId: string): Promise<DatasetDTO> {
-    logger.debug(`Attempting to approve draft revision for publication`);
+  public async submitForPublication(datasetId: string, revisionId: string): Promise<DatasetDTO> {
+    logger.debug(`Attempting to submit draft revision for publication`);
     return this.fetch({
-      url: `dataset/${datasetId}/revision/by-id/${revisionId}/approve`,
+      url: `dataset/${datasetId}/revision/by-id/${revisionId}/submit`,
       method: HttpMethod.Post
     }).then((response) => response.json() as unknown as DatasetDTO);
   }
@@ -680,6 +682,18 @@ export class PublisherApi {
     const json = { status };
     return this.fetch({ url: `admin/user/${userId}/status`, method: HttpMethod.Patch, json }).then(
       (response) => response.json() as unknown as UserDTO
+    );
+  }
+
+  public async getTaskById(taskId: string): Promise<TaskDTO> {
+    logger.debug(`Fetching task by id: ${taskId}`);
+    return this.fetch({ url: `task/${taskId}` }).then((response) => response.json() as unknown as TaskDTO);
+  }
+
+  public async taskDecision(taskId: string, decisionDTO: TaskDecisionDTO): Promise<TaskDTO> {
+    logger.debug(`Decision made on task ${taskId}: ${decisionDTO.decision}`);
+    return this.fetch({ url: `task/${taskId}`, method: HttpMethod.Patch, json: decisionDTO }).then(
+      (response) => response.json() as unknown as TaskDTO
     );
   }
 }

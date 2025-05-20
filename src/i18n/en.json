@@ -23,11 +23,13 @@
       "live": "Live dataset"
     },
     "publishing_status": {
-      "published": "Published",
       "incomplete": "Incomplete",
-      "scheduled": "Scheduled",
       "update_incomplete": "Update incomplete",
-      "update_scheduled": "Update scheduled"
+      "pending_approval": "Pending approval",
+      "changes_requested": "Issues to fix",
+      "scheduled": "Scheduled",
+      "update_scheduled": "Update scheduled",
+      "published": "Published"
     }
   },
   "pagination": {
@@ -79,6 +81,7 @@
       "expired": "Your session has expired. You need to sign in again."
     },
     "form": {
+      "notice_header": "Important",
       "notice_1": "The username we've given you is temporary. You'll only be able to log in with it whilst we run this round of testing.",
       "notice_2": "Do not upload any sensitive data or data that other StatsWales users should not have access to.",
       "username": {
@@ -111,6 +114,8 @@
     "publishing_status": {
       "incomplete": "Incomplete",
       "update_incomplete": "Update incomplete",
+      "pending_approval": "Pending approval",
+      "changes_requested": "Issues to fix",
       "scheduled": "Scheduled",
       "update_scheduled": "Update scheduled",
       "published": "Published"
@@ -934,14 +939,12 @@
       },
       "publishing": {
         "subheading": "Publishing",
-        "organisation": "Publisher organisation and contact",
         "when": "When this dataset should be published",
-        "when_update": "When this update should be published",
-        "submit": "Submit for approval"
+        "when_update": "When this update should be published"
       },
       "submit": {
         "subheading": "By continuing, you confirm that all data and metadata has been checked and is correct.",
-        "button": "Submit for publishing"
+        "button": "Submit for approval"
       }
     },
     "change_data": {
@@ -961,13 +964,26 @@
       "example": "For example: {{example}}"
     },
     "overview": {
-      "scheduled": {
+      "subheading": "Dataset overview",
+      "submitted": {
         "notification": {
           "header": "Success",
-          "content": "Dataset submitted successfully for publishing"
-        },
-        "publish_at": "Publishing scheduled: <strong>{{publish_at}}</strong>",
-        "what_next": "What do you want to do?"
+          "content": "Dataset submitted for approval"
+        }
+      },
+      "pending": {
+        "publish_at": "Proposed publication date: <strong>{{publishAt}}</strong>",
+        "requested_by": "Publishing requested by: <strong>{{userName}}</strong>"
+      },
+      "scheduled": {
+        "publish_at": "Publishing scheduled: <strong>{{publishAt}}</strong>"
+      },
+      "rejected": {
+        "summary": "Dataset was not approved for publishing because it has issues to fix:"
+      },
+      "tabs": {
+        "actions": "Actions",
+        "history": "History"
       },
       "actions": {
         "view_published_dataset": "View published dataset (opens in new tab)",
@@ -978,6 +994,10 @@
         "continue": "Continue creating dataset",
         "preview": "View dataset preview",
         "move": "Move dataset to another group"
+      },
+      "buttons": {
+        "pending_approval": "Respond to publishing request",
+        "fix": "Fix issues with dataset"
       },
       "error": {
         "withdraw": "Could not withdraw dataset from publication. You should contact support."
@@ -996,6 +1016,40 @@
     "move_group": {
       "heading": "Which group do you want to move this dataset to?",
       "success": "Dataset moved to {{groupName}}"
+    },
+    "task": {
+      "decision": {
+        "publish": {
+          "requested": {
+            "heading": "Do you approve this dataset for publishing?",
+            "form": {
+              "decision": {
+                "options": {
+                  "yes": {
+                    "label": "Yes"
+                  },
+                  "no": {
+                    "label": "No"
+                  }
+                },
+                "error": {
+                  "missing": "Select yes if you approve this dataset for publishing"
+                }
+              },
+              "reason": {
+                "label": "Enter reason and required actions",
+                "error": {
+                  "missing": "Enter why you do not approve this dataset for publishing and the required actions"
+                }
+              }
+            }
+          },
+          "flash": {
+            "approve": "Dataset approved for publishing",
+            "reject": "Dataset not approved for publishing"
+          }
+        }
+      }
     }
   },
   "translations": {
