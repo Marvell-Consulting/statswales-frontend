@@ -12,7 +12,7 @@ export default function Overview(props) {
     return (
       <a
         className="govuk-link govuk-link--no-underline"
-        href={props.buildUrl(path, props.i18n.language, queryParams )}
+        href={props.buildUrl(path, props.i18n.language, queryParams)}
         target={newTab ? '_blank' : undefined}
       >
         {props.t(`publish.overview.actions.${action}`)}
@@ -61,12 +61,11 @@ export default function Overview(props) {
                 <p
                   className="govuk-body govuk-!-margin-0"
                   dangerouslySetInnerHTML={{
-                     __html: props.t('publish.overview.pending.requested_by', {
+                    __html: props.t('publish.overview.pending.requested_by', {
                       userName: props.openPublishTask?.created_by_name
                     })
                   }}
-                >
-                </p>
+                ></p>
 
                 {props.canApprove && (
                   <a
@@ -145,7 +144,9 @@ export default function Overview(props) {
                     )}
 
                     {props.canEdit &&
-                      ['pending_approval', 'update_pending_approval', 'scheduled', 'update_scheduled'].includes(props.publishingStatus) && (
+                      ['pending_approval', 'update_pending_approval', 'scheduled', 'update_scheduled'].includes(
+                        props.publishingStatus
+                      ) && (
                         <li>
                           <ActionLink
                             path={`/publish/${datasetId}/overview`}
