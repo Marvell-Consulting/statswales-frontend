@@ -1,23 +1,17 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import clsx from 'clsx';
-import { LocalsProvider } from '../../context/Locals';
 import T from '../T';
+import { Locals, LocalsProvider, useLocals } from '../../context/Locals';
 
-const Layout = ({
-  i18n,
-  t,
-  title,
-  isDeveloper,
-  children,
-  supportEmail,
-  isAuthenticated,
-  buildUrl,
-  activePage,
-  isAdmin,
-  backLink,
-  returnLink,
-  formPage
-}) => {
+export type LayoutProps = {
+  title?: string;
+  formPage?: boolean;
+  returnLink?: string;
+  backLink?: string;
+};
+
+const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithChildren<LayoutProps>) => {
+  const { i18n, t, supportEmail, isAuthenticated, buildUrl, activePage, isAdmin, isDeveloper } = useLocals();
   return (
     <html lang={i18n.language} className="govuk-template wg">
       <head>
@@ -313,7 +307,7 @@ const Layout = ({
   );
 };
 
-export default function PublisherLayout(props) {
+export default function PublisherLayout(props: PropsWithChildren<Locals & LayoutProps>) {
   return (
     <LocalsProvider {...props}>
       <Layout {...props}>{props.children}</Layout>

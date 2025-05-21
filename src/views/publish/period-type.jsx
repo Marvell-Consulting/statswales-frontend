@@ -16,7 +16,7 @@ export default function PeriodType(props) {
         {props.t('publish.period-type-chooser.heading')}
       </h1>
 
-      <ErrorHandler {...props} />
+      <ErrorHandler />
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">

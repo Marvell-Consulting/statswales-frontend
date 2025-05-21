@@ -38,7 +38,7 @@ export default function UserList(props) {
   ];
   return (
     <Layout {...props}>
-      <FlashMessages {...props} />
+      <FlashMessages />
 
       <h1 className="govuk-heading-xl">{props.t('admin.user.list.heading')}</h1>
 
@@ -49,7 +49,7 @@ export default function UserList(props) {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
           {props?.users && props?.users.length > 0 && (
-            <Table {...props} i18nBase="admin.user.list.table" columns={columns} rows={props.users} />
+            <Table i18nBase="admin.user.list.table" columns={columns} rows={props.users} />
           )}
         </div>
       </div>

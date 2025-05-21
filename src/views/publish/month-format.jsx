@@ -16,7 +16,7 @@ export default function MonthFormat(props) {
         {props.t('publish.month_format.heading')}
       </h1>
 
-      <ErrorHandler {...props} />
+      <ErrorHandler />
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">

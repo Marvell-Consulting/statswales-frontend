@@ -10,7 +10,7 @@ export default function Topics(props) {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <h1 className="govuk-heading-xl">{props.t('publish.topics.heading')}</h1>
-          <ErrorHandler {...props} />
+          <ErrorHandler />
 
           <form encType="multipart/form-data" method="post">
             <input type="hidden" name="topics" value="" />

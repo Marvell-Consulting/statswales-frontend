@@ -3,6 +3,8 @@ import Layout from '../components/layouts/Publisher';
 import ErrorHandler from '../components/ErrorHandler';
 import DimensionPreviewTable from '../components/DimensionPreviewTable';
 import RadioGroup from '../components/RadioGroup';
+import T from '../components/T';
+import Select from '../components/Select';
 
 export default function NumberChooser(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
@@ -18,7 +20,7 @@ export default function NumberChooser(props) {
         <h1 className="govuk-heading-xl">{props.t('publish.number_chooser.review_heading')}</h1>
       )}
 
-      <ErrorHandler {...props} />
+      <ErrorHandler />
 
       {props.data && (
         <>
@@ -77,23 +79,12 @@ export default function NumberChooser(props) {
                         value: 'decimal',
                         label: props.t('publish.number_chooser.chooser.decimal'),
                         children: (
-                          <div className="govuk-form-group">
-                            <label className="govuk-label" htmlFor="decimalPlaces">
-                              {props.t('publish.number_chooser.chooser.decimal_places')}
-                            </label>
-                            <select className="govuk-select" id="decimalPlaces" name="decimalPlaces">
-                              <option value="1">1</option>
-                              <option value="2" selected>
-                                2
-                              </option>
-                              <option value="3">3</option>
-                              <option value="4">4</option>
-                              <option value="5">5</option>
-                              <option value="6">6</option>
-                              <option value="7">7</option>
-                              <option value="8">8</option>
-                            </select>
-                          </div>
+                          <Select
+                            name="decimalPlaces"
+                            label={<T>publish.number_chooser.chooser.decimal_places</T>}
+                            options={[1, 2, 3, 4, 5, 6, 7, 8]}
+                            value={2}
+                          />
                         )
                       }
                     ]}

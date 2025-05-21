@@ -6,7 +6,7 @@ export default function Start(props) {
   return (
     <Layout {...props}>
       <h1 className="govuk-heading-xl">{props.t('publish.start.title')}</h1>
-      <ErrorHandler {...props} />
+      <ErrorHandler />
 
       <p className="govuk-body">{props.t('publish.start.p1')}</p>
 

@@ -63,7 +63,6 @@ export default function UserGroupView(props) {
             <p>{props.t('admin.group.view.users.none')}</p>
           ) : (
             <Table
-              {...props}
               i18nBase="admin.group.view.users.table"
               columns={columns}
               rows={props.group.users.map((userWithRoles) => ({

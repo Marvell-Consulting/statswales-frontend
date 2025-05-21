@@ -13,7 +13,6 @@ export default function FactTable(props) {
       </div>
       <div id="accordion-default-content-2" className="govuk-accordion__section-content">
         <Table
-          {...props}
           i18nBase="developer.display"
           columns={['name', 'index', 'type', 'datatype']}
           rows={props.dataset?.fact_table.map((row) => ({ ...row, data_type: row.datatype }))}

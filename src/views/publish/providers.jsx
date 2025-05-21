@@ -3,6 +3,9 @@ import ErrorHandler from '../components/ErrorHandler';
 import Layout from '../components/layouts/Publisher';
 import Table from '../components/Table';
 import RadioGroup from '../components/RadioGroup';
+import Select from '../components/Select';
+import T from '../components/T';
+import Autocomplete from '../components/Autocomplete';
 
 export default function Providers(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
@@ -44,7 +47,7 @@ export default function Providers(props) {
             {/* Add provider form is displayed whenever we're adding a "new" provider, or if there aren't any saved currently */}
             <div className="govuk-grid-column-two-thirds">
               <h1 className="govuk-heading-xl">{props.t('publish.providers.add.heading')}</h1>
-              <ErrorHandler {...props} />
+              <ErrorHandler />
 
               <p
                 className="govuk-body"
@@ -56,33 +59,19 @@ export default function Providers(props) {
               />
 
               <form encType="multipart/form-data" method="post">
-                <div className="govuk-form-group">
-                  <div className="govuk-hint" id="provider-hint">
-                    {props.t('publish.providers.add.form.provider.hint')}
-                  </div>
-                  <select id="provider" name="provider_id" className="govuk-select" aria-describedby="provider-hint">
-                    <option key={0} value="" selected disabled></option>
-                    {props.availableProviders.map((provider, index) => (
-                      <option key={index + 1} value={provider.id}>
-                        {provider.name}
-                      </option>
-                    ))}
-                  </select>
-                  <script
-                    type="text/javascript"
-                    dangerouslySetInnerHTML={{
-                      __html: `
-                              (() => {
-                                accessibleAutocomplete.enhanceSelectElement({
-                                  selectElement: document.querySelector('#provider'),
-                                  autoSelect: true,
-                                  showAllValues: true,
-                                  defaultValue: ''
-                                });
-                              })()`
-                    }}
-                  ></script>
-                </div>
+                <Autocomplete
+                  name="provider_id"
+                  hint={<T>publish.providers.add.form.provider.hint</T>}
+                  options={[
+                    {
+                      value: '',
+                      disabled: true
+                    },
+                    ...props.availableProviders.map((provider) => ({ value: provider.id, label: provider.name }))
+                  ]}
+                  value={''}
+                />
+
                 <button type="submit" className="govuk-button" data-module="govuk-button">
                   {props.t('buttons.continue')}
                 </button>
@@ -97,9 +86,8 @@ export default function Providers(props) {
             <div className="govuk-grid-row">
               <div className="govuk-grid-column-full">
                 <h1 className="govuk-heading-xl">{props.t('publish.providers.list.heading')}</h1>
-                <ErrorHandler {...props} />
+                <ErrorHandler />
                 <Table
-                  {...props}
                   i18nBase="publish.providers.list.table"
                   columns={columns}
                   rows={props.dataProviders.map((p) => ({
@@ -146,7 +134,7 @@ export default function Providers(props) {
               <h1 className="govuk-heading-xl" id="add-source">
                 {props.t('publish.providers.add_source.heading')}
               </h1>
-              <ErrorHandler {...props} />
+              <ErrorHandler />
 
               <h3 className="govuk-heading-s govuk-!-margin-bottom-1">
                 {props.t('publish.providers.add_source.selected_provider')}
@@ -177,40 +165,19 @@ export default function Providers(props) {
 
                             <br />
 
-                            <div className="govuk-hint">{props.t('publish.providers.add_source.form.source.hint')}</div>
-
-                            <select
-                              id="source"
+                            <Autocomplete
                               name="source_id"
-                              className="govuk-select govuk-!-width-full"
-                              aria-describedby="source-hint"
-                            >
-                              <option value="" selected disabled></option>
-                              {props.availableSources.map((source) => (
-                                <option
-                                  key={source.id}
-                                  value={source.id}
-                                  selected={props.dataProvider?.source_id === source.id}
-                                >
-                                  {source.name}
-                                </option>
-                              ))}
-                            </select>
+                              hint={<T>publish.providers.add_source.form.source.hint</T>}
+                              options={[
+                                {
+                                  value: '',
+                                  disabled: true
+                                },
+                                ...props.availableSources.map((source) => ({ value: source.id, label: source.name }))
+                              ]}
+                              value=""
+                            />
                           </fieldset>
-                          <script
-                            type="text/javascript"
-                            dangerouslySetInnerHTML={{
-                              __html: `
-                                    (() => {
-                                      accessibleAutocomplete.enhanceSelectElement({
-                                        selectElement: document.querySelector('#source'),
-                                        autoSelect: true,
-                                        showAllValues: true,
-                                        defaultValue: ''
-                                      })
-                                    })();`
-                            }}
-                          ></script>
                         </div>
                       )
                     },

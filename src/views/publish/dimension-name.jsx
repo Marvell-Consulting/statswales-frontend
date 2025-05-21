@@ -32,7 +32,9 @@ export default function DimensionName(props) {
           ? props.t('publish.dimension_name.measure_heading')
           : props.t('publish.dimension_name.dimension_heading')}
       </h1>
-      <ErrorHandler {...props} />
+
+      <ErrorHandler />
+
       <p className="govuk-body">{props.t('publish.dimension_name.hint')}</p>
       <ul className="govuk-list govuk-list--bullet">
         <li>{props.t('publish.dimension_name.concise')}</li>

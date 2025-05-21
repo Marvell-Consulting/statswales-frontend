@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
+import { Locals, LocalsProvider, useLocals } from '../../context/Locals';
 
-export default function ConsumerLayout({ children, i18n, t, buildUrl }) {
+const Layout = ({ children }: PropsWithChildren) => {
+  const { i18n, t, buildUrl } = useLocals();
   const links = [
     'contact_us',
     'accessibility',
@@ -152,5 +154,13 @@ export default function ConsumerLayout({ children, i18n, t, buildUrl }) {
         <script src="https://kit.fontawesome.com/f6f4af2d4c.js" crossOrigin="anonymous" />
       </body>
     </html>
+  );
+};
+
+export default function ConsumerLayout({ children, ...props }: PropsWithChildren<Locals>) {
+  return (
+    <LocalsProvider {...props}>
+      <Layout>{children}</Layout>
+    </LocalsProvider>
   );
 }

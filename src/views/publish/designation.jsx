@@ -16,10 +16,9 @@ export default function Designation(props) {
             </h1>
 
             <form encType="multipart/form-data" method="post">
-              <ErrorHandler {...props} />
+              <ErrorHandler />
 
               <RadioGroup
-                {...props}
                 name="designation"
                 labelledBy="designation"
                 options={props.designationOptions.map((option) => ({

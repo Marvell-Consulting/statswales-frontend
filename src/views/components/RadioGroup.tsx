@@ -1,7 +1,39 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, ReactNode } from 'react';
 import clsx from 'clsx';
+import { useLocals } from '../context/Locals';
 
-export default function RadioGroup({ name, label, hint, options, value, labelledBy, errors, errorMessage }) {
+type Option = {
+  value: string;
+  label: ReactNode;
+  hint?: ReactNode;
+  disabled?: boolean;
+  children?: ReactNode;
+};
+
+type Divider = {
+  divider: ReactNode;
+};
+
+export type RadioGroupPropsBase = {
+  name: string;
+  options: Array<Option | Divider>;
+  errorMessage?: ReactNode;
+  hint?: ReactNode;
+  label?: ReactNode;
+  labelledBy?: string;
+  value?: string;
+};
+
+export type RadioGroupProps =
+  | (RadioGroupPropsBase & {
+      label: ReactNode;
+    })
+  | (RadioGroupPropsBase & {
+      labelledBy: string;
+    });
+
+export default function RadioGroup({ name, label, hint, options, value, labelledBy, errorMessage }: RadioGroupProps) {
+  const { errors } = useLocals();
   return (
     <div className={clsx('govuk-form-group', { 'govuk-form-group--error': errors?.find((e) => e.field === name) })}>
       <fieldset className="govuk-fieldset" aria-labelledby={labelledBy}>
@@ -20,12 +52,16 @@ export default function RadioGroup({ name, label, hint, options, value, labelled
         )}
 
         <div className="govuk-radios" data-module="govuk-radios">
-          {options.map((option, index) =>
-            option.divider ? (
-              <div key={index} className="govuk-radios__divider">
-                {option.divider}
-              </div>
-            ) : (
+          {options.map((option, index) => {
+            const isDivider = 'divider' in option;
+            if (isDivider) {
+              return (
+                <div key={index} className="govuk-radios__divider">
+                  {option.divider}
+                </div>
+              );
+            }
+            return (
               <Fragment key={index}>
                 <div className="govuk-radios__item">
                   <input
@@ -36,7 +72,7 @@ export default function RadioGroup({ name, label, hint, options, value, labelled
                     value={option.value}
                     disabled={option.disabled}
                     defaultChecked={option.value === value}
-                    data-aria-controls={option.children && `conditional-${option.id}`}
+                    data-aria-controls={option.children && `conditional-${option.value}`}
                   />
                   <label className="govuk-label govuk-radios__label" htmlFor={option.value}>
                     {option.label}
@@ -50,14 +86,14 @@ export default function RadioGroup({ name, label, hint, options, value, labelled
                 {option.children && (
                   <div
                     className="govuk-radios__conditional govuk-radios__conditional--hidden"
-                    id={`conditional-${option.id}`}
+                    id={`conditional-${option.value}`}
                   >
                     {option.children}
                   </div>
                 )}
               </Fragment>
-            )
-          )}
+            );
+          })}
         </div>
       </fieldset>
     </div>

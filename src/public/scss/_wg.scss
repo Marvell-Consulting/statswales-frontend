@@ -636,6 +636,10 @@ $whitepurple: #eed5e3;
     border-left: none;
   }
 
+  .govuk-form-group--inline {
+    display: inline-block;
+  }
+
   .govuk-error-message {
     font-weight: normal;
     color: $black;

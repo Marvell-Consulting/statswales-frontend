@@ -4,6 +4,7 @@ import ErrorHandler from '../components/ErrorHandler';
 import clsx from 'clsx';
 import RadioGroup from '../components/RadioGroup';
 import T from '../components/T';
+import Select from '../components/Select';
 
 export default function UpdateFrequency(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
@@ -18,7 +19,7 @@ export default function UpdateFrequency(props) {
             </h1>
 
             <form encType="multipart/form-data" method="post">
-              <ErrorHandler {...props} />
+              <ErrorHandler />
 
               <RadioGroup
                 name="is_updated"
@@ -46,20 +47,20 @@ export default function UpdateFrequency(props) {
                             type="text"
                             defaultValue={props.frequency_value}
                           />{' '}
-                          <select
-                            className="govuk-select govuk-!-display-inline"
-                            id="frequency_unit"
+                          <Select
                             name="frequency_unit"
-                          >
-                            <option value="">
-                              {props.t(`publish.update_frequency.form.frequency_unit.options.select`)}
-                            </option>
-                            {props.unitOptions.map((unit) => (
-                              <option key={unit} value={unit} selected={props.frequency_unit === unit}>
-                                <T>publish.update_frequency.form.frequency_unit.options.{unit}</T>
-                              </option>
-                            ))}
-                          </select>
+                            className="govuk-!-display-inline"
+                            options={[
+                              {
+                                value: '',
+                                label: <T>publish.update_frequency.form.frequency_unit.options.select</T>
+                              },
+                              ...props.unitOptions.map((unit) => ({
+                                value: unit,
+                                label: <T>publish.update_frequency.form.frequency_unit.options.{unit}</T>
+                              }))
+                            ]}
+                          />
                         </fieldset>
                       </div>
                     )

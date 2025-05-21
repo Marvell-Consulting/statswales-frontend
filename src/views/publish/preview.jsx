@@ -4,6 +4,8 @@ import ErrorHandler from '../components/ErrorHandler';
 import Pagination from '../components/Pagination';
 import Table from '../components/Table';
 import RadioGroup from '../components/RadioGroup';
+import Select from '../components/Select';
+import T from '../components/T';
 
 export default function Preview(props) {
   const returnLink =
@@ -48,7 +50,7 @@ export default function Preview(props) {
         {props.revisit ? props.t('publish.preview.heading_summary') : props.t('publish.preview.heading')}
       </h1>
 
-      <ErrorHandler {...props} />
+      <ErrorHandler />
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-one-half" style={{ paddingTop: '7px' }}>
@@ -72,16 +74,13 @@ export default function Preview(props) {
             role="page-size"
             className="govuk-!-margin-bottom-0"
           >
-            <label className="govuk-label govuk-!-display-inline" htmlFor="page_size">
-              {props.t('pagination.page_size')}
-            </label>{' '}
-            <select className="govuk-select govuk-!-display-inline" id="page_size" name="page_size">
-              {[5, 10, 25, 50, 100, 250, 500].map((num) => (
-                <option key={num} value={num} selected={props.page_size === num}>
-                  {num}
-                </option>
-              ))}
-            </select>{' '}
+            <Select
+              name="page_size"
+              label={<T>pagination.page_size</T>}
+              options={[5, 10, 25, 50, 100, 250, 500]}
+              value={props.page_size}
+              inline
+            />{' '}
             <input type="hidden" name="file" value={props.datafile_id} />
             <input type="hidden" name="page_number" value="1" />
             <button

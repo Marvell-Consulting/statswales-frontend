@@ -44,13 +44,13 @@ export default function DateChooser(props) {
         <h1 className="govuk-heading-xl">{props.t('publish.time_dimension_chooser.heading')}</h1>
       )}
 
-      <ErrorHandler {...props} />
+      <ErrorHandler />
 
       {props.data && (
         <>
           <div className="govuk-grid-row">
             <div className="govuk-grid-column-full with-overflow">
-              <Table {...props} columns={columns} rows={props.data} />
+              <Table columns={columns} rows={props.data} />
               {props.page_info?.total_records > props.page_size && (
                 <p className="govuk-body govuk-hint">
                   {props.t('publish.time_dimension_review.showing', {
