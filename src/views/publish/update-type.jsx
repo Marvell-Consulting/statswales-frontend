@@ -1,6 +1,8 @@
 import React from 'react';
 import Layout from '../components/layouts/Publisher';
 import ErrorHandler from '../components/ErrorHandler';
+import RadioGroup from '../components/RadioGroup';
+import T from '../components/T';
 
 export default function UpdateType(props) {
   const backLink = 'javascript:history.back()';
@@ -12,63 +14,17 @@ export default function UpdateType(props) {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
           <form method="post" role="continue" id="updateType">
-            <div className="govuk-form-group">
-              <fieldset className="govuk-fieldset">
-                <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                  <h2 className="govuk-fieldset__heading">{props.t('publish.update_type.heading')}</h2>
-                </legend>
-                <div className="govuk-radios" data-module="govuk-radios">
-                  <div className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      id="updateTypeAdd"
-                      name="updateType"
-                      type="radio"
-                      value="add"
-                    />
-                    <label className="govuk-label govuk-radios__label" htmlFor="updateTypeAdd">
-                      {props.t('publish.update_type.add')}
-                    </label>
-                  </div>
-                  <div className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      id="updateTypeAddRevise"
-                      name="updateType"
-                      type="radio"
-                      value="add_revise"
-                    />
-                    <label className="govuk-label govuk-radios__label" htmlFor="updateTypeAddRevise">
-                      {props.t('publish.update_type.add_revise')}
-                    </label>
-                  </div>
-                  <div className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      id="updateTypeRevise"
-                      name="updateType"
-                      type="radio"
-                      value="revise"
-                    />
-                    <label className="govuk-label govuk-radios__label" htmlFor="updateTypeRevise">
-                      {props.t('publish.update_type.revise')}
-                    </label>
-                  </div>
-                  <div className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      id="updateTypeReplaceAll"
-                      name="updateType"
-                      type="radio"
-                      value="replace_all"
-                    />
-                    <label className="govuk-label govuk-radios__label" htmlFor="updateTypeReplaceAll">
-                      {props.t('publish.update_type.replace_all')}
-                    </label>
-                  </div>
-                </div>
-              </fieldset>
-            </div>
+            <RadioGroup
+              name="updateType"
+              label={<T>publish.update_type.heading</T>}
+              options={[
+                { value: 'add', label: <T>publish.update_type.add</T> },
+                { value: 'add_revise', label: <T>publish.update_type.add_revise</T> },
+                { value: 'revise', label: <T>publish.update_type.revise</T> },
+                { value: 'replace_all', label: <T>publish.update_type.replace_all</T> }
+              ]}
+            />
+
             <div className="govuk-button-group">
               <button
                 type="submit"

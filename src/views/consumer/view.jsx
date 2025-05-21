@@ -10,6 +10,7 @@ import KeyInfo from '../components/dataset/KeyInfo';
 import Notes from '../components/dataset/Notes';
 import About from '../components/dataset/About';
 import Published from '../components/dataset/Published';
+import RadioGroup from '../components/RadioGroup';
 
 export default function ConsumerView(props) {
   const LayoutComponent = props.isDeveloper ? Layout : ConsumerLayout;
@@ -127,160 +128,80 @@ export default function ConsumerView(props) {
             props.i18n.language
           )}
         >
-          <div className="govuk-form-group">
-            <fieldset className="govuk-fieldset">
-              <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                <h2 className="govuk-fieldset__heading govuk-heading-m">{props.t('consumer_view.download_heading')}</h2>
-              </legend>
-              <div className="govuk-radios" data-module="govuk-radios">
-                <div className="govuk-radios__item">
-                  <input
-                    className="govuk-radios__input"
-                    id="filtered"
-                    name="view_type"
-                    type="radio"
-                    value="filtered"
-                    disabled
-                  />
-                  <label className="govuk-label govuk-radios__label" htmlFor="filtered">
-                    {props.t('consumer_view.filtered_download')}
-                  </label>
-                </div>
-                <div className="govuk-radios__item">
-                  <input
-                    className="govuk-radios__input"
-                    id="default"
-                    name="view_type"
-                    type="radio"
-                    value="default"
-                    defaultChecked
-                  />
-                  <label className="govuk-label govuk-radios__label" htmlFor="default">
-                    {props.t('consumer_view.default_download')}
-                  </label>
-                </div>
-              </div>
-            </fieldset>
-          </div>
+          <RadioGroup
+            name="view_type"
+            label={props.t('consumer_view.download_heading')}
+            options={[
+              {
+                value: 'filtered',
+                label: props.t('consumer_view.filtered_download'),
+                disabled: true
+              },
+              {
+                value: 'default',
+                label: props.t('consumer_view.default_download')
+              }
+            ]}
+            value="default"
+          />
 
-          <div className="govuk-form-group">
-            <fieldset className="govuk-fieldset">
-              <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                <h2 className="govuk-fieldset__heading govuk-heading-m">{props.t('consumer_view.download_format')}</h2>
-              </legend>
-              <div className="govuk-radios" data-module="govuk-radios">
-                <div className="govuk-radios__item">
-                  <input className="govuk-radios__input" id="csv" name="format" type="radio" value="csv" />
-                  <label className="govuk-label govuk-radios__label" htmlFor="csv">
-                    CSV
-                  </label>
-                  <div id="number-format-hint" className="govuk-hint govuk-radios__hint govuk-radios__hint-gel">
-                    {props.t('consumer_view.data_only_hint')}
-                  </div>
-                </div>
-                <div className="govuk-radios__item">
-                  <input className="govuk-radios__input" id="excel" name="format" type="radio" value="xlsx" />
-                  <label className="govuk-label govuk-radios__label" htmlFor="excel">
-                    Excel
-                  </label>
-                  <div id="number-format-hint" className="govuk-hint govuk-radios__hint govuk-radios__hint-gel">
-                    {props.t('consumer_view.data_metadata_hint')}
-                  </div>
-                </div>
-                <div className="govuk-radios__item">
-                  <input className="govuk-radios__input" id="parquet" name="format" type="radio" value="parquet" />
-                  <label className="govuk-label govuk-radios__label" htmlFor="parquet">
-                    Parquet
-                  </label>
-                  <div id="number-format-hint" className="govuk-hint govuk-radios__hint govuk-radios__hint-gel">
-                    {props.t('consumer_view.data_metadata_hint')}
-                  </div>
-                </div>
-                <div className="govuk-radios__item">
-                  <input className="govuk-radios__input" id="duckdb" name="format" type="radio" value="duckdb" />
-                  <label className="govuk-label govuk-radios__label" htmlFor="duckdb">
-                    DuckDB
-                  </label>
-                  <div id="number-format-hint" className="govuk-hint govuk-radios__hint govuk-radios__hint-gel">
-                    {props.t('consumer_view.everything_hint')}
-                  </div>
-                </div>
-              </div>
-            </fieldset>
-          </div>
+          <RadioGroup
+            name="format"
+            label={props.t('consumer_view.download_format')}
+            options={[
+              {
+                value: 'csv',
+                label: 'CSV',
+                hint: props.t('consumer_view.data_only_hint')
+              },
+              {
+                value: 'xlsx',
+                label: 'Excel',
+                hint: props.t('consumer_view.data_metadata_hint')
+              },
+              {
+                value: 'parquet',
+                label: 'Parquet',
+                hint: props.t('consumer_view.data_metadata_hint')
+              },
+              {
+                value: 'duckdb',
+                label: 'DuckDB',
+                hint: props.t('consumer_view.everything_hint')
+              }
+            ]}
+          />
 
-          <div className="govuk-form-group">
-            <fieldset className="govuk-fieldset">
-              <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                <h2 className="govuk-fieldset__heading govuk-heading-m">{props.t('consumer_view.number_formating')}</h2>
-              </legend>
-              <div className="govuk-radios" data-module="govuk-radios">
-                <div className="govuk-radios__item">
-                  <input
-                    className="govuk-radios__input"
-                    id="dafault_format"
-                    name="number_format"
-                    type="radio"
-                    value="default"
-                    defaultChecked
-                  />
-                  <label className="govuk-label govuk-radios__label" htmlFor="dafault_format">
-                    {props.t('consumer_view.formatted_numbers')}
-                  </label>
-                  <div id="number-format-hint" className="govuk-hint govuk-radios__hint govuk-radios__hint-gel">
-                    {props.t('consumer_view.formatted_numbers_hint')}
-                  </div>
-                </div>
-                <div className="govuk-radios__item">
-                  <input
-                    className="govuk-radios__input"
-                    id="raw_format"
-                    name="number_format"
-                    type="radio"
-                    value="raw"
-                    disabled
-                  />
-                  <label className="govuk-label govuk-radios__label" htmlFor="raw_format">
-                    {props.t('consumer_view.unformatted_numbers')}
-                  </label>
-                </div>
-              </div>
-            </fieldset>
-          </div>
+          <RadioGroup
+            name="number_format"
+            label={props.t('consumer_view.number_formating')}
+            options={[
+              {
+                value: 'default',
+                label: props.t('consumer_view.formatted_numbers'),
+                hint: props.t('consumer_view.formatted_numbers_hint')
+              },
+              {
+                value: 'raw',
+                label: props.t('consumer_view.unformatted_numbers')
+              }
+            ]}
+          />
 
-          <div className="govuk-form-group">
-            <fieldset className="govuk-fieldset">
-              <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                <h2 className="govuk-fieldset__heading govuk-heading-m">{props.t('consumer_view.select_language')}</h2>
-              </legend>
-              <div className="govuk-radios" data-module="govuk-radios">
-                <div className="govuk-radios__item">
-                  <input
-                    className="govuk-radios__input"
-                    id="en-GB"
-                    name="download_language"
-                    type="radio"
-                    value="en-GB"
-                  />
-                  <label className="govuk-label govuk-radios__label" htmlFor="en-GB">
-                    {props.t('consumer_view.english')}
-                  </label>
-                </div>
-                <div className="govuk-radios__item">
-                  <input
-                    className="govuk-radios__input"
-                    id="cy-GB"
-                    name="download_language"
-                    type="radio"
-                    value="cy-GB"
-                  />
-                  <label className="govuk-label govuk-radios__label" htmlFor="cy-GB">
-                    {props.t('consumer_view.welsh')}
-                  </label>
-                </div>
-              </div>
-            </fieldset>
-          </div>
+          <RadioGroup
+            name="download_language"
+            label={props.t('consumer_view.select_language')}
+            options={[
+              {
+                value: 'en-GB',
+                label: props.t('consumer_view.english')
+              },
+              {
+                value: 'cy-GB',
+                label: props.t('consumer_view.welsh')
+              }
+            ]}
+          />
 
           <button
             name="action"

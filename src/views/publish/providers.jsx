@@ -2,6 +2,7 @@ import React from 'react';
 import ErrorHandler from '../components/ErrorHandler';
 import Layout from '../components/layouts/Publisher';
 import Table from '../components/Table';
+import RadioGroup from '../components/RadioGroup';
 
 export default function Providers(props) {
   const backLink = 'javascript:history.back()';
@@ -113,40 +114,20 @@ export default function Providers(props) {
                 {/* Add another provider form is displayed whenever we're not editing a provider*/}
                 <form encType="multipart/form-data" method="post">
                   <input type="hidden" name="add_another" value="true" />
-                  <div className="govuk-form-group">
-                    <h2 className="govuk-heading-m" id="add-provider">
-                      {props.t('publish.providers.list.form.add_another.heading')}
-                    </h2>
-
-                    <fieldset className="govuk-fieldset" aria-describedby="add-provider">
-                      <div className="govuk-radios" data-module="govuk-radios">
-                        <div className="govuk-radios__item">
-                          <input
-                            className="govuk-radios__input"
-                            id="addYes"
-                            name="add_provider"
-                            type="radio"
-                            value="true"
-                          />
-                          <label className="govuk-label govuk-radios__label" htmlFor="addYes">
-                            {props.t('publish.providers.list.form.add_another.options.yes.label')}
-                          </label>
-                        </div>
-                        <div className="govuk-radios__item">
-                          <input
-                            className="govuk-radios__input"
-                            id="addNo"
-                            name="add_provider"
-                            type="radio"
-                            value="false"
-                          />
-                          <label className="govuk-label govuk-radios__label" htmlFor="addNo">
-                            {props.t('publish.providers.list.form.add_another.options.no.label')}
-                          </label>
-                        </div>
-                      </div>
-                    </fieldset>
-                  </div>
+                  <RadioGroup
+                    name="add_provider"
+                    label={props.t('publish.providers.list.form.add_another.heading')}
+                    options={[
+                      {
+                        value: 'true',
+                        label: props.t('publish.providers.list.form.add_another.options.yes.label')
+                      },
+                      {
+                        value: 'false',
+                        label: props.t('publish.providers.list.form.add_another.options.no.label')
+                      }
+                    ]}
+                  />
                   <button type="submit" className="govuk-button" data-module="govuk-button">
                     {props.t('buttons.continue')}
                   </button>
@@ -160,7 +141,9 @@ export default function Providers(props) {
           <div className="govuk-grid-row">
             {/* Select source form is displayed when we're editing a provider */}
             <div className="govuk-grid-column-two-thirds">
-              <h1 className="govuk-heading-xl">{props.t('publish.providers.add_source.heading')}</h1>
+              <h1 className="govuk-heading-xl" id="add-source">
+                {props.t('publish.providers.add_source.heading')}
+              </h1>
               <ErrorHandler {...props} />
 
               <h3 className="govuk-heading-s govuk-!-margin-bottom-1">
@@ -170,28 +153,15 @@ export default function Providers(props) {
 
               <form encType="multipart/form-data" method="post">
                 <input type="hidden" name="provider_id" value={props.dataProvider?.provider_id} />
-                <div className="govuk-form-group">
-                  <fieldset className="govuk-fieldset" aria-describedby="add-source">
-                    <div className="govuk-radios" data-module="govuk-radios">
-                      <div className="govuk-radios__item">
-                        <input
-                          className="govuk-radios__input"
-                          id="addYes"
-                          name="add_source"
-                          type="radio"
-                          value="true"
-                          data-aria-controls="conditional-add-source"
-                          defaultChecked={!!(props.dataProvider?.source_id || props.addSource === true)}
-                        />
-                        <label className="govuk-label govuk-radios__label" htmlFor="addYes">
-                          {props.t('publish.providers.add_source.form.has_source.options.yes.label')}
-                        </label>
-                      </div>
 
-                      <div
-                        className="govuk-radios__conditional govuk-radios__conditional--hidden"
-                        id="conditional-add-source"
-                      >
+                <RadioGroup
+                  name="add_source"
+                  labelledBy="add-source"
+                  options={[
+                    {
+                      value: 'true',
+                      label: props.t('publish.providers.add_source.form.has_source.options.yes.label'),
+                      children: (
                         <div className="govuk-form-group">
                           <fieldset className="govuk-fieldset" role="group" aria-describedby="addYes">
                             <legend
@@ -229,34 +199,26 @@ export default function Providers(props) {
                             type="text/javascript"
                             dangerouslySetInnerHTML={{
                               __html: `
-                                      (() => {
-                                        accessibleAutocomplete.enhanceSelectElement({
-                                          selectElement: document.querySelector('#source'),
-                                          autoSelect: true,
-                                          showAllValues: true,
-                                          defaultValue: ''
-                                        })
-                                      })();`
+                                    (() => {
+                                      accessibleAutocomplete.enhanceSelectElement({
+                                        selectElement: document.querySelector('#source'),
+                                        autoSelect: true,
+                                        showAllValues: true,
+                                        defaultValue: ''
+                                      })
+                                    })();`
                             }}
                           ></script>
                         </div>
-                      </div>
+                      )
+                    },
+                    {
+                      value: 'false',
+                      label: props.t('publish.providers.add_source.form.has_source.options.no.label')
+                    }
+                  ]}
+                />
 
-                      <div className="govuk-radios__item">
-                        <input
-                          className="govuk-radios__input"
-                          id="addNo"
-                          name="add_source"
-                          type="radio"
-                          value="false"
-                        />
-                        <label className="govuk-label govuk-radios__label" htmlFor="addNo">
-                          {props.t('publish.providers.add_source.form.has_source.options.no.label')}
-                        </label>
-                      </div>
-                    </div>
-                  </fieldset>
-                </div>
                 <button type="submit" className="govuk-button" data-module="govuk-button">
                   {props.t('buttons.continue')}
                 </button>
