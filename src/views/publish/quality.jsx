@@ -15,7 +15,7 @@ export default function Quality(props) {
             <h1 className="govuk-heading-xl">{props.t('publish.quality.heading')}</h1>
 
             <form encType="multipart/form-data" method="post">
-              <ErrorHandler {...props} />
+              <ErrorHandler />
 
               <p className="govuk-body">{props.t('publish.quality.explain')}</p>
 

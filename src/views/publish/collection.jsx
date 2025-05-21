@@ -13,7 +13,7 @@ export default function Collection(props) {
           <div className="govuk-grid-column-two-thirds">
             <h1 className="govuk-heading-xl">{props.t('publish.collection.heading')}</h1>
 
-            <ErrorHandler {...props} />
+            <ErrorHandler />
 
             <p className="govuk-body">{props.t('publish.collection.explain')}</p>
 

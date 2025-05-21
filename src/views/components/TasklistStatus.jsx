@@ -1,11 +1,14 @@
 import React from 'react';
+import T from './T';
+import { useLocals } from '../context/Locals';
 
-export default function TasklistStatus({ status, t, statusToColour }) {
+export default function TasklistStatus({ status }) {
+  const { statusToColour } = useLocals();
   const colour = statusToColour(status);
   return (
     <div className="govuk-task-list__status">
       <strong className={colour ? `govuk-tag govuk-tag--${colour}` : undefined}>
-        {t(`publish.tasklist.status.${status}`)}
+        <T>publish.tasklist.status.{status}</T>
       </strong>
     </div>
   );

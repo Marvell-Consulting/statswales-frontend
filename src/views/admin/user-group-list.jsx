@@ -24,7 +24,7 @@ export default function UserGroupList(props) {
 
   return (
     <Layout {...props}>
-      <FlashMessages {...props} />
+      <FlashMessages />
 
       <h1 className="govuk-heading-xl">{props.t('admin.group.list.heading')}</h1>
 
@@ -36,7 +36,7 @@ export default function UserGroupList(props) {
         <div className="govuk-grid-column-full">
           {props?.groups && props?.groups.length > 0 && (
             <>
-              <Table {...props} i18nBase="admin.group.list.table" columns={columns} rows={props.groups} />
+              <Table i18nBase="admin.group.list.table" columns={columns} rows={props.groups} />
               {props.total_pages > 1 && <Pagination {...props} />}
             </>
           )}

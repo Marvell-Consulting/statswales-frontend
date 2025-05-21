@@ -16,7 +16,7 @@ export default function TaskDecision(props) {
             <h1 className="govuk-heading-xl" id="task-decision">
               <T>publish.task.decision.{props.taskType}.heading</T>
             </h1>
-            <ErrorHandler {...props} />
+            <ErrorHandler />
 
             <RadioGroup
               name="decision"

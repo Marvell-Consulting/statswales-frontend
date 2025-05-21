@@ -43,5 +43,5 @@ export default function TranslationsPreviewTable(props) {
           }
         ])
   ];
-  return <Table {...props} columns={columns} rows={props.translations} />;
+  return <Table columns={columns} rows={props.translations} />;
 }

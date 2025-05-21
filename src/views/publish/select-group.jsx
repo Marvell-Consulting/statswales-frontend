@@ -13,10 +13,9 @@ export default function SelectGroup(props) {
           </h1>
 
           <form encType="multipart/form-data" method="post">
-            <ErrorHandler {...props} />
+            <ErrorHandler />
 
             <RadioGroup
-              {...props}
               name="group_id"
               labelledBy="group-id"
               options={props.availableGroups.map((group) => ({

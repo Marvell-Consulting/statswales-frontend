@@ -79,7 +79,7 @@ export default function DeveloperList(props) {
   ];
   return (
     <Layout {...props}>
-      <FlashMessages {...props} />
+      <FlashMessages />
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
@@ -91,7 +91,7 @@ export default function DeveloperList(props) {
         <div className="govuk-grid-column-full">
           {props.data && props.data.length > 0 && (
             <>
-              <Table {...props} columns={columns} rows={props.data} />
+              <Table columns={columns} rows={props.data} />
               {props.total_pages > 1 && <Pagination {...props} />}
             </>
           )}

@@ -36,7 +36,7 @@ export default function Schedule(props) {
           <div className="govuk-grid-column-two-thirds">
             <h1 className="govuk-heading-xl">{props.t('publish.schedule.heading')}</h1>
 
-            <ErrorHandler {...props} />
+            <ErrorHandler />
 
             <form encType="multipart/form-data" method="post">
               <div className={clsx('govuk-form-group', { 'govuk-form-group--error': props.dateError })}>

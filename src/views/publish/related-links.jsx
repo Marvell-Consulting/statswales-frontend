@@ -58,7 +58,7 @@ export default function RelatedLinks(props) {
             <div className="govuk-grid-column-two-thirds">
               <h1 className="govuk-heading-xl">{props.t('publish.related.list.heading')}</h1>
 
-              <ErrorHandler {...props} />
+              <ErrorHandler />
               <Table columns={columns} rows={props.related_links} />
 
               <form encType="multipart/form-data" method="post">
@@ -86,7 +86,7 @@ export default function RelatedLinks(props) {
             <div className="govuk-grid-column-two-thirds">
               <h1 className="govuk-heading-xl">{props.t('publish.related.add.heading')}</h1>
 
-              <ErrorHandler {...props} />
+              <ErrorHandler />
 
               <p className="govuk-body">{props.t('publish.related.add.explain')}</p>
 

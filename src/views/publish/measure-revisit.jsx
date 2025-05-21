@@ -12,7 +12,7 @@ export default function MeasureRevisit(props) {
       <h1 className="govuk-heading-xl">
         {props.measure.metadata?.name || props.t('publish.time_dimension_review.unknown_name')}
       </h1>
-      <ErrorHandler {...props} />
+      <ErrorHandler />
 
       {props.data && (
         <>

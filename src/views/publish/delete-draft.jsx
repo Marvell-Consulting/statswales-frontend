@@ -18,7 +18,7 @@ export default function DeleteDraft(props) {
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
-          <ErrorHandler {...props} />
+          <ErrorHandler />
           <div className="warning-background">
             <div className="govuk-error-message alert-warning">
               <form method="post">
