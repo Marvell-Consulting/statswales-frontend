@@ -12,7 +12,7 @@ export default function ErrorHandler({ errors, t }) {
         <div className="govuk-error-summary__body">
           <ul className="govuk-list govuk-error-summary__list">
             {errors.map((error) => (
-              <li>
+              <li key={error.message.key}>
                 <a href={`#${error.field}`}>{t(error.message.key, error.message.params)}</a>
               </li>
             ))}
