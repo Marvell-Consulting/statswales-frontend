@@ -6,6 +6,8 @@ import DatasetStatus from '../components/dataset/DatasetStatus';
 import Tabs from '../components/Tabs';
 
 export default function Overview(props) {
+  const datasetId = props.dataset.id;
+
   function ActionLink({ path, action, queryParams = {}, newTab }) {
     return (
       <a
@@ -56,17 +58,21 @@ export default function Overview(props) {
                     })
                   }}
                 />
-                <p className="govuk-body govuk-!-margin-0">
-                  {props.t('publish.overview.pending.requested_by', {
-                    userName: props.openPublishTask?.created_by_name
-                  })}
+                <p
+                  className="govuk-body govuk-!-margin-0"
+                  dangerouslySetInnerHTML={{
+                     __html: props.t('publish.overview.pending.requested_by', {
+                      userName: props.openPublishTask?.created_by_name
+                    })
+                  }}
+                >
                 </p>
 
                 {props.canApprove && (
                   <a
                     className="govuk-button govuk-!-margin-top-4"
                     href={props.buildUrl(
-                      `/publish/${props.dataset.id}/task-decision/${props.openPublishTask?.id}`,
+                      `/publish/${datasetId}/task-decision/${props.openPublishTask?.id}`,
                       props.i18n.language
                     )}
                   >
@@ -82,7 +88,7 @@ export default function Overview(props) {
                 <p className="govuk-body">{props.openPublishTask?.comment}</p>
                 <a
                   className="govuk-button govuk-!-margin-top-4"
-                  href={props.buildUrl(`/publish/${props.dataset.id}/tasklist`, props.i18n.language)}
+                  href={props.buildUrl(`/publish/${datasetId}/tasklist`, props.i18n.language)}
                 >
                   {props.t('publish.overview.buttons.fix')}
                 </a>
