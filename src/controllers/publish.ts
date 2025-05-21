@@ -1923,20 +1923,6 @@ export const periodOfTimeChooser = async (req: Request, res: Response, next: Nex
   res.render('publish/period-type');
 };
 
-export const changeData = async (req: Request, res: Response) => {
-  if (req.method === 'POST') {
-    if (req.body.change === 'table') {
-      res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/upload`, req.language));
-      return;
-    }
-    if (req.body.change === 'columns') {
-      res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/sources`, req.language));
-      return;
-    }
-  }
-  res.render('publish/change-data');
-};
-
 export const provideSummary = async (req: Request, res: Response) => {
   let errors: ViewError[] | undefined;
   const dataset = singleLangDataset(res.locals.dataset, req.language);
