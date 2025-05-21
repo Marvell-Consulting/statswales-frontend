@@ -26,21 +26,6 @@ export default function Overview(props) {
         <div className="govuk-grid-column-full">
           <FlashMessages {...props} />
 
-          {props.successfullySubmitted && (
-            <div
-              className="govuk-notification-banner govuk-notification-banner--success"
-              role="alert"
-              aria-labelledby="govuk-notification-banner-title"
-              data-module="govuk-notification-banner"
-            >
-              <div className="govuk-notification-banner__content">
-                <p className="govuk-notification-banner__heading">
-                  {props.t('publish.overview.submitted.notification.content')}
-                </p>
-              </div>
-            </div>
-          )}
-
           <span className="region-subhead">{props.t('publish.overview.subheading')}</span>
           <h1 className="govuk-heading-xl govuk-!-margin-bottom-2">{props.title}</h1>
 

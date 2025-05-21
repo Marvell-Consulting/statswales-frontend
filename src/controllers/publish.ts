@@ -451,7 +451,9 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
   try {
     if (req.method === 'POST') {
       await req.pubapi.submitForPublication(dataset.id, draftRevision.id);
-      res.redirect(req.buildUrl(`/publish/${dataset.id}/overview`, req.language, { submitted: 'true' }));
+      req.session.flash = [`publish.tasklist.submit.success`];
+      req.session.save();
+      res.redirect(req.buildUrl(`/publish/${dataset.id}/overview`, req.language));
       return;
     }
 
@@ -2546,7 +2548,6 @@ export const importTranslations = async (req: Request, res: Response) => {
 
 export const overview = async (req: Request, res: Response, next: NextFunction) => {
   let errors: ViewError[] = [];
-  const successfullySubmitted = req.query?.submitted === 'true';
   const canMoveGroup = getApproverUserGroups(req.user).length > 1;
   const user = req.user as UserDTO;
   const canEdit = isEditorForDataset(user, res.locals.dataset);
@@ -2576,7 +2577,6 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
       dataset,
       revision,
       title,
-      successfullySubmitted,
       datasetStatus,
       publishingStatus,
       canMoveGroup,

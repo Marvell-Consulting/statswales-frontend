@@ -33,8 +33,8 @@ export default function Tabs({ tabs }) {
       </div>
       {tabs
         .filter((t) => t.children)
-        .map((tab) => (
-          <div className="govuk-tabs__panel" id={tab.id} role="tabpanel" aria-labelledby={`tab_${tab.id}`}>
+        .map((tab, i) => (
+          <div key={i} className="govuk-tabs__panel" id={tab.id} role="tabpanel" aria-labelledby={`tab_${tab.id}`}>
             {tab.children}
           </div>
         ))}
