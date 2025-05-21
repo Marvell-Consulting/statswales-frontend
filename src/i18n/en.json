@@ -26,6 +26,7 @@
       "incomplete": "Incomplete",
       "update_incomplete": "Update incomplete",
       "pending_approval": "Pending approval",
+      "update_pending_approval": "Update pending approval",
       "changes_requested": "Issues to fix",
       "scheduled": "Scheduled",
       "update_scheduled": "Update scheduled",
@@ -115,6 +116,7 @@
       "incomplete": "Incomplete",
       "update_incomplete": "Update incomplete",
       "pending_approval": "Pending approval",
+      "update_pending_approval": "Update pending approval",
       "changes_requested": "Issues to fix",
       "scheduled": "Scheduled",
       "update_scheduled": "Update scheduled",
@@ -944,7 +946,8 @@
       },
       "submit": {
         "subheading": "By continuing, you confirm that all data and metadata has been checked and is correct.",
-        "button": "Submit for approval"
+        "button": "Submit for approval",
+        "success": "Dataset submitted for approval"
       }
     },
     "change_data": {
@@ -965,12 +968,6 @@
     },
     "overview": {
       "subheading": "Dataset overview",
-      "submitted": {
-        "notification": {
-          "header": "Success",
-          "content": "Dataset submitted for approval"
-        }
-      },
       "pending": {
         "publish_at": "Proposed publication date: <strong>{{publishAt}}</strong>",
         "requested_by": "Publishing requested by: <strong>{{userName}}</strong>"

@@ -24,6 +24,7 @@ import { consumer } from './routes/consumer';
 import { cookies } from './routes/cookie';
 import { handleAsset404 } from './middleware/asset-404';
 import { admin } from './routes/admin';
+import expressReactViews from 'express-react-views';
 
 const app: Application = express();
 const config = appConfig();
@@ -52,7 +53,8 @@ app.use(initServices);
 
 // configure the view engine
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set('view engine', 'jsx');
+app.engine('jsx', expressReactViews.createEngine());
 
 // public routes
 app.use('/healthcheck', rateLimiter, healthcheck);

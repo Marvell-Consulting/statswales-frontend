@@ -733,7 +733,6 @@ $whitepurple: #eed5e3;
     margin-top: 15px;
     margin-bottom: 15px;
     font-size: 16px;
-    float: right;
     border: none;
     background-color: transparent;
     color: $blue;
@@ -2440,6 +2439,19 @@ $whitepurple: #eed5e3;
     100% {
       transform: rotate(360deg);
     }
+  }
+
+  .nowrap {
+    white-space: nowrap !important;
+  }
+
+  .max-width-none {
+    max-width: none !important;
+  }
+
+  .translation-export td,
+  .translation-import td {
+    white-space: pre-line !important;
   }
 
   .loader {

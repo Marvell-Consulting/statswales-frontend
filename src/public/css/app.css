@@ -587,7 +587,6 @@
   margin-top: 15px;
   margin-bottom: 15px;
   font-size: 16px;
-  float: right;
   border: none;
   background-color: transparent;
   color: #0360a6;
@@ -2026,6 +2025,16 @@
   100% {
     transform: rotate(360deg);
   }
+}
+.wg .nowrap {
+  white-space: nowrap !important;
+}
+.wg .max-width-none {
+  max-width: none !important;
+}
+.wg .translation-export td,
+.wg .translation-import td {
+  white-space: pre-line !important;
 }
 .wg .loader {
   border: 12px solid #eeeeee;
