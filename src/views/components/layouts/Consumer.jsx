@@ -117,7 +117,9 @@ export default function ConsumerLayout({ children, i18n, t, buildUrl }) {
           </div>
         </nav>
 
-        {children}
+        <main className="govuk-main-wrapper" id="main-content" role="main">
+          <div className="govuk-width-container">{children}</div>
+        </main>
 
         <footer className="wg-footer">
           <div className="govuk-width-container govuk-!-padding-top-9">
