@@ -83,7 +83,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Run Trivy vulnerability scanner
+      - name: Fail on Trivy vulnerability scanner CRITICAL
         uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
         with:
           image-ref: ghcr.io/marvell-consulting/statswales-frontend:latest
@@ -91,7 +91,22 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           format: 'table'
+          severity: 'CRITICAL'
+
+      - name: Run Trivy vulnerability CRITICAL,HIGH
+        uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
+        with:
+          image-ref: ghcr.io/marvell-consulting/statswales-frontend:latest
+          exit-code: '0'
+          format: 'template'
+          template: '@/contrib/sarif.tpl'
+          output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
 
       # Sign the resulting Docker image digest except on PRs.
       # This will only write to the public Rekor transparency log when the Docker
