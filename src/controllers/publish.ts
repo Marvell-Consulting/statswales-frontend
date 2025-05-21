@@ -88,7 +88,6 @@ import { DatasetDTO } from '../dtos/dataset';
 import { RevisionDTO } from '../dtos/revision';
 import { TaskAction } from '../enums/task-action';
 import { UserDTO } from '../dtos/user/user';
-import { TaskDTO } from '../dtos/task';
 import { TaskDecisionDTO } from '../dtos/task-decision';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
@@ -2654,11 +2653,7 @@ export const moveDatasetGroup = async (req: Request, res: Response, next: NextFu
 };
 
 export const taskDecision = async (req: Request, res: Response, next: NextFunction) => {
-  let task: TaskDTO | undefined;
-  let taskType = '';
-  let values: TaskDecisionDTO = {};
   let errors: ViewError[] = [];
-
   const taskIdError = await hasError(uuidValidator('taskId'), req);
 
   if (taskIdError) {
@@ -2668,7 +2663,10 @@ export const taskDecision = async (req: Request, res: Response, next: NextFuncti
   }
 
   try {
-    task = await req.pubapi.getTaskById(req.params.taskId);
+    const dataset = await req.pubapi.getDataset(res.locals.datasetId, DatasetInclude.Overview);
+    const revision = singleLangRevision(dataset.end_revision, req.language)!;
+    const title = revision?.metadata?.title;
+    const task = await req.pubapi.getTaskById(req.params.taskId);
 
     if (!task || task.dataset_id !== res.locals.datasetId) {
       logger.error('Failed to find task');
@@ -2676,7 +2674,8 @@ export const taskDecision = async (req: Request, res: Response, next: NextFuncti
       return;
     }
 
-    taskType = `${task.action}.${task.status}`;
+    const taskType = `${task.action}.${task.status}`;
+    let values: TaskDecisionDTO = {};
 
     if (req.method === 'POST') {
       values = req.body;
@@ -2701,11 +2700,19 @@ export const taskDecision = async (req: Request, res: Response, next: NextFuncti
       res.redirect(req.buildUrl(`/publish/${res.locals.datasetId}/overview`, req.language));
       return;
     }
+
+    res.render('publish/task-decision', {
+      task,
+      taskType,
+      values,
+      dataset,
+      revision,
+      title,
+      errors
+    });
   } catch (err) {
     if (err instanceof ApiException) {
       errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
     }
   }
-
-  res.render('publish/task-decision', { task, taskType, values, errors });
 };
