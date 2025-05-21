@@ -1004,6 +1004,7 @@
     },
     "task": {
       "decision": {
+        "dataset_title": "Dataset title <strong>{{title}}</strong>",
         "publish": {
           "requested": {
             "heading": "Do you approve this dataset for publishing?",

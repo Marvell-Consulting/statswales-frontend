@@ -14,12 +14,18 @@ export default function TaskDecision(props) {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <form encType="multipart/form-data" method="post">
-
             <h1 className="govuk-heading-xl govuk-!-margin-top-2" id="task-decision">
               {props.t(`publish.task.decision.${props.taskType}.heading`)}
             </h1>
 
-            <p className="govuk-body govuk-!-margin-0">Dataset title: <strong>{props.title}</strong></p>
+            <p
+              className="govuk-body govuk-!-margin-0"
+              dangerouslySetInnerHTML={{
+                __html: props.t('publish.task.decision.dataset_title', {
+                  title: props.title
+                })
+              }}
+            />
 
             <p
               className="govuk-body govuk-!-margin-0"
