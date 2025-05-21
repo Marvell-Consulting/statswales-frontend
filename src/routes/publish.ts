@@ -49,12 +49,13 @@ import {
 } from '../controllers/publish';
 import { DatasetInclude as Include } from '../enums/dataset-include';
 import { flashMessages } from '../middleware/flash';
+import { noCache } from '../middleware/no-cache';
 
 export const publish = Router();
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-publish.use(flashMessages);
+publish.use(noCache, flashMessages);
 
 publish.get('/', start);
 
