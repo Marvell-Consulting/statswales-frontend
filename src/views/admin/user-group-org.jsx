@@ -1,7 +1,6 @@
 import React from 'react';
 import Layout from '../components/layouts/Publisher';
 import ErrorHandler from '../components/ErrorHandler';
-import clsx from 'clsx';
 import RadioGroup from '../components/RadioGroup';
 
 export default function UserGroupOrg(props) {

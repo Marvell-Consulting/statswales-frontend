@@ -183,9 +183,11 @@ export default function ConsumerView(props) {
               },
               {
                 value: 'raw',
-                label: props.t('consumer_view.unformatted_numbers')
+                label: props.t('consumer_view.unformatted_numbers'),
+                disabled: true
               }
             ]}
+            value="default"
           />
 
           <RadioGroup

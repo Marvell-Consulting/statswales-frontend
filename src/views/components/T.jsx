@@ -1,7 +1,11 @@
 import React from 'react';
 import { useLocals } from '../context/Locals';
 
-export default function T({ children, ...props }) {
+export default function T({ children, raw, ...props }) {
   const { t } = useLocals();
-  return <span dangerouslySetInnerHTML={{ __html: t(children, props) }} />;
+  const content = t(children, props);
+  if (raw) {
+    return <span dangerouslySetInnerHTML={{ __html: content }} />;
+  }
+  return <span>{content}</span>;
 }

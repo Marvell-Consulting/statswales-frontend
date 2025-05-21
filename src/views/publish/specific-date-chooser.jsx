@@ -26,7 +26,12 @@ export default function SpecificDateChooser(props) {
                 {
                   value: 'dd/MM/yyyy',
                   label: 'DD/MM/YYYY',
-                  hint: <T example="14/10/2024">publish.point_in_time.example</T>
+                  hint: (
+                    // slashes need escaping
+                    <T example="14/10/2024" raw>
+                      publish.point_in_time.example
+                    </T>
+                  )
                 },
                 {
                   value: 'dd-MM-yyyy',

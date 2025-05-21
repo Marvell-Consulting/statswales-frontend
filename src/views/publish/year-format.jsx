@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from '../components/layouts/Publisher';
 import ErrorHandler from '../components/ErrorHandler';
 import RadioGroup from '../components/RadioGroup';
+import T from '../components/T';
 
 export default function YearFormat(props) {
   const backLink = props.referrer;
@@ -45,7 +46,12 @@ export default function YearFormat(props) {
                 {
                   value: 'YYYY/YY',
                   label: 'YYYY/YY',
-                  hint: <T example="2023/24">publish.year_format.example</T>
+                  // slashes need escaping
+                  hint: (
+                    <T example="2023/24" raw>
+                      publish.year_format.example
+                    </T>
+                  )
                 },
                 {
                   value: 'YYYY-YYYY',
@@ -55,7 +61,12 @@ export default function YearFormat(props) {
                 {
                   value: 'YYYY/YYYY',
                   label: 'YYYY/YYYY',
-                  hint: <T example="2023/2024">publish.year_format.example</T>
+                  // slashes need escaping
+                  hint: (
+                    <T example="2023/2024" raw>
+                      publish.year_format.example
+                    </T>
+                  )
                 }
               ]}
             />
