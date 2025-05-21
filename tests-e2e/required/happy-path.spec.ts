@@ -350,6 +350,7 @@ test.describe('Happy path', () => {
 
     // submit
     await page.getByRole('button', { name: 'Submit for approval' }).click();
-    expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview?submitted=true`);
+    expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
+    expect(page.getByText('Dataset submitted for approval')).toBeTruthy();
   });
 });
