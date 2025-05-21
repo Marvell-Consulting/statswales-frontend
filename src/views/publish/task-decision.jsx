@@ -4,21 +4,21 @@ import Layout from '../components/layouts/Publisher';
 import clsx from 'clsx';
 
 export default function TaskDecision(props) {
+  const decisionError = props.errors?.find((e) => e.field === 'decision');
+  const reasonError = props.errors?.find((e) => e.field === 'reason');
+
   return (
-    <Layout>
+    <Layout {...props}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <form encType="multipart/form-data" method="post">
             <h1 className="govuk-heading-xl">{props.t(`publish.task.decision.${props.taskType}.heading`)}</h1>
+
             <ErrorHandler {...props} />
 
-            <div
-              className={clsx('govuk-form-group', {
-                'govuk-form-group--error': props.errors?.find((e) => e.field === 'decision')
-              })}
-            >
+            <div className={clsx('govuk-form-group', { 'govuk-form-group--error': decisionError })}>
               <fieldset className="govuk-fieldset">
-                {props.errors?.find((e) => e.field === 'decision') && (
+                {decisionError && (
                   <p id="decision-error" className="govuk-error-message">
                     {props.t(`publish.task.decision.${props.taskType}.form.decision.error.missing`)}
                   </p>
@@ -55,16 +55,12 @@ export default function TaskDecision(props) {
                     className="govuk-radios__conditional govuk-radios__conditional--hidden"
                     id="conditional-decisionNo"
                   >
-                    <div
-                      className={clsx('govuk-form-group', {
-                        'govuk-form-group--error': props.errors?.find((e) => e.field === 'reason')
-                      })}
-                    >
+                    <div className={clsx('govuk-form-group', { 'govuk-form-group--error': reasonError })}>
                       <fieldset className="govuk-fieldset" role="group" aria-describedby="decisionNo">
                         <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
                           {props.t(`publish.task.decision.${props.taskType}.form.reason.label`)}
                         </legend>
-                        {props.errors?.find((e) => e.field === 'reason') && (
+                        {reasonError && (
                           <p id="reason-error" className="govuk-error-message">
                             {props.t(`publish.task.decision.${props.taskType}.form.reason.error.missing`)}
                           </p>
@@ -76,9 +72,8 @@ export default function TaskDecision(props) {
                           name="reason"
                           rows="4"
                           aria-describedby="roundingDescription-hint"
-                        >
-                          {props.values?.reason}
-                        </textarea>
+                          defaultValue={props.values?.reason}
+                        />
                       </fieldset>
                     </div>
                   </div>
