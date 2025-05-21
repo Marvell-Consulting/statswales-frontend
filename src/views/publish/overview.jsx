@@ -6,6 +6,18 @@ import DatasetStatus from '../components/dataset/DatasetStatus';
 import Tabs from '../components/Tabs';
 
 export default function Overview(props) {
+  function ActionLink({ path, action, queryParams = {}, newTab }) {
+    return (
+      <a
+        className="govuk-link govuk-link--no-underline"
+        href={props.buildUrl(path, props.i18n.language, queryParams )}
+        target={newTab ? '_blank' : undefined}
+      >
+        {props.t(`publish.overview.actions.${action}`)}
+      </a>
+    );
+  }
+
   return (
     <Layout {...props}>
       <div className="govuk-grid-row">
@@ -34,7 +46,7 @@ export default function Overview(props) {
           <ErrorHandler {...props} />
 
           <div className="overview-details">
-            {props.publishingStatus === 'pending_approval' && (
+            {['pending_approval', 'update_pending_approval'].includes(props.publishingStatus) && (
               <>
                 <p
                   className="govuk-body govuk-!-margin-0"
@@ -98,84 +110,52 @@ export default function Overview(props) {
                   <ul className="govuk-list">
                     {props.canEdit && props.publishingStatus === 'incomplete' && (
                       <li>
-                        <a
-                          className="govuk-link govuk-link--no-underline"
-                          href={props.buildUrl(`/publish/${props.dataset.id}/tasklist`, props.i18n.language)}
-                        >
-                          {props.t('publish.overview.actions.continue')}
-                        </a>
+                        <ActionLink path={`/publish/${datasetId}/tasklist`} action="continue" />
                       </li>
                     )}
 
                     {props.canEdit && props.publishingStatus === 'update_incomplete' && (
                       <li>
-                        <a
-                          className="govuk-link govuk-link--no-underline"
-                          href={props.buildUrl(`/publish/${props.dataset.id}/tasklist`, props.i18n.language)}
-                        >
-                          {props.t('publish.overview.actions.continue_update')}
-                        </a>
+                        <ActionLink path={`/publish/${datasetId}/tasklist`} action="continue_update" />
                       </li>
                     )}
 
                     {props.datasetStatus === 'live' && (
                       <li>
-                        <a
-                          className="govuk-link govuk-link--no-underline"
-                          href={props.buildUrl(`/published/${props.dataset.id}`, props.i18n.language)}
-                          target="_blank"
-                        >
-                          {props.t('publish.overview.actions.view_published_dataset')}
-                        </a>
+                        <ActionLink path={`/published/${datasetId}`} action="view_published_dataset" newTab />
                       </li>
                     )}
 
                     {props.canEdit && props.publishingStatus === 'published' && (
                       <li>
-                        <a
-                          className="govuk-link govuk-link--no-underline"
-                          href={props.buildUrl(`/publish/${props.dataset.id}/update`, props.i18n.language)}
-                        >
-                          {props.t('publish.overview.actions.update_dataset')}
-                        </a>
+                        <ActionLink path={`/publish/${datasetId}/update`} action="update_dataset" />
                       </li>
                     )}
 
                     {props.publishingStatus !== 'published' && (
                       <li>
-                        <a
-                          className="govuk-link govuk-link--no-underline"
-                          href={props.buildUrl(`/publish/${props.dataset.id}/cube-preview`, props.i18n.language)}
-                        >
-                          {props.t('publish.overview.actions.preview')}
-                        </a>
+                        <ActionLink path={`/publish/${datasetId}/cube-preview`} action="preview" />
                       </li>
                     )}
 
                     {props.canEdit &&
-                      ['pending_approval', 'scheduled', 'update_scheduled'].includes(props.publishingStatus) && (
+                      ['pending_approval', 'update_pending_approval', 'scheduled', 'update_scheduled'].includes(props.publishingStatus) && (
                         <li>
-                          <a
-                            className="govuk-link govuk-link--no-underline"
-                            href={props.buildUrl(`/publish/${props.dataset.id}/overview`, props.i18n.language, {
-                              withdraw: 'true'
-                            })}
-                          >
-                            {props.t(
-                              `publish.overview.actions.${props.publishingStatus === 'update_scheduled' ? 'withdraw_update_revision' : 'withdraw_first_revision'}`
-                            )}
-                          </a>
+                          <ActionLink
+                            path={`/publish/${datasetId}/overview`}
+                            action={
+                              props.publishingStatus === 'update_scheduled'
+                                ? 'withdraw_update_revision'
+                                : 'withdraw_first_revision'
+                            }
+                            queryParams={{ withdraw: 'true' }}
+                          />
                         </li>
                       )}
 
                     {props.canMoveGroup && (
                       <li>
-                        <a
-                          className="govuk-link govuk-link--no-underline"
-                          href={props.buildUrl(`/publish/${props.dataset.id}/move`, props.i18n.language)}
-                        >
-                          {props.t('publish.overview.actions.move')}
-                        </a>
+                        <ActionLink path="move" action="move" />
                       </li>
                     )}
                   </ul>
