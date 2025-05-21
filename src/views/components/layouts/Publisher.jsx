@@ -1,7 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
+import { LocalsProvider } from '../../context/Locals';
 
-export default function Layout({
+const Layout = ({
   i18n,
   t,
   title,
@@ -15,7 +16,7 @@ export default function Layout({
   backLink,
   returnLink,
   formPage
-}) {
+}) => {
   return (
     <html lang={i18n.language} className="govuk-template wg">
       <head>
@@ -307,5 +308,13 @@ export default function Layout({
         <script src="https://kit.fontawesome.com/f6f4af2d4c.js" crossOrigin="anonymous"></script>
       </body>
     </html>
+  );
+};
+
+export default function PublisherLayout(props) {
+  return (
+    <LocalsProvider {...props}>
+      <Layout {...props}>{props.children}</Layout>
+    </LocalsProvider>
   );
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from '../components/layouts/Publisher';
 import ErrorHandler from '../components/ErrorHandler';
 import Table from '../components/Table';
+import RadioGroup from '../components/RadioGroup';
 
 export default function DateChooser(props) {
   const backLink = props.referrer;
@@ -83,47 +84,22 @@ export default function DateChooser(props) {
             <div className="govuk-grid-row">
               <div className="govuk-grid-column-full">
                 <form method="post" role="continue">
-                  <div className="govuk-form-group">
-                    <fieldset className="govuk-fieldset">
-                      <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h2 className="govuk-fieldset__heading">
-                          {props.t('publish.time_dimension_chooser.question')}
-                        </h2>
-                      </legend>
-                      <div className="govuk-radios" data-module="govuk-radios">
-                        <div className="govuk-radios__item">
-                          <input
-                            className="govuk-radios__input"
-                            id="dimensionTypePeriod"
-                            name="dimensionType"
-                            type="radio"
-                            value="time_period"
-                          />
-                          <label className="govuk-label govuk-radios__label" htmlFor="dimensionTypePeriod">
-                            {props.t('publish.time_dimension_chooser.chooser.period')}
-                          </label>
-                          <div className="govuk-hint govuk-radios__hint">
-                            {props.t('publish.time_dimension_chooser.chooser.period-hint')}
-                          </div>
-                        </div>
-                        <div className="govuk-radios__item">
-                          <input
-                            className="govuk-radios__input"
-                            id="dimensionTypePoint"
-                            name="dimensionType"
-                            type="radio"
-                            value="time_point"
-                          />
-                          <label className="govuk-label govuk-radios__label" htmlFor="dimensionTypePoint">
-                            {props.t('publish.time_dimension_chooser.chooser.point')}
-                          </label>
-                          <div className="govuk-hint govuk-radios__hint">
-                            {props.t('publish.time_dimension_chooser.chooser.point-hint')}
-                          </div>
-                        </div>
-                      </div>
-                    </fieldset>
-                  </div>
+                  <RadioGroup
+                    name="dimensionType"
+                    label={props.t('publish.time_dimension_chooser.question')}
+                    options={[
+                      {
+                        value: 'time_period',
+                        label: props.t('publish.time_dimension_chooser.chooser.period'),
+                        hint: props.t('publish.time_dimension_chooser.chooser.period-hint')
+                      },
+                      {
+                        value: 'time_point',
+                        label: props.t('publish.time_dimension_chooser.chooser.point'),
+                        hint: props.t('publish.time_dimension_chooser.chooser.point-hint')
+                      }
+                    ]}
+                  />
                   <div className="govuk-button-group">
                     <button
                       type="submit"

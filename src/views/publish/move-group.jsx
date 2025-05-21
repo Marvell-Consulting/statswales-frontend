@@ -1,43 +1,31 @@
 import React from 'react';
 import Layout from '../components/layouts/Publisher';
 import ErrorHandler from '../components/ErrorHandler';
-import clsx from 'clsx';
+import RadioGroup from '../components/RadioGroup';
 
 export default function MoveGroup(props) {
   return (
     <Layout {...props} formPage>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
-          <h1 className="govuk-heading-xl">{props.t('publish.move_group.heading')}</h1>
+          <h1 className="govuk-heading-xl" id="move-group">
+            {props.t('publish.move_group.heading')}
+          </h1>
 
           <form encType="multipart/form-data" method="post">
             <ErrorHandler {...props} />
 
-            <div
-              className={clsx('govuk-form-group', {
-                'govuk-form-group--error': props.errors?.find((e) => e.field === 'group_id')
-              })}
-            >
-              <fieldset className="govuk-fieldset" aria-describedby="group_id">
-                <div className="govuk-radios" data-module="govuk-radios">
-                  {props.availableGroups?.map((group, index) => (
-                    <div key={index} className="govuk-radios__item">
-                      <input
-                        className="govuk-radios__input"
-                        id={`group_${group.id}`}
-                        name="group_id"
-                        type="radio"
-                        value={group.id}
-                        defaultChecked={values.group_id === group.id}
-                      />
-                      <label className="govuk-label govuk-radios__label" htmlFor={`group_${group.id}`}>
-                        {group.name}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </fieldset>
-            </div>
+            <RadioGroup
+              {...props}
+              name="group_id"
+              labelledBy="move-group"
+              options={props.availableGroups.map((group) => ({
+                value: group.id,
+                label: group.name
+              }))}
+              value={values.group_id}
+            />
+
             <button type="submit" className="govuk-button" data-module="govuk-button">
               {props.t('buttons.continue')}
             </button>

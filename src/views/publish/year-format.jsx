@@ -1,6 +1,8 @@
 import React from 'react';
 import Layout from '../components/layouts/Publisher';
 import ErrorHandler from '../components/ErrorHandler';
+import RadioGroup from '../components/RadioGroup';
+import T from '../components/T';
 
 export default function YearFormat(props) {
   const backLink = props.referrer;
@@ -8,136 +10,66 @@ export default function YearFormat(props) {
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
       <span className="region-subhead">{props.dimension.metadata.name}</span>
-      <h1 className="govuk-heading-xl">{props.t('publish.year_format.heading')}</h1>
+      <h1 className="govuk-heading-xl" id="year-type">
+        {props.t('publish.year_format.heading')}
+      </h1>
 
       <ErrorHandler {...props} />
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
           <form method="post" role="continue">
-            <div className="govuk-form-group">
-              <fieldset className="govuk-fieldset">
-                <div className="govuk-radios" data-module="govuk-radios">
-                  <div className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      id="year-format-1"
-                      name="yearType"
-                      type="radio"
-                      value="YYYY"
-                    />
-                    <label className="govuk-label govuk-radios__label" htmlFor="year-format-1">
-                      YYYY
-                    </label>
-                    <div id="year-format-1-hint" className="govuk-hint govuk-radios__hint">
-                      {props.t('publish.year_format.example', { example: '2024' })}
-                    </div>
-                  </div>
-                  <div className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      id="year-format-2"
-                      name="yearType"
-                      type="radio"
-                      value="YYYYYY"
-                    />
-                    <label className="govuk-label govuk-radios__label" htmlFor="year-format-2">
-                      YYYYYY
-                    </label>
-                    <div id="year-format-2-hint" className="govuk-hint govuk-radios__hint">
-                      {props.t('publish.year_format.example', { example: '202324' })}
-                    </div>
-                  </div>
-                  <div className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      id="year-format-3"
-                      name="yearType"
-                      type="radio"
-                      value="YYYYYYYY"
-                    />
-                    <label className="govuk-label govuk-radios__label" htmlFor="year-format-3">
-                      YYYYYYYY
-                    </label>
-                    <div id="year-format-4-hint" className="govuk-hint govuk-radios__hint">
-                      {props.t('publish.year_format.example', { example: '20232024' })}
-                    </div>
-                  </div>
-                  <div className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      id="year-format-4"
-                      name="yearType"
-                      type="radio"
-                      value="YYYY-YY"
-                    />
-                    <label className="govuk-label govuk-radios__label" htmlFor="year-format-4">
-                      YYYY-YY
-                    </label>
-                    <div id="year-format-4-hint" className="govuk-hint govuk-radios__hint">
-                      {props.t('publish.year_format.example', { example: '2023-24' })}
-                    </div>
-                  </div>
-                  <div className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      id="year-format-5"
-                      name="yearType"
-                      type="radio"
-                      value="YYYY/YY"
-                    />
-                    <label className="govuk-label govuk-radios__label" htmlFor="year-format-5">
-                      YYYY/YY
-                    </label>
-                    <div
-                      id="year-format-5-hint"
-                      className="govuk-hint govuk-radios__hint"
-                      dangerouslySetInnerHTML={{
-                        __html: props.t('publish.year_format.example', { example: '2023/24' })
-                      }}
-                    />
-                  </div>
-                  <div className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      id="year-format-6"
-                      name="yearType"
-                      type="radio"
-                      value="YYYY-YYYY"
-                    />
-                    <label className="govuk-label govuk-radios__label" htmlFor="year-format-6">
-                      YYYY-YYYY
-                    </label>
-                    <div
-                      id="year-format-6-hint"
-                      className="govuk-hint govuk-radios__hint"
-                      dangerouslySetInnerHTML={{
-                        __html: props.t('publish.year_format.example', { example: '2023-2024' })
-                      }}
-                    />
-                  </div>
-                  <div className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      id="year-format-7"
-                      name="yearType"
-                      type="radio"
-                      value="YYYY/YYYY"
-                    />
-                    <label className="govuk-label govuk-radios__label" htmlFor="year-format-7">
-                      YYYY/YYYY
-                    </label>
-                    <div
-                      id="year-format-7-hint"
-                      className="govuk-hint govuk-radios__hint"
-                      dangerouslySetInnerHTML={{
-                        __html: props.t('publish.year_format.example', { example: '2023/2024' })
-                      }}
-                    />
-                  </div>
-                </div>
-              </fieldset>
-            </div>
+            <RadioGroup
+              name="yearType"
+              labelledBy="year-type"
+              options={[
+                {
+                  value: 'YYYY',
+                  label: 'YYYY',
+                  hint: <T example="2024">publish.year_format.example</T>
+                },
+                {
+                  value: 'YYYYYY',
+                  label: 'YYYYYY',
+                  hint: <T example="202324">publish.year_format.example</T>
+                },
+                {
+                  value: 'YYYYYYYY',
+                  label: 'YYYYYYYY',
+                  hint: <T example="20232024">publish.year_format.example</T>
+                },
+                {
+                  value: 'YYYY-YY',
+                  label: 'YYYY-YY',
+                  hint: <T example="2023-24">publish.year_format.example</T>
+                },
+                {
+                  value: 'YYYY/YY',
+                  label: 'YYYY/YY',
+                  // slashes need escaping
+                  hint: (
+                    <T example="2023/24" raw>
+                      publish.year_format.example
+                    </T>
+                  )
+                },
+                {
+                  value: 'YYYY-YYYY',
+                  label: 'YYYY-YYYY',
+                  hint: <T example="2023-2024">publish.year_format.example</T>
+                },
+                {
+                  value: 'YYYY/YYYY',
+                  label: 'YYYY/YYYY',
+                  // slashes need escaping
+                  hint: (
+                    <T example="2023/2024" raw>
+                      publish.year_format.example
+                    </T>
+                  )
+                }
+              ]}
+            />
             <div className="govuk-button-group">
               <button
                 type="submit"

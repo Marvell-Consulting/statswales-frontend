@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from '../components/layouts/Publisher';
 import ErrorHandler from '../components/ErrorHandler';
 import clsx from 'clsx';
+import RadioGroup from '../components/RadioGroup';
 
 export default function Quality(props) {
   const backLink = 'javascript:history.back()';
@@ -46,38 +47,16 @@ export default function Quality(props) {
                 />
               </div>
 
-              <div
-                className={clsx('govuk-form-group', {
-                  'govuk-form-group--error': props.errors?.find((e) => e.field === 'rounding_applied')
-                })}
-              >
-                <fieldset className="govuk-fieldset" aria-describedby="rounding">
-                  <h2 className="govuk-heading-s">{props.t('publish.quality.form.rounding_applied.heading')}</h2>
-                  {props.errors?.find((e) => e.field === 'rounding_applied') && (
-                    <p id="rounding_applied-error" className="govuk-error-message">
-                      {props.t('publish.quality.form.rounding_applied.error.missing')}
-                    </p>
-                  )}
-
-                  <div className="govuk-radios" data-module="govuk-radios">
-                    <div className="govuk-radios__item">
-                      <input
-                        className="govuk-radios__input"
-                        id="roundingApplied1"
-                        name="rounding_applied"
-                        data-aria-controls="conditional-rounding1"
-                        type="radio"
-                        value="true"
-                        defaultChecked={props.rounding_applied}
-                      />
-                      <label className="govuk-label govuk-radios__label" htmlFor="roundingApplied1">
-                        {props.t('publish.quality.form.rounding_applied.options.yes.label')}
-                      </label>
-                    </div>
-                    <div
-                      className="govuk-radios__conditional govuk-radios__conditional--hidden"
-                      id="conditional-rounding1"
-                    >
+              <RadioGroup
+                {...props}
+                name="rounding_applied"
+                label={props.t('publish.quality.form.rounding_applied.heading')}
+                errorMessage={props.t('publish.quality.form.rounding_applied.error.missing')}
+                options={[
+                  {
+                    value: 'true',
+                    label: props.t('publish.quality.form.rounding_applied.options.yes.label'),
+                    children: (
                       <div
                         className={clsx('govuk-form-group', {
                           'govuk-form-group--error': props.errors?.find((e) => e.field === 'rounding_description')
@@ -104,23 +83,15 @@ export default function Quality(props) {
                           />
                         </fieldset>
                       </div>
-                    </div>
-                    <div className="govuk-radios__item">
-                      <input
-                        className="govuk-radios__input"
-                        id="roundingApplied2"
-                        name="rounding_applied"
-                        type="radio"
-                        value="false"
-                        defaultChecked={props.rounding_applied || undefined}
-                      />
-                      <label className="govuk-label govuk-radios__label" htmlFor="roundingApplied2">
-                        {props.t('publish.quality.form.rounding_applied.options.no.label')}
-                      </label>
-                    </div>
-                  </div>
-                </fieldset>
-              </div>
+                    )
+                  },
+                  {
+                    value: 'false',
+                    label: props.t('publish.quality.form.rounding_applied.options.no.label')
+                  }
+                ]}
+                value={props.rounding_applied}
+              />
 
               <button type="submit" className="govuk-button" data-module="govuk-button">
                 {props.t('buttons.continue')}

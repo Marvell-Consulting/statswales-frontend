@@ -3,6 +3,8 @@ import Layout from '../components/layouts/Publisher';
 import ErrorHandler from '../components/ErrorHandler';
 import Table from '../components/Table';
 import clsx from 'clsx';
+import RadioGroup from '../components/RadioGroup';
+import T from '../components/T';
 
 export default function RelatedLinks(props) {
   const backLink = 'javascript:history.back()';
@@ -61,27 +63,20 @@ export default function RelatedLinks(props) {
 
               <form encType="multipart/form-data" method="post">
                 <input type="hidden" name="add_another" value="true" />
-                <div className="govuk-form-group">
-                  <h2 className="govuk-heading-m" id="add-link">
-                    {props.t('publish.related.list.form.add_another.heading')}
-                  </h2>
-                  <fieldset className="govuk-fieldset" aria-describedby="add-link">
-                    <div className="govuk-radios" data-module="govuk-radios">
-                      <div className="govuk-radios__item">
-                        <input className="govuk-radios__input" id="addYes" name="add_link" type="radio" value="true" />
-                        <label className="govuk-label govuk-radios__label" htmlFor="addYes">
-                          {props.t('publish.related.list.form.add_another.options.yes.label')}
-                        </label>
-                      </div>
-                      <div className="govuk-radios__item">
-                        <input className="govuk-radios__input" id="addNo" name="add_link" type="radio" value="false" />
-                        <label className="govuk-label govuk-radios__label" htmlFor="addNo">
-                          {props.t('publish.related.list.form.add_another.options.no.label')}
-                        </label>
-                      </div>
-                    </div>
-                  </fieldset>
-                </div>
+                <RadioGroup
+                  name="add_link"
+                  label={<T>publish.related.list.form.add_another.heading</T>}
+                  options={[
+                    {
+                      value: 'true',
+                      label: <T>publish.related.list.form.add_another.options.yes.label</T>
+                    },
+                    {
+                      value: 'false',
+                      label: <T>publish.related.list.form.add_another.options.no.label</T>
+                    }
+                  ]}
+                />
                 <button type="submit" className="govuk-button" data-module="govuk-button">
                   {props.t('buttons.continue')}
                 </button>

@@ -1,6 +1,7 @@
 import React from 'react';
 import Layout from '../components/layouts/Publisher';
 import ErrorHandler from '../components/ErrorHandler';
+import RadioGroup from '../components/RadioGroup';
 
 export default function PeriodType(props) {
   const backLink = props.buildUrl(
@@ -11,55 +12,33 @@ export default function PeriodType(props) {
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
       <span className="region-subhead">{props.dimension.metadata.name}</span>
-      <h1 className="govuk-heading-xl">{props.t('publish.period-type-chooser.heading')}</h1>
+      <h1 className="govuk-heading-xl" id="period-type">
+        {props.t('publish.period-type-chooser.heading')}
+      </h1>
 
       <ErrorHandler {...props} />
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
           <form method="post" role="continue">
-            <div className="govuk-form-group">
-              <fieldset className="govuk-fieldset">
-                <div className="govuk-radios" data-module="govuk-radios">
-                  <div className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      id="periodTypeChooserYears"
-                      name="periodType"
-                      type="radio"
-                      value="years"
-                    />
-                    <label className="govuk-label govuk-radios__label" htmlFor="periodTypeChooserYears">
-                      {props.t('publish.period-type-chooser.chooser.years')}
-                    </label>
-                  </div>
-                  <div className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      id="periodTypeChooserQuarters"
-                      name="periodType"
-                      type="radio"
-                      value="quarters"
-                    />
-                    <label className="govuk-label govuk-radios__label" htmlFor="periodTypeChooserQuarters">
-                      {props.t('publish.period-type-chooser.chooser.quarters')}
-                    </label>
-                  </div>
-                  <div className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      id="periodTypeChooserMonths"
-                      name="periodType"
-                      type="radio"
-                      value="months"
-                    />
-                    <label className="govuk-label govuk-radios__label" htmlFor="periodTypeChooserMonths">
-                      {props.t('publish.period-type-chooser.chooser.months')}
-                    </label>
-                  </div>
-                </div>
-              </fieldset>
-            </div>
+            <RadioGroup
+              name="periodType"
+              labelledBy="period-type"
+              options={[
+                {
+                  value: 'years',
+                  label: props.t('publish.period-type-chooser.chooser.years')
+                },
+                {
+                  value: 'quarters',
+                  label: props.t('publish.period-type-chooser.chooser.quarters')
+                },
+                {
+                  value: 'months',
+                  label: props.t('publish.period-type-chooser.chooser.months')
+                }
+              ]}
+            />
             <div className="govuk-button-group">
               <button
                 type="submit"

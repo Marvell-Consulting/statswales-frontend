@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from '../components/layouts/Publisher';
 import ErrorHandler from '../components/ErrorHandler';
 import DimensionPreviewTable from '../components/DimensionPreviewTable';
+import RadioGroup from '../components/RadioGroup';
 
 export default function NumberChooser(props) {
   const backLink = props.referrer;
@@ -62,41 +63,18 @@ export default function NumberChooser(props) {
             <div className="govuk-grid-row">
               <div className="govuk-grid-column-full">
                 <form method="post" role="continue">
-                  <div className="govuk-form-group">
-                    <fieldset className="govuk-fieldset">
-                      <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
-                        <h2 className="govuk-fieldset__heading">{props.t('publish.number_chooser.question')}</h2>
-                      </legend>
-                      <div className="govuk-radios" data-module="govuk-radios">
-                        <div className="govuk-radios__item">
-                          <input
-                            className="govuk-radios__input"
-                            id="numberTypeInteger"
-                            name="numberType"
-                            type="radio"
-                            value="integer"
-                          />
-                          <label className="govuk-label govuk-radios__label" htmlFor="numberTypeInteger">
-                            {props.t('publish.number_chooser.chooser.integer')}
-                          </label>
-                        </div>
-                        <div className="govuk-radios__item">
-                          <input
-                            className="govuk-radios__input"
-                            id="numberTypeDecimal"
-                            name="numberType"
-                            type="radio"
-                            value="decimal"
-                            data-aria-controls="conditional-numberTypeDecimal"
-                          />
-                          <label className="govuk-label govuk-radios__label" htmlFor="numberTypeDecimal">
-                            {props.t('publish.number_chooser.chooser.decimal')}
-                          </label>
-                        </div>
-                        <div
-                          className="govuk-radios__conditional govuk-radios__conditional--hidden"
-                          id="conditional-numberTypeDecimal"
-                        >
+                  <RadioGroup
+                    name="numberType"
+                    label={props.t('publish.number_chooser.question')}
+                    options={[
+                      {
+                        value: 'integer',
+                        label: props.t('publish.number_chooser.chooser.integer')
+                      },
+                      {
+                        value: 'decimal',
+                        label: props.t('publish.number_chooser.chooser.decimal'),
+                        children: (
                           <div className="govuk-form-group">
                             <label className="govuk-label" htmlFor="decimalPlaces">
                               {props.t('publish.number_chooser.chooser.decimal_places')}
@@ -114,10 +92,10 @@ export default function NumberChooser(props) {
                               <option value="8">8</option>
                             </select>
                           </div>
-                        </div>
-                      </div>
-                    </fieldset>
-                  </div>
+                        )
+                      }
+                    ]}
+                  />
                   <div className="govuk-button-group">
                     <button
                       type="submit"

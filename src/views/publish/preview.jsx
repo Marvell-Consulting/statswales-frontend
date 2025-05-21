@@ -3,6 +3,7 @@ import Layout from '../components/layouts/Publisher';
 import ErrorHandler from '../components/ErrorHandler';
 import Pagination from '../components/Pagination';
 import Table from '../components/Table';
+import RadioGroup from '../components/RadioGroup';
 
 export default function Preview(props) {
   const backLink = props.revisit && props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
@@ -106,57 +107,36 @@ export default function Preview(props) {
             <div className="govuk-grid-row">
               <div className="govuk-grid-column-full">
                 <form method="post" role="continue">
-                  <fieldset className="govuk-fieldset">
-                    <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
-                      <h2 className="govuk-fieldset__heading">{props.t('publish.preview.revisit_question')}</h2>
-                    </legend>
-                    <div className="govuk-radios govuk-body govuk-!-margin-bottom-3" data-module="govuk-radios">
-                      <div className="govuk-radios__item">
-                        <input
-                          className="govuk-radios__input"
-                          id="actionChooserTable"
-                          name="actionChooser"
-                          type="radio"
-                          value="replace-table"
-                        />
-                        <label className="govuk-label govuk-radios__label" htmlFor="actionChooserTable">
-                          {props.t('publish.preview.upload_different')}
-                        </label>
-                        <div id="actionChooserTable-hint" className="govuk-hint govuk-radios__hint">
-                          {props.t('publish.preview.upload_different_hint')}
-                        </div>
-                      </div>
-                      <div className="govuk-radios__item">
-                        <input
-                          className="govuk-radios__input"
-                          id="actionChooserSources"
-                          name="actionChooser"
-                          type="radio"
-                          value="replace-sources"
-                        />
-                        <label className="govuk-label govuk-radios__label" htmlFor="actionChooserSources">
-                          {props.t('publish.preview.change_source')}
-                        </label>
-                        <div id="actionChooserSources-hint" className="govuk-hint govuk-radios__hint">
-                          {props.t('publish.preview.change_source_hint')}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="govuk-button-group">
-                      <button
-                        type="submit"
-                        name="confirm"
-                        value="true"
-                        className="govuk-button"
-                        data-module="govuk-button"
-                        style={{ verticalAlign: 'unset' }}
-                        data-prevent-double-click="true"
-                      >
-                        {props.t('buttons.continue')}
-                      </button>
-                    </div>
-                  </fieldset>
+                  <RadioGroup
+                    name="actionChooser"
+                    label={props.t('publish.preview.revisit_question')}
+                    options={[
+                      {
+                        value: 'replace-table',
+                        label: props.t('publish.preview.upload_different'),
+                        hint: props.t('publish.preview.upload_different_hint')
+                      },
+                      {
+                        value: 'replace-sources',
+                        label: props.t('publish.preview.change_source'),
+                        hint: props.t('publish.preview.change_source_hint')
+                      }
+                    ]}
+                  />
                 </form>
+                <div className="govuk-button-group">
+                  <button
+                    type="submit"
+                    name="confirm"
+                    value="true"
+                    className="govuk-button"
+                    data-module="govuk-button"
+                    style={{ verticalAlign: 'unset' }}
+                    data-prevent-double-click="true"
+                  >
+                    {props.t('buttons.continue')}
+                  </button>
+                </div>
               </div>
             </div>
           ) : (
