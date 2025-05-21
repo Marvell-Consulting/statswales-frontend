@@ -4,6 +4,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { fetchDataset } from '../middleware/fetch-dataset';
 import { ensureDeveloper } from '../middleware/ensure-developer';
 import { flashMessages } from '../middleware/flash';
+import { noCache } from '../middleware/no-cache';
 import {
   displayDatasetPreview,
   downloadAllDatasetFiles,
@@ -15,7 +16,7 @@ import {
 
 export const developer = Router();
 
-developer.use(ensureDeveloper, flashMessages);
+developer.use(ensureDeveloper, noCache, flashMessages);
 
 developer.use((req: Request, res: Response, next: NextFunction) => {
   res.locals.activePage = 'developer';
