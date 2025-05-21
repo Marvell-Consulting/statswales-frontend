@@ -124,6 +124,19 @@ export default function Preview(props) {
                     ]}
                   />
                 </form>
+                <div className="govuk-button-group">
+                  <button
+                    type="submit"
+                    name="confirm"
+                    value="true"
+                    className="govuk-button"
+                    data-module="govuk-button"
+                    style={{ verticalAlign: 'unset' }}
+                    data-prevent-double-click="true"
+                  >
+                    {props.t('buttons.continue')}
+                  </button>
+                </div>
               </div>
             </div>
           ) : (
