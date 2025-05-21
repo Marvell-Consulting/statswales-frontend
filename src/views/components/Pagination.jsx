@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React from 'react';
+import T from './T';
 
 export default function Pagination({
-  t,
   total_pages,
   current_page,
   page_size,
@@ -25,7 +25,9 @@ export default function Pagination({
           <nav className="govuk-pagination" aria-label="Pagination">
             <div className={clsx('govuk-pagination__prev', { 'govuk-pagination__inactive': current_page === 1 })}>
               {current_page === 1 ? (
-                <span className="govuk-pagination__link-title">{t('pagination.previous')}</span>
+                <span className="govuk-pagination__link-title">
+                  <T>pagination.previous</T>
+                </span>
               ) : (
                 <a
                   className="govuk-link govuk-pagination__link"
@@ -37,7 +39,9 @@ export default function Pagination({
                   )}
                   rel="prev"
                 >
-                  <span className="govuk-pagination__link-title">{t('pagination.previous')}</span>
+                  <span className="govuk-pagination__link-title">
+                    <T>pagination.previous</T>
+                  </span>
                 </a>
               )}
             </div>
@@ -95,10 +99,14 @@ export default function Pagination({
                   )}
                   rel="next"
                 >
-                  <span className="govuk-pagination__link-title">{t('pagination.next')}</span>
+                  <span className="govuk-pagination__link-title">
+                    <T>pagination.next</T>
+                  </span>
                 </a>
               ) : (
-                <span className="govuk-pagination__link-title">{t('pagination.next')}</span>
+                <span className="govuk-pagination__link-title">
+                  <T>pagination.next</T>
+                </span>
               )}
             </div>
           </nav>
@@ -113,11 +121,9 @@ export default function Pagination({
         <div className="govuk-grid-row govuk-!-margin-bottom-2">
           {!hide_pagination_hint && (
             <div className="govuk-grid-column-full govuk-!-text-align-centre govuk-hint">
-              {t('publish.preview.showing_rows', {
-                start: page_info.start_record,
-                end: page_info.end_record,
-                total: page_info.total_records
-              })}
+              <T start={page_info.start_record} end={page_info.end_record} total={page_info.total_records}>
+                publish.preview.showing_rows
+              </T>
             </div>
           )}
         </div>

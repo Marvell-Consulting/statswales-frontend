@@ -32,7 +32,7 @@ export default function Import(props) {
 
             <div className="govuk-inset-text">{props.t('translations.import.note')}</div>
 
-            <ErrorHandler {...props} />
+            <ErrorHandler />
             <form
               action={props.buildUrl(`/publish/${props.datasetId}/translation/import`, props.i18n.language)}
               method="post"

@@ -8,11 +8,11 @@ export default function UserRoles(props) {
     <Layout {...props} formPage>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
-          <FlashMessages {...props} />
+          <FlashMessages />
 
           <h1 className="govuk-heading-xl">{props.t('admin.user.roles.heading', { userName: props.userName })}</h1>
 
-          <ErrorHandler {...props} />
+          <ErrorHandler />
 
           <form encType="multipart/form-data" method="post">
             <div className="govuk-form-group">

@@ -11,7 +11,7 @@ export default function MeasureReview(props) {
       <span className="region-subhead">{props.measure.metadata.name}</span>
       <h1 className="govuk-heading-xl">{props.t('publish.measure_review.heading')}</h1>
 
-      <ErrorHandler {...props} />
+      <ErrorHandler />
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">

@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 import React from 'react';
 
-export default function Tabs({ tabs }) {
+export default function Tabs({ tabs, tabIndexBase = 0 }) {
   return (
     <div className="govuk-tabs" data-module="govuk-tabs">
       <div className="tabs">
         <div className="govuk-width-container">
-          <div className="govuk-main-wrapper govuk-!-padding-bottom-0" id="main-content">
+          <div className="govuk-main-wrapper govuk-!-padding-bottom-0">
             <ul className="govuk-tabs__list" role="tablist">
               {tabs.map((tab, i) => (
                 <li
@@ -20,8 +20,7 @@ export default function Tabs({ tabs }) {
                     id={`tab_${tab.id}`}
                     role="tab"
                     aria-controls={tab.id}
-                    // aria-selected={i === 0 ? true : false}
-                    tabIndex={i}
+                    tabIndex={tabIndexBase + i}
                   >
                     {tab.label}
                   </a>

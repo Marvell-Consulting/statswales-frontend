@@ -1,7 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
+import T from './T';
 
-export default function Table({ columns, rows, colgroup, inverted, isSticky, t, i18nBase }) {
+export default function Table({ columns, rows, colgroup, inverted, isSticky, i18nBase }) {
   return (
     <div className="govuk-table__container">
       <table className={clsx('govuk-table', { 'sticky-table': isSticky })}>
@@ -12,9 +13,13 @@ export default function Table({ columns, rows, colgroup, inverted, isSticky, t, 
               columns.map((col, cIx) => (
                 <tr key={`${rIx}-${cIx}`}>
                   <th scope="row" className="govuk-table__header">
-                    {typeof col === 'string' || (!col.label && col.label !== '')
-                      ? t(`${i18nBase}.${col.key || col}`)
-                      : col.label}
+                    {typeof col === 'string' || (!col.label && col.label !== '') ? (
+                      <T>
+                        {i18nBase}.{col.key || col}
+                      </T>
+                    ) : (
+                      col.label
+                    )}
                   </th>
                   <td className="govuk-table__cell">
                     {typeof col === 'string' ? row[col] : col.format ? col.format(row[col.key], row) : row[col.key]}
@@ -34,9 +39,13 @@ export default function Table({ columns, rows, colgroup, inverted, isSticky, t, 
                     className={clsx('govuk-table__header', col.className)}
                     style={col.style || undefined}
                   >
-                    {typeof col === 'string' || (!col.label && col.label !== '')
-                      ? t(`${i18nBase}.${col.key || col}`)
-                      : col.label}
+                    {typeof col === 'string' || (!col.label && col.label !== '') ? (
+                      <T>
+                        {i18nBase}.{col.key || col}
+                      </T>
+                    ) : (
+                      col.label
+                    )}
                   </th>
                 ))}
               </tr>

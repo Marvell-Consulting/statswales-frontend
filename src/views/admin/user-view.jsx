@@ -23,7 +23,7 @@ export default function UserView(props) {
     <Layout {...props}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
-          <FlashMessages {...props} />
+          <FlashMessages />
 
           <h1 className="govuk-heading-xl">{props.user.full_name || props.user.email}</h1>
 
@@ -65,7 +65,7 @@ export default function UserView(props) {
           <h2 className="govuk-heading-l">{props.t('admin.user.view.groups.heading')}</h2>
 
           {props.groups && props.groups.length > 0 ? (
-            <Table {...props} columns={columns} rows={props.groups} />
+            <Table columns={columns} rows={props.groups} />
           ) : (
             <p className="govuk-body">{props.t('admin.user.view.groups.empty')}</p>
           )}

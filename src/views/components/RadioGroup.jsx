@@ -1,7 +1,9 @@
 import React, { Fragment } from 'react';
 import clsx from 'clsx';
+import { useLocals } from '../context/Locals';
 
-export default function RadioGroup({ name, label, hint, options, value, labelledBy, errors, errorMessage }) {
+export default function RadioGroup({ name, label, hint, options, value, labelledBy, errorMessage }) {
+  const { errors } = useLocals();
   return (
     <div className={clsx('govuk-form-group', { 'govuk-form-group--error': errors?.find((e) => e.field === name) })}>
       <fieldset className="govuk-fieldset" aria-labelledby={labelledBy}>
