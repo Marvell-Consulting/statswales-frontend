@@ -9,7 +9,6 @@ import {
   factTablePreview,
   sources,
   taskList,
-  changeData,
   redirectToOverview,
   provideSummary,
   provideCollection,
@@ -169,9 +168,6 @@ publish.post(
 );
 
 /* Metadata */
-publish.get('/:datasetId/change', fetchDataset(), changeData);
-publish.post('/:datasetId/change', fetchDataset(), upload.none(), changeData);
-
 publish.get('/:datasetId/summary', fetchDataset(Include.Meta), provideSummary);
 publish.post('/:datasetId/summary', fetchDataset(Include.Meta), upload.none(), provideSummary);
 

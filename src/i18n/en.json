@@ -950,18 +950,6 @@
         "success": "Dataset submitted for approval"
       }
     },
-    "change_data": {
-      "title": "What do you need to do?",
-      "note": "The file should be in CSV, JSON or Parquet format",
-      "change_table": {
-        "label": "Upload a different data table",
-        "description": "This will remove reference data from all dimensions"
-      },
-      "change_columns": {
-        "label": "Change what each column in the data table contains",
-        "description": "This will remove reference data for any columns that contain dimensions that you change"
-      }
-    },
     "point_in_time": {
       "heading": "What date format is used?",
       "example": "For example: {{example}}"
