@@ -24,7 +24,15 @@ function ActionLink({ path, action, newTab, queryParams }) {
   );
 }
 
-function ActionsTab({ datasetId, canEdit, canApprove, canMoveGroup, datasetStatus, publishingStatus, openPublishTask }) {
+function ActionsTab({
+  datasetId,
+  canEdit,
+  canApprove,
+  canMoveGroup,
+  datasetStatus,
+  publishingStatus,
+  openPublishTask
+}) {
   const { buildUrl, i18n } = useLocals();
 
   return (
@@ -41,7 +49,9 @@ function ActionsTab({ datasetId, canEdit, canApprove, canMoveGroup, datasetStatu
 
         {canEdit && openPublishTask?.status === 'rejected' && (
           <>
-            <p className="govuk-body"><T>publish.overview.rejected.summary</T></p>
+            <p className="govuk-body">
+              <T>publish.overview.rejected.summary</T>
+            </p>
             <p className="govuk-body">{openPublishTask?.comment}</p>
             <a
               className="govuk-button govuk-!-margin-top-4"
@@ -85,14 +95,14 @@ function ActionsTab({ datasetId, canEdit, canApprove, canMoveGroup, datasetStatu
         )}
 
         {canEdit &&
-          ['pending_approval', 'update_pending_approval', 'scheduled', 'update_scheduled'].includes(publishingStatus) && (
+          ['pending_approval', 'update_pending_approval', 'scheduled', 'update_scheduled'].includes(
+            publishingStatus
+          ) && (
             <li>
               <ActionLink
                 path={`/publish/${datasetId}/overview`}
                 action={
-                  publishingStatus === 'update_scheduled'
-                    ? 'withdraw_update_revision'
-                    : 'withdraw_first_revision'
+                  publishingStatus === 'update_scheduled' ? 'withdraw_update_revision' : 'withdraw_first_revision'
                 }
                 queryParams={{ withdraw: 'true' }}
               />
@@ -117,7 +127,11 @@ function HistoryTab({ history }) {
       key: 'created_at',
       label: <T>publish.overview.history.table.created_at</T>,
       format: (createdAt, event) => {
-        return <span data-eventid={event.id}>{dateFormat(createdAt, 'h:mmaaa, d MMMM yyyy', { locale: i18n.language })}</span>;
+        return (
+          <span data-eventid={event.id}>
+            {dateFormat(createdAt, 'h:mmaaa, d MMMM yyyy', { locale: i18n.language })}
+          </span>
+        );
       }
     },
     {
@@ -132,7 +146,12 @@ function HistoryTab({ history }) {
           const { action, status, isUpdate } = event.data;
 
           if (action === 'publish') {
-            return <T>publish.overview.history.event.task.publish.{isUpdate ? 'update_' : ''}{status}</T>;
+            return (
+              <T>
+                publish.overview.history.event.task.publish.{isUpdate ? 'update_' : ''}
+                {status}
+              </T>
+            );
           }
         }
       }
@@ -152,9 +171,7 @@ function HistoryTab({ history }) {
     }
   ];
 
-  return (
-    <Table columns={columns} rows={history} />
-  );
+  return <Table columns={columns} rows={history} />;
 }
 
 export default function Overview(props) {
