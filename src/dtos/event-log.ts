@@ -7,4 +7,5 @@ export interface EventLogDTO {
   user_id?: string;
   client?: string;
   created_at: Date;
+  created_by?: string;
 }
