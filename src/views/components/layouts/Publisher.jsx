@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { LocalsProvider } from '../../context/Locals';
+import T from '../T';
 
 const Layout = ({
   i18n,
@@ -111,10 +112,9 @@ const Layout = ({
               <strong className="govuk-tag govuk-phase-banner__content__tag">
                 {t('consumer.global.phase_banner.beta')}
               </strong>
-              <span
-                className="govuk-phase-banner__text"
-                dangerouslySetInnerHTML={{ __html: t('header.feedback', { support_email: supportEmail }) }}
-              />
+              <T className="govuk-phase-banner__text" raw>
+                header.feedback
+              </T>
             </p>
           </div>
         </div>
@@ -265,7 +265,9 @@ const Layout = ({
           <div className="govuk-width-container govuk-!-padding-top-9">
             <ul className="footer-menu govuk-list">
               <li className="menu__item">
-                <a href={`mailto:${supportEmail}`}>{t('footer.contact_us')}</a>
+                <a href={`mailto:${supportEmail}`}>
+                  <T>footer.contact_us</T>
+                </a>
               </li>
               <li className="menu__item">
                 <a href="https://www.gov.wales/accessibility-statement-govwales">{t('footer.accessibility')}</a>

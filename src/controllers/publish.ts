@@ -91,6 +91,7 @@ import { UserDTO } from '../dtos/user/user';
 import { TaskDTO } from '../dtos/task';
 import { TaskDecisionDTO } from '../dtos/task-decision';
 import { SingleLanguageRevision } from '../dtos/single-language/revision';
+import { appConfig } from '../config';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -2082,6 +2083,8 @@ export const provideUpdateFrequency = async (req: Request, res: Response) => {
 export const provideDataProviders = async (req: Request, res: Response, next: NextFunction) => {
   const deleteId = req.query.delete;
   const editId = req.query.edit;
+  const config = appConfig();
+  const supportEmail = req.language.includes('en') ? config.supportEmail.en : config.supportEmail.cy;
   let availableProviders: ProviderDTO[] = [];
   let dataProviders: RevisionProviderDTO[] = [];
   let errors: ViewError[] | undefined;
@@ -2204,6 +2207,7 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
     availableProviders, // list of all available providers
     availableSources, // list of sources for the selected provider,
     addSource: errors && errors[0]?.message?.key === 'errors.provider_source.missing', // whether to show the source dropdown
+    request_data_provider_url: `mailto:${supportEmail}`,
     errors
   });
 };

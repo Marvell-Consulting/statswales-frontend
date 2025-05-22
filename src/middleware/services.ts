@@ -35,7 +35,7 @@ export const initServices = (req: Request, res: Response, next: NextFunction): v
   res.locals.referrer = req.get('Referrer');
   res.locals.parseISO = parseISO;
   res.locals.dateFormat = dateFormat;
-  res.locals.supportEmail = config.supportEmail;
+  res.locals.supportEmail = req.language.includes('en') ? config.supportEmail.en : config.supportEmail.cy;
 
   next();
 };

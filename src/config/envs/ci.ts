@@ -10,7 +10,10 @@ import { SessionStore } from '../session-store.enum';
 export function getCIConfig(): AppConfig {
   return defineConfig({
     env: AppEnv.Ci,
-    supportEmail: 'support@example.com',
+    supportEmail: {
+      en: 'support@example.com',
+      cy: 'support@example.com'
+    },
     logger: {
       level: (process.env.LOG_LEVEL as Level) || 'silent'
     },
