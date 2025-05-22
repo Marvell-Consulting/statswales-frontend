@@ -40,6 +40,7 @@ import { UserStatus } from '../enums/user-status';
 import { AuthProvider } from '../enums/auth-providers';
 import { TaskDTO } from '../dtos/task';
 import { TaskDecisionDTO } from '../dtos/task-decision';
+import { EventLogDTO } from '../dtos/event-log';
 
 const config = appConfig();
 
@@ -694,6 +695,13 @@ export class PublisherApi {
     logger.debug(`Decision made on task ${taskId}: ${decisionDTO.decision}`);
     return this.fetch({ url: `task/${taskId}`, method: HttpMethod.Patch, json: decisionDTO }).then(
       (response) => response.json() as unknown as TaskDTO
+    );
+  }
+
+  public async getDatasetHistory(datasetId: string): Promise<EventLogDTO[]> {
+    logger.debug(`Fetching history for dataset ${datasetId}...`);
+    return this.fetch({ url: `dataset/${datasetId}/history` }).then(
+      (response) => response.json() as unknown as EventLogDTO[]
     );
   }
 }

@@ -92,6 +92,7 @@ import { TaskDTO } from '../dtos/task';
 import { TaskDecisionDTO } from '../dtos/task-decision';
 import { SingleLanguageRevision } from '../dtos/single-language/revision';
 import { appConfig } from '../config';
+import { EventLogDTO } from '../dtos/event-log';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -2545,7 +2546,11 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
   const canApprove = isApproverForDataset(user, res.locals.dataset);
 
   try {
-    const dataset = await req.pubapi.getDataset(res.locals.datasetId, DatasetInclude.Overview);
+    const [dataset, history] = await Promise.all([
+      req.pubapi.getDataset(res.locals.datasetId, DatasetInclude.Overview),
+      req.pubapi.getDatasetHistory(res.locals.datasetId)
+    ]);
+
     const revision = singleLangRevision(dataset.end_revision, req.language)!;
 
     if (req.query.withdraw) {
@@ -2564,6 +2569,11 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
     const publishingStatus = getPublishingStatus(dataset, revision);
     const openPublishTask = dataset.tasks?.find((task) => task.open && task.action === TaskAction.Publish);
 
+    const filteredHistory = history.filter((log: EventLogDTO) => {
+      if (log.entity === 'dataset' && log.action === 'update') return false;
+      return true;
+    });
+
     res.render('publish/overview', {
       dataset,
       revision,
@@ -2573,7 +2583,8 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
       canMoveGroup,
       canEdit,
       canApprove,
-      openPublishTask
+      openPublishTask,
+      history: filteredHistory
     });
     return;
   } catch (err) {

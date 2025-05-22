@@ -980,6 +980,31 @@
         "preview": "View dataset preview",
         "move": "Move dataset to another group"
       },
+      "history": {
+        "table": {
+          "created_at": "Date",
+          "action": "Action",
+          "user": "User",
+          "comment": "Comments"
+        },
+        "event": {
+          "dataset": {
+            "insert": "Dataset first created"
+          },
+          "task": {
+            "publish": {
+              "requested": "Dataset submitted for approval",
+              "update_requested": "Update submitted for approval",
+              "withdrawn": "Dataset withdrawn from approval",
+              "update_withdrawn": "Update withdrawn from approval",
+              "rejected": "Dataset rejected for publishing",
+              "update_rejected": "Update rejected for publishing",
+              "approved": "Dataset approved for publishing",
+              "update_approved": "Update approved for publishing"
+            }
+          }
+        }
+      },
       "buttons": {
         "pending_approval": "Respond to publishing request",
         "fix": "Fix issues with dataset"
@@ -1004,7 +1029,7 @@
     },
     "task": {
       "decision": {
-        "dataset_title": "Dataset title <strong>{{title}}</strong>",
+        "dataset_title": "Dataset title: <strong>{{title}}</strong>",
         "publish": {
           "requested": {
             "heading": "Do you approve this dataset for publishing?",
