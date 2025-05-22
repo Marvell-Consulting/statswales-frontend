@@ -50,7 +50,7 @@ export default function Overview(props) {
                       userName: props.openPublishTask?.created_by_name
                     })
                   }}
-                ></p>
+                />
 
                 {props.canApprove && (
                   <a

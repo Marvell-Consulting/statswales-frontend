@@ -90,6 +90,7 @@ import { TaskAction } from '../enums/task-action';
 import { UserDTO } from '../dtos/user/user';
 import { TaskDTO } from '../dtos/task';
 import { TaskDecisionDTO } from '../dtos/task-decision';
+import { SingleLanguageRevision } from '../dtos/single-language/revision';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -2656,9 +2657,11 @@ export const moveDatasetGroup = async (req: Request, res: Response, next: NextFu
 export const taskDecision = async (req: Request, res: Response, next: NextFunction) => {
   let task: TaskDTO | undefined;
   let taskType = '';
+  let title: string | undefined;
+  let dataset: DatasetDTO | undefined;
+  let revision: SingleLanguageRevision | undefined;
   let values: TaskDecisionDTO = {};
   let errors: ViewError[] = [];
-
   const taskIdError = await hasError(uuidValidator('taskId'), req);
 
   if (taskIdError) {
@@ -2668,6 +2671,9 @@ export const taskDecision = async (req: Request, res: Response, next: NextFuncti
   }
 
   try {
+    dataset = await req.pubapi.getDataset(res.locals.datasetId, DatasetInclude.Overview);
+    revision = singleLangRevision(dataset.end_revision, req.language)!;
+    title = revision?.metadata?.title;
     task = await req.pubapi.getTaskById(req.params.taskId);
 
     if (!task || task.dataset_id !== res.locals.datasetId) {
@@ -2707,5 +2713,13 @@ export const taskDecision = async (req: Request, res: Response, next: NextFuncti
     }
   }
 
-  res.render('publish/task-decision', { task, taskType, values, errors });
+  res.render('publish/task-decision', {
+    task,
+    taskType,
+    values,
+    dataset,
+    revision,
+    title,
+    errors
+  });
 };

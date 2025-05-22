@@ -13,9 +13,28 @@ export default function TaskDecision(props) {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <form encType="multipart/form-data" method="post">
-            <h1 className="govuk-heading-xl" id="task-decision">
+            <h1 className="govuk-heading-xl govuk-!-margin-top-2" id="task-decision">
               <T>publish.task.decision.{props.taskType}.heading</T>
             </h1>
+
+            <p className="govuk-body govuk-!-margin-0">
+              <T title={props.title} raw>
+                publish.task.decision.dataset_title
+              </T>
+            </p>
+
+            <p className="govuk-body govuk-!-margin-0">
+              <T publishAt={props.dateFormat(props.revision.publish_at, 'h:mmaaa, d MMMM yyyy')} raw>
+                publish.overview.pending.publish_at
+              </T>
+            </p>
+
+            <p className="govuk-body govuk-!-margin-top-0">
+              <T userName={props.task.created_by_name} raw>
+                publish.overview.pending.requested_by
+              </T>
+            </p>
+
             <ErrorHandler {...props} />
 
             <RadioGroup
