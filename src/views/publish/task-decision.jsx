@@ -18,15 +18,21 @@ export default function TaskDecision(props) {
             </h1>
 
             <p className="govuk-body govuk-!-margin-0">
-              <T title={props.title} raw>publish.task.decision.dataset_title</T>
+              <T title={props.title} raw>
+                publish.task.decision.dataset_title
+              </T>
             </p>
 
             <p className="govuk-body govuk-!-margin-0">
-              <T publishAt={props.dateFormat(props.revision.publish_at, 'h:mmaaa, d MMMM yyyy')} raw>publish.overview.pending.publish_at</T>
+              <T publishAt={props.dateFormat(props.revision.publish_at, 'h:mmaaa, d MMMM yyyy')} raw>
+                publish.overview.pending.publish_at
+              </T>
             </p>
 
             <p className="govuk-body govuk-!-margin-top-0">
-              <T userName={props.task.created_by_name} raw>publish.overview.pending.requested_by</T>
+              <T userName={props.task.created_by_name} raw>
+                publish.overview.pending.requested_by
+              </T>
             </p>
 
             <ErrorHandler {...props} />
