@@ -2545,7 +2545,12 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
   const canApprove = isApproverForDataset(user, res.locals.dataset);
 
   try {
-    const dataset = await req.pubapi.getDataset(res.locals.datasetId, DatasetInclude.Overview);
+    const [dataset, history] = await Promise.all([
+      req.pubapi.getDataset(res.locals.datasetId, DatasetInclude.Overview),
+      req.pubapi.getDatasetHistory(res.locals.datasetId)
+    ]);
+    console.log(history);
+
     const revision = singleLangRevision(dataset.end_revision, req.language)!;
 
     if (req.query.withdraw) {
@@ -2573,7 +2578,8 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
       canMoveGroup,
       canEdit,
       canApprove,
-      openPublishTask
+      openPublishTask,
+      history
     });
     return;
   } catch (err) {

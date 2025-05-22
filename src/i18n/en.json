@@ -980,6 +980,14 @@
         "preview": "View dataset preview",
         "move": "Move dataset to another group"
       },
+      "history": {
+        "table": {
+          "created_at": "Date",
+          "action": "Action",
+          "user": "User",
+          "comment": "Comments"
+        }
+      },
       "buttons": {
         "pending_approval": "Respond to publishing request",
         "fix": "Fix issues with dataset"
