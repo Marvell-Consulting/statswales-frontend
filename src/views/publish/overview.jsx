@@ -8,7 +8,6 @@ import DatasetStatus from '../components/dataset/DatasetStatus';
 import Tabs from '../components/Tabs';
 import T from '../components/T';
 import Table from '../components/Table';
-import { format } from 'path';
 
 function ActionLink({ path, action, newTab, queryParams }) {
   const { buildUrl, i18n } = useLocals();
