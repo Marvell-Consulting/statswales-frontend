@@ -14,6 +14,16 @@ import { getDownloadHeaders } from '../utils/download-headers';
 import { logger } from '../utils/logger';
 import { Locale } from '../enums/locale';
 
+export const homepage = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const topics = await req.conapi.getPublishedTopics();
+    console.log(topics);
+    res.render('consumer/homepage', { topics });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const listPublishedDatasets = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const page = parseInt(req.query.page_number as string, 10) || 1;

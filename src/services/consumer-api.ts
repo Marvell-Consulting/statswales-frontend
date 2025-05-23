@@ -10,6 +10,7 @@ import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
 import { ViewDTO } from '../dtos/view-dto';
 import { FileFormat } from '../enums/file-format';
+import { TopicDTO } from '../dtos/topic';
 
 const config = appConfig();
 
@@ -60,6 +61,11 @@ export class ConsumerApi {
 
   public async ping(): Promise<boolean> {
     return this.fetch({ url: 'healthcheck' }).then(() => true);
+  }
+
+  public async getPublishedTopics(): Promise<TopicDTO[]> {
+    logger.debug(`Fetching published topics...`);
+    return this.fetch({ url: `published/topics` }).then((response) => response.json() as unknown as TopicDTO[]);
   }
 
   public async getPublishedDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {
