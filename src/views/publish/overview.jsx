@@ -141,6 +141,10 @@ function HistoryTab({ history }) {
           return <T>publish.overview.history.event.dataset.{action}</T>;
         }
 
+        if (event.entity === 'revision') {
+          return <T>publish.overview.history.event.revision.{action}</T>;
+        }
+
         if (event.entity === 'task') {
           const { action, status, isUpdate } = event.data;
 

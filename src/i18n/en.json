@@ -989,14 +989,18 @@
         },
         "event": {
           "dataset": {
-            "insert": "Dataset first created"
+            "insert": "Dataset first created",
+            "publish": "Dataset first published"
+          },
+          "revision": {
+            "insert": "Update started"
           },
           "task": {
             "publish": {
               "requested": "Dataset submitted for approval",
               "update_requested": "Update submitted for approval",
-              "withdrawn": "Dataset withdrawn from approval",
-              "update_withdrawn": "Update withdrawn from approval",
+              "withdrawn": "Dataset change started",
+              "update_withdrawn": "Update change started",
               "rejected": "Dataset rejected for publishing",
               "update_rejected": "Update rejected for publishing",
               "approved": "Dataset approved for publishing",
