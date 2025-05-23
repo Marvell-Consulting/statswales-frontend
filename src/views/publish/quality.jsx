@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import RadioGroup from '../components/RadioGroup';
 
 export default function Quality(props) {
+  console.log({ rounding: props.rounding_applied });
   const backLink = 'javascript:history.back()';
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   return (
@@ -90,7 +91,11 @@ export default function Quality(props) {
                     label: props.t('publish.quality.form.rounding_applied.options.no.label')
                   }
                 ]}
-                value={props.rounding_applied ? 'true' : 'false'}
+                value={
+                  props.rounding_applied !== null &&
+                  props.rounding_applied !== undefined &&
+                  (props.rounding_applied ? 'true' : 'false')
+                }
               />
 
               <button type="submit" className="govuk-button" data-module="govuk-button">

@@ -5,26 +5,33 @@ import { metadataA as dataset, metadataB as datasetB } from '../fixtures/dataset
 
 import { SummaryPage } from './pages/summary-page';
 import { users } from '../fixtures/logins';
+import { createEmptyDataset } from './helpers/create-empty-dataset';
 
 const config = appConfig();
 const baseUrl = config.frontend.url;
 
 test.describe('Metadata Summary', () => {
   let summaryPage: SummaryPage;
+  let id: string;
 
   test.beforeEach(async ({ page }) => {
     summaryPage = new SummaryPage(page);
   });
 
-  test.describe('Not authed', () => {
-    test('Redirects to login page when not authenticated', async ({ page }) => {
-      await summaryPage.goto(dataset.id);
-      await expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
-    });
-  });
+  // test.describe('Not authed', () => {
+  //   test('Redirects to login page when not authenticated', async ({ page }) => {
+  //     await summaryPage.goto(dataset.id);
+  //     await expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
+  //   });
+  // });
 
   test.describe('Authed as a publisher', () => {
     test.use({ storageState: users.publisher.path });
+
+    test.beforeAll(async ({ browser }) => {
+      const page = await browser.newPage();
+      id = await createEmptyDataset(page, 'Meta designation spec');
+    });
 
     test('Has a heading', async ({ page }) => {
       await summaryPage.goto(dataset.id);

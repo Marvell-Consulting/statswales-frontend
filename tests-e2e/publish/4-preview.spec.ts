@@ -8,6 +8,7 @@ import { previewA as datasetA, previewB as datasetB } from '../fixtures/datasets
 import { PreviewPage } from './pages/preview-page';
 import { UploadPage } from './pages/upload-page';
 import { users } from '../fixtures/logins';
+import { createEmptyDataset } from './helpers/create-empty-dataset';
 
 const config = appConfig();
 const baseUrl = config.frontend.url;
@@ -16,6 +17,7 @@ const baseUrl = config.frontend.url;
 test.fixme('Preview page', () => {
   let previewPage: PreviewPage;
   let uploadPage: UploadPage;
+  let id: string;
 
   test.beforeEach(async ({ page }) => {
     previewPage = new PreviewPage(page);
@@ -31,6 +33,11 @@ test.fixme('Preview page', () => {
 
   test.describe('Authed as a publisher', () => {
     test.use({ storageState: users.publisher.path });
+
+    test.beforeAll(async ({ browser }) => {
+      const page = await browser.newPage();
+      id = await createEmptyDataset(page, 'Preview spec');
+    });
 
     test.beforeEach(async () => {
       await previewPage.goto(datasetA.id);

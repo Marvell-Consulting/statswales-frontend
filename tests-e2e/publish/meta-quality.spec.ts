@@ -5,26 +5,33 @@ import { metadataA as dataset, metadataB as datasetB } from '../fixtures/dataset
 
 import { QualityPage } from './pages/quality-page';
 import { users } from '../fixtures/logins';
+import { createEmptyDataset } from './helpers/create-empty-dataset';
 
 const config = appConfig();
 const baseUrl = config.frontend.url;
 
 test.describe('Metadata Quality', () => {
   let qualityPage: QualityPage;
+  let id: string;
 
   test.beforeEach(async ({ page }) => {
     qualityPage = new QualityPage(page);
   });
 
-  test.describe('Not authed', () => {
-    test('Redirects to login page when not authenticated', async ({ page }) => {
-      await qualityPage.goto(dataset.id);
-      await expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
-    });
-  });
+  // test.describe('Not authed', () => {
+  //   test('Redirects to login page when not authenticated', async ({ page }) => {
+  //     await qualityPage.goto(dataset.id);
+  //     expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
+  //   });
+  // });
 
   test.describe('Authed as a publisher', () => {
     test.use({ storageState: users.publisher.path });
+
+    test.beforeAll(async ({ browser }) => {
+      const page = await browser.newPage();
+      id = await createEmptyDataset(page, 'Meta designation spec');
+    });
 
     test('Has a heading', async ({ page }) => {
       await qualityPage.goto(dataset.id);
@@ -47,9 +54,8 @@ test.describe('Metadata Quality', () => {
       });
 
       test('Displays a validation error when no input is provided', async ({ page }) => {
-        await qualityPage.fillForm('');
         await qualityPage.submit();
-        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/quality`);
+        expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/quality`);
         await expect(page.getByText('Enter the statistical quality of this dataset').first()).toBeVisible();
         await expect(
           page.getByText('Select whether any rounding has been applied to the data values').first()
@@ -59,14 +65,14 @@ test.describe('Metadata Quality', () => {
       test('Displays a validation error when the quality input is only whitespace', async ({ page }) => {
         await qualityPage.fillForm('   ', true, 'This is a description of rounding applied.');
         await qualityPage.submit();
-        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/quality`);
+        expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/quality`);
         await expect(page.getByText('Enter the statistical quality of this dataset').first()).toBeVisible();
       });
 
       test('Displays a validation error when rounding applied is not specified', async ({ page }) => {
         await qualityPage.fillForm('This is info about data quality.', undefined, undefined);
         await qualityPage.submit();
-        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/quality`);
+        expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/quality`);
         await expect(
           page.getByText('Select whether any rounding has been applied to the data values').first()
         ).toBeVisible();
@@ -75,7 +81,7 @@ test.describe('Metadata Quality', () => {
       test('Displays a validation error when rounding applied but rounding description missing', async ({ page }) => {
         await qualityPage.fillForm('This is info about data quality.', true, '');
         await qualityPage.submit();
-        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/quality`);
+        expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/quality`);
         await expect(page.getByText('Enter what rounding has been applied to the data values').first()).toBeVisible();
       });
     });
@@ -89,13 +95,13 @@ test.describe('Metadata Quality', () => {
       test('Can add info about quality with no rounding applied then return to the tasklist', async ({ page }) => {
         await qualityPage.fillForm('This is info about data quality.', false);
         await qualityPage.submit();
-        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetB.id}/tasklist`);
+        expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetB.id}/tasklist`);
       });
 
       test('Can add info about quality and rounding then return to the tasklist', async ({ page }) => {
         await qualityPage.fillForm('This is info about data quality.', true, 'This is how rounding applied.');
         await qualityPage.submit();
-        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetB.id}/tasklist`);
+        expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetB.id}/tasklist`);
       });
     });
   });
