@@ -5,8 +5,10 @@ import DimensionPreviewTable from '../components/DimensionPreviewTable';
 import RadioGroup from '../components/RadioGroup';
 
 export default function DimensionChooser(props) {
-  const backLink = 'javascript:history.back()';
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const backLink = props.url.includes('change-type')
+    ? props.buildUrl(`/publish/${props.datasetId}/dimension/${props.dimension.id}`, props.i18n.language)
+    : returnLink;
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
       <span className="region-subhead">{props.dimension.metadata.name}</span>

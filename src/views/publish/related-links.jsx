@@ -7,8 +7,9 @@ import RadioGroup from '../components/RadioGroup';
 import T from '../components/T';
 
 export default function RelatedLinks(props) {
-  const backLink = 'javascript:history.back()';
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  console.log(props.referrer);
+  const backLink = props.referrer;
 
   const columns = [
     {

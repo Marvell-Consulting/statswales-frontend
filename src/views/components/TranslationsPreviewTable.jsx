@@ -39,7 +39,9 @@ export default function TranslationsPreviewTable(props) {
           {
             key: 'edit_link',
             label: props.t('translations.export.table.action'),
-            format: (value) => <a href={value}>{props.t('translations.export.buttons.change')}</a>
+            format: (value) => (
+              <a href={`${value}?referrer=${props.referrer}`}>{props.t('translations.export.buttons.change')}</a>
+            )
           }
         ])
   ];

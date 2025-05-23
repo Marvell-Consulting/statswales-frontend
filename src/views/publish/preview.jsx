@@ -6,9 +6,9 @@ import Table from '../components/Table';
 import RadioGroup from '../components/RadioGroup';
 
 export default function Preview(props) {
-  const backLink = props.revisit && props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   const returnLink =
     props.revisit && props.datasetId && props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const backLink = props.revisit && returnLink;
   const colgroup = (
     <>
       {props.headers.map((header, index) => (
@@ -123,20 +123,20 @@ export default function Preview(props) {
                       }
                     ]}
                   />
+                  <div className="govuk-button-group">
+                    <button
+                      type="submit"
+                      name="confirm"
+                      value="true"
+                      className="govuk-button"
+                      data-module="govuk-button"
+                      style={{ verticalAlign: 'unset' }}
+                      data-prevent-double-click="true"
+                    >
+                      {props.t('buttons.continue')}
+                    </button>
+                  </div>
                 </form>
-                <div className="govuk-button-group">
-                  <button
-                    type="submit"
-                    name="confirm"
-                    value="true"
-                    className="govuk-button"
-                    data-module="govuk-button"
-                    style={{ verticalAlign: 'unset' }}
-                    data-prevent-double-click="true"
-                  >
-                    {props.t('buttons.continue')}
-                  </button>
-                </div>
               </div>
             </div>
           ) : (

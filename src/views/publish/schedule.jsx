@@ -4,8 +4,8 @@ import ErrorHandler from '../components/ErrorHandler';
 import clsx from 'clsx';
 
 export default function Schedule(props) {
-  const backLink = 'javascript:history.back()';
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const backLink = returnLink;
 
   function Field({ name, width = 3 }) {
     return (

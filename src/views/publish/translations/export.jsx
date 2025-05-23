@@ -3,7 +3,7 @@ import Layout from '../../components/layouts/Publisher';
 import TranslationsPreviewTable from '../../components/TranslationsPreviewTable';
 
 export default function Export(props) {
-  const backLink = 'javascript:history.back()';
+  const backLink = props.referrer;
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink}>

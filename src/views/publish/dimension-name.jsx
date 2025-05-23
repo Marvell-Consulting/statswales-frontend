@@ -16,7 +16,7 @@ export default function DimensionName(props) {
           return props.buildUrl(`/publish/${props.datasetId}/measure/review`, props.i18n.language);
         case 'date_period':
         case 'date':
-          return props.buildUrl(`/publish/${props.datasetId}/date/${props.id}/review`, props.i18n.language);
+          return props.buildUrl(`/publish/${props.datasetId}/dates/${props.id}/review`, props.i18n.language);
         default:
           return props.buildUrl(`/publish/${props.datasetId}/lookup/${props.id}/review`, props.i18n.language);
       }
@@ -32,16 +32,13 @@ export default function DimensionName(props) {
           ? props.t('publish.dimension_name.measure_heading')
           : props.t('publish.dimension_name.dimension_heading')}
       </h1>
-
       <ErrorHandler {...props} />
-
       <p className="govuk-body">{props.t('publish.dimension_name.hint')}</p>
       <ul className="govuk-list govuk-list--bullet">
         <li>{props.t('publish.dimension_name.concise')}</li>
         <li>{props.t('publish.dimension_name.unique')}</li>
         <li>{props.t('publish.dimension_name.language')}</li>
       </ul>
-
       <form encType="multipart/form-data" method="post">
         <div className="govuk-form-group">
           <input className="govuk-input" id="name" name="name" type="text" defaultValue={props.dimensionName} />

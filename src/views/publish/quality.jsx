@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import RadioGroup from '../components/RadioGroup';
 
 export default function Quality(props) {
-  const backLink = 'javascript:history.back()';
+  const backLink = props.referrer;
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>

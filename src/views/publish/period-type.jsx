@@ -5,7 +5,7 @@ import RadioGroup from '../components/RadioGroup';
 
 export default function PeriodType(props) {
   const backLink = props.buildUrl(
-    `/publish/${props.datasetId}/dates/${props.dimension.id}/period/year-format`,
+    `/publish/${props.datasetId}/dates/${props.dimension.id}/period`,
     props.i18n.language
   );
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);

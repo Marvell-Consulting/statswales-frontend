@@ -2,8 +2,8 @@ import React from 'react';
 import Layout from '../components/layouts/Publisher';
 
 export default function DimensionMatchFailure(props) {
-  const backLink = props.referrer;
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const backLink = props.url;
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink}>
       <span className="region-subhead">{props.dimension.metadata.name}</span>
@@ -53,7 +53,7 @@ export default function DimensionMatchFailure(props) {
                 <li
                   key={index}
                   className="govuk-list--bullet"
-                  __dangerouslySetInnerHTML={{
+                  dangerouslySetInnerHTML={{
                     __html: `
                           "${value.toString().replace(
                             ' ',

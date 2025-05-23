@@ -3,9 +3,9 @@ import Layout from '../components/layouts/Publisher';
 import ErrorHandler from '../components/ErrorHandler';
 
 export default function Sources(props) {
-  const backLink = props.revisit && 'javascript:history.back()';
   const returnLink =
     props.revisit && props.datasetId && props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const backLink = returnLink;
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
       <h1 className="govuk-heading-xl">{props.t('publish.sources.heading')}</h1>

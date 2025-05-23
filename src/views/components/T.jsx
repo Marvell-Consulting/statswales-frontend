@@ -8,5 +8,5 @@ export default function T({ children, raw, className, ...props }) {
   if (raw) {
     return <span className={className} dangerouslySetInnerHTML={{ __html: content }} />;
   }
-  return <span>{content}</span>;
+  return <span className={className}>{content}</span>;
 }
