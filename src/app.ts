@@ -70,7 +70,7 @@ app.use('/:lang/admin', rateLimiter, ensureAuthenticated, admin);
 app.use('/:lang', rateLimiter, ensureAuthenticated, homepage);
 
 // handle 404s
-app.all('*', notFound);
+app.use(notFound);
 
 // handle errors
 app.use(errorHandler);
