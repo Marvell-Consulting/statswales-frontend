@@ -9,7 +9,7 @@ export default function TaskDecision(props) {
   const reasonError = props.errors?.find((e) => e.field === 'reason');
 
   return (
-    <Layout {...props}>
+    <Layout {...props} formPage>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <form encType="multipart/form-data" method="post">
