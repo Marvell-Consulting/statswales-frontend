@@ -583,10 +583,13 @@
 .wg .top-links {
   background-color: #ffffff;
 }
+.wg .govuk-link:link {
+  color: #0360a6;
+}
 .wg .return-link {
   margin-top: 15px;
   margin-bottom: 15px;
-  font-size: 16px;
+  font-size: 18px;
   border: none;
   background-color: transparent;
   color: #0360a6;
@@ -597,7 +600,7 @@
 }
 .wg .change-link {
   padding: 0;
-  font-size: 16px;
+  font-size: 18px;
   float: left;
   border: none;
   background-color: transparent;
