@@ -14,11 +14,18 @@ import { getDownloadHeaders } from '../utils/download-headers';
 import { logger } from '../utils/logger';
 import { Locale } from '../enums/locale';
 
-export const homepage = async (req: Request, res: Response, next: NextFunction) => {
+export const listTopics = async (req: Request, res: Response, next: NextFunction) => {
+  const topicId = req.params.topicId ? req.params.topicId.match(/\d+/)?.[0] : undefined;
+
   try {
-    const topics = await req.conapi.getPublishedTopics();
-    console.log(topics);
-    res.render('consumer/homepage', { topics });
+    const { selectedTopic, children, parents, datasets } = await req.conapi.getPublishedTopics(topicId);
+
+    // add slug for friendlier URLs
+    const childTopics = children?.map((topic) => ({ ...topic, slug: slugify(topic.name, { lower: true }) })) || [];
+    const parentTopics = parents?.map((topic) => ({ ...topic, slug: slugify(topic.name, { lower: true }) })) || [];
+    const datasetItems = datasets?.data;
+
+    res.render('consumer/topic-list', { selectedTopic, childTopics, parentTopics, datasets: datasetItems });
   } catch (err) {
     next(err);
   }

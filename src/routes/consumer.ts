@@ -1,11 +1,13 @@
 import { Router } from 'express';
 
-import { homepage, downloadPublishedDataset, viewPublishedDataset } from '../controllers/consumer';
+import { listTopics, downloadPublishedDataset, viewPublishedDataset } from '../controllers/consumer';
 import { fetchPublishedDataset } from '../middleware/fetch-dataset';
 
 export const consumer = Router();
 
-consumer.get('/', homepage);
+consumer.get('/', listTopics);
+
+consumer.get('/topic/:topicId{/:topicSlug}', listTopics);
 
 consumer.get('/:datasetId', fetchPublishedDataset, viewPublishedDataset);
 

@@ -776,6 +776,13 @@
 .wg .govuk-breadcrumbs__link:visited {
   font-size: 16px;
 }
+.wg .govuk-heading-xl,
+.wg .govuk-heading-l,
+.wg .govuk-heading-m,
+.wg .govuk-heading-s,
+.wg .govuk-heading-xs {
+  color: inherit;
+}
 .wg .govuk-heading-m a {
   font-size: 24px;
 }
@@ -1064,7 +1071,6 @@
   font-size: 18px;
 }
 .wg .govuk-heading-xl {
-  color: #1f1f1f;
   font-size: 48px;
   font-weight: bold;
   letter-spacing: -0.0542rem;
@@ -1076,14 +1082,12 @@
 }
 .wg .govuk-heading-l,
 .wg .govuk-fieldset__legend--l {
-  color: #1f1f1f;
   font-size: 36px;
   font-weight: bold;
   letter-spacing: -0.0375rem;
   line-height: 40px;
 }
 .wg .govuk-heading-m {
-  color: #1f1f1f;
   font-size: 28px;
   font-weight: bold;
   letter-spacing: -0.0292rem;
@@ -1091,14 +1095,12 @@
 }
 .wg .govuk-heading-s,
 .wg .govuk-table__caption--s {
-  color: #1f1f1f;
   font-size: 24px;
   font-weight: bold;
   letter-spacing: -0.025rem;
   line-height: 28px;
 }
 .wg .govuk-heading-xs {
-  color: #1f1f1f;
   font-size: 20px;
   font-weight: bold;
   letter-spacing: -0.01875rem;
@@ -1106,7 +1108,6 @@
   margin-bottom: 20px;
 }
 .wg .govuk-heading-xxs {
-  color: #1f1f1f;
   font-size: 18px;
   font-weight: bold;
   letter-spacing: -0.01458rem;
@@ -1114,7 +1115,6 @@
 }
 @media screen and (max-width: 768px) {
   .wg .govuk-heading-xl {
-    color: #1f1f1f;
     font-size: 34px;
     font-weight: bold;
     letter-spacing: -0.04167rem;
@@ -1122,14 +1122,12 @@
   }
   .wg .govuk-heading-l,
   .wg .govuk-fieldset__legend--l {
-    color: #1f1f1f;
     font-size: 28px;
     font-weight: bold;
     letter-spacing: -0.03333rem;
     line-height: 32px;
   }
   .wg .govuk-heading-m {
-    color: #1f1f1f;
     font-size: 24px;
     font-weight: bold;
     letter-spacing: -0.025rem;
@@ -1137,21 +1135,18 @@
   }
   .wg .govuk-heading-s,
   .wg .govuk-table__caption--s {
-    color: #1f1f1f;
     font-size: 20px;
     font-weight: bold;
     letter-spacing: -0.02083rem;
     line-height: 24px;
   }
   .wg .govuk-heading-xs {
-    color: #1f1f1f;
     font-size: 18px;
     font-weight: bold;
     letter-spacing: -0.01875rem;
     line-height: 22px;
   }
   .wg .govuk-heading-xxs {
-    color: #1f1f1f;
     font-size: 14px;
     font-weight: bold;
     letter-spacing: -0.01458rem;
