@@ -993,7 +993,8 @@
             "publish": "Dataset first published"
           },
           "revision": {
-            "insert": "Update started"
+            "insert": "Update started",
+            "publish": "Update published"
           },
           "task": {
             "publish": {
@@ -1006,6 +1007,9 @@
               "approved": "Dataset approved for publishing",
               "update_approved": "Update approved for publishing"
             }
+          },
+          "created_by": {
+            "system": "System"
           }
         }
       },

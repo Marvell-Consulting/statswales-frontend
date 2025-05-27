@@ -161,7 +161,10 @@ function HistoryTab({ history }) {
     },
     {
       key: 'created_by',
-      label: <T>publish.overview.history.table.user</T>
+      label: <T>publish.overview.history.table.user</T>,
+      format: (createdBy) => {
+        return createdBy === 'system' ? <T>publish.overview.history.event.created_by.system</T> : createdBy;
+      }
     },
     {
       key: 'comment',
