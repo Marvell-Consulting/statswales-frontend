@@ -1077,7 +1077,9 @@
   line-height: 52px;
   margin-bottom: revert;
 }
-.wg .hero .govuk-heading-m, .wg .hero .govuk-heading-l, .wg .hero .govuk-heading-xl {
+.wg .hero .govuk-heading-m,
+.wg .hero .govuk-heading-l,
+.wg .hero .govuk-heading-xl {
   color: #ffffff;
 }
 .wg .govuk-heading-l,

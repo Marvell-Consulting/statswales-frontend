@@ -1322,7 +1322,9 @@ $whitepurple: #eed5e3;
   }
 
   .hero {
-    .govuk-heading-m, .govuk-heading-l, .govuk-heading-xl {
+    .govuk-heading-m,
+    .govuk-heading-l,
+    .govuk-heading-xl {
       color: $white;
     }
   }
