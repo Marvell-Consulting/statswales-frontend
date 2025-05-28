@@ -7,7 +7,7 @@ type ColumnBase<T> = {
   className?: string;
   cellClassName?: string;
   style?: CSSProperties;
-  format?: (value: T[keyof T], row: T) => ReactNode;
+  format?: (value: any, row: T) => ReactNode;
 };
 
 type ColumnWithLabel<T> = ColumnBase<T> & {
