@@ -19,7 +19,7 @@ export default function ErrorHandler() {
             {errors.map((error) => (
               <li key={error.message.key}>
                 <a href={`#${error.field}`}>
-                  <T {...error.message.params}>error.message.key</T>
+                  <T {...error.message.params}>{error.message.key}</T>
                 </a>
               </li>
             ))}

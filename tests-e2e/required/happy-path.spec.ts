@@ -200,7 +200,7 @@ test.describe('Happy path', () => {
     await page.getByRole('link', { name: 'Data sources' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/providers`);
     await page.locator('.autocomplete__wrapper').click();
-    await page.locator('#provider__option--1').click({ force: true });
+    await page.locator('#provider_id__option--1').click({ force: true });
     await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/providers?edit`);
     await page.getByLabel('No specific source from data provider').click({ force: true });
