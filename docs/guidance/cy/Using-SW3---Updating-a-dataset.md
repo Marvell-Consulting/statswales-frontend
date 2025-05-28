@@ -1,4 +1,4 @@
-# Defnyddio SW3: Diweddaru set ddata
+# Defnyddio SC3: Diweddaru set ddata
 
 ## Data
 

@@ -1,6 +1,6 @@
 # Paratoi data: Setiau data newydd
 
-Mae setiau data yn cynnwys set o ystadegau a’u metadata cysylltiedig. Caiff y set ddata ei hadeiladu yn SW3 fel ciwb data o dabl data a data cyfeirio neu am-edrych.
+Mae setiau data yn cynnwys set o ystadegau a’u metadata cysylltiedig. Caiff y set ddata ei hadeiladu yn SC3 fel ciwb data o dabl data a data cyfeirio neu am-edrych.
 
 ## Tablau data
 
@@ -42,7 +42,7 @@ Er mai CSVs yw’r fformat a argymhellir, gall y system dderbyn fformatau JSON, 
 
 ### Penawdau
 
-Dylai enwau penawdau colofnau fod yn ystyrlon, fel eich bod yn gwybod yr hyn y mae pob colofn yn ei gynnwys. Bydd hyn yn bwysig wrth [lanlwytho eich CSV](Using-SW3---Creating-a-new-dataset) i SW3. Gallant gynnwys bylchau rhwng geiriau yn ôl y gofyn.
+Dylai enwau penawdau colofnau fod yn ystyrlon, fel eich bod yn gwybod yr hyn y mae pob colofn yn ei gynnwys. Bydd hyn yn bwysig wrth [lanlwytho eich CSV](Using-SW3---Creating-a-new-dataset) i SC3. Gallant gynnwys bylchau rhwng geiriau yn ôl y gofyn.
 
 ### Ffeithiau anghyflawn neu ddyblyg
 
@@ -74,25 +74,36 @@ Bydd trefn y colofnau yn eich ffeil tabl data yn effeithio ar drefn y tabl data 
 
 ## Data cyfeirio
 
-Pan fyddwch yn creu eich set ddata yn SW3, bydd angen i chi ddewis data cyfeirio ar gyfer pob dimensiwn yn eich tabl data. Yn ein tabl enghreifftiol, byddai hyn yn golygu dewis tablau am-edrych ar gyfer ‘CodArdal’ ac ar gyfer ‘CodBand’, a chadarnhau fformatau dyddiad ar gyfer ‘CodBlwyddyn’. Nid oes angen i chi ychwanegu tablau am-edrych ar gyfer [nodiadau gwerthoedd data](#guidance-nodiadau).
+Pan fyddwch yn creu eich set ddata yn SC3, bydd angen i chi ddewis data cyfeirio ar gyfer pob dimensiwn yn eich tabl data. Yn ein tabl enghreifftiol, byddai hyn yn golygu dewis tablau am-edrych ar gyfer ‘CodArdal’ ac ar gyfer ‘CodBand’, a chadarnhau fformatau dyddiad ar gyfer ‘CodBlwyddyn’. Nid oes angen i chi ychwanegu tablau am-edrych ar gyfer [nodiadau gwerthoedd data](#guidance-nodiadau).
 
 ### Data cyfeirio safonol
 
-Nid yw SW3 yn defnyddio tablau am-edrych ar gyfer dimensiynau sy’n cynnwys dyddiadau. Yn hytrach, ceir [dull gweithredu safonol tuag at fformatio](#guidance-fformatio-dyddiadau).
-
-Ar hyn o bryd, mae gan y system ddata cyfeirio safonol a reolir yn ganolog ar gyfer daearyddiaeth yn unig. Mae hyn yn cynnwys yr holl godau cyfeirio daearyddiaeth cyffredin a ddefnyddir.
-
-Y nod yw ychwanegu mwy o ddata cyfeirio safonol i’r system yn y dyfodol. Bydd gweithredu’r data cyfeirio safonol hwn yn:
+Mae data cyfeirio safonol a reolir yn ganolog yn helpu:
 
 - sicrhau gwell cysondeb ar draws StatsCymru
 - safoni disgrifiadau Cymraeg a Saesneg
 - gwella defnyddioldeb i ddefnyddwyr data
 
+Ar hyn o bryd, mae gan SC3 ddata cyfeirio safonol a reolir yn ganolog ar gyfer daearyddiaeth yn unig.
+
+Nid yw SC3 yn defnyddio tablau am-edrych ar gyfer dimensiynau sy’n cynnwys dyddiadau. Yn hytrach, ceir [dull gweithredu safonol tuag at fformatio](#guidance-fformatio-dyddiadau).
+
 Ar gyfer unrhyw fath dimensiwn arall, dylech [baratoi eich tabl am-edrych eich hun](#guidance-tablau-am-edrych), gydag eithriadau posibl ar gyfer rhai [dimensiynau sy&#39;n cynnwys testun neu rifau](#guidance-dimensiynau-sy'n-cynnwys-testun-neu-rifau-lle-nad-oes-gofyn-cael-tabl-am-edrych).
 
 ### Fformatio dyddiadau
 
-Pan fyddwch yn creu eich set ddata yn SW3, bydd angen i chi [nodi’r fformatau dyddiadau yr ydych chi wedi’u defnyddio](Using-SW3---Creating-a-new-dataset#guidance-cwestiynau-am-ffurf-y-dyddiadau) yn eich tabl data. Dim ond fformatau dyddiadau penodol y gall SW3 eu derbyn.
+Pan fyddwch yn creu eich set ddata yn SC3, bydd angen i chi [nodi’r fformatau dyddiadau yr ydych chi wedi’u defnyddio](Using-SW3---Creating-a-new-dataset#guidance-cwestiynau-am-ffurf-y-dyddiadau) yn eich tabl data. Dim ond fformatau dyddiadau penodol y gall SC3 eu derbyn.
+
+#### Pwyntiau penodol mewn amser
+
+Er enghraifft, dyddiadau penodol pan gasglwyd gwerthoedd data.
+
+| Fformat yn y tabl data | Enghraifft | Sut y bydd yn ymddangos ar y wefan |
+| :--------------------- | :--------- | :--------------------------------- |
+| DD/MM/YYYY             | 01/01/2022 | 1 Ionawr 2022                      |
+| DD-MM-YYYY             | 01-01-2022 | 1 Ionawr 2022                      |
+| YYYY-MM-DD             | 2022-01-01 | 1 Ionawr 2022                      |
+| YYYYMMDD               | 20220101   | 1 Ionawr 2022                      |
 
 #### Cyfnodau amser
 
@@ -153,20 +164,9 @@ Gall eich set ddata gynnwys data ar gyfer cyfnodau amser lluosog. Er enghraifft,
 
 **Rhaid i chi ddefnyddio fformatio blwyddyn cyson** ar gyfer yr holl gyfnodau amser sy’n bresennol yn y set ddata. Er enghraifft, os ydych chi’n defnyddio ‘YYYY’ ar gyfer blynyddoedd, gallech ddefnyddio ‘YYYYQx’ ar gyfer chwarteri a 'YYYYMM' ar gyfer misoedd.
 
-#### Pwyntiau penodol mewn amser
-
-Er enghraifft, dyddiadau penodol pan gasglwyd gwerthoedd data.
-
-| Fformat yn y tabl data | Enghraifft | Sut y bydd yn ymddangos ar y wefan |
-| :--------------------- | :--------- | :--------------------------------- |
-| DD/MM/YYYY             | 01/01/2022 | 1 Ionawr 2022                      |
-| DD-MM-YYYY             | 01-01-2022 | 1 Ionawr 2022                      |
-| YYYY-MM-DD             | 2022-01-01 | 1 Ionawr 2022                      |
-| YYYYMMDD               | 20220101   | 1 Ionawr 2022                      |
-
 ### Tablau am-edrych
 
-Ar gyfer dimensiynau nad ydynt yn cynnwys dyddiadau neu ddaearyddiaeth, dylech baratoi eich tablau am-edrych eich hun. Byddwch yn lanlwytho’r rhain i SW3.
+Ar gyfer dimensiynau nad ydynt yn cynnwys dyddiadau neu ddaearyddiaeth, dylech baratoi eich tablau am-edrych eich hun. Byddwch yn lanlwytho’r rhain i SC3.
 
 Mae tabl am-edrych yn dweud wrth y system yr hyn y mae pob un o’r codau cyfeirio a ddefnyddir mewn dimensiwn perthnasol yn ei gynrychioli. Mae’n bwysig bod y codau cyfeirio yn y dimensiwn yn y tabl data yn **cyfateb yn union** â’r rhai yn y tabl am-edrych.
 
@@ -248,7 +248,7 @@ Dylai disgrifiadau o’r holl werthoedd dimensiwn fod yn:
 
 #### Nodiadau tabl am-edrych
 
-Gellir darparu nodiadau tabl am-edrych, ond **nid ydynt yn cael eu dangos yn yr hyn y mae’r defnyddiwr yn ei weld ar hyn o bryd** yn SW3. Os yw nodiadau yn cynnwys gwybodaeth bwysig, dylech sicrhau bod y wybodaeth hon yn cael ei darparu yn yr [adran metadata](#guidance-metadata) mwyaf priodol hefyd.
+Gellir darparu nodiadau tabl am-edrych, ond **nid ydynt yn cael eu dangos yn yr hyn y mae’r defnyddiwr yn ei weld ar hyn o bryd** yn SC3. Os yw nodiadau yn cynnwys gwybodaeth bwysig, dylech sicrhau bod y wybodaeth hon yn cael ei darparu yn yr [adran metadata](#guidance-metadata) mwyaf priodol hefyd.
 
 ### Dimensiynau sy'n cynnwys testun neu rifau lle nad oes gofyn cael tabl am-edrych
 
@@ -262,7 +262,7 @@ Er enghraifft, yn ein henghraifft treth gyngor, os mai dim ond 'A', 'B' ac ati y
 
 ### Enwau dimensiynau
 
-Pan fyddwch yn ychwanegu data cyfeirio yn SW3, bydd angen i chi ychwanegu’r hyn yr ydych yn dymuno i’r dimensiwn gael ei alw ar yr ochr i ddefnyddwyr.
+Pan fyddwch yn ychwanegu data cyfeirio yn SC3, bydd angen i chi ychwanegu’r hyn yr ydych yn dymuno i’r dimensiwn gael ei alw ar yr ochr i ddefnyddwyr.
 
 Dylai enwau dimensiynau fod yn:
 
@@ -273,7 +273,7 @@ Dylai enwau dimensiynau fod yn:
 
 Mae mesur, neu fath data, yn dynodi’r hyn y mae’r gwerth data yn ei gynrychioli. **Rhaid** i chi gynnwys colofn ar gyfer hyn yn eich tabl data, hyd yn oed os yw eich set ddata yn cynnwys un math o fesur yn unig. Mae cynnwys mesurau yn helpu defnyddwyr i ddeall y data yn eich set ddata yn well.
 
-Ar gyfer dimensiwn sy’n cynnwys mesurau, dylech baratoi eich tabl am-edrych eich hun. Byddwch yn lanlwytho hwn i SW3. Dylai fod yn yr un fformat â [thablau am-edrych](#guidance-tablau-am-edrych) eraill, gyda’r colofnau ychwanegol canlynol:
+Ar gyfer dimensiwn sy’n cynnwys mesurau, dylech baratoi eich tabl am-edrych eich hun. Byddwch yn lanlwytho hwn i SC3. Dylai fod yn yr un fformat â [thablau am-edrych](#guidance-tablau-am-edrych) eraill, gyda’r colofnau ychwanegol canlynol:
 
 | Pennawd | Yr hyn y mae’r golofn yn ei gynnwys                                                                                                                                                                                                                                                                             |
 | :------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -297,13 +297,13 @@ _Sylwer mai enghraifft yw hon at ddibenion arddangos, ac nad yw’n dabl am-edry
 
 Dim ond os bydd angen gwneud hynny er mwyn deall y data y dylech chi ychwanegu nodyn i werth data penodol. Fodd bynnag, **rhaid i chi gynnwys colofn ar gyfer codau nodiadau** yn eich tabl data, hyd yn oed os nad oes gennych chi unrhyw godau nodiadau i’w cynnwys.
 
-Mae SW3 yn defnyddio codau nodiadau llaw-fer, gydag esboniadau safonol, sy’n dilyn [safonau’r sector cyhoeddus](https://analysisfunction.civilservice.gov.uk/policy-store/symbols-in-tables-definitions-and-help/) yn agos. Nid yw’r codau yn gwahaniaethu rhwng priflythrennau a llythrennau bach.
+Mae SC3 yn defnyddio codau nodiadau llaw-fer, gydag esboniadau safonol, sy’n dilyn [safonau’r sector cyhoeddus](https://analysisfunction.civilservice.gov.uk/policy-store/symbols-in-tables-definitions-and-help/) yn agos. Nid yw’r codau yn gwahaniaethu rhwng priflythrennau a llythrennau bach.
 
 | Llaw-fer | Ystyr                                               | Defnydd                                                                                                                                                                                                                            |
 | :------- | :-------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | a        | Cyfartaledd                                         | Pan fydd gwerth data yn gyfartaledd gwerthoedd eraill                                                                                                                                                                              |
 | b        | Cyfres toriad amser                                 | Pan fydd toriad mewn cyfres data sy’n golygu na ellir cymharu data cyn y toriad gyda data ar ôl y toriad yn uniongyrchol                                                                                                           |
-| c        | Gwybodaeth gyfrinachol                              | Er enghraifft, os bydd gwerth data wedi cael ei atal oherwydd y gallech chi adnabod manylion am bobl penodol o’r data. Sylwer nad oes unrhyw ffordd yn SW3 i guddio nac atal gwerthoedd, felly rhaid gwneud hyn yn eich tabl data. |
+| c        | Gwybodaeth gyfrinachol                              | Er enghraifft, os bydd gwerth data wedi cael ei atal oherwydd y gallech chi adnabod manylion am bobl penodol o’r data. Sylwer nad oes unrhyw ffordd yn SC3 i guddio nac atal gwerthoedd, felly rhaid gwneud hyn yn eich tabl data. |
 | e        | Amcangyfrifedig                                     | Pan fydd gwerth data yn werth amcangyfrifedig                                                                                                                                                                                      |
 | f        | Rhagolwg                                            | Pan fydd gwerth data yn werth yn y dyfodol wedi’i gyfrifo yn hytrach na gwerth wedi’i arsylwi                                                                                                                                      |
 | k        | Ffigwr isel                                         | Ffigwr isel sy’n ymddangos fel sero ar ôl talgrynnu                                                                                                                                                                                |
@@ -328,7 +328,7 @@ Dylid darparu’r holl nodiadau eraill am ddimensiynau neu’r set ddata yn yr [
 
 ## Metadata
 
-Cyn i chi greu set ddata newydd yn SW3, dylech baratoi’r holl fetadata cysylltiedig y bydd ei angen arnoch. Dylech ddarparu hwn **i gyd yn yr un iaith**. Dylai hyn fod ym mha bynnag iaith y byddwch yn ei defnyddio pan fyddwch yn defnyddio SW3, sef Cymraeg neu Saesneg. Caiff cyfieithiadau metadata i’r iaith arall eu [prosesu gyda’r holl gyfieithiadau eraill](Using-SW3---Creating-a-new-dataset#guidance-cyfieithiadau).
+Cyn i chi greu set ddata newydd yn SC3, dylech baratoi’r holl fetadata cysylltiedig y bydd ei angen arnoch. Dylech ddarparu hwn **i gyd yn yr un iaith**. Dylai hyn fod ym mha bynnag iaith y byddwch yn ei defnyddio pan fyddwch yn defnyddio SC3, sef Cymraeg neu Saesneg. Caiff cyfieithiadau metadata i’r iaith arall eu [prosesu gyda’r holl gyfieithiadau eraill](Using-SW3---Creating-a-new-dataset#guidance-cyfieithiadau).
 
 ### Rhestrau bwled
 
@@ -418,7 +418,7 @@ Caiff [rhestr y darparwyr data a’r ffynonellau \[link TBD\]](#) ei rheoli yn g
 - anfon e-bost at ... yn ... \[process TBD\]
 - nodi enw’r darparwr data a’r ffynhonnell yn Gymraeg ac yn Saesneg
 
-Byddwch yn cael eich hysbysu ar ôl i’r darparwr data a’r ffynhonnell gael eu hychwanegu i’r rhestr. Yna, byddwch yn gallu eu dewis yn SW3.
+Byddwch yn cael eich hysbysu ar ôl i’r darparwr data a’r ffynhonnell gael eu hychwanegu i’r rhestr. Yna, byddwch yn gallu eu dewis yn SC3.
 
 #### Adroddiadau cysylltiedig
 
@@ -455,7 +455,7 @@ Ceir [gwahanol fathau o ddynodiadau ystadegau](https://uksa.statisticsauthority.
 
 Ceir 13 pwnc lefel uchel, y mae gan y rhan fwyaf ohonynt bynciau eilaidd. Mae **tag pwnc unigol** yn cynnwys ‘lefel uchel \+ pwnc eilaidd’. Yr unig eithriadau yw tagiau pwnc ‘Twristiaeth’ a’r ‘Iaith Gymraeg’, sy’n rhai lefel uchel yn unig.
 
-Er enghraifft, gallai set ddata sy’n ymwneud â gofal iechyd fod wedi cael ei thagio â thag pwnc unigol ‘Yr amgylchedd, ynni ac amaethyddiaeth: Ffermio’. Neu fe allai fod wedi cael ei thagio ag ail dag pwnc fel ‘Busnes, yr economi a’r farchnad lafur: Busnes’. Dylech ddewis cymaint o dagiau pwnc ag sy’n berthnasol i’r set ddata.
+Er enghraifft, gallai set ddata fod wedi cael ei thagio â thag pwnc unigol ‘Yr amgylchedd, ynni ac amaethyddiaeth: Ffermio’. Neu fe allai fod wedi cael ei thagio ag ail dag pwnc fel ‘Busnes, yr economi a’r farchnad lafur: Busnes’. Dylech ddewis cymaint o dagiau pwnc ag sy’n berthnasol i’r set ddata.
 
 Bydd y detholiad hwn yn caniatáu i ddefnyddwyr leoli a nodi setiau data sydd o ddiddordeb iddynt yn haws. Mae’n bwysig ystyried y gwahanol ffyrdd y gall defnyddwyr gategoreiddio’r hyn y mae set ddata yn ei chynnwys.
 

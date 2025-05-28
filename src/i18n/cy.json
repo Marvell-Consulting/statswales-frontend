@@ -102,6 +102,9 @@
       "create": "Creu set ddata newydd"
     }
   },
+  "guidance": {
+    "title": "Canllawiau ar gyfer StatsCymru 3 (SC3)"
+  },
   "dataset_view": {
     "key_information": {
       "heading": "Gwybodaeth allweddol",

@@ -87,6 +87,10 @@ $whitepurple: #eed5e3;
     padding-left: 30px;
   }
 
+  .govuk-list--number {
+    padding-left: 30px;
+  }
+
   tr {
     color: $black;
     font-size: 16px;
@@ -1338,10 +1342,11 @@ $whitepurple: #eed5e3;
 
   .govuk-heading-xs {
     color: $black;
-    font-size: 22px;
+    font-size: 20px;
     font-weight: bold;
     letter-spacing: -0.01875rem;
-    line-height: 26px;
+    line-height: 20px;
+    margin-bottom: 20px;
   }
 
   .govuk-heading-xxs {

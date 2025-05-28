@@ -53,6 +53,9 @@
 .wg .govuk-list--bullet {
   padding-left: 30px;
 }
+.wg .govuk-list--number {
+  padding-left: 30px;
+}
 .wg tr {
   color: #1f1f1f;
   font-size: 16px;
@@ -1093,10 +1096,11 @@
 }
 .wg .govuk-heading-xs {
   color: #1f1f1f;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
   letter-spacing: -0.01875rem;
-  line-height: 26px;
+  line-height: 20px;
+  margin-bottom: 20px;
 }
 .wg .govuk-heading-xxs {
   color: #1f1f1f;
