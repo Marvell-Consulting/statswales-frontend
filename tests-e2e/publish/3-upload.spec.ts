@@ -12,21 +12,22 @@ const config = appConfig();
 const baseUrl = config.frontend.url;
 
 test.describe('Upload page', () => {
+  let id: string;
   let uploadPage: UploadPage;
 
   test.beforeEach(async ({ page }) => {
     uploadPage = new UploadPage(page);
   });
 
-  // test.describe('Not authed', () => {
-  //   test('Redirects to login page when not authenticated', async ({ page }) => {
-  //     await uploadPage.goto(id);
-  //     expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
-  //   });
-  // });
+  test.describe('Not authed', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+    test('Redirects to login page when not authenticated', async ({ page }) => {
+      await uploadPage.goto(id);
+      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
+    });
+  });
 
   test.describe('Authed as a publisher', () => {
-    let id: string;
     test.use({ storageState: users.publisher.path });
 
     test.beforeAll(async ({ browser }) => {

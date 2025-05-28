@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 
 import { appConfig } from '../../src/config';
-import { metadataA as dataset, metadataB as datasetB } from '../fixtures/datasets';
 
 import { TopicsPage } from './pages/topics-page';
 import { users } from '../fixtures/logins';
@@ -18,19 +17,20 @@ test.describe('Metadata Topics', () => {
     topicsPage = new TopicsPage(page);
   });
 
-  // test.describe('Not authed', () => {
-  //   test('Redirects to login page when not authenticated', async ({ page }) => {
-  //     await topicsPage.goto(id);
-  //     await expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
-  //   });
-  // });
+  test.describe('Not authed', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+    test('Redirects to login page when not authenticated', async ({ page }) => {
+      await topicsPage.goto(id);
+      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
+    });
+  });
 
   test.describe('Authed as a publisher', () => {
     test.use({ storageState: users.publisher.path });
 
     test.beforeAll(async ({ browser }) => {
       const page = await browser.newPage();
-      id = await createEmptyDataset(page, 'Meta designation spec');
+      id = await createEmptyDataset(page, 'Meta topics spec');
     });
 
     test('Has a heading', async ({ page }) => {
@@ -45,29 +45,26 @@ test.describe('Metadata Topics', () => {
     });
 
     test.describe('Form validation', () => {
+      let id: string;
+      test.beforeAll(async ({ browser }) => {
+        const page = await browser.newPage();
+        id = await createEmptyDataset(page, 'Meta topics spec');
+      });
+
       test.beforeEach(async () => {
-        // Only use metadata A dataset for failed form validation - once successfully saved, tests for missing
-        // topics selection will fail as it is populated with the saved values from the previous submission
         await topicsPage.goto(id);
       });
 
       test('Displays a validation error when no selection is made', async ({ page }) => {
         await topicsPage.submit();
-        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${id}/topics`);
+        expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${id}/topics`);
         await expect(page.getByText('Select which topics are relevant to this dataset').first()).toBeVisible();
-      });
-    });
-
-    test.describe('Form success', () => {
-      test.beforeEach(async () => {
-        // using metadata B dataset for successful form submission
-        await topicsPage.goto(datasetB.id);
       });
 
       test('Can select dataset topics then return to the tasklist', async ({ page }) => {
         await topicsPage.fillForm(['Finance and tax', 'Council tax']);
         await topicsPage.submit();
-        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetB.id}/tasklist`);
+        expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${id}/tasklist`);
       });
     });
   });

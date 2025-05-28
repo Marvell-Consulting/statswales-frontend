@@ -17,12 +17,13 @@ test.describe('Sources page', () => {
     sourcesPage = new SourcesPage(page);
   });
 
-  // test.describe('Not authed', () => {
-  //   test('Redirects to login page when not authenticated', async ({ page }) => {
-  //     await sourcesPage.goto(id);
-  //     expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
-  //   });
-  // });
+  test.describe('Not authed', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+    test('Redirects to login page when not authenticated', async ({ page }) => {
+      await sourcesPage.goto(id);
+      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
+    });
+  });
 
   test.describe('Authed as a publisher', () => {
     test.use({ storageState: users.publisher.path });

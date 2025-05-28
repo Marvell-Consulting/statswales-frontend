@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import RadioGroup from '../components/RadioGroup';
 
 export default function Quality(props) {
-  console.log({ rounding: props.rounding_applied });
   const backLink = 'javascript:history.back()';
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   return (

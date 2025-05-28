@@ -10,7 +10,7 @@ export async function createEmptyDataset(page: Page, title: string) {
   await page.goto('/en-GB/publish');
   await page.getByRole('link', { name: 'Continue' }).click();
   const titlePage = new TitlePage(page);
-  await titlePage.fillForm(title);
+  await titlePage.fillForm(`${title} - ${new Date().toISOString()}`);
   await titlePage.submit();
   const url = page.url();
   const re = new RegExp(`^${escapeRegExp(baseUrl)}/en-GB/publish/(.*)/upload$`);

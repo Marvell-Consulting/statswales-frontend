@@ -7,6 +7,7 @@ const config = appConfig();
 const baseUrl = config.frontend.url;
 
 test.describe('Not authed', () => {
+  test.use({ storageState: { cookies: [], origins: [] } });
   test('Redirects to login page when not authenticated', async ({ page }) => {
     await page.goto('/en-GB/publish');
     expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
