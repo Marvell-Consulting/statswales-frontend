@@ -36,7 +36,7 @@ auth.all('/local', urlencoded({ extended: false }), (req: Request, res: Response
   let errors: ViewError[] | undefined;
 
   if (req.method === 'POST') {
-    const username = ((req.body.username as string) || '').trim();
+    const username = ((req.body?.username as string) || '').trim();
 
     if (!username) {
       errors = [{ field: 'username', message: { key: 'login.form.username.error' } }];

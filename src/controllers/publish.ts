@@ -121,7 +121,7 @@ export const start = (req: Request, res: Response) => {
 export const provideDatasetGroup = async (req: Request, res: Response) => {
   const availableGroups = getEditorUserGroups(req.user).map((g) => singleLangUserGroup(g.group, req.language)) || [];
   const validGroupIds = availableGroups.map((group) => group.id) as string[];
-  const values = req.body;
+  const values = req.body || {};
   let errors: ViewError[] = [];
 
   if (req.method === 'POST') {
@@ -161,7 +161,7 @@ export const provideTitle = async (req: Request, res: Response) => {
 
   if (req.method === 'POST') {
     try {
-      title = req.body.title;
+      title = req.body?.title;
 
       errors = (await getErrors(titleValidator(), req)).map((error: FieldValidationError) => {
         return { field: error.path, message: { key: `publish.title.form.title.error.${error.msg}` } };
@@ -281,7 +281,7 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
 
     try {
       if (revisit) {
-        switch (req.body.actionChooser) {
+        switch (req.body?.actionChooser) {
           case 'replace-table':
             res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
             return;
@@ -293,7 +293,7 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
             errors = [{ field: 'actionChooserTable', message: { key: 'errors.preview.select_action' } }];
         }
       } else {
-        if (req.body.confirm === 'true') {
+        if (req.body?.confirm === 'true') {
           if (revision.revision_index === 0) {
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
           } else {
@@ -690,7 +690,7 @@ export const measureReview = async (req: Request, res: Response, next: NextFunct
 
     if (req.method === 'POST') {
       logger.debug(`User has reviewed measure lookup table.`);
-      switch (req.body.confirm) {
+      switch (req.body?.confirm) {
         case 'continue':
           res.redirect(req.buildUrl(`/publish/${dataset.id}/measure/name`, req.language));
           break;
@@ -860,7 +860,7 @@ export const lookupReview = async (req: Request, res: Response, next: NextFuncti
     const revisit = Boolean(dimension.factTableColumn !== dimension.metadata?.name);
 
     if (req.method === 'POST') {
-      switch (req.body.confirm) {
+      switch (req.body?.confirm) {
         case 'true':
           if (revisit) res.redirect(req.buildUrl(`/publish/${dataset.id}/dimension/${dimension.id}`, req.language));
           else res.redirect(req.buildUrl(`/publish/${dataset.id}/dimension/${dimension.id}/name`, req.language));
@@ -922,7 +922,7 @@ export const setupNumberDimension = async (req: Request, res: Response, next: Ne
     const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
 
     if (req.method === 'POST') {
-      if (!req.body.numberType) {
+      if (!req.body?.numberType) {
         logger.error('No number type selected');
         res.status(400);
         res.render('publish/number-chooser', {
@@ -942,8 +942,8 @@ export const setupNumberDimension = async (req: Request, res: Response, next: Ne
       const dimensionPatch: DimensionPatchDTO = {
         dimension_id: dimension.id,
         dimension_type: DimensionType.Numeric,
-        number_format: req.body.numberType as NumberType,
-        decimal_places: (req.body.numberType as NumberType) === NumberType.Decimal ? req.body.decimalPlaces : 0
+        number_format: req.body?.numberType as NumberType,
+        decimal_places: (req.body?.numberType as NumberType) === NumberType.Decimal ? req.body?.decimalPlaces : 0
       };
       try {
         await req.pubapi.patchDimension(res.locals.dataset.id, dimension.id, dimensionPatch);
@@ -1016,7 +1016,7 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
 
     if (req.method === 'POST') {
       let dimensionPatch: DimensionPatchDTO;
-      switch (req.body.dimensionType) {
+      switch (req.body?.dimensionType) {
         case 'lookup':
           res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}`, req.language));
           return;
@@ -1046,7 +1046,7 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
           dimensionPatch = {
             dimension_id: dimension.id,
             dimension_type: DimensionType.ReferenceData,
-            reference_type: req.body.dimensionType
+            reference_type: req.body?.dimensionType
           };
           try {
             await req.pubapi.patchDimension(res.locals.dataset.id, dimension.id, dimensionPatch);
@@ -1136,7 +1136,7 @@ export const fetchTimeDimensionPreview = async (req: Request, res: Response, nex
 
     const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
     if (req.method === 'POST') {
-      switch (req.body.dimensionType) {
+      switch (req.body?.dimensionType) {
         case 'time_period':
           res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/dates/${dimension.id}/period`, req.language));
           break;
@@ -1188,7 +1188,7 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
 
   try {
     if (req.method === 'POST') {
-      if (!req.body.yearType) {
+      if (!req.body?.yearType) {
         logger.error('User failed to select an option for year type');
         res.status(400);
         res.render('publish/year-type', {
@@ -1204,11 +1204,11 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
         });
         return;
       }
-      if (req.body.yearType === 'calendar') {
+      if (req.body?.yearType === 'calendar') {
         session.dimensionPatch = {
           dimension_id: req.params.dimensionId,
           dimension_type: DimensionType.DatePeriod,
-          date_type: req.body.yearType,
+          date_type: req.body?.yearType,
           year_format: 'YYYY'
         };
         set(req.session, `dataset[${dataset.id}]`, session);
@@ -1221,7 +1221,7 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
         session.dimensionPatch = {
           dimension_id: req.params.dimensionId,
           dimension_type: DimensionType.Date,
-          date_type: req.body.yearType
+          date_type: req.body?.yearType
         };
         set(req.session, `dataset[${dataset.id}]`, session);
         req.session.save();
@@ -1259,7 +1259,7 @@ export const yearFormat = async (req: Request, res: Response, next: NextFunction
         logger.error('Failed to find patch information in the session.');
         throw new Error('Year type not set in previous step');
       }
-      if (!req.body.yearType) {
+      if (!req.body?.yearType) {
         logger.error('User failed to select an option for year format');
         res.status(400);
         res.render('publish/year-format', {
@@ -1275,7 +1275,7 @@ export const yearFormat = async (req: Request, res: Response, next: NextFunction
         });
         return;
       }
-      session.dimensionPatch.year_format = req.body.yearType;
+      session.dimensionPatch.year_format = req.body?.yearType;
       set(req.session, `dataset[${dataset.id}]`, session);
       req.session.save();
       res.redirect(
@@ -1311,7 +1311,7 @@ export const periodType = async (req: Request, res: Response, next: NextFunction
     }
 
     if (req.method === 'POST') {
-      switch (req.body.periodType) {
+      switch (req.body?.periodType) {
         case 'years':
           try {
             await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
@@ -1404,7 +1404,7 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
       }
 
       const errors: ViewError[] = [];
-      if (!req.body.quarterType) {
+      if (!req.body?.quarterType) {
         logger.error('User failed to select an option for quarter type');
         errors.push({
           field: 'quarter-format-2',
@@ -1414,7 +1414,7 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
         });
       }
 
-      if (!req.body.fifthQuater) {
+      if (!req.body?.fifthQuater) {
         logger.error('User failed to select how quarterly totals is represented');
         errors.push({
           field: 'fifth-quater-yes',
@@ -1429,14 +1429,14 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
         res.render('publish/quarter-format', {
           dimension,
           errors,
-          quarterType: req.body.quarterType,
-          fifthQuater: req.body.fifthQuater
+          quarterType: req.body?.quarterType,
+          fifthQuater: req.body?.fifthQuater
         });
         return;
       }
 
-      patchRequest.quarter_format = req.body.quarterType;
-      if (req.body.fifthQuater === 'yes') {
+      patchRequest.quarter_format = req.body?.quarterType;
+      if (req.body?.fifthQuater === 'yes') {
         patchRequest.fifth_quarter = true;
       }
       try {
@@ -1495,7 +1495,7 @@ export const monthChooser = async (req: Request, res: Response, next: NextFuncti
         res.redirect(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}`);
         return;
       }
-      if (!req.body.monthFormat) {
+      if (!req.body?.monthFormat) {
         logger.error('User failed to select an option for month type');
         res.status(400);
         res.render('publish/month-format', {
@@ -1511,7 +1511,7 @@ export const monthChooser = async (req: Request, res: Response, next: NextFuncti
         });
         return;
       }
-      patchRequest.month_format = req.body.monthFormat;
+      patchRequest.month_format = req.body?.monthFormat;
       session.dimensionPatch = patchRequest;
       set(req.session, `dataset[${dataset.id}]`, session);
       logger.debug(`Saving Dimension Patch to session with the following: ${JSON.stringify(patchRequest, null, 2)}`);
@@ -1551,7 +1551,7 @@ export const periodReview = async (req: Request, res: Response, next: NextFuncti
 
   try {
     if (req.method === 'POST') {
-      switch (req.body.confirm) {
+      switch (req.body?.confirm) {
         case 'true':
           res.redirect(
             req.buildUrl(`/publish/${req.params.datasetId}/dimension/${req.params.dimensionId}/name`, req.language)
@@ -1612,7 +1612,7 @@ export const measureName = async (req: Request, res: Response, next: NextFunctio
     if (req.method === 'POST') {
       // TODO Replace validation if statements with an Express Validator
       //  See https://github.com/Marvell-Consulting/statswales-frontend/pull/138
-      const updatedName = req.body.name;
+      const updatedName = req.body?.name;
       if (!updatedName) {
         logger.error('User failed to submit a name');
         res.status(400);
@@ -1637,7 +1637,7 @@ export const measureName = async (req: Request, res: Response, next: NextFunctio
         return;
       }
       if (updatedName.length > 256) {
-        logger.error(`Measure name is too long... length: ${req.body.name.length}`);
+        logger.error(`Measure name is too long... length: ${req.body?.name.length}`);
         errors = {
           status: 400,
           errors: [
@@ -1755,7 +1755,7 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
     if (req.method === 'POST') {
       // TODO Replace validation if statements with an Express Validator
       //  See https://github.com/Marvell-Consulting/statswales-frontend/pull/138
-      const updatedName = req.body.name;
+      const updatedName = req.body?.name;
       if (!updatedName || updatedName.trim().length < 1) {
         logger.error('User failed to submit a name');
         res.status(400);
@@ -1774,7 +1774,7 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
         return;
       }
       if (updatedName.length > 256) {
-        logger.error(`Dimension name is too long... length: ${req.body.name.length}`);
+        logger.error(`Dimension name is too long... length: ${req.body?.name.length}`);
         res.status(400);
         res.render('publish/dimension-name', {
           ...{ columnName, updatedName, id: dimension.id, dimensionType: dimension.type },
@@ -1853,7 +1853,7 @@ export const pointInTimeChooser = async (req: Request, res: Response, next: Next
   if (req.method === 'POST') {
     const patchRequest: DimensionPatchDTO = {
       dimension_id: req.params.dimensionId,
-      date_format: req.body.dateFormat,
+      date_format: req.body?.dateFormat,
       dimension_type: DimensionType.Date,
       date_type: YearType.PointInTime
     };
@@ -1895,7 +1895,7 @@ export const periodOfTimeChooser = async (req: Request, res: Response, next: Nex
   }
 
   if (req.method === 'POST') {
-    switch (req.body.dimensionType) {
+    switch (req.body?.dimensionType) {
       case 'years':
         res.redirect(
           req.buildUrl(
@@ -1933,7 +1933,7 @@ export const provideSummary = async (req: Request, res: Response) => {
 
   if (req.method === 'POST') {
     try {
-      summary = req.body.summary;
+      summary = req.body?.summary;
 
       errors = (await getErrors(summaryValidator(), req)).map((error: FieldValidationError) => {
         return { field: error.path, message: { key: `publish.summary.form.description.error.missing` } };
@@ -1965,7 +1965,7 @@ export const provideCollection = async (req: Request, res: Response) => {
 
   if (req.method === 'POST') {
     try {
-      collection = req.body.collection;
+      collection = req.body?.collection;
 
       errors = (await getErrors(collectionValidator(), req)).map((error: FieldValidationError) => {
         return { field: error.path, message: { key: `publish.collection.form.collection.error.missing` } };
@@ -2002,9 +2002,9 @@ export const provideQuality = async (req: Request, res: Response) => {
   if (req.method === 'POST') {
     try {
       metadata = {
-        quality: req.body.quality,
-        rounding_applied: req.body.rounding_applied ? req.body.rounding_applied === 'true' : undefined,
-        rounding_description: req.body.rounding_applied === 'true' ? req.body.rounding_description : ''
+        quality: req.body?.quality,
+        rounding_applied: req.body?.rounding_applied ? req.body?.rounding_applied === 'true' : undefined,
+        rounding_description: req.body?.rounding_applied === 'true' ? req.body?.rounding_description : ''
       };
 
       const validators = [qualityValidator(), roundingAppliedValidator(), roundingDescriptionValidator()];
@@ -2039,9 +2039,9 @@ export const provideUpdateFrequency = async (req: Request, res: Response) => {
 
   if (req.method === 'POST') {
     update_frequency = {
-      is_updated: req.body.is_updated ? req.body.is_updated === 'true' : undefined,
-      frequency_unit: req.body.is_updated === 'true' ? req.body.frequency_unit : undefined,
-      frequency_value: req.body.is_updated === 'true' ? req.body.frequency_value : undefined
+      is_updated: req.body?.is_updated ? req.body?.is_updated === 'true' : undefined,
+      frequency_unit: req.body?.is_updated === 'true' ? req.body?.frequency_unit : undefined,
+      frequency_value: req.body?.is_updated === 'true' ? req.body?.frequency_value : undefined
     };
 
     try {
@@ -2322,7 +2322,7 @@ export const provideDesignation = async (req: Request, res: Response) => {
 
   if (req.method === 'POST') {
     try {
-      designation = req.body.designation;
+      designation = req.body?.designation;
 
       errors = (await getErrors(designationValidator(), req)).map((error: FieldValidationError) => {
         return { field: error.path, message: { key: `publish.designation.form.designation.error.missing` } };
@@ -2370,7 +2370,7 @@ export const provideTopics = async (req: Request, res: Response) => {
         throw new Error();
       }
 
-      const topicIds = req.body.topics.filter(Boolean); // strip empty values
+      const topicIds = req.body?.topics.filter(Boolean); // strip empty values
       await req.pubapi.updateDatasetTopics(dataset.id, topicIds);
       res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
       return;
@@ -2412,11 +2412,11 @@ export const providePublishDate = async (req: Request, res: Response) => {
       });
 
       values = {
-        year: req.body.year,
-        month: req.body.month ? req.body.month.padStart(2, '0') : '',
-        day: req.body.day ? req.body.day.padStart(2, '0') : '',
-        hour: req.body.hour ? req.body.hour.padStart(2, '0') : '',
-        minute: req.body.minute ? req.body.minute.padStart(2, '0') : ''
+        year: req.body?.year,
+        month: req.body?.month ? req.body?.month.padStart(2, '0') : '',
+        day: req.body?.day ? req.body?.day.padStart(2, '0') : '',
+        hour: req.body?.hour ? req.body?.hour.padStart(2, '0') : '',
+        minute: req.body?.minute ? req.body?.minute.padStart(2, '0') : ''
       };
 
       const publishDate = new TZDate(
@@ -2608,8 +2608,8 @@ export const updateDatatable = async (req: Request, res: Response) => {
   const dataset = res.locals.dataset;
 
   if (req.method === 'POST') {
-    if (req.body.updateType) {
-      set(req.session, `dataset.${dataset.id}`, { updateType: req.body.updateType });
+    if (req.body?.updateType) {
+      set(req.session, `dataset.${dataset.id}`, { updateType: req.body?.updateType });
       req.session.save();
       res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
       return;

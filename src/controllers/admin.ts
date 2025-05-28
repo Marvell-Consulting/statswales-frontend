@@ -289,7 +289,7 @@ export const viewUser = async (req: Request, res: Response) => {
     }
   ];
 
-  const action = req.body.action || '';
+  const action = req.body?.action || '';
   const flash = res.locals.flash;
 
   const groups = sortBy(
@@ -328,8 +328,8 @@ export const editUserRoles = async (req: Request, res: Response) => {
 
       values = {
         ...req.body,
-        global: Array.isArray(req.body.global) ? req.body.global : [req.body.global],
-        groups: Array.isArray(req.body.groups) ? req.body.groups : [req.body.groups]
+        global: Array.isArray(req.body?.global) ? req.body?.global : [req.body?.global],
+        groups: Array.isArray(req.body?.groups) ? req.body?.groups : [req.body?.groups]
       };
 
       if (values.global) {
