@@ -96,7 +96,7 @@ The system contains standardised lookup tables for all commonly used geographies
 
 You will not need to upload these standardised lookup tables when you build your dataset in SW3. You will only need to tell the system which geography you've used.
 
-There may be rare circumstances where the standardised tables do not contain the appropriate data for your dataset. For example, if you need to aggregate certain geographical areas for confidentiality reasons. In these cases you should [prepare your own lookup tables](#guidance-lookup-tables). 
+There may be rare circumstances where the standardised tables do not contain the appropriate data for your dataset. For example, if you need to aggregate certain geographical areas for confidentiality reasons. In these cases you should [prepare your own lookup tables](#guidance-lookup-tables).
 
 You'll also need to provide the reason you've not used a standard table. This reason will be visible to the consumer as part of the 'Geographical areas covered' metadata section.
 
@@ -175,7 +175,7 @@ You **must use consistent year formatting** for all time periods present in the 
 
 ##### Non-standard periods
 
-There may be rare circumstances where these standardised formats are not appropriate for the data in your dataset. For example, if periods are non-continuous and cover only parts of specific years. In these cases you should [prepare your own date lookup tables](#guidance-date-lookup-tables). 
+There may be rare circumstances where these standardised formats are not appropriate for the data in your dataset. For example, if periods are non-continuous and cover only parts of specific years. In these cases you should [prepare your own date lookup tables](#guidance-date-lookup-tables).
 
 You'll also need to provide the reason you've not used the standard formatting. This reason will be visible to the consumer as part of the 'Time period covered' metadata section.
 
@@ -270,7 +270,7 @@ Lookup table notes can be provided, but **are not currently shown in the consume
 In the rare circumstance where you need to upload a date lookup table, this should be in the same format as other lookup tables, with the following additional columns:
 
 | Heading | What the column contains                                  |
-| :-------| :-------------------------------------------------------- |
+| :------ | :-------------------------------------------------------- |
 | start   | Date the period starts in ISO format, yyyy-mm-ddThh:mm:ss |
 | end     | Date the period ends in ISO format, yyyy-mm-ddThh:mm:ss   |
 

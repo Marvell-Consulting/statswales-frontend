@@ -42,6 +42,7 @@ For [dimensions containing dates](Data-preparation-‐-New-datasets#guidance-dat
 For periods you’ll first be asked whether you need to use standardised date formatting or upload your own custom date lookup table. You should only upload your own date lookup table if you cannot use any of the accepted date formats.
 
 For standardised date formatting you'll be asked:
+
 - the type of year the dimension represents
 - the date format used for years
 - whether the shortest period in the dimension are months, quarters or years
