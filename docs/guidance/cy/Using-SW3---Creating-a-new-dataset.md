@@ -1,4 +1,4 @@
-# Defnyddio SW3: Creu set ddata newydd
+# Defnyddio SC3: Creu set ddata newydd
 
 ## Data
 

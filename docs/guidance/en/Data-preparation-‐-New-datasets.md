@@ -78,21 +78,42 @@ When you build your dataset in SW3, you’ll need to select reference data for e
 
 ### Standardised reference data
 
-SW3 does not use lookup tables for dimensions containing dates. Instead there is a [standardised approach to formatting](#guidance-date-formatting).
-
-The system currently has standardised, centrally-managed reference data for geography only. This includes all commonly used geography reference codes.
-
-The aim is to add more standardised reference data to the system in the future. Implementing this standardised reference data will:
+Standardised, centrally-managed reference data helps:
 
 - ensure better consistency across StatsWales
 - standardise English and Welsh descriptions
 - improve usability for data consumers
 
+SW3 currently has standardised, centrally-managed lookup tables for geography only.
+
+SW3 does not use lookup tables for dimensions containing dates. Instead there is a [standardised approach to formatting](#guidance-date-formatting).
+
 For any other dimension type, you should [prepare your own lookup table](#guidance-lookup-tables), with possible exceptions for some [dimensions containing text or numbers](#guidance-dimensions-containing-text-or-numbers-where-no-lookup-table-is-required).
+
+### Geography
+
+The system contains standardised lookup tables for all commonly used geographies, as provided by the [ONS Open Geography portal](https://geoportal.statistics.gov.uk/). You can download these lookup tables as CSVs from the ['Reference data' section](#) of this service. You must use the codes in these tables when creating your data tables.
+
+You will not need to upload these standardised lookup tables when you build your dataset in SW3. You will only need to tell the system which geography you've used.
+
+There may be rare circumstances where the standardised tables do not contain the appropriate data for your dataset. For example, if you need to aggregate certain geographical areas for confidentiality reasons. In these cases you should [prepare your own lookup tables](#guidance-lookup-tables).
+
+You'll also need to provide the reason you've not used a standard table. This reason will be visible to the consumer as part of the 'Geographical areas covered' metadata section.
 
 ### Date formatting
 
 When you build your dataset in SW3, you’ll need to [indicate the date formats you’ve used](Using-SW3---Creating-a-new-dataset#guidance-date-formatting-questions) in your data table. SW3 can only accept certain date formats.
+
+#### Specific points in time
+
+For example, specific dates when data values were collected.
+
+| Format in data table | Example    | How it will appear on website |
+| :------------------- | :--------- | :---------------------------- |
+| DD/MM/YYYY           | 01/01/2022 | 1 January 2022                |
+| DD-MM-YYYY           | 01-01-2022 | 1 January 2022                |
+| YYYY-MM-DD           | 2022-01-01 | 1 January 2022                |
+| YYYYMMDD             | 20220101   | 1 January 2022                |
 
 #### Periods of time
 
@@ -142,8 +163,7 @@ You also need to know the type of year the dimension covers, either:
 - financial (1 April to 31 March)
 - tax (6 April to 5 April)
 - academic (1 September to 31 August)
-
-The system cannot currently handle rolling years. This guidance will be updated once this functionality is added.
+- other (any other start date)
 
 If you do not know the type of year the dimension covers, you should contact the data collector for your dataset.
 
@@ -153,16 +173,11 @@ Your dataset can contain data for multiple time periods. For example, monthly va
 
 You **must use consistent year formatting** for all time periods present in the dataset. For example if you use ‘YYYY’ for years, you could use ‘YYYYQx’ for quarters and 'YYYYMM' for months.
 
-#### Specific points in time
+##### Non-standard periods
 
-For example, specific dates when data values were collected.
+There may be rare circumstances where these standardised formats are not appropriate for the data in your dataset. For example, if periods are non-continuous and cover only parts of specific years. In these cases you should [prepare your own date lookup tables](#guidance-date-lookup-tables).
 
-| Format in data table | Example    | How it will appear on website |
-| :------------------- | :--------- | :---------------------------- |
-| DD/MM/YYYY           | 01/01/2022 | 1 January 2022                |
-| DD-MM-YYYY           | 01-01-2022 | 1 January 2022                |
-| YYYY-MM-DD           | 2022-01-01 | 1 January 2022                |
-| YYYYMMDD             | 20220101   | 1 January 2022                |
+You'll also need to provide the reason you've not used the standard formatting. This reason will be visible to the consumer as part of the 'Time period covered' metadata section.
 
 ### Lookup tables
 
@@ -249,6 +264,23 @@ Descriptions of all dimension values should be:
 #### Lookup table notes
 
 Lookup table notes can be provided, but **are not currently shown in the consumer view** in SW3. If notes contain important information, you should ensure this information is also provided in the most appropriate [metadata section](#guidance-metadata).
+
+#### Date lookup tables
+
+In the rare circumstance where you need to upload a date lookup table, this should be in the same format as other lookup tables, with the following additional columns:
+
+| Heading | What the column contains                                  |
+| :------ | :-------------------------------------------------------- |
+| start   | Date the period starts in ISO format, yyyy-mm-ddThh:mm:ss |
+| end     | Date the period ends in ISO format, yyyy-mm-ddThh:mm:ss   |
+
+Example date lookup table:
+
+| refcode | start      | end        | sort | description_en | description_cy |
+| :------ | :--------- | :--------- | :--- | :------------- | :------------- |
+| 2022    | 2022-06-01 | 2022-08-31 | 1    | Summer 2022    | Haf 2022       |
+| 2023    | 2023-06-01 | 2023-08-31 | 2    | Summer 2023    | Haf 2023       |
+| 2024    | 2024-06-01 | 2024-08-31 | 3    | Summer 2024    | Haf 2024       |
 
 ### Dimensions containing text or numbers where no lookup table is required
 
@@ -456,7 +488,7 @@ There are [different types of statistics designations](https://uksa.statisticsau
 
 There are 13 high-level topics, most of which have multiple secondary topics. A **single topic tag** consists of ‘high-level + secondary topic’. The only exceptions are the ‘Tourism’ and ‘Welsh language’ topic tags which are high level only.
 
-For example a healthcare related dataset may be tagged to a single topic tag ‘Environment, energy and agriculture: Farming’. Or it could also be tagged to a second topic tag of ‘Business, economy and labour market: Business’. You should select as many topic tags as are relevant to the dataset.
+For example a dataset may be tagged to a single topic tag ‘Environment, energy and agriculture: Farming’. Or it could also be tagged to a second topic tag of ‘Business, economy and labour market: Business’. You should select as many topic tags as are relevant to the dataset.
 
 This selection will allow consumers to more easily locate and identify datasets of interest to them. It’s important to consider the different ways consumers may categorise what a dataset covers.
 

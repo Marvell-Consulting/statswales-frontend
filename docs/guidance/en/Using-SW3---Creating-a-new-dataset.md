@@ -16,17 +16,19 @@ You'll then be taken to your dataset tasklist. It will list all the dimensions y
 
 Clicking on each dimension will let you select what kind of data the dimension contains. This will be either:
 
-- dates - you'll then answer questions about the date formatting used
-- geography - the system will then add the standardised reference data
+- dates - you'll then answer questions about the date formatting used, or upload your own lookup table if necessary
+- geography - you'll then select the appropriate standardised reference data, or upload your own lookup table if necessary
 - text, [where no lookup table is needed](Data-preparation-‐-New-datasets#guidance-dimensions-containing-text-or-numbers-where-no-lookup-table-is-required)
-- numbers, [where no lookup table is needed](Data-preparation-‐-New-datasets#guidance-dimensions-containing-text-or-numbers-where-no-lookup-table-is-required) - you'll then need to indicate the kind of numbers used
+- numbers, [where no lookup table is needed](Data-preparation-‐-New-datasets#guidance-dimensions-containing-text-or-numbers-where-no-lookup-table-is-required) - you'll then indicate the kind of numbers used
   - For this option, the dimension must only contain numbers, with no symbols or letters.
-- something else - you'll then need to upload your own lookup table
+- something else - you'll then upload your own lookup table
 
-For each option you'll be asked to enter a name for the dimension to be called on the StatsWales website. The name should be:
+For most options you'll be asked to enter a name for the dimension to be called on the StatsWales website. The name should be:
 
 - concise and clearly explain what the dimension contains
 - different to other dimension names in the dataset
+
+If you select standardised reference data, the dimension name will be automatically populated. You can change this, but you should only do so if absolutely necessary for understanding the dataset. For example, a migration-related dataset where there are 2 dimensions containing local authorities - one is the local authority someone moved from and the other is the one they moved to. In that scenario you might rename the dimensions to "Local authorities moved from" and "Local authorities moved to", to distinguish between them.
 
 For a dimension containing measure or data types, when you click on it from your dataset tasklist, you'll then need to upload the [appropriate lookup table](Data-preparation-‐-New-datasets#guidance-measure-or-data-types).
 
@@ -37,7 +39,9 @@ For [dimensions containing dates](Data-preparation-‐-New-datasets#guidance-dat
 - periods - for example, months or years for which data values apply to
 - specific points - for example, specific dates when data values were collected
 
-For periods you’ll be asked:
+For periods you’ll first be asked whether you need to use standardised date formatting or upload your own custom date lookup table. You should only upload your own date lookup table if you cannot use any of the accepted date formats.
+
+For standardised date formatting you'll be asked:
 
 - the type of year the dimension represents
 - the date format used for years

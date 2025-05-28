@@ -126,6 +126,9 @@
       "create": "Create new dataset"
     }
   },
+  "guidance": {
+    "title": "Guidance for StatsWales 3 (SW3)"
+  },
   "dataset_view": {
     "key_information": {
       "heading": "Main information",
