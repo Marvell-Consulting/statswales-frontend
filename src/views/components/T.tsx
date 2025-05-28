@@ -6,7 +6,7 @@ export type TProps = {
   fallback?: string;
   raw?: boolean;
   className?: string;
-} & Record<string, any>;
+} & Record<string, string | number | boolean | ReactNode>;
 
 export default function T({ children, fallback, className, raw, ...props }: TProps) {
   const { t } = useLocals();
