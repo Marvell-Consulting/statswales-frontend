@@ -959,6 +959,14 @@ $whitepurple: #eed5e3;
     font-size: 16px;
   }
 
+  .govuk-heading-xl,
+  .govuk-heading-l,
+  .govuk-heading-m,
+  .govuk-heading-s,
+  .govuk-heading-xs {
+    color: inherit;
+  }
+
   .govuk-heading-m a {
     font-size: 24px;
   }
@@ -1306,7 +1314,6 @@ $whitepurple: #eed5e3;
   }
 
   .govuk-heading-xl {
-    color: $black;
     font-size: 48px;
     font-weight: bold;
     letter-spacing: -0.0542rem;
@@ -1314,9 +1321,16 @@ $whitepurple: #eed5e3;
     margin-bottom: revert;
   }
 
+  .hero {
+    .govuk-heading-m,
+    .govuk-heading-l,
+    .govuk-heading-xl {
+      color: $white;
+    }
+  }
+
   .govuk-heading-l,
   .govuk-fieldset__legend--l {
-    color: $black;
     font-size: 36px;
     font-weight: bold;
     letter-spacing: -0.0375rem;
@@ -1324,7 +1338,6 @@ $whitepurple: #eed5e3;
   }
 
   .govuk-heading-m {
-    color: $black;
     font-size: 28px;
     font-weight: bold;
     letter-spacing: -0.0292rem;
@@ -1333,7 +1346,6 @@ $whitepurple: #eed5e3;
 
   .govuk-heading-s,
   .govuk-table__caption--s {
-    color: $black;
     font-size: 24px;
     font-weight: bold;
     letter-spacing: -0.025rem;
@@ -1341,7 +1353,6 @@ $whitepurple: #eed5e3;
   }
 
   .govuk-heading-xs {
-    color: $black;
     font-size: 20px;
     font-weight: bold;
     letter-spacing: -0.01875rem;
@@ -1350,7 +1361,6 @@ $whitepurple: #eed5e3;
   }
 
   .govuk-heading-xxs {
-    color: $black;
     font-size: 18px;
     font-weight: bold;
     letter-spacing: -0.01458rem;
@@ -1359,7 +1369,6 @@ $whitepurple: #eed5e3;
 
   @media screen and (max-width: 768px) {
     .govuk-heading-xl {
-      color: $black;
       font-size: 34px;
       font-weight: bold;
       letter-spacing: -0.04167rem;
@@ -1368,7 +1377,6 @@ $whitepurple: #eed5e3;
 
     .govuk-heading-l,
     .govuk-fieldset__legend--l {
-      color: $black;
       font-size: 28px;
       font-weight: bold;
       letter-spacing: -0.03333rem;
@@ -1376,7 +1384,6 @@ $whitepurple: #eed5e3;
     }
 
     .govuk-heading-m {
-      color: $black;
       font-size: 24px;
       font-weight: bold;
       letter-spacing: -0.025rem;
@@ -1385,7 +1392,6 @@ $whitepurple: #eed5e3;
 
     .govuk-heading-s,
     .govuk-table__caption--s {
-      color: $black;
       font-size: 20px;
       font-weight: bold;
       letter-spacing: -0.02083rem;
@@ -1393,7 +1399,6 @@ $whitepurple: #eed5e3;
     }
 
     .govuk-heading-xs {
-      color: $black;
       font-size: 18px;
       font-weight: bold;
       letter-spacing: -0.01875rem;
@@ -1401,7 +1406,6 @@ $whitepurple: #eed5e3;
     }
 
     .govuk-heading-xxs {
-      color: $black;
       font-size: 14px;
       font-weight: bold;
       letter-spacing: -0.01458rem;

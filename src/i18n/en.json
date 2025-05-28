@@ -1617,6 +1617,14 @@
         "feedback": "You’re viewing a new version of StatsWales"
       }
     },
+    "topic_list": {
+      "heading": "Find statistics and data from the Welsh Government",
+      "topics": "Topics",
+      "topic": "Topic",
+      "dataset": {
+        "first_published": "First published: {{published}}"
+      }
+    },
     "list": {
       "heading": "Find statistics and data from the Welsh Government",
       "total_datasets": "datasets"
