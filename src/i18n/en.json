@@ -904,7 +904,9 @@
       }
     },
     "tasklist": {
+      "subheading": "Dataset tasklist",
       "no_title": "No title available",
+      "overview": "Dataset overview",
       "preview": "Preview (opens in new tab)",
       "open_developer_view": "Developer view (opens in new tab)",
       "delete": {
