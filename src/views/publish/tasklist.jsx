@@ -16,10 +16,7 @@ function Sidebar(props) {
         </li>
         <li className="govuk-task-list__item govuk-task-list__item--with-link tasklist-no-border">
           <div className="govuk-task-list__name-and-hint">
-            <a
-              href={props.buildUrl(`/publish/${props.datasetId}/cube-preview`, props.i18n.language)}
-              target="_blank"
-            >
+            <a href={props.buildUrl(`/publish/${props.datasetId}/cube-preview`, props.i18n.language)} target="_blank">
               {props.t('publish.tasklist.preview')}
             </a>
           </div>
@@ -38,9 +35,7 @@ function Sidebar(props) {
           <li className="govuk-task-list__item govuk-task-list__item--with-link tasklist-no-border">
             <div className="govuk-task-list__name-and-hint">
               <a href={props.buildUrl(`/publish/${props.datasetId}/delete`, props.i18n.language)}>
-                {props.t(
-                  `publish.tasklist.delete.${props.publishingStatus === 'incomplete' ? 'dataset' : 'update'}`
-                )}
+                {props.t(`publish.tasklist.delete.${props.publishingStatus === 'incomplete' ? 'dataset' : 'update'}`)}
               </a>
             </div>
           </li>
