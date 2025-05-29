@@ -17,13 +17,13 @@ export default function TranslationsPreviewTable({ isImport, translations }: Tra
       label: <T>translations.export.table.field</T>,
       format: (value: string, row: TranslationDTO) => {
         if (row.type === 'dimension') {
-          return <T key={value}>translations.export.dimension</T>;
+          return <T value={value}>translations.export.dimension</T>;
         } else if (row.type === 'measure') {
-          return <T key={value}>translations.export.measure</T>;
+          return <T value={value}>translations.export.measure</T>;
         } else if (row.type === 'metadata') {
-          return <T>translations.export.field.{value}`</T>;
+          return <T>translations.export.field.{value}</T>;
         } else if (row.type === 'link') {
-          return <T key={value}>translations.export.link</T>;
+          return <T value={value}>translations.export.link</T>;
         }
       }
     },
