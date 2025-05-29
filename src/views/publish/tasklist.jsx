@@ -3,6 +3,53 @@ import Layout from '../components/layouts/Publisher';
 import TasklistStatus from '../components/TasklistStatus';
 import DatasetStatus from '../components/dataset/DatasetStatus';
 
+function Sidebar(props) {
+  return (
+    <div className="govuk-grid-column-one-third">
+      <ul className="govuk-task-list border-top">
+        <li className="govuk-task-list__item govuk-task-list__item--with-link tasklist-no-border">
+          <div className="govuk-task-list__name-and-hint">
+            <a href={props.buildUrl(`/publish/${props.datasetId}/overview`, props.i18n.language)}>
+              {props.t('publish.tasklist.overview')}
+            </a>
+          </div>
+        </li>
+        <li className="govuk-task-list__item govuk-task-list__item--with-link tasklist-no-border">
+          <div className="govuk-task-list__name-and-hint">
+            <a
+              href={props.buildUrl(`/publish/${props.datasetId}/cube-preview`, props.i18n.language)}
+              target="_blank"
+            >
+              {props.t('publish.tasklist.preview')}
+            </a>
+          </div>
+        </li>
+        {props?.isDeveloper && (
+          <li className="govuk-task-list__item govuk-task-list__item--with-link tasklist-no-border">
+            <div className="govuk-task-list__name-and-hint">
+              <a href={props.buildUrl(`/developer/${props.datasetId}`, props.i18n.language)} target="_blank">
+                {props.t('publish.tasklist.open_developer_view')}
+              </a>
+            </div>
+          </li>
+        )}
+
+        {['incomplete', 'update_incomplete'].includes(props.publishingStatus) && (
+          <li className="govuk-task-list__item govuk-task-list__item--with-link tasklist-no-border">
+            <div className="govuk-task-list__name-and-hint">
+              <a href={props.buildUrl(`/publish/${props.datasetId}/delete`, props.i18n.language)}>
+                {props.t(
+                  `publish.tasklist.delete.${props.publishingStatus === 'incomplete' ? 'dataset' : 'update'}`
+                )}
+              </a>
+            </div>
+          </li>
+        )}
+      </ul>
+    </div>
+  );
+}
+
 export default function Tasklist(props) {
   function getPath() {
     if (props.revision?.revision_index === 0 && !props.revision.data_table_id) {
@@ -35,6 +82,7 @@ export default function Tasklist(props) {
     <Layout {...props}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
+          <span className="region-subhead">{props.t('publish.tasklist.subheading')}</span>
           <h1 className="govuk-heading-xl govuk-!-margin-bottom-2">{props.datasetTitle}</h1>
         </div>
       </div>
@@ -186,41 +234,7 @@ export default function Tasklist(props) {
             </div>
           )}
         </div>
-        <div className="govuk-grid-column-one-third">
-          <ul className="govuk-task-list border-top">
-            <li className="govuk-task-list__item govuk-task-list__item--with-link tasklist-no-border">
-              <div className="govuk-task-list__name-and-hint">
-                <a
-                  href={props.buildUrl(`/publish/${props.datasetId}/cube-preview`, props.i18n.language)}
-                  target="_blank"
-                >
-                  {props.t('publish.tasklist.preview')}
-                </a>
-              </div>
-            </li>
-            {props?.isDeveloper && (
-              <li className="govuk-task-list__item govuk-task-list__item--with-link tasklist-no-border">
-                <div className="govuk-task-list__name-and-hint">
-                  <a href={props.buildUrl(`/developer/${props.datasetId}`, props.i18n.language)} target="_blank">
-                    {props.t('publish.tasklist.open_developer_view')}
-                  </a>
-                </div>
-              </li>
-            )}
-
-            {['incomplete', 'update_incomplete'].includes(props.publishingStatus) && (
-              <li className="govuk-task-list__item govuk-task-list__item--with-link tasklist-no-border">
-                <div className="govuk-task-list__name-and-hint">
-                  <a href={props.buildUrl(`/publish/${props.datasetId}/delete`, props.i18n.language)}>
-                    {props.t(
-                      `publish.tasklist.delete.${props.publishingStatus === 'incomplete' ? 'dataset' : 'update'}`
-                    )}
-                  </a>
-                </div>
-              </li>
-            )}
-          </ul>
-        </div>
+        <Sidebar {...props} />
       </div>
     </Layout>
   );

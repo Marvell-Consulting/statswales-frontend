@@ -150,10 +150,7 @@ function HistoryTab({ history }) {
 
           if (action === 'publish') {
             return (
-              <T>
-                publish.overview.history.event.task.publish.{isUpdate ? 'update_' : ''}
-                {status}
-              </T>
+              <T>publish.overview.history.event.task.publish.{isUpdate ? `update_${status}` : status}</T>
             );
           }
         }
