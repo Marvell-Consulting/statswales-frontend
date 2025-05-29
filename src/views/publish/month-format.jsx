@@ -36,7 +36,7 @@ export default function MonthFormat(props) {
                   hint: props.t('publish.month_format.example', { example: '01' })
                 },
                 {
-                  value: 'MM',
+                  value: 'mm',
                   label: 'MM',
                   hint: props.t('publish.month_format.example', { example: '01' })
                 }

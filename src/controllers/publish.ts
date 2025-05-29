@@ -1406,6 +1406,7 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
 
     if (req.method === 'POST') {
       const patchRequest = session.dimensionPatch;
+
       if (!patchRequest) {
         res.redirect(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}`);
         return;
@@ -1437,28 +1438,27 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
         res.render('publish/quarter-format', {
           dimension,
           errors,
+          quarterTotals,
           quarterType: req.body?.quarterType,
           fifthQuater: req.body?.fifthQuater
         });
         return;
       }
 
-      patchRequest.quarter_format = req.body?.quarterType;
+      const { quarterType } = req.body;
+
+      patchRequest.quarter_format = quarterType === 'null' ? null : quarterType;
       if (req.body?.fifthQuater === 'yes') {
         patchRequest.fifth_quarter = true;
       }
       try {
         await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
-
         session.dimensionPatch = undefined;
         set(req.session, `dataset[${dataset.id}]`, session);
         req.session.save();
         res.redirect(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`);
         return;
       } catch (err) {
-        session.dimensionPatch = undefined;
-        set(req.session, `dataset[${dataset.id}]`, session);
-        req.session.save();
         const error = err as ApiException;
         logger.debug(`Error is: ${JSON.stringify(error, null, 2)}`);
         if (error.status === 400) {
