@@ -857,7 +857,7 @@ export const lookupReview = async (req: Request, res: Response, next: NextFuncti
       return;
     }
     let errors: ViewErrDTO | undefined;
-    const revisit = Boolean(dimension.factTableColumn !== dimension.metadata?.name);
+    const revisit = !!dimension.metadata?.name;
 
     if (req.method === 'POST') {
       switch (req.body?.confirm) {
