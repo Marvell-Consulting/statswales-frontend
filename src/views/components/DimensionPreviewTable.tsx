@@ -29,7 +29,7 @@ export default function DimensionPreviewTable(props: DimensionPreviewTableProps)
       ) : (
         (() => {
           if (i18n.exists(`publish.time_dimension_review.column_headers.${heading.name.toLowerCase()}`)) {
-            return <T>publish.time_dimension_review.column_headers.${heading.name.toLowerCase()}</T>;
+            return <T>publish.time_dimension_review.column_headers.{heading.name.toLowerCase()}</T>;
           } else if (heading.name === props.dimension.factTableColumn) {
             return props.dimension.metadata?.name ? props.dimension.metadata.name : heading.name;
           } else {

@@ -1089,8 +1089,8 @@
         "quality": "Statistical quality",
         "roundingDescription": "Rounding applied"
       },
-      "dimension": "{{key}} dimension name",
-      "measure": "{{key}} measure name",
+      "dimension": "{{value}} dimension name",
+      "measure": "{{value}} measure name",
       "link": "Related report",
       "buttons": {
         "export": "Export CSV",

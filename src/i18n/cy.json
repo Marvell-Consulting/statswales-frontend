@@ -876,7 +876,7 @@
         "quality": "Ansawdd ystadegol",
         "roundingDescription": "Wedi'i dalgrynnu"
       },
-      "dimension": "{{key}} enw dimensiwn",
+      "dimension": "{{value}} enw dimensiwn",
       "buttons": {
         "export": "Allgludo CSV",
         "change": "Newid"
