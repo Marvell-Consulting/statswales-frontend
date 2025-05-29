@@ -4,8 +4,8 @@ import Layout from '../components/layouts/Publisher';
 import clsx from 'clsx';
 
 export default function Summary(props) {
-  const backLink = 'javascript:history.back()';
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const backLink = returnLink;
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
       <div className="govuk-width-container">

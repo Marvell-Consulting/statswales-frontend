@@ -5,8 +5,10 @@ import RadioGroup from '../components/RadioGroup';
 import T from '../components/T';
 
 export default function YearType(props) {
-  const backLink = props.referrer;
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const backLink = props.revisit
+    ? props.buildUrl(`/publish/${props.datasetId}/dates/${props.dimension.id}/change-format`, props.i18n.language)
+    : props.buildUrl(`/publish/${props.datasetId}/dates/${props.dimension.id}`, props.i18n.language);
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
       <span className="region-subhead">{props.dimension.metadata.name}</span>

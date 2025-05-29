@@ -4,8 +4,10 @@ import ErrorHandler from '../components/ErrorHandler';
 import DimensionPreviewTable from '../components/DimensionPreviewTable';
 
 export default function DimensionRevisit(props) {
-  const backLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const backLink = props.url.includes('change-type')
+    ? props.buildUrl(`/publish/${props.datasetId}/dimension/${props.dimension.id}`, props.i18n.language)
+    : returnLink;
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink}>
       <span className="region-subhead">{props.dimension.metadata.name}</span>

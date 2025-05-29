@@ -4,8 +4,10 @@ import ErrorHandler from '../components/ErrorHandler';
 import MeasurePreviewTable from '../components/MeasurePreviewTable';
 
 export default function MeasurePreview(props) {
-  const backLink = props.buildUrl(`/publish/${props.datasetId}/measure`, props.i18n.language);
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const backLink = props.url.includes('change-lookup')
+    ? props.buildUrl(`/publish/${props.datasetId}/measure`, props.i18n.language)
+    : returnLink;
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
       <span className="region-subhead">{props.measure.metadata.name}</span>

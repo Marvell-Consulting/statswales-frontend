@@ -4,8 +4,8 @@ import ErrorHandler from '../components/ErrorHandler';
 import clsx from 'clsx';
 
 export default function Collection(props) {
-  const backLink = 'javascript:history.back()';
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const backLink = props.returnLink;
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
       <div className="govuk-width-container">

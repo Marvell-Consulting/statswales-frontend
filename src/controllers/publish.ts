@@ -337,7 +337,7 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
     (colA: FactTableColumnDto, colB: FactTableColumnDto) => colA.index - colB.index
   ) as FactTableColumnDto[];
 
-  const revisit = factTable.filter((column: FactTableColumnDto) => column.type === SourceType.Unknown).length > 0;
+  const revisit = factTable.filter((column: FactTableColumnDto) => column.type === SourceType.Unknown).length === 0;
 
   let error: ViewError | undefined;
   let errors: ViewError[] | undefined;
@@ -919,6 +919,8 @@ export const setupNumberDimension = async (req: Request, res: Response, next: Ne
       return;
     }
 
+    const revisit = !!dimension.extractor;
+
     const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
 
     if (req.method === 'POST') {
@@ -927,6 +929,7 @@ export const setupNumberDimension = async (req: Request, res: Response, next: Ne
         res.status(400);
         res.render('publish/number-chooser', {
           ...dataPreview,
+          revisit,
           errors: [
             {
               field: 'numberTypeInteger',
@@ -957,12 +960,14 @@ export const setupNumberDimension = async (req: Request, res: Response, next: Ne
           res.status(400);
           res.render('publish/number-match-failure', {
             ...failurePreview,
+            revisit,
             dimension
           });
         } else {
           res.status(500);
           res.render('publish/number-chooser', {
             ...dataPreview,
+            revisit,
             errors: [
               {
                 field: 'unknown',
@@ -982,16 +987,17 @@ export const setupNumberDimension = async (req: Request, res: Response, next: Ne
       req.session.errors = undefined;
       req.session.save();
       res.status(500);
-      res.render('publish/number-chooser', { ...dataPreview, dimension, errors });
+      res.render('publish/number-chooser', { ...dataPreview, dimension, errors, revisit });
       return;
     }
 
     if (dimension && dimension.extractor && req.path.indexOf('change') === -1) {
-      res.render('publish/number-chooser', { ...dataPreview, dimension });
+      res.render('publish/number-chooser', { ...dataPreview, dimension, revisit });
     } else {
       res.render('publish/number-chooser', {
         ...dataPreview,
         dimension,
+        revisit,
         showCancelButton: Boolean(req.path.indexOf('change') > -1)
       });
     }
@@ -1179,6 +1185,7 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
   const dataset = singleLangDataset(res.locals.dataset, req.language);
   const dimension = dataset.dimensions?.find((dim) => dim.id === req.params.dimensionId);
   const session = get(req.session, `dataset[${dataset.id}]`, { dimensionPatch: undefined });
+  const revisit = !!dimension?.extractor;
 
   if (!dimension) {
     logger.error('Failed to find dimension in dataset');
@@ -1193,6 +1200,7 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
         res.status(400);
         res.render('publish/year-type', {
           dimension,
+          revisit,
           errors: [
             {
               field: 'yearTypeCalendar',
@@ -1235,7 +1243,7 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
       }
     }
 
-    res.render('publish/year-type', { dimension });
+    res.render('publish/year-type', { dimension, revisit });
   } catch (err) {
     logger.error('Failed to get dimension preview', err);
     next(new NotFoundException());

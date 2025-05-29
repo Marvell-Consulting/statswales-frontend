@@ -5,8 +5,10 @@ import Table from '../components/Table';
 import RadioGroup from '../components/RadioGroup';
 
 export default function Providers(props) {
-  const backLink = 'javascript:history.back()';
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const backLink = props.url.includes('?edit=')
+    ? props.buildUrl(`/publish/${props.datasetId}/providers`, props.i18n.language)
+    : returnLink;
   const columns = [
     'provider',
     {

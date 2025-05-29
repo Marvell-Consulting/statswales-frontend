@@ -5,8 +5,11 @@ import RadioGroup from '../components/RadioGroup';
 import T from '../components/T';
 
 export default function YearFormat(props) {
-  const backLink = props.referrer;
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const backLink = props.buildUrl(
+    `/publish/${props.datasetId}/dates/${props.dimension.id}/period`,
+    props.i18n.language
+  );
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
       <span className="region-subhead">{props.dimension.metadata.name}</span>

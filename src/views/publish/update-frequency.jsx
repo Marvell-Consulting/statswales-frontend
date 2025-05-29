@@ -6,8 +6,8 @@ import RadioGroup from '../components/RadioGroup';
 import T from '../components/T';
 
 export default function UpdateFrequency(props) {
-  const backLink = 'javascript:history.back()';
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const backLink = returnLink;
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
       <div className="govuk-width-container">

@@ -4,8 +4,20 @@ import ErrorHandler from '../components/ErrorHandler';
 import DimensionPreviewTable from '../components/DimensionPreviewTable';
 
 export default function LookupTablePreview(props) {
-  const backLink = props.referrer;
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+
+  const backLink = props.revisit
+    ? props.dimension.type === 'text'
+      ? props.buildUrl(`publish/${props.datasetId}/dimension/${props.dimension.id}/change-type`)
+      : props.dimension.type === 'numbers'
+        ? props.buildUrl(`publish/${props.datasetId}/numbers/${props.dimension.id}/change-type`)
+        : props.referrer
+    : props.dimension.type === 'text'
+      ? props.buildUrl(`publish/${props.datasetId}/dimension/${props.dimension.id}`)
+      : props.dimension.type === 'numbers'
+        ? props.buildUrl(`publish/${props.datasetId}/numbers/${props.dimension.id}`)
+        : props.referrer;
+
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
       <span className="region-subhead">{props.dimension.metadata.name}</span>

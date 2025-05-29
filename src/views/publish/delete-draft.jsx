@@ -4,8 +4,8 @@ import DatasetStatus from '../components/dataset/DatasetStatus';
 import ErrorHandler from '../components/ErrorHandler';
 
 export default function DeleteDraft(props) {
-  const backLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const backLink = props.returnLink;
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
       <div className="govuk-grid-row">

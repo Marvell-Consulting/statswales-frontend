@@ -5,8 +5,15 @@ import Table from '../components/Table';
 import RadioGroup from '../components/RadioGroup';
 
 export default function DateChooser(props) {
-  const backLink = props.referrer;
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const backLink = props.url.includes('change-format')
+    ? props.data
+      ? props.referrer
+      : props.buildUrl(`/publish/${props.datasetId}/dimension/${props.dimension.id}/change-type`, props.i18n.language)
+    : props.data
+      ? props.referrer
+      : props.buildUrl(`/publish/${props.datasetId}/dimension/${props.dimension.id}`, props.i18n.language);
+
   const columns = props.headers.map((col, index) => ({
     key: index,
     label:

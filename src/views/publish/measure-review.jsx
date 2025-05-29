@@ -4,8 +4,8 @@ import MeasurePreviewTable from '../components/MeasurePreviewTable';
 import Layout from '../components/layouts/Publisher';
 
 export default function MeasureReview(props) {
-  const backLink = props.referrer;
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const backLink = props.buildUrl(`/publish/${props.datasetId}/measure`, props.i18n.language);
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
       <span className="region-subhead">{props.measure.metadata.name}</span>
