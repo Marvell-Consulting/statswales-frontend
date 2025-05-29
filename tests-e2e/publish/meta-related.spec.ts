@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
 
 import { appConfig } from '../../src/config';
-import { metadataA as dataset, metadataB as datasetB } from '../fixtures/datasets';
 
 import { RelatedLinksPage } from './pages/related-page';
 import { users } from '../fixtures/logins';
+import { createEmptyDataset } from './helpers/create-empty-dataset';
 
 const config = appConfig();
 const baseUrl = config.frontend.url;
@@ -13,29 +13,36 @@ test.describe.configure({ mode: 'serial' }); // tests in this file must be perfo
 
 test.describe('Metadata Related Links', () => {
   let relatedPage: RelatedLinksPage;
+  let id: string;
 
   test.beforeEach(async ({ page }) => {
     relatedPage = new RelatedLinksPage(page);
   });
 
   test.describe('Not authed', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
     test('Redirects to login page when not authenticated', async ({ page }) => {
-      await relatedPage.goto(dataset.id);
-      await expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
+      await relatedPage.goto(id);
+      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
     });
   });
 
   test.describe('Authed as a publisher', () => {
     test.use({ storageState: users.publisher.path });
 
+    test.beforeAll(async ({ browser }) => {
+      const page = await browser.newPage();
+      id = await createEmptyDataset(page, 'Meta related spec');
+    });
+
     test('Has a heading', async ({ page }) => {
-      await relatedPage.goto(dataset.id);
+      await relatedPage.goto(id);
       await relatedPage.removeAllLinks();
       await expect(page.getByRole('heading', { name: 'Add a link to a report' })).toBeVisible();
     });
 
     test('Can switch to Welsh', async ({ page }) => {
-      await relatedPage.goto(dataset.id);
+      await relatedPage.goto(id);
       await relatedPage.removeAllLinks();
       await page.getByText('Cymraeg').click();
       await expect(page.getByRole('heading', { name: 'Ychwanegu dolen i adroddiad' })).toBeVisible();
@@ -43,13 +50,13 @@ test.describe('Metadata Related Links', () => {
 
     test.describe('Form validation', () => {
       test.beforeEach(async () => {
-        await relatedPage.goto(dataset.id);
+        await relatedPage.goto(id);
         await relatedPage.removeAllLinks();
       });
 
       test('Displays a validation error when no input is provided', async ({ page }) => {
         await relatedPage.submit();
-        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/related`);
+        expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${id}/related`);
         await expect(page.getByText('Enter the link URL for a related report').first()).toBeVisible();
         await expect(
           page.getByText('Enter the link text to appear on the webpage for a related report').first()
@@ -59,7 +66,7 @@ test.describe('Metadata Related Links', () => {
       test('Displays a validation error when an invalid URL is provided', async ({ page }) => {
         await relatedPage.fillForm('Not a URL', 'Some label');
         await relatedPage.submit();
-        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/related`);
+        expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${id}/related`);
         await expect(page.getByText('Enter the link URL in the correct format').first()).toBeVisible();
       });
 
@@ -67,7 +74,7 @@ test.describe('Metadata Related Links', () => {
         await relatedPage.fillForm('http://example.com/1', 'Link 1');
         await relatedPage.submit();
 
-        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${dataset.id}/related`);
+        expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${id}/related`);
         await expect(page.getByRole('heading', { name: 'Report links added' })).toBeVisible();
         await expect(page.getByRole('cell', { name: 'Link 1' })).toBeVisible();
       });
@@ -82,8 +89,15 @@ test.describe('Metadata Related Links', () => {
     });
 
     test.describe('Form success', () => {
+      let id: string;
+
+      test.beforeAll(async ({ browser }) => {
+        const page = await browser.newPage();
+        id = await createEmptyDataset(page, 'Meta related spec');
+      });
+
       test.beforeEach(async () => {
-        await relatedPage.goto(datasetB.id);
+        await relatedPage.goto(id);
       });
 
       test('Can successfully add multiple related links', async ({ page }) => {
@@ -104,7 +118,7 @@ test.describe('Metadata Related Links', () => {
         await relatedPage.fillForm('http://example.com/3', 'Link 3');
         await relatedPage.submit();
 
-        await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetB.id}/related`);
+        expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${id}/related`);
         await expect(page.getByRole('heading', { name: 'Report links added' })).toBeVisible();
         await expect(page.getByRole('cell', { name: 'Link 1' })).toBeVisible();
         await expect(page.getByRole('cell', { name: 'Link 2' })).toBeVisible();
@@ -112,7 +126,7 @@ test.describe('Metadata Related Links', () => {
       });
 
       test('Can remove a single related link', async ({ page }) => {
-        const row = await page.getByRole('row', { name: 'Link 2' });
+        const row = page.getByRole('row', { name: 'Link 2' });
         await row.getByRole('link', { name: 'Remove' }).click();
 
         await expect(page.getByRole('heading', { name: 'Report links added' })).toBeVisible();

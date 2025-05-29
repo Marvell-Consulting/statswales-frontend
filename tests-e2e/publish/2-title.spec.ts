@@ -16,6 +16,7 @@ test.describe('Title page', () => {
   });
 
   test.describe('Not authed', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
     test('Redirects to login page when not authenticated', async ({ page }) => {
       await page.goto(`${baseUrl}/en-GB/publish/title`);
       expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);

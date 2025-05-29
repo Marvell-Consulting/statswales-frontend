@@ -90,7 +90,11 @@ export default function Quality(props) {
                     label: props.t('publish.quality.form.rounding_applied.options.no.label')
                   }
                 ]}
-                value={props.rounding_applied}
+                value={
+                  props.rounding_applied !== null &&
+                  props.rounding_applied !== undefined &&
+                  (props.rounding_applied ? 'true' : 'false')
+                }
               />
 
               <button type="submit" className="govuk-button" data-module="govuk-button">
