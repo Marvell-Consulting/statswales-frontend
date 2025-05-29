@@ -11,7 +11,7 @@ export default function Title(props) {
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
       <h1 className="govuk-heading-xl">{props.t('publish.title.heading')}</h1>
 
-      <ErrorHandler {...props} />
+      <ErrorHandler />
 
       <ul className="govuk-list govuk-list--bullet">
         <li>{props.t('publish.title.appear')}</li>

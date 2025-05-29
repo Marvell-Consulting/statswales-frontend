@@ -16,7 +16,7 @@ export default function Title(props) {
             : props.t('publish.upload.title')}
       </h1>
 
-      <ErrorHandler {...props} />
+      <ErrorHandler />
 
       <form method="post" encType="multipart/form-data">
         <div className="govuk-form-group">

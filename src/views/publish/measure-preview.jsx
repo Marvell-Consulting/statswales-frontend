@@ -12,7 +12,7 @@ export default function MeasurePreview(props) {
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
       <span className="region-subhead">{props.measure.metadata.name}</span>
       <h1 className="govuk-heading-xl">{props.t('publish.measure_preview.heading')}</h1>
-      <ErrorHandler {...props} />
+      <ErrorHandler />
       {props.data && !props.errors && (
         <div className="govuk-grid-row">
           <div className="govuk-grid-column-full with-overflow">

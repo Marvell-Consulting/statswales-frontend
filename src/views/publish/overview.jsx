@@ -187,13 +187,13 @@ export default function Overview(props) {
     <Layout {...props}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
-          <FlashMessages {...props} />
+          <FlashMessages />
 
           <span className="region-subhead">{props.t('publish.overview.subheading')}</span>
           <h1 className="govuk-heading-xl govuk-!-margin-bottom-2">{props.title}</h1>
 
           <DatasetStatus {...props} />
-          <ErrorHandler {...props} />
+          <ErrorHandler />
 
           <div className="overview-details">
             {['pending_approval', 'update_pending_approval'].includes(props.publishingStatus) && (

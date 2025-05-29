@@ -12,7 +12,7 @@ export default function UploadLookup(props) {
       <span className="region-subhead">{props.dimension.metadata.name}</span>
       <h1 className="govuk-heading-xl">{props.t('publish.upload.lookup_heading')}</h1>
 
-      <ErrorHandler {...props} />
+      <ErrorHandler />
 
       {props.data && (
         <>

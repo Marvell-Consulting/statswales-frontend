@@ -51,6 +51,12 @@ export default tseslint.config([
     }
   },
   {
+    files: ['**/*.tsx'],
+    rules: {
+      '@typescript-eslint/naming-convention': 'off'
+    }
+  },
+  {
     files: ['src/config/**/*.ts', 'test/helpers/jest-setup.ts'],
     rules: {
       'no-process-env': 'off'

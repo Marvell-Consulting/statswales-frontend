@@ -1,6 +1,8 @@
 import React from 'react';
 import Layout from '../components/layouts/Publisher';
 import ErrorHandler from '../components/ErrorHandler';
+import T from '../components/T';
+import Select from '../components/Select';
 
 export default function Sources(props) {
   const returnLink =
@@ -9,7 +11,7 @@ export default function Sources(props) {
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
       <h1 className="govuk-heading-xl">{props.t('publish.sources.heading')}</h1>
-      <ErrorHandler {...props} />
+      <ErrorHandler />
       <form action={props.buildUrl(`/publish/${props.datasetId}/sources`, props.i18n.language)} method="post">
         <div
           className="source-list"
@@ -29,27 +31,18 @@ export default function Sources(props) {
             >
               <div className="govuk-grid-row">
                 <div className="govuk-grid-column-full">
-                  <span
-                    style={{
-                      minWidth: '30%',
-                      display: 'inline-block'
-                    }}
-                  >
-                    <label className="govuk-label govuk-!-display-inline" htmlFor={`column-${source.index}`}>
-                      <strong>{source.name || props.t('publish.preview.unnamed_column', { colNum: idx + 1 })}</strong>
-                    </label>
-                  </span>
-                  <select
-                    className="govuk-select govuk-!-display-inline"
-                    id={`column-${source.index}`}
+                  <Select
                     name={`column-${source.index}`}
-                  >
-                    {props.sourceTypes.map((val) => (
-                      <option key={val} value={val} selected={source.type === val}>
-                        {props.t(`publish.sources.types.${val}`)}
-                      </option>
-                    ))}
-                  </select>
+                    className="govuk-!-display-inline"
+                    label={source.name || <T colNum={idx + 1}>publish.preview.unnamed_column</T>}
+                    labelClassName="govuk-label--s"
+                    labelStyle={{ minWidth: '30%', display: 'inline-block' }}
+                    options={props.sourceTypes.map((val) => ({
+                      value: val,
+                      label: <T>publish.sources.types.{val}</T>
+                    }))}
+                    value={source.type}
+                  />
                 </div>
               </div>
             </div>

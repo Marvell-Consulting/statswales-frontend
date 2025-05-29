@@ -17,7 +17,7 @@ export default function QuarterFormat(props) {
         {props.t(`publish.quarter_format.${props.quarterTotals ? 'heading-alt' : 'heading'}`)}
       </h1>
 
-      <ErrorHandler {...props} />
+      <ErrorHandler />
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">

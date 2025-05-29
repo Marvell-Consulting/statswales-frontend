@@ -8,8 +8,8 @@ export default function UserStatus(props) {
     <Layout {...props} formPage>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
-          <FlashMessages {...props} />
-          <ErrorHandler {...props} />
+          <FlashMessages />
+          <ErrorHandler />
 
           <h1 className="govuk-heading-xl">
             {props.t(`admin.user.${props.action}.heading`, { userName: props.userName })}

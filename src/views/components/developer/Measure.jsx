@@ -16,7 +16,6 @@ export default function Measure(props) {
           <div className="govuk-grid-column-full">
             <p className="govuk-body-m"></p>
             <Table
-              {...props}
               i18nBase="developer.display"
               columns={['id', 'fact_table_column', 'join_column']}
               rows={[props.dataset?.measure]}
@@ -30,7 +29,6 @@ export default function Measure(props) {
                 <span className="govuk-details__summary-text">{props.t('developer.display.show_measure_table')}</span>
               </summary>
               <Table
-                {...props}
                 i18nBase="developer.display"
                 columns={['reference', 'format', 'decimals', 'description', 'notes', 'sort_order', 'hierarchy']}
                 rows={props.dataset.measure.measure_table}
@@ -48,7 +46,6 @@ export default function Measure(props) {
                   </span>
                 </summary>
                 <Table
-                  {...props}
                   inverted
                   i18nBase="developer.display"
                   columns={[

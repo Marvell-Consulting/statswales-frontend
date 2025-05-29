@@ -11,7 +11,7 @@ export default function UserGroupName(props) {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <h1 className="govuk-heading-xl">{props.t('admin.group.name.heading')}</h1>
-          <ErrorHandler {...props} />
+          <ErrorHandler />
 
           <form encType="multipart/form-data" method="post">
             <div className="govuk-form-group">

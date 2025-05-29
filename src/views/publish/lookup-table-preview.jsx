@@ -27,7 +27,7 @@ export default function LookupTablePreview(props) {
         )}
       </h1>
 
-      <ErrorHandler {...props} />
+      <ErrorHandler />
 
       {props.dimension.type === 'lookup_table' && (
         <div className="govuk-grid-row">

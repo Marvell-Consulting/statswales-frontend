@@ -1,6 +1,9 @@
 import React from 'react';
+import { useLocals } from '../context/Locals';
+import T from './T';
 
-export default function FlashMessages({ flash, t }) {
+export default function FlashMessages() {
+  const { flash } = useLocals();
   if (!flash || !flash.length) {
     return null;
   }
@@ -15,13 +18,13 @@ export default function FlashMessages({ flash, t }) {
           if (typeof msg == 'string') {
             return (
               <p key={index} className="govuk-notification-banner__heading">
-                {t(msg)}
+                <T>{msg}</T>
               </p>
             );
           } else if (msg != null && typeof msg == 'object') {
             return (
               <p key={index} className="govuk-notification-banner__heading">
-                {t(msg.key, msg.params)}
+                <T {...msg.params}>{msg.key}</T>
               </p>
             );
           }

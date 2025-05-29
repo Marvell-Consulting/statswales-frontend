@@ -1,6 +1,9 @@
 import React from 'react';
+import { useLocals } from '../context/Locals';
+import T from './T';
 
-export default function ErrorHandler({ errors, t }) {
+export default function ErrorHandler() {
+  const { errors } = useLocals();
   if (!errors || !errors.length) {
     return null;
   }
@@ -8,12 +11,16 @@ export default function ErrorHandler({ errors, t }) {
   return (
     <div className="govuk-error-summary" data-module="govuk-error-summary">
       <div role="alert">
-        <h2 className="govuk-error-summary__title">{t('errors.problem')}</h2>
+        <h2 className="govuk-error-summary__title">
+          <T>errors.problem</T>
+        </h2>
         <div className="govuk-error-summary__body">
           <ul className="govuk-list govuk-error-summary__list">
             {errors.map((error) => (
               <li key={error.message.key}>
-                <a href={`#${error.field}`}>{t(error.message.key, error.message.params)}</a>
+                <a href={`#${error.field}`}>
+                  <T {...error.message.params}>{error.message.key}</T>
+                </a>
               </li>
             ))}
           </ul>

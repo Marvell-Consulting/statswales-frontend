@@ -507,6 +507,9 @@
   padding-left: 0;
   border-left: none;
 }
+.wg .govuk-form-group--inline {
+  display: inline-block;
+}
 .wg .govuk-error-message {
   font-weight: normal;
   color: #1f1f1f;

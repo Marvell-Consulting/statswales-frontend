@@ -9,7 +9,7 @@ export default function UpdateType(props) {
   const backLink = returnLink;
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
-      <ErrorHandler {...props} />
+      <ErrorHandler />
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">

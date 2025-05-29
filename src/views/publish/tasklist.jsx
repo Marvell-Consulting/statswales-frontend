@@ -26,7 +26,7 @@ export default function Tasklist(props) {
             {props.t(translation || `publish.tasklist.metadata.${id}`)}
           </a>
         </div>
-        <TasklistStatus {...props} status={status} />
+        <TasklistStatus status={status} />
       </li>
     );
   }
@@ -55,7 +55,7 @@ export default function Tasklist(props) {
                   {props.t('publish.tasklist.data.datatable')}
                 </a>
               </div>
-              <TasklistStatus {...props} status={props.taskList.datatable} />
+              <TasklistStatus status={props.taskList.datatable} />
             </li>
             {props.taskList.measure && (
               <li className="govuk-task-list__item govuk-task-list__item--with-link">
@@ -67,7 +67,7 @@ export default function Tasklist(props) {
                     {props.taskList.measure.name}
                   </a>
                 </div>
-                <TasklistStatus {...props} status={props.taskList.measure.status} />
+                <TasklistStatus status={props.taskList.measure.status} />
               </li>
             )}
             {props.taskList.dimensions?.map((dimension, index) => (
@@ -80,7 +80,7 @@ export default function Tasklist(props) {
                     {dimension.name}
                   </a>
                 </div>
-                <TasklistStatus {...props} status={dimension.status} />
+                <TasklistStatus status={dimension.status} />
               </li>
             ))}
           </ul>
@@ -146,7 +146,7 @@ export default function Tasklist(props) {
                   </a>
                 )}
               </div>
-              <TasklistStatus {...props} status={props.taskList.translation.export} />
+              <TasklistStatus status={props.taskList.translation.export} />
             </li>
             <li className="govuk-task-list__item govuk-task-list__item--with-link">
               <div className="govuk-task-list__name-and-hint">
@@ -162,7 +162,7 @@ export default function Tasklist(props) {
                   </a>
                 )}
               </div>
-              <TasklistStatus {...props} status={props.taskList.translation.import} />
+              <TasklistStatus status={props.taskList.translation.import} />
             </li>
           </ul>
 

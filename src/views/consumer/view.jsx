@@ -11,6 +11,8 @@ import Notes from '../components/dataset/Notes';
 import About from '../components/dataset/About';
 import Published from '../components/dataset/Published';
 import RadioGroup from '../components/RadioGroup';
+import Select from '../components/Select';
+import T from '../components/T';
 
 export default function ConsumerView(props) {
   const LayoutComponent = props.isDeveloper ? Layout : ConsumerLayout;
@@ -21,17 +23,23 @@ export default function ConsumerView(props) {
         <div className="govuk-grid-row govuk-!-margin-bottom-0">
           <div className="govuk-grid-column-one-half">
             <form method="get">
-              <label className="govuk-label govuk-label--s" htmlFor="view" style={{ display: 'inline-block' }}>
-                {props.t('consumer_view.data_view')}:
-              </label>{' '}
-              <select className="govuk-select" id="view" name="dataViewsChoice">
-                <option value="" disabled="">
-                  {props.t('consumer_view.select_view')}
-                </option>
-                <option value="default" selected>
-                  {props.t('consumer_view.data_table')}
-                </option>
-              </select>{' '}
+              <Select
+                name="dataViewsChoice"
+                label={<T>consumer_view.data_view</T>}
+                labelClassName="govuk-label--s"
+                options={[
+                  {
+                    value: '',
+                    label: <T>consumer_view.select_view</T>
+                  },
+                  {
+                    value: 'default',
+                    label: <T>consumer_view.data_table</T>
+                  }
+                ]}
+                value={new URLSearchParams(props.url.split('?')[1]).get('dataViewsChoice')}
+                inline
+              />{' '}
               <button type="submit" className="govuk-button button-black govuk-button-small" data-module="govuk-button">
                 {props.t('consumer_view.apply_view')}
               </button>
@@ -51,18 +59,13 @@ export default function ConsumerView(props) {
           <div className="govuk-grid-column-one-quarter">
             <form method="get">
               <h3>{props.t('consumer_view.filters')}</h3>
-              <div className="govuk-form-group">
-                <label className="govuk-label" htmlFor="page_size">
-                  {props.t('pagination.page_size')}
-                </label>
-                <select className="govuk-select" id="page_size" name="page_size">
-                  {[5, 10, 25, 50, 100, 250, 500].map((size) => (
-                    <option key={size} value={size} selected={props.page_size === size}>
-                      {size}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <Select
+                name="page_size"
+                label={<T>pagination.page_size</T>}
+                value={props.page_size}
+                options={[5, 10, 25, 50, 100, 250, 500].map((size) => ({ value: size, label: size }))}
+              />
+              {/* CHECK - is this needed? */}
               <script
                 dangerouslySetInnerHTML={{
                   __html: `

@@ -10,8 +10,8 @@ export class ProviderPage {
   private readonly sourceInput: Locator;
 
   constructor(public readonly page: Page) {
-    this.providerInput = this.page.locator('input#provider');
-    this.sourceInput = this.page.locator('input#source');
+    this.providerInput = this.page.locator('input#provider_id');
+    this.sourceInput = this.page.locator('input#source_id');
   }
 
   async goto(datasetId: string) {

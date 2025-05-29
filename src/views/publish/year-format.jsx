@@ -17,7 +17,7 @@ export default function YearFormat(props) {
         {props.t('publish.year_format.heading')}
       </h1>
 
-      <ErrorHandler {...props} />
+      <ErrorHandler />
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">

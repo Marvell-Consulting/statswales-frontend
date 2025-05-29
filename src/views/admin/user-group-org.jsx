@@ -12,11 +12,10 @@ export default function UserGroupOrg(props) {
             <h1 className="govuk-heading-xl" id="organisation">
               {props.t('admin.group.organisation.heading')}
             </h1>
-            <ErrorHandler {...props} />
+            <ErrorHandler />
 
             <form encType="multipart/form-data" method="post">
               <RadioGroup
-                {...props}
                 name="organisation_id"
                 labelledBy="organisation"
                 options={props.organisations.map((org) => ({ value: org.id, label: org.name }))}

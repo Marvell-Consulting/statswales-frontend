@@ -14,7 +14,7 @@ export default function SpecificDateChooser(props) {
         <T>publish.point_in_time.heading</T>
       </h1>
 
-      <ErrorHandler {...props} />
+      <ErrorHandler />
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">

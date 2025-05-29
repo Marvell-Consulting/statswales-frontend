@@ -15,7 +15,7 @@ export default function DimensionRevisit(props) {
         {props.dimension.metadata?.name || props.t('publish.time_dimension_review.unknown_name')}
       </h1>
 
-      <ErrorHandler {...props} />
+      <ErrorHandler />
 
       {props.data && (
         <>

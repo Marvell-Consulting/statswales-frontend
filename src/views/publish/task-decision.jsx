@@ -35,7 +35,7 @@ export default function TaskDecision(props) {
               </T>
             </p>
 
-            <ErrorHandler {...props} />
+            <ErrorHandler />
 
             <RadioGroup
               name="decision"

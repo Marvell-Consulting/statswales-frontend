@@ -16,7 +16,7 @@ export default function YearType(props) {
         {props.t('publish.year_type.heading')}
       </h1>
 
-      <ErrorHandler {...props} />
+      <ErrorHandler />
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">

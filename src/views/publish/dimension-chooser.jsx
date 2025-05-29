@@ -16,7 +16,7 @@ export default function DimensionChooser(props) {
         {props.t('publish.dimension_type_chooser.heading')}
       </h1>
 
-      <ErrorHandler {...props} />
+      <ErrorHandler />
       {props.data && (
         <>
           <div className="govuk-grid-row">
