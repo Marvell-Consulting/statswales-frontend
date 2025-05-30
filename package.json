@@ -24,8 +24,6 @@
     "dev": "nodemon --watch src -e ts,ejs,jsx,tsx,json,scss --exec npm run start",
     "docker-compose-up": "bash -c 'f() { if [ $(command -v podman) ]; then podman compose up -d; else docker compose up -d; fi }; f'",
     "docker-compose-down": "bash -c 'f() { if [ $(command -v podman) ]; then podman compose stop; else docker compose stop; fi }; f'",
-    "lhci:mobile": "lhci autorun",
-    "lhci:desktop": "lhci autorun --collect.settings.preset=desktop",
     "prelocalstack": "npm run docker-compose-up",
     "localstack": "trap 'exit 0' SIGINT; nodemon --watch src -e ts,ejs,json,scss --exec npm run start",
     "postlocalstack": "npm run docker-compose-down",

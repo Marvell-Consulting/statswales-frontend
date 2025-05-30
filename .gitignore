@@ -46,4 +46,4 @@ playwright/.auth
 
 # ignore lighthouse reports
 lhci-reports
-.lighthouseci
+.lighthouseci/**
