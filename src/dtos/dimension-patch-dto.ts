@@ -10,7 +10,7 @@ export interface DimensionPatchDTO {
   reference_type?: string;
   date_type?: YearType;
   year_format?: string;
-  quarter_format?: string;
+  quarter_format?: string | null;
   month_format?: string;
   date_format?: string;
   fifth_quarter?: boolean;

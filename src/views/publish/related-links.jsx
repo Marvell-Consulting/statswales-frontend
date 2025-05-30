@@ -8,7 +8,6 @@ import T from '../components/T';
 
 export default function RelatedLinks(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
-  console.log(props.referrer);
   const backLink = props.referrer;
 
   const columns = [

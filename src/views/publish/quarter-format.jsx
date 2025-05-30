@@ -60,14 +60,13 @@ export default function QuarterFormat(props) {
                   ? [
                       { divider: 'or' },
                       {
-                        // CHECK: is this the right value?
-                        value: 'QX',
+                        value: 'null',
                         label: props.t('publish.quarter_format.no_quarterly_totals')
                       }
                     ]
                   : [])
               ]}
-              value={props.quarterType}
+              value={String(props.quarterType)}
             />
 
             <RadioGroup

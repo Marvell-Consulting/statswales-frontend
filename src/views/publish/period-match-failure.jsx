@@ -30,7 +30,7 @@ export default function PeriodMatchFailure(props) {
             }}
           />
         )}
-        {props.patchRequest.quarter_format && (
+        {props.patchRequest.quarter_format && props.patchRequest.quarter_format !== 'null' && (
           <li
             className="govuk-list--bullet"
             dangerouslySetInnerHTML={{
