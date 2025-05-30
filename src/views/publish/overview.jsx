@@ -101,7 +101,7 @@ function ActionsTab({
               <ActionLink
                 path={`/publish/${datasetId}/overview`}
                 action={
-                  publishingStatus === 'update_scheduled' ? 'withdraw_update_revision' : 'withdraw_first_revision'
+                  ['update_scheduled', 'update_pending_approval'].includes(publishingStatus) ? 'withdraw_update_revision' : 'withdraw_first_revision'
                 }
                 queryParams={{ withdraw: 'true' }}
               />
