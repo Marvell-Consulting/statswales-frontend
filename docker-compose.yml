@@ -15,7 +15,7 @@ services:
 
   blobstorage:
     image: mcr.microsoft.com/azure-storage/azurite
-    # command: azurite --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0 --debug=/tmp/debug.log
+    command: azurite --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0 --debug=/tmp/debug.log
     ports:
       - '10000:10000'
       - '10001:10001'
@@ -43,10 +43,7 @@ services:
       TEST_DB_HOST: 'db'
       TEST_DB_PORT: 5432
       TEST_DB_SYNC: 'false'
-      AZURE_BLOB_STORAGE_URL: http://blobstorage:10000/devstoreaccount1
-      AZURE_DATALAKE_STORAGE_ACCOUNT_NAME: ${AZURE_DATALAKE_STORAGE_ACCOUNT_NAME}
-      AZURE_DATALAKE_STORAGE_ACCOUNT_KEY: ${AZURE_DATALAKE_STORAGE_ACCOUNT_KEY}
-      AZURE_DATALAKE_STORAGE_FILESYSTEM_NAME: ${AZURE_DATALAKE_STORAGE_FILESYSTEM_NAME}
+      AZURE_BLOB_STORAGE_URL: 'http://blobstorage:10000/devstoreaccount1'
 
     command: sh -c "npm run migration:run && npm run seed:required && npm run seed:ci && npm run seed:dataset && npm run start"
 
