@@ -49,9 +49,19 @@ jobs:
           SESSION_SECRET: peakaboo
           JWT_SECRET: jwtsecret
           SUPPORT_EMAIL: support@example.com
+
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
           name: playwright-report
           path: playwright/results/
           retention-days: 30
+
+      - name: Audit URLs using Lighthouse
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            http://localhost:3000/en-GB/published/f12bed26-18ac-4cb9-bcdb-24ed155f29a1
+          configPath: ./lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: true
