@@ -43,3 +43,7 @@ yarn.lock
 # ignore IDE settings
 .vscode/
 playwright/.auth
+
+# ignore lighthouse reports
+lhci-reports
+.lighthouseci

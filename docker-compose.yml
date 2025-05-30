@@ -45,7 +45,7 @@ services:
       TEST_DB_SYNC: 'false'
       AZURE_BLOB_STORAGE_URL: 'http://blobstorage:10000/devstoreaccount1'
 
-    command: sh -c "npm run migration:run && npm run seed:required && npm run seed:ci && npm run start"
+    command: sh -c "npm run migration:run && npm run seed:required && npm run seed:ci && npm run seed:dataset && npm run start"
 
   ready-for-tests:
     image: busybox
