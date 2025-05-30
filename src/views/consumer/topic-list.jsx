@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Layout from '../components/layouts/Publisher';
+import Layout from '../components/layouts/Consumer';
 import Hero from '../components/consumer/Hero';
 import T from '../components/T';
 import { useLocals } from '../context/Locals';

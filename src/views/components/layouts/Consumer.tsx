@@ -108,18 +108,11 @@ const Layout = ({ children }: PropsWithChildren) => {
               <div className="statsWales-logo" role="img" aria-label="StatsWales logo"></div>
             </a>
           </div>
-          <div className="nav__content">
-            <div className="govuk-width-container">
-              <ul aria-hidden="true">
-                <li>
-                  <a href={buildUrl('/published', i18n.language)}>{t('header.navigation.home')}</a>
-                </li>
-              </ul>
-            </div>
-          </div>
         </nav>
 
-        <main className="govuk-main-wrapper" id="main-content" role="main">
+        <hr className="govuk-section-break govuk-section-break--l govuk-!-margin-bottom-0 govuk-section-break--visible" />
+
+        <main className="govuk-main-wrapper govuk-!-padding-top-0" id="main-content" role="main">
           <div className="govuk-width-container">{children}</div>
         </main>
 
