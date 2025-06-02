@@ -165,7 +165,7 @@ You also need to know the type of year the dimension covers, either:
 - academic (1 September to 31 August)
 - other (any other start date)
 
-If you do not know the type of year the dimension covers, you should contact the data collector for your dataset.
+If you do not know the type of year the dimension covers, you should contact the data collector for your dataset. If you're unable to get this information, you should make your best assumption. Based on your knowledge of the dataset and other datasets like it.
 
 ##### Multiple periods in the same dataset
 
@@ -425,12 +425,27 @@ In short, simple sentences explain either:
 - the methodology used to calculate the data
 - both of the above
 
+For data collection, try to include:
+
+- specific names and types of data collections used, for example "Form HO 13" instead of "a survey", and why these were used
+- enough information for consumers to be able to go and find out more about the specific collection techniques used
+
+For data calculation, try to include whether:
+
+- any [data analysis techniques](https://analysisfunction.civilservice.gov.uk/policy-store/guide-to-gss-statistical-techniques-and-tools/) have been used, such as forecasting or scaling
+- a widely recognised standard has been used, one developed by the publisher
+
 #### Statistical quality
 
 In short, simple sentences explain any issues or methodological changes related to the dataset including any:
 
 - notes relevant to all data values in the dataset
 - custom explanations needed to clarify any data value note codes used
+
+Try to include the impact on all the data in the dataset of any:
+
+- limitations, biases or uncertainties in the data sources used
+- deviations from standards, or limitations, in any of the data analysis techniques used in calculating the data
 
 If available, you can include a **high-level summary** of the statistical quality report. You should add a link to the report in the ‘Related reports’ section, not as a link here.
 

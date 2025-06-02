@@ -90,6 +90,16 @@ Nid yw SC3 yn defnyddio tablau am-edrych ar gyfer dimensiynau sy’n cynnwys dyd
 
 Ar gyfer unrhyw fath dimensiwn arall, dylech [baratoi eich tabl am-edrych eich hun](#guidance-tablau-am-edrych), gydag eithriadau posibl ar gyfer rhai [dimensiynau sy&#39;n cynnwys testun neu rifau](#guidance-dimensiynau-sy'n-cynnwys-testun-neu-rifau-lle-nad-oes-gofyn-cael-tabl-am-edrych).
 
+### Daearyddiaeth
+
+Mae’r system yn cynnwys tablau am-edrych safonol ar gyfer pob daearyddiaeth gyffredin a ddefnyddir, fel y darparir gan [porth Open Geography SYG](https://geoportal.statistics.gov.uk/). Gallwch lawrlwytho’r tablau am-edrych hyn fel CSVs o [adran ‘Data cyfeirio’](#) y gwasanaeth hwn. Rhaid i chi ddefnyddio’r codau yn y tablau hyn wrth greu eich tablau data chi.
+
+Ni fydd angen i chi lanlwytho’r tablau am-edrych safonol hyn pan fyddwch yn creu eich set ddata yn SW3. Dim ond dweud wrth y system pa ddaearyddiaeth yr ydych chi wedi’i defnyddio y bydd angen i chi ei wneud.
+
+Efallai y bydd amgylchiadau prin pan na fydd y tablau safonol yn cynnwys y data priodol ar gyfer eich set ddata. Er enghraifft, os bydd angen i chi gyfuno ardaloedd daearyddol penodol am resymau cyfrinachedd. Yn yr achosion hyn, dylech [baratoi eich tablau am-edrych eich hun](#guidance-tablau-am-edrych).
+
+Bydd angen i chi nodi’r rheswm pam nad ydych chi wedi defnyddio tabl safonol hefyd. Bydd y rheswm hwn yn weladwy i’r defnyddiwr fel rhan o’r adran metadata ‘Ardaloedd daearyddol sydd wedi’u cynnwys’.
+
 ### Fformatio dyddiadau
 
 Pan fyddwch yn creu eich set ddata yn SC3, bydd angen i chi [nodi’r fformatau dyddiadau yr ydych chi wedi’u defnyddio](Using-SW3---Creating-a-new-dataset#guidance-cwestiynau-am-ffurf-y-dyddiadau) yn eich tabl data. Dim ond fformatau dyddiadau penodol y gall SC3 eu derbyn.
@@ -153,6 +163,7 @@ Bydd angen i chi wybod y math o flwyddyn y mae’r dimensiwn yn ei gynnwys hefyd
 - ariannol (1 Ebrill i 31 Mawrth)
 - treth (6 Ebrill i 5 Ebrill)
 - academaidd (1 Medi i 31 Awst)
+- arall (unrhyw ddyddiad cychwyn arall)
 
 Ni all y system ymdopi â blynyddoedd treigl ar hyn o bryd. Caiff y canllawiau hyn eu diweddaru ar ôl ychwanegu'r swyddogaeth hon.
 
@@ -163,6 +174,12 @@ Os nad ydych chi'n gwybod y math o flwyddyn y mae'r dimensiwn yn ymwneud â hi, 
 Gall eich set ddata gynnwys data ar gyfer cyfnodau amser lluosog. Er enghraifft, gwerthoedd misol gyda chyfansymiau chwarterol a blynyddol.
 
 **Rhaid i chi ddefnyddio fformatio blwyddyn cyson** ar gyfer yr holl gyfnodau amser sy’n bresennol yn y set ddata. Er enghraifft, os ydych chi’n defnyddio ‘YYYY’ ar gyfer blynyddoedd, gallech ddefnyddio ‘YYYYQx’ ar gyfer chwarteri a 'YYYYMM' ar gyfer misoedd.
+
+##### Cyfnodau ansafonol
+
+Efallai y bydd amgylchiadau prin pan na fydd y ffurfiau safonol hyn yn briodol ar gyfer y data yn eich set ddata. Er enghraifft, os na fydd cyfnodau yn barhaus ac os byddant yn cynnwys rhannau o flynyddoedd penodol yn unig. Yn yr achosion hyn, dylech [baratoi eich tablau am-edrych data eich hun](#guidance-tablau-am-edrych-dyddiad).
+
+Bydd angen i chi nodi’r rheswm dros eich penderfyniad i beidio defnyddio’r ffurf safonol hefyd. Bydd y rheswm hwn yn weladwy i’r defnyddiwr fel rhan o adran metadata ‘Cyfnod amser dan sylw’.
 
 ### Tablau am-edrych
 
@@ -207,13 +224,13 @@ Enghraifft o rhan o dabl am-edrych ar gyfer cod band treth:
 
 Enghraifft o rhan o dabl am-edrych ar gyfer cod band treth:
 
-| codcyf | disgrifiad_en | disgrifiad \_cy | trefn |
-| :----- | :------------ | :-------------- | :---- |
-| A-     | Tax band A-   | Band treth A-   | 1     |
-| A      | Tax band A    | Band treth A    | 2     |
-| B      | Tax band B    | Band treth B    | 3     |
-| C      | Tax band C    | Band treth C    | 4     |
-| D      | Tax band D    | Band treth D    | 5     |
+| codcyf | disgrifiad_en | disgrifiad_cy | trefn |
+| :----- | :------------ | :------------ | :---- |
+| A-     | Tax band A-   | Band treth A- | 1     |
+| A      | Tax band A    | Band treth A  | 2     |
+| B      | Tax band B    | Band treth B  | 3     |
+| C      | Tax band C    | Band treth C  | 4     |
+| D      | Tax band D    | Band treth D  | 5     |
 
 #### Penawdau colofnau
 
@@ -225,13 +242,13 @@ Defnyddiwch y golofn 'hierarchaeth' i ddynodi a yw gwerth dimensiwn yn is na gwe
 
 Rhan enghreifftiol o dabl am-edrych am godau bandiau treth sydd â hierarchaeth 3-lefel:
 
-| codcyf | disgrifiad_en | disgrifiad \_cy | hierarchaeth | trefn |
-| :----- | :------------ | :-------------- | :----------- | :---- |
-| A      | Tax band A    | Band treth A    |              | 14    |
-| A1     | Tax band A1   | Band treth A1   | A            | 15    |
-| A1a    | Tax band A1a  | Band treth A1a  | A1           | 16    |
-| A1b    | Tax band A1b  | Band treth A1b  | A1           | 17    |
-| A1c    | Tax band A1c  | Band treth A1c  | A1           | 18    |
+| codcyf | disgrifiad_en | disgrifiad_cy  | hierarchaeth | trefn |
+| :----- | :------------ | :------------- | :----------- | :---- |
+| A      | Tax band A    | Band treth A   |              | 14    |
+| A1     | Tax band A1   | Band treth A1  | A            | 15    |
+| A1a    | Tax band A1a  | Band treth A1a | A1           | 16    |
+| A1b    | Tax band A1b  | Band treth A1b | A1           | 17    |
+| A1c    | Tax band A1c  | Band treth A1c | A1           | 18    |
 
 Nid oes cyfyngiad o ran sawl lefel y gall hierarchaeth eu cynnwys. Fodd bynnag, dim ond at un gwerth uwch ei ben yn yr hierarchaeth y gall gwerth dimensiwn ymwneud ag ef. Er enghraifft, ni fyddai modd i is-fand 'A1' eistedd dan 'A' ac 'A-'.
 
@@ -249,6 +266,23 @@ Dylai disgrifiadau o’r holl werthoedd dimensiwn fod yn:
 #### Nodiadau tabl am-edrych
 
 Gellir darparu nodiadau tabl am-edrych, ond **nid ydynt yn cael eu dangos yn yr hyn y mae’r defnyddiwr yn ei weld ar hyn o bryd** yn SC3. Os yw nodiadau yn cynnwys gwybodaeth bwysig, dylech sicrhau bod y wybodaeth hon yn cael ei darparu yn yr [adran metadata](#guidance-metadata) mwyaf priodol hefyd.
+
+#### Tablau am-edrych dyddiad
+
+Yn yr achosion prin pan fydd angen i chi lanlwytho tabl am-edrych dyddiad, dylai hwn fod yn yr un ffurf â thablau am-edrych eraill, gyda’r colofnau ychwanegol canlynol:
+
+| Pennawd | Yr hyn y mae’r golofn yn ei gynnwys                                   |
+| :------ | :-------------------------------------------------------------------- |
+| cychwyn | Dyddiad y mae’r cyfnod yn cychwyn mewn ffurf ISO, yyyy-mm-ddThh:mm:ss |
+| gorffen | Dyddiad y mae’r cyfnod yn gorffen mewn ffurf ISO, yyyy-mm-ddThh:mm:ss |
+
+Enghraifft tabl am-edrych dyddiad:
+
+| codcyf | cychwyn    | gorffen    | trefn | disgrifiad_en | disgrifiad_cy |
+| :----- | :--------- | :--------- | :---- | :------------ | :------------ |
+| 2022   | 2022-06-01 | 2022-08-31 | 1     | Summer 2022   | Haf 2022      |
+| 2023   | 2023-06-01 | 2023-08-31 | 2     | Summer 2023   | Haf 2023      |
+| 2024   | 2024-06-01 | 2024-08-31 | 3     | Summer 2024   | Haf 2024      |
 
 ### Dimensiynau sy'n cynnwys testun neu rifau lle nad oes gofyn cael tabl am-edrych
 

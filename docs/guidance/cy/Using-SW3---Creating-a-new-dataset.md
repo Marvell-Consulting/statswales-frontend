@@ -16,17 +16,19 @@ Yna, byddwch yn cael eich tywys i’ch rhestr dasgau ar gyfer eich set ddata. By
 
 Bydd clicio ar bob dimensiwn yn caniatáu i chi ddewis pa fath o ddata sydd yn y dimensiwn. Bydd hyn naill ai yn:
 
-- ddyddiadau – yna byddwch yn ateb cwestiynau am ffurf y dyddiadau a ddefnyddiwyd
-- daearyddiaeth – yna bydd y system yn ychwanegu'r data cyfeirio safonol
+- dyddiadau – yna byddwch yn ateb cwestiynau am ffurf y dyddiad a ddefnyddiwyd, neu byddwch yn lanlwytho eich tabl am-edrych eich hun os bydd angen
+- daearyddiaeth – yna byddwch yn dewis y data cyfeirio safonol priodol, neu’n lanlwytho eich tabl am-edrych eich hun yn ôl yr angen
 - testun, [lle nad oes angen cael tabl am-edrych](Data-preparation-‐-New-datasets#guidance-dimensiynau-sy'n-cynnwys-testun-neu-rifau-lle-nad-oes-gofyn-cael-tabl-am-edrych)
 - rhifau, [lle nad oes angen cael tabl am-edrych](Data-preparation-‐-New-datasets#guidance-dimensiynau-sy'n-cynnwys-testun-neu-rifau-lle-nad-oes-gofyn-cael-tabl-am-edrych) - yna bydd angen i chi nodi'r math o rifau a ddefnyddir
   - Ar gyfer y dewis hwn, rhaid i'r dimensiwn gynnwys rhifau yn unig, heb unrhyw symbolau neu lythrennau.
-- rhywbeth arall - yna bydd angen i chi lanlwytho eich tabl am-edrych eich hun
+- rhywbeth arall – yna byddwch yn lanlwytho eich tabl am-edrych eich hun
 
-Ar gyfer pob dewis, gofynnir i chi nodi enw ar gyfer y dimensiwn, a roddir iddo ar wefan StatsCymru. Dylai'r enw fod:
+Ar gyfer y rhan fwyaf o ddewisiadau, gofynnir i chi nodi enw i alw’r dimensiwn ar wefan StatsCymru. Dylai’r enw fod:
 
 - yn gryno, gan esbonio'n glir yr hyn y mae'r dimensiwn yn ei gynnwys
 - yn wahanol i enwau dimensiwn eraill yn y set ddata
+
+Os byddwch yn dewis data cyfeirio safonol, llenwir yr enw dimensiwn yn awtomatig. Gallwch newid hwn, ond dim ond os bydd gwir angen gwneud hyn er mwyn deall y set ddata y dylech wneud hyn. Er enghraifft, set ddata ynghylch mudo lle y ceir 2 ddimensiwn sy’n cynnwys awdurdodau lleol – mae un yn awdurdod lleol y symudodd rhywun ohono a’r llall yw’r un y gwnaethant symud iddo. Yn y sefyllfa honno, efallai y byddech yn ailenwi’r dimensiynau yn “Awdurdodau lleol y symudwyd ohonynt” ac “Awdurdodau lleol y symudwyd iddynt” er mwyn gwahaniaethu rhyngddynt.
 
 Ar gyfer dimensiwn sy'n cynnwys mathau o ddata neu fesur, pan fyddwch yn clicio arno o'ch rhestr dasgau ar gyfer y set ddata, bydd angen i chi lanlwytho'r [tabl am-edrych priodol](Data-preparation-‐-New-datasets#guidance-mathau-data-neu-fesur) wedi hyn.
 
@@ -37,7 +39,9 @@ Ar gyfer [dimensiynau sy’n cynnwys dyddiadau](Data-preparation-‐-New-dataset
 - cyfnodau – er enghraifft, misoedd neu flynyddoedd y mae gwerthoedd data yn berthnasol iddynt
 - pwyntiau penodol – er enghraifft, dyddiadau penodol pan gasglwyd gwerthoedd data
 
-Ar gyfer cyfnodau, gofynnir i chi nodi:
+Ar gyfer cyfnodau, gofynnir i chi yn gyntaf a fydd angen i chi ddefnyddio ffurf dyddiad safonol neu lanlwytho eich tabl am-edrych dyddiad eich hun. Dim ond eich tabl am-edrych dyddiad eich hun y dylech ei lanlwytho os na allwch ddefnyddio unrhyw rai o’r ffurfiau dyddiad derbyniol.
+
+Ar gyfer ffurf dyddiad safonol, gofynnir i chi:
 
 - y math o flwyddyn y mae’r dimensiwn yn ei chynrychioli
 - ffurf y dyddiad a ddefnyddir ar gyfer blynyddoedd
