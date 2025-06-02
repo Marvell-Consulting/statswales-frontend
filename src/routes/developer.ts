@@ -11,7 +11,8 @@ import {
   downloadDataTableFromRevision,
   downloadLookupFileFromDimension,
   downloadLookupFileFromMeasure,
-  listAllDatasets
+  listAllDatasets,
+  rebuildCube
 } from '../controllers/developer';
 
 export const developer = Router();
@@ -30,3 +31,4 @@ developer.get('/:datasetId/download', fetchDataset(Include.All), downloadAllData
 developer.get('/:datasetId/revision/:revisionId/datatable', fetchDataset(Include.All), downloadDataTableFromRevision);
 developer.get('/:datasetId/dimension/:dimensionId/lookup', fetchDataset(Include.All), downloadLookupFileFromDimension);
 developer.get('/:datasetId/measure/lookup', fetchDataset(Include.All), downloadLookupFileFromMeasure);
+developer.get('/:datasetId/rebuild/', fetchDataset(Include.All), rebuildCube);

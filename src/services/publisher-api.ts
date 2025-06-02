@@ -281,6 +281,14 @@ export class PublisherApi {
     return this.fetch({ url }).then((response) => response.body as ReadableStream);
   }
 
+  public async rebuildCube(datasetId: string, revisionId: string) {
+    logger.debug(`Rebuilding cube for revision: ${revisionId}...`);
+    return this.fetch({
+      url: `dataset/${datasetId}/revision/by-id/${revisionId}/`,
+      method: HttpMethod.Post
+    });
+  }
+
   public async confirmDataTable(datasetId: string, revisionId: string): Promise<DataTableDto> {
     logger.debug(`Confirming data table import for revision: ${revisionId}...`);
 

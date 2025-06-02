@@ -909,6 +909,7 @@
       "overview": "Dataset overview",
       "preview": "Preview (opens in new tab)",
       "open_developer_view": "Developer view (opens in new tab)",
+      "rebuild_cube": "Rebuild the cube",
       "delete": {
         "dataset": "Delete this dataset",
         "update": "Delete this update"

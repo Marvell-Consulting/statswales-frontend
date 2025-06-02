@@ -29,8 +29,6 @@ export default function DateChooser(props) {
         case 'start_date':
         case 'end_date':
           return props.dateFormat(props.parseISO(value.split('T')[0]), 'do MMMM yyyy');
-        case 'date_type':
-          return props.t(`publish.time_dimension_review.year_type.${value}`);
       }
       return value;
     }
