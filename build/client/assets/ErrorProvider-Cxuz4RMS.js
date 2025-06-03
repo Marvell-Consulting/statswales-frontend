@@ -1,1 +1,0 @@
-import{j as s}from"./context-Zvpbq3dQ.js";import{r as o}from"./chunk-DQRVZFIR-CI4QRDf9.js";const t=o.createContext(null),i=({children:r,errors:e})=>s.jsx(t.Provider,{value:e??null,children:r}),x=()=>{const r=o.useContext(t);if(r===void 0)throw new Error("useErrors be used in an ErrorProvider");return r};export{i as E,x as u};

@@ -43,3 +43,9 @@ yarn.lock
 # ignore IDE settings
 .vscode/
 playwright/.auth
+
+# generated types
+.react-router
+
+# built app
+build
