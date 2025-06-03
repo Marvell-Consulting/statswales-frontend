@@ -41,6 +41,7 @@ import { AuthProvider } from '../enums/auth-providers';
 import { TaskDTO } from '../dtos/task';
 import { TaskDecisionDTO } from '../dtos/task-decision';
 import { EventLogDTO } from '../dtos/event-log';
+import { FilterTable } from '../dtos/filter-table';
 
 const config = appConfig();
 
@@ -360,6 +361,14 @@ export class PublisherApi {
     return this.fetch({
       url: `dataset/${datasetId}/revision/by-id/${revisionId}/preview?page_number=${pageNumber}&page_size=${pageSize}`
     }).then((response) => response.json() as unknown as ViewDTO);
+  }
+
+  public async getRevisionFilters(datasetId: string, revisionId: string): Promise<FilterTable> {
+    logger.debug(`Fetching filters for dataset: ${datasetId}, revision: ${revisionId}`);
+
+    return this.fetch({
+      url: `dataset/${datasetId}/revision/by-id/${revisionId}/preview/filters`
+    }).then((response) => response.json() as unknown as FilterTable);
   }
 
   public async assignSources(datasetId: string, sourceTypeAssignment: SourceAssignmentDTO[]): Promise<DatasetDTO> {

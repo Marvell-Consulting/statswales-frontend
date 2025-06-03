@@ -92,6 +92,7 @@ import { TaskDTO } from '../dtos/task';
 import { TaskDecisionDTO } from '../dtos/task-decision';
 import { SingleLanguageRevision } from '../dtos/single-language/revision';
 import { appConfig } from '../config';
+import { FilterTable } from '../dtos/filter-table';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -524,11 +525,13 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
   let previewMetadata: PreviewMetadata | undefined;
 
   try {
-    const [datasetDTO, revisionDTO, previewDTO]: [DatasetDTO, RevisionDTO, ViewDTO] = await Promise.all([
-      req.pubapi.getDataset(datasetId, DatasetInclude.All),
-      req.pubapi.getRevision(datasetId, endRevisionId),
-      req.pubapi.getRevisionPreview(datasetId, endRevisionId, pageNumber, pageSize)
-    ]);
+    const [datasetDTO, revisionDTO, previewDTO, filtersDTO]: [DatasetDTO, RevisionDTO, ViewDTO, FilterTable] =
+      await Promise.all([
+        req.pubapi.getDataset(datasetId, DatasetInclude.All),
+        req.pubapi.getRevision(datasetId, endRevisionId),
+        req.pubapi.getRevisionPreview(datasetId, endRevisionId, pageNumber, pageSize),
+        req.pubapi.getRevisionFilters(datasetId, endRevisionId)
+      ]);
 
     const dataset = singleLangDataset(datasetDTO, req.language)!;
     const revision = singleLangRevision(revisionDTO, req.language)!;
@@ -548,6 +551,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
       res.render('consumer/view', {
         ...previewData,
         datasetMetadata: previewMetadata,
+        filters: filtersDTO,
         preview: true,
         dataset,
         pagination,

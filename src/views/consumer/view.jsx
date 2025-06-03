@@ -14,6 +14,20 @@ import RadioGroup from '../components/RadioGroup';
 import Select from '../components/Select';
 import T from '../components/T';
 
+function populateFilters(columnName, filters) {
+  return filters.forEach((filter, index) => {
+    const children = filter.children ? populateFilters(columnName, filter.children) : null;
+    const item = <div className="govuk-checkboxes__item">
+      <input className="govuk-checkboxes__input" id="{columnName}-{index}" name="{columnName}" type="checkbox"
+             value="{filter.description}" />
+      <label className="govuk-label govuk-checkboxes__label" htmlFor="{columnName}">
+        {filter.description}
+      </label>
+    </div>;
+    return item, children;
+  })
+}
+
 export default function ConsumerView(props) {
   const LayoutComponent = props.isDeveloper ? Layout : ConsumerLayout;
 
@@ -21,7 +35,7 @@ export default function ConsumerView(props) {
     <div className="govuk-width-container">
       <div className="govuk-main-wrapper govuk-!-padding-top-0">
         <div className="govuk-grid-row govuk-!-margin-bottom-0">
-          <div className="govuk-grid-column-one-half">
+        <div className="govuk-grid-column-one-half">
             <form method="get">
               <Select
                 name="dataViewsChoice"
@@ -83,6 +97,14 @@ export default function ConsumerView(props) {
                     })`
                 }}
               />
+              {props.filters.map((filter) => {
+                const checkboxes = populateFilters(filter.columnName, filter.values)
+                return (
+                    <h2 className="govuk-heading-s">{filter.columnName}</h2>
+                    <div className="govuk-checkboxes" data-module="govuk-checkboxes">
+                    </div>
+                )
+              })}
               <button
                 name="dataViewsChoice"
                 value="filter"
