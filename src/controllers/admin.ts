@@ -74,7 +74,7 @@ export const fetchUser = async (req: Request, res: Response, next: NextFunction)
   }
 
   try {
-    const user = await req.pubapi.getUser(req.params.userId);
+    const user = await req.pubapi.getUserById(req.params.userId);
     res.locals.userId = user.id;
     res.locals.user = user;
   } catch (err: any) {
