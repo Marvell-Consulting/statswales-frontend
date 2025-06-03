@@ -1,0 +1,28 @@
+import type { DimensionDTO } from './dimension';
+import type { RevisionDTO } from './revision';
+import { MeasureDTO } from './measure';
+import { FactTableColumnDto } from './fact-table-column-dto';
+import { TaskDTO } from './task';
+
+export interface DatasetDTO {
+  id: string;
+  created_at: string;
+  created_by: string;
+  live?: string;
+  archive?: string;
+  fact_table?: FactTableColumnDto[];
+  measure?: MeasureDTO;
+  dimensions?: DimensionDTO[];
+  revisions: RevisionDTO[];
+  start_revision?: RevisionDTO;
+  start_revision_id?: string;
+  end_revision?: RevisionDTO;
+  end_revision_id?: string;
+  draft_revision?: RevisionDTO;
+  draft_revision_id?: string;
+  published_revision?: RevisionDTO;
+  start_date?: string;
+  end_date?: string;
+  user_group_id?: string;
+  tasks?: TaskDTO[];
+}

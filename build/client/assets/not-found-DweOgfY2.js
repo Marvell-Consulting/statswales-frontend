@@ -1,0 +1,1 @@
+import{w as r}from"./with-props-daUcymKh.js";import{j as o}from"./context-Zvpbq3dQ.js";import{T as t}from"./T-CQIXqhPq.js";import"./chunk-DQRVZFIR-CI4QRDf9.js";const p=r(function(){return o.jsx("h1",{className:"govuk-heading-xl",children:o.jsx(t,{children:"errors.not_found"})})});export{p as default};

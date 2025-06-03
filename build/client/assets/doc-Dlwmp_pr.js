@@ -1,0 +1,1 @@
+import{w as t}from"./with-props-daUcymKh.js";import{j as r}from"./context-Zvpbq3dQ.js";import{M as m}from"./MarkdownDocument-C3N7CTC7.js";import"./chunk-DQRVZFIR-CI4QRDf9.js";import"./T-CQIXqhPq.js";const f=t(function({loaderData:o}){return r.jsx(m,{toc:o.toc,doc:o.doc})});export{f as default};

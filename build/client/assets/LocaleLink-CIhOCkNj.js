@@ -1,0 +1,1 @@
+import{j as i}from"./context-Zvpbq3dQ.js";import{u as m,L as c,c as l}from"./chunk-DQRVZFIR-CI4QRDf9.js";import{l as p}from"./locale-url-yD_AyXRN.js";import{u}from"./T-CQIXqhPq.js";const g=({children:o,path:s,query:a,anchor:r,...t})=>{const{i18n:n}=u(),{pathname:e}=m();return i.jsx(c,{to:p(s||e,n.language,a?l(a):void 0,r),...t,children:o})};export{g as L};

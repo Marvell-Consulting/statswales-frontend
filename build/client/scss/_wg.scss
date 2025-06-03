@@ -1,0 +1,2623 @@
+$black: #1f1f1f;
+$darkgrey: #666666;
+$lightgrey_dark: #cccccc;
+$darkred: #7e0a0e;
+$darkblue: #1f446d;
+$darkgreen: #3b510d;
+$darkpurple: #772cfe;
+$orange: #ff8000;
+$yellow: #ffd530;
+$white: #ffffff;
+$charcoal: #323232;
+$midgrey: #999999;
+$lightgrey_mid: #dddddd;
+$red: #aa1111;
+$palered: #fea8a9;
+$whitered: #ffe4e5;
+$blue: #0360a6;
+$whiteblue: #c2e0fc;
+$paleblue: #99ccff;
+$green: #019e1e;
+$whitegreen: #cdf7d4;
+$plum: #632a5d;
+$paleorange: #ffdab5;
+$paleyellow: #fff5ce;
+$lightgrey: #b5b5b5;
+$lightgrey_semi: #e5e5e5;
+$lightgrey_light: #eeeeee;
+$lightgrey_offwhite: #f1f1f1;
+$brightred: #d81f1f;
+$lightblue: #3b7dc5;
+$lightgreen: #01b723;
+$purple: #a82b71;
+$whitepurple: #eed5e3;
+
+.wg {
+  .govuk-body {
+    color: $black;
+  }
+
+  p {
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  ol,
+  ul,
+  a,
+  table,
+  .govuk-header__link,
+  .govuk-task-list__status,
+  .govuk-tag,
+  .govuk-input,
+  .govuk-label,
+  .govuk-button,
+  .govuk-select,
+  dl,
+  .govuk-accordion__section-heading-text,
+  span,
+  .govuk-inset-text {
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+  }
+
+  ul.li,
+  ol.li {
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .govuk-details {
+    margin-bottom: 10px;
+  }
+
+  .govuk-list {
+    color: $black;
+    font-size: 18px;
+    padding-left: 0;
+  }
+
+  .govuk-list--bullet {
+    padding-left: 30px;
+  }
+
+  .govuk-list--number {
+    padding-left: 30px;
+  }
+
+  tr {
+    color: $black;
+    font-size: 16px;
+    line-height: 20px;
+    border-bottom: 1px solid $lightgrey_semi;
+    padding: 15px 10px 15px 0;
+  }
+
+  th {
+    color: $black;
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 2px solid $lightgrey_semi;
+  }
+
+  p {
+    font-size: 18px;
+    line-height: 24px;
+  }
+
+  .govuk-button {
+    background: $red;
+    color: $white;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 15px 20px 15px 20px;
+    margin-bottom: 15px;
+    box-shadow: none;
+
+    &:visited {
+      color: $white;
+    }
+
+    &:focus {
+      border-color: inherit;
+      outline: none;
+      box-shadow: none;
+    }
+
+    &:hover,
+    &[disabled]:hover {
+      background: $brightred;
+      color: $white;
+    }
+
+    &.govuk-button--secondary {
+      background-color: $darkgrey;
+      color: $white;
+      font-size: 20px;
+      font-weight: bold;
+      padding: 15px 20px 15px 20px;
+      margin-bottom: 15px;
+      box-shadow: none;
+      outline: $midgrey;
+      border-color: rgba(0, 0, 0, 0);
+
+      &:focus {
+        background-color: $midgrey;
+      }
+
+      &:hover {
+        background-color: $charcoal;
+      }
+    }
+  }
+
+  .govuk-button-lang {
+    background: $black;
+    color: $white;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 20px 10px 20px;
+    margin-bottom: 15px;
+    float: right;
+    border: none;
+    cursor: pointer;
+  }
+
+  .govuk-button-lang:hover {
+    background: $midgrey;
+    cursor: pointer;
+  }
+
+  .govuk-button.secondary.blue {
+    border: 1px solid $blue;
+    background-color: $white;
+    color: $blue;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+
+    &:hover {
+      background: $blue;
+      border: 1px solid $blue;
+      color: $white;
+      font-size: 16px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+  }
+
+  .button-black,
+  .button-black:focus {
+    background-color: $black;
+    border-color: $black;
+  }
+
+  .govuk-input {
+    background: $white;
+    border: 1px solid $darkgrey;
+    color: $black;
+    font-size: 16px;
+    padding: 10px 15px;
+  }
+
+  .govuk-textarea {
+    background: $white;
+    border: 1px solid $darkgrey;
+    color: $black;
+    font-size: 16px;
+    padding: 10px 15px;
+  }
+
+  .govuk-select {
+    border: 1px solid $darkgrey;
+    color: $black;
+    background: $white;
+    font-size: 16px;
+  }
+
+  .govuk-task-list,
+  .actions .govuk-list,
+  ul.govuk-summary-list__actions-list {
+    font-size: 18px;
+    padding-left: 0px;
+  }
+
+  .govuk-list .govuk-list {
+    margin-top: 5px;
+  }
+
+  .govuk-radios__label::before {
+    border: 1px solid $darkgrey;
+  }
+
+  .govuk-checkboxes__label::before {
+    border: 1px solid $darkgrey;
+  }
+
+  .region-subhead {
+    color: $red;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    line-height: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  .topic-subhead {
+    color: $darkgrey;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    line-height: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  dl {
+    font-size: 14px;
+  }
+
+  dt {
+    font-weight: bold;
+    width: 30%;
+    display: inline-block;
+    padding-bottom: 15px;
+  }
+  dd {
+    width: 50%;
+    display: inline-block;
+    padding-bottom: 15px;
+    vertical-align: top;
+  }
+
+  .govuk-accordion__section-toggle,
+  .govuk-accordion__controls {
+    display: none;
+  }
+
+  .govuk-accordion__section-heading-text {
+    color: $blue;
+    margin-top: 13px;
+  }
+
+  .govuk-accordion__section-heading-text::after {
+    float: right;
+    content: '+ ';
+    font-size: 24px;
+    padding-right: 10px;
+    color: $black;
+  }
+
+  .govuk-table__cell--para {
+    white-space: pre-line;
+  }
+
+  .govuk-summary-list__value--para {
+    white-space: pre-line;
+  }
+
+  .button-reset {
+    border: 1px solid $red;
+    background: $white;
+    color: $red;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+    margin-bottom: 15px;
+  }
+
+  .button-reset:hover {
+    border: 1px solid $red;
+    background: $red;
+    color: $white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+    margin-bottom: 15px;
+    cursor: pointer;
+  }
+
+  a.cta-lead {
+    background: $blue;
+    color: $white;
+    font-weight: bold;
+    padding: 15px 25px;
+    text-decoration: none;
+    border-radius: 30px;
+  }
+
+  button.cta {
+    background: $blue;
+    color: $white;
+    font-weight: bold;
+    padding: 15px 25px;
+    text-decoration: none;
+    border-radius: 30px;
+  }
+
+  .badge {
+    background: $darkgrey;
+    color: $white;
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 10px;
+    padding: 5px 10px;
+    text-transform: uppercase;
+  }
+
+  .badge.check,
+  .badge.grey {
+    background: $darkgrey;
+  }
+
+  .badge.signoff,
+  .badge.orange {
+    background: $orange;
+  }
+
+  .badge.ready,
+  .badge.blue {
+    background: $blue;
+  }
+
+  .badge.warning,
+  .badge.red {
+    background: $red;
+  }
+
+  .col-group {
+    background: #f3f2f1;
+    border-bottom: 1px solid #b1b4b6;
+    border-top: 1px solid #b1b4b6;
+    border-left: 1px solid #b1b4b6;
+    padding: 10px;
+    position: relative;
+    text-align: left;
+    z-index: 2;
+  }
+
+  p.govuk-hint {
+    font-size: 16px;
+  }
+
+  .govuk-radios__hint {
+    padding-left: 32px;
+    margin-top: 5px;
+  }
+
+  .float-right {
+    float: right;
+  }
+
+  .search-banner {
+    background-color: $blue;
+    padding: 20px 30px 5px 30px;
+    width: 100%;
+  }
+
+  .search-banner .govuk-label {
+    color: $white;
+  }
+
+  .search-banner .govuk-input:focus {
+    background-color: $white;
+  }
+
+  .fa {
+    position: relative;
+    bottom: -3px;
+  }
+
+  .data-warning {
+    padding-left: 30px;
+    color: $black;
+  }
+
+  .filter-container {
+    padding: 5px 10px;
+    border: 1px solid $darkgrey;
+    min-height: 90px;
+    max-height: 310px;
+    overflow: scroll;
+    overflow-x: hidden;
+  }
+
+  .filter-container-outer {
+    padding: 5px 10px;
+    border: 1px solid $darkgrey;
+  }
+
+  /* Table editor */
+  .hidden {
+    display: none;
+  }
+
+  .table-controls {
+    background: #f1f1f1;
+    padding: 15px;
+    margin-top: 15px;
+  }
+
+  .table-controls.row {
+    background: $white;
+    padding: 15px;
+    margin-top: 15px;
+    border: 1px solid $black;
+  }
+
+  .dimension-container {
+    width: 33%;
+    display: inline-block;
+    vertical-align: top;
+    border: 1px solid $black;
+    font-size: 16px;
+  }
+
+  .dimension-container:hover {
+    border-color: #1d70b8;
+    cursor: move;
+    cursor: grab;
+  }
+
+  /* Article call outs */
+  .article {
+    margin: 30px 0px;
+    background: #f1f1f1;
+    border-left: 10px solid $blue;
+    padding: 40px 30px;
+  }
+
+  .article-title {
+    color: $black;
+    line-height: 28px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .article-sub-heading {
+    color: $black;
+    font-size: 18px;
+  }
+
+  .search-bar {
+    padding-left: 35px;
+    background: url('https://img.icons8.com/search') no-repeat left;
+    background-position-x: 10px;
+    background-size: 20px;
+  }
+
+  .wg-footer {
+    background-color: $lightgrey_light;
+    margin-top: 60px;
+  }
+
+  .wg-footer-logo {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='34' viewBox='0 0 137.3 34.2'%3E%3Cpath d='M0 13a1.49 1.49 0 0 1 .6-.7 3.9 3.9 0 0 1 1.6-.2 9.2 9.2 0 0 1 3.4 2 29.84 29.84 0 0 1 3.2 3.1c.2-.5.7-1.4.7-1.4a42.46 42.46 0 0 0-6.1-4C2 11.3.2 11.1 0 13zM1.4 10.7c1.6-.5 1.8.6 2.1.9l1.2.7c-1.6-3.7-3.3-1.6-3.3-1.6z'/%3E%3Cpath d='M2.1 12.6c3.8 2.8.6 4.1.6 4.1a1.36 1.36 0 0 0 1.7-.4l.3-.6a1.75 1.75 0 0 0 .1-.5 40.57 40.57 0 0 1 3.8 4.9 11.15 11.15 0 0 1-.2-1.8c-1.2-1.4-1.5-1.9-2.3-2.7-2.2-2.7-4-3-4-3M18.1 12.3a7.17 7.17 0 0 1-.1-2 8.8 8.8 0 0 0 .5-1.5l.1.1.6.4a8.51 8.51 0 0 1-.6-1.7c0-.1 0-.1-.1-.2a4.13 4.13 0 0 0-.8-1.8 4.62 4.62 0 0 1 .3 1.9c-.1 1.7-2.6 3.7-2 6.7a5.73 5.73 0 0 0 2 3 15.49 15.49 0 0 1-.9-3.2 4.13 4.13 0 0 1 .5-2.5l.2.1z'/%3E%3Cpath d='M35.1.5a57.16 57.16 0 0 0-6.5 1.4c-2.1.7-5.3 2-6.7 3.8s-.2 4.6-.6 6.5-3.2 3.8-3.2 3.8 3.3-.9 4.4-3.5c.9-1.9-.2-3.3 1.1-6.2S35.1.5 35.1.5z'/%3E%3Cpath d='M35.2.7a7.9 7.9 0 0 0-4.8 4.6L32 5s.1-2.2 3.2-4.3zM40.9 5.5a27 27 0 0 0-11.2.5c-5.6 1.7-4.8 4.5-4.9 6.1s-1.4 5.2-6.4 4.8a5.59 5.59 0 0 0 6.1-1c3.2-2.6 1-5.8 3.6-7.3s4.7-2.7 12.8-3.1z'/%3E%3Cpath d='M26.8 13.6a6.3 6.3 0 0 1 3.5 1.8 5.26 5.26 0 0 0-3.8-1 4.42 4.42 0 0 1 .3-.8zM36.3 11.1s-5.3.1-5.4 4.6c-.1-.1-2.9-5 5.4-4.6zM40.5 5.8c-5.4 1.1-4.2 5.3-4.2 5.3-2.7-5.4 4.2-5.3 4.2-5.3zM25.6 19.8a6.16 6.16 0 0 1 5.3-4c-4.1-.8-5.1 1.2-5.3 2.7a36.39 36.39 0 0 0-6.4-.7 18.4 18.4 0 0 1 6.4 2zM3.7 31.1a3.64 3.64 0 0 1 1.9-.4 4.76 4.76 0 0 0 1.8-.4 13.09 13.09 0 0 0-2.7-.5c-1.1.1-1 1.3-1 1.3zM23.6 28.3a.79.79 0 0 1 .7-.9 4.64 4.64 0 0 1 2 .4 6.3 6.3 0 0 1-1.3.3 2.66 2.66 0 0 0-1.4.2zM31.2 31.5a3.08 3.08 0 0 1 1.7-.3 6.09 6.09 0 0 0 1.4 0c-.4 0-1.2-.9-2.2-.7a.87.87 0 0 0-.9 1zM35.9 10.9c-6.5-1.5-8.5-.4-8.5-.4a2 2 0 0 0 .2-.6c.2-.3.2-.4.2-.5a19.26 19.26 0 0 1 8.1 1.5zM10.9 6.8A2.44 2.44 0 0 0 9.3 6C8.1 6 7 7.4 6 7.4A3.25 3.25 0 0 1 4.3 7a2.43 2.43 0 0 0 1.7.9c1.4 0 2.4-1.3 3.3-1.3a5.53 5.53 0 0 1 1.6.2zM13.8 8.2a6.26 6.26 0 0 1 .1 2c-.1 2.2-4.3 5.2-4.3 8.8a5.18 5.18 0 0 0 1.6 3.4 8.61 8.61 0 0 1-.4-3.8c.4-2.6 3.7-5.7 3.6-8.2a3.51 3.51 0 0 0-.6-2.2z'/%3E%3Cpath d='M11.7 22.3a4.85 4.85 0 0 1-.2-2.8c.3-.9 1.1-1.6 2.7-2 0 0-2.8 2.6-.7 4.8a9.87 9.87 0 0 0-2 2.9c-.6 1.3-1.8 4.2-2.2 4.8a5.42 5.42 0 0 1-2.6 2.2c-1.7.1-3.7.4-3.8 1.7a1.75 1.75 0 0 1-.3-1.2c.1-.9 1.5-1.9 3-1.8a3.21 3.21 0 0 0 3.6-2.1 61 61 0 0 1 2.5-6.5z'/%3E%3Cpath d='M14.1 22.5s-2.3 7-6.4 9.7a10.41 10.41 0 0 1 3.2-.1c.7.3 1.5.8.8 2 0 0 1.4-.8 1.1-2-.3-1-1.8-1-1.8-1s-.4-.2-.2-.8 1.8-2.6 2-3 2.2-3.4 2.3-3.6a2.49 2.49 0 0 0 2.6-1.4c.9-1.8-1-3.4-1-3.4s.8 1.9-.1 2.8a3.17 3.17 0 0 1-2.5.8z'/%3E%3Cpath d='M16.1 24.1a3.74 3.74 0 0 0 1.1-.4s.4.4 2 .4h.3a30.62 30.62 0 0 0 7.5-2.3l.4.6c-2.7.9-5.9 3.5-10 3-.3-.1-1.7-.3-1.9-.4.1-.1.6-.9.6-.9zM27.8 27.5a3.86 3.86 0 0 1-2 1.7c-1.2 0-2.7.3-2.8 1.3a1 1 0 0 1-.2-.9c0-.6.9-1.4 2.2-1.3a2.05 2.05 0 0 0 2.3-1.7c.3-.9 0-2.6.4-3.7 0 0 .6.5.9.7l-.1.3c-.4 1.1-.2 2.5-.7 3.6zM29.5 24.1a7.23 7.23 0 0 0 .7.4 4.77 4.77 0 0 0-.4 1.2c-.1.3-.5 1.6-.7 2.1s.1.6.1.6 1.1.1 1.3.8c.3.9-.8 1.5-.8 1.5.5-.9-.1-1.3-.6-1.5a6.88 6.88 0 0 0-2.2.1c1.7-1.1 2.3-4.6 2.6-5.2z'/%3E%3Cpath d='M36.1 31.2s.5 1 .2 1.3c-1.1.1-1.8 0-3.4.2-1.4.2-2.4.3-2.5 1.5a1.59 1.59 0 0 1-.3-1.1c.1-.8 1.3-1.7 2.7-1.6a6.37 6.37 0 0 0 1.9-.1c.4-.2-.6-2.2-.8-2.6-1.5-3-1.5-4-1.5-4.2 0 0-4.2-.8-5.3-3.7 3.4 2.8 6.1 2.8 6.1 2.8a56.66 56.66 0 0 0 2.9 7.5zM37.2 15.3h1.2c1.8-3.9 5-8 5-10.4a4.08 4.08 0 0 0-1.1-2.6l-.2.6A10.67 10.67 0 0 0 40.6.4a19.5 19.5 0 0 1 2.7 1.3l-.5.1a4.13 4.13 0 0 1 1.2 3c.1 2.8-3 6.1-4.8 10.4 4 .5 6.8 3 6.8 5.7 0 3.8-2.3 5.2-4.4 5.2a4.84 4.84 0 0 1-2.6-.7c-1-.5-2-1.7-2-4.1a10.91 10.91 0 0 1 .9-4.7q-1.5.15-2.7.3l-1.1.3a4.21 4.21 0 0 1 2.1 2.7 7.22 7.22 0 0 1-.4 3.7 15.31 15.31 0 0 0 1.1 5.4l.6 1.5a1.67 1.67 0 0 0 .8.9s1.2.2 1.5.9a1.06 1.06 0 0 1-.3 1.4c.3-1.1-.7-1.3-1.3-1.3h-.1a6.73 6.73 0 0 0-1-.1 12 12 0 0 0-.6-2.3s-1-2.7-1.3-4a24.55 24.55 0 0 1-.7-3s2.8-4.8-3.5-6.9a1.86 1.86 0 0 1 .8 0 10.43 10.43 0 0 1 1.7-.5c.9-.1 2.2-.2 3.7-.3zm1.6 1.3a13.47 13.47 0 0 0-.8 5c.1 1.7 1.1 4 3.8 3.7a3.31 3.31 0 0 0 2.7-1.9 5.63 5.63 0 0 0 .5-2.1 4.28 4.28 0 0 0-1.6-3.2 7 7 0 0 0-4.6-1.5M10.6 4.3s-2.2-.7-3.6.4l.7 1.2a2.33 2.33 0 0 1 3.6.7 3.83 3.83 0 0 1-3.6 1.1A2.56 2.56 0 0 0 10 8.8c1.6 0 3.2-1.7 3.7-1.1 0 0-.2-2.3 2.7-3.2a3 3 0 0 1 .7.8 3.16 3.16 0 0 0 .9-2.5A3.25 3.25 0 0 0 16.6.1a3.73 3.73 0 0 1-.3 2.1 2.12 2.12 0 0 1-1.8 1.3 4.76 4.76 0 0 1-1.3-.2c-.4-.1-2.5-.8-2.6 1zm2.4-.1s-.7 1.2-1.7.5c0 0 0-.7.6-.6s.5.2 1.1.1zM60.2 7h1v6.6h2.5v.8h-3.4L60.2 7zM64.5 6.5h.9v8h-.9zM68.5 15.6c-.3.9-.6 1.3-1.3 1.3a1.27 1.27 0 0 1-.6-.1l.1-.8a.9.9 0 0 0 .5.1c.3 0 .4-.1.6-.7l.2-.9-1.7-5.6h1l1.2 4.4 1.1-4.4h.9zM76.2 14.5h-1l-1.1-4.6-1.1 4.6h-1l-1.4-5.4h1l1 4.5 1-4.5h1.1l1.1 4.5 1-4.5h.9zM80.4 9c1.4 0 2.2 1.1 2.2 2.8s-.7 2.8-2.2 2.8-2.2-1.1-2.2-2.8.7-2.8 2.2-2.8zm0 4.8c.9 0 1.2-.7 1.2-2.1s-.4-2.1-1.2-2.1-1.2.7-1.2 2.1.3 2.1 1.2 2.1zM87.5 13.5c0 .3.1.7.1 1h-.9l-.1-.8a1.5 1.5 0 0 1-1.4.9c-1.1 0-1.9-.9-1.9-2.8S84 9 85.2 9a1.72 1.72 0 0 1 1.4.8V6.5h.9zm-2.1-3.8q-1.2 0-1.2 2.1t1.2 2.1q1.2 0 1.2-2.1t-1.2-2.1zM88.7 10.2c0-.4-.1-.8-.1-1.2h.9l.1.9a1.46 1.46 0 0 1 1.5-.9v.9c-.1 0-.2-.1-.3-.1-.7 0-1.2.6-1.2 1.8v2.9h-.9zM92.1 9.4a2.6 2.6 0 0 1 1.5-.4 1.68 1.68 0 0 1 1.4.5 1.76 1.76 0 0 1 .5 1.3v2.8a2.77 2.77 0 0 0 .1.9h-.8l-.1-.7a1.73 1.73 0 0 1-1.5.8 1.37 1.37 0 0 1-1.5-1.5c0-1.1.7-1.8 2.6-1.8h.5V11a2.39 2.39 0 0 0-.2-.9c-.2-.3-.5-.3-.9-.3a1.82 1.82 0 0 0-1.4.6zm2.6 2.4h-.6c-1.1 0-1.5.5-1.5 1.1s.3 1 .9 1a1.29 1.29 0 0 0 1.3-1.4v-.7zM97.5 12c0 1.3.5 1.9 1.5 1.9a2.14 2.14 0 0 0 1.2-.4l.1.8a3.65 3.65 0 0 1-1.5.3c-1.4 0-2.2-1.1-2.2-2.8S97.3 9 98.7 9c1.2 0 1.9 1 1.9 2.6v.5l-3.1-.1zm2.2-.6c0-1.1-.4-1.7-1.1-1.7s-1.1.4-1.1 1.7zM104 14.4a1.85 1.85 0 0 1-.7.2c-.8 0-1.3-.3-1.3-1.3V9.8h-.9v-.7h.9V7.9l.9-.3V9h1.1v.7h-1.1v3.2q0 .9.6.9a.76.76 0 0 0 .5-.2v.8zM104.7 6.5h.9v3.3a1.34 1.34 0 0 1 1.3-.8c1 0 1.6.5 1.6 1.8v3.8h-.9v-3.5c0-.9-.3-1.2-.9-1.2s-1.2.5-1.2 1.5v3.3h-.9l.1-8.2zM117 14.4a3 3 0 0 1-1.3.2c-2.3 0-3.4-1.8-3.4-3.8 0-2.3 1.3-3.8 3.3-3.8a2.9 2.9 0 0 1 1.4.3v.9a2.3 2.3 0 0 0-1.4-.4c-1.2 0-2.3 1-2.3 2.8s.7 3.2 2.4 3.2a1.84 1.84 0 0 0 1.3-.4zM119.9 15.6c-.3.9-.6 1.3-1.3 1.3a1.27 1.27 0 0 1-.6-.1l.1-.8a.9.9 0 0 0 .5.1c.3 0 .4-.1.6-.7l.2-.9-1.7-5.6h1l1.2 4.4 1.1-4.4h.9zM122.5 10.2c0-.4-.1-.8-.1-1.2h.9l.1.8a1.39 1.39 0 0 1 2.6 0 1.54 1.54 0 0 1 1.3-.9c1 0 1.6.5 1.6 1.8v3.8h-.9v-3.7c0-.7-.3-1-.9-1s-1 .4-1 1.4v3.4h-.9v-3.7c0-.7-.3-1-.9-1s-1 .4-1 1.4v3.4h-.9l.1-4.5zM130.2 10.2c0-.4-.1-.8-.1-1.2h.9l.1.9a1.46 1.46 0 0 1 1.5-.9v.9c-.1 0-.2-.1-.3-.1-.7 0-1.2.6-1.2 1.8v2.9h-.9zM137.2 13.3c0 .4.1.8.1 1.2h-.9l-.1-.8a1.42 1.42 0 0 1-1.4.9c-1 0-1.6-.5-1.6-1.8V9h.9v3.6c0 .9.3 1.2.9 1.2s1.2-.5 1.2-1.5V9h.9v4.3zM59.5 19.9h1l1.2 6 1.3-6h1.2l1.3 6 1.3-6h.9L66 27.4h-1.1L63.5 21l-1.4 6.4H61zM69.1 24.8c0 1.3.5 1.9 1.5 1.9a2.84 2.84 0 0 0 1.3-.4l.1.8a3.65 3.65 0 0 1-1.5.3c-1.4 0-2.2-1.1-2.2-2.8s.7-2.8 2.1-2.8c1.2 0 1.9 1 1.9 2.6v.5l-3.2-.1zm2.2-.6c0-1.1-.4-1.7-1.1-1.7s-1.1.4-1.1 1.7zM73.3 19.3h.9v8h-.9zM75.4 26.3a2.2 2.2 0 0 0 1.3.4c.7 0 1.1-.4 1.1-.7s-.2-.6-.7-.9l-.6-.3c-.8-.4-1.1-.7-1.1-1.4a1.64 1.64 0 0 1 1.8-1.6 4.3 4.3 0 0 1 1.2.2l-.1.7c-.3 0-.7-.1-1.1-.1-.6 0-.9.3-.9.7s.3.7.9.9l.3.1c.7.3 1.1.7 1.1 1.4 0 1-.5 1.7-1.8 1.7a3.34 3.34 0 0 1-1.5-.3zM79.6 19.3h.9v3.3a1.34 1.34 0 0 1 1.3-.8c1 0 1.6.5 1.6 1.8v3.8h-.9v-3.5c0-.9-.3-1.2-.9-1.2s-1.2.5-1.2 1.5v3.3h-.9l.1-8.2zM92.5 27a4.88 4.88 0 0 1-1.9.4c-2.4 0-3.4-1.8-3.4-3.8 0-2.3 1.4-3.8 3.3-3.8a5.66 5.66 0 0 1 1.8.3v1a4.07 4.07 0 0 0-1.8-.5c-1.2 0-2.3 1-2.3 2.8s.8 3.2 2.4 3.2a3.55 3.55 0 0 0 1-.2v-2.3h-1.3v-.8h2.2V27zM96 21.8c1.4 0 2.2 1.1 2.2 2.8s-.7 2.8-2.2 2.8-2.2-1.1-2.2-2.8.7-2.8 2.2-2.8zm0 4.8c.9 0 1.3-.7 1.3-2.1s-.4-2.1-1.3-2.1-1.3.7-1.3 2.1.4 2.1 1.3 2.1zM98.6 21.8h1l1.2 4.5 1.2-4.5h1l-1.7 5.4h-1.1zM104.5 24.8c0 1.3.5 1.9 1.5 1.9a2.84 2.84 0 0 0 1.3-.4l.1.8a3.65 3.65 0 0 1-1.5.3c-1.4 0-2.2-1.1-2.2-2.8s.7-2.8 2.1-2.8c1.2 0 1.9 1 1.9 2.6v.5l-3.2-.1zm2.2-.6c0-1.1-.4-1.7-1.1-1.7s-1.1.4-1.1 1.7zM108.6 23c0-.4-.1-.8-.1-1.2h.9l.1.9a1.46 1.46 0 0 1 1.5-.9v.9c-.1 0-.2-.1-.3-.1-.7 0-1.2.6-1.2 1.8v2.9h-.9zM111.8 23c0-.4-.1-.8-.1-1.2h.9l.1.8a1.42 1.42 0 0 1 1.4-.9c1 0 1.6.5 1.6 1.8v3.8h-.9v-3.5c0-.9-.3-1.2-.9-1.2s-1.2.5-1.2 1.5v3.3h-.9V23zM117 23c0-.4-.1-.8-.1-1.2h.9l.1.8a1.39 1.39 0 0 1 2.6 0 1.54 1.54 0 0 1 1.3-.9c1 0 1.6.5 1.6 1.8v3.8h-.9v-3.7c0-.7-.3-1-.9-1s-1 .4-1 1.4v3.4h-.9v-3.7c0-.7-.3-1-.9-1s-1 .4-1 1.4v3.4h-.9l.1-4.5zM125.4 24.8c0 1.3.5 1.9 1.5 1.9a2.84 2.84 0 0 0 1.3-.4l.1.8a3.65 3.65 0 0 1-1.5.3c-1.4 0-2.2-1.1-2.2-2.8s.7-2.8 2.1-2.8c1.2 0 1.9 1 1.9 2.6v.5l-3.2-.1zm2.3-.6c0-1.1-.4-1.7-1.1-1.7s-1.1.4-1.1 1.7zM129.5 23c0-.4-.1-.8-.1-1.2h.9l.1.8a1.42 1.42 0 0 1 1.4-.9c1 0 1.6.5 1.6 1.8v3.8h-.9v-3.5c0-.9-.3-1.2-.9-1.2s-1.2.5-1.2 1.5v3.3h-.9V23zM137.2 27.2a1.85 1.85 0 0 1-.7.2c-.9 0-1.3-.3-1.3-1.3v-3.5h-.9v-.7h.9v-1.1l.9-.3v1.4h1.1v.7H136v3.2q0 .9.6.9a1.42 1.42 0 0 0 .6-.2v.7z'/%3E%3Cpath style='fill:none;stroke:%23000;' d='M52.5 0v34.2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 0px 70px;
+    width: 100%;
+    height: 34px;
+    display: inline-block;
+    padding: 70px 0 50px 0;
+  }
+
+  .govuk-file-upload,
+  .govuk-hint {
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+    font-size: 18px;
+  }
+
+  .govuk-button-group .govuk-link,
+  a,
+  a:visited,
+  .govuk-task-list__link,
+  .govuk-button-group .app-task-list__task-name > a {
+    font-weight: bold;
+    text-decoration: none;
+    color: $blue;
+    font-size: 18px;
+  }
+
+  .govuk-button-group:hover .govuk-link:hover,
+  a:hover {
+    font-weight: bold;
+    text-decoration: none;
+    color: $lightblue;
+  }
+
+  .govuk-header__link:focus,
+  .govuk-button-group:focus .govuk-link:focus {
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  a:focus,
+  .govuk-link:focus {
+    outline: 3px solid transparent;
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .govuk-tag--blue {
+    background-color: $whiteblue;
+    color: $black;
+  }
+
+  .govuk-tag--red {
+    background-color: $whitered;
+    color: $black;
+  }
+
+  .govuk-tag--grey {
+    background-color: $lightgrey_mid;
+    color: $black;
+  }
+
+  .govuk-tag--orange {
+    background-color: $paleorange;
+    color: $black;
+  }
+
+  .govuk-tag--yellow {
+    background-color: $paleyellow;
+    color: $black;
+  }
+
+  .govuk-tag--green {
+    background-color: $whitegreen;
+    color: $black;
+  }
+
+  .govuk-tag--purple {
+    background-color: $whitepurple;
+    color: $black;
+  }
+
+  .govuk-notification-banner {
+    border: none;
+    font-size: 18px;
+
+    &--success {
+      background: $whitegreen;
+      border-left: 10px solid $green;
+    }
+
+    &__title {
+      // color: $black;
+    }
+
+    &__header {
+    }
+
+    &__content {
+      background-color: transparent;
+      padding: 20px;
+    }
+
+    &__heading {
+      font-size: 18px;
+      font-weight: normal;
+    }
+  }
+
+  .govuk-notification-banner:focus {
+    outline: none;
+  }
+
+  .govuk-error-summary {
+    background-color: $whitered;
+    border-left: 10px solid $red;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+    padding: 25px 20px 25px 20px;
+  }
+
+  .govuk-error-summary:focus {
+    outline: none;
+  }
+
+  h2.govuk-error-summary__title {
+    font-size: 24px;
+  }
+
+  ul.govuk-list.govuk-error-summary__list li a {
+    color: black;
+    font-weight: normal;
+  }
+
+  .govuk-form-group--error {
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .govuk-form-group--inline {
+    display: inline-block;
+  }
+
+  .govuk-error-message {
+    font-weight: normal;
+    color: $black;
+    border-left: solid $red 3px;
+    padding: 25px 20px;
+    background-color: $whitered;
+  }
+
+  .header-select {
+    vertical-align: middle;
+  }
+
+  .ignore {
+    background-color: $lightgrey_light;
+  }
+
+  .govuk-radios.govuk-radios__conditional {
+    margin-left: 30px;
+    margin-bottom: 0px;
+  }
+
+  .govuk-radios__label {
+    padding: 2px 0 0 10px;
+    font-size: 18px;
+  }
+
+  .govuk-radios__label::before,
+  .govuk-radios--small .govuk-radios__label::before {
+    width: 20px;
+    height: 20px;
+    margin: 20px 0 0 20px;
+    background-color: $white;
+  }
+
+  .govuk-radios__label::after {
+    top: 5px;
+    left: 5px;
+    border: 7px solid $blue;
+    margin: 20px 0 0 20px;
+  }
+
+  .govuk-radios__item {
+    background-color: $lightgrey_semi;
+    padding: 20px;
+  }
+
+  .govuk-radios__secondary {
+    margin-bottom: -10px;
+  }
+
+  .nested {
+    padding: 20px 20px 0;
+  }
+
+  .govuk-radios__input {
+    width: 22px;
+    height: 22px;
+  }
+
+  .govuk-radios__input:focus + .govuk-radios__label::before {
+    border-width: 1px;
+    outline: 3px solid transparent;
+    outline-offset: 1px;
+    box-shadow: 0 0 0 4px #ffdd00;
+  }
+
+  .govuk-inset-text {
+    border-left: 10px solid $blue;
+    background: $lightgrey_mid;
+    color: $black;
+    padding: 25px 30px;
+  }
+
+  .govuk-radios--small .govuk-radios__item {
+    margin-bottom: 10px;
+  }
+
+  .form-background {
+    background-color: $lightgrey_offwhite;
+    max-width: none;
+    margin: 0 40px 0 0;
+    margin-right: auto;
+    margin-left: auto;
+
+    table.sticky-table thead {
+      background-color: $lightgrey_offwhite;
+    }
+
+    table.sticky-table th {
+      background-color: $lightgrey_offwhite;
+    }
+  }
+
+  .top-links {
+    background-color: $white;
+  }
+
+  .govuk-link:link {
+    color: $blue;
+  }
+
+  .return-link {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 18px;
+    border: none;
+    background-color: transparent;
+    color: $blue;
+    font-weight: bold;
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .change-link {
+    padding: 0;
+    font-size: 18px;
+    float: left;
+    border: none;
+    background-color: transparent;
+    color: $blue;
+    font-weight: bold;
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .tasklist-action {
+    padding: 0;
+    font-size: 18px;
+    float: left;
+    text-align: left;
+    margin-bottom: 18px;
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    color: $blue;
+    font-weight: bold;
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .add-source {
+    padding: 0;
+    margin-bottom: 30px;
+    font-size: 18px;
+    border: none;
+    background-color: transparent;
+    color: $blue;
+    font-weight: bold;
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .govuk-link:hover {
+    color: $lightblue;
+  }
+
+  .govuk-checkboxes__label {
+    max-width: calc(100% - 30px);
+    padding: 0px;
+    margin-top: 2px;
+  }
+
+  .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before {
+    background-color: $white;
+    border-width: 4px;
+    outline: 3px solid transparent;
+    outline-offset: 1px;
+    box-shadow: 0 0 0 3px #ffdd00;
+  }
+
+  .govuk-checkboxes__label::before {
+    background: $white;
+    left: 20px;
+    top: 20px;
+  }
+
+  .govuk-checkboxes--small .govuk-checkboxes__label {
+    padding-left: 11px;
+    font-size: 18px;
+  }
+
+  .govuk-checkboxes--small .govuk-checkboxes__label::after {
+    top: 27px;
+    left: 26px;
+    border-color: $blue;
+  }
+
+  .govuk-checkboxes--small .govuk-checkboxes__conditional {
+    margin-left: 30px;
+    margin-bottom: 0px;
+  }
+
+  .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before {
+    border-width: 1px;
+  }
+
+  .govuk-checkboxes--small
+    .govuk-checkboxes__item:hover
+    .govuk-checkboxes__input:not(:disabled)
+    + .govuk-checkboxes__label::before {
+    box-shadow: 0 0 0 0px #b1b4b6;
+  }
+
+  .govuk-checkboxes--small .govuk-checkboxes__item {
+    padding: 10px;
+    background-color: $lightgrey_semi;
+    margin-bottom: 10px;
+  }
+
+  .govuk-checkboxes--small .govuk-checkboxes__secondary {
+    margin-bottom: -10px;
+  }
+
+  .govuk-tag {
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    max-width: none;
+  }
+
+  .sort-label {
+    width: max-content;
+    float: left;
+    padding-top: 10px;
+    margin-right: 10px;
+    font-size: 16px;
+  }
+
+  .govuk-pagination .govuk-pagination__prev,
+  .govuk-pagination .govuk-pagination__item,
+  .govuk-pagination .govuk-pagination__next {
+    color: $red;
+
+    &.govuk-pagination__inactive {
+      color: $black;
+    }
+
+    a {
+      color: inherit;
+    }
+  }
+
+  .govuk-pagination__summary {
+    display: none;
+    color: $darkgrey;
+    font-size: 14px;
+  }
+
+  .govuk-pagination {
+    justify-content: space-between;
+  }
+
+  .govuk-pagination__prev .govuk-pagination__link,
+  .govuk-pagination__next .govuk-pagination__link {
+    font-size: 20px;
+  }
+
+  .border-top {
+    border-top: 8px solid $lightgrey_semi;
+    padding-top: 15px;
+  }
+
+  .hmrc-account-menu__main {
+    float: left;
+    padding-inline-start: 0;
+  }
+
+  .hmrc-account-menu {
+    background-color: $lightgrey_mid;
+    border-bottom: none;
+  }
+
+  .hmrc-account-menu__link--active,
+  .hmrc-account-menu__link--active:visited {
+    border-bottom-width: 0;
+    background-color: $blue;
+    color: $white;
+    padding: 12px 10px;
+  }
+
+  .hmrc-account-menu__link {
+    font-size: 18px;
+  }
+
+  .hmrc-account-menu__link:hover {
+    border-bottom-width: 0;
+  }
+
+  .govuk-textarea {
+    font-size: 18px;
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+  }
+
+  .govuk-input {
+    font-size: 18px;
+  }
+
+  .sidebar-list > li {
+    margin-bottom: 15px;
+  }
+
+  .govuk-fieldset__legend {
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+  }
+
+  .hmrc-list-with-actions--short .hmrc-summary-list__actions {
+    width: 25%;
+  }
+
+  .language-switcher-language-url a {
+    color: $white;
+  }
+
+  .govuk-breadcrumbs__link:link,
+  .govuk-breadcrumbs__link:visited {
+    font-size: 16px;
+  }
+
+  .govuk-heading-xl,
+  .govuk-heading-l,
+  .govuk-heading-m,
+  .govuk-heading-s,
+  .govuk-heading-xs {
+    color: inherit;
+  }
+
+  .govuk-heading-m a {
+    font-size: 24px;
+  }
+
+  .govuk-section-break {
+    border-bottom: 1px solid $lightgrey_semi;
+  }
+
+  .govuk-section-break--6 {
+    border-bottom: 6px solid $lightgrey_semi;
+  }
+
+  .govuk-section-break--2 {
+    border-bottom: 2px solid $lightgrey_semi;
+  }
+
+  .govuk-body-s {
+    font-size: 16px;
+  }
+
+  .caption {
+    color: $darkgrey;
+  }
+
+  .index-list__item {
+    margin-bottom: 25px;
+  }
+
+  .index-list__item__meta {
+    margin-right: 20px;
+  }
+
+  footer ul li {
+    float: left;
+    margin: 0 25px 0 0;
+  }
+
+  footer ul li a,
+  footer ul li a:visited,
+  footer ul li a:hover {
+    color: $black;
+    font-size: 16px;
+    font-weight: normal;
+  }
+
+  .govuk-details__summary-text {
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  .govuk-details__summary:hover {
+    color: $lightblue;
+  }
+
+  .govuk-details__summary::after {
+    content: '\2303';
+    rotate: 180deg;
+    bottom: 2px;
+    right: -20px;
+    position: absolute;
+    font-weight: bold;
+  }
+
+  .govuk-details[open] > .govuk-details__summary::after {
+    content: '\2303';
+    rotate: none;
+    bottom: -3px;
+    right: -20px;
+    position: absolute;
+    font-weight: bold;
+  }
+
+  .govuk-details__summary::before,
+  .govuk-details[open] > .govuk-details__summary::before {
+    display: none;
+  }
+
+  .govuk-details__summary {
+    padding-left: 0;
+  }
+
+  .govuk-details {
+    border-left: 3px solid $midgrey;
+    padding-left: 20px;
+  }
+
+  .govuk-details__text {
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .govuk-phase-banner {
+    background-color: $yellow;
+    border-bottom: none;
+    font-size: 16px;
+  }
+
+  .govuk-phase-banner .govuk-link {
+    color: $black;
+    font-size: 16px;
+    text-decoration: underline;
+  }
+
+  .govuk-phase-banner .govuk-tag {
+    background-color: $black;
+    color: $yellow;
+  }
+
+  .govuk-warning-text__text {
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+    font-weight: normal;
+    background-color: $lightgrey_light;
+    border-left: 10px solid $blue;
+    padding: 25px 25px 25px 45px;
+    font-size: 18px;
+  }
+
+  .govuk-warning-text__icon {
+    background: $blue;
+    border: 3px solid $blue;
+    min-width: 25px;
+    min-height: 25px;
+    font-size: 20px;
+    line-height: 18px;
+    margin-top: 22px;
+    margin-left: 22px;
+  }
+
+  .summary td:nth-last-child(1),
+  .summary th:nth-last-child(1) {
+    background-color: $lightgrey_light;
+  }
+
+  .govuk-back-link::before {
+    border-width: max(3px, 0.0625em) max(3px, 0.0625em) 0 0;
+    width: 0.32em;
+    height: 0.32em;
+    border-color: $midgrey;
+  }
+
+  .govuk-back-link {
+    padding-left: 1.2em;
+  }
+
+  .govuk-back-link:link,
+  .govuk-back-link:visited {
+    color: $blue;
+  }
+
+  .govuk-breadcrumbs__list-item::before {
+    border-width: max(3px, 0.0625em) max(3px, 0.0625em) 0 0;
+    width: 0.32em;
+    height: 0.32em;
+    border-color: $midgrey;
+  }
+
+  .govuk-pagination__prev {
+    padding-left: 15px;
+  }
+
+  .govuk-pagination__prev::before {
+    border-width: max(2px, 0.0625em) max(2px, 0.0625em) 0 0;
+    width: 0.25em;
+    height: 0.25em;
+    border-color: $midgrey;
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0.1875em;
+    margin: auto 0;
+    transform: rotate(225deg);
+    border: solid;
+  }
+
+  .govuk-pagination__next {
+    padding-right: 15px;
+  }
+
+  .govuk-pagination__next::after {
+    border-width: max(2px, 0.0625em) max(2px, 0.0625em) 0 0;
+    width: 0.25em;
+    height: 0.25em;
+    border-color: $midgrey;
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0.1875em;
+    margin: auto 0;
+    transform: rotate(45deg);
+    border: solid;
+  }
+
+  .govuk-pagination__icon {
+    display: none;
+  }
+
+  /* Pagination styles for screens below 768px */
+  @media screen and (max-width: 768px) {
+    .govuk-pagination__summary {
+      display: block;
+    }
+
+    .govuk-pagination {
+      justify-content: left;
+      gap: 20px;
+      margin-bottom: 15px;
+
+      .govuk-pagination__list {
+        display: none;
+      }
+
+      .govuk-pagination__prev {
+        background-color: $black;
+        color: $white;
+        padding-left: 35px;
+
+        &.govuk-pagination__inactive {
+          display: none;
+        }
+
+        &::before {
+          border-width: 5px 5px 0 0;
+          width: 0.5em;
+          height: 0.5em;
+          left: 0.75em;
+        }
+      }
+
+      .govuk-pagination__next {
+        background-color: $black;
+        color: $white;
+        padding-right: 35px;
+
+        &::after {
+          border-width: 5px 5px 0 0;
+          width: 0.5em;
+          height: 0.5em;
+          right: 0.75em;
+        }
+
+        &.govuk-pagination__inactive {
+          display: none;
+        }
+      }
+    }
+
+    .govuk-pagination .govuk-pagination__prev a,
+    .govuk-pagination .govuk-pagination__next a {
+      color: $white;
+    }
+
+    .govuk-pagination__prev:hover,
+    .govuk-pagination__next:hover {
+      background-color: $midgrey;
+    }
+
+    .govuk-pagination__prev::before {
+      border-width: max(4px, 0.0625em) max(4px, 0.0625em) 0 0;
+      width: 0.55em;
+      height: 0.55em;
+      left: 1em;
+    }
+
+    .govuk-pagination__next::after {
+      border-width: max(4px, 0.0625em) max(4px, 0.0625em) 0 0;
+      width: 0.55em;
+      height: 0.55em;
+      right: 1em;
+    }
+
+    .govuk-pagination {
+      flex-direction: row;
+    }
+  }
+
+  .govuk-frontend-supported .govuk-accordion {
+    border-bottom: none;
+  }
+
+  .govuk-accordion__section {
+    background-color: $lightgrey_offwhite;
+    padding: 20px 20px 0px 20px;
+  }
+
+  .govuk-frontend-supported .govuk-accordion__section-button {
+    border-top: none;
+    padding: 0px;
+    border-bottom: none;
+  }
+
+  .govuk-accordion__section-heading-text {
+    color: #0360a6;
+    margin-top: 15px;
+  }
+
+  .govuk-accordion__section-heading-text::after {
+    float: right;
+    content: '+ ';
+    font-size: 50px;
+    font-weight: normal;
+    padding-right: 0px;
+    color: $blue;
+    margin-top: -15px;
+  }
+
+  .button--feature {
+    background: $white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 1px solid $blue;
+    color: $blue;
+  }
+
+  .button--feature:hover {
+    background: $blue;
+    color: $white;
+  }
+
+  .button--filter {
+    background: $black;
+    padding: 10px 20px;
+    font-size: 20px;
+    color: $white;
+  }
+
+  .button--filter:hover {
+    background: $midgrey;
+    color: $white;
+  }
+
+  button.govuk-button-small {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 10px 10px 10px;
+  }
+
+  dd,
+  dt {
+    font-size: 18px;
+  }
+
+  .govuk-heading-xl {
+    font-size: 48px;
+    font-weight: bold;
+    letter-spacing: -0.0542rem;
+    line-height: 52px;
+    margin-bottom: revert;
+  }
+
+  .hero {
+    .govuk-heading-m,
+    .govuk-heading-l,
+    .govuk-heading-xl {
+      color: $white;
+    }
+  }
+
+  .govuk-heading-l,
+  .govuk-fieldset__legend--l {
+    font-size: 36px;
+    font-weight: bold;
+    letter-spacing: -0.0375rem;
+    line-height: 40px;
+  }
+
+  .govuk-heading-m {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: -0.0292rem;
+    line-height: 32px;
+  }
+
+  .govuk-heading-s,
+  .govuk-table__caption--s {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: -0.025rem;
+    line-height: 28px;
+  }
+
+  .govuk-heading-xs {
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: -0.01875rem;
+    line-height: 20px;
+    margin-bottom: 20px;
+  }
+
+  .govuk-heading-xxs {
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: -0.01458rem;
+    line-height: 24px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .govuk-heading-xl {
+      font-size: 34px;
+      font-weight: bold;
+      letter-spacing: -0.04167rem;
+      line-height: 38px;
+    }
+
+    .govuk-heading-l,
+    .govuk-fieldset__legend--l {
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: -0.03333rem;
+      line-height: 32px;
+    }
+
+    .govuk-heading-m {
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: -0.025rem;
+      line-height: 28px;
+    }
+
+    .govuk-heading-s,
+    .govuk-table__caption--s {
+      font-size: 20px;
+      font-weight: bold;
+      letter-spacing: -0.02083rem;
+      line-height: 24px;
+    }
+
+    .govuk-heading-xs {
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: -0.01875rem;
+      line-height: 22px;
+    }
+
+    .govuk-heading-xxs {
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: -0.01458rem;
+      line-height: 18px;
+    }
+  }
+
+  .checkbox-level-2 {
+    margin-left: 50px;
+  }
+
+  .checkbox-level-3 {
+    margin-left: 100px;
+  }
+
+  .govuk-tabs {
+    font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
+  }
+
+  .govuk-tabs__tab:visited,
+  .govuk-pagination__link:visited {
+    background: none;
+  }
+
+  .govuk-tabs__tab {
+    font-size: 24px;
+    padding: 10px 0px;
+  }
+
+  .govuk-frontend-supported .govuk-tabs__list {
+    padding: 0;
+    border-bottom: none;
+  }
+
+  .govuk-frontend-supported .govuk-tabs__list-item {
+    background-color: $darkblue;
+    margin-right: 15px;
+    padding: 20px;
+
+    &:not(.govuk-tabs__list-item--selected):hover {
+      a {
+        color: $white;
+      }
+      background-color: $lightblue;
+    }
+
+    .govuk-tabs__tab:link {
+      padding: 0;
+      color: $paleblue;
+    }
+  }
+
+  .govuk-tabs__list-item a,
+  .govuk-tabs__list-item a:visited {
+    color: $paleblue;
+  }
+
+  .govuk-frontend-supported {
+    .govuk-tabs__list-item--selected .govuk-tabs__tab:link,
+    .govuk-tabs__list-item--selected .govuk-tabs__tab:visited {
+      color: $black;
+      font-weight: normal;
+    }
+  }
+
+  .govuk-frontend-supported .govuk-tabs__list-item--selected {
+    margin-bottom: 0;
+    border: none;
+    background-color: #ffffff;
+    border-top: $lightgrey_dark 6px solid;
+  }
+
+  .govuk-frontend-supported .govuk-tabs__panel {
+    padding: 30px 0;
+    border: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    .govuk-frontend-supported .govuk-tabs__list-item {
+      margin-right: 10px;
+      padding: 15px;
+    }
+
+    .govuk-tabs__tab {
+      font-size: 20px;
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    .govuk-tabs__title {
+      display: none;
+    }
+
+    .govuk-frontend-supported .govuk-tabs__list-item:before {
+      content: none;
+    }
+
+    .govuk-frontend-supported .govuk-tabs__list-item--selected,
+    .govuk-frontend-supported .govuk-tabs__list-item,
+    .govuk-frontend-supported .govuk-tabs__list-item:hover {
+      border: none;
+      border-bottom: 0;
+      background-color: $blue !important;
+
+      .govuk-tabs__tab {
+        font-weight: bold !important;
+        color: $white !important;
+      }
+    }
+  }
+
+  .checkboxes__filter {
+    background-color: white;
+    padding: 0px;
+    margin-bottom: 0;
+  }
+
+  .checkboxes__label__filter {
+    font-size: 14px;
+    margin-top: 8px;
+  }
+
+  .checkboxes__input__filter {
+    height: 34px;
+    width: 34px;
+  }
+
+  .checkboxes__label__filter::before {
+    top: 10px;
+    left: 0px;
+  }
+
+  .checkboxes__label__filter::before {
+    top: 10px;
+  }
+
+  .checkboxes__label__filter::after {
+    top: 17px;
+    color: $blue;
+    left: 6px;
+  }
+
+  .checkboxes__conditional__filter {
+    margin-left: 10px;
+  }
+
+  .tabs,
+  .hero {
+    margin: 1em -100%; /* old browsers fallback */
+    margin: 1em calc(50% - 50vw);
+    background-color: $blue;
+  }
+
+  .hero .govuk-heading-l {
+    color: $white;
+  }
+
+  #selected-options li {
+    border: solid 1px $darkgrey;
+    background-color: $lightgrey_light;
+    padding: 5px 8px;
+    width: max-content;
+    font-size: 14px;
+    border-radius: 3px;
+    float: left;
+    margin-right: 10px;
+  }
+
+  #selected-options .remove-selected-option {
+    margin-bottom: 0px;
+  }
+
+  .filter-container-outer h4 {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .filter-container-outer .govuk-list {
+    margin-bottom: 0px;
+  }
+
+  .pivoted {
+    background-color: $lightgrey_offwhite;
+  }
+
+  .pivoted-total {
+    background-color: $lightgrey_semi;
+    font-weight: bold;
+  }
+
+  .govuk-section-break {
+    border-bottom: 1px solid $lightgrey;
+  }
+
+  .govuk-frontend-supported .govuk-tabs__panel {
+    padding: 10px 0;
+  }
+
+  table.dataTable thead > tr > th.sorting:before,
+  table.dataTable thead > tr > th.sorting_asc:before,
+  table.dataTable thead > tr > th.sorting_desc:before,
+  table.dataTable thead > tr > th.sorting_asc_disabled:before,
+  table.dataTable thead > tr > th.sorting_desc_disabled:before,
+  table.dataTable thead > tr > td.sorting:before,
+  table.dataTable thead > tr > td.sorting_asc:before,
+  table.dataTable thead > tr > td.sorting_desc:before,
+  table.dataTable thead > tr > td.sorting_asc_disabled:before,
+  table.dataTable thead > tr > td.sorting_desc_disabled:before {
+    top: 11px;
+  }
+
+  table.dataTable thead > tr > th.sorting:after,
+  table.dataTable thead > tr > th.sorting_asc:after,
+  table.dataTable thead > tr > th.sorting_desc:after,
+  table.dataTable thead > tr > th.sorting_asc_disabled:after,
+  table.dataTable thead > tr > th.sorting_desc_disabled:after,
+  table.dataTable thead > tr > td.sorting:after,
+  table.dataTable thead > tr > td.sorting_asc:after,
+  table.dataTable thead > tr > td.sorting_desc:after,
+  table.dataTable thead > tr > td.sorting_asc_disabled:after,
+  table.dataTable thead > tr > td.sorting_desc_disabled:after {
+    top: 22px;
+  }
+
+  table.dataTable thead > tr > th.sorting:before,
+  table.dataTable thead > tr > th.sorting:after,
+  table.dataTable thead > tr > th.sorting_asc:before,
+  table.dataTable thead > tr > th.sorting_asc:after,
+  table.dataTable thead > tr > th.sorting_desc:before,
+  table.dataTable thead > tr > th.sorting_desc:after,
+  table.dataTable thead > tr > th.sorting_asc_disabled:before,
+  table.dataTable thead > tr > th.sorting_asc_disabled:after,
+  table.dataTable thead > tr > th.sorting_desc_disabled:before,
+  table.dataTable thead > tr > th.sorting_desc_disabled:after,
+  table.dataTable thead > tr > td.sorting:before,
+  table.dataTable thead > tr > td.sorting:after,
+  table.dataTable thead > tr > td.sorting_asc:before,
+  table.dataTable thead > tr > td.sorting_asc:after,
+  table.dataTable thead > tr > td.sorting_desc:before,
+  table.dataTable thead > tr > td.sorting_desc:after,
+  table.dataTable thead > tr > td.sorting_asc_disabled:before,
+  table.dataTable thead > tr > td.sorting_asc_disabled:after,
+  table.dataTable thead > tr > td.sorting_desc_disabled:before,
+  table.dataTable thead > tr > td.sorting_desc_disabled:after {
+    position: absolute;
+    display: block;
+    opacity: 0.35;
+    right: 10px;
+    line-height: 9px;
+    font-size: 0.8em;
+  }
+
+  table.dataTable thead > tr > th.sorting_asc:before,
+  table.dataTable thead > tr > th.sorting_desc:after,
+  table.dataTable thead > tr > td.sorting_asc:before,
+  table.dataTable thead > tr > td.sorting_desc:after {
+    opacity: 1;
+    color: $blue;
+  }
+
+  /*! CSS Used from: https://www.gov.wales/sites/default/files/css/css_lTn9Sj73KcbXUKHef4_YMuiuhY8GIlMQA2hwhzm00os.css?delta=0&language=en&theme=govwales&include=eJxtjUsOwyAMRC9E4R7d9gCRCS7QOjGyIVFu3whF6UfdjD3PM3LkZQVCHTSBYBhG5mfGfcxVmNy3NfFM59rpPUcnsOBsuh67blpxch4Uz4qLxB5oVP1Fjw9SwRNeb_8fVWbyIBet234yBQSiQEnqgrQCZN_Etrk0T1kTBrNkXNV1tROHRvgCRbBhfA ; media=all */
+  @media all {
+    .visually-hidden {
+      position: absolute;
+      overflow: hidden;
+      clip: rect(1px, 1px, 1px, 1px);
+      width: 1px;
+      height: 1px;
+      word-wrap: normal;
+    }
+  }
+
+  /*! CSS Used from: https://www.gov.wales/sites/default/files/css/css_ue5WElbp3ni7qv6hfj7Vy59C7mTeU7Vq4aryglWjd7w.css?delta=1&language=en&theme=govwales&include=eJxtjUsOwyAMRC9E4R7d9gCRCS7QOjGyIVFu3whF6UfdjD3PM3LkZQVCHTSBYBhG5mfGfcxVmNy3NfFM59rpPUcnsOBsuh67blpxch4Uz4qLxB5oVP1Fjw9SwRNeb_8fVWbyIBet234yBQSiQEnqgrQCZN_Etrk0T1kTBrNkXNV1tROHRvgCRbBhfA ; media=all */
+  @media all {
+    .container-fluid {
+      padding-right: 20px;
+      padding-left: 20px;
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    .container-fluid:before,
+    .container-fluid:after {
+      display: table;
+      content: ' ';
+    }
+
+    .container-fluid:after {
+      clear: both;
+    }
+
+    a {
+      background-color: inherit;
+      color: #0360a6;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    a:visited,
+    a:active {
+      color: #0360a6;
+    }
+
+    a:hover {
+      color: #3b7dc5;
+    }
+
+    a:focus {
+      color: #1f1f1f;
+    }
+
+    ul {
+      margin: 0;
+    }
+
+    ul {
+      padding: 0;
+    }
+
+    img {
+      border: 0;
+      vertical-align: bottom;
+      max-width: 100%;
+      height: auto;
+    }
+
+    input {
+      font-family: inherit;
+      font-size: 100%;
+      margin: 0;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      border-radius: 0;
+    }
+
+    input {
+      line-height: normal;
+    }
+
+    input[type='text'] {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+
+    label {
+      display: block;
+      margin: 0;
+    }
+
+    .header__components .components__form form .form-item label {
+      border: 0;
+      clip: rect(0, 0, 0, 0);
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      padding: 0;
+      width: 1px;
+      position: absolute;
+    }
+
+    ul {
+      font-size: 18px;
+      font-size: 1.125rem;
+      line-height: 24px;
+      line-height: 1.5rem;
+      margin-bottom: 20px;
+      margin-top: 0;
+    }
+
+    @media screen and (min-width: 768px) {
+      ul {
+        font-size: 18px;
+        font-size: 1.125rem;
+        line-height: 24px;
+        line-height: 1.5rem;
+      }
+    }
+
+    ul {
+      margin: 0;
+      margin-bottom: 20px;
+      padding: 0 0 0 30px;
+    }
+
+    body * {
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
+    .header__components {
+      padding: 20px;
+    }
+
+    @media all and (min-width: 768px) {
+      .header__components {
+        height: auto;
+      }
+    }
+
+    .header__logo {
+      float: left;
+      margin: 0;
+      padding: 0;
+      width: 140px;
+      height: 34px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 34'%3E%3Cpath style='fill:none;' d='M0 0h140v34H0z' /%3E%3Cg%3E%3Cpath style='fill:%23fff;' d='M.5 12.9a1.5 1.5 0 0 1 .6-.7 3.9 3.9 0 0 1 1.6-.2A9.1 9.1 0 0 1 6 14a29.6 29.6 0 0 1 3.2 3l.7-1.4a42.1 42.1 0 0 0-6-4C2.5 11.2.7 11 .5 12.9zM1.9 10.6c1.6-.5 1.8.6 2.1.9l1.2.7c-1.6-3.7-3.3-1.6-3.3-1.6z'/%3E%3Cpath style='fill:%23fff;' d='M2.6 12.5c3.8 2.8.6 4.1.6 4.1a1.3 1.3 0 0 0 1.7-.4l.3-.6a1.7 1.7 0 0 0 .1-.5A40.2 40.2 0 0 1 9 19.9a11 11 0 0 1-.2-1.8c-1.2-1.4-1.5-1.9-2.3-2.7-2.2-2.7-4-3-4-3M18.4 12.2a7.1 7.1 0 0 1-.1-2 8.7 8.7 0 0 0 .5-1.5h.1l.6.4a8.4 8.4 0 0 1-.6-1.7v-.1a4.1 4.1 0 0 0-.9-1.8 4.6 4.6 0 0 1 .3 1.9c-.1 1.7-2.6 3.7-2 6.6a5.7 5.7 0 0 0 2 3 15.3 15.3 0 0 1-.9-3.2 4.1 4.1 0 0 1 .5-2.5h.2zM35.3.5a56.6 56.6 0 0 0-6.4 1.4c-2.1.7-5.2 2-6.6 3.8s-.2 4.6-.6 6.4-3.2 3.8-3.2 3.8 3.3-.9 4.4-3.5-.2-3.3 1.1-6.1S35.3.5 35.3.5z'/%3E%3Cpath style='fill:%23fff;' d='M35.4.7a7.8 7.8 0 0 0-4.8 4.6l1.6-.3s.1-2.2 3.2-4.3zM41 5.4a26.7 26.7 0 0 0-11.1.5c-5.5 1.7-4.8 4.5-4.9 6s-1.4 5.2-6.3 4.8a5.5 5.5 0 0 0 6-1c3.2-2.6 1-5.7 3.6-7.2S33 5.8 41 5.4z'/%3E%3Cpath style='fill:%23fff;' d='M27 13.5a6.2 6.2 0 0 1 3.5 1.8 5.2 5.2 0 0 0-3.8-1zM36.5 11s-5.2.1-5.3 4.6c-.2-.1-3-5 5.3-4.6zM40.6 5.7c-5.3 1.1-4.1 5.3-4.1 5.3-2.7-5.4 4.1-5.3 4.1-5.3zM25.9 19.6a6.1 6.1 0 0 1 5.2-4c-4.1-.8-5.1 1.2-5.2 2.7a36 36 0 0 0-6.3-.7 18.2 18.2 0 0 1 6.3 2zM4.2 30.8a3.6 3.6 0 0 1 1.8-.4 4.7 4.7 0 0 0 1.8-.4l-2.7-.5c-1 .1-.9 1.3-.9 1.3zM23.9 28a.8.8 0 0 1 .7-.9 4.6 4.6 0 0 1 2 .4l-1.3.3a2.6 2.6 0 0 0-1.4.2zM31.4 31.2a3.1 3.1 0 0 1 1.7-.3h1.4c-.4 0-1.2-.9-2.2-.7a.9.9 0 0 0-.9 1zM36.1 10.8c-6.4-1.5-8.4-.4-8.4-.4a2 2 0 0 0 .2-.6c.2-.3.2-.4.2-.5a19.1 19.1 0 0 1 8 1.5zM11.3 6.7a2.4 2.4 0 0 0-1.6-.8c-1.2 0-2.3 1.4-3.3 1.4a3.2 3.2 0 0 1-1.7-.4 2.4 2.4 0 0 0 1.7.9c1.4 0 2.4-1.3 3.3-1.3zM14.2 8.1a6.2 6.2 0 0 1 .1 2c-.1 2.2-4.3 5.2-4.3 8.7a5.1 5.1 0 0 0 1.6 3.4 8.5 8.5 0 0 1-.4-3.8c.4-2.6 3.7-5.6 3.6-8.1a3.5 3.5 0 0 0-.6-2.2z'/%3E%3Cpath style='fill:%23fff;' d='M12.1 22.1a4.8 4.8 0 0 1-.2-2.8c.3-.9 1.1-1.6 2.7-2 0 0-2.8 2.6-.7 4.8a9.8 9.8 0 0 0-2 2.9c-.6 1.3-1.8 4.2-2.2 4.8A5.4 5.4 0 0 1 7.1 32c-1.7.1-3.7.4-3.8 1.7a1.7 1.7 0 0 1-.3-1.2c.1-.9 1.5-1.9 3-1.8a3.2 3.2 0 0 0 3.6-2.1 60.4 60.4 0 0 1 2.5-6.5z'/%3E%3Cpath style='fill:%23fff;' d='M14.5 22.3s-2.3 6.9-6.3 9.6a10.3 10.3 0 0 1 3.2-.1c.7.3 1.5.8.8 2s1.4-.8 1.1-2-1.8-1-1.8-1-.4-.2-.2-.8 1.8-2.6 2-3l2.3-3.6a2.5 2.5 0 0 0 2.4-1.3c.9-1.8-1-3.4-1-3.4s.8 1.9-.1 2.8a3.1 3.1 0 0 1-2.4.8z'/%3E%3Cpath style='fill:%23fff;' d='M16.4 23.9l1.1-.4s.4.4 2 .4h.3a30.3 30.3 0 0 0 7.4-2.3l.4.6c-2.7.9-5.8 3.5-9.9 3l-1.9-.4zM28 27.2a3.8 3.8 0 0 1-2 1.7c-1.2 0-2.7.3-2.8 1.3a1 1 0 0 1-.2-.9c0-.6.9-1.4 2.2-1.3a2 2 0 0 0 2.3-1.7c.3-.9 0-2.6.4-3.7l.9.7v.3c-.5 1.2-.3 2.6-.8 3.6zM29.7 23.9l.7.4a4.7 4.7 0 0 0-.4 1.2l-.7 2.1c-.2.5.1.6.1.6s1.1.1 1.3.8-.8 1.5-.8 1.5-.1-1.3-.6-1.5a6.8 6.8 0 0 0-2.2.1c1.7-1.2 2.3-4.6 2.6-5.2z'/%3E%3Cpath style='fill:%23fff;' d='M36.3 30.9s.5 1 .2 1.3-1.8 0-3.4.2-2.4.3-2.5 1.5a1.6 1.6 0 0 1-.3-1.1 2.5 2.5 0 0 1 2.7-1.6h1.9c.4-.2-.6-2.2-.8-2.6-1.5-3-1.5-4-1.5-4.2s-4.2-.8-5.2-3.7c3.4 2.8 6 2.8 6 2.8a56.1 56.1 0 0 0 2.9 7.4zM37.3 15.2h1.2c1.8-3.9 5-7.9 5-10.3a4 4 0 0 0-1.1-2.6l-.2.6A10.6 10.6 0 0 0 40.7.4l2.7 1.3h-.5a4.1 4.1 0 0 1 1.2 3c.1 2.8-3 6-4.8 10.3 4 .5 6.7 3 6.7 5.6s-2.3 5.2-4.4 5.2a4.8 4.8 0 0 1-2.6-.7c-1-.5-2-1.7-2-4.1a10.8 10.8 0 0 1 .9-4.7l-2.7.3-1.1.3a4.2 4.2 0 0 1 2.1 2.7 7.2 7.2 0 0 1-.4 3.7 15.2 15.2 0 0 0 1.1 5.3l.6 1.5a1.7 1.7 0 0 0 .8.9s1.2.2 1.5.9a1 1 0 0 1-.3 1.4c.3-1.1-.7-1.3-1.3-1.3h-1a11.9 11.9 0 0 0-.6-2.3s-1-2.7-1.3-4a24.3 24.3 0 0 1-.7-3s2.8-4.8-3.5-6.8h.9l1.7-.5zm1.6 1.3a13.3 13.3 0 0 0-.8 5c.1 1.7 1.1 4 3.8 3.7a3.3 3.3 0 0 0 2.7-1.9 5.6 5.6 0 0 0 .5-2.1 4.2 4.2 0 0 0-1.6-3.2 6.9 6.9 0 0 0-4.6-1.5M11 4.3s-2.2-.7-3.6.4l.7 1.2a2.3 2.3 0 0 1 3.3.2l.3.5a3.8 3.8 0 0 1-3.6 1 2.5 2.5 0 0 0 2.3 1.1c1.6 0 3.2-1.7 3.7-1.1s-.2-2.3 2.7-3.2l.7.8a3.1 3.1 0 0 0 .9-2.5A3.2 3.2 0 0 0 16.9.1a3.7 3.7 0 0 1-.3 2.1 2.1 2.1 0 0 1-1.8 1.3l-1.3-.2c-.3-.1-2.4-.8-2.5 1zm2.4-.1s-.7 1.2-1.7.5 0-.7.6-.6.5.2 1.1.1zM60.1 6.9h1v6.5h2.5v.8h-3.4zM64.4 6.4h.9v7.9h-.9zM68.4 15.5c-.3.9-.6 1.3-1.3 1.3h-.6V16h.5c.3 0 .4-.1.6-.7l.2-.9-1.6-5.6h1l1.2 4.4 1.1-4.4h.9zM76 14.4h-1l-1.1-4.6-1.1 4.6h-1L70.4 9h1l1 4.5 1-4.5h1.1l1.1 4.5 1-4.5h.9zM80.1 8.9c1.4 0 2.2 1.1 2.2 2.8s-.7 2.8-2.2 2.8-2.1-1.1-2.1-2.8.7-2.8 2.1-2.8zm0 4.8c.9 0 1.2-.7 1.2-2.1s-.4-2.1-1.2-2.1-1.2.7-1.2 2.1.3 2.1 1.2 2.1zM87.2 13.4c0 .3.1.7.1 1h-.9v-.8a1.5 1.5 0 0 1-1.4.9c-1.1 0-1.9-.9-1.9-2.8s.7-2.8 1.9-2.8a1.7 1.7 0 0 1 1.4.8V6.4h.9zm-2.1-3.8q-1.2 0-1.2 2.1t1.2 2.1 1.2-2.1q0-2.1-1.2-2.1zM88.4 10.1c0-.4-.1-.8-.1-1.2h.9v.9a1.4 1.4 0 0 1 1.5-.9v.9h-.3c-.7 0-1.2.6-1.2 1.8v2.9h-.9zM91.7 9.3a2.6 2.6 0 0 1 1.5-.4 1.7 1.7 0 0 1 1.4.5 1.7 1.7 0 0 1 .5 1.3v2.8a2.7 2.7 0 0 0 .1.9h-.8v-.7a1.7 1.7 0 0 1-1.5.8 1.4 1.4 0 0 1-1.6-1.5c0-1.1.7-1.8 2.6-1.8h.5v-.3a2.4 2.4 0 0 0-.2-.9c-.2-.3-.5-.3-.9-.3a1.8 1.8 0 0 0-1.4.6zm2.6 2.4h-.6c-1.1 0-1.5.5-1.5 1.1s.3 1 .9 1a1.3 1.3 0 0 0 1.3-1.3v-.7zM97.1 11.9c0 1.3.5 1.9 1.5 1.9a2.1 2.1 0 0 0 1.2-.4v.8a3.6 3.6 0 0 1-1.5.3c-1.4 0-2.2-1.1-2.2-2.8s.7-2.8 2.1-2.8 1.9 1 1.9 2.6v.5zm2.2-.6c0-1.1-.4-1.7-1.1-1.7s-1.1.4-1.1 1.7zM103.5 14.3l-.7.2c-.8 0-1.3-.3-1.3-1.3V9.7h-.9V9h.9V7.8l.9-.3v1.4h1.1v.7h-1.1v3.2q0 .9.6.9l.5-.2zM104.2 6.4h.9v3.3a1.3 1.3 0 0 1 1.3-.8c1 0 1.6.5 1.6 1.8v3.8h-.9V11c0-.9-.3-1.2-.9-1.2s-1.2.5-1.2 1.5v3.3h-.9zM116.4 14.3l-1.3.2c-2.3 0-3.4-1.8-3.4-3.8s1.3-3.8 3.3-3.8a2.9 2.9 0 0 1 1.4.3v.9a2.3 2.3 0 0 0-1.4-.4c-1.2 0-2.3 1-2.3 2.8s.7 3.2 2.4 3.2a1.8 1.8 0 0 0 1.3-.4zM119.3 15.5c-.3.9-.6 1.3-1.3 1.3h-.6V16h.5c.3 0 .4-.1.6-.7l.2-.9-1.7-5.5h1l1.2 4.4 1.1-4.4h.9zM121.8 10.1c0-.4-.1-.8-.1-1.2h.9v.8a1.4 1.4 0 0 1 2.6 0 1.5 1.5 0 0 1 1.3-.9c1 0 1.6.5 1.6 1.8v3.8h-.9v-3.7c0-.7-.3-1-.9-1s-1 .4-1 1.4v3.4h-.9v-3.7c0-.7-.3-1-.9-1s-1 .4-1 1.4v3.4h-.9zM129.5 10.1c0-.4-.1-.8-.1-1.2h.9v.9a1.4 1.4 0 0 1 1.5-.9v.9h-.3c-.7 0-1.2.6-1.2 1.8v2.9h-.9zM136.4 13.2c0 .4.1.8.1 1.2h-.9v-.8a1.4 1.4 0 0 1-1.4.9c-1 0-1.6-.5-1.6-1.8V8.9h.9v3.6c0 .9.3 1.2.9 1.2s1.2-.5 1.2-1.5V8.9h.9v4.3zM59.4 19.7h1l1.2 5.9 1.3-5.9h1.2l1.3 5.9 1.3-5.9h.9l-1.7 7.4h-1.1l-1.4-6.3-1.4 6.3h-1.1zM68.9 24.6c0 1.3.5 1.9 1.5 1.9a2.8 2.8 0 0 0 1.3-.4v.8a3.6 3.6 0 0 1-1.5.3c-1.4 0-2.2-1.1-2.2-2.8s.7-2.8 2.1-2.8 1.9 1 1.9 2.6v.5zm2.2-.6c0-1.1-.4-1.7-1.1-1.7s-1.1.4-1.1 1.7zM73.1 19.1h.9V27h-.9zM75.2 26.1a2.2 2.2 0 0 0 1.3.4c.7 0 1.1-.4 1.1-.7s-.2-.6-.7-.9l-.6-.3c-.8-.4-1.1-.7-1.1-1.4a1.6 1.6 0 0 1 1.7-1.6h.1l1.2.2v.7H77c-.6 0-.9.3-.9.7s.3.7.9.9h.3c.7.3 1.1.7 1.1 1.4s-.5 1.7-1.8 1.7a3.3 3.3 0 0 1-1.5-.3zM79.3 19.1h.9v3.3a1.3 1.3 0 0 1 1.3-.8c1 0 1.6.5 1.6 1.8v3.8h-.9v-3.5c0-.9-.3-1.2-.9-1.2s-1.2.5-1.2 1.5v3.3h-.9zM92.1 26.7a4.8 4.8 0 0 1-1.9.4c-2.4 0-3.4-1.8-3.4-3.8s1.4-3.8 3.3-3.8l1.8.3v1a4 4 0 0 0-1.8-.5c-1.2 0-2.3 1-2.3 2.8s.8 3.2 2.4 3.2l1-.2v-2.2h-1.3v-.8h2.2zM95.6 21.6c1.4 0 2.2 1.1 2.2 2.8s-.7 2.8-2.2 2.8-2.2-1.1-2.2-2.8.7-2.8 2.2-2.8zm0 4.8c.9 0 1.3-.7 1.3-2.1s-.4-2.1-1.3-2.1-1.3.7-1.3 2.1.4 2 1.3 2zM98.2 21.6h1l1.2 4.5 1.2-4.5h1l-1.7 5.3h-1.1zM104 24.6c0 1.3.5 1.9 1.5 1.9a2.8 2.8 0 0 0 1.3-.4v.8a3.6 3.6 0 0 1-1.5.3c-1.4 0-2.2-1.1-2.2-2.8s.7-2.8 2.1-2.8 1.9 1 1.9 2.6v.5zm2.2-.6c0-1.1-.4-1.7-1.1-1.7s-1.1.4-1.1 1.7zM108.1 22.8c0-.4-.1-.8-.1-1.2h.9v.9a1.4 1.4 0 0 1 1.5-.9v.9h-.3c-.7 0-1.2.6-1.2 1.8V27h-.9zM111.2 22.8c0-.4-.1-.8-.1-1.2h.9v.8a1.4 1.4 0 0 1 1.4-.9c1 0 1.6.5 1.6 1.8V27h-.9v-3.4c0-.9-.3-1.2-.9-1.2s-1.2.5-1.2 1.5v3.3h-.9zM116.4 22.8c0-.4-.1-.8-.1-1.2h.9v.8a1.4 1.4 0 0 1 2.6 0 1.5 1.5 0 0 1 1.3-.9c1 0 1.6.5 1.6 1.8V27h-.9v-3.6c0-.7-.3-1-.9-1s-1 .4-1 1.4v3.4h-.9v-3.7c0-.7-.3-1-.9-1s-1 .4-1 1.4v3.4h-.9zM124.7 24.6c0 1.3.5 1.9 1.5 1.9a2.8 2.8 0 0 0 1.3-.4v.8a3.6 3.6 0 0 1-1.5.3c-1.4 0-2.2-1.1-2.2-2.8s.7-2.8 2.1-2.8 1.9 1 1.9 2.6v.5zm2.3-.6c0-1.1-.4-1.7-1.1-1.7s-1.1.4-1.1 1.7zM128.8 22.8c0-.4-.1-.8-.1-1.2h.9v.8a1.4 1.4 0 0 1 1.4-.9c1 0 1.6.5 1.6 1.8V27h-.9v-3.4c0-.9-.3-1.2-.9-1.2s-1.2.5-1.2 1.5v3.3h-.9v-4.4zM136.4 26.9l-.7.2c-.9 0-1.3-.3-1.3-1.3v-3.4h-.9v-.7h.9v-1.1l.9-.3v1.4h1.1v.7h-1.2v3.2q0 .9.6.9l.6-.2v.7zM52 0h1v33.88h-1z'/%3E%3C/g%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-size: 140px 34px;
+      color: #fff;
+      text-decoration: underline;
+      border: none;
+    }
+
+    .header__logo:visited,
+    .header__logo:active {
+      color: #fff;
+    }
+
+    .header__logo:hover {
+      color: $lightgrey;
+    }
+
+    .header__logo:focus {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='137.3' height='34.2' viewBox='0 0 137.3 34.2'%3E%3Cpath d='M0 13a1.49 1.49 0 0 1 .6-.7 3.9 3.9 0 0 1 1.6-.2 9.2 9.2 0 0 1 3.4 2 29.84 29.84 0 0 1 3.2 3.1c.2-.5.7-1.4.7-1.4a42.46 42.46 0 0 0-6.1-4C2 11.3.2 11.1 0 13zM1.4 10.7c1.6-.5 1.8.6 2.1.9l1.2.7c-1.6-3.7-3.3-1.6-3.3-1.6z'/%3E%3Cpath d='M2.1 12.6c3.8 2.8.6 4.1.6 4.1a1.36 1.36 0 0 0 1.7-.4l.3-.6a1.75 1.75 0 0 0 .1-.5 40.57 40.57 0 0 1 3.8 4.9 11.15 11.15 0 0 1-.2-1.8c-1.2-1.4-1.5-1.9-2.3-2.7-2.2-2.7-4-3-4-3M18.1 12.3a7.17 7.17 0 0 1-.1-2 8.8 8.8 0 0 0 .5-1.5l.1.1.6.4a8.51 8.51 0 0 1-.6-1.7c0-.1 0-.1-.1-.2a4.13 4.13 0 0 0-.8-1.8 4.62 4.62 0 0 1 .3 1.9c-.1 1.7-2.6 3.7-2 6.7a5.73 5.73 0 0 0 2 3 15.49 15.49 0 0 1-.9-3.2 4.13 4.13 0 0 1 .5-2.5l.2.1z'/%3E%3Cpath d='M35.1.5a57.16 57.16 0 0 0-6.5 1.4c-2.1.7-5.3 2-6.7 3.8s-.2 4.6-.6 6.5-3.2 3.8-3.2 3.8 3.3-.9 4.4-3.5c.9-1.9-.2-3.3 1.1-6.2S35.1.5 35.1.5z'/%3E%3Cpath d='M35.2.7a7.9 7.9 0 0 0-4.8 4.6L32 5s.1-2.2 3.2-4.3zM40.9 5.5a27 27 0 0 0-11.2.5c-5.6 1.7-4.8 4.5-4.9 6.1s-1.4 5.2-6.4 4.8a5.59 5.59 0 0 0 6.1-1c3.2-2.6 1-5.8 3.6-7.3s4.7-2.7 12.8-3.1z'/%3E%3Cpath d='M26.8 13.6a6.3 6.3 0 0 1 3.5 1.8 5.26 5.26 0 0 0-3.8-1 4.42 4.42 0 0 1 .3-.8zM36.3 11.1s-5.3.1-5.4 4.6c-.1-.1-2.9-5 5.4-4.6zM40.5 5.8c-5.4 1.1-4.2 5.3-4.2 5.3-2.7-5.4 4.2-5.3 4.2-5.3zM25.6 19.8a6.16 6.16 0 0 1 5.3-4c-4.1-.8-5.1 1.2-5.3 2.7a36.39 36.39 0 0 0-6.4-.7 18.4 18.4 0 0 1 6.4 2zM3.7 31.1a3.64 3.64 0 0 1 1.9-.4 4.76 4.76 0 0 0 1.8-.4 13.09 13.09 0 0 0-2.7-.5c-1.1.1-1 1.3-1 1.3zM23.6 28.3a.79.79 0 0 1 .7-.9 4.64 4.64 0 0 1 2 .4 6.3 6.3 0 0 1-1.3.3 2.66 2.66 0 0 0-1.4.2zM31.2 31.5a3.08 3.08 0 0 1 1.7-.3 6.09 6.09 0 0 0 1.4 0c-.4 0-1.2-.9-2.2-.7a.87.87 0 0 0-.9 1zM35.9 10.9c-6.5-1.5-8.5-.4-8.5-.4a2 2 0 0 0 .2-.6c.2-.3.2-.4.2-.5a19.26 19.26 0 0 1 8.1 1.5zM10.9 6.8A2.44 2.44 0 0 0 9.3 6C8.1 6 7 7.4 6 7.4A3.25 3.25 0 0 1 4.3 7a2.43 2.43 0 0 0 1.7.9c1.4 0 2.4-1.3 3.3-1.3a5.53 5.53 0 0 1 1.6.2zM13.8 8.2a6.26 6.26 0 0 1 .1 2c-.1 2.2-4.3 5.2-4.3 8.8a5.18 5.18 0 0 0 1.6 3.4 8.61 8.61 0 0 1-.4-3.8c.4-2.6 3.7-5.7 3.6-8.2a3.51 3.51 0 0 0-.6-2.2z'/%3E%3Cpath d='M11.7 22.3a4.85 4.85 0 0 1-.2-2.8c.3-.9 1.1-1.6 2.7-2 0 0-2.8 2.6-.7 4.8a9.87 9.87 0 0 0-2 2.9c-.6 1.3-1.8 4.2-2.2 4.8a5.42 5.42 0 0 1-2.6 2.2c-1.7.1-3.7.4-3.8 1.7a1.75 1.75 0 0 1-.3-1.2c.1-.9 1.5-1.9 3-1.8a3.21 3.21 0 0 0 3.6-2.1 61 61 0 0 1 2.5-6.5z'/%3E%3Cpath d='M14.1 22.5s-2.3 7-6.4 9.7a10.41 10.41 0 0 1 3.2-.1c.7.3 1.5.8.8 2 0 0 1.4-.8 1.1-2-.3-1-1.8-1-1.8-1s-.4-.2-.2-.8 1.8-2.6 2-3 2.2-3.4 2.3-3.6a2.49 2.49 0 0 0 2.6-1.4c.9-1.8-1-3.4-1-3.4s.8 1.9-.1 2.8a3.17 3.17 0 0 1-2.5.8z'/%3E%3Cpath d='M16.1 24.1a3.74 3.74 0 0 0 1.1-.4s.4.4 2 .4h.3a30.62 30.62 0 0 0 7.5-2.3l.4.6c-2.7.9-5.9 3.5-10 3-.3-.1-1.7-.3-1.9-.4.1-.1.6-.9.6-.9zM27.8 27.5a3.86 3.86 0 0 1-2 1.7c-1.2 0-2.7.3-2.8 1.3a1 1 0 0 1-.2-.9c0-.6.9-1.4 2.2-1.3a2.05 2.05 0 0 0 2.3-1.7c.3-.9 0-2.6.4-3.7 0 0 .6.5.9.7l-.1.3c-.4 1.1-.2 2.5-.7 3.6zM29.5 24.1a7.23 7.23 0 0 0 .7.4 4.77 4.77 0 0 0-.4 1.2c-.1.3-.5 1.6-.7 2.1s.1.6.1.6 1.1.1 1.3.8c.3.9-.8 1.5-.8 1.5.5-.9-.1-1.3-.6-1.5a6.88 6.88 0 0 0-2.2.1c1.7-1.1 2.3-4.6 2.6-5.2z'/%3E%3Cpath d='M36.1 31.2s.5 1 .2 1.3c-1.1.1-1.8 0-3.4.2-1.4.2-2.4.3-2.5 1.5a1.59 1.59 0 0 1-.3-1.1c.1-.8 1.3-1.7 2.7-1.6a6.37 6.37 0 0 0 1.9-.1c.4-.2-.6-2.2-.8-2.6-1.5-3-1.5-4-1.5-4.2 0 0-4.2-.8-5.3-3.7 3.4 2.8 6.1 2.8 6.1 2.8a56.66 56.66 0 0 0 2.9 7.5zM37.2 15.3h1.2c1.8-3.9 5-8 5-10.4a4.08 4.08 0 0 0-1.1-2.6l-.2.6A10.67 10.67 0 0 0 40.6.4a19.5 19.5 0 0 1 2.7 1.3l-.5.1a4.13 4.13 0 0 1 1.2 3c.1 2.8-3 6.1-4.8 10.4 4 .5 6.8 3 6.8 5.7 0 3.8-2.3 5.2-4.4 5.2a4.84 4.84 0 0 1-2.6-.7c-1-.5-2-1.7-2-4.1a10.91 10.91 0 0 1 .9-4.7q-1.5.15-2.7.3l-1.1.3a4.21 4.21 0 0 1 2.1 2.7 7.22 7.22 0 0 1-.4 3.7 15.31 15.31 0 0 0 1.1 5.4l.6 1.5a1.67 1.67 0 0 0 .8.9s1.2.2 1.5.9a1.06 1.06 0 0 1-.3 1.4c.3-1.1-.7-1.3-1.3-1.3h-.1a6.73 6.73 0 0 0-1-.1 12 12 0 0 0-.6-2.3s-1-2.7-1.3-4a24.55 24.55 0 0 1-.7-3s2.8-4.8-3.5-6.9a1.86 1.86 0 0 1 .8 0 10.43 10.43 0 0 1 1.7-.5c.9-.1 2.2-.2 3.7-.3zm1.6 1.3a13.47 13.47 0 0 0-.8 5c.1 1.7 1.1 4 3.8 3.7a3.31 3.31 0 0 0 2.7-1.9 5.63 5.63 0 0 0 .5-2.1 4.28 4.28 0 0 0-1.6-3.2 7 7 0 0 0-4.6-1.5M10.6 4.3s-2.2-.7-3.6.4l.7 1.2a2.33 2.33 0 0 1 3.6.7 3.83 3.83 0 0 1-3.6 1.1A2.56 2.56 0 0 0 10 8.8c1.6 0 3.2-1.7 3.7-1.1 0 0-.2-2.3 2.7-3.2a3 3 0 0 1 .7.8 3.16 3.16 0 0 0 .9-2.5A3.25 3.25 0 0 0 16.6.1a3.73 3.73 0 0 1-.3 2.1 2.12 2.12 0 0 1-1.8 1.3 4.76 4.76 0 0 1-1.3-.2c-.4-.1-2.5-.8-2.6 1zm2.4-.1s-.7 1.2-1.7.5c0 0 0-.7.6-.6s.5.2 1.1.1zM60.2 7h1v6.6h2.5v.8h-3.4L60.2 7zM64.5 6.5h.9v8h-.9zM68.5 15.6c-.3.9-.6 1.3-1.3 1.3a1.27 1.27 0 0 1-.6-.1l.1-.8a.9.9 0 0 0 .5.1c.3 0 .4-.1.6-.7l.2-.9-1.7-5.6h1l1.2 4.4 1.1-4.4h.9zM76.2 14.5h-1l-1.1-4.6-1.1 4.6h-1l-1.4-5.4h1l1 4.5 1-4.5h1.1l1.1 4.5 1-4.5h.9zM80.4 9c1.4 0 2.2 1.1 2.2 2.8s-.7 2.8-2.2 2.8-2.2-1.1-2.2-2.8.7-2.8 2.2-2.8zm0 4.8c.9 0 1.2-.7 1.2-2.1s-.4-2.1-1.2-2.1-1.2.7-1.2 2.1.3 2.1 1.2 2.1zM87.5 13.5c0 .3.1.7.1 1h-.9l-.1-.8a1.5 1.5 0 0 1-1.4.9c-1.1 0-1.9-.9-1.9-2.8S84 9 85.2 9a1.72 1.72 0 0 1 1.4.8V6.5h.9zm-2.1-3.8q-1.2 0-1.2 2.1t1.2 2.1q1.2 0 1.2-2.1t-1.2-2.1zM88.7 10.2c0-.4-.1-.8-.1-1.2h.9l.1.9a1.46 1.46 0 0 1 1.5-.9v.9c-.1 0-.2-.1-.3-.1-.7 0-1.2.6-1.2 1.8v2.9h-.9zM92.1 9.4a2.6 2.6 0 0 1 1.5-.4 1.68 1.68 0 0 1 1.4.5 1.76 1.76 0 0 1 .5 1.3v2.8a2.77 2.77 0 0 0 .1.9h-.8l-.1-.7a1.73 1.73 0 0 1-1.5.8 1.37 1.37 0 0 1-1.5-1.5c0-1.1.7-1.8 2.6-1.8h.5V11a2.39 2.39 0 0 0-.2-.9c-.2-.3-.5-.3-.9-.3a1.82 1.82 0 0 0-1.4.6zm2.6 2.4h-.6c-1.1 0-1.5.5-1.5 1.1s.3 1 .9 1a1.29 1.29 0 0 0 1.3-1.4v-.7zM97.5 12c0 1.3.5 1.9 1.5 1.9a2.14 2.14 0 0 0 1.2-.4l.1.8a3.65 3.65 0 0 1-1.5.3c-1.4 0-2.2-1.1-2.2-2.8S97.3 9 98.7 9c1.2 0 1.9 1 1.9 2.6v.5l-3.1-.1zm2.2-.6c0-1.1-.4-1.7-1.1-1.7s-1.1.4-1.1 1.7zM104 14.4a1.85 1.85 0 0 1-.7.2c-.8 0-1.3-.3-1.3-1.3V9.8h-.9v-.7h.9V7.9l.9-.3V9h1.1v.7h-1.1v3.2q0 .9.6.9a.76.76 0 0 0 .5-.2v.8zM104.7 6.5h.9v3.3a1.34 1.34 0 0 1 1.3-.8c1 0 1.6.5 1.6 1.8v3.8h-.9v-3.5c0-.9-.3-1.2-.9-1.2s-1.2.5-1.2 1.5v3.3h-.9l.1-8.2zM117 14.4a3 3 0 0 1-1.3.2c-2.3 0-3.4-1.8-3.4-3.8 0-2.3 1.3-3.8 3.3-3.8a2.9 2.9 0 0 1 1.4.3v.9a2.3 2.3 0 0 0-1.4-.4c-1.2 0-2.3 1-2.3 2.8s.7 3.2 2.4 3.2a1.84 1.84 0 0 0 1.3-.4zM119.9 15.6c-.3.9-.6 1.3-1.3 1.3a1.27 1.27 0 0 1-.6-.1l.1-.8a.9.9 0 0 0 .5.1c.3 0 .4-.1.6-.7l.2-.9-1.7-5.6h1l1.2 4.4 1.1-4.4h.9zM122.5 10.2c0-.4-.1-.8-.1-1.2h.9l.1.8a1.39 1.39 0 0 1 2.6 0 1.54 1.54 0 0 1 1.3-.9c1 0 1.6.5 1.6 1.8v3.8h-.9v-3.7c0-.7-.3-1-.9-1s-1 .4-1 1.4v3.4h-.9v-3.7c0-.7-.3-1-.9-1s-1 .4-1 1.4v3.4h-.9l.1-4.5zM130.2 10.2c0-.4-.1-.8-.1-1.2h.9l.1.9a1.46 1.46 0 0 1 1.5-.9v.9c-.1 0-.2-.1-.3-.1-.7 0-1.2.6-1.2 1.8v2.9h-.9zM137.2 13.3c0 .4.1.8.1 1.2h-.9l-.1-.8a1.42 1.42 0 0 1-1.4.9c-1 0-1.6-.5-1.6-1.8V9h.9v3.6c0 .9.3 1.2.9 1.2s1.2-.5 1.2-1.5V9h.9v4.3zM59.5 19.9h1l1.2 6 1.3-6h1.2l1.3 6 1.3-6h.9L66 27.4h-1.1L63.5 21l-1.4 6.4H61zM69.1 24.8c0 1.3.5 1.9 1.5 1.9a2.84 2.84 0 0 0 1.3-.4l.1.8a3.65 3.65 0 0 1-1.5.3c-1.4 0-2.2-1.1-2.2-2.8s.7-2.8 2.1-2.8c1.2 0 1.9 1 1.9 2.6v.5l-3.2-.1zm2.2-.6c0-1.1-.4-1.7-1.1-1.7s-1.1.4-1.1 1.7zM73.3 19.3h.9v8h-.9zM75.4 26.3a2.2 2.2 0 0 0 1.3.4c.7 0 1.1-.4 1.1-.7s-.2-.6-.7-.9l-.6-.3c-.8-.4-1.1-.7-1.1-1.4a1.64 1.64 0 0 1 1.8-1.6 4.3 4.3 0 0 1 1.2.2l-.1.7c-.3 0-.7-.1-1.1-.1-.6 0-.9.3-.9.7s.3.7.9.9l.3.1c.7.3 1.1.7 1.1 1.4 0 1-.5 1.7-1.8 1.7a3.34 3.34 0 0 1-1.5-.3zM79.6 19.3h.9v3.3a1.34 1.34 0 0 1 1.3-.8c1 0 1.6.5 1.6 1.8v3.8h-.9v-3.5c0-.9-.3-1.2-.9-1.2s-1.2.5-1.2 1.5v3.3h-.9l.1-8.2zM92.5 27a4.88 4.88 0 0 1-1.9.4c-2.4 0-3.4-1.8-3.4-3.8 0-2.3 1.4-3.8 3.3-3.8a5.66 5.66 0 0 1 1.8.3v1a4.07 4.07 0 0 0-1.8-.5c-1.2 0-2.3 1-2.3 2.8s.8 3.2 2.4 3.2a3.55 3.55 0 0 0 1-.2v-2.3h-1.3v-.8h2.2V27zM96 21.8c1.4 0 2.2 1.1 2.2 2.8s-.7 2.8-2.2 2.8-2.2-1.1-2.2-2.8.7-2.8 2.2-2.8zm0 4.8c.9 0 1.3-.7 1.3-2.1s-.4-2.1-1.3-2.1-1.3.7-1.3 2.1.4 2.1 1.3 2.1zM98.6 21.8h1l1.2 4.5 1.2-4.5h1l-1.7 5.4h-1.1zM104.5 24.8c0 1.3.5 1.9 1.5 1.9a2.84 2.84 0 0 0 1.3-.4l.1.8a3.65 3.65 0 0 1-1.5.3c-1.4 0-2.2-1.1-2.2-2.8s.7-2.8 2.1-2.8c1.2 0 1.9 1 1.9 2.6v.5l-3.2-.1zm2.2-.6c0-1.1-.4-1.7-1.1-1.7s-1.1.4-1.1 1.7zM108.6 23c0-.4-.1-.8-.1-1.2h.9l.1.9a1.46 1.46 0 0 1 1.5-.9v.9c-.1 0-.2-.1-.3-.1-.7 0-1.2.6-1.2 1.8v2.9h-.9zM111.8 23c0-.4-.1-.8-.1-1.2h.9l.1.8a1.42 1.42 0 0 1 1.4-.9c1 0 1.6.5 1.6 1.8v3.8h-.9v-3.5c0-.9-.3-1.2-.9-1.2s-1.2.5-1.2 1.5v3.3h-.9V23zM117 23c0-.4-.1-.8-.1-1.2h.9l.1.8a1.39 1.39 0 0 1 2.6 0 1.54 1.54 0 0 1 1.3-.9c1 0 1.6.5 1.6 1.8v3.8h-.9v-3.7c0-.7-.3-1-.9-1s-1 .4-1 1.4v3.4h-.9v-3.7c0-.7-.3-1-.9-1s-1 .4-1 1.4v3.4h-.9l.1-4.5zM125.4 24.8c0 1.3.5 1.9 1.5 1.9a2.84 2.84 0 0 0 1.3-.4l.1.8a3.65 3.65 0 0 1-1.5.3c-1.4 0-2.2-1.1-2.2-2.8s.7-2.8 2.1-2.8c1.2 0 1.9 1 1.9 2.6v.5l-3.2-.1zm2.3-.6c0-1.1-.4-1.7-1.1-1.7s-1.1.4-1.1 1.7zM129.5 23c0-.4-.1-.8-.1-1.2h.9l.1.8a1.42 1.42 0 0 1 1.4-.9c1 0 1.6.5 1.6 1.8v3.8h-.9v-3.5c0-.9-.3-1.2-.9-1.2s-1.2.5-1.2 1.5v3.3h-.9V23zM137.2 27.2a1.85 1.85 0 0 1-.7.2c-.9 0-1.3-.3-1.3-1.3v-3.5h-.9v-.7h.9v-1.1l.9-.3v1.4h1.1v.7H136v3.2q0 .9.6.9a1.42 1.42 0 0 0 .6-.2v.7z'/%3E%3Cpath style='fill:none;stroke:%23000;' d='M52.5 0v34.2'/%3E%3C/svg%3E");
+    }
+
+    .header__logo_print {
+      width: 113px;
+      height: 133px;
+      overflow: hidden;
+      display: none;
+    }
+
+    #block-govwales-branding {
+      float: left;
+    }
+
+    .language-switcher-language-url {
+      position: absolute;
+      right: 0;
+      margin-right: 0;
+      display: inline-block;
+    }
+
+    @media all and (min-width: 768px) {
+      .language-switcher-language-url {
+        position: relative;
+        float: right;
+      }
+    }
+
+    .language-switcher-language-url a {
+      text-decoration: none;
+      color: #fff;
+      background: #1f1f1f;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      display: inline-block;
+      border: none;
+    }
+
+    .language-switcher-language-url a:hover {
+      background-color: $midgrey;
+    }
+
+    .language-switcher-language-url a:focus {
+      background-color: $midgrey;
+      border-color: transparent;
+      color: $white;
+      outline: 2px solid #1f1f1f;
+      text-decoration: none;
+      -webkit-box-shadow: 0 0 0 2px #ffd530;
+      box-shadow: 0 0 0 2px #ffd530;
+    }
+
+    .language-switcher-language-url ul {
+      margin: 0 20px 0 0;
+      padding: 0;
+    }
+
+    @media all and (min-width: 768px) {
+      .language-switcher-language-url ul {
+        margin: 0;
+      }
+    }
+
+    .language-switcher-language-url li {
+      display: block;
+      list-style: none;
+      float: right;
+    }
+
+    @media all and (min-width: 768px) {
+      .language-switcher-language-url li {
+        float: none;
+      }
+    }
+
+    .language-switcher-language-url li a {
+      padding: 5px 20px;
+    }
+
+    .language-switcher-language-url li.is-active {
+      display: none;
+    }
+
+    .container-fluid {
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    .button {
+      text-decoration: none;
+      color: #fff;
+      background: #1f1f1f;
+      padding: 10px 20px;
+      font-size: 0.875em;
+      font-weight: bold;
+      display: inline-block;
+      border: none;
+    }
+
+    .button:hover {
+      background-color: #999999;
+    }
+
+    .button:focus {
+      background-color: #ffd530;
+      border-color: transparent;
+      color: #1f1f1f;
+      outline: 2px solid #1f1f1f;
+      text-decoration: none;
+      -webkit-box-shadow: 0 0 0 2px #ffd530;
+      box-shadow: 0 0 0 2px #ffd530;
+    }
+
+    .header__components {
+      position: relative;
+    }
+
+    .header__components .components__form {
+      float: right;
+      margin: 15px 0 0 0;
+      width: 100%;
+      position: relative;
+    }
+
+    @media all and (min-width: 768px) {
+      .header__components .components__form {
+        width: 336px;
+        margin: 0 0 0 20px;
+      }
+    }
+
+    .header__components .components__form form .form-item {
+      width: 100%;
+      position: relative;
+      float: left;
+      z-index: 1;
+    }
+
+    .header__components .components__form form .form-item label {
+      color: #fff;
+    }
+
+    .header__components .components__form form .form-item input[type='text'] {
+      background: #fff;
+      padding: 2px 44px 2px 10px;
+      border: 2px solid #fff;
+      height: 34px;
+      width: 100%;
+      border-radius: 0;
+      font-size: 14px;
+      font-size: 0.875rem;
+      display: block;
+    }
+
+    .header__components .components__form form .form-actions {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 2;
+      width: 34px;
+      height: 34px;
+      display: block;
+    }
+
+    .header__components .components__form form .form-actions input[type='submit'] {
+      width: 34px;
+      height: 34px;
+      text-indent: -9999px;
+      padding: 0;
+      border: none;
+      background-image: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2238%22 height=%2218%22%3E%3Cpath d=%22M2.16 2.16a7.33 7.33 0 0 1 11.16 9.42L18 16.2 16.2 18l-4.62-4.62A7.35 7.35 0 0 1 2.16 2.16zM3.9 10.8a4.92 4.92 0 1 0 0-7 4.92 4.92 0 0 0 0 7z%22 fill=%22%23fff%22/%3E%3C/svg%3E');
+      background-color: #aa1111;
+      background-repeat: no-repeat;
+      background-position: 11px;
+      background-size: 28px;
+      overflow: hidden;
+    }
+
+    .header__components .components__form form .form-actions input[type='submit']:hover {
+      background-color: $brightred;
+    }
+
+    .header__components .components__form form .form-actions input[type='submit']:focus {
+      background-image: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2238%22 height=%2218%22%3E%3Cpath d=%22M2.16 2.16a7.33 7.33 0 0111.16 9.42L18 16.2 16.2 18l-4.62-4.62A7.35 7.35 0 012.16 2.16zM3.9 10.8a4.92 4.92 0 100-7 4.92 4.92 0 000 7z%22 fill=%22%23111%22/%3E%3C/svg%3E');
+      background-color: #aa1111;
+      background-repeat: no-repeat;
+      background-position: 11px;
+      background-size: 28px;
+    }
+
+    .is-active {
+      display: block;
+    }
+
+    input:focus {
+      background-color: inherit;
+      border-color: #1f1f1f;
+      color: #1f1f1f;
+      outline: 2px solid transparent;
+      text-decoration: none;
+      -webkit-box-shadow: 0 0 0 2px #ffd530;
+      box-shadow: 0 0 0 2px #ffd530;
+    }
+
+    input[type='submit']:focus {
+      background-color: #ffd530;
+      border-color: transparent;
+      color: #1f1f1f;
+      outline: 2px solid #1f1f1f;
+      text-decoration: none;
+      -webkit-box-shadow: 0 0 0 2px #ffd530;
+      box-shadow: 0 0 0 2px #ffd530;
+    }
+
+    @media print {
+      .header__components {
+        padding: 0;
+      }
+
+      a:link,
+      a:visited {
+        text-decoration: underline;
+      }
+
+      .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .links,
+      .header__logo,
+      #block-exposedformglobal-keyword-searchsearch-page {
+        visibility: hidden;
+        display: none;
+      }
+
+      #block-govwales-branding {
+        width: 100%;
+        float: none;
+        display: block;
+        overflow: hidden;
+      }
+
+      .header__logo_print {
+        display: block;
+        width: 4cm;
+        height: 4.7cm;
+        float: right;
+        margin-bottom: 20px;
+      }
+    }
+  }
+
+  nav.primary {
+    background: #fff;
+    margin: 30px 0;
+  }
+
+  nav.primary .nav__toggle {
+    text-align: right;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  nav.primary .nav__toggle .helper-menu__register,
+  nav.primary .nav__toggle .helper-menu__sign-in,
+  nav.primary .nav__toggle .helper-menu__sign-out {
+    background: $white;
+    border-width: 1px;
+    font-size: 16px;
+    line-height: 20px;
+    padding: 10px 15px;
+    border: $blue solid 1px;
+    color: $blue;
+  }
+
+  nav.primary .nav__toggle .helper-menu__register:hover,
+  nav.primary .nav__toggle .helper-menu__register:focus-visible,
+  nav.primary .nav__toggle .helper-menu__sign-in:hover,
+  nav.primary .nav__toggle .helper-menu__sign-in:focus-visible,
+  nav.primary .nav__toggle .helper-menu__sign-out:hover,
+  nav.primary .nav__toggle .helper-menu__sign-out:focus-visible {
+    color: $blue;
+  }
+
+  nav.primary .nav__toggle .helper-menu__register:hover:hover,
+  nav.primary .nav__toggle .helper-menu__register:hover:focus-visible,
+  nav.primary .nav__toggle .helper-menu__register:focus-visible:hover,
+  nav.primary .nav__toggle .helper-menu__register:focus-visible:focus-visible,
+  nav.primary .nav__toggle .helper-menu__sign-in:hover:hover,
+  nav.primary .nav__toggle .helper-menu__sign-in:hover:focus-visible,
+  nav.primary .nav__toggle .helper-menu__sign-in:focus-visible:hover,
+  nav.primary .nav__toggle .helper-menu__sign-in:focus-visible:focus-visible,
+  nav.primary .nav__toggle .helper-menu__sign-out:hover:hover,
+  nav.primary .nav__toggle .helper-menu__sign-out:hover:focus-visible,
+  nav.primary .nav__toggle .helper-menu__sign-out:focus-visible:hover,
+  nav.primary .nav__toggle .helper-menu__sign-out:focus-visible:focus-visible {
+    color: $white;
+    background-color: $blue;
+  }
+
+  nav.primary .nav__toggle .helper-menu__register:hover:hover::after,
+  nav.primary .nav__toggle .helper-menu__register:hover:focus-visible::after,
+  nav.primary .nav__toggle .helper-menu__register:focus-visible:hover::after,
+  nav.primary .nav__toggle .helper-menu__register:focus-visible:focus-visible::after,
+  nav.primary .nav__toggle .helper-menu__sign-in:hover:hover::after,
+  nav.primary .nav__toggle .helper-menu__sign-in:hover:focus-visible::after,
+  nav.primary .nav__toggle .helper-menu__sign-in:focus-visible:hover::after,
+  nav.primary .nav__toggle .helper-menu__sign-in:focus-visible:focus-visible::after,
+  nav.primary .nav__toggle .helper-menu__sign-out:hover:hover::after,
+  nav.primary .nav__toggle .helper-menu__sign-out:hover:focus-visible::after,
+  nav.primary .nav__toggle .helper-menu__sign-out:focus-visible:hover::after,
+  nav.primary .nav__toggle .helper-menu__sign-out:focus-visible:focus-visible::after {
+    color: #016171;
+  }
+
+  nav.primary .nav__toggle .helper-menu__account {
+    color: #01778a;
+    font-size: 0;
+    margin: 10px 0 0 -10px;
+  }
+
+  nav.primary .nav__toggle .helper-menu__account:hover,
+  nav.primary .nav__toggle .helper-menu__account:focus-visible {
+    color: #016171;
+  }
+
+  nav.primary .nav__toggle .helper-menu__account:hover::after,
+  nav.primary .nav__toggle .helper-menu__account:focus-visible::after {
+    color: #016171;
+  }
+
+  nav.primary .nav__toggle .helper-menu__account::after {
+    color: #01778a;
+    font-size: 28px;
+  }
+
+  nav.primary .nav__toggle span.button.helper-menu__account:hover,
+  nav.primary .nav__toggle div.able-modal-dialog[aria-hidden='false'] span.helper-menu__account.modalCloseButton:hover,
+  div.able-modal-dialog[aria-hidden='false'] nav.primary .nav__toggle span.helper-menu__account.modalCloseButton:hover,
+  nav.primary .nav__toggle span.button.helper-menu__account:focus-visible,
+  nav.primary
+    .nav__toggle
+    div.able-modal-dialog[aria-hidden='false']
+    span.helper-menu__account.modalCloseButton:focus-visible,
+  div.able-modal-dialog[aria-hidden='false']
+    nav.primary
+    .nav__toggle
+    span.helper-menu__account.modalCloseButton:focus-visible {
+    color: #01778a;
+    cursor: default;
+    outline: none;
+  }
+
+  nav.primary .nav__toggle span.button.helper-menu__account:hover::after,
+  nav.primary
+    .nav__toggle
+    div.able-modal-dialog[aria-hidden='false']
+    span.helper-menu__account.modalCloseButton:hover::after,
+  div.able-modal-dialog[aria-hidden='false']
+    nav.primary
+    .nav__toggle
+    span.helper-menu__account.modalCloseButton:hover::after,
+  nav.primary .nav__toggle span.button.helper-menu__account:focus-visible::after,
+  nav.primary
+    .nav__toggle
+    div.able-modal-dialog[aria-hidden='false']
+    span.helper-menu__account.modalCloseButton:focus-visible::after,
+  div.able-modal-dialog[aria-hidden='false']
+    nav.primary
+    .nav__toggle
+    span.helper-menu__account.modalCloseButton:focus-visible::after {
+    color: #01778a;
+  }
+
+  nav.primary .nav__toggle .toggle__button {
+    background: #fff;
+    float: right;
+    font-size: 16px;
+    line-height: 20px;
+    margin: 0;
+    padding: 10px 15px 10px 41px;
+    position: relative;
+    color: $blue;
+    border: 1px solid $blue;
+  }
+
+  nav.primary .nav__toggle .toggle__button span {
+    background: $blue;
+    height: 3px;
+    left: 13px;
+    position: absolute;
+    top: 12px;
+    transform-origin: center;
+    transition: 0.2s;
+    width: 18px;
+  }
+
+  nav.primary .nav__toggle .toggle__button span + span {
+    top: 19px;
+  }
+
+  nav.primary .nav__toggle .toggle__button span + span + span {
+    top: 26px;
+  }
+
+  nav.primary .nav__toggle .toggle__button:hover,
+  nav.primary .nav__toggle .toggle__button:focus-visible {
+    opacity: 1;
+  }
+
+  nav.primary .nav__content {
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  nav.primary .nav__content ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  nav.primary .nav__content ul li {
+    border-bottom: 1px solid $lightgrey;
+    display: block;
+    margin: 0;
+  }
+
+  nav.primary .nav__content ul li:last-of-type {
+    border: 0;
+  }
+
+  nav.primary .nav__content ul li a {
+    color: $charcoal;
+    display: block;
+    font-size: 22px;
+    font-weight: 700;
+    padding: 20px;
+  }
+
+  nav.primary .nav__content ul li a:hover,
+  nav.primary .nav__content ul li a:focus-visible {
+    background: $blue;
+    color: $white;
+  }
+
+  nav.primary .nav__content ul li a.is-active,
+  nav.primary .nav__content ul li a.active {
+    background: $blue;
+    color: $white;
+  }
+
+  nav.primary .nav__content ul li a.button,
+  nav.primary .nav__content ul li div.able-modal-dialog[aria-hidden='false'] a.modalCloseButton,
+  div.able-modal-dialog[aria-hidden='false'] nav.primary .nav__content ul li a.modalCloseButton {
+    border-width: 1px;
+    color: $blue;
+    display: inline-block;
+    font-size: 16px;
+    margin: 15px;
+    padding: 10px 15px;
+  }
+
+  nav.primary .nav__content ul li a.button:hover,
+  nav.primary .nav__content ul li div.able-modal-dialog[aria-hidden='false'] a.modalCloseButton:hover,
+  div.able-modal-dialog[aria-hidden='false'] nav.primary .nav__content ul li a.modalCloseButton:hover,
+  nav.primary .nav__content ul li a.button:focus-visible,
+  nav.primary .nav__content ul li div.able-modal-dialog[aria-hidden='false'] a.modalCloseButton:focus-visible,
+  div.able-modal-dialog[aria-hidden='false'] nav.primary .nav__content ul li a.modalCloseButton:focus-visible {
+    color: $white;
+  }
+
+  nav.primary.nav--is-open .nav__toggle .toggle__button {
+    background: $blue;
+    color: $white;
+  }
+
+  nav.primary.nav--is-open .nav__toggle .toggle__button span {
+    left: 12px;
+    top: 19px;
+    transform: rotate(45deg);
+    width: 20px;
+    background: #fff;
+  }
+
+  nav.primary.nav--is-open .nav__toggle .toggle__button span + span {
+    opacity: 0;
+  }
+
+  nav.primary.nav--is-open .nav__toggle .toggle__button span + span + span {
+    opacity: 1;
+    top: 19px;
+    transform: rotate(-45deg);
+  }
+
+  nav.primary.nav--is-open .nav__content {
+    height: auto;
+  }
+
+  nav.primary .nav__content:focus-within {
+    height: auto;
+  }
+
+  nav.primary + h1 {
+    padding: 20px 0 0;
+  }
+
+  @media screen and (min-width: 480px) {
+    nav.primary .nav__toggle .helper-menu__account {
+      font-size: 16px;
+    }
+
+    nav.primary .nav__toggle .helper-menu__account::after {
+      font-size: 20px;
+    }
+  }
+
+  nav.primary.primary {
+    margin: 20px 0 0 0;
+  }
+
+  nav.primary .nav__content {
+    height: auto;
+    padding: 0 20px;
+    background-color: $lightgrey_mid;
+  }
+
+  nav.primary .nav__content ul li {
+    border: 0;
+    float: left;
+    margin: 0;
+    text-align: center;
+  }
+
+  nav.primary .nav__content ul li:last-of-type {
+    margin: 0;
+  }
+
+  nav.primary .nav__content ul li a {
+    font-size: 18px;
+    padding: 8px 10px;
+  }
+
+  nav.primary .nav__content .is-helper {
+    display: none;
+  }
+
+  .statsWales-logo {
+    width: 182px;
+    height: 28px;
+    margin-top: 7px;
+    background-image: url('../assets/images/StatsWales.svg');
+    background-size: cover;
+  }
+
+  &[lang^='cy'] {
+    .statsWales-logo {
+      background-image: url('../assets/images/StatsCymru.svg');
+      width: 183.75px;
+      height: 31.5px;
+    }
+  }
+
+  .table-border {
+    border-right: 1px solid $midgrey;
+  }
+
+  @media (min-width: 1020px) {
+    .container-fluid {
+      max-width: 1000px;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .govuk-width-container {
+      max-width: 1200px;
+    }
+    .container-fluid {
+      max-width: 1240px;
+    }
+  }
+
+  @media (min-width: 1480px) {
+    .govuk-width-container {
+      max-width: 1400px;
+    }
+    .container-fluid {
+      max-width: 1440px;
+    }
+  }
+
+  .govuk-table__header--numeric,
+  .govuk-table__cell--numeric {
+    text-align: right;
+  }
+
+  .govuk-panel {
+    text-align: left;
+    border: 4px $blue solid;
+    padding: 10px 30px;
+    margin-bottom: 30px;
+  }
+
+  .wg .govuk-panel p {
+    font-size: 24px;
+  }
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .nowrap {
+    white-space: nowrap !important;
+  }
+
+  .max-width-none {
+    max-width: none !important;
+  }
+
+  .translation-export td,
+  .translation-import td {
+    white-space: pre-line !important;
+  }
+
+  .loader {
+    border: 12px solid $lightgrey_light;
+    border-bottom-color: $brightred;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    -webkit-animation: 2s linear infinite;
+    animation: rotation 2s linear infinite;
+  }
+
+  .govuk-table__container {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .source-list-item,
+  .govuk-table__header,
+  .govuk-table__cell {
+    border-bottom: 1px solid $lightgrey;
+  }
+
+  .govuk-table__head {
+    border-bottom: 2px solid $lightgrey;
+  }
+
+  a.govuk-button.govuk-button--top {
+    color: $charcoal;
+    background-color: transparent;
+    border: 1px solid $midgrey;
+    padding: 10px 20px 10px 36px;
+    font-size: 14px;
+    margin-bottom: 0px;
+    background-image: url('data:image/svg+xml;charset=utf8,%3Csvg id=%22Layer_1%22 data-name=%22Layer 1%22 xmlns=%22http://www.w3.org/2000/svg%22 width=%22159.5%22 height=%22102.4%22 viewBox=%220 0 159.5 102.4%22%3E%3Ctitle%3Eblack-arrow-up%3C/title%3E%3Cpath d=%22M159.5,79.8,79.8,0,0,79.8l22.6,22.6L79.7,45.3l57.1,57.1Z%22/%3E%3C/svg%3E');
+    background-size: 18px 13px;
+    background-position: 10px center;
+    background-repeat: no-repeat;
+  }
+
+  a.govuk-button.govuk-button--secondary.govuk-button--top:hover {
+    background-color: $lightgrey_dark;
+    color: $charcoal;
+  }
+
+  footer .top .govuk-button:before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0.2em;
+    bottom: 0;
+    left: 1.3em;
+    width: 0.4375em;
+    height: 0.4375em;
+    margin: auto 0;
+    transform: rotate(315deg);
+    border: solid;
+    border-width: 3px 3px 0px 0px;
+    border-color: $charcoal;
+  }
+
+  footer .footer-top {
+    padding: 15px 0;
+    background-color: $lightgrey_semi;
+  }
+
+  .with-overflow {
+    overflow-x: auto;
+  }
+
+  .alert-warning {
+    border-left: 10px solid $red;
+    padding-left: 120px;
+    background-image: URL('/assets/images/warning-sign.svg');
+    background-repeat: no-repeat;
+    background-position: 30px 20px;
+    background-size: 54px;
+  }
+
+  .warning-background {
+    background-color: $whitered;
+    padding: 20px;
+  }
+
+  td.line-number {
+    text-align: right;
+    padding-right: 10px;
+    color: #6f777b;
+    font-family: monospace !important;
+    border-right: 1px solid #b5b5b5;
+    margin-right: 10px;
+  }
+
+  th.line-number + th {
+    padding-left: 20px;
+  }
+
+  td.line-number + td {
+    padding-left: 20px;
+  }
+
+  table.sticky-table {
+    position: relative;
+    overflow: scroll;
+  }
+
+  table.sticky-table thead {
+    background-color: $white;
+    border-bottom: 1px solid #b5b5b5;
+    position: sticky;
+    top: 0;
+  }
+
+  table.sticky-table th {
+    background-color: $white;
+    border-bottom: 1px solid #b5b5b5;
+    position: sticky;
+    top: 0;
+  }
+
+  .govuk-pagination__prev {
+    padding-left: 35px;
+  }
+
+  .govuk-pagination__prev::before {
+    color: inherit;
+    border-width: max(2px, 0.0625em) max(2px, 0.0625em) 0 0;
+    width: 0.35em;
+    height: 0.35em;
+    left: 1em;
+  }
+
+  .govuk-pagination__prev-none::before {
+    border: none;
+  }
+
+  .govuk-pagination__next {
+    padding-right: 35px;
+  }
+
+  .govuk-pagination__next::after {
+    color: inherit;
+    border-width: max(2px, 0.0625em) max(2px, 0.0625em) 0 0;
+    width: 0.35em;
+    height: 0.35em;
+    right: 1em;
+  }
+
+  .govuk-pagination__next-none::after {
+    border: none;
+  }
+}
