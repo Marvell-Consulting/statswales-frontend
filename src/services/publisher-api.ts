@@ -661,8 +661,8 @@ export class PublisherApi {
     );
   }
 
-  public async getUser(userId: string): Promise<UserDTO> {
-    logger.debug(`Fetching user...`);
+  public async getUserById(userId: string): Promise<UserDTO> {
+    logger.debug(`Fetching user ${userId}...`);
     return this.fetch({ url: `admin/user/${userId}` }).then((response) => response.json() as unknown as UserDTO);
   }
 
@@ -703,5 +703,10 @@ export class PublisherApi {
     return this.fetch({ url: `dataset/${datasetId}/history` }).then(
       (response) => response.json() as unknown as EventLogDTO[]
     );
+  }
+
+  public async getUser(): Promise<UserDTO> {
+    logger.debug(`Fetching the current user...`);
+    return this.fetch({ url: 'user' }).then((response) => response.json() as unknown as UserDTO);
   }
 }

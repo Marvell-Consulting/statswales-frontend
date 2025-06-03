@@ -119,7 +119,8 @@ export const start = (req: Request, res: Response) => {
 };
 
 export const provideDatasetGroup = async (req: Request, res: Response) => {
-  const availableGroups = getEditorUserGroups(req.user).map((g) => singleLangUserGroup(g.group, req.language)) || [];
+  const currentUser = await req.pubapi.getUser();
+  const availableGroups = getEditorUserGroups(currentUser).map((g) => singleLangUserGroup(g.group, req.language)) || [];
   const validGroupIds = availableGroups.map((group) => group.id) as string[];
   const values = req.body || {};
   let errors: ViewError[] = [];
