@@ -74,8 +74,9 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
       }))
   );
   pagination = generateSequenceForNumber(preview.current_page, preview.total_pages);
+  const filters = await req.conapi.getPublishedDatasetFilters(dataset.id);
 
-  res.render('consumer/view', { ...preview, datasetMetadata, pagination });
+  res.render('consumer/view', { ...preview, datasetMetadata, pagination, filters });
 };
 
 export const downloadPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
