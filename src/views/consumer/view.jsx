@@ -23,47 +23,41 @@ export default function ConsumerView(props) {
     <div className="govuk-width-container">
       <div className="govuk-main-wrapper govuk-!-padding-top-0">
         <div className="govuk-grid-row govuk-!-margin-bottom-0">
-          <div className="govuk-grid-column-one-half">
-            <form method="get">
-              <Select
-                name="dataViewsChoice"
-                label={<T>consumer_view.data_view</T>}
-                labelClassName="govuk-label--s"
-                options={[
-                  {
-                    value: '',
-                    label: <T>consumer_view.select_view</T>
-                  },
-                  {
-                    value: 'default',
-                    label: <T>consumer_view.data_table</T>
-                  }
-                ]}
-                value={new URLSearchParams(props.url.split('?')[1]).get('dataViewsChoice')}
-                inline
-              />{' '}
-              <button type="submit" className="govuk-button button-black govuk-button-small" data-module="govuk-button">
-                {props.t('consumer_view.apply_view')}
-              </button>
-            </form>
-          </div>
-          <div className="govuk-grid-column-one-half govuk-!-text-align-right">
-            {props.t('publish.preview.showing_rows', {
-              start: props.page_info.start_record,
-              end: props.page_info.end_record,
-              total: props.page_info.total_records
-            })}
-          </div>
+          {/* Disabled for consumer testing */}
+          {/*<div className="govuk-grid-column-one-half">*/}
+          {/*  <form method="get">*/}
+          {/*    <Select*/}
+          {/*      name="dataViewsChoice"*/}
+          {/*      label={<T>consumer_view.data_view</T>}*/}
+          {/*      labelClassName="govuk-label--s"*/}
+          {/*      options={[*/}
+          {/*        {*/}
+          {/*          value: '',*/}
+          {/*          label: <T>consumer_view.select_view</T>*/}
+          {/*        },*/}
+          {/*        {*/}
+          {/*          value: 'default',*/}
+          {/*          label: <T>consumer_view.data_table</T>*/}
+          {/*        }*/}
+          {/*      ]}*/}
+          {/*      value={new URLSearchParams(props.url.split('?')[1]).get('dataViewsChoice')}*/}
+          {/*      inline*/}
+          {/*    />{' '}*/}
+          {/*    <button type="submit" className="govuk-button button-black govuk-button-small" data-module="govuk-button">*/}
+          {/*      {props.t('consumer_view.apply_view')}*/}
+          {/*    </button>*/}
+          {/*  </form>*/}
+          {/*</div>*/}
         </div>
         <hr className="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-padding-top-0" />
         <div className="govuk-grid-row">
           {/* Sidebar filters */}
           <div className="govuk-grid-column-one-quarter">
             <form method="get">
-              <h3>{props.t('consumer_view.filters')}</h3>
+              <h2 className="govuk-heading-m">{props.t('consumer_view.options')}</h2>
               <div className="govuk-form-group">
                 <label className="govuk-label region-subhead" htmlFor="page_size">
-                  {props.t('pagination.page_size')}
+                  {props.t('consumer_view.page_size')}
                 </label>
                 <select className="govuk-select" id="page_size" name="page_size" defaultValue={props.page_size}>
                   {[5, 10, 25, 50, 100, 250, 500].map((size) => (
@@ -73,6 +67,7 @@ export default function ConsumerView(props) {
                   ))}
                 </select>
               </div>
+              <h2 className="govuk-heading-m">{props.t('consumer_view.filters')}</h2>
               <script
                 dangerouslySetInnerHTML={{
                   __html: `
@@ -116,7 +111,10 @@ export default function ConsumerView(props) {
                                 value={value.description}
                                 defaultChecked={isSelected}
                               />
-                              <label className="govuk-label govuk-checkboxes__label checkboxes__label__filter" htmlFor={value.description}>
+                              <label
+                                className="govuk-label govuk-checkboxes__label checkboxes__label__filter"
+                                htmlFor={value.description}
+                              >
                                 {value.description}
                               </label>
                             </div>
@@ -148,7 +146,7 @@ export default function ConsumerView(props) {
             </div>
 
             {/* Pagination */}
-            <Pagination {...props} hideLineCount />
+            <Pagination {...props} />
           </div>
         </div>
       </div>
