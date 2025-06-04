@@ -19,7 +19,10 @@ export default function UserRoles(props) {
               <fieldset className="govuk-fieldset">
                 <h2 className="govuk-heading-l">{props.t('admin.user.roles.service.heading')}</h2>
 
-                <div className="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                <div
+                  className="govuk-checkboxes govuk-checkboxes--small govuk-checkboxes--bg"
+                  data-module="govuk-checkboxes"
+                >
                   {props.availableRoles.global.map((role, index) => (
                     <div key={index} className="govuk-checkboxes__item">
                       <input
@@ -41,7 +44,10 @@ export default function UserRoles(props) {
                 <fieldset key={index} className="govuk-fieldset">
                   <h2 className="govuk-heading-l">{organisation.name}</h2>
 
-                  <div className="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                  <div
+                    className="govuk-checkboxes govuk-checkboxes--small govuk-checkboxes--bg"
+                    data-module="govuk-checkboxes"
+                  >
                     {organisation.groups.map((group, index) => (
                       <Fragment key={index}>
                         <div key={index} className="govuk-checkboxes__item">
