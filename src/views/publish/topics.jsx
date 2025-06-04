@@ -16,7 +16,10 @@ export default function Topics(props) {
             <input type="hidden" name="topics" value="" />
             <div className="govuk-form-group">
               <fieldset className="govuk-fieldset" aria-describedby="topic-hint">
-                <div className="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
+                <div
+                  className="govuk-checkboxes govuk-checkboxes--small govuk-checkboxes--bg"
+                  data-module="govuk-checkboxes"
+                >
                   {props.nestedTopics.map((topic, index) => (
                     <Fragment key={index}>
                       <div className="govuk-checkboxes__item">

@@ -245,3 +245,21 @@ export const downloadAllDatasetFiles = async (req: Request, res: Response, next:
     next(new NotFoundException('errors.import_missing'));
   }
 };
+
+export const rebuildCube = async (req: Request, res: Response, next: NextFunction) => {
+  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const revision = dataset.draft_revision;
+  if (!revision) {
+    logger.error('No draft revision found');
+    next(new NotFoundException('errors.draft_missing'));
+    return;
+  }
+
+  try {
+    await req.pubapi.rebuildCube(dataset.id, revision.id);
+    res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+  } catch (_err) {
+    logger.error(_err, 'Error rebuilding the cube');
+    next(new NotFoundException('errors.import_missing'));
+  }
+};

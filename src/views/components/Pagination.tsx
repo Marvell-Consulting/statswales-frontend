@@ -132,7 +132,11 @@ export default function Pagination({
         <div className="govuk-grid-row govuk-!-margin-bottom-2">
           {!hide_pagination_hint && (
             <div className="govuk-grid-column-full govuk-!-text-align-centre govuk-hint">
-              <T start={page_info.start_record} end={page_info.end_record} total={page_info.total_records}>
+              <T
+                start={page_info.start_record?.toLocaleString()}
+                end={page_info.end_record?.toLocaleString()}
+                total={page_info.total_records?.toLocaleString()}
+              >
                 publish.preview.showing_rows
               </T>
             </div>

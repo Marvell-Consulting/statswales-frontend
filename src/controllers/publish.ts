@@ -92,6 +92,8 @@ import { TaskDTO } from '../dtos/task';
 import { TaskDecisionDTO } from '../dtos/task-decision';
 import { SingleLanguageRevision } from '../dtos/single-language/revision';
 import { appConfig } from '../config';
+import { FilterTable } from '../dtos/filter-table';
+import qs from 'qs';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -515,8 +517,10 @@ export const deleteDraft = async (req: Request, res: Response) => {
 
 export const cubePreview = async (req: Request, res: Response, next: NextFunction) => {
   const { id: datasetId, end_revision_id: endRevisionId } = res.locals.dataset;
-  const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
-  const pageSize = Number.parseInt(req.query.page_size as string, 10) || 10;
+  const query = qs.parse(req.originalUrl.split('?')[1]);
+  const pageNumber = Number.parseInt(query.page_number as string, 10) || 1;
+  const pageSize = Number.parseInt(query.page_size as string, 10) || 10;
+  const filter = query.filter as Record<string, string[]>;
 
   let errors: ViewError[] | undefined;
   let previewData: ViewDTO | ViewErrDTO | undefined;
@@ -524,11 +528,23 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
   let previewMetadata: PreviewMetadata | undefined;
 
   try {
-    const [datasetDTO, revisionDTO, previewDTO]: [DatasetDTO, RevisionDTO, ViewDTO] = await Promise.all([
-      req.pubapi.getDataset(datasetId, DatasetInclude.All),
-      req.pubapi.getRevision(datasetId, endRevisionId),
-      req.pubapi.getRevisionPreview(datasetId, endRevisionId, pageNumber, pageSize)
-    ]);
+    const [datasetDTO, revisionDTO, previewDTO, filtersDTO]: [DatasetDTO, RevisionDTO, ViewDTO, FilterTable] =
+      await Promise.all([
+        req.pubapi.getDataset(datasetId, DatasetInclude.All),
+        req.pubapi.getRevision(datasetId, endRevisionId),
+        req.pubapi.getRevisionPreview(
+          datasetId,
+          endRevisionId,
+          pageNumber,
+          pageSize,
+          filter &&
+            Object.keys(filter).map((key) => ({
+              columnName: key,
+              values: filter[key]
+            }))
+        ),
+        req.pubapi.getRevisionFilters(datasetId, endRevisionId)
+      ]);
 
     const dataset = singleLangDataset(datasetDTO, req.language)!;
     const revision = singleLangRevision(revisionDTO, req.language)!;
@@ -548,6 +564,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
       res.render('consumer/view', {
         ...previewData,
         datasetMetadata: previewMetadata,
+        filters: filtersDTO,
         preview: true,
         dataset,
         pagination,

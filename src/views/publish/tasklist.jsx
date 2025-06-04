@@ -30,7 +30,15 @@ function Sidebar(props) {
             </div>
           </li>
         )}
-
+        {props?.isDeveloper && (
+          <li className="govuk-task-list__item govuk-task-list__item--with-link tasklist-no-border">
+            <div className="govuk-task-list__name-and-hint">
+              <a href={props.buildUrl(`/developer/${props.datasetId}/rebuild`, props.i18n.language)}>
+                {props.t('publish.tasklist.rebuild_cube')}
+              </a>
+            </div>
+          </li>
+        )}
         {['incomplete', 'update_incomplete'].includes(props.publishingStatus) && (
           <li className="govuk-task-list__item govuk-task-list__item--with-link tasklist-no-border">
             <div className="govuk-task-list__name-and-hint">
