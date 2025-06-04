@@ -12,6 +12,7 @@ import { ViewDTO } from '../dtos/view-dto';
 import { FileFormat } from '../enums/file-format';
 import { PublishedTopicsDTO } from '../dtos/published-topics-dto';
 import { FilterInterface } from '../interfaces/filterInterface';
+import { FilterTable } from '../dtos/filter-table';
 
 const config = appConfig();
 
@@ -104,6 +105,13 @@ export class ConsumerApi {
 
     return this.fetch({ url: `published/${datasetId}/view?${searchParams.toString()}` }).then(
       (response) => response.json() as unknown as ViewDTO
+    );
+  }
+
+  public async getPublishedDatasetFilters(datasetId: string): Promise<FilterTable> {
+    logger.debug(`Fetching published view of dataset: ${datasetId}`);
+    return this.fetch({ url: `published/${datasetId}/view/filters` }).then(
+      (response) => response.json() as unknown as FilterTable
     );
   }
 
