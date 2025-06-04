@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import qs from 'qs';
 import Layout from '../components/layouts/Publisher';
 import ConsumerLayout from '../components/layouts/Consumer';
@@ -62,7 +62,7 @@ export default function ConsumerView(props) {
             <form method="get">
               <h3>{props.t('consumer_view.filters')}</h3>
               <div className="govuk-form-group">
-                <label className="govuk-label" htmlFor="page_size">
+                <label className="govuk-label region-subhead" htmlFor="page_size">
                   {props.t('pagination.page_size')}
                 </label>
                 <select className="govuk-select" id="page_size" name="page_size" defaultValue={props.page_size}>
@@ -90,37 +90,39 @@ export default function ConsumerView(props) {
                 }}
               />
               {props.filters.map((filter, index) => {
-                const selected = parsed?.filter?.[filter.factTableColumn];
+                const selected = parsed?.filter?.[filter.columnName];
                 return (
                   <Fragment key={index}>
-                    <h2 className="govuk-heading-s">{filter.factTableColumn}</h2>
-                    <div
-                      className="govuk-checkboxes govuk-checkboxes--small option-select"
-                      data-module="govuk-checkboxes"
-                    >
-                      {filter.values.map((value, index) => {
-                        const isSelected =
-                          selected &&
-                          (Array.isArray(selected)
-                            ? selected.includes(value.description)
-                            : selected === value.description);
-                        return (
-                          <div class="govuk-checkboxes__item" key={index}>
-                            <input
-                              class="govuk-checkboxes__input"
-                              id={value.description}
-                              name={`filter[${filter.factTableColumn}]`}
-                              type="checkbox"
-                              // we are using description for now.
-                              value={value.description}
-                              defaultChecked={isSelected}
-                            />
-                            <label class="govuk-label govuk-checkboxes__label" for={value.reference}>
-                              {value.description}
-                            </label>
-                          </div>
-                        );
-                      })}
+                    <h3 className="region-subhead">{filter.columnName}</h3>
+                    <div className="filter-container">
+                      <div
+                        className="govuk-checkboxes govuk-checkboxes--small option-select"
+                        data-module="govuk-checkboxes"
+                      >
+                        {filter.values.map((value, index) => {
+                          const isSelected =
+                            selected &&
+                            (Array.isArray(selected)
+                              ? selected.includes(value.description)
+                              : selected === value.description);
+                          return (
+                            <div className="govuk-checkboxes__item" key={index}>
+                              <input
+                                className="govuk-checkboxes__input checkboxes__input__filter"
+                                id={value.description}
+                                name={`filter[${filter.columnName}]`}
+                                type="checkbox"
+                                // we are using description for now.
+                                value={value.description}
+                                defaultChecked={isSelected}
+                              />
+                              <label className="govuk-label govuk-checkboxes__label checkboxes__label__filter" htmlFor={value.description}>
+                                {value.description}
+                              </label>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                   </Fragment>
                 );
