@@ -1142,7 +1142,8 @@
         "last_updated": "Last updated",
         "dataset_status": "Dataset status",
         "publish_status": "Publishing status",
-        "not_translated": "Not yet translated"
+        "not_translated": "Not yet translated",
+        "actions": "Actions"
       }
     },
     "display": {

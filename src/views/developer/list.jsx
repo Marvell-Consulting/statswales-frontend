@@ -66,13 +66,21 @@ export default function DeveloperList(props) {
     },
     {
       key: 'id',
-      label: '',
-      format: (value) => {
-        const url = `/${props.i18n.language}/publish/${value}/tasklist`;
+      label: props.t('developer.list.table.actions'),
+      format: (datasetId) => {
         return (
-          <a href={url} className="govuk-link">
-            <i className="fa-solid fa-list-check"></i> {props.t('developer.list.tasklist')}
-          </a>
+          <ul className="govuk-summary-list__actions-list govuk-!-margin-bottom-0">
+            <li className="govuk-summary-list__actions-list-item">
+              <a href={`/${props.i18n.language}/publish/${datasetId}/tasklist`} className="govuk-link">
+                <i className="fa-solid fa-list-check"></i> {props.t('developer.list.tasklist')}
+              </a>
+            </li>
+            <li className="govuk-summary-list__actions-list-item">
+              <a href={`/${props.i18n.language}/developer/${datasetId}/rebuild`} className="govuk-link">
+                {props.t('publish.tasklist.rebuild_cube')}
+              </a>
+            </li>
+          </ul>
         );
       }
     }
