@@ -84,7 +84,7 @@ export default function ConsumerView(props) {
                     })`
                 }}
               />
-              {props.filters.map((filter, index) => {
+              {props.filters?.map((filter, index) => {
                 const selected = parsed?.filter?.[filter.columnName];
                 return (
                   <Fragment key={index}>
