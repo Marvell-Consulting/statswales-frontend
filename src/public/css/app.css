@@ -651,43 +651,50 @@
   padding: 0px;
   margin-top: 2px;
 }
-.wg .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before {
+.wg .govuk-checkboxes--small .govuk-checkboxes__item:hover .govuk-checkboxes__input:not(:disabled) + .govuk-checkboxes__label:before {
+  box-shadow: none;
+}
+.wg .option-select {
+  max-height: 200px;
+  overflow-y: auto;
+}
+.wg .govuk-checkboxes--bg .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before {
   background-color: #ffffff;
   border-width: 4px;
   outline: 3px solid transparent;
   outline-offset: 1px;
   box-shadow: 0 0 0 3px #ffdd00;
 }
-.wg .govuk-checkboxes__label::before {
+.wg .govuk-checkboxes--bg .govuk-checkboxes__label::before {
   background: #ffffff;
   left: 20px;
   top: 20px;
 }
-.wg .govuk-checkboxes--small .govuk-checkboxes__label {
+.wg .govuk-checkboxes--bg .govuk-checkboxes__label {
   padding-left: 11px;
   font-size: 18px;
 }
-.wg .govuk-checkboxes--small .govuk-checkboxes__label::after {
+.wg .govuk-checkboxes--bg .govuk-checkboxes__label::after {
   top: 27px;
   left: 26px;
   border-color: #0360a6;
 }
-.wg .govuk-checkboxes--small .govuk-checkboxes__conditional {
+.wg .govuk-checkboxes--bg .govuk-checkboxes__conditional {
   margin-left: 30px;
   margin-bottom: 0px;
 }
-.wg .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before {
+.wg .govuk-checkboxes--bg .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before {
   border-width: 1px;
 }
-.wg .govuk-checkboxes--small .govuk-checkboxes__item:hover .govuk-checkboxes__input:not(:disabled) + .govuk-checkboxes__label::before {
+.wg .govuk-checkboxes--bg .govuk-checkboxes__item:hover .govuk-checkboxes__input:not(:disabled) + .govuk-checkboxes__label::before {
   box-shadow: 0 0 0 0px #b1b4b6;
 }
-.wg .govuk-checkboxes--small .govuk-checkboxes__item {
+.wg .govuk-checkboxes--bg .govuk-checkboxes__item {
   padding: 10px;
   background-color: #e5e5e5;
   margin-bottom: 10px;
 }
-.wg .govuk-checkboxes--small .govuk-checkboxes__secondary {
+.wg .govuk-checkboxes--bg .govuk-checkboxes__secondary {
   margin-bottom: -10px;
 }
 .wg .govuk-tag {

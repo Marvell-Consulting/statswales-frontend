@@ -11,6 +11,7 @@ import { ResultsetWithCount } from '../interfaces/resultset-with-count';
 import { ViewDTO } from '../dtos/view-dto';
 import { FileFormat } from '../enums/file-format';
 import { PublishedTopicsDTO } from '../dtos/published-topics-dto';
+import { FilterInterface } from '../interfaces/filterInterface';
 
 const config = appConfig();
 
@@ -89,10 +90,16 @@ export class ConsumerApi {
     datasetId: string,
     pageSize: number,
     pageNumber: number,
-    sortBy?: string
+    sortBy?: string,
+    filter?: FilterInterface[]
   ): Promise<ViewDTO> {
     logger.debug(`Fetching published view of dataset: ${datasetId}`);
     const searchParams = new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString() });
+
+    if (filter && filter.length) {
+      searchParams.set('filter', JSON.stringify(filter));
+    }
+
     if (sortBy) searchParams.append('sort_by', sortBy);
 
     return this.fetch({ url: `published/${datasetId}/view?${searchParams.toString()}` }).then(

@@ -1,4 +1,5 @@
 import React from 'react';
+import qs from 'qs';
 import Layout from '../components/layouts/Publisher';
 import ConsumerLayout from '../components/layouts/Consumer';
 import DatasetStatus from '../components/dataset/DatasetStatus';
@@ -14,28 +15,15 @@ import RadioGroup from '../components/RadioGroup';
 import Select from '../components/Select';
 import T from '../components/T';
 
-function populateFilters(columnName, filters) {
-  return filters.forEach((filter, index) => {
-    const children = filter.children ? populateFilters(columnName, filter.children) : null;
-    const item = <div className="govuk-checkboxes__item">
-      <input className="govuk-checkboxes__input" id="{columnName}-{index}" name="{columnName}" type="checkbox"
-             value="{filter.description}" />
-      <label className="govuk-label govuk-checkboxes__label" htmlFor="{columnName}">
-        {filter.description}
-      </label>
-    </div>;
-    return item, children;
-  })
-}
-
 export default function ConsumerView(props) {
   const LayoutComponent = props.isDeveloper ? Layout : ConsumerLayout;
+  const parsed = qs.parse(props.url.split('?')[1]);
 
   const DataPanel = (
     <div className="govuk-width-container">
       <div className="govuk-main-wrapper govuk-!-padding-top-0">
         <div className="govuk-grid-row govuk-!-margin-bottom-0">
-        <div className="govuk-grid-column-one-half">
+          <div className="govuk-grid-column-one-half">
             <form method="get">
               <Select
                 name="dataViewsChoice"
@@ -73,13 +61,18 @@ export default function ConsumerView(props) {
           <div className="govuk-grid-column-one-quarter">
             <form method="get">
               <h3>{props.t('consumer_view.filters')}</h3>
-              <Select
-                name="page_size"
-                label={<T>pagination.page_size</T>}
-                value={props.page_size}
-                options={[5, 10, 25, 50, 100, 250, 500].map((size) => ({ value: size, label: size }))}
-              />
-              {/* CHECK - is this needed? */}
+              <div className="govuk-form-group">
+                <label className="govuk-label" htmlFor="page_size">
+                  {props.t('pagination.page_size')}
+                </label>
+                <select className="govuk-select" id="page_size" name="page_size" defaultValue={props.page_size}>
+                  {[5, 10, 25, 50, 100, 250, 500].map((size) => (
+                    <option key={size} value={size}>
+                      {size}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <script
                 dangerouslySetInnerHTML={{
                   __html: `
@@ -87,7 +80,6 @@ export default function ConsumerView(props) {
                     document.querySelectorAll('.govuk-checkboxes__input').forEach(parentCheckbox => {
                       const controlledId = parentCheckbox.getAttribute('data-aria-controls');
                       const nestedContainer = controlledId ? document.getElementById(controlledId) : null;
-
                       if (nestedContainer) {
                         // Toggle visibility of nested checkboxes
                         parentCheckbox.addEventListener('change', function () {
@@ -97,14 +89,43 @@ export default function ConsumerView(props) {
                     })`
                 }}
               />
-              {props.filters.map((filter) => {
-                const checkboxes = populateFilters(filter.columnName, filter.values)
+              {props.filters.map((filter, index) => {
+                const selected = parsed?.filter?.[filter.factTableColumn];
                 return (
-                    <h2 className="govuk-heading-s">{filter.columnName}</h2>
-                    <div className="govuk-checkboxes" data-module="govuk-checkboxes">
+                  <Fragment key={index}>
+                    <h2 className="govuk-heading-s">{filter.factTableColumn}</h2>
+                    <div
+                      className="govuk-checkboxes govuk-checkboxes--small option-select"
+                      data-module="govuk-checkboxes"
+                    >
+                      {filter.values.map((value, index) => {
+                        const isSelected =
+                          selected &&
+                          (Array.isArray(selected)
+                            ? selected.includes(value.description)
+                            : selected === value.description);
+                        return (
+                          <div class="govuk-checkboxes__item" key={index}>
+                            <input
+                              class="govuk-checkboxes__input"
+                              id={value.description}
+                              name={`filter[${filter.factTableColumn}]`}
+                              type="checkbox"
+                              // we are using description for now.
+                              value={value.description}
+                              defaultChecked={isSelected}
+                            />
+                            <label class="govuk-label govuk-checkboxes__label" for={value.reference}>
+                              {value.description}
+                            </label>
+                          </div>
+                        );
+                      })}
                     </div>
-                )
+                  </Fragment>
+                );
               })}
+              <br />
               <button
                 name="dataViewsChoice"
                 value="filter"

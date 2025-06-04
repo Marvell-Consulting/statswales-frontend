@@ -13,6 +13,7 @@ import { FileFormat } from '../enums/file-format';
 import { getDownloadHeaders } from '../utils/download-headers';
 import { logger } from '../utils/logger';
 import { Locale } from '../enums/locale';
+import qs from 'qs';
 
 export const listTopics = async (req: Request, res: Response, next: NextFunction) => {
   const topicId = req.params.topicId ? req.params.topicId.match(/\d+/)?.[0] : undefined;
@@ -49,9 +50,11 @@ export const listPublishedDatasets = async (req: Request, res: Response, next: N
 export const viewPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
   const dataset = singleLangDataset(res.locals.dataset, req.language);
   const revision = dataset.published_revision;
-  const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
-  const pageSize = Number.parseInt(req.query.page_size as string, 10) || 100;
+  const query = qs.parse(req.originalUrl.split('?')[1]);
+  const pageNumber = Number.parseInt(query.page_number as string, 10) || 1;
+  const pageSize = Number.parseInt(query.page_size as string, 10) || 100;
   let pagination: (string | number)[] = [];
+  const filter = query.filter as Record<string, string[]>;
 
   if (!dataset.live || !revision) {
     next(new NotFoundException('no published revision found'));
@@ -59,7 +62,17 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   }
 
   const datasetMetadata = await getDatasetPreview(dataset, revision);
-  const preview = await req.conapi.getPublishedDatasetView(dataset.id, pageSize, pageNumber, undefined);
+  const preview = await req.conapi.getPublishedDatasetView(
+    dataset.id,
+    pageSize,
+    pageNumber,
+    undefined,
+    filter &&
+      Object.keys(filter).map((key) => ({
+        columnName: key,
+        values: filter[key]
+      }))
+  );
   pagination = generateSequenceForNumber(preview.current_page, preview.total_pages);
 
   res.render('consumer/view', { ...preview, datasetMetadata, pagination });

@@ -42,6 +42,7 @@ import { TaskDTO } from '../dtos/task';
 import { TaskDecisionDTO } from '../dtos/task-decision';
 import { EventLogDTO } from '../dtos/event-log';
 import { FilterTable } from '../dtos/filter-table';
+import { FilterInterface } from '../interfaces/filterInterface';
 
 const config = appConfig();
 
@@ -352,14 +353,24 @@ export class PublisherApi {
     datasetId: string,
     revisionId: string,
     pageNumber: number,
-    pageSize: number
+    pageSize: number,
+    filter?: FilterInterface[]
   ): Promise<ViewDTO> {
     logger.debug(
       `Fetching preview for dataset: ${datasetId}, revision: ${revisionId}, page: ${pageNumber}, pageSize: ${pageSize}`
     );
 
+    const query = new URLSearchParams({
+      page_number: String(pageNumber),
+      page_size: String(pageSize)
+    });
+
+    if (filter && filter.length) {
+      query.set('filter', JSON.stringify(filter));
+    }
+
     return this.fetch({
-      url: `dataset/${datasetId}/revision/by-id/${revisionId}/preview?page_number=${pageNumber}&page_size=${pageSize}`
+      url: `dataset/${datasetId}/revision/by-id/${revisionId}/preview?${query}`
     }).then((response) => response.json() as unknown as ViewDTO);
   }
 
