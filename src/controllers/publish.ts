@@ -653,7 +653,6 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
       } catch (err) {
         const error = err as ApiException;
         const viewErr = JSON.parse((error.body as string) || '{}') as ViewErrDTO;
-        logger.debug(`Error is: ${JSON.stringify(viewErr, null, 2)}`);
 
         if (error.status === 400) {
           res.status(400);
@@ -666,6 +665,7 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
           res.render('publish/measure-match-failure', { measure, errors, extension });
           return;
         }
+
         logger.error('Something went wrong other than not matching');
         logger.debug(`Full error JSON: ${JSON.stringify(error, null, 2)}`);
         res.render('publish/measure-preview', { ...preview, supportedFormats, measure, errors: viewErr.errors });
@@ -812,7 +812,7 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
         res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/review`, req.language));
       } catch (err) {
         const error = err as ApiException;
-        logger.debug(`Error is: ${JSON.stringify(error, null, 2)}`);
+
         if (error.status === 400) {
           res.status(400);
           logger.error('Lookup table did not match data in the fact table.', err);
@@ -824,8 +824,10 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
           });
           return;
         }
+
         logger.error('Something went wrong other than not matching');
         logger.error(`Full error JSON: ${JSON.stringify(error, null, 2)}`);
+
         res.status(500);
         res.render('publish/upload-lookup', {
           ...dataPreview,
@@ -1077,10 +1079,9 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
             res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/review`, req.language));
           } catch (err) {
             const error = err as ApiException;
-            logger.debug(`Error is: ${JSON.stringify(error, null, 2)}`);
             if (error.status === 400) {
               res.status(400);
-              logger.error('Reference data did not match data in the fact table.', err);
+              logger.error(err, 'Reference data did not match data in the fact table.');
               const failurePreview = JSON.parse(error.body as string) as ViewErrDTO;
               res.render('publish/dimension-match-failure', {
                 ...failurePreview,
@@ -1187,7 +1188,6 @@ export const fetchTimeDimensionPreview = async (req: Request, res: Response, nex
       }
       return;
     }
-    logger.debug(JSON.stringify(dimension, null, 2));
     if (dimension && dimension.extractor && req.path.indexOf('change') === -1) {
       res.render('publish/dimension-revisit', { ...dataPreview, dimension });
     } else {
@@ -1478,10 +1478,9 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
         return;
       } catch (err) {
         const error = err as ApiException;
-        logger.debug(`Error is: ${JSON.stringify(error, null, 2)}`);
         if (error.status === 400) {
           res.status(400);
-          logger.error('Date dimension had inconsistent formats than supplied by the user.', err);
+          logger.error(err, 'Date dimension had inconsistent formats than supplied by the user.');
           const failurePreview = JSON.parse(error.body as string) as ViewErrDTO;
           res.render('publish/period-match-failure', { ...failurePreview, patchRequest, dimension });
           return;
@@ -1494,7 +1493,6 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
         return;
       }
     }
-    logger.debug(`Session dimensionPatch = ${JSON.stringify(session.dimensionPatch, null, 2)}`);
     res.render('publish/quarter-format', { quarterTotals, dimension });
   } catch (err) {
     logger.error('Failed to get dimension preview', err);
@@ -1540,7 +1538,6 @@ export const monthChooser = async (req: Request, res: Response, next: NextFuncti
       patchRequest.month_format = req.body?.monthFormat;
       session.dimensionPatch = patchRequest;
       set(req.session, `dataset[${dataset.id}]`, session);
-      logger.debug(`Saving Dimension Patch to session with the following: ${JSON.stringify(patchRequest, null, 2)}`);
       req.session.save();
       try {
         await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
@@ -1892,15 +1889,15 @@ export const pointInTimeChooser = async (req: Request, res: Response, next: Next
       return;
     } catch (err) {
       const error = err as ApiException;
-      logger.debug(`Error is: ${JSON.stringify(error, null, 2)}`);
       if (error.status === 400) {
         res.status(400);
-        logger.error('Date dimension had inconsistent formats than supplied by the user.', err);
+        logger.error(err, 'Date dimension had inconsistent formats than supplied by the user.');
         const failurePreview = JSON.parse(error.body as string) as ViewErrDTO;
         res.render('publish/period-match-failure', { ...failurePreview, patchRequest, dimension });
         return;
       }
       logger.error('Something went wrong other than not matching');
+      logger.debug(`Error is: ${JSON.stringify(error, null, 2)}`);
       res.redirect(
         req.buildUrl(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/point-in-time/`, req.language)
       );
