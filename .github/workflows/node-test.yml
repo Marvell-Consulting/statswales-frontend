@@ -62,6 +62,6 @@ jobs:
         with:
           urls: |
             http://localhost:3000/en-GB/published/f12bed26-18ac-4cb9-bcdb-24ed155f29a1
-          configPath: ./lighthouserc.json
+          # configPath: ./lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true
