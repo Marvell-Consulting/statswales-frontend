@@ -264,10 +264,6 @@
         "decimal": "Gwerth Degol",
         "format": "Fformat",
         "measure_type": "Math o Werth"
-      },
-      "column_values": {
-        "0": "0",
-        "1": "1"
       }
     },
     "time_dimension_review": {
