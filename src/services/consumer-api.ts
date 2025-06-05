@@ -68,7 +68,7 @@ export class ConsumerApi {
   public async getPublishedTopics(topicId?: string, page = 1, limit = 20): Promise<PublishedTopicsDTO> {
     logger.debug(`Fetching published datasets for topic: ${topicId}`);
     const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
-    const url = topicId ? `published/topic/${topicId}?${qs}` : `published/topic`;
+    const url = topicId ? `v1/topic/${topicId}?${qs}` : `v1/topic`;
 
     return this.fetch({ url }).then((response) => response.json() as unknown as PublishedTopicsDTO);
   }
@@ -77,14 +77,14 @@ export class ConsumerApi {
     logger.debug(`Fetching published dataset list...`);
     const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
 
-    return this.fetch({ url: `published/list?${qs}` }).then(
+    return this.fetch({ url: `v1/list?${qs}` }).then(
       (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
     );
   }
 
   public async getPublishedDataset(datasetId: string): Promise<DatasetDTO> {
     logger.debug(`Fetching published dataset: ${datasetId}`);
-    return this.fetch({ url: `published/${datasetId}` }).then((response) => response.json() as unknown as DatasetDTO);
+    return this.fetch({ url: `v1/${datasetId}` }).then((response) => response.json() as unknown as DatasetDTO);
   }
 
   public async getPublishedDatasetView(
@@ -103,14 +103,14 @@ export class ConsumerApi {
 
     if (sortBy) searchParams.append('sort_by', sortBy);
 
-    return this.fetch({ url: `published/${datasetId}/view?${searchParams.toString()}` }).then(
+    return this.fetch({ url: `v1/${datasetId}/view?${searchParams.toString()}` }).then(
       (response) => response.json() as unknown as ViewDTO
     );
   }
 
   public async getPublishedDatasetFilters(datasetId: string): Promise<FilterTable> {
     logger.debug(`Fetching published view of dataset: ${datasetId}`);
-    return this.fetch({ url: `published/${datasetId}/view/filters` }).then(
+    return this.fetch({ url: `v1/${datasetId}/view/filters` }).then(
       (response) => response.json() as unknown as FilterTable
     );
   }
@@ -119,7 +119,7 @@ export class ConsumerApi {
     logger.debug(`Fetching ${format} stream for dataset: ${datasetId}...`);
 
     return this.fetch({
-      url: `published/${datasetId}/download/${format}`,
+      url: `v1/${datasetId}/download/${format}`,
       lang: language
     }).then((response) => response.body as ReadableStream);
   }
