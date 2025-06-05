@@ -247,16 +247,10 @@ export const downloadAllDatasetFiles = async (req: Request, res: Response, next:
 };
 
 export const rebuildCube = async (req: Request, res: Response, next: NextFunction) => {
-  const dataset = singleLangDataset(res.locals.dataset, req.language);
-  const revision = dataset.draft_revision;
-  if (!revision) {
-    logger.error('No draft revision found');
-    next(new NotFoundException('errors.draft_missing'));
-    return;
-  }
+  const dataset = res.locals.dataset;
 
   try {
-    await req.pubapi.rebuildCube(dataset.id, revision.id);
+    await req.pubapi.rebuildCube(dataset.id, dataset.end_revision_id);
     res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
   } catch (_err) {
     logger.error(_err, 'Error rebuilding the cube');
