@@ -3,8 +3,8 @@
   "developer_warning": "<strong class=\"govuk-tag govuk-tag--red govuk-phase-banner__content__tag\">Warning</strong> Tudalen y datblygwr yw hon ac nid yw wedi bod trwy waith ymchwil gyda defnyddwyr",
   "developer_tag": "<span class=\"govuk-tag govuk-tag--yellow govuk-phase-banner__content__tag\">Developer Page</span>",
   "external_tag": "<span class=\"govuk-tag govuk-tag--orange govuk-phase-banner__content__tag\">External Page</span>",
-  "yes": "Yes (awaiting feedback from Alex on this)",
-  "no": "No (awaiting feedback from Alex on this)",
+  "yes": "Oes",
+  "no": "Nac oes",
   "toc": "Cynnwys",
   "buttons": {
     "continue": "Parhau",
@@ -266,8 +266,8 @@
         "measure_type": "Math o Werth"
       },
       "column_values": {
-        "0": "No (awaiting feedback from Alex on this)",
-        "1": "Yes (awaiting feedback from Alex on this)"
+        "0": "0",
+        "1": "1"
       }
     },
     "time_dimension_review": {
