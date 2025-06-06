@@ -374,12 +374,12 @@ export class PublisherApi {
     }).then((response) => response.json() as unknown as ViewDTO);
   }
 
-  public async getRevisionFilters(datasetId: string, revisionId: string): Promise<FilterTable> {
+  public async getRevisionFilters(datasetId: string, revisionId: string): Promise<FilterTable[]> {
     logger.debug(`Fetching filters for dataset: ${datasetId}, revision: ${revisionId}`);
 
     return this.fetch({
       url: `dataset/${datasetId}/revision/by-id/${revisionId}/preview/filters`
-    }).then((response) => response.json() as unknown as FilterTable);
+    }).then((response) => response.json() as unknown as FilterTable[]);
   }
 
   public async assignSources(datasetId: string, sourceTypeAssignment: SourceAssignmentDTO[]): Promise<DatasetDTO> {
