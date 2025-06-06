@@ -528,7 +528,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
   let previewMetadata: PreviewMetadata | undefined;
 
   try {
-    const [datasetDTO, revisionDTO, previewDTO, filtersDTO]: [DatasetDTO, RevisionDTO, ViewDTO, FilterTable] =
+    const [datasetDTO, revisionDTO, previewDTO, filtersDTO]: [DatasetDTO, RevisionDTO, ViewDTO, FilterTable[]] =
       await Promise.all([
         req.pubapi.getDataset(datasetId, DatasetInclude.All),
         req.pubapi.getRevision(datasetId, endRevisionId),

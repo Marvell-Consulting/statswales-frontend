@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import qs from 'qs';
 import Layout from '../components/layouts/Publisher';
 import ConsumerLayout from '../components/layouts/Consumer';
 import DatasetStatus from '../components/dataset/DatasetStatus';
@@ -12,12 +11,16 @@ import Notes from '../components/dataset/Notes';
 import About from '../components/dataset/About';
 import Published from '../components/dataset/Published';
 import RadioGroup from '../components/RadioGroup';
-import Select from '../components/Select';
-import T from '../components/T';
+import { CheckboxGroup, CheckboxOptions } from '../components/CheckboxGroup';
+import { PreviewMetadata } from '../../interfaces/preview-metadata';
+import { DatasetDTO } from '../../dtos/dataset';
+import { PublishingStatus } from '../../enums/publishing-status';
+import { DatasetStatus as DatasetStatusType } from '../../enums/dataset-status';
+import { PageInfo } from '../../dtos/view-dto';
+import { Filters } from '../components/Filters';
 
 export default function ConsumerView(props) {
   const LayoutComponent = props.isDeveloper ? Layout : ConsumerLayout;
-  const parsed = qs.parse(props.url.split('?')[1]);
 
   const DataPanel = (
     <div className="govuk-width-container">
@@ -84,47 +87,7 @@ export default function ConsumerView(props) {
                     })`
                 }}
               />
-              {props.filters?.map((filter, index) => {
-                const selected = parsed?.filter?.[filter.columnName];
-                return (
-                  <Fragment key={index}>
-                    <h3 className="region-subhead">{filter.columnName}</h3>
-                    <div className="filter-container">
-                      <div
-                        className="govuk-checkboxes govuk-checkboxes--small option-select"
-                        data-module="govuk-checkboxes"
-                      >
-                        {filter.values.map((value, index) => {
-                          const isSelected =
-                            selected &&
-                            (Array.isArray(selected)
-                              ? selected.includes(value.description)
-                              : selected === value.description);
-                          return (
-                            <div className="govuk-checkboxes__item" key={index}>
-                              <input
-                                className="govuk-checkboxes__input checkboxes__input__filter"
-                                id={value.description}
-                                name={`filter[${filter.columnName}]`}
-                                type="checkbox"
-                                // we are using description for now.
-                                value={value.description}
-                                defaultChecked={isSelected}
-                              />
-                              <label
-                                className="govuk-label govuk-checkboxes__label checkboxes__label__filter"
-                                htmlFor={value.description}
-                              >
-                                {value.description}
-                              </label>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </Fragment>
-                );
-              })}
+              <Filters filters={props.filters} url={props.url} />
               <br />
               <button
                 name="dataViewsChoice"
@@ -268,7 +231,7 @@ export default function ConsumerView(props) {
   return (
     <LayoutComponent {...props}>
       <h1 className="govuk-heading-xl">{props.datasetMetadata.title}</h1>
-      {(props.preview || (props?.isDeveloper && props?.ShowDeveloperTab)) && <DatasetStatus {...props} />}
+      {(props.preview || (props?.isDeveloper && props?.showDeveloperTab)) && <DatasetStatus {...props} />}
       {props.preview && (
         <div className="govuk-panel">
           <p className="govuk-panel__title-m">{props.t('publish.cube_preview.panel')}</p>
