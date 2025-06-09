@@ -309,9 +309,10 @@ test.describe('Happy path', () => {
     await previewPage.click('#xlsx', { force: true });
     const excelDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
     await checkFile(testInfo, excelDownload);
-    await previewPage.click('#duckdb', { force: true });
-    const duckDBDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
-    await checkFile(testInfo, duckDBDownload);
+    // Disabled while DuckDB file download is unavailable
+    // await previewPage.click('#duckdb', { force: true });
+    // const duckDBDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
+    // await checkFile(testInfo, duckDBDownload);
 
     // data table
     // TODO: link has a leading space

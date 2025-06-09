@@ -172,12 +172,12 @@ export default function ConsumerView(props) {
                 value: 'parquet',
                 label: 'Parquet',
                 hint: props.t('consumer_view.data_metadata_hint')
-              },
-              {
-                value: 'duckdb',
-                label: 'DuckDB',
-                hint: props.t('consumer_view.everything_hint')
               }
+              // {
+              //   value: 'duckdb',
+              //   label: 'DuckDB',
+              //   hint: props.t('consumer_view.everything_hint')
+              // }
             ]}
           />
 
