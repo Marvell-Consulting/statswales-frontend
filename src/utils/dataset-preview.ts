@@ -14,8 +14,8 @@ export const getDatasetPreview = async (
     throw new Error('preview requires access to the revision and metadata');
   }
 
-  const { summary, quality, collection, rounding_description } = revision.metadata;
-  const { rounding_applied, designation, related_links } = revision;
+  const { rounding_applied, designation, related_links, providers, metadata } = revision;
+  const { summary, quality, collection, rounding_description } = metadata;
 
   const preview: PreviewMetadata = {
     title: revision.metadata.title,
@@ -23,7 +23,7 @@ export const getDatasetPreview = async (
       updatedAt: revision?.publish_at,
       nextUpdateAt: nextUpdateAt(revision),
       designation,
-      providers: revision.providers?.map(({ provider_name, source_name }) => ({ provider_name, source_name })),
+      providers: providers?.map(({ provider_name, source_name }) => ({ provider_name, source_name })),
       timePeriod: { start: dataset.start_date, end: dataset.end_date }
     },
     notes: {
