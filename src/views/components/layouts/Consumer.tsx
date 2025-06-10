@@ -120,7 +120,7 @@ const Layout = ({ children }: PropsWithChildren) => {
           <div className="govuk-width-container govuk-!-padding-top-9">
             <ul className="footer-menu govuk-list">
               {links.map((link) => (
-                <li className="govuk-footer__inline-list-item">
+                <li className="govuk-footer__inline-list-item" key={link}>
                   <a className="govuk-footer__link" href="#">
                     {t(`footer.${link}`)}
                   </a>

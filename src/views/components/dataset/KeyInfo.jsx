@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 export default function KeyInfo(props) {
   return (
@@ -36,8 +36,8 @@ export default function KeyInfo(props) {
         </div>
 
         {props.keyInfo.providers.length > 0 ? (
-          props.keyInfo.providers.entries().map(([idx, provider]) => (
-            <>
+          props.keyInfo.providers.map((provider, idx) => (
+            <Fragment key={idx}>
               <div className="govuk-summary-list__row">
                 <dt className="govuk-summary-list__key">
                   {props.keyInfo.providers?.length > 1
@@ -56,7 +56,7 @@ export default function KeyInfo(props) {
                   {provider.source_name ? provider.source_name : props.t('dataset_view.key_information.no_source')}
                 </dd>
               </div>
-            </>
+            </Fragment>
           ))
         ) : (
           <>
