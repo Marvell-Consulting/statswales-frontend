@@ -1450,6 +1450,9 @@
         "buttons": {
           "create": "Create group",
           "continue": "Continue"
+        },
+        "error": {
+          "saving": "There was a problem saving the group"
         }
       },
       "organisation": {
