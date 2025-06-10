@@ -4,7 +4,7 @@ import i18nextMiddleware from 'i18next-http-middleware';
 
 import { appConfig } from '../config';
 
-const ignoreRoutes = ['/public', '/css', '/assets', '/healthcheck'];
+const ignoreRoutes = ['/public', '/css', '/assets', '/healthcheck', '/v1'];
 
 const config = appConfig();
 const cookieDomain = new URL(config.auth.jwt.cookieDomain).hostname;

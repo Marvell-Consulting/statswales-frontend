@@ -25,6 +25,7 @@ import { cookies } from './routes/cookie';
 import { handleAsset404 } from './middleware/asset-404';
 import { admin } from './routes/admin';
 import expressReactViews from 'express-react-views';
+import { consumerApiProxy } from './routes/consumer-api-proxy';
 
 const app: Application = express();
 const config = appConfig();
@@ -35,6 +36,9 @@ logger.info(`App config loaded for '${config.env}' env`);
 app.disable('x-powered-by');
 app.set('trust proxy', 1);
 
+// proxy requests to the consumer API to the backend. Needs to be before middleware to ensure request is not modified
+app.use('/v1', consumerApiProxy);
+
 // asset routes (bypass middleware)
 app.use('/public', express.static(`${__dirname}/public`));
 app.use('/css', express.static(`${__dirname}/css`));
@@ -42,9 +46,9 @@ app.use('/assets', express.static(`${__dirname}/assets`));
 app.use(handleAsset404);
 
 // enable middleware
+app.use(httpLogger);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(httpLogger);
 app.use(cookieParser());
 app.use(session);
 app.use(i18nextMiddleware.handle(i18next));
