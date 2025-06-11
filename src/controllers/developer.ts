@@ -57,9 +57,6 @@ export const displayDatasetPreview = async (req: Request, res: Response) => {
     const pageSize = Number.parseInt(req.query.page_size as string, 10) || 100;
 
     datasetView = await req.pubapi.getRevisionPreview(datasetId, revision.id, pageNumber, pageSize);
-
-    // console.log(datasetView);
-
     previewMetadata = await getDatasetPreview(singleLangDataset(dataset, req.language), revision);
     pagination = generateSequenceForNumber(datasetView.current_page, datasetView.total_pages);
     logger.debug(`Sending request to backend for file list of dataset ${datasetId}...`);
