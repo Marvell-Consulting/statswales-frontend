@@ -1,28 +1,28 @@
+import { Readable } from 'node:stream';
+
 import { NextFunction, Request, Response } from 'express';
+import hljs from 'highlight.js';
+import slugify from 'slugify';
+import { t } from 'i18next';
+
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
 import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { logger } from '../utils/logger';
 import { ViewDTO } from '../dtos/view-dto';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { generateSequenceForNumber, getPaginationProps } from '../utils/pagination';
-import { DataTableDto } from '../dtos/data-table';
-import { RevisionDTO } from '../dtos/revision';
-import { Readable } from 'node:stream';
 import { singleLangDataset, singleLangRevision } from '../utils/single-lang-dataset';
 import { statusToColour } from '../utils/status-to-colour';
 import { getDatasetStatus, getPublishingStatus } from '../utils/dataset-status';
 import { FileImportDto } from '../dtos/file-import';
-import slugify from 'slugify';
 import { FileFormat } from '../enums/file-format';
 import { getDownloadHeaders } from '../utils/download-headers';
 import { LookupTableDTO } from '../dtos/lookup-table';
-import { t } from 'i18next';
-import { DatasetDTO } from '../dtos/dataset';
-import { getLatestRevision } from '../utils/revision';
 import { getDatasetPreview } from '../utils/dataset-preview';
 import { PreviewMetadata } from '../interfaces/preview-metadata';
 import { ViewError } from '../dtos/view-error';
-import hljs from 'highlight.js';
+import { DatasetInclude } from '../enums/dataset-include';
+import { UnknownException } from '../exceptions/unknown.exception';
 
 export const listAllDatasets = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -39,118 +39,117 @@ export const listAllDatasets = async (req: Request, res: Response, next: NextFun
 };
 
 export const displayDatasetPreview = async (req: Request, res: Response) => {
-  const dataset = singleLangDataset(res.locals.dataset, req.language);
-  const revisionId = getLatestRevision(res.locals.dataset)?.id;
   let pagination: (string | number)[] = [];
   let errors: ViewError[] | undefined;
-  const revWithMeta = await req.pubapi.getRevision(dataset.id, revisionId!);
-  const revision = singleLangRevision(revWithMeta, req.language)!;
-  const datasetStatus = getDatasetStatus(res.locals.dataset);
-  const publishingStatus = getPublishingStatus(res.locals.dataset);
-  const datasetTitle = revision?.metadata?.title || dataset.id;
-  let status = 200;
-
   let datasetView: ViewDTO | undefined;
   let unProcessedFilelist: FileImportDto[] = [];
   let previewMetadata: PreviewMetadata | undefined = undefined;
+  const datasetId = req.params.datasetId;
 
   try {
+    const dataset = await req.pubapi.getDataset(datasetId, DatasetInclude.Developer);
+    const revWithMeta = await req.pubapi.getRevision(datasetId, dataset.end_revision_id!);
+    const revision = singleLangRevision(revWithMeta, req.language)!;
+    const datasetStatus = getDatasetStatus(dataset);
+    const publishingStatus = getPublishingStatus(dataset);
+    const datasetTitle = revision?.metadata?.title || datasetId;
     const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
     const pageSize = Number.parseInt(req.query.page_size as string, 10) || 100;
-    datasetView = await req.pubapi.getRevisionPreview(dataset.id, revision.id, pageNumber, pageSize);
-    previewMetadata = await getDatasetPreview(dataset, revision);
+
+    datasetView = await req.pubapi.getRevisionPreview(datasetId, revision.id, pageNumber, pageSize);
+
+    // console.log(datasetView);
+
+    previewMetadata = await getDatasetPreview(singleLangDataset(dataset, req.language), revision);
     pagination = generateSequenceForNumber(datasetView.current_page, datasetView.total_pages);
+    logger.debug(`Sending request to backend for file list of dataset ${datasetId}...`);
+
+    unProcessedFilelist = await req.pubapi.getDatasetFileList(datasetId);
+
+    unProcessedFilelist = unProcessedFilelist.sort((fileA, fileB) => fileA.filename.localeCompare(fileB.filename));
+    unProcessedFilelist.unshift({
+      filename: t('developer.display.all_files', { lng: req.language }),
+      mime_type: 'application/zip',
+      file_type: 'zip',
+      type: 'all',
+      hash: '',
+      parent_id: datasetId
+    });
+
+    const fileList: FileImportDto[][] = [];
+    unProcessedFilelist.forEach((file: FileImportDto, index: number) => {
+      switch (file.type) {
+        case 'data_table':
+          file.link = req.buildUrl(`/developer/${datasetId}/revision/${file.parent_id}/datatable`, req.language);
+          break;
+        case 'dimension':
+          file.link = req.buildUrl(`/developer/${datasetId}/dimension/${file.parent_id}/lookup`, req.language);
+          break;
+        case 'measure':
+          file.link = req.buildUrl(`/developer/${datasetId}/measure/lookup`, req.language);
+          break;
+        case 'all':
+          file.link = req.buildUrl(`/developer/${datasetId}/download`, req.language);
+          break;
+      }
+      if (index % 4 === 0) {
+        fileList.push([file]);
+      } else {
+        fileList[fileList.length - 1].push(file);
+      }
+    });
+
+    const datasetJson = hljs.highlight(JSON.stringify(dataset, null, 2), {
+      language: 'json',
+      ignoreIllegals: true
+    }).value;
+
+    res.render('consumer/view', {
+      ...datasetView,
+      datasetMetadata: previewMetadata,
+      showDeveloperTab: true,
+      datasetJson,
+      fileList,
+      dataset,
+      pagination,
+      errors,
+      datasetStatus,
+      publishingStatus,
+      datasetTitle
+    });
   } catch (error) {
-    logger.error(error, `Failed to get preview data for revision ${revision.id}`);
-    status = 500;
+    logger.error(error, `Failed to get developer preview data`);
+    throw new UnknownException();
   }
-
-  try {
-    logger.debug(`Sending request to backend for file list of dataset ${dataset.id}...`);
-    unProcessedFilelist = await req.pubapi.getDatasetFileList(dataset.id);
-  } catch (err) {
-    logger.error(err);
-  }
-
-  unProcessedFilelist = unProcessedFilelist.sort((fileA, fileB) => fileA.filename.localeCompare(fileB.filename));
-  unProcessedFilelist.unshift({
-    filename: t('developer.display.all_files', { lng: req.language }),
-    mime_type: 'application/zip',
-    file_type: 'zip',
-    type: 'all',
-    hash: '',
-    parent_id: dataset.id
-  });
-
-  const fileList: FileImportDto[][] = [];
-  unProcessedFilelist.forEach((file: FileImportDto, index: number) => {
-    switch (file.type) {
-      case 'data_table':
-        file.link = req.buildUrl(`/developer/${dataset.id}/revision/${file.parent_id}/datatable`, req.language);
-        break;
-      case 'dimension':
-        file.link = req.buildUrl(`/developer/${dataset.id}/dimension/${file.parent_id}/lookup`, req.language);
-        break;
-      case 'measure':
-        file.link = req.buildUrl(`/developer/${dataset.id}/measure/lookup`, req.language);
-        break;
-      case 'all':
-        file.link = req.buildUrl(`/developer/${dataset.id}/download`, req.language);
-        break;
-    }
-    if (index % 4 === 0) {
-      fileList.push([file]);
-    } else {
-      fileList[fileList.length - 1].push(file);
-    }
-  });
-
-  const datasetJson = hljs.highlight(JSON.stringify(dataset, null, 2), {
-    language: 'json',
-    ignoreIllegals: true
-  }).value;
-
-  res.status(status);
-  res.render('consumer/view', {
-    ...datasetView,
-    datasetMetadata: previewMetadata,
-    showDeveloperTab: true,
-    datasetJson,
-    fileList,
-    dataset,
-    pagination,
-    errors,
-    datasetStatus,
-    publishingStatus,
-    datasetTitle
-  });
 };
 
 export const downloadDataTableFromRevision = async (req: Request, res: Response, next: NextFunction) => {
-  const dataset: DatasetDTO = res.locals.dataset;
-  const revision = dataset.revisions?.find((rev: RevisionDTO) => rev.id === req.params.revisionId);
+  const datasetId = req.params.datasetId;
 
-  if (!revision) {
-    logger.error('Invalid or missing revisionId');
-    next(new NotFoundException('errors.revision_missing'));
-    return;
-  }
-
-  if (!revision.data_table) {
-    logger.error('Invalid or missing data table');
-    next(new NotFoundException('errors.data_table_missing'));
-    return;
-  }
-
-  const dataTable: DataTableDto = revision.data_table;
   try {
-    const attachmentName: string = revision.data_table?.original_filename || revision.id;
+    const dataset = await req.pubapi.getDataset(datasetId, DatasetInclude.LatestRevision);
+    const revision = dataset.end_revision;
+    const dataTable = await req.pubapi.getRevisionDataTable(datasetId, dataset.end_revision_id!);
+
+    if (!revision) {
+      logger.error('Invalid or missing revisionId');
+      next(new NotFoundException('errors.revision_missing'));
+      return;
+    }
+
+    if (!dataTable) {
+      logger.error('Invalid or missing data table');
+      next(new NotFoundException('errors.data_table_missing'));
+      return;
+    }
+
+    const attachmentName: string = dataTable.original_filename || revision.id;
     const headers = getDownloadHeaders(dataTable.file_type as FileFormat, attachmentName);
 
     if (!headers) {
       throw new NotFoundException('invalid file format');
     }
-    const fileStream = await req.pubapi.getOriginalUpload(dataset.id, revision.id);
+    const fileStream = await req.pubapi.getOriginalUpload(datasetId, revision.id);
     res.writeHead(200, headers);
     const readable: Readable = Readable.from(fileStream);
     readable.pipe(res);
@@ -188,29 +187,34 @@ export const downloadLookupFileFromMeasure = async (req: Request, res: Response,
 };
 
 export const downloadLookupFileFromDimension = async (req: Request, res: Response, next: NextFunction) => {
-  const dataset = singleLangDataset(res.locals.dataset, req.language);
-  const dimension = dataset.dimensions?.find((dimension) => dimension.id === req.params.dimensionId);
+  const datasetId = req.params.datasetId;
+  const dimensionId = req.params.dimensionId;
 
-  if (!dimension) {
-    logger.error(`Invalid or missing Dimension ID, requested id is ${req.params.dimensionId}`);
-    next(new NotFoundException('errors.dimension_missing'));
-    return;
-  }
-
-  if (!dimension.lookupTable) {
-    logger.error('Invalid or missing dimension lookup table');
-    next(new NotFoundException('errors.dimension_lookup_missing'));
-    return;
-  }
-
-  const lookupTable: LookupTableDTO = dimension.lookupTable;
   try {
+    const dataset = await req.pubapi.getDataset(datasetId, DatasetInclude.Dimensions);
+    const localisedDataset = singleLangDataset(dataset, req.language);
+    const dimension = localisedDataset.dimensions?.find((dimension) => dimension.id === dimensionId);
+
+    if (!dimension) {
+      logger.error(`Invalid or missing Dimension ID, requested id is ${dimensionId}`);
+      next(new NotFoundException('errors.dimension_missing'));
+      return;
+    }
+
+    if (!dimension.lookupTable) {
+      logger.error('Invalid or missing dimension lookup table');
+      next(new NotFoundException('errors.dimension_lookup_missing'));
+      return;
+    }
+
+    const lookupTable: LookupTableDTO = dimension.lookupTable;
     const attachmentName: string = lookupTable.original_filename || dimension.id;
     const headers = getDownloadHeaders(lookupTable.file_type as FileFormat, attachmentName);
 
     if (!headers) {
       throw new NotFoundException('invalid file format');
     }
+
     const fileStream = await req.pubapi.getOriginalUploadDimension(dataset.id, dimension.id);
     res.writeHead(200, headers);
     const readable: Readable = Readable.from(fileStream);
@@ -221,21 +225,18 @@ export const downloadLookupFileFromDimension = async (req: Request, res: Respons
 };
 
 export const downloadAllDatasetFiles = async (req: Request, res: Response, next: NextFunction) => {
-  const dataset = singleLangDataset(res.locals.dataset, req.language);
-  const revision = dataset.revisions?.sort((revA, revB) => {
-    if (revA.revision_index < revB.revision_index) return -1;
-    if (revA.revision_index > revB.revision_index) return 1;
-    return 0;
-  })[0];
-  const datasetTitle = revision?.metadata?.title || dataset.id;
+  logger.debug(`Downloading all files for dataset ${req.params.datasetId}`);
   try {
+    const dataset = await req.pubapi.getDataset(req.params.datasetId, DatasetInclude.LatestRevision);
+    const latestRevision = singleLangDataset(dataset, req.language).end_revision;
+    const datasetTitle = latestRevision?.metadata?.title || dataset.id;
     const attachmentName = `${slugify(datasetTitle, { lower: true })}`;
-
     const headers = getDownloadHeaders(FileFormat.Zip, attachmentName);
 
     if (!headers) {
       throw new NotFoundException('invalid file format');
     }
+
     const fileStream = await req.pubapi.getAllDatasetFiles(dataset.id);
     res.writeHead(200, headers);
     const readable: Readable = Readable.from(fileStream);
@@ -247,11 +248,12 @@ export const downloadAllDatasetFiles = async (req: Request, res: Response, next:
 };
 
 export const rebuildCube = async (req: Request, res: Response, next: NextFunction) => {
-  const dataset = res.locals.dataset;
+  const datasetId = req.params.datasetId;
 
   try {
-    await req.pubapi.rebuildCube(dataset.id, dataset.end_revision_id);
-    res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+    const dataset = await req.pubapi.getDataset(datasetId);
+    await req.pubapi.rebuildCube(datasetId, dataset.end_revision_id!);
+    res.redirect(req.buildUrl(`/publish/${datasetId}/overview`, req.language));
   } catch (_err) {
     logger.error(_err, 'Error rebuilding the cube');
     next(new NotFoundException('errors.import_missing'));

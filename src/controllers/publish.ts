@@ -530,7 +530,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
   try {
     const [datasetDTO, revisionDTO, previewDTO, filtersDTO]: [DatasetDTO, RevisionDTO, ViewDTO, FilterTable[]] =
       await Promise.all([
-        req.pubapi.getDataset(datasetId, DatasetInclude.All),
+        req.pubapi.getDataset(datasetId, DatasetInclude.Preview),
         req.pubapi.getRevision(datasetId, endRevisionId),
         req.pubapi.getRevisionPreview(
           datasetId,

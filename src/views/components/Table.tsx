@@ -73,7 +73,7 @@ export default function Table<T>({ columns, rows, colgroup, inverted, isSticky, 
           <>
             <thead className="govuk-table__head">
               <tr className="govuk-table__row">
-                {columns.map((col, index) => {
+                {columns?.map((col, index) => {
                   const isObject = typeof col === 'object';
                   const hasLabel = isObject && 'label' in col;
                   return (
@@ -96,7 +96,7 @@ export default function Table<T>({ columns, rows, colgroup, inverted, isSticky, 
               </tr>
             </thead>
             <tbody className="govuk-table__body">
-              {rows.map((row, index) => (
+              {rows?.map((row, index) => (
                 <tr key={index} className="govuk-table__row">
                   {columns.map((col, index) => {
                     const isObject = typeof col === 'object';
