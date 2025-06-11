@@ -349,6 +349,14 @@ export class PublisherApi {
     );
   }
 
+  public async getRevisionDataTable(datasetId: string, revisionId: string): Promise<DataTableDto> {
+    logger.debug(`Fetching revision datatable: ${revisionId}`);
+
+    return this.fetch({ url: `dataset/${datasetId}/revision/by-id/${revisionId}/data-table` }).then(
+      (response) => response.json() as unknown as DataTableDto
+    );
+  }
+
   public async getRevisionPreview(
     datasetId: string,
     revisionId: string,
