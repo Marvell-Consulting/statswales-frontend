@@ -655,7 +655,7 @@
   box-shadow: none;
 }
 .wg .option-select {
-  max-height: 200px;
+  max-height: 350px;
   overflow-y: auto;
 }
 .wg .govuk-checkboxes--bg .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before {
