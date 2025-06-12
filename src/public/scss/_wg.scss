@@ -587,13 +587,6 @@ $whitepurple: #eed5e3;
       border-left: 10px solid $green;
     }
 
-    &__title {
-      // color: $black;
-    }
-
-    &__header {
-    }
-
     &__content {
       background-color: transparent;
       padding: 20px;
@@ -814,7 +807,7 @@ $whitepurple: #eed5e3;
   }
 
   .option-select {
-    max-height: 200px;
+    max-height: 350px;
     overflow-y: auto;
   }
 
@@ -1541,7 +1534,7 @@ $whitepurple: #eed5e3;
   .checkboxes__label__filter {
     font-size: 14px;
     margin-top: 8px;
-    margin-left: 1em;
+    padding-left: 1em;
   }
 
   .checkboxes__input__filter {

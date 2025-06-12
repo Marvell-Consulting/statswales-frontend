@@ -19,6 +19,12 @@ const normalizeFilters = (options: FilterTable['values']): CheckboxOptions[] => 
   });
 };
 
+const filterOptionCount = (options: FilterTable['values']): number => {
+  return options.reduce((count, opt) => {
+    return opt.children ? count + filterOptionCount(opt.children) : count + 1;
+  }, 0);
+};
+
 export const Filters = ({ filters, url }: FiltersProps) => {
   const parsedFilter = qs.parse(url.split('?')[1])?.filter;
   return (
@@ -33,7 +39,7 @@ export const Filters = ({ filters, url }: FiltersProps) => {
             key={index}
             data-values={JSON.stringify(values)}
           >
-            <h3 className="region-subhead">{filter.columnName}</h3>
+            <h3 className="region-subhead">{`${filter.columnName} (${filterOptionCount(filter.values)})`}</h3>
             <div className="filter-container option-select">
               <CheckboxGroup
                 name={`filter[${filter.columnName}]`}
@@ -54,7 +60,7 @@ export const Filters = ({ filters, url }: FiltersProps) => {
               const values = filter.getAttribute("data-values");
               const div = document.createElement("div");
               div.classList.add("govuk-checkboxes__item");
-            
+
               const allCheckbox = document.createElement("input")
               allCheckbox.classList.add("govuk-checkboxes__input", "checkboxes__input__filter");
               allCheckbox.setAttribute("id", name + "-all")
@@ -78,7 +84,7 @@ export const Filters = ({ filters, url }: FiltersProps) => {
 
                 allCheckbox.checked = !anyChecked
               }
-              
+
               childCheckboxes.forEach(checkbox => checkbox.addEventListener("change", checkState));
 
               allCheckbox.addEventListener("change", (e) => {
@@ -106,7 +112,7 @@ export const Filters = ({ filters, url }: FiltersProps) => {
               parent.insertBefore(document.createElement("hr"), parent.firstChild);
               parent.insertBefore(checkbox, parent.firstChild);
             });
-            
+
           })();
           `
         }}
