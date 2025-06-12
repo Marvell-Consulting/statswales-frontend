@@ -1258,7 +1258,7 @@
 .wg .checkboxes__label__filter {
   font-size: 14px;
   margin-top: 8px;
-  margin-left: 1em;
+  padding-left: 1em;
 }
 .wg .checkboxes__input__filter {
   height: 34px;
