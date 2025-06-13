@@ -21,7 +21,8 @@ const normalizeFilters = (options: FilterTable['values']): CheckboxOptions[] => 
 
 const filterOptionCount = (options: FilterTable['values']): number => {
   return options.reduce((count, opt) => {
-    return opt.children ? count + filterOptionCount(opt.children) : count + 1;
+    const childCount = opt.children ? filterOptionCount(opt.children) : 0;
+    return count + childCount + 1;
   }, 0);
 };
 
