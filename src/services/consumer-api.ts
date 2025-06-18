@@ -66,7 +66,9 @@ export class ConsumerApi {
   }
 
   public async getPublishedTopics(topicId?: string, page = 1, limit = 20): Promise<PublishedTopicsDTO> {
-    logger.debug(`Fetching published datasets for topic: ${topicId}`);
+    if (topicId) {
+      logger.debug(`Fetching published datasets for topic: ${topicId}`);
+    }
     const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
     const url = topicId ? `v1/topic/${topicId}?${qs}` : `v1/topic`;
 
