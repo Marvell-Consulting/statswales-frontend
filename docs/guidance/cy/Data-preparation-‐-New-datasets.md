@@ -433,7 +433,7 @@ Ar gyfer casglu data, ceisiwch gynnwys:
 
 Ar gyfer cyfrifo data, ceisiwch gynnwys:
 
-- a oes unrhyw [dechnegau dadansoddi data](https://analysisfunction.civilservice.gov.uk/policy-store/guide-to-gss-statistical-techniques-and-tools/) wedi cael eu defnyddio, megis rhagfynegi neu raddio 
+- a oes unrhyw [dechnegau dadansoddi data](https://analysisfunction.civilservice.gov.uk/policy-store/guide-to-gss-statistical-techniques-and-tools/) wedi cael eu defnyddio, megis rhagfynegi neu raddio
 - a oes safon a gydnabyddir yn eang wedi cael ei defnyddio, neu un a ddatblygwyd gan y cyhoeddwr
 
 #### Ansawdd ystadegol
@@ -441,7 +441,7 @@ Ar gyfer cyfrifo data, ceisiwch gynnwys:
 Mewn brawddegau byr a syml, esboniwch unrhyw faterion sy'n cael effaith arwyddocaol ar y data. Pan fo hynny'n berthnasol, ceisiwch gynnwys unrhyw:
 
 - fesurau meintiol lle y ceir ansicrwydd
-- effaith unrhyw rai o'r ffynonellau data neu'r technegau dadansoddi a ddefnyddiwyd 
+- effaith unrhyw rai o'r ffynonellau data neu'r technegau dadansoddi a ddefnyddiwyd
 - esboniadau sy'n angenrheidiol er mwyn egluro unrhyw godau nodyn gwerth data a ddefnyddiwyd
 
 Dylai'r adran hon gynnwys mwy na 'Gweler yr adroddiad ansawdd ystadegol'. Os yw ar gael, gallwch gynnwys **crynodeb lefel uchel** o’r adroddiad ansawdd ystadegol. Dylech ychwanegu dolen i’r adroddiad yn yr adran ‘Adroddiadau cysylltiedig’, nid fel dolen yma.
