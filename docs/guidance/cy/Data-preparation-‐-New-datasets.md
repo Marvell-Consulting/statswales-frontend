@@ -426,14 +426,25 @@ Mewn brawddegau byr a syml, esboniwch naill ai:
 - y fethodoleg a ddefnyddiwyd i gyfrifo’r data
 - y ddau uchod
 
+Ar gyfer casglu data, ceisiwch gynnwys:
+
+- enwau penodol a mathau o gasgliadau data a ddefnyddiwyd, er enghraifft “Ffurflen HO 13" yn lle "arolwg", a pham y defnyddiwyd y rhain
+- digon o wybodaeth er mwyn i ddefnyddwyr allu mynd ati i ddarganfod mwy am y technegau casglu penodol a ddefnyddiwyd
+
+Ar gyfer cyfrifo data, ceisiwch gynnwys:
+
+- a oes unrhyw [dechnegau dadansoddi data](https://analysisfunction.civilservice.gov.uk/policy-store/guide-to-gss-statistical-techniques-and-tools/) wedi cael eu defnyddio, megis rhagfynegi neu raddio
+- a oes safon a gydnabyddir yn eang wedi cael ei defnyddio, neu un a ddatblygwyd gan y cyhoeddwr
+
 #### Ansawdd ystadegol
 
-Mewn brawddegau byr a syml, esboniwch unrhyw faterion neu newidiadau methodolegol sy’n ymwneud a’r set ddata, gan gynnwys unrhyw:
+Mewn brawddegau byr a syml, esboniwch unrhyw faterion sy'n cael effaith arwyddocaol ar y data. Pan fo hynny'n berthnasol, ceisiwch gynnwys unrhyw:
 
-- nodiadau sy’n berthnasol i’r holl werthoedd data yn y set ddata
-- esboniadau wedi’u haddasu sy’n angenrheidiol er mwyn egluro unrhyw godau nodiadau gwerthoedd data a ddefnyddiwyd
+- fesurau meintiol lle y ceir ansicrwydd
+- effaith unrhyw rai o'r ffynonellau data neu'r technegau dadansoddi a ddefnyddiwyd
+- esboniadau sy'n angenrheidiol er mwyn egluro unrhyw godau nodyn gwerth data a ddefnyddiwyd
 
-Os yw ar gael, gallwch gynnwys **crynodeb lefel uchel** o’r adroddiad ansawdd ystadegol. Dylech ychwanegu dolen i’r adroddiad yn yr adran ‘Adroddiadau cysylltiedig’, nid fel dolen yma.
+Dylai'r adran hon gynnwys mwy na 'Gweler yr adroddiad ansawdd ystadegol'. Os yw ar gael, gallwch gynnwys **crynodeb lefel uchel** o’r adroddiad ansawdd ystadegol. Dylech ychwanegu dolen i’r adroddiad yn yr adran ‘Adroddiadau cysylltiedig’, nid fel dolen yma.
 
 ##### Talgrynnu wedi’i wneud
 

@@ -21,11 +21,9 @@ export default function Quality(props) {
 
               <ul className="govuk-list govuk-list--bullet">
                 <li>{props.t('publish.quality.explain_1')}</li>
-                <ul className="govuk-list govuk-list--bullet">
-                  <li>{props.t('publish.quality.explain_1a')}</li>
-                  <li>{props.t('publish.quality.explain_1b')}</li>
-                </ul>
                 <li>{props.t('publish.quality.explain_2')}</li>
+                <li>{props.t('publish.quality.explain_3')}</li>
+                <li>{props.t('publish.quality.explain_4')}</li>
               </ul>
 
               <div className="govuk-form-group">

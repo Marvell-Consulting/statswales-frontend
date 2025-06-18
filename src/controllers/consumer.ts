@@ -2,6 +2,7 @@ import { Readable } from 'node:stream';
 
 import { Request, Response, NextFunction } from 'express';
 import slugify from 'slugify';
+import qs from 'qs';
 
 import { DatasetListItemDTO } from '../dtos/dataset-list-item';
 import { ResultsetWithCount } from '../interfaces/resultset-with-count';
@@ -13,7 +14,9 @@ import { FileFormat } from '../enums/file-format';
 import { getDownloadHeaders } from '../utils/download-headers';
 import { logger } from '../utils/logger';
 import { Locale } from '../enums/locale';
-import qs from 'qs';
+import { appConfig } from '../config';
+
+const config = appConfig();
 
 export const listTopics = async (req: Request, res: Response, next: NextFunction) => {
   const topicId = req.params.topicId ? req.params.topicId.match(/\d+/)?.[0] : undefined;
@@ -25,8 +28,15 @@ export const listTopics = async (req: Request, res: Response, next: NextFunction
     const childTopics = children?.map((topic) => ({ ...topic, slug: slugify(topic.name, { lower: true }) })) || [];
     const parentTopics = parents?.map((topic) => ({ ...topic, slug: slugify(topic.name, { lower: true }) })) || [];
     const datasetItems = datasets?.data;
+    const consumerApiUrl = `${config.backend.url}/v1/docs`;
 
-    res.render('consumer/topic-list', { selectedTopic, childTopics, parentTopics, datasets: datasetItems });
+    res.render('consumer/topic-list', {
+      selectedTopic,
+      childTopics,
+      parentTopics,
+      datasets: datasetItems,
+      consumerApiUrl
+    });
   } catch (err) {
     next(err);
   }
