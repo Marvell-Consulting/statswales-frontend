@@ -1630,7 +1630,7 @@
       "heading": "Find statistics and data about Wales",
       "topics": "Topics",
       "topic": "Topic",
-      "api": "Browse by topic or <a rel=\"noreferrer noopener\" target=\"_blank\" href=\"https://api.dev.stats.cymru/v1/docs/#/\">get API access (opens in new tab)</a>.",
+      "api": "Browse by topic or <a rel=\"noreferrer noopener\" target=\"_blank\" href=\"{{url}}\">get API access (opens in new tab)</a>.",
       "dataset": {
         "first_published": "First published: {{published}}"
       }

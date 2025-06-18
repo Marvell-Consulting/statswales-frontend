@@ -99,7 +99,7 @@ export default function TopicList(props) {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <p>
-            <T>consumer.topic_list.api</T>
+            <T url={props.consumerApiUrl} raw>consumer.topic_list.api</T>
           </p>
 
           {!props.selectedTopic && (
