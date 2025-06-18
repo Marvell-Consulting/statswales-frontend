@@ -433,21 +433,17 @@ For data collection, try to include:
 For data calculation, try to include whether:
 
 - any [data analysis techniques](https://analysisfunction.civilservice.gov.uk/policy-store/guide-to-gss-statistical-techniques-and-tools/) have been used, such as forecasting or scaling
-- a widely recognised standard has been used, one developed by the publisher
+- a widely recognised standard has been used, or one developed by the publisher
 
 #### Statistical quality
 
-In short, simple sentences explain any issues or methodological changes related to the dataset including any:
+In short, simple sentences explain any issues that significantly affect the data. Where applicable, try to include any:
 
-- notes relevant to all data values in the dataset
-- custom explanations needed to clarify any data value note codes used
+- quantitative measures of uncertainty
+- impact from any of the data sources or analysis techniques used
+- explanations needed to clarify any data value note codes used
 
-Try to include the impact on all the data in the dataset of any:
-
-- limitations, biases or uncertainties in the data sources used
-- deviations from standards, or limitations, in any of the data analysis techniques used in calculating the data
-
-If available, you can include a **high-level summary** of the statistical quality report. You should add a link to the report in the ‘Related reports’ section, not as a link here.
+This section should contain more than 'See the statistical quality report'. If available, you can include a **high-level summary** of the statistical quality report. You should add a link to the report in the ‘Related reports’ section, not as a link here.
 
 ##### Rounding applied
 

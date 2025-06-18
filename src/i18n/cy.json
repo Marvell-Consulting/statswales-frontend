@@ -424,11 +424,11 @@
     },
     "quality": {
       "heading": "Beth yw ansawdd ystadegol y set ddata hon?",
-      "explain": "Yn fyr, mewn brawddegau syml, esboniwch:",
-      "explain_1": "unrhyw faterion neu newidiadau methodolegol sy'n ymwneud â'r set ddata hon, gan gynnwys unrhyw:",
-      "explain_1a": "nodiadau sy'n berthnasol i'r holl werthoedd data yn y set ddata hon",
-      "explain_1b": "esboniadau wedi'u haddasu sy'n angenrheidiol er mwyn egluro unrhyw godau nodiadau a ddefnyddiwyd",
-      "explain_2": "crynodeb lefel uchel o'r adroddiad ansawdd ystadegol, os yw ar gael",
+      "explain": "Mewn brawddegau byr a syml, esboniwch unrhyw faterion sy'n cael effaith arwyddocaol ar y data. Pan fo hynny'n berthnasol, ceisiwch gynnwys unrhyw:",
+      "explain_1": "fesurau meintiol lle y ceir ansicrwydd",
+      "explain_2": "effaith unrhyw rai o'r ffynonellau data neu'r technegau dadansoddi a ddefnyddiwyd ",
+      "explain_3": "esboniadau sy'n angenrheidiol er mwyn egluro unrhyw godau nodyn gwerth data a ddefnyddiwyd",
+      "explain_4": "crynodeb lefel uchel o'r adroddiad ansawdd ystadegol, os yw ar gael",
       "language": "Dylid nodi hyn yn yr iaith yr ydych chi'n gweld y gwasanaeth hwn.",
       "form": {
         "quality": {
