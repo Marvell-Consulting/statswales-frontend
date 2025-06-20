@@ -1,15 +1,19 @@
 {
   "app_title": "StatsCymru",
-  "developer_warning": "<strong class=\"govuk-tag govuk-tag--red govuk-phase-banner__content__tag\">Warning</strong> Tudalen y datblygwr yw hon ac nid yw wedi bod trwy waith ymchwil gyda defnyddwyr",
+  "developer_warning": "<strong class=\"govuk-tag govuk-tag--red govuk-phase-banner__content__tag\">Warning</strong> Tudalen datblygwr yw hon ac nid yw wedi bod yn destun ymchwil gan ddefnyddwyr",
   "developer_tag": "<span class=\"govuk-tag govuk-tag--yellow govuk-phase-banner__content__tag\">Developer Page</span>",
   "external_tag": "<span class=\"govuk-tag govuk-tag--orange govuk-phase-banner__content__tag\">External Page</span>",
-  "yes": "Oes",
-  "no": "Nac oes",
   "toc": "Cynnwys",
+  "user_roles": {
+    "editor": "Golygydd",
+    "approver": "Cymeradwywr"
+  },
   "buttons": {
     "continue": "Parhau",
     "back": "Yn ôl",
-    "upload_csv": "Parhau"
+    "cancel": "Canslo",
+    "upload_csv": "Parhau",
+    "preview": "Rhagolwg (bydd yn agor mewn tab newydd)"
   },
   "badge": {
     "dataset_status": {
@@ -17,11 +21,14 @@
       "live": "Set ddata fyw"
     },
     "publishing_status": {
-      "published": "Cyhoeddwyd",
       "incomplete": "Anghyflawn",
-      "scheduled": "Wedi'i hamserlennu",
-      "update_incomplete": "Diweddariad yn Anghyflawn",
-      "update_scheduled": "Diweddariad wedi'i Amserlennu"
+      "update_incomplete": "Diweddariad yn anghyflawn",
+      "pending_approval": "Yn aros am gymeradwyaeth",
+      "update_pending_approval": "Diweddariad yn aros am gymeradwyaeth",
+      "changes_requested": "Materion i'w datrys",
+      "scheduled": "Amserlennwyd",
+      "update_scheduled": "Diweddariad wedi'i amserlennu",
+      "published": "Cyhoeddwyd"
     }
   },
   "pagination": {
@@ -31,25 +38,29 @@
     "page_size": "Maint y dudalen"
   },
   "header": {
-    "product_name": "StatsCymru F3.0",
+    "product_name": "StatsCymru V3.0",
     "beta": "Beta",
-    "feedback": "Rydych chi'n edrych ar fersiwn newydd o StatsCymru.  Gallwch gael cymorth trwy droi at <a class=\"govuk-link\" href=\"http://statswales3support.slack.com\">Slack</a>.",
-    "logo": "StatsCymru logo",
+    "feedback": "Rydych chi'n edrych ar fersiwn newydd o StatsCymru. Gallwch gael cymorth trwy droi at <a class=\"govuk-link\" href=\"http://statswales3support.slack.com\">Slack</a>.",
+    "logo": "Logo StatsCymru",
     "navigation": {
+      "home": "Hafan",
       "menu": "Dewislen",
       "skip_to_content": "Neidio i'r prif gynnwys",
       "publish_dataset": "Cyhoeddi set ddata",
-      "guidance": "Canllawiau",
+      "guidance": "Canllaw",
       "list_datasets": "Rhestru setiau data",
       "logout": "Allgofnodi",
-      "developer": "Datblygwr"
+      "login": "Mewngofnodi",
+      "developer": "Datblygwr",
+      "groups": "Grwpiau",
+      "users": "Defnyddwyr"
     }
   },
   "footer": {
     "top_of_page": "Yn ôl i'r brig",
     "contact_us": "Cysylltu â ni",
     "accessibility": "Hygyrchedd",
-    "copyright_statement": "Datganiad Hawlfraint",
+    "copyright_statement": "Datganiad hawlfraint",
     "cookies": "Cwcis",
     "privacy": "Preifatrwydd",
     "terms_conditions": "Amodau a thelerau",
@@ -65,11 +76,12 @@
     },
     "error": {
       "summary_title": "Mae problem wedi codi",
-      "generic": "Nid oedd modd eich mewngofnodi.  Rhowch gynnig eto yn nes ymlaen.",
-      "expired": "Mae eich sesiwn wedi dod i ben.  Mewngofnodwch eto."
+      "generic": "Ni fu modd eich mewngofnodi. Rhowch gynnig arall yn nes ymlaen.",
+      "expired": "Mae eich sesiwn wedi dod i ben. Bydd angen i chi fewngofnodi eto."
     },
     "form": {
-      "notice_1": "Mae'r enw defnyddiwr a roddwyd i chi yn enw defnyddiwr dros dro.  Dim ond yn ystod y cyfnod profi hwn y byddwch yn gallu ei ddefnyddio i fewngofnodi.",
+      "notice_header": "Pwysig",
+      "notice_1": "Mae'r enw defnyddiwr a roddom i chi yn enw dros dro. Dim ond yn ystod y rownd brofi hon y byddwch yn gallu ei ddefnyddio i fewngofnodi.",
       "notice_2": "Peidiwch â lanlwytho unrhyw ddata sensitif neu ddata na ddylai defnyddwyr eraill StatsCymru gael mynediad iddo.",
       "username": {
         "label": "Enw defnyddiwr",
@@ -81,11 +93,18 @@
   "homepage": {
     "heading": "Setiau data",
     "table": {
-      "id": "Cod adnabod",
+      "id": "ID",
       "title": "Teitl",
+      "group": "Grŵp",
       "last_updated": "Diweddarwyd ddiwethaf",
-      "dataset_status": "Statws set ddata",
-      "publish_status": "Statws cyhoeddi"
+      "dataset_status": "Statws y set ddata",
+      "publish_status": "Statws cyhoeddi",
+      "not_translated": "Heb ei gyfieithu eto"
+    },
+    "no_results": {
+      "summary": "Nid oes gennych chi fynediad i unrhyw setiau data. Rydych chi naill ai:",
+      "summary_1": "wedi cael eich ychwanegu i grŵp heb unrhyw setiau data ynddo",
+      "summary_2": "heb gael mynediad fel golygydd neu gymeradwywr i unrhyw grwpiau"
     },
     "status": {
       "new": "Newydd",
@@ -93,9 +112,12 @@
     },
     "publishing_status": {
       "incomplete": "Anghyflawn",
-      "update_incomplete": "Diweddariad Heb ei Gwblhau",
-      "scheduled": "Wedi'i amserlennu",
-      "update_scheduled": "Diweddariad wedi'i Amserlennu",
+      "update_incomplete": "Diweddariad yn anghyflawn",
+      "pending_approval": "Yn aros am gymeradwyaeth",
+      "update_pending_approval": "Diweddariad yn aros am gymeradwyaeth",
+      "changes_requested": "Materion i'w trwsio",
+      "scheduled": "Amserlennwyd",
+      "update_scheduled": "Diweddariad wedi'i amserlennu",
       "published": "Cyhoeddwyd"
     },
     "buttons": {
@@ -103,21 +125,21 @@
     }
   },
   "guidance": {
-    "title": "Canllawiau ar gyfer StatsCymru 3 (SC3)"
+    "title": "Canllaw ar gyfer StatsCymru 3 (SW3)"
   },
   "dataset_view": {
     "key_information": {
-      "heading": "Gwybodaeth allweddol",
+      "heading": "Prif wybodaeth",
       "last_update": "Diweddariad mwyaf diweddar",
       "next_update": "Disgwylir y diweddariad nesaf (dros dro)",
       "data_provider": "Darparwr data",
       "data_providers": "Darparwr data {{index}}",
       "data_source": "Ffynhonnell data",
       "data_sources": "Ffynhonnell data {{index}}",
-      "no_source": "Dim ffynhonnell benodol gan y darparwr data",
+      "no_source": "Dim ffynhonnell benodol gan ddarparwr y data",
       "data_categories": "Categorïau data",
-      "time_covered": "Cyfnod dan sylw",
-      "time_period": "{{start}} tan {{end}}",
+      "time_covered": "Cyfnod amser dan sylw",
+      "time_period": "{{start}} i {{end}}",
       "update_missing": "Dyddiad cyhoeddi heb ei nodi eto",
       "next_update_missing": "Dyddiad cyhoeddi neu amlder diweddaru heb ei nodi eto",
       "not_updated": "Ni chaiff y set ddata hon ei diweddaru"
@@ -134,26 +156,27 @@
       "a": "Cyfartaledd",
       "c": "Gwybodaeth gyfrinachol",
       "e": "Amcangyfrifedig",
-      "f": "Rhagolygol",
+      "f": "Rhagolwg",
       "k": "Ffigwr isel",
       "p": "Dros dro",
       "r": "Diwygiedig",
       "t": "Cyfanswm",
       "u": "Dibynadwyedd isel",
       "x": "Ddim ar gael",
-      "z": "Ddim yn berthnasol"
+      "z": "Amherthnasol"
     },
     "about": {
       "heading": "Am y set ddata hon",
+      "overview": "Trosolwg",
       "summary": "Crynodeb",
-      "data_collection": "Casglu a chyfrifo data",
+      "data_collection": "Caglu a chyfrifo data",
       "statistical_quality": "Ansawdd ystadegol",
       "designation": "Dynodiad",
       "designations": {
         "official": "Ystadegau swyddogol",
         "accredited": "Ystadegau swyddogol achrededig",
-        "in_development": "Ystadegau swyddogol sy'n cael eu datblygu",
-        "management": "Gwybodaeth reolaethol",
+        "in_development": "Ystadegau swyddogol yn cael eu datblygu",
+        "management": "Gwybodaeth reoli",
         "none": "Dim dynodiad"
       },
       "related_reports": "Adroddiadau cysylltiedig"
@@ -161,7 +184,7 @@
     "published": {
       "heading": "Cyhoeddwyd gan",
       "org": "Sefydliad",
-      "contact": "Cyfeiriad e-bost cysylltu"
+      "contact": "Cyfeiriad e-bost cyswllt"
     },
     "buttons": {
       "csv": "Lawrlwytho fel CSV",
@@ -177,78 +200,126 @@
       "excel": "Lawrlwytho fel Excel",
       "duckdb": "Lawrlwytho fel DuckDB"
     },
-    "table_preview": "Rhagolwg o'r Tabl",
-    "table_note": "Ni ddangosir hwn i'r defnyddiwr",
+    "table_preview": "Rhagolwg o'r tabl [At ddefnydd y Cyhoeddwr yn unig]",
+    "table_note": "Ni fydd y defnyddiwr yn gweld hwn",
     "not_entered": "Heb ei nodi eto",
     "not_selected": "Heb ei ddewis eto",
-    "not_available": "Ddim ar Gael",
+    "not_available": "Ddim ar gael",
     "categories_missing": "Data cyfeirio heb ei ddewis eto",
     "period_cover_missing": "Gwybodaeth am y dyddiad heb ei nodi eto"
   },
   "publish": {
     "header": {
-      "overview": "Dychwelyd i'r trosolwg o'r set ddata",
+      "overview": "Dychwelyd i restr tasgau y set ddata",
       "back": "Yn ôl"
     },
     "cube_preview": {
-      "panel": "Dyma ragolwg o'r set ddata hon.",
-      "heading": "Gwybodaeth allweddol"
+      "panel": "Rhagolwg o'r set ddata yw hwn.",
+      "heading": "Prif wybodaeth"
+    },
+    "delete_draft": {
+      "dataset": {
+        "heading": "Trwy barhau, rydych chi'n cadarnhau y dylid dileu'r set ddata hon",
+        "message": "Gwaredir yr holl ddata ar gyfer y set ddata hon yn barhaol. Ni fydd modd dadwneud hyn.",
+        "button": "Dileu set ddata",
+        "success": "Mae'r set ddata wedi cael ei dileu yn llwyddiannus",
+        "error": "Ni lwyddwyd i ddileu'r set ddata oherwydd gwall ar y gweinydd"
+      },
+      "update": {
+        "heading": "Trwy barhau, rydych chi'n cadarnhau y dylid dileu'r diweddariad hwn",
+        "message": "Caiff yr holl ddata o'r diweddariad hwn ei ddileu'n barhaol, ond ni effeithir ar y set ddata a gyhoeddir. Ni fydd modd dadwneud hyn.",
+        "button": "Dileu diweddariad",
+        "success": "Mae'r diweddariad wedi cael ei ddileu yn llwyddiannus",
+        "error": "Ni lwyddwyd i ddileu'r diweddariad oherwydd gwall ar y gweinydd"
+      }
     },
     "start": {
       "title": "Creu set ddata newydd",
-      "p1": "I greu set ddata newydd, bydd angen y canlynol arnoch:",
+      "p1": "Er mwyn creu set ddata newydd, bydd angen i chi gael:",
       "data_table": "tabl data sy'n cynnwys gwerthoedd data a chyfeiriadau at yr holl ddimensiynau perthnasol",
-      "lookup_table": "unrhyw dablau am-edrych a gynhyrchir gan y defnyddiwr, y mae angen i chi eu cynnwys (os yn berthnasol)",
-      "metadata": "metadata am y set ddata hon, yn yr iaith yr ydych chi'n gweld y gwasanaeth hwn"
+      "lookup_table": "unrhyw dablau am-edrych wedi'u creu gan y defnyddiwr y bydd angen i chi eu cynnwys (os yn berthnasol)",
+      "metadata": "metadata am y set ddata hon, yn yr iaith yr ydych chi'n defnyddio'r gwasanaeth hwn",
+      "errors": {
+        "no_groups": "Rhaid i chi fod yn olygydd mewn o leiaf un grŵp er mwyn creu set ddata"
+      }
     },
     "dimension_name": {
-      "heading": "Beth ddylai enw'r dimensiwn hwn fod ar wefan StatsCymru?",
-      "concise": "fod yn gryno, gan esbonio'r hyn y mae'r dimensiwn yn ei gynnwys yn glir",
-      "language": "cael ei nodi yn yr iaith yr ydych chi'n gweld y gwasanaeth hwn"
+      "dimension_heading": "Beth ddylid galw'r dimensiwn hwn ar wefan StatsCymru?",
+      "measure_heading": "Beth ddylid galw'r mesur hwn ar wefan StatsCymru?",
+      "hint": "Yr enw a ddylai gael ei roi i'r dimensiwn:",
+      "concise": "esboniwch yr hyn y mae'r dimensiwn yn ei gynnwys mewn ffordd glir a chryno",
+      "unique": "gwahanol i enwau dimensiwn eraill yn y set ddata hon",
+      "language": "nodwyd yn yr iaith yr ydych chi'n defnyddio'r gwasanaeth hwn"
     },
     "dimension_type_chooser": {
       "heading": "Ychwanegu data cyfeirio",
       "subheading": "Dimensiwn",
-      "question": "Pa fath o ddata y mae'r dimensiwn hwn yn ei gynnwys?",
+      "question": "Pa fath o ddata sydd yn y dimensiwn hwn?",
       "chooser": {
         "age": "Oedran",
+        "date": "Dyddiadau",
         "ethnicity": "Ethnigrwydd",
         "geography": "Daearyddiaeth",
+        "number": "Niferoedd (nid oes angen tabl am-edrych)",
         "religion": "Crefydd",
         "sex_gender": "Rhyw a rhywedd",
+        "text": "Testun (nid oes angen tabl am-edrych)",
+        "time": "Amseroedd",
         "lookup": "Rhywbeth arall"
       }
     },
     "time_dimension_chooser": {
-      "heading": "Creu dimensiwn sy'n cynnwys dyddiadau",
+      "heading": "Gosod dimensiwn sy'n cynnwys dyddiadau",
       "subheading": "Dyddiadau",
-      "showing": "Sampl o {{rows}} o {{total}} rhes.",
-      "question": "Pa fath o ddyddiadau y mae'r dimensiwn yn eu cynnwys?",
+      "showing": "Sampl o {{rows }} o {{total}} rhes.",
+      "question": "Pa fath o ddyddiadau sydd yn y dimensiwn?",
       "chooser": {
-        "period": "Cyfnodau amser",
-        "period-hint": "Er enghraifft, misoedd neu flynyddoedd y mae'r gwerthoedd data yn berthnasol iddynt",
-        "point": "Pwyntiau penodol mewn amser",
-        "point-hint": "Er enghraifft, dyddiadau penodol pan gasglwyd gwerthoedd data"
+        "period": "Cyfnodau",
+        "period-hint": "Er enghraifft, misoedd neu flynyddoedd y mae gwerthoedd data yn berthnasol iddynt",
+        "point": "Pwyntiau penodol",
+        "point-hint": "Er enghraifft, dyddiadau penodol pan gasglwyd y gwerthoedd data"
       }
+    },
+    "number_chooser": {
+      "heading": "Gosod dimensiwn sy'n cynnwys rhifau",
+      "review_heading": "Gwirio'r dimensiwn",
+      "subheading": "Niferoedd",
+      "showing": "Sampl o {{rows }} o {{total}} rhes.",
+      "question": "Pa fath o rifau sydd yn y dimensiwn hwn?",
+      "chooser": {
+        "integer": "Rhifau cyfan",
+        "decimal": "Rhifau degol",
+        "decimal_places": "Sawl lle degol ddylid eu dangos?"
+      },
+      "confirm": "Trwy barhau, rydych chi'n cadarnhau bod y dimensiwn yn gywir."
     },
     "lookup_table_review": {
       "heading": "Gwirio'r tabl am-edrych",
+      "explain": "Ychwanegwyd y tabl am-edrych a lanlwythwyd i dabl am-edrych safonol. Efallai bod colofnau yn y tabl am-edrych safonol hwn nad oeddent yn y tabl am-edrych a lanlwythwyd.",
+      "dimension_heading": "Gwirio'r dimensiwn",
       "showing": "Dangos sampl o {{rows}} o {{total}} rhes.",
       "confirm": "Trwy barhau, rydych chi'n cadarnhau bod y tabl am-edrych yn gywir.",
-      "go_back": "Dewis gwahanol dabl am-edrych",
+      "dimension_confirm": "Trwy barhau, rydych chi'n cadarnhau bod y dimensiwn yn ymddangos yn gywir.",
+      "go_back": "Dewis tabl am-edrych gwahanol",
+      "choose_different": "Dewis data cyfeirio gwahanol",
+      "change_lookup_table": "Disodli'r tabl am-edrych",
+      "change_date_format": "Newid fformat y dyddiadau",
+      "change_dimension_type": "Newid y math o ddata sydd yn y dimensiwn hwn",
       "column_headers": {
-        "fact_table": "Tabl Ffeithiau:",
-        "lookup_table": "Tabl Am-edrych:",
+        "fact_table": "Tabl ffeithiau:",
+        "lookup_table": "Tabl am-edrych:",
+        "description": "Disgrifiad",
         "description_en": "Disgrifiad (Saesneg)",
         "description_cy": "Disgrifiad (Cymraeg)",
-        "sort_order": "Trefn Ddidoli",
-        "hierarchy": "Hierarchiaeth",
+        "sort_order": "Trefn ddidoli",
+        "hierarchy": "Hierarchaeth",
         "notes_en": "Nodiadau (Saesneg)",
         "notes_cy": "Nodiadau (Cymraeg)"
       }
     },
     "measure_review": {
       "heading": "Gwirio'r tabl mesur",
+      "explain": "Ychwanegwyd y tabl am-edrych mesur a lanlwythwyd i dabl mesur safonol. Efallai y bydd colofnau yn y tabl mesur hwn nad oeddent yn y tabl am-edrych mesur a lanlwythwyd.",
       "showing": "Dangos sampl o {{rows}} o {{total}} rhes.",
       "confirm": "Trwy barhau, rydych chi'n cadarnhau bod y tabl mesur yn gywir.",
       "go_back": "Dewis tabl mesur gwahanol",
@@ -257,43 +328,93 @@
         "lookup_table": "Tabl Am-edrych:",
         "description_en": "Disgrifiad (Saesneg)",
         "description_cy": "Disgrifiad (Cymraeg)",
-        "sort": "Trefn Ddidoli",
-        "sort_order": "Trefn Ddidoli",
+        "description": "Disgrifiad",
+        "decimals": "Lleoedd degol",
+        "hierarchy": "Hierarchaeth",
+        "language": "Iaith",
+        "reference": "Gwerth cyfeirio",
+        "sort": "Trefn ddidoli",
+        "sort_order": "Trefn ddidoli",
+        "notes": "Nodiadau",
         "notes_en": "Nodiadau (Saesneg)",
         "notes_cy": "Nodiadau (Cymraeg)",
-        "decimal": "Gwerth Degol",
         "format": "Fformat",
-        "measure_type": "Math o Werth"
+        "measure_type": "Math o werth"
+      },
+      "column_values": {
+        "null": "Nac oes",
+        "cy-gb": "Cymraeg",
+        "en-gb": "Saesneg",
+        "float": "Rhif pwynt arnawf",
+        "decimal": "Rhif degol",
+        "integer": "Rhif cyfan",
+        "long": "Rhif cyfan mawr",
+        "percentage": "Canran",
+        "string": "Testun plaen",
+        "text": "Testun plaen",
+        "date": "Dyddiad",
+        "datetime": "Dyddiad ac amser",
+        "time": "Amser"
       }
     },
     "time_dimension_review": {
-      "heading": "Cadarnhewch bod y dyddiadau'n gywir",
+      "heading": "Cadarnhau bod y dyddiadau yn gywir",
+      "unknown_name": "Dimensiwn Heb Enw",
+      "actions": "Gweithredoedd",
       "showing": "Dangos sampl o {{rows}} o {{total}} rhes.",
-      "confirm": "Trwy barhau, rydych chi'n cadarnhau bod y dyddiadau'n gywir.",
+      "confirm": "Trwy barhau, rydych chi'n cadarnhau bod y dyddiadau yn gywir.",
       "go_back": "Newid fformat y dyddiad",
+      "change_format": "Newid cynrychiolaeth y dyddiad",
+      "change_name": "Newid enw dimensiwn",
+      "change_measure_name": "Newid enw mesur",
       "column_headers": {
         "date_code": "Cod dyddiad",
-        "description": "Disgrifiad",
-        "start_date": "Dechrau",
+        "start_date": "Cychwyn",
         "end_date": "Gorffen",
-        "date_type": "Math o ddyddiad"
+        "date_type": "Math o ddyddiad",
+        "description": "Disgrifiad",
+        "description_en": "Disgrifiad (Saesneg)",
+        "description_cy": "Disgrifiad (Cymraeg)",
+        "descriptionen": "Disgrifiad (Saesneg)",
+        "descriptioncy": "Disgrifiad (Cymraeg)",
+        "descriptionenglish": "Disgrifiad (Saesneg)",
+        "descriptionwelsh": "Disgrifiad (Cymraeg)",
+        "descriptioncymraeg": "Disgrifiad (Cymraeg)",
+        "description_english": "Disgrifiad (Saesneg)",
+        "description_welsh": "Disgrifiad (Cymraeg)",
+        "description_cymraeg": "Disgrifiad (Cymraeg)",
+        "notes": "Nodiadau",
+        "notesen": "Nodiadau (Saesneg)",
+        "notescy": "Nodiadau (Cymraeg)",
+        "notesenglish": "Nodiadau (Saesneg)",
+        "noteswelsh": "Nodiadau (Cymraeg)",
+        "notescymraeg": "Nodiadau (Cymraeg)",
+        "notes_english": "Nodiadau (Saesneg)",
+        "notes_welsh": "Nodiadau (Cymraeg)",
+        "notes_cymraeg": "Nodiadau (Cymraeg)",
+        "language": "Iaith",
+        "lang": "Iaith",
+        "sortorder": "Trefn Ddidoli",
+        "sort": "Trefn Ddidoli",
+        "sort_order": "Trefn Ddidoli",
+        "hierarchy": "Hierarchaeth"
       },
       "year_type": {
-        "calendar_year": "Blwyddyn Galendr",
-        "calendar_quarter": "Chwarter Calendr",
-        "calendar_month": "Mis Calendr",
-        "financial_year": "Blwyddyn Ariannol",
-        "financial_quarter": "Chwarter Ariannol",
-        "financial_month": "Mis Ariannol",
-        "academic_year": "Blwyddyn Academaidd",
-        "academic_quarter": "Chwarter Academaidd",
-        "academic_month": "Mis Academaidd",
-        "tax_year": "Blwyddyn Dreth",
-        "tax_quarter": "Chwarter Treth",
-        "tax_month": "Mis Treth",
-        "meteorological_year": "Blwyddyn Feteorolegol",
-        "meteorological_quarter": "Chwarter Meteorolegol",
-        "meteorological_month": "Mis Meteorolegol",
+        "calendar_year": "Blwyddyn galendr",
+        "calendar_quarter": "Chwarter calendr",
+        "calendar_month": "Mis calendr",
+        "financial_year": "Blwyddyn ariannol",
+        "financial_quarter": "Chwarter ariannol",
+        "financial_month": "Mis ariannol",
+        "academic_year": "Blwyddyn academaidd",
+        "academic_quarter": "Chwarter academaidd",
+        "academic_month": "Mis academaidd",
+        "tax_year": "Blwyddyn dreth",
+        "tax_quarter": "Chwarter treth",
+        "tax_month": "Mis treth",
+        "meteorological_year": "Blwyddyn feteorolegol",
+        "meteorological_quarter": "Chwarter meteorolegol",
+        "meteorological_month": "Mis meteorolegol",
         "specific_day": "Pwynt penodol mewn amser"
       }
     },
@@ -301,7 +422,7 @@
       "heading": "Lanlwytho tabl am-edrych mesur"
     },
     "period-type-chooser": {
-      "heading": "Beth yw'r cyfnodau amser byrraf yn y dimensiwn?",
+      "heading": "Beth yw'r cyfnodau byrraf yn y dimensiwn?",
       "subheading": "Dyddiadau",
       "chooser": {
         "years": "Blynyddoedd",
@@ -313,13 +434,13 @@
       "heading": "Pa fath o flwyddyn y mae'r dimensiwn yn ei chynrychioli?",
       "chooser": {
         "calendar": "Calendr",
-        "calendar-hint": "1 Ionawr tan 31 Rhagfyr",
+        "calendar-hint": "1 Ionawr i 31 Rhagfyr",
         "financial": "Ariannol",
-        "financial-hint": "1 Ebrill tan 31 Mawrth",
+        "financial-hint": "1 Ebrill i 31 Mawrth",
         "tax": "Treth",
-        "tax-hint": "6 Ebrill tan 5 Ebrill",
+        "tax-hint": "6 Ebrill i 5 Ebrill",
         "academic": "Academaidd",
-        "academic-hint": "1 Medi tan 31 Awst",
+        "academic-hint": "1 Medi i 31 Awst",
         "meteorological": "Meteorolegol",
         "meteorological-hint": "1 Mawrth i 28 neu 29 Chwefror"
       }
@@ -330,9 +451,10 @@
     },
     "quarter_format": {
       "heading": "Pa fformat a ddefnyddir ar gyfer chwarteri yn y dimensiwn?",
-      "heading-alt": "Pa fformat a ddefnyddir ar gyfer cyfansymiau chwarterol?",
+      "heading-alt": "Pa fformat a ddefnyddir ar gyfer y cyfansymiau chwarterol?",
       "example": "Er enghraifft, {{example}}",
-      "fifth_quarter": "A ddefnyddir chwarter i gynrychioli cyfansymiau blynyddol?",
+      "fifth_quarter": "A ddefnyddir pumed chwarter i gynrychioli cyfansymiau blynyddol?",
+      "fifth_example": "Er enghraifft, 2024Q5 i gynrychioli'r cyfanswm ar gyfer 2024",
       "no_quarterly_totals": "Nid oes cyfansymiau chwarterol"
     },
     "month_format": {
@@ -340,65 +462,91 @@
       "example": "Er enghraifft, {{example}}"
     },
     "measure_match_failure": {
-      "heading": "Ni ellir cyfateb data y tabl am-edrych mesur gyda'r tabl data",
-      "information": "Nid oes {{failureCount, number}} cyfeiriad yn y dimensiwn yn cyd-fynd â'r cyfeiriadau yn eich tabl am-edrych mesur.  Dylech wirio:",
-      "formatting": "bod y codau cyfeirio a ddefnyddir yn y tabl data yn gywir",
-      "choices": "eich bod wedi dewis y tabl am-edrych cywir ar gyfer eich mesur"
+      "heading": "Ni ellir cyfateb y tabl am-edrych mesur gyda'r tabl data",
+      "measure_subheading": "Codau cyfeirio yn y tabl am-edrych mesur na ellir eu cyfateb",
+      "information": "{{failureCount, number}} achos o godau cyfeirio yn y tabl data na ellir eu gweld yn y tabl am-edrych mesur.",
+      "things_to_check": "Dylech wirio eich bod wedi dewis y tabl data a'r tabl am-edrych mesur cywir a bod y ddau ohonynt:",
+      "formatting": "yn cynnwys y codau cyfeirio cywir",
+      "choices": "heb fod yn cynnwys unrhyw fylchau ar ôl unrhyw werthoedd",
+      "upload_different_measure": "Lanlwytho tabl am-edrych mesur gwahanol neu wedi'i gywiro"
     },
     "dimension_match_failure": {
       "lookup_heading": "Ni ellir cyfateb data y tabl am-edrych gyda'r tabl data",
       "heading": "Ni ellir cyfateb y data cyfeirio gyda'r tabl data",
-      "lookup_information": "Nid oes {{failureCount, number}} cyfeiriad yn y dimensiwn yn cyd-fynd â'r cyfeiriadau yn eich tabl am-edrych.  Dylech wirio:",
-      "ref_information": "Nid oes {{failureCount, number}} cyfeiriad yn y dimensiwn yn cyd-fynd â chategori y data cyfeirio a ddewisoch.  Dylech wirio:",
-      "formatting": "bod y codau cyfeirio a ddefnyddiwyd yn y tabl data yn gywir",
-      "choices": "eich bod wedi dewis y tabl am-edrych cywir",
-      "subheading": "Ni ellir cyfateb y codau cyfeirio",
-      "ref_choices": "eich bod wedi dewis y categori data cyfeirio cywir",
+      "lookup_information": "{{failureCount, number}} achos o godau cyfeirio yn y tabl data na ellir eu gweld yn y tabl am-edrych a lanlwythwyd.",
+      "you_should_check": "Dylech wirio eich bod wedi dewis y tabl data a'r tabl am-edrych cywir a bod y ddau ohonynt:",
+      "ref_information": "{{failureCount, number}} achos o godau cyfeirio yn y tabl data na ellir eu gweld yn y data cyfeirio safonol a ddewiswyd.",
+      "you_should_check_ref": "Dylech wirio eich bod wedi dewis y tabl data a'r data cyfeirio cywir. Dylech wirio hefyd bod y tabl data:",
+      "formatting": "yn cynnwys y codau cyfeirio cywir",
+      "choices": "heb fod yn cynnwys unrhyw fylchau ar ôl unrhyw werthoedd",
+      "ref_formatting": "yn cynnwys y codau cyfeirio cywir",
+      "ref_choices": "heb fod yn cynnwys unrhyw fylchau ar ôl unrhyw werthoedd",
+      "fact_table_subheading": "Codau cyfeirio yn y tabl data na ellir eu cyfateb",
       "actions": "Gweithredoedd",
-      "upload_different_file": "Lanlwytho tabl data wedi'i gywiro neu dabl data gwahanol",
-      "upload_different_file_warning": "(Bydd hyn yn gwaredu data cyfeirio o bob dimensiwn)",
-      "try_different_format": "Dewis gwahanol dabl am-edrych",
-      "no_matches": "Nid oes unrhyw rai o'r dyddiadau yn cyd-fynd â'r fformat a ddarparwyd"
+      "upload_different_file": "Lanlwythiad wedi'i gywiro neu dabl data gwahanol",
+      "upload_different_file_warning": "Rhybudd: Bydd hyn yn gwaredu'r holl ddata cyfeirio o bob dimensiwn",
+      "try_different_format": "Dewis data cyfeirio gwahanol",
+      "try_different_lookup": "Lanlwytho tabl am-edrych gwahanol neu wedi'i gywiro",
+      "no_matches": "Nid oedd unrhyw rai o'r dyddiadau yn cyd-fynd â'r fformat a ddarparwyd",
+      "missing_data_table_values": "Ceir codau cyfeirio yn y tabl data na ellir eu cyfateb",
+      "missing_lookup_table_values": "Ceir codau cyfeirio yn y tabl am-edrych na ellir eu cyfateb"
     },
     "period_match_failure": {
-      "heading": "Ni ellir cyfateb fformat y dyddiad gyda'r dimensiwn",
-      "information": "Nid oes {{failureCount, number}} cod dyddiad yn y dimensiwn yn cyd-fynd â'r fformat dyddiadau a nodoch.  Dylech wirio:",
-      "formatting": "bod yr holl godau dyddiad yn y dimensiwn yn gywir",
-      "choices": "eich bod wedi nodi'r fformat dyddiad cywir",
+      "heading": "Ni ellir cyfateb fformat y dyddiad i'r dimensiwn",
+      "information": "{{failureCount, number}} achos o godau data yn y dimensiwn nad ydynt yn cyfateb â fformat y dyddiad a nodwyd gennych. Dylech wirio:",
+      "formatting": "bod yr holl godau dyddiad yn y dimensiwn yn gywir ac nad ydynt yn cynnwys unrhyw fylchau",
+      "choices": "eich bod wedi nodi'r fformat cywir o ran y dyddiad",
       "supplied_format": "Fformat dyddiad a nodwyd:",
-      "year_format": "Blwyddyn: {{format}}",
-      "quarter_format": "Chwarter: {{format}}",
-      "month_format": "Mis: {{format}}",
+      "year_format": "Blynyddoedd: {{format}}",
+      "quarter_format": "Chwarteri: {{format}}",
+      "month_format": "Misoedd: {{format}}",
       "date_format": "Dyddiad: {{format}}",
-      "subheading": "Codau dyddiad unigryw na ellir eu cyfateb",
+      "subheading": "Codau dyddiad yn y tabl data na ellir eu cyfateb",
+      "fact_table_subheading": "Codau cyfeirio yn y tabl data na ellir eu cyfateb",
       "actions": "Gweithredoedd",
-      "upload_different_file": "Lanlwytho tabl data wedi'i gywiro neu dabl data gwahanol",
-      "upload_different_file_warning": "(Bydd hyn yn gwaredu data cyfeirio o bob dimensiwn)",
+      "upload_different_file": "Lanlwytho tabl data gwahanol neu wedi'i gywiro",
+      "upload_different_file_warning": "Rhybudd: Bydd hyn yn gwaredu'r holl ddata cyfeirio o bob dimensiwn",
       "try_different_format": "Nodi fformat dyddiad gwahanol",
-      "no_matches": "Nid oes unrhyw rai o'r dyddiadau yn cyd-fynd â'r fformat a ddarparwyd"
+      "no_matches": "Nid oedd unrhyw rai o'r dyddiadau yn cyd-fynd â'r fformat a ddarparwyd"
+    },
+    "group": {
+      "heading": "Pa grŵp ddylai'r set ddata hon berthyn iddo?",
+      "form": {
+        "group_id": {
+          "error": {
+            "invalid": "Dewiswch y grŵp y mae'r set ddata hon yn perthyn iddo",
+            "missing": "Dewiswch y grŵp y dylai'r set ddata hon berthyn iddo"
+          }
+        }
+      }
     },
     "title": {
       "heading": "Beth yw teitl y set ddata hon?",
-      "appear": "Dyma'r teitl a fydd yn ymddangos ar wefan StatsCymru",
+      "appear": "Hwn yw'r teitl a fydd yn ymddangos ar wefan StatsCymru",
       "descriptive": "Dylai fod yn fyr, yn ddisgrifiadol ac yn unigryw",
       "form": {
         "title": {
-          "hint": "Dylid nodi hyn yn yr iaith yr ydych chi'n gweld y gwasanaeth hwn.",
+          "hint": "Dylid nodi hyn yn yr iaith yr ydych chi'n defnyddio'r gwasanaeth hwn.",
           "error": {
             "missing": "Nodwch deitl y set ddata hon",
             "too_long": "Rhaid i deitl y set ddata hon fod yn 1,000 nod neu'n llai",
             "too_short": "Rhaid i deitl y set ddata hon fod yn 3 nod neu'n fwy",
-            "unique": "Mae'r teitl a nodwyd yn cael ei ddefnyddio yn barod ar gyfer set ddata a gyhoeddwyd.  Nodwch deitl unigryw ar gyfer y set ddata hon."
+            "unique": "Mae'r teitl a nodwyd yn cael ei ddefnyddio yn barod ar gyfer set ddata a gyhoeddwyd. Nodwch deitl unigryw ar gyfer y set ddata hon."
+          }
+        },
+        "group_id": {
+          "error": {
+            "missing": "Ni ddewiswyd grŵp ar gyfer y set ddata hon. Mae angen i chi greu'r set ddata hon eto o'r rhestr setiau data."
           }
         }
       }
     },
     "summary": {
       "heading": "Beth yw'r crynodeb o'r set ddata hon?",
-      "explain": "Yn fyr, mae brawddegau syml yn esbonio:",
-      "explain_1": "beth mae'r set ddata hon amdano a'r hyn y mae'n ei ddangos",
-      "explain_2": "dimensiynau'r set ddata hon a pham eu bod wedi cael eu defnyddio, os oes angen",
-      "language": "Dylid nodi hyn yn yr iaith yr ydych chi'n gweld y gwasanaeth hwn.",
+      "explain": "Mewn brawddegau byr a syml, esboniwch:",
+      "explain_1": "set ddata am beth yw hon a'r hyn y mae'n ei ddangos",
+      "explain_2": "dimensiynau'r set ddata hon a pham y'u defnyddiwyd, yn ôl yr angen",
+      "language": "Dylid nodi hyn yn yr iaith yr ydych chi'n defnyddio'r gwasanaeth hwn.",
       "form": {
         "description": {
           "error": {
@@ -409,27 +557,27 @@
     },
     "collection": {
       "heading": "Sut oedd y data wedi cael ei gasglu neu ei gyfrifo?",
-      "explain": "Yn fyr, brawddegau syml sy'n esbonio naill ai:",
+      "explain": "Mewn brawddegau syml a byr, esboniwch naill ai:",
       "explain_1": "y fethodoleg a ddefnyddiwyd i gasglu'r data",
       "explain_2": "y fethodoleg a ddefnyddiwyd i gyfrifo'r data",
       "explain_3": "y ddau uchod",
-      "language": "Dylid nodi hyn yn yr iaith yr ydych chi'n gweld y gwasanaeth hwn.",
+      "language": "Dylid nodi hyn yn yr iaith yr ydych chi'n defnyddio'r gwasanaeth hwn.",
       "form": {
         "collection": {
           "error": {
-            "missing": "Nodwch sut y cafodd y data ei gasglu neu ei gyfrifo"
+            "missing": "Nodwch sut oedd y data wedi cael ei gasglu neu ei gyfrifo"
           }
         }
       }
     },
     "quality": {
       "heading": "Beth yw ansawdd ystadegol y set ddata hon?",
-      "explain": "Mewn brawddegau byr a syml, esboniwch unrhyw faterion sy'n cael effaith arwyddocaol ar y data. Pan fo hynny'n berthnasol, ceisiwch gynnwys unrhyw:",
-      "explain_1": "fesurau meintiol lle y ceir ansicrwydd",
-      "explain_2": "effaith unrhyw rai o'r ffynonellau data neu'r technegau dadansoddi a ddefnyddiwyd ",
-      "explain_3": "esboniadau sy'n angenrheidiol er mwyn egluro unrhyw godau nodyn gwerth data a ddefnyddiwyd",
+      "explain": "Mewn brawddegau syml a byr, esboniwch unrhyw faterion sy'n cael effaith arwyddocaol ar y data. Pan fo hynny'n berthnasol, ceisiwch gynnwys unrhyw:",
+      "explain_1": "fesurau meintiol o ansicrwydd",
+      "explain_2": "effaith unrhyw rai o'r ffynonellau data neu'r technegau dadansoddi a ddefnyddiwyd",
+      "explain_3": "esboniadau sy'n angenrheidiol er mwyn egluro unrhyw godau nodau gwerth data a ddefnyddiwyd",
       "explain_4": "crynodeb lefel uchel o'r adroddiad ansawdd ystadegol, os yw ar gael",
-      "language": "Dylid nodi hyn yn yr iaith yr ydych chi'n gweld y gwasanaeth hwn.",
+      "language": "Dylid nodi hyn yn yr iaith yr ydych chi'n defnyddio'r gwasanaeth hwn.",
       "form": {
         "quality": {
           "error": {
@@ -441,20 +589,20 @@
           "options": {
             "yes": {
               "label": "Ydynt",
-              "note": "Mewn brawddegau syml a byr, esboniwch pa waith talgrynnu sydd wedi cael ei wneud."
+              "note": "Mewn brawddegau syml a byr, esboniwch pa waith talgrynnu a wnaethpwyd."
             },
             "no": {
               "label": "Nac ydynt"
             }
           },
           "error": {
-            "missing": "Nodwch a oes unrhyw rai o'r gwerthoedd data wedi cael eu talgrynnu"
+            "missing": "Nodwch a yw'r gwerthoedd data wedi cael eu talgrynnu mewn unrhyw ffordd"
           }
         },
         "rounding_description": {
-          "label": "Mewn brawddegau syml a byr, esboniwch pa waith talgrynnu sydd wedi cael ei wneud.",
+          "label": "Mewn brawddegau syml a byr, esboniwch pa waith talgrynnu a wnaethpwyd",
           "error": {
-            "missing": "Nodwch pa waith talgrynnu sydd wedi cael ei wneud i'r gwerthoedd data"
+            "missing": "Nodwch pa waith talgrynnu a wnaethpwyd i'r gwerthoedd data"
           }
         }
       }
@@ -476,18 +624,18 @@
           }
         },
         "frequency_value": {
-          "label": "Nodwch y cyfnod rhwng diweddariadau.  Er enghraifft, blwyddyn.",
+          "label": "Nodwch y cyfnod rhwng diweddariadau. Er enghraifft, 1 blwyddyn.",
           "error": {
             "missing": "Nodwch nifer yr wythnosau, y misoedd neu'r blynyddoedd ar gyfer y cyfnod rhwng diweddariadau"
           }
         },
         "frequency_unit": {
           "options": {
-            "select": "Nodwch",
-            "day": "diwrnod",
-            "week": "wythnos",
-            "month": "mis",
-            "year": "blwyddyn"
+            "select": "Dewiswch",
+            "day": "diwrnodau",
+            "week": "wythnosau",
+            "month": "misoedd",
+            "year": "blynyddoedd"
           },
           "error": {
             "missing": "Nodwch a yw'r cyfnod rhwng diweddariadau mewn wythnosau, misoedd neu flynyddoedd"
@@ -504,30 +652,31 @@
         "explain_3": "gwaith cysylltiedig arall",
         "form": {
           "link_url": {
-            "label": "URL y ddolen",
-            "hint": "Dylai hwn gychwyn gyda naill ai 'https://' neu 'http://'",
+            "label": "Dolen URL",
+            "hint": "Dylai hwn ddechrau gyda 'https://' neu 'http://'",
             "error": {
-              "missing": "Nodwch URL y ddolen ar gyfer adroddiad cysylltiedig",
-              "invalid": "Nodwch URL y ddolen yn y fformat cywir"
+              "missing": "Nodwch y ddolen URL ar gyfer adroddiad cysylltiedig",
+              "invalid": "Nodwch y ddolen URL yn y fformat cywir"
             }
           },
           "link_label": {
-            "label": "Testun y ddolen i ymddangos ar y dudalen we",
-            "hint": "Dylid nodi hyn yn yr iaith yr ydych chi'n gweld y gwasanaeth hwn.",
+            "label": "Cysylltu testun i ymddangos ar y dudalen we",
+            "hint": "Dylid nodi hyn yn yr iaith yr ydych chi'n defnyddio'r gwasanaeth hwn.",
             "error": {
-              "missing": "Nodwch destun y ddolen i ymddangos ar y dudalen we am adroddiad cysylltiedig"
+              "missing": "Nodwch destun y ddolen i ymddangos ar y dudalen we i adroddiad cysylltiedig"
             }
           }
         }
       },
       "list": {
-        "heading": "Dolenni adroddiadau a ychwanegwyd",
+        "heading": "Ychwanegwyd dolenni i adroddiadau",
         "table": {
-          "link": "Dolen adroddiad",
+          "link": "Dolen i adroddiad",
           "action_header": "Gweithredu",
           "action_edit": "Newid",
           "action_delete": "Gwaredu"
         },
+        "not_translated": "Heb ei gyfieithu eto",
         "form": {
           "add_another": {
             "heading": "A oes angen i chi ychwanegu dolen i adroddiad arall?",
@@ -540,7 +689,7 @@
               }
             },
             "error": {
-              "missing": "Dewiswch oes os bydd angen i chi ychwanegu dolen i adroddiad arall"
+              "missing": "Dewiswch oes os oes angen i chi ychwanegu dolen i adroddiad arall"
             }
           }
         }
@@ -549,18 +698,18 @@
     "providers": {
       "add": {
         "heading": "Ychwanegu darparwr data",
-        "explain": "Os nad ydych chi'n gallu dod o hyd i ddarparwr y data yn y rhestr, gallwch <a class=\"govuk-link\" href=\"{{request_data_provider_url}}\">ofyn bod darparwr data yn cael ei ychwanegu</a>.",
+        "explain": "Os na allwch chi ddod o hyd i ddarparwr y data yn y rhestr, gallwch <a class=\"govuk-link\" href=\"{{request_data_provider_url}}\">ofyn bod darparwr data yn cael ei ychwanegu</a>.",
         "form": {
           "provider": {
             "hint": "Dechrau teipio neu ddewis o'r rhestr",
             "error": {
-              "missing": "Dewis darparwr data o'r rhestr darparwyr data"
+              "missing": "Dewiswch ddarparwr data o restr y darparwyr data"
             }
           }
         }
       },
       "add_source": {
-        "heading": "Ychwanegu ffynhonnell data gan y darparwr data a ddewiswyd",
+        "heading": "Ychwanegu ffynhonnell ddata o'r darparwr data a ddewiswyd",
         "selected_provider": "Darparwr data a ddewiswyd",
         "form": {
           "has_source": {
@@ -569,7 +718,7 @@
                 "label": "Dewis ffynhonnell"
               },
               "no": {
-                "label": "Dim ffynhonnell benodol gan y darparwr data"
+                "label": "Dim ffynhonnell benodol gan ddarparwr data"
               }
             },
             "error": {
@@ -577,7 +726,7 @@
             }
           },
           "source": {
-            "note": "Os nad ydych yn gallu gweld y ffynhonnell yn y rhestr, gallwch <a class=\"govuk-link\" href=\"{{request_data_source_url}}\">ofyn bod darparwr data yn cael ei ychwanegu</a>.",
+            "note": "Os na allwch chi ddod o hyd i'r ffynhonnell yn y rhestr, gallwch <a class=\"govuk-link\" href=\"{{request_data_source_url}}\">ofyn bod ffynhonnell data yn cael ei hychwanegu</a>.",
             "hint": "Dechrau teipio neu ddewis o'r rhestr",
             "error": {
               "missing": "Dewis ffynhonnell o restr y ffynonellau ar gyfer y darparwr data a ddewiswyd"
@@ -586,14 +735,14 @@
         }
       },
       "list": {
-        "heading": "Ffynonellau a ychwanegwyd",
+        "heading": "Ffynonellau wedi'u hychwanegu",
         "table": {
           "provider": "Darparwr",
           "source": "Ffynhonnell",
           "action_header": "Gweithredu",
           "action_edit": "Newid",
           "action_delete": "Gwaredu",
-          "no_source": "Dim ffynhonnell benodol gan y darparwr data"
+          "no_source": "Dim ffynhonnell benodol wrth y darparwr data"
         },
         "form": {
           "add_another": {
@@ -607,45 +756,45 @@
               }
             },
             "error": {
-              "missing": "Dewiswch oes os bydd angen i chi ychwanegu ffynhonnell arall"
+              "missing": "Dewiswch oes os oes angen i chi ychwanegu ffynhonnell arall"
             }
           }
         }
       }
     },
     "designation": {
-      "heading": "Beth yw dynodiad y set ddata hon?",
+      "heading": "Sut caiff y set ddata hon ei dynodi?",
       "form": {
         "designation": {
           "options": {
             "official": {
-              "label": "Ystadegau gwladol"
+              "label": "Ystadegau swyddogol"
             },
             "accredited": {
               "label": "Ystadegau swyddogol achrededig"
             },
             "in_development": {
-              "label": "Ystadegau swyddogol sy'n cael eu datblygu"
+              "label": "Ystadegau swyddogol yn cael eu datblygu"
             },
             "management": {
-              "label": "Gwybodaeth reolaethol"
+              "label": "Gwybodaeth reoli"
             },
             "none": {
               "label": "Dim dynodiad"
             }
           },
           "error": {
-            "missing": "Nodwch ddynodiad y set ddata hon"
+            "missing": "Dewiswch sut y caiff y set ddata hon ei dynodi"
           }
         }
       }
     },
     "topics": {
-      "heading": "Pa faterion sy'n berthnasol i'r set ddata hon?",
+      "heading": "Pa bynciau sy'n berthnasol i'r set ddata hon?",
       "form": {
         "topics": {
           "error": {
-            "missing": "Nodwch pa faterion sy'n berthnasol i'r set ddata hon"
+            "missing": "Dewiswch pa bynciau sy'n berthnasol i'r set ddata hon"
           }
         }
       }
@@ -657,59 +806,40 @@
           "label": "Dyddiad",
           "hint": "Er enghraifft, 10 05 2024",
           "error": {
-            "invalid": "Rhaid i'r dyddiad y dylid cyhoeddi'r set ddata hon fod yn ddyddiad go iawn",
-            "past": "Rhaid i'r dyddiad y dylid cyhoeddi'r set ddata hon fod yn y dyfodol"
+            "invalid": "Rhaid i'r dyddiad pan ddylid cyhoeddi'r set ddata hon fod yn ddyddiad go iawn",
+            "past": "Rhaid i'r dyddiad pan ddylid cyhoeddi'r set ddata hon fod yn y dyfodol"
           }
         },
         "day": {
           "label": "Diwrnod",
-          "error": "Rhaid i'r dyddiad y dylid cyhoeddi'r set ddata hon gynnwys diwrnod"
+          "error": "Rhaid i'r dyddiad pan ddylid cyhoeddi'r set ddata hon gynnwys diwrnod"
         },
         "month": {
           "label": "Mis",
-          "error": "Rhaid i'r dyddiad y dylid cyhoeddi'r set ddata hon gynnwys mis"
+          "error": "Rhaid i'r dyddiad pan ddylid cyhoeddi'r set ddata hon gynnwys mis"
         },
         "year": {
           "label": "Blwyddyn",
-          "error": "Rhaid i'r dyddiad y dylid cyhoeddi'r set ddata hon gynnwys blwyddyn"
+          "error": "Rhaid i'r dyddiad pan ddylid cyhoeddi'r set ddata hon gynnwys blwyddyn"
         },
         "time": {
           "label": "Amser",
-          "hint": "Y rhagosodiad fydd 09:30 yr amser lleol yn y DU.  Dim ond os bydd angen amser cyhoeddi gwahanol y dylid newid hwn.  Defnyddiwch fformat cloc 24 awr, er enghraifft 15:00.",
+          "hint": "09:30, sef yr amser lleol yn y DU, fydd yn cael ei ragosod. Dim ond os bydd angen amser cyhoeddi gwahanol y dylid newid hwn. Defnyddiwch fformat cloc 24 awr, er enghraifft 15:00.",
           "error": {
-            "invalid": "Rhaid i'r amser y dylid cyhoeddi'r set ddata hon fod yn amser go iawn"
+            "invalid": "Rhaid i'r amser pan ddylid cyhoeddi'r set ddata hon fod yn amser real"
           }
         },
         "hour": {
           "label": "Awr",
-          "error": "Rhaid i'r amser y dylid cyhoeddi'r set ddata hon gynnwys awr"
+          "error": "Rhaid i'r amser pan ddylid cyhoeddi'r set ddata hon gynnwys awr"
         },
         "minute": {
           "label": "Munud",
-          "error": "Rhaid i'r amser y dylid cyhoeddi'r set ddata hon gynnwys munud"
+          "error": "Rhaid i'r amser pan ddylid cyhoeddi'r set ddata hon gynnwys munud"
         }
       },
       "error": {
-        "saving": "Nid oedd modd cadw'r dyddiad cyhoeddi, rhowch gynnig arall yn nes ymlaen"
-      }
-    },
-    "organisation": {
-      "heading": "Sefydliad a thîm cyhoeddi",
-      "form": {
-        "organisation": {
-          "label": "Sefydliad",
-          "placeholder": "Dewis sefydliad",
-          "error": "Dewiswch sefydliad"
-        },
-        "team": {
-          "label": "Tîm",
-          "note": "Os nad ydych yn gallu gweld eich tîm yn y rhestr, neu os bydd enw eich tîm wedi newid, gallwch <a class=\"govuk-link\" href=\"{{request_team}}\">ofyn bod tîm yn cael ei ychwanegu neu'n cael ei newid</a>.",
-          "placeholder": "Dewis tîm",
-          "error": "Dewiswch dîm"
-        }
-      },
-      "error": {
-        "saving": "Nid oedd modd cadw'r tîm, rhowch gynnig arall yn nes ymlaen"
+        "saving": "Nid oedd modd cadw'r dyddiad cyhoeddi. Rhowch gynnig arall yn nes ymlaen."
       }
     },
     "upload": {
@@ -726,7 +856,7 @@
       },
       "errors": {
         "missing": "Dewis tabl data",
-        "api": "Nid oedd modd lanlwytho'r ffeil a ddewiswyd - rhowch gynnig arall ar hyn"
+        "api": "Nid oedd modd lanlwytho'r ffeil a ddewiswyd. Rhowch gynnig arall ar hyn."
       }
     },
     "preview": {
@@ -738,16 +868,21 @@
       "rows": "{{count}} rhes",
       "rows_other": "{{count}} rhes",
       "row_number": "Rhes",
-      "preview_summary": "Mae eich lanlwythiad yn cynnwys $t(publish.preview.columns, {\"count\": {{cols}} }) a $t(publish.preview.rows, {\"count\": {{rows}} }).",
+      "preview_summary": "Mae $t(publish.preview.columns, {\"count\": {{cols}} }) a $t(publish.preview.rows, {\"count\": {{rows}} }) yn eich lanlwythiad.",
       "columns_rows": "$t(publish.preview.columns, {\"count\": {{cols}} }) a $t(publish.preview.rows, {\"count\": {{rows}} })",
-      "upload_summary": "Mae'r tabl data yn cynnwys $t(publish.preview.columns, {\"count\": {{cols}} }) a $t(publish.preview.rows, {\"count\": {{rows}} }).  Mae $t(publish.preview.columns, {\"count\": {{ignored}} }) yn y lanlwythiad CSV wedi cael eu hanwybyddu.",
+      "upload_summary": "Mae $t(publish.preview.columns, {\"count\": {{cols}} }) a $t(publish.preview.rows, {\"count\": {{rows}} }) yn y tabl data. Mae $t(publish.preview.columns, {\"count\": {{ignored}} }) yn y ffeil a lanlwythwyd wedi cael eu hanwybyddu.",
       "showing_rows": "Yn dangos rhesi {{start}} – {{end}} o {{total}}",
       "unnamed_column": "colofn {{colNum}}",
       "confirm_correct": "Trwy barhau, rydych chi'n cadarnhau bod y tabl data yn gywir.",
+      "revisit_question": "Beth mae angen i chi ei wneud?",
+      "upload_different": "Lanlwytho tabl data gwahanol",
+      "upload_different_hint": "Rhybudd: Bydd hyn yn gwaredu'r holl ddata cyfeirio o bob dimensiwn",
+      "change_source": "Newid y diffiniad o'r hyn y mae pob colofn yn y tabl data yn ei gynnwys",
+      "change_source_hint": "Rhybudd: Bydd hyn yn gwaredu'r holl ddata cyfeirio o bob dimensiwn",
       "source_type": {
         "data_values": "Gwerthoedd data",
         "note_codes": "Codau nodiadau",
-        "measure": "Mesur neu fathau o ddata",
+        "measure": "Mathau data neu fesur",
         "dimension": "Dimensiwn",
         "time": "Dimensiwn sy'n cynnwys dyddiadau",
         "ignore": "Gellir anwybyddu'r golofn hon",
@@ -755,27 +890,37 @@
       }
     },
     "sources": {
-      "heading": "Beth mae pob colofn yn y tabl data yn ei gynnwys?",
+      "heading": "Beth sydd ym mhob colofn yn y tabl data?",
       "types": {
         "data_values": "Gwerthoedd data",
         "note_codes": "Codau nodiadau",
-        "measure": "Mesur neu fathau o ddata",
+        "measure": "Mathau data neu fesur",
         "dimension": "Dimensiwn",
         "time": "Dimensiwn sy'n cynnwys dyddiadau",
-        "ignore": "Anwybyddwyd",
+        "ignore": "Gellir anwybyddu'r golofn hon",
         "unknown": "Dewis"
       }
     },
     "tasklist": {
-      "no_title": "Dim Teitl ar Gael",
-      "preview": "Rhagolwg (yn agor mewn tab newydd)",
+      "subheading": "Rhestr tasgau set ddata",
+      "no_title": "Dim teitl ar gael",
+      "overview": "Trosolwg o set ddata",
+      "preview": "Rhagolwg (bydd yn agor mewn tab newydd)",
+      "open_developer_view": "Golwg y datblygwr (bydd yn agor mewn tab newydd)",
+      "rebuild_cube": "Ailadeiladu'r ciwb",
+      "delete": {
+        "dataset": "Dileu'r set ddata hon",
+        "update": "Dileu'r diweddariad hwn"
+      },
       "status": {
         "cannot_start": "Ni ellir cychwyn eto",
         "available": "Ar gael",
         "completed": "Wedi'i gwblhau",
+        "not_required": "Ddim yn ofynnol",
         "not_started": "Heb gychwyn eto",
         "incomplete": "Anghyflawn",
-        "not_implemented": "Heb ei Weithredu"
+        "unchanged": "Heb newid",
+        "updated": "Diweddarwyd"
       },
       "data": {
         "subheading": "Data",
@@ -791,7 +936,7 @@
         "related_reports": "Adroddiadau cysylltiedig",
         "update_frequency": "Pa mor aml y caiff y set ddata hon ei diweddaru",
         "designation": "Dynodiad",
-        "relevant_topics": "Materion perthnasol"
+        "relevant_topics": "Pynciau perthnasol"
       },
       "translation": {
         "subheading": "Cyfieithiad",
@@ -800,25 +945,13 @@
       },
       "publishing": {
         "subheading": "Cyhoeddi",
-        "organisation": "Sefydliad sy'n cyhoeddi a manylion cyswllt",
-        "when": "Pryd ddylid cyhoeddi'r set ddata hon",
-        "submit": "Cyflwyno i'w chymeradwyo"
+        "when": "Pryd y dylid cyhoeddi'r set ddata hon",
+        "when_update": "Pryd y dylid cyhoeddi'r diweddariad hwn"
       },
       "submit": {
-        "subheading": "Trwy barhau, rydych chi'n cadarnhau bod yr holl ddata a'r metadata wedi cael ei wirio a'i fod yn gywir.",
-        "button": "Cyflwyno i'w chyhoeddi"
-      }
-    },
-    "change_data": {
-      "title": "Beth mae angen i chi ei wneud?",
-      "note": "Dylai'r ffeil fod mewn fformat CSV",
-      "change_table": {
-        "label": "Lanlwytho tabl data gwahanol",
-        "description": "Bydd hyn yn gwaredu data cyfeirio o bob dimensiwn"
-      },
-      "change_columns": {
-        "label": "Newid y cynnwys ym mhob colofn yn y tabl data",
-        "description": "Bydd hyn yn gwaredu data cyfeirio ar gyfer unrhyw golofnau sy'n cynnwys dimensiynau y byddwch yn eu newid"
+        "subheading": "Trwy barhau, rydych chi'n cadarnhau bod yr holl ddata a metadata wedi cael ei wirio a'i fod yn gywir.",
+        "button": "Cyflwyno i'w gymeradwyo",
+        "success": "Cyflwynwyd y set ddata i'w chymeradwyo"
       }
     },
     "point_in_time": {
@@ -826,34 +959,119 @@
       "example": "Er enghraifft: {{example}}"
     },
     "overview": {
+      "subheading": "Trosolwg o'r set ddata",
+      "pending": {
+        "publish_at": "Dyddiad cyhoeddi arfaethedig: <strong>{{publishAt}}</strong>",
+        "requested_by": "Gofynnwyd iddi gael ei chyhoeddi gan: <strong>{{userName}}</strong>"
+      },
       "scheduled": {
-        "notification": {
-          "header": "Llwyddiant",
-          "content": "Cyflwynwyd y set ddata yn llwyddiannus i'w chyhoeddi"
+        "publish_at": "Cyhoeddi wedi'i amserlennu: <strong>{{publishAt}}</strong>"
+      },
+      "rejected": {
+        "summary": "Ni chymeradwywyd y set ddata i'w chyhoeddi gan bod angen trwsio materion ynddi:"
+      },
+      "tabs": {
+        "actions": "Gweithredoedd",
+        "history": "Hanes"
+      },
+      "actions": {
+        "view_published_dataset": "Gweld y set ddata a gyhoeddwyd (bydd yn agor mewn tab newydd)",
+        "update_dataset": "Diweddaru'r set ddata hon",
+        "withdraw_first_revision": "Newid y set ddata cyn ei chyhoeddi",
+        "withdraw_update_revision": "Newid y diweddariad cyn ei gyhoeddi",
+        "continue_update": "Parhau gyda'r diweddariad",
+        "continue": "Parhau i greu set ddata",
+        "preview": "Gweld rhagolwg o'r set ddata",
+        "move": "Symud y set ddata i grŵp arall"
+      },
+      "history": {
+        "table": {
+          "created_at": "Dyddiad",
+          "action": "Gweithred",
+          "user": "Defnyddiwr",
+          "comment": "Sylwadau"
         },
-        "publish_at": "Cyhoeddi wedi'i amserlennu: <strong>{{publish_at}}</strong>",
-        "what_next": "Beth ydych yn dymuno ei wneud?",
-        "buttons": {
-          "view_published_dataset": "Gweld y set ddata a gyhoeddwyd (bydd yn agor mewn tab newydd)",
-          "update_dataset": "Diweddaru'r set ddata hon",
-          "withdraw_first_revision": "Newid y set ddata cyn ei chyhoeddi",
-          "withdraw_update_revision": "Newid y diweddariad cyn ei gyhoeddi",
-          "continue_update": "Parhau gyda'r diweddariad",
-          "continue": "Parhau gyda'r set ddata"
+        "event": {
+          "dataset": {
+            "insert": "Dyddiad creu'r set ddata yn y lle cyntaf",
+            "publish": "Dyddiad cyhoeddi y set ddata am y tro cyntaf"
+          },
+          "revision": {
+            "insert": "Cychwynnwyd ar y diweddariad",
+            "publish": "Cyhoeddwyd y diweddariad"
+          },
+          "task": {
+            "publish": {
+              "requested": "Set ddata wedi'i chyflwyno i'w chymeradwyo",
+              "update_requested": "Diweddariad wedi'i gyflwyno i'w gymeradwyo",
+              "withdrawn": "Newid y set ddata wedi cychwyn",
+              "update_withdrawn": "Newid y diweddariad wedi cychwyn",
+              "rejected": "Gwrthodwyd y set ddata i'w chyhoeddi",
+              "update_rejected": "Gwrthodwyd y diweddariad i'w gyhoeddi",
+              "approved": "Cymeradwywyd y set ddata i'w chyhoeddi",
+              "update_approved": "Cymeradwywyd y diweddariad i'w gyhoeddi"
+            }
+          },
+          "created_by": {
+            "system": "System"
+          }
         }
       },
+      "buttons": {
+        "pending_approval": "Ymateb i gais cyhoeddi",
+        "fix": "Datrys materion gyda'r set ddata"
+      },
       "error": {
-        "withdraw": "Nid oedd modd atal y set ddata rhag cael ei chyhoeddi, cysylltwch â chymorth"
+        "withdraw": "Nid oedd modd atal y set ddata rhag cael ei chyhoeddi. Dylech gysylltu â chymorth."
       }
     },
     "update_type": {
-      "heading": "Beth mae angen i chi ei wneud?",
+      "heading": "Beth y mae angen i chi ei wneud?",
       "add": "Ychwanegu data newydd yn unig",
-      "add_revise": "Ychwanegu data newydd a diwygio'r data presennol",
-      "revise": "Diwygio'r data presennol yn unig",
+      "add_revise": "Ychwanegu data newydd a diwygio data presennol",
+      "revise": "Diwygio data presennol yn unig",
       "replace_all": "Disodli'r holl ddata presennol",
       "errors": {
-        "missing": "Bydd angen i chi ddewis y math o ddiweddariad yr hoffech ei wneud"
+        "missing": "Mae angen i chi ddewis y math o ddiweddariad yr ydych yn dymuno ei wneud"
+      }
+    },
+    "move_group": {
+      "heading": "Pa grŵp yr ydych chi'n dymuno symud y set ddata hon iddo?",
+      "success": "Symudwyd y set ddata i {{groupName}}"
+    },
+    "task": {
+      "decision": {
+        "dataset_title": "Teitl y set ddata: <strong>{{title}}</strong>",
+        "publish": {
+          "requested": {
+            "heading": "A ydych chi'n cymeradwyo'r set ddata hon i'w cyhoeddi?",
+            "form": {
+              "decision": {
+                "options": {
+                  "yes": {
+                    "label": "Ydw"
+                  },
+                  "no": {
+                    "label": "Nac ydw"
+                  }
+                },
+                "error": {
+                  "missing": "Dewiswch ydw os ydych chi'n cymeradwyo'r set ddata hon i'w cyhoeddi"
+                }
+              },
+              "reason": {
+                "label": "Nodwch y rheswm a'r gweithredoedd gofynnol",
+                "error": {
+                  "missing": "Nodwch pam nad ydych chi'n cymeradwyo'r set ddata hon i'w chyhoeddi a'r gweithredoedd gofynnol"
+                }
+              }
+            }
+          },
+          "flash": {
+            "approve": "Cymeradwywyd y set ddata i'w chyhoeddi",
+            "reject": "Ni chymeradwywyd y set ddata i'w chyhoeddi"
+          }
+        }
       }
     }
   },
@@ -867,12 +1085,14 @@
       },
       "field": {
         "title": "Teitl",
-        "description": "Crynodeb",
+        "summary": "Crynodeb",
         "collection": "Casglu data",
         "quality": "Ansawdd ystadegol",
         "roundingDescription": "Wedi'i dalgrynnu"
       },
       "dimension": "{{value}} enw dimensiwn",
+      "measure": "{{value}} enw mesur",
+      "link": "Adroddiad cysylltiedig",
       "buttons": {
         "export": "Allgludo CSV",
         "change": "Newid"
@@ -880,14 +1100,15 @@
     },
     "import": {
       "heading": "Mewngludo ffeil cyfieithiad",
-      "heading_preview": "Gwirio'r testun wedi'i gyfieithu",
-      "note": "Dim ond os yw wedi cael ei llenwi'n llawn y gallwch chi fewngludo ffeil y cyfieithiad.",
+      "heading_preview": "Gwirio'r testun a gyfieithwyd",
+      "note": "Dim ond os yw wedi cael ei llenwi y gallwch chi fewngludo ffeil y cyfieithiad.",
       "form": {
         "file": {
           "label": "Rhaid i'r ffeil fod mewn fformat CSV",
           "error": {
-            "missing": "Dewiswch y ffeil cyfieithiad wedi'i llenwi i'w lanlwytho",
-            "values": "Rhaid i'r ffeil cyfieithiad fod wedi'i llenwi ar gyfer y ddwy iaith"
+            "missing": "Dewiswch ffeil y cyfieithiad a lanwyd i'w lanlwytho",
+            "invalid": "Nid oedd modd lanlwytho'r ffeil a ddewiswyd. Gwiriwch eich bod wedi defnyddio'r ffeil cyfieithiad a allgludwyd ar gyfer y set ddata hon ac nad ydych chi wedi newid unrhyw rai o'r gwerthoedd yn y golofn allwedd.",
+            "values": "Rhaid llenwi ffeil y cyfieithiad ar gyfer y ddwy iaith"
           }
         }
       },
@@ -909,35 +1130,72 @@
       "details": "Manylion",
       "tasklist": "Rhestr Tasgau",
       "error": {
-        "no_datasets": "Nid oes unrhyw setiau data wedi'u rhestru yn y gronfa ddata ar hyn o bryd.  Os oes angen help arnoch, holwch aelod o'r tîm datblygu."
+        "no_datasets": "Ni restrir unrhyw setiau data yn y gronfa ddata ar hyn o bryd. Os oes angen help arnoch, cysylltwch ag aelod o'r tîm datblygu."
+      },
+      "table": {
+        "id": "ID",
+        "title": "Teitl",
+        "group": "Grŵp",
+        "revision_by": "Awdur",
+        "last_updated": "Diweddarwyd ddiwethaf",
+        "dataset_status": "Statws set ddata",
+        "publish_status": "Statws cyhoeddi",
+        "not_translated": "Heb ei gyfieithu eto",
+        "actions": "Gweithredoedd"
       }
     },
     "display": {
       "heading": "Dangos Set Ddata",
+      "fact_table": "Tabl Ffeithiau",
+      "data_type": "Math Data DuckDB",
+      "created_by_id": "Crëwyd gan",
+      "measure": "Mesur",
+      "show_measure_table": "Dangos Tabl Mesur",
+      "show_lookup_table_details": "Dangos manylion tabl am-edrych",
+      "reference": "Cyfeiriad",
+      "format": "Fformat",
+      "decimals": "Lleoedd degol",
+      "sort_order": "Trefn Ddidoli",
+      "hierarchy": "Hierarchaeth",
+      "file_type": "Math o ffeil",
+      "hash": "SHA256 Hash",
+      "uploaded_at": "Lanlwythwyd am",
+      "live": "Dyddiad byw",
+      "id": "ID",
+      "name": "Enw",
       "title": "Teitl",
       "description": "Disgrifiad",
       "notes": "Nodiadau",
       "contents": "Cynnwys",
       "summary": "Crynodeb",
       "dimension": "Dimensiwn",
-      "start_revision": "Cychwyn Cod Adnabod Diwygio",
+      "start_revision": "Cychwyn Diwygio ID",
       "index": "Mynegai",
       "type": "Math",
       "created_at": "Dyddiad Creu",
       "created_by": "Crëwyd Gan",
-      "revision": "Diwygio",
-      "import": "Ffeil a Fewngludwyd",
-      "imports": "Ffeiliau a Fewngludwyd",
+      "revision": "Diwygiad",
+      "import": "Mewngludiad Ffeil",
+      "imports": "Mewngludiadau Ffeil",
       "download": "Lawrlwytho",
       "download_file": "Lawrlwytho Ffeil",
       "location": "Lleoliad",
       "filename": "Enw ffeil",
-      "mime_type": "Math Mime",
-      "fact_tables": "Tablau Ffeithiau",
+      "mime_type": "Math Meim",
+      "fact_tables": "Tabl Ffeithiau",
+      "fact_table_column": "Colofn tabl ffeithiau",
+      "join_column": "Uno Colofn",
+      "extractor": "Echdynnwr",
+      "show_extractor": "Dangos Echdynnwr",
+      "metadata": "Metadata",
+      "show_metadata": "Dangos Metadata",
+      "all_files": "Pob Ffeil",
+      "files": "Ffeiliau",
+      "download_files": "Lawrlwytho Ffeiliau",
       "error": {
-        "no_dimensions": "Nid yw'r set ddata hon wedi cael ei chwblhau gyda dimensiynau",
-        "no_revisions": "Nid yw'r set ddata hon wedi cael ei chwblhau gyda diwygiadau",
-        "no_description": "Nid oes disgrifiad ar gael"
+        "no_dimensions": "Ni chwblhawyd y set ddata hon gyda dimensiynau",
+        "no_revisions": "Ni chwblhawyd y set ddata hon gyda diwygiadau",
+        "no_description": "Dim disgrifiad ar gael"
       }
     }
   },
@@ -946,44 +1204,172 @@
       "missing": "Mae angen i chi gadarnhau neu wrthod y ffeil a lanlwythwyd gan ddefnyddio'r botymau ar ddiwedd y rhagolwg"
     },
     "session": {
-      "current_dataset_missing": "Mae'r set ddata gyfredol ar goll o'r sesiwn",
-      "current_revision_missing": "Mae'r diwygiad cyfredol ar goll o'r sesiwn",
-      "current_import_missing": "Mae'r mewngludiad cyfredol ar goll o'r sesiwn",
-      "no_sources_on_import": "Nid yw'r mewngludiad cyfredol yn cynnwys unrhyw ffynonellau, a oedd y CSV yn wag?"
+      "current_dataset_missing": "Ni ellir canfod tabl data. Ceisiwch lanlwytho tabl data.",
+      "current_revision_missing": "Ni ellir canfod tabl data. Ceisiwch lanlwytho tabl data.",
+      "current_import_missing": "Ni ellir canfod tabl data. Ceisiwch lanlwytho tabl data.",
+      "no_sources_on_import": "Nid yw'r tabl a ddewiswyd yn cynnig unrhyw ddimensiynau. Gwiriwch bod y tabl yn gywir."
     },
     "sources": {
-      "unknowns_found": "Mae angen i chi ddweud wrthym beth mae pob colofn yn ei gynnwys",
-      "multiple_datavalues": "Dim ond un golofn y gallwch ei nodi fel un sy'n cynnwys gwerthoedd data",
-      "multiple_footnotes": "Dim ond un golofn y gallwch ei nodi fel un sy'n cynnwys nodiadau",
-      "dimension_creation_failed": "Aeth rhywbeth o'i le wrth geisio creu'r dimensiynau.  Rhowch gynnig arall arno."
+      "unknowns_found": "Dewiswch beth y mae pob colofn yn y tabl data yn ei gynnwys",
+      "no_notes_column": "Dylai fod un colofn yn y tabl data ar gyfer codau nodiadau. Gwiriwch eich bod wedi dewis yr opsiynau cywir neu gwiriwch bod y tabl data yn gywir.",
+      "multiple_datavalues": "Dylai fod un colofn yn unig yn y tabl data ar gyfer gwerthoedd data. Gwiriwch eich bod wedi dewis yr opsiynau cywir neu gwiriwch bod y tabl data yn gywir.",
+      "multiple_footnotes": "Dylai fod un colofn yn unig yn y tabl data ar gyfer codau nodiadau. Gwiriwch eich bod wedi dewis yr opsiynau cywir neu gwiriwch bod y tabl data yn gywir.",
+      "multiple_measures": "Dylai fod un colofn yn unig yn y tabl data ar gyfer mathau o ddata neu fesur. Gwiriwch eich bod wedi dewis yr opsiynau cywir neu gwiriwch bod y tabl data yn gywir.",
+      "dimension_creation_failed": "Nid oedd modd creu dimensiynau. Gwiriwch eich bod wedi dewis yr opsiynau cywir neu gwiriwch bod y tabl data yn gywir."
     },
     "preview": {
-      "failed_to_get_preview": "Nid oeddem yn gallu creu rhagolwg o'r CSV a lanlwythwyd.  A yw hwn yn CSV dilys?",
-      "remove_error": "Nid oeddem yn gallu gwaredu eich ffeil a lanlwythwyd o'r gweinydd.  Aeth rhywbeth o'i le.  Rhowch gynnig arall arno",
-      "confirm_error": "Mae angen i chi gadarnhau neu wrthod y ffeil a lanlwythwyd gan ddefnyddio'r botymau ar ddiwedd y rhagolwg",
+      "failed_to_get_preview": "Nid oedd modd creu rhagolwg o'r tabl. Gwiriwch eich bod wedi ychwanegu data cyfeirio i bob dimensiwn neu bod y tabl data yn gywir.",
+      "remove_error": "Nid oedd modd gwaredu'r ffeil a lanlwythwyd o'r gweinydd. Rhowch gynnig arall ar hyn neu cysylltwch â chymorth.",
+      "confirm_error": "Cadarnhau neu wrthod y ffeil a lanlwythwyd",
       "revision_missing": "Mae diwygiad ar goll o'r set ddata hon",
-      "import_missing": "Mae mewngludiad ar goll o'r set ddata hon",
-      "invalid_download_format": "Nodwch fformat ffeil dilys (csv, excel, parquet, duckdb)"
+      "import_missing": "Mewn mewngludiad ar goll o'r set ddata hon",
+      "invalid_download_format": "Dewiswch a ydych chi'n dymuno lawrlwytho'r set ddata fel CSV, Parquet, Excel neu DuckDB",
+      "select_action": "Dewiswch a oes angen i chi lanlwytho tabl data gwahanol neu newid y diffiniad o'r hyn sydd ym mhob colofn yn y tabl data"
     },
-    "datalake_error": "Ni ellir cysylltu â'r Llyn data",
-    "blob_storage_errror": "Ni ellir cysylltu â Gwasanaeth Storio Blob",
+    "preview_failure": {
+      "heading": "Ffeiliwyd er mwyn creu rhagolwg set ddata ar gyfer {{datasetTitle}}",
+      "message": "Aeth rhywbeth o'i le wrth geisio creu rhagolwg",
+      "error": "Ni allwn greu rhagolwg o'r set ddata oherwydd gwall annisgwyl ar y gweinydd.",
+      "generation_fail": "Ni lwyddwyd i greu ciwb",
+      "no_preview": "Ni fu modd creu ciwb, felly nid yw dewisiadau cael rhagolwg o'r tabl a lawrlwytho ar gael. Gwiriwch eich bod wedi ychwanegu data cyfeirio i bob dimensiwn neu bod y tabl data yn gywir.",
+      "try_again": "Ail-lwytho'r dudalen"
+    },
+    "datalake_error": "Ni fu modd cysylltu â'r Llyn Data",
+    "blob_storage_errror": "Ni fu modd cysylltu â Gwasanaeth Storio Blob",
     "problem": "Mae problem wedi codi",
-    "try_later": "Rhowch gynnig arall yn nes ymlaen",
-    "name_missing": "Mae Enw'r Set Ddata ar Goll",
-    "dataset_missing": "Ni chanfuwyd set ddata gyda'r cod adnabod hwn",
+    "try_later": "Rhowch gynnig eto yn nes ymlaen",
+    "name_missing": "Mae enw'r set ddata ar goll",
+    "dataset_missing": "Ni chanfuwyd set ddata gyda'r ID hwn",
+    "dimension_validation": {
+      "duplicate_descriptions_or_notes": "Mae'r colofnau disgrifiadau yn y tabl am-edrych yr un peth ym mhob iaith. Rhaid darparu disgrifiadau ym mhob iaith ofynnol.",
+      "fact_table_creation_failed": "Nid oedd y system yn gallu creu tabl ffeithiau. Rhowch gynnig arall yn nes ymlaen neu cysylltwch â chymorth.",
+      "items_not_in_category": "Mae gwerthoedd cyfeirio yn y dimensiwn nad ydynt yn y categori data a ddewisoch. Gwiriwch eich bod wedi dewis y math cywir o ddata.",
+      "lookup_not_supported": "Nid oedd modd adnabod y ffeil a lanlwythwyd gennych. Gwiriwch bod y ffeil yn y fformat cywir.",
+      "lookup_table_loading_failed": "Nid oedd modd i'r system ychwanegu'r tabl am-edrych. Rhowch gynnig arall yn nes ymlaen neu cysylltwch â chymorth.",
+      "missing_languages": "Nid yw'r tabl am-edrych yn cynnwys disgrifiadau yn yr ieithoedd canlynol: $t({{languages}}).",
+      "no_reference_data_categories_present": "Mae gwerthoedd cyfeirio yn y dimensiwn nad ydynt yn y categori data a ddewisoch chi. Gwiriwch eich bod wedi dewis y math cywir o ddata.",
+      "no_reference_match": "Mae gwerthoedd cyfeirio yn y dimensiwn nad ydynt yn y categori data a ddewisoch chi. Gwiriwch eich bod wedi dewis y math cywir o ddata.",
+      "non_numerical_values_present": "Mae'r dimensiwn yn cynnwys gwerthoedd nad ydynt yn rhifol. Gwiriwch eich bod wedi dewis y math cywir o ddata cyfeirio a bod eich tabl data yn gywir.",
+      "primary_key_failed": "Ceir cyfeiriadau wedi'u dyblygu yn eich tabl am-edrych. Dylech gael gwared ag unrhyw ddyblygiadau o'ch tabl am-edrych a'i lanlwytho eto.",
+      "reference_data_preview_failed": "Nid oedd modd i'r system ychwanegu data cyfeirio. Rhowch gynnig arall yn nes ymlaen neu cysylltwch â chymorth.",
+      "reference_data_validation_failed": {
+        "": "Nid oedd modd ychwanegu data cyfeirio i'r ciwb. Gwiriwch eich bod wedi dewis y math cywir o ddata cyfeirio a bod eich tabl data yn gywir."
+      },
+      "some_references_failed_to_match": "Ni ellir cyfateb data cyfeirio gyda'r tabl data. Gwiriwch eich bod wedi dewis y math cywir o ddata cyfeirio a bod eich tabl data yn gywir.",
+      "to_many_categories_present": "Mae gwerthoedd cyfeirio yn y dimensiwn nad ydynt yn y categori data a ddewisoch. Gwiriwch eich bod wedi dewis y math cywir o ddata.",
+      "unknown_error": "Aeth rhywbeth o'i le wrth ychwanegu'r data cyfeirio i'r ciwb. Rhowch gynnig arall yn nes ymlaen neu cysylltwch â chymorth.",
+      "unknown_reference_data_items": "Ni ellir cyfateb data cyfeirio gyda'r tabl data. Gwiriwch eich bod wedi dewis y math cywir o ddata cyfeirio a bod eich tabl data yn gywir.",
+      "unknown_type": "Ni chaiff y math o ddata dimensiwn a ddewisoch ei gynnal. Dylech ddewis 'Rhywbeth arall' a lanlwytho tabl am-edrych."
+    },
+    "measure_validation": {
+      "duplicate_descriptions_or_notes": "Mae'r colofnau disgrifiadau yn y tabl am-edrych mesur yr un fath ym mhob iaith. Rhaid darparu disgrifiadau ym mhob iaith ofynnol.",
+      "extracting_data_failed": "Ni fu modd ychwanegu tabl am-edrych mesur i'r ciwb. Gwiriwch eich bod wedi lanlwytho'r tabl am-edrych cywir.",
+      "invalid_decimals_present": "Dim ond gwerthoedd cyfanrif cadarnhaol y dylai'r golofn ddegol yn y tabl am-edrych mesur eu cynnwys. Cywirwch y tabl am-edrych mesur a'i lanlwytho eto.",
+      "invalid_formats_present": "Dim ond rhifau degol, arnawf, cyfanrif, hir, canran, llinyn, testun, dyddiad, dyddiadamser neu amser y dylai'r golofn ddegol yn y tabl am-edrych mesur ei gynnwys. Cywirwch y tabl am-edrych mesur a'i lanlwytho eto.",
+      "missing_languages": "Nid yw'r tabl am-edrych mesur yn cynnwys disgrifiadau yn yr ieithoedd canlynol: $t({{languages}}).",
+      "no_description_columns": "Nid yw'r tabl am-edrych mesur yn cynnwys unrhyw golofnau disgrifiad. Cywirwch y tabl am-edrych mesur a'i lanlwytho eto.",
+      "no_join_column": "Nid oedd modd ychwanegu'r tabl am-edrych mesur i'r ciwb. Gwiriwch bod y tabl am-edrych mesur yn cynnwys colofn codcyf. Cywirwch y tabl am-edrych mesur a'i lanlwytho eto.",
+      "no_reference_match": "Ni ellir cyfateb y tabl am-edrych mesur gyda'r tabl data. Gwiriwch eich bod wedi lanlwytho'r tabl am-edrych mesur cywir a bod eich tabl data yn gywir.",
+      "primary_key_failed": "Mae cyfeiriadau dyblyg yn eich tabl am-edrych mesur. Dylech waredu unrhyw ddyblygiadau o'ch tabl am-edrych mesur a'i lanlwytho eto.",
+      "some_references_failed_to_match": "Ni ellir cyfateb y tabl am-edrych gyda'r tabl data. Gwiriwch eich bod wedi lanlwytho'r tabl am-edrych cywir a bod eich tabl data yn gywir.",
+      "unknown_error": "Nid oedd y system wedi gallu ychwanegu'r tabl am-edrych mesur i'r ciwb. Rhowch gynnig arall yn nes ymlaen neu cysylltwch â chymorth."
+    },
+    "file_validation": {
+      "invalid_decimals_present": "Dim ond gwerthoedd cyfanrif cadarnhaol ddylai'r golofn ddegol yn y tabl am-edrych mesur eu cynnwys. Cywirwch y tabl am-edrych mesur a'i lanlwytho eto.",
+      "wrong_data_type_in_reference": "Ni ellir cyfateb y tabl am-edrych gyda'r tabl data. Gwiriwch eich bod wedi lanlwytho'r tabl am-edrych cywir a bod eich tabl data yn gywir.",
+      "unknown_mime_type": "Rhaid i'r ffeil a ddewisir fod mewn fformat CSV, Excel (XLSX), JSON neu Parquet",
+      "unknown_file_format": "Rhaid i'r ffeil a ddewisir fod mewn fformat CSV, Excel (XLSX), JSON neu Parquet",
+      "invalid_unicode": "Rhaid i ffeiliau CSV a JSON fod mewn fformat UTF-8. Cadwch y ffeil yn y fformat cywir a'i lanlwytho eto.",
+      "missing_languages": "Nid yw'r tabl am-edrych yn cynnwys disgrifiadau yn yr holl ieithoedd gofynnol",
+      "invalid_csv": "Nid oedd modd lanlwytho'r ffeil CSV a ddewiswyd. Gwiriwch bod y ffeil yn gywir a rhowch gynnig arall arni.",
+      "invalid_json": "Nid oedd modd lanlwytho'r ffeil JSON a ddewiswyd. Gwiriwch bod y ffeil yn gywir a rhowch gynnig arall arni.",
+      "fact_table": "Nid oedd modd i'r system greu tabl ffeithiau. Rhowch gynnig arall yn nes ymlaen neu cysylltwch â chymorth.",
+      "datalake": "Nid oedd modd canfod ffeil ofynnol yn storfa ddata y gwasanaeth. Rhowch gynnig arall yn nes ymlaen neu cysylltwch â chymorth.",
+      "unknown": "Aeth rhywbeth o'i le gyda'r system. Rhowch gynnig arall yn nes ymlaen neu cysylltwch â chymorth."
+    },
     "dimension": {
-      "name_to_short": "Mae enw'r Dimensiwn yn rhy fyr neu ar goll",
-      "name_to_long": "Mae enw Dimensiwn wedi'i gyfyngu i 1024 nod",
-      "naming_failed": "Aeth rhywbeth o'i le wrth geisio gosod yr enw.  Rhowch gynnig arall ar hyn"
+      "name_missing": "Nodwch beth ddylid galw'r dimensiwn hwn ar wefan StatsCymru",
+      "name_too_long": "Rhaid i'r enw dimensiwn fod yn 256 nod neu lai",
+      "naming_failed": "Nid oedd modd ychwanegu'r enw dimensiwn. Rhowch gynnig arall arni.",
+      "illegal_characters": "Dim ond llythrennau, rhifau a nodau \"£ $ € ¢ % ( ) _ - +\" y gall enw dimensiwn eu cynnwys",
+      "dimension_period_type_required": "Dewiswch a yw'r dimensiwn yn cynnwys cyfnodau neu bwyntiau penodol",
+      "dimension_type_required": "Dewiswch y math o ddata sydd yn y dimensiwn hwn",
+      "year_type_required": "Dewiswch y math o flwyddyn y mae'r dimensiwn yn ei chynrychioli",
+      "year_format_required": "Dewiswch y fformat a ddefnyddiwyd ar gyfer blynyddoedd yn y dimensiwn",
+      "shortest_period_required": "Dewiswch beth yw'r cyfnodau byrraf yn y dimensiwn",
+      "quarter_type_required": "Dewiswch y fformat a ddefnyddiwyd ar gyfer chwarteri yn y dimensiwn",
+      "quarter_total_type_required": "Dewiswch a ddefnyddir pumed chwarter i gynrychioli cyfansymiau blynyddol",
+      "month_type_required": "Dewiswch y fformat a ddefnyddiwyd ar gyfer misoedd yn y dimensiwn",
+      "number_type_required": "Dewiswch pa fath o rifau y mae'r dimensiwn hwn yn eu cynnwys",
+      "invalid_unicode": "Rhaid i ffeiliau CSV a JSON fod mewn fformat UTF-8. Cadwch y ffeil yn y fformat cywir a'i lanlwytho eto."
     },
     "upload": {
-      "no_csv": "Ni ddarparwyd data CSV",
-      "no_csv_data": "Nid oes data CSV ar gael"
+      "no_csv": "Dewis tabl am-edrych",
+      "no_csv_data": "Dewis tabl am-edrych"
     },
     "not_found": "Nid yw'r dudalen ar gael",
-    "server_error": "Mae camgymeriad anhysbys wedi codi, rhowch gynnig arall yn nes ymlaen",
-    "forbidden": "Nid ydych chi wedi sicrhau caniatâd i droi at y dudalen hon",
-    "dimension_reset": "Aeth rhywbeth o'i le wrth geisio ailosod y dimensiwn"
+    "server_error": "Mae gwall anhysbys wedi digwydd, rhowch gynnig arall yn nes ymlaen",
+    "forbidden": {
+      "heading": "Nid ydych chi wedi cael caniatâd i droi at y dudalen hon",
+      "description": "Os ydych chi'n credu y dylech chi gael mynediad i'r dudalen hon, dylech gysylltu â gweinyddwr gwasanaeth."
+    },
+    "dimension_reset": "Mae rhywbeth wedi mynd o'i le wrth geisio ailosod y dimensiwn",
+    "fact_table_validation": {
+      "incomplete_fact": "Mae'r tabl data yn cynnwys {{count}} achos o ffeithiau anghyflawn",
+      "incomplete_fact_500": "Mae'r tabl data yn cynnwys {{count}} achos neu fwy o ffeithiau anghyflawn",
+      "incomplete_fact_missing": "Mae'r tabl data yn cynnwys nifer anhysbys o ffeithiau anghyflawn",
+      "incomplete_fact_info": "Dylech gywiro eich tabl data a'i lanlwytho eto.",
+      "incomplete_table_summary": "Tabl yn cynnwys {{rows}} llinell o ffeithiau anghyflawn.",
+      "incomplete_table_summary_500": "Tabl yn cynnwys y {{rows}} llinell gyntaf o ffeithiau anghyflawn.",
+      "change_data_table": "Disodli'r tabl data",
+      "duplicate_fact": "Mae'r tabl data yn cynnwys {{count}} achos neu fwy o ffeithiau dyblygedig",
+      "duplicate_fact_500": "Mae'r tabl data yn cynnwys {{count}} achos o ffeithiau dyblygedig",
+      "duplicate_fact_missing": "Mae'r tabl data yn cynnwys nifer anhysbys o ffeithiau dyblygedig",
+      "unknown_duplicate_fact": "Mae'r tabl data yn cynnwys un ffaith ddyblygedig neu fwy sydd eisoes yn y ciwb.",
+      "duplicate_fact_info": "Dylech gywiro eich tabl data a'i lanlwytho eto.",
+      "change_sources_action": "Newid yr hyn sydd ym mhob colofn",
+      "duplicate_fact_summary": "Ffeithiau dyblygedig",
+      "duplicate_table_summary": "Dangos Tabl yn cynnwys {{rows}} llinell o ffeithiau dyblygedig",
+      "duplicate_table_summary_500": "Dangos Tabl yn cynnwys y {{rows}} llinell gyntaf o ffeithiau dyblygedig",
+      "bad_note_codes": "Mae'r tabl data yn cynnwys {{count}} achos o godau nodiadau anhysbys",
+      "bad_note_codes_500": "Mae'r tabl data yn cynnwys {{count}} achos neu fwy o godau nodiadau anhysbys",
+      "bad_note_codes_missing": "Mae'r tabl data yn cynnwys nifer anhysbys o godau nodiadau anhysbys",
+      "bad_node_code_fact_summary": "Ffeithiau gyda chodau nodiadau anhysbys",
+      "bad_node_code_table_summary": "Dangos Tabl sy'n cynnwys {{rows}} llinell gyda chodau anhysbys",
+      "bad_node_code_table_summary_500": "Dangos Tabl sy'n cynnwys y {{rows}} llinell gyntaf gyda chodau anhysbys",
+      "bad_node_code_info": "Dylech wirio eich bod wedi defnyddio codau nodiadau safonol. Cywirwch eich tabl data a'i lanlwytho eto."
+    }
+  },
+  "consumer_view": {
+    "about_this_dataset": "Am y set ddata hon",
+    "overview": "Trosolwg",
+    "data": "Data",
+    "download": "Lawrlwytho",
+    "data_view": "Golwg y data",
+    "select_view": "Dewis golwg",
+    "data_table": "Tabl data",
+    "apply_view": "Gweithredu golwg",
+    "options": "Gweld dewisiadau",
+    "filters": "Hidlwyr",
+    "page_size": "Rhes fesul tudalen",
+    "apply_filters": "Gweithredu",
+    "start_date": "Dyddiad Cychwyn",
+    "end_date": "Dyddiad Gorffen",
+    "download_heading": "Dewis y set ddata wedi'i hidlo neu gyfan i'w lawrlwytho",
+    "filtered_download": "Set ddata wedi'i hidlo (yn defnyddio hidlwyr sy'n weithredol ar hyn o bryd)",
+    "default_download": "Set ddata gyfan",
+    "download_format": "Dewis y fformat lawrlwytho",
+    "data_only_hint": "Yn cynnwys y set ddata yn unig",
+    "data_metadata_hint": "Yn cynnwys y set ddata a metadata",
+    "everything_hint": "Yn cynnwys y set ddata, metadata a thablau am-edrych cysylltiedig",
+    "number_formating": "Dewis fformat rhifau",
+    "formatted_numbers": "Rhifau wedi'u fformatio",
+    "formatted_numbers_hint": "Mae hyn yn cynnwys talgrynnu i leoedd degol a chomas i wahanu miloedd",
+    "unformatted_numbers": "Rhifau heb eu fformatio",
+    "select_language": "Dewis iaith",
+    "english": "Saesneg",
+    "welsh": "Cymraeg",
+    "download_button": "Lawrlwytho data"
   },
   "routes": {
     "healthcheck": "gwiriad iechyd",
@@ -996,8 +1382,240 @@
     "upload": "lanlwytho",
     "confirm": "cadarnhau",
     "sources": "ffynonellau",
-    "source_confirmation": "cadarnhad-ffynhonnell",
+    "source_confirmation": "ffynhonnell-cadarnhad",
     "tasklist": "rhestr tasgau"
+  },
+  "admin": {
+    "group": {
+      "list": {
+        "heading": "Grwpiau",
+        "table": {
+          "name": "Enw",
+          "email": "Cyswllt",
+          "user_count": "Defnyddwyr",
+          "dataset_count": "Setiau data"
+        },
+        "buttons": {
+          "add": "Ychwanegu grŵp"
+        }
+      },
+      "view": {
+        "details": {
+          "heading": "Manylion grŵp",
+          "organisation": {
+            "heading": "Sefydliad",
+            "not_set": "Heb ei osod"
+          },
+          "email": {
+            "heading": "E-bost cyswllt",
+            "not_set": "Heb ei osod"
+          }
+        },
+        "users": {
+          "heading": "Defnyddwyr",
+          "none": "Dim defnyddwyr wedi'u neilltuo i'r grŵp hwn",
+          "table": {
+            "name": "Enw neu gyfeiriad e-bost",
+            "roles": "Rolau",
+            "status": "Statws"
+          }
+        },
+        "datasets": {
+          "heading": "Setiau data",
+          "dataset": "Mae {{count}} set ddata",
+          "dataset_other": "Mae {{count}} set ddata",
+          "some": "$t(admin.group.view.datasets.dataset, {\"count\": {{count}} }) wedi'u neilltuo i'r grŵp hwn",
+          "none": "Dim setiau data wedi'u neilltuo i'r grŵp hwn"
+        },
+        "buttons": {
+          "edit": "Newid manylion y grŵp"
+        }
+      },
+      "name": {
+        "heading": "Beth yw enw'r grŵp?",
+        "form": {
+          "name_en": {
+            "label": "Nodwch yr enw yn Saesneg",
+            "error": {
+              "missing": "Nodwch enw'r grŵp yn Saesneg"
+            }
+          },
+          "name_cy": {
+            "label": "Nodwch yr enw yn Gymraeg",
+            "error": {
+              "missing": "Nodwch enw'r grŵp yn Gymraeg"
+            }
+          }
+        },
+        "buttons": {
+          "create": "Creu grŵp",
+          "continue": "Parhau"
+        },
+        "error": {
+          "saving": "Roedd problem wrth gadw'r grŵp"
+        }
+      },
+      "organisation": {
+        "heading": "I ba sefydliad y mae'r grŵp yn perthyn?",
+        "form": {
+          "organisation_id": {
+            "label": "Sefydliad",
+            "placeholder": "Dewiswch sefydliad",
+            "error": "Dewiswch y sefydliad y mae'r grŵp yn perthyn iddo"
+          }
+        },
+        "error": {
+          "saving": "Nid oedd modd cadw'r sefydliad. Rhowch gynnig arall yn nes ymlaen."
+        }
+      },
+      "email": {
+        "heading": "Beth yw'r cyfeiriad e-bost cyhoeddus ar gyfer setiau data yn y grŵp?",
+        "form": {
+          "email_en": {
+            "label": "Nodwch y cyfeiriad e-bost yn Saesneg",
+            "error": {
+              "missing": "Nodwch y cyfeiriad e-bost cyhoeddus ar gyfer setiau data yn y grŵp yn Saesneg",
+              "invalid": "Nodwch gyfeiriad e-bost dilys ar gyfer y grŵp yn Saesneg"
+            }
+          },
+          "email_cy": {
+            "label": "Nodwch y cyfeiriad e-bost yn Gymraeg",
+            "error": {
+              "missing": "Nodwch y cyfeiriad e-bost cyhoeddus ar gyfer setiau data yn y grŵp yn Gymraeg",
+              "invalid": "Nodwch gyfeiriad e-bost dilys ar gyfer y grŵp yn Gymraeg"
+            }
+          }
+        },
+        "success": {
+          "create": "Grŵp wedi'i greu yn llwyddiannus",
+          "update": "Grŵp wedi'i ddiweddaru yn llwyddiannus"
+        }
+      }
+    },
+    "user": {
+      "list": {
+        "heading": "Defnyddwyr",
+        "table": {
+          "name": "Enw neu gyfeiriad e-bost",
+          "groups": "Grwpiau",
+          "login": "Mewngofnodwyd y tro diwethaf",
+          "status": "Statws"
+        },
+        "buttons": {
+          "add": "Ychwanegu defnyddiwr"
+        }
+      },
+      "create": {
+        "heading": "Beth yw cyfeiriad e-bost y defnyddiwr?",
+        "form": {
+          "email": {
+            "label": "Cyfeiriad e-bost",
+            "error": {
+              "missing": "Nodwch gyfeiriad e-bost y defnyddiwr",
+              "invalid": "Nodwch gyfeiriad e-bost dilys"
+            }
+          }
+        },
+        "buttons": {
+          "create": "Ychwanegu defnyddiwr",
+          "continue": "Parhau"
+        },
+        "success": "Defnyddiwr wedi'i greu yn llwyddiannus",
+        "error": {
+          "saving": "Roedd problem wrth gadw'r defnyddiwr",
+          "email_already_exists": "Mae defnyddiwr sydd â'r cyfeiriad e-bost hwn yn bodoli yn barod"
+        }
+      },
+      "view": {
+        "heading": "Beth ydych chi'n dymuno ei wneud?",
+        "details": {
+          "status": "Statws",
+          "email": "Cyfeiriad e-bost",
+          "login": "Mewngofnodwyd y tro diwethaf",
+          "service_admin": "Gweinyddwr gwasanaeth",
+          "developer": "Datblygwr"
+        },
+        "login_never": "Byth",
+        "groups": {
+          "heading": "Grwpiau",
+          "empty": "Dim grwpiau wedi'u neilltuo",
+          "table": {
+            "name": "Enw'r grŵp",
+            "roles": "Rolau"
+          }
+        },
+        "actions": {
+          "heading": "Gweithredoedd",
+          "edit_roles": {
+            "label": "Gweld neu newid rolau a grwpiau"
+          },
+          "deactivate": {
+            "label": "Analluogi defnyddiwr"
+          },
+          "reactivate": {
+            "label": "Ailalluogi defnyddiwr"
+          }
+        }
+      },
+      "roles": {
+        "heading": "Pa rolau sydd gan {{userName}}?",
+        "service": {
+          "heading": "StatsCymru"
+        },
+        "form": {
+          "groups": {
+            "error": {
+              "invalid": "Dewis grŵp"
+            }
+          },
+          "roles": {
+            "options": {
+              "service_admin": {
+                "label": "Gweinyddwr gwasanaeth"
+              },
+              "developer": {
+                "label": "Datblygwr"
+              },
+              "editor": {
+                "label": "Golygydd"
+              },
+              "approver": {
+                "label": "Cymeradwywr"
+              }
+            },
+            "error": {
+              "invalid": "Dewiswch pa rolau sydd gan {{userName}} ar gyfer {{groupName}}"
+            }
+          }
+        },
+        "success": {
+          "create": "{{userName}} wedi'i ychwanegu",
+          "update": "{{userName}} wedi'i ddiweddaru"
+        }
+      },
+      "deactivate": {
+        "heading": "A ydych chi'n siŵr eich bod yn dymuno analluogi {{userName}}?",
+        "description": "Ni fydd y defnyddiwr hwn yn gallu mewngofnodi na golygu unrhyw setiau data.",
+        "success": "{{userName}} wedi'i analluogi",
+        "error": {
+          "saving": "Nid oedd modd analluogi'r defnyddiwr. Rhowch gynnig arall yn nes ymlaen."
+        }
+      },
+      "reactivate": {
+        "heading": "A ydych chi'n siŵr eich bod yn dymuno ailalluogi {{userName}}?",
+        "description": "Bydd y defnyddiwr hwn yn gallu mewngofnodi ac ailgychwyn y rolau a neilltuwyd iddynt.",
+        "success": "{{userName}} wedi'i ailalluogi",
+        "error": {
+          "saving": "Nid oedd modd ailalluogi'r defnyddiwr. Rhowch gynnig arall yn nes ymlaen."
+        }
+      },
+      "badge": {
+        "status": {
+          "active": "Gweithredol",
+          "inactive": "Wedi'i ddadalluogi"
+        }
+      }
+    }
   },
   "consumer": {
     "global": {
@@ -1005,12 +1623,25 @@
       "heading": "StatsCymru",
       "phase_banner": {
         "beta": "Beta",
-        "feedback": "Rydych chi'n gweld fersiwn newydd o StatsCymru"
+        "feedback": "Rydych chi'n edrych ar fersiwn newydd o StatsCymru"
+      }
+    },
+    "topic_list": {
+      "heading": "Darganfod ystadegau a data am Gymru",
+      "api": "Pori fesul pwnc neu <a rel=\\\"noreferrer noopener\\\" target=\\\"_blank\\\" href=\\\"https://api.dev.stats.cymru/v1/docs/#/\\\"> gael mynediad API (yn agor mewn tab newydd)</a>.",
+      "topics": "Pynciau",
+      "topic": "Pwnc",
+      "dataset": {
+        "first_published": "Cyhoeddwyd yn gyntaf: {{published}}"
       }
     },
     "list": {
-      "heading": "Chwilio am ystadegau a data gan Lywodraeth Cymru",
+      "heading": "Darganfod ystadegau a data am Gymru",
       "total_datasets": "setiau data"
     }
+  },
+  "languages": {
+    "en": "Saesneg",
+    "cy": "Cymraeg"
   }
 }
