@@ -1,8 +1,8 @@
 export class ApiException extends Error {
   constructor(
     public message: string,
-    public status?: number,
-    public body?: string | FormData,
+    public status: number,
+    public body?: string,
     public tag?: string
   ) {
     super(message);

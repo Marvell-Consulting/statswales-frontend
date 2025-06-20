@@ -100,11 +100,8 @@ export class PublisherApi {
       })
       .then(async (response: Response) => {
         if (!response.ok) {
-          const body = await new Response(response.body).text();
-          if (body) {
-            throw new ApiException(response.statusText, response.status, body);
-          }
-          throw new ApiException(response.statusText, response.status);
+          const body = (await new Response(response.body).text()) || undefined;
+          throw new ApiException(response.statusText, response.status, body);
         }
         return response;
       })

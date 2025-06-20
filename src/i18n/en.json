@@ -858,7 +858,8 @@
       },
       "errors": {
         "missing": "Select a data table",
-        "api": "The selected file could not be uploaded. Try again."
+        "api": "The selected file could not be uploaded. Try again.",
+        "infected": "The selected file is infected with a virus. Try again with a different file."
       }
     },
     "preview": {
