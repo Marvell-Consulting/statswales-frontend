@@ -41,7 +41,7 @@ test.describe('Metadata Designation', () => {
     test('Can switch to Welsh', async ({ page }) => {
       await designationPage.goto(id);
       await page.getByText('Cymraeg').click();
-      await expect(page.getByRole('heading', { name: 'Beth yw dynodiad y set ddata hon?' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Sut caiff y set ddata hon ei dynodi?' })).toBeVisible();
     });
 
     test.describe('Form success', () => {
