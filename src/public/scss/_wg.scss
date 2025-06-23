@@ -2488,7 +2488,7 @@ $whitepurple: #eed5e3;
 
   .govuk-table__container {
     max-width: 100%;
-    overflow-x: auto;
+    // overflow-x: auto; removing this fixes sticky headers
   }
 
   .source-list-item,
