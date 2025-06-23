@@ -45,9 +45,7 @@ test.describe('Sources page', () => {
 
     test('Can switch to Welsh', async ({ page }) => {
       await page.getByText('Cymraeg').click();
-      await expect(
-        page.getByRole('heading', { name: 'Beth mae pob colofn yn y tabl data yn ei gynnwys?' })
-      ).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Beth sydd ym mhob colofn yn y tabl data?' })).toBeVisible();
     });
 
     test.fixme('Displays an error if no sources are selected', async () => {});
