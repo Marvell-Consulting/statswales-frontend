@@ -236,14 +236,7 @@ export const uploadDataTable = async (req: Request, res: Response) => {
       logger.error(err, `There was a problem uploading the file`);
       if (err instanceof ApiException) {
         res.status(err.status);
-        let body;
-
-        try {
-          body = JSON.parse(err.body?.toString() || '{}');
-        } catch (parseError) {
-          logger.error(parseError, 'Failed to parse error body as JSON');
-        }
-
+        const body = JSON.parse(err.body?.toString() || '{}');
         if (body?.error?.includes('infected')) {
           errors = [{ field: 'csv', message: { key: `publish.upload.errors.infected` } }];
         } else {
@@ -654,23 +647,24 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
         return;
       } catch (err) {
         const error = err as ApiException;
-        const viewErr = JSON.parse((error.body as string) || '{}') as ViewErrDTO;
+        const body = JSON.parse((error.body as string) || '{}');
+        let errors = body?.errors;
 
-        if (error.status === 400) {
+        if (body?.error?.includes('infected')) {
+          errors = [{ field: 'csv', message: { key: `publish.upload.errors.infected` } }];
+        } else if (error.status === 400) {
           res.status(400);
-          if (!(viewErr.extension as { mismatch: boolean }).mismatch) {
-            res.render('publish/measure-preview', { ...preview, supportedFormats, measure, errors: viewErr.errors });
+          if (!(body.extension as { mismatch: boolean }).mismatch) {
+            res.render('publish/measure-preview', { ...preview, supportedFormats, measure, errors: body.errors });
             return;
           }
           logger.error(err, 'Measure lookup table did not match data in the fact table.');
-          const { errors, extension } = viewErr;
-          res.render('publish/measure-match-failure', { measure, errors, extension });
+          res.render('publish/measure-match-failure', { measure, errors, extension: body.extension });
           return;
         }
 
-        logger.error('Something went wrong other than not matching');
-        logger.debug(`Full error JSON: ${JSON.stringify(error, null, 2)}`);
-        res.render('publish/measure-preview', { ...preview, supportedFormats, measure, errors: viewErr.errors });
+        logger.error(err, 'Something went wrong other than not matching');
+        res.render('publish/measure-preview', { ...preview, supportedFormats, measure, errors });
         return;
       }
     }
@@ -752,17 +746,25 @@ export const measureReview = async (req: Request, res: Response, next: NextFunct
 
 export const uploadLookupTable = async (req: Request, res: Response, next: NextFunction) => {
   const dataset = res.locals.dataset;
-  const dimension = singleLangDataset(res.locals.dataset, req.language).dimensions?.find(
-    (dim) => dim.id === req.params.dimensionId
-  );
+  const dimensionId = req.params.dimensionId;
+  const dimension = singleLangDataset(dataset, req.language).dimensions?.find((dim) => dim.id === dimensionId);
+
   if (!dimension) {
     logger.error('Failed to find dimension in dataset');
     next(new NotFoundException());
     return;
   }
-  let errors: ViewError[] | undefined;
+
   const revisit = dataset.dimensions?.length > 0;
+  const uploadType = 'lookup';
+  const changeLookup = Boolean(dimension.type === DimensionType.LookupTable);
+  const supportedFormats = Object.values(DuckDBSupportFileFormats)
+    .map((format) => format.toLowerCase())
+    .join(',');
+
+  let errors: ViewError[] | undefined;
   let dataPreview: ViewDTO | ViewErrDTO;
+
   try {
     dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
   } catch (err) {
@@ -770,55 +772,42 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
     const error = err as ApiException;
     dataPreview = {
       status: error.status || 500,
-      errors: [
-        {
-          field: '',
-          message: {
-            key: 'errors.dimension_preview'
-          }
-        }
-      ],
+      errors: [{ field: '', message: { key: 'errors.dimension_preview' } }],
       dataset_id: dataset.id
     };
   }
-  const supportedFormats = Object.values(DuckDBSupportFileFormats).map((format) => format.toLowerCase());
+
   if (req.method === 'POST') {
     logger.debug('User submitted a look up table');
     try {
       if (!req.file) {
         res.status(400);
-        res.render('publish/upload-lookup', {
-          ...dataPreview,
-          supportedFormats: supportedFormats.join(','),
-          revisit,
-          errors: [
-            {
-              field: 'csv',
-              message: {
-                key: 'errors.upload.no_csv'
-              }
-            }
-          ],
-          uploadType: 'lookup',
-          dimension,
-          changeLookup: Boolean(dimension.type === 'lookup_table')
-        });
-        return;
+        errors = [{ field: 'csv', message: { key: 'errors.upload.no_csv' } }];
+        throw new Error();
       }
       const fileName = req.file.originalname;
       req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
       const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
+
       try {
         logger.debug('Sending lookup table to backend');
         await req.pubapi.uploadLookupTable(dataset.id, dimension.id, fileData, fileName);
         res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/review`, req.language));
+        return;
       } catch (err) {
         const error = err as ApiException;
+        res.status(error.status);
+        const body = JSON.parse((error.body as string) || '{}');
+
+        if (body?.error?.includes('infected')) {
+          errors = [{ field: 'csv', message: { key: `publish.upload.errors.infected` } }];
+          res.status(400);
+          throw new Error();
+        }
 
         if (error.status === 400) {
-          res.status(400);
-          logger.error('Lookup table did not match data in the fact table.', err);
-          const failurePreview = JSON.parse(error.body as string) as ViewErrDTO;
+          logger.error(err, 'Lookup table did not match data in the fact table.');
+          const failurePreview = body as ViewErrDTO;
           res.render('publish/dimension-match-failure', {
             ...failurePreview,
             patchRequest: { dimension_type: DimensionType.LookupTable },
@@ -827,34 +816,15 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
           return;
         }
 
-        logger.error('Something went wrong other than not matching');
-        logger.error(`Full error JSON: ${JSON.stringify(error, null, 2)}`);
-
+        logger.error(error, 'Something went wrong other than not matching');
         res.status(500);
-        res.render('publish/upload-lookup', {
-          ...dataPreview,
-          supportedFormats: supportedFormats.join(','),
-          revisit,
-          errors: [
-            {
-              field: 'unknown',
-              message: {
-                key: 'errors.csv.unknown'
-              }
-            }
-          ],
-          uploadType: 'lookup',
-          dimension,
-          changeLookup: Boolean(dimension.type === 'lookup_table')
-        });
-        return;
+        errors = [{ field: 'unknown', message: { key: 'errors.csv.unknown' } }];
+        throw new Error();
       }
-
-      return;
-    } catch (err) {
-      logger.error(err, 'Seems some other error happened and we ended up here.');
-      res.status(500);
-      errors = [{ field: 'csv', message: { key: 'errors.upload.no_csv_data' } }];
+    } catch (err: any) {
+      logger.error(err, `There was a problem uploading the lookup`);
+      res.status(res.statusCode || 500);
+      errors = errors || [{ field: 'csv', message: { key: 'errors.upload.no_csv_data' } }];
     }
   }
 
@@ -862,10 +832,10 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
     ...dataPreview,
     revisit,
     errors,
-    supportedFormats: supportedFormats.join(','),
-    uploadType: 'lookup',
+    supportedFormats,
+    uploadType,
     dimension,
-    changeLookup: Boolean(dimension.type === 'lookup_table')
+    changeLookup
   });
 };
 
@@ -2539,8 +2509,9 @@ export const importTranslations = async (req: Request, res: Response) => {
         throw new Error();
       }
 
+      const fileName = req.file.originalname;
       const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
-      await req.pubapi.uploadTranslationImport(dataset.id, fileData);
+      await req.pubapi.uploadTranslationImport(dataset.id, fileData, fileName);
 
       preview = true;
       translations = await parseUploadedTranslations(req.file.buffer);
@@ -2550,8 +2521,13 @@ export const importTranslations = async (req: Request, res: Response) => {
     errors.push({ field: 'csv', message: { key: 'translations.import.form.file.error.invalid' } });
 
     if (err instanceof ApiException) {
-      const error = JSON.parse(err.body as string).error;
-      if (error.includes('invalid.values')) {
+      const body = JSON.parse((err.body as string) || '{}');
+
+      if (body?.error?.includes('infected')) {
+        errors = [{ field: 'csv', message: { key: `publish.upload.errors.infected` } }];
+      }
+
+      if (body?.error?.includes('invalid.values')) {
         errors = [{ field: 'csv', message: { key: 'translations.import.form.file.error.values' } }];
       }
     }

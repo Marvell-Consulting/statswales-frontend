@@ -591,10 +591,10 @@ export class PublisherApi {
     return this.fetch({ url: `translation/${datasetId}/export` }).then((response) => response.body as ReadableStream);
   }
 
-  public async uploadTranslationImport(datasetId: string, file: Blob): Promise<DatasetDTO> {
+  public async uploadTranslationImport(datasetId: string, file: Blob, filename: string): Promise<DatasetDTO> {
     logger.debug(`Uploading translations to dataset: ${datasetId}`);
     const body = new FormData();
-    body.set('csv', file);
+    body.set('csv', file, filename);
 
     return this.fetch({ url: `translation/${datasetId}/import`, method: HttpMethod.Post, body }).then(
       (response) => response.json() as unknown as DatasetDTO
