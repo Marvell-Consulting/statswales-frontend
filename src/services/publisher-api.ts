@@ -100,11 +100,8 @@ export class PublisherApi {
       })
       .then(async (response: Response) => {
         if (!response.ok) {
-          const body = await new Response(response.body).text();
-          if (body) {
-            throw new ApiException(response.statusText, response.status, body);
-          }
-          throw new ApiException(response.statusText, response.status);
+          const body = (await new Response(response.body).text()) || undefined;
+          throw new ApiException(response.statusText, response.status, body);
         }
         return response;
       })
@@ -594,10 +591,10 @@ export class PublisherApi {
     return this.fetch({ url: `translation/${datasetId}/export` }).then((response) => response.body as ReadableStream);
   }
 
-  public async uploadTranslationImport(datasetId: string, file: Blob): Promise<DatasetDTO> {
+  public async uploadTranslationImport(datasetId: string, file: Blob, filename: string): Promise<DatasetDTO> {
     logger.debug(`Uploading translations to dataset: ${datasetId}`);
     const body = new FormData();
-    body.set('csv', file);
+    body.set('csv', file, filename);
 
     return this.fetch({ url: `translation/${datasetId}/import`, method: HttpMethod.Post, body }).then(
       (response) => response.json() as unknown as DatasetDTO
