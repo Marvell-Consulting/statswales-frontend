@@ -874,7 +874,7 @@
       "preview_summary": "There are $t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} }) in your upload.",
       "columns_rows": "$t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} })",
       "upload_summary": "There are $t(publish.preview.columns, {\"count\": {{cols}} }) and $t(publish.preview.rows, {\"count\": {{rows}} }) in the data table. $t(publish.preview.columns, {\"count\": {{ignored}} }) in the uploaded file have been ignored.",
-      "showing_rows": "Showing rows {{start}} – {{end}} of {{total}}",
+      "showing_rows": "Showing {{start}} to {{end}} of {{total}} rows",
       "unnamed_column": "column {{colNum}}",
       "confirm_correct": "By continuing, you confirm the data table is correct.",
       "revisit_question": "What do you need to do?",
