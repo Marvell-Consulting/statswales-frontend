@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from '../components/layouts/Publisher';
 import FlashMessages from '../components/FlashMessages';
 import Table from '../components/Table';
+import Pagination from '../components/Pagination';
 
 export default function UserList(props) {
   const columns = [
@@ -49,7 +50,10 @@ export default function UserList(props) {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
           {props?.users && props?.users.length > 0 && (
-            <Table i18nBase="admin.user.list.table" columns={columns} rows={props.users} />
+            <>
+              <Table i18nBase="admin.user.list.table" columns={columns} rows={props.users} />
+              <Pagination {...props} />
+            </>
           )}
         </div>
       </div>
