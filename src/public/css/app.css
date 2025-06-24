@@ -2180,6 +2180,9 @@
 .wg .govuk-pagination__next-none::after {
   border: none;
 }
+.wg .total-rows {
+  padding: 10px 0;
+}
 
 .wg .autocomplete__wrapper {
   position: relative;

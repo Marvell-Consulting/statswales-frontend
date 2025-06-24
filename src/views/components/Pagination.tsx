@@ -9,7 +9,6 @@ export type PaginationProps = {
   total_pages: number;
   current_page: number;
   page_size: number;
-  hideLineCount?: boolean;
   hide_pagination_hint?: boolean;
   anchor?: string;
   page_info: PageInfo;
@@ -20,7 +19,6 @@ export default function Pagination({
   current_page,
   page_size,
   pagination,
-  hideLineCount,
   hide_pagination_hint,
   anchor,
   page_info
@@ -32,7 +30,22 @@ export default function Pagination({
   return (
     <>
       <div className="govuk-grid-row">
-        <div className="govuk-grid-column-full">
+        <div className="govuk-grid-column-one-third">
+          <div className="total-rows">
+            {!hide_pagination_hint && (
+              <div>
+                <T
+                  start={page_info.start_record?.toLocaleString()}
+                  end={page_info.end_record?.toLocaleString()}
+                  total={page_info.total_records?.toLocaleString()}
+                >
+                  publish.preview.showing_rows
+                </T>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="govuk-grid-column-two-thirds">
           <nav className="govuk-pagination" aria-label="Pagination">
             <div className={clsx('govuk-pagination__prev', { 'govuk-pagination__inactive': current_page === 1 })}>
               {current_page === 1 ? (
@@ -127,22 +140,6 @@ export default function Pagination({
       <div className="govuk-pagination__summary">
         Page {current_page} of {total_pages}
       </div>
-
-      {!hideLineCount && (
-        <div className="govuk-grid-row govuk-!-margin-bottom-2">
-          {!hide_pagination_hint && (
-            <div className="govuk-grid-column-full govuk-!-text-align-centre govuk-hint">
-              <T
-                start={page_info.start_record?.toLocaleString()}
-                end={page_info.end_record?.toLocaleString()}
-                total={page_info.total_records?.toLocaleString()}
-              >
-                publish.preview.showing_rows
-              </T>
-            </div>
-          )}
-        </div>
-      )}
     </>
   );
 }

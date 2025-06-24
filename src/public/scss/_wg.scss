@@ -2625,4 +2625,8 @@ $whitepurple: #eed5e3;
   .govuk-pagination__next-none::after {
     border: none;
   }
+
+  .total-rows {
+    padding: 10px 0;
+  }
 }
