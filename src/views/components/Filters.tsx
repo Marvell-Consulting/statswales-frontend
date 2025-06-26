@@ -1,6 +1,6 @@
 import React from 'react';
 import { FilterTable } from '../../dtos/filter-table';
-import { CheckboxGroup, CheckboxOptions } from './CheckboxGroup';
+import { Checkbox, CheckboxGroup, CheckboxOptions, Controls } from './CheckboxGroup';
 import qs from 'qs';
 import { get } from 'lodash';
 
@@ -34,20 +34,31 @@ export const Filters = ({ filters, url }: FiltersProps) => {
         const values = get(parsedFilter, filter.columnName);
 
         return (
-          <div
-            className="filters"
-            id={`filter-${filter.factTableColumn}`}
-            key={index}
-            data-values={JSON.stringify(values)}
-          >
+          <div className="filters" id={`filter-${filter.factTableColumn}`} key={index}>
             <h3 className="region-subhead">{`${filter.columnName} (${filterOptionCount(filter.values)})`}</h3>
             <div className="filter-container option-select">
-              <CheckboxGroup
-                name={`filter[${filter.columnName}]`}
-                options={normalizeFilters(filter.values)}
-                values={Array.isArray(values) ? values : [values]}
-                independentExpand
-              />
+              <div className="filter-head hidden">
+                <Controls className="parent-controls" />
+                <div className="govuk-checkboxes--small">
+                  <Checkbox
+                    checked={!values}
+                    label="No filter"
+                    name={`filter-${filter.factTableColumn}-all`}
+                    value="all"
+                    omitName
+                    values={Array.isArray(values) ? values : [values]}
+                  />
+                  <hr />
+                </div>
+              </div>
+              <div className="filter-body">
+                <CheckboxGroup
+                  name={`filter[${filter.columnName}]`}
+                  options={normalizeFilters(filter.values)}
+                  values={Array.isArray(values) ? values : [values]}
+                  independentExpand
+                />
+              </div>
             </div>
           </div>
         );
@@ -57,29 +68,12 @@ export const Filters = ({ filters, url }: FiltersProps) => {
         dangerouslySetInnerHTML={{
           __html: `
           (() => {
-            function createCheckbox(filter) {
-              const name = filter.getAttribute("id")
-              const values = filter.getAttribute("data-values");
-              const div = document.createElement("div");
-              div.classList.add("govuk-checkboxes__item");
+            function addListeners(filter) {
+              const name = filter.getAttribute("id");
+              const checkboxId = name + "-all";
+              const allCheckbox = filter.querySelector(".filter-head input#" + checkboxId)
 
-              const allCheckbox = document.createElement("input")
-              allCheckbox.classList.add("govuk-checkboxes__input", "checkboxes__input__filter");
-              allCheckbox.setAttribute("id", name + "-all")
-              allCheckbox.setAttribute("type", "checkbox");
-              if (!values) {
-                allCheckbox.setAttribute("checked", true);
-              }
-
-              const label = document.createElement("label");
-              label.classList.add("govuk-label", "govuk-checkboxes__label", "checkboxes__label__filter")
-              label.setAttribute("for", name + "-all");
-              label.innerText = "No filter"
-
-              div.appendChild(allCheckbox)
-              div.appendChild(label)
-
-              const childCheckboxes = [...filter.querySelectorAll('[type="checkbox"]')]
+              const childCheckboxes = [...filter.querySelectorAll('.filter-body [type="checkbox"]')]
 
               function checkState() {
                 const anyChecked = childCheckboxes.some(c => c.checked);
@@ -102,19 +96,68 @@ export const Filters = ({ filters, url }: FiltersProps) => {
                 }
                 e.target.checked = true;
               })
-
-              return div;
             }
 
             const filters = document.querySelectorAll(".filters");
 
             filters.forEach(filter => {
-              const checkbox = createCheckbox(filter)
-              const parent = filter.querySelector(".option-select > .govuk-checkboxes")
-              parent.insertBefore(document.createElement("hr"), parent.firstChild);
-              parent.insertBefore(checkbox, parent.firstChild);
-            });
+              const head = filter.querySelector(".filter-container > .filter-head");
+              head.classList.remove("hidden");
 
+              addListeners(filter);
+
+              const filterBody = filter.querySelector(".filter-body")
+              const parentControls = filter.querySelector(".parent-controls");
+
+              filterBody.insertBefore(parentControls, filterBody.firstChild);
+
+              const controls = filter.querySelectorAll(".controls");
+
+              controls.forEach(control => {
+                control.classList.remove("hidden");
+
+                const selectAll = control.querySelector("[data-action='select-all']")
+                const clear = control.querySelector("[data-action='clear']")
+
+                const details = control.parentNode.parentNode;
+                const selectors = [
+                  // nested items with children
+                  ":scope > .indent > .govuk-checkboxes > details > summary > .govuk-checkboxes__item > input[type='checkbox']",
+                  // nested items without children
+                  ":scope > .indent > .govuk-checkboxes > .govuk-checkboxes__item > input[type='checkbox']",
+                  // top-level items with children
+                  ":scope > .filter-body > .govuk-checkboxes > details > summary > .govuk-checkboxes__item > input[type='checkbox']:not(.all-filter)",
+                  // top-level items without children
+                  ":scope > .filter-body > .govuk-checkboxes > .govuk-checkboxes__item > input[type='checkbox']:not(.all-filter)",
+                ]
+                const checkboxes = details.querySelectorAll(selectors.join(", "));
+
+                selectAll.addEventListener("click", (e) => {
+                  e.preventDefault();
+                  checkboxes.forEach(checkbox => {
+                    checkbox.checked = true
+                    const evt = new Event("change")
+                    checkbox.dispatchEvent(evt)
+                  })
+                  if (details.tagName === "DETAILS") {
+                    details.setAttribute("open", true)
+                  }
+                  return false;
+                })
+
+                clear.addEventListener("click", (e) => {
+                  e.preventDefault();
+
+                  checkboxes.forEach(checkbox => {
+                    checkbox.checked = false
+                    const evt = new Event("change")
+                    checkbox.dispatchEvent(evt)
+                  })
+                
+                  return false;
+                })
+              });
+            });
           })();
           `
         }}

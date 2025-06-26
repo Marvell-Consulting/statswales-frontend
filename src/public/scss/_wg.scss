@@ -386,20 +386,6 @@
     color: colours.$black;
   }
 
-  .filter-container {
-    padding: 5px 10px;
-    border: 1px solid colours.$darkgrey;
-    min-height: 90px;
-    max-height: 310px;
-    overflow: scroll;
-    overflow-x: hidden;
-  }
-
-  .filter-container-outer {
-    padding: 5px 10px;
-    border: 1px solid colours.$darkgrey;
-  }
-
   /* Table editor */
   .hidden {
     display: none;
@@ -772,11 +758,6 @@
     .govuk-checkboxes__input:not(:disabled)
     + .govuk-checkboxes__label:before {
     box-shadow: none;
-  }
-
-  .option-select {
-    max-height: 350px;
-    overflow-y: auto;
   }
 
   .govuk-checkboxes--bg {
@@ -1552,15 +1533,6 @@
   }
 
   #selected-options .remove-selected-option {
-    margin-bottom: 0px;
-  }
-
-  .filter-container-outer h4 {
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  .filter-container-outer .govuk-list {
     margin-bottom: 0px;
   }
 
