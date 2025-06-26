@@ -46,6 +46,7 @@ export const Filters = ({ filters, url }: FiltersProps) => {
                 name={`filter[${filter.columnName}]`}
                 options={normalizeFilters(filter.values)}
                 values={Array.isArray(values) ? values : [values]}
+                independentExpand
               />
             </div>
           </div>
@@ -73,7 +74,7 @@ export const Filters = ({ filters, url }: FiltersProps) => {
               const label = document.createElement("label");
               label.classList.add("govuk-label", "govuk-checkboxes__label", "checkboxes__label__filter")
               label.setAttribute("for", name + "-all");
-              label.innerText = "All"
+              label.innerText = "No filter"
 
               div.appendChild(allCheckbox)
               div.appendChild(label)

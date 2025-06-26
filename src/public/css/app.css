@@ -2338,6 +2338,78 @@
   z-index: 0;
 }
 
+.filter-container {
+  overflow-x: auto !important;
+}
+.filter-container input[type=checkbox] {
+  width: 24px;
+  height: 24px;
+  margin-left: 0;
+  margin-top: 5px;
+}
+.filter-container .govuk-checkboxes__item::after {
+  content: .filter-container .govuk-checkboxes__item::after nbsp;
+}
+.filter-container .govuk-checkboxes__label {
+  margin-top: 0 !important;
+  line-height: 34px;
+  padding-left: 0.5em !important;
+  max-width: unset;
+}
+.filter-container .govuk-checkboxes__label:before {
+  top: 5px !important;
+  left: 0 !important;
+}
+.filter-container .govuk-checkboxes__label:after {
+  top: 12px !important;
+}
+.filter-container .indent {
+  margin-left: 30px;
+  position: relative;
+}
+.filter-container .indent::before {
+  content: "";
+  display: block;
+  position: absolute;
+  left: -20px;
+  width: 2px;
+  height: 100%;
+  background-color: #eeeeee;
+}
+.filter-container details[open] > summary::before {
+  transform: rotate(90deg);
+}
+.filter-container details .govuk-checkboxes__item:not(summary > .govuk-checkboxes__item) {
+  margin-left: 30px;
+}
+.filter-container details summary {
+  display: flex;
+  position: relative;
+  white-space: nowrap;
+  height: 34px;
+  align-items: center;
+  gap: 6px;
+}
+.filter-container details summary::before {
+  content: "";
+  background-image: url("../assets/images/chevron.svg");
+  background-repeat: no-repeat;
+  background-size: 15px 15px;
+  background-position: center;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.filter-container details .govuk-checkboxes__item {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  padding-right: 1em;
+}
+.filter-container details .govuk-checkboxes__item label {
+  white-space: nowrap;
+}
+
 .wg .govuk-header__link:hover {
   border: none;
 }
