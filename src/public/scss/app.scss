@@ -1,5 +1,7 @@
+@use 'colours';
 @use 'wg';
 @use 'autocomplete';
+@use 'filters';
 
 .wg {
   .govuk-header__link:hover {
@@ -11,7 +13,7 @@
   }
 
   .govuk-header {
-    background: wg.$charcoal;
+    background: colours.$charcoal;
     border-bottom: 0px;
     padding: 20px 0px;
     height: 34px;
@@ -25,7 +27,7 @@
   }
 
   .wg-header {
-    background-color: wg.$charcoal;
+    background-color: colours.$charcoal;
   }
 
   .govuk-header__container {
@@ -34,11 +36,11 @@
   }
 
   .govuk-template {
-    background-color: wg.$white;
+    background-color: colours.$white;
   }
 
   .govuk-pagination__link {
-    color: wg.$red;
+    color: colours.$red;
   }
 
   .govuk-pagination__item--current {
