@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React from 'react';
 
 export type CheckboxOptions = {
@@ -14,6 +15,20 @@ export type CheckboxGroupProps = {
   independentExpand?: boolean;
 };
 
+export function Controls({ className }: { className?: string }) {
+  return (
+    <div className={clsx('controls hidden', className)}>
+      <a href="#" className="govuk-link" data-action="select-all">
+        Select all
+      </a>
+      <span>|</span>
+      <a href="#" className="govuk-link" data-action="clear">
+        None
+      </a>
+    </div>
+  );
+}
+
 export const Checkbox = ({
   name,
   label,
@@ -21,14 +36,15 @@ export const Checkbox = ({
   children,
   checked,
   values,
-  independentExpand
-}: CheckboxOptions & { name: string; checked?: boolean; values: string[] }) => {
+  independentExpand,
+  omitName
+}: CheckboxOptions & { name: string; checked?: boolean; values: string[]; omitName?: boolean }) => {
   const CheckboxField = (
     <div className="govuk-checkboxes__item">
       <input
         className="govuk-checkboxes__input checkboxes__input__filter"
         id={name}
-        name={`${name}[]`}
+        name={omitName ? undefined : `${name}[]`}
         type="checkbox"
         value={value}
         data-aria-controls={children ? `conditional-${name}` : undefined}
@@ -55,7 +71,9 @@ export const Checkbox = ({
     const isOpen = children.some((child) => hasValue(child, values));
     return (
       <details open={isOpen}>
-        <summary>{CheckboxField}</summary>
+        <summary>
+          {CheckboxField} <Controls />
+        </summary>
         <div className="indent">
           <CheckboxGroup options={children} name={name} values={values} independentExpand={independentExpand} />
         </div>
