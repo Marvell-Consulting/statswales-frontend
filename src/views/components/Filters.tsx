@@ -3,6 +3,7 @@ import { FilterTable } from '../../dtos/filter-table';
 import { Checkbox, CheckboxGroup, CheckboxOptions, Controls } from './CheckboxGroup';
 import qs from 'qs';
 import { get } from 'lodash';
+import clsx from 'clsx';
 
 export type FiltersProps = {
   filters: FilterTable[];
@@ -33,9 +34,24 @@ export const Filters = ({ filters, url }: FiltersProps) => {
       {filters?.map((filter, index) => {
         const values = get(parsedFilter, filter.columnName);
 
+        const filtered = values?.length;
+        const total = filterOptionCount(filter.values);
+
+        const isFiltered = !!filtered;
+
         return (
           <div className="filters" id={`filter-${filter.factTableColumn}`} key={index}>
-            <h3 className="region-subhead">{`${filter.columnName} (${filterOptionCount(filter.values)})`}</h3>
+            <h3 className="region-subhead">
+              {filter.columnName}{' '}
+              <span>
+                (
+                <span className={clsx('show-when-filtered', { hidden: !isFiltered })}>
+                  <span className="selected">{filtered}</span> of{' '}
+                </span>
+                <span className="total">{total}</span>
+                <span className={clsx('show-when-filtered', { hidden: !isFiltered })}> selected</span>)
+              </span>
+            </h3>
             <div className="filter-container option-select">
               <div className="filter-head hidden">
                 <Controls className="parent-controls" />
@@ -72,16 +88,30 @@ export const Filters = ({ filters, url }: FiltersProps) => {
               const name = filter.getAttribute("id");
               const checkboxId = name + "-all";
               const allCheckbox = filter.querySelector(".filter-head input#" + checkboxId)
+              const selectedLabel = filter.querySelector("span.selected")
+              const showWhenFiltered = filter.querySelectorAll("span.show-when-filtered")
 
               const childCheckboxes = [...filter.querySelectorAll('.filter-body [type="checkbox"]')]
 
               function checkState() {
                 const anyChecked = childCheckboxes.some(c => c.checked);
-
                 allCheckbox.checked = !anyChecked
+                updateTotals()
               }
 
               childCheckboxes.forEach(checkbox => checkbox.addEventListener("change", checkState));
+
+              function updateTotals() {
+                const numChecked = childCheckboxes.reduce((sum, check) => sum + (check.checked ? 1 : 0), 0);
+                selectedLabel.innerText = numChecked;
+                showWhenFiltered.forEach(f => {
+                  if (numChecked) {
+                    f.classList.remove("hidden")
+                  } else {
+                    f.classList.add("hidden") 
+                  }
+                })
+              }
 
               allCheckbox.addEventListener("change", (e) => {
                 if (e.target.checked) {
@@ -95,6 +125,7 @@ export const Filters = ({ filters, url }: FiltersProps) => {
                   })
                 }
                 e.target.checked = true;
+                updateTotals()
               })
             }
 
