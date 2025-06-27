@@ -298,6 +298,9 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
             __html: `
               import { initAll } from '/assets/js/govuk-frontend.min.js';
               initAll();
+
+              const toShow = document.querySelectorAll(".non-js-hidden");
+              toShow.forEach(el => el.classList.remove("non-js-hidden"))
               `
           }}
         />

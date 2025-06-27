@@ -141,7 +141,11 @@ const Layout = ({ children }: PropsWithChildren) => {
           dangerouslySetInnerHTML={{
             __html: `
             import { initAll } from '/assets/js/govuk-frontend.min.js';
-            initAll();`
+            initAll();
+            
+            const toShow = document.querySelectorAll(".non-js-hidden");
+            toShow.forEach(el => el.classList.remove("non-js-hidden"))
+            `
           }}
         />
         <script src="https://kit.fontawesome.com/f6f4af2d4c.js" crossOrigin="anonymous" />

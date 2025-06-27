@@ -1,8 +1,9 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { ReactNode } from 'react';
+import T from './T';
 
 export type CheckboxOptions = {
-  label: string;
+  label: ReactNode;
   value: string;
   children?: CheckboxOptions[];
   independentExpand?: boolean;
@@ -15,15 +16,23 @@ export type CheckboxGroupProps = {
   independentExpand?: boolean;
 };
 
-export function Controls({ className }: { className?: string }) {
+export function Controls({
+  className,
+  selectAllLabel,
+  noneLabel
+}: {
+  className?: string;
+  selectAllLabel: ReactNode;
+  noneLabel: ReactNode;
+}) {
   return (
-    <div className={clsx('controls hidden', className)}>
+    <div className={clsx('controls non-js-hidden', className)}>
       <a href="#" className="govuk-link" data-action="select-all">
-        Select all
+        {selectAllLabel}
       </a>
       <span>|</span>
       <a href="#" className="govuk-link" data-action="clear">
-        None
+        {noneLabel}
       </a>
     </div>
   );
@@ -72,7 +81,7 @@ export const Checkbox = ({
     return (
       <details open={isOpen}>
         <summary>
-          {CheckboxField} <Controls />
+          {CheckboxField} <Controls selectAllLabel={<T>filters.select_all</T>} noneLabel={<T>filters.none</T>} />
         </summary>
         <div className="indent">
           <CheckboxGroup options={children} name={name} values={values} independentExpand={independentExpand} />

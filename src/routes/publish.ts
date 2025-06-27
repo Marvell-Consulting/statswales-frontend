@@ -50,6 +50,7 @@ import {
 import { DatasetInclude as Include } from '../enums/dataset-include';
 import { flashMessages } from '../middleware/flash';
 import { noCache } from '../middleware/no-cache';
+import { clearParams } from '../middleware/clearParams';
 
 export const publish = Router();
 
@@ -88,7 +89,7 @@ publish.get('/:datasetId/delete', fetchDataset(Include.Meta), deleteDraft);
 publish.post('/:datasetId/delete', fetchDataset(Include.Meta), deleteDraft);
 
 /* Cube Preview */
-publish.get('/:datasetId/cube-preview', fetchDataset(), cubePreview);
+publish.get('/:datasetId/cube-preview', clearParams, fetchDataset(), cubePreview);
 publish.get('/:datasetId/download', fetchDataset(), downloadDataset);
 
 /* Measure creation */

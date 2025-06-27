@@ -70,24 +70,8 @@ export default function ConsumerView(props) {
                   ))}
                 </select>
               </div>
-              <h2 className="govuk-heading-m">{props.t('consumer_view.filters')}</h2>
-              <script
-                dangerouslySetInnerHTML={{
-                  __html: `
-                    // Ensure nested checkboxes toggle visibility but do not auto-select
-                    document.querySelectorAll('.govuk-checkboxes__input').forEach(parentCheckbox => {
-                      const controlledId = parentCheckbox.getAttribute('data-aria-controls');
-                      const nestedContainer = controlledId ? document.getElementById(controlledId) : null;
-                      if (nestedContainer) {
-                        // Toggle visibility of nested checkboxes
-                        parentCheckbox.addEventListener('change', function () {
-                          nestedContainer.style.display = parentCheckbox.checked ? 'block' : 'none';
-                        });
-                      }
-                    })`
-                }}
-              />
-              <Filters filters={props.filters} url={props.url} />
+
+              <Filters filters={props.filters} url={props.url} title={props.t('consumer_view.filters')} />
               <br />
               <button
                 name="dataViewsChoice"
