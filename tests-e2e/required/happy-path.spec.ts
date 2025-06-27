@@ -303,9 +303,9 @@ test.describe('Happy path', () => {
     await previewPage.click('#en-GB', { force: true });
     const csvDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
     await checkFile(testInfo, csvDownload);
-    await previewPage.click('#parquet', { force: true });
-    const parquetDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
-    await checkFile(testInfo, parquetDownload);
+    await previewPage.click('#json', { force: true });
+    const jsonDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
+    await checkFile(testInfo, jsonDownload);
     await previewPage.click('#xlsx', { force: true });
     const excelDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
     await checkFile(testInfo, excelDownload);

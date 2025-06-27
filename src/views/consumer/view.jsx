@@ -143,15 +143,13 @@ export default function ConsumerView(props) {
             options={[
               {
                 value: 'filtered',
-                label: props.t('consumer_view.filtered_download'),
-                disabled: true
+                label: props.t('consumer_view.filtered_download')
               },
               {
                 value: 'default',
                 label: props.t('consumer_view.default_download')
               }
             ]}
-            value="default"
           />
 
           <RadioGroup
@@ -166,13 +164,18 @@ export default function ConsumerView(props) {
               {
                 value: 'xlsx',
                 label: 'Excel',
-                hint: props.t('consumer_view.data_metadata_hint')
+                hint: props.t('consumer_view.data_only_hint')
               },
               {
-                value: 'parquet',
-                label: 'Parquet',
-                hint: props.t('consumer_view.data_metadata_hint')
+                value: 'json',
+                label: 'JSON',
+                hint: props.t('consumer_view.data_only_hint')
               }
+              // {
+              //   value: 'parquet',
+              //   label: 'Parquet',
+              //   hint: props.t('consumer_view.data_metadata_hint')
+              // }
               // {
               //   value: 'duckdb',
               //   label: 'DuckDB',
@@ -188,15 +191,15 @@ export default function ConsumerView(props) {
               {
                 value: 'default',
                 label: props.t('consumer_view.formatted_numbers'),
-                hint: props.t('consumer_view.formatted_numbers_hint')
+                hint: props.t('consumer_view.formatted_numbers_hint'),
+                disabled: true
               },
               {
                 value: 'raw',
-                label: props.t('consumer_view.unformatted_numbers'),
-                disabled: true
+                label: props.t('consumer_view.unformatted_numbers')
               }
             ]}
-            value="default"
+            value="raw"
           />
 
           <RadioGroup
@@ -213,6 +216,13 @@ export default function ConsumerView(props) {
               }
             ]}
           />
+
+          <input
+            type="hidden"
+            id="selected_filter_options"
+            name="selected_filter_options"
+            value={JSON.stringify(props.selectedFilterOptions)}
+          ></input>
 
           <button
             name="action"
