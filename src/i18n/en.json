@@ -1341,6 +1341,13 @@
       "bad_node_code_info": "You should check you have used standard note codes.  Correct your data table and upload it again."
     }
   },
+  "filters": {
+    "select_all": "Select all",
+    "none": "None",
+    "clear": "Clear all",
+    "no_filter": "No filter",
+    "summary": "<span class=\"number-selected\">{{filtered}}</span> of {{total}} selected"
+  },
   "consumer_view": {
     "about_this_dataset": "About this dataset",
     "overview": "Overview",

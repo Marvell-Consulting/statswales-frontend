@@ -392,6 +392,16 @@
     display: none;
   }
 
+  // used to hide JS only components for non-js users.
+  .non-js-hidden {
+    display: none;
+  }
+
+  // used by JS to show/hide elements dynamically
+  .js-hidden {
+    display: none;
+  }
+
   .table-controls {
     background: #f1f1f1;
     padding: 15px;
@@ -1664,7 +1674,7 @@
     }
 
     a:focus {
-      color: #1f1f1f;
+      color: colours.$black;
     }
 
     ul {
@@ -1813,7 +1823,7 @@
     .language-switcher-language-url a {
       text-decoration: none;
       color: #fff;
-      background: #1f1f1f;
+      background: colours.$black;
       padding: 10px 20px;
       font-size: 16px;
       font-weight: bold;
@@ -1829,10 +1839,10 @@
       background-color: colours.$midgrey;
       border-color: transparent;
       color: colours.$white;
-      outline: 2px solid #1f1f1f;
+      outline: 2px solid colours.$black;
       text-decoration: none;
-      -webkit-box-shadow: 0 0 0 2px #ffd530;
-      box-shadow: 0 0 0 2px #ffd530;
+      -webkit-box-shadow: 0 0 0 2px colours.$yellow;
+      box-shadow: 0 0 0 2px colours.$yellow;
     }
 
     .language-switcher-language-url ul {
@@ -1877,7 +1887,7 @@
     .button {
       text-decoration: none;
       color: #fff;
-      background: #1f1f1f;
+      background: colours.$black;
       padding: 10px 20px;
       font-size: 0.875em;
       font-weight: bold;
@@ -1890,13 +1900,13 @@
     }
 
     .button:focus {
-      background-color: #ffd530;
+      background-color: colours.$yellow;
       border-color: transparent;
-      color: #1f1f1f;
-      outline: 2px solid #1f1f1f;
+      color: colours.$black;
+      outline: 2px solid colours.$black;
       text-decoration: none;
-      -webkit-box-shadow: 0 0 0 2px #ffd530;
-      box-shadow: 0 0 0 2px #ffd530;
+      -webkit-box-shadow: 0 0 0 2px colours.$yellow;
+      box-shadow: 0 0 0 2px colours.$yellow;
     }
 
     .header__components {
@@ -1982,22 +1992,22 @@
 
     input:focus {
       background-color: inherit;
-      border-color: #1f1f1f;
-      color: #1f1f1f;
+      border-color: colours.$black;
+      color: colours.$black;
       outline: 2px solid transparent;
       text-decoration: none;
-      -webkit-box-shadow: 0 0 0 2px #ffd530;
-      box-shadow: 0 0 0 2px #ffd530;
+      -webkit-box-shadow: 0 0 0 2px colours.$yellow;
+      box-shadow: 0 0 0 2px colours.$yellow;
     }
 
     input[type='submit']:focus {
-      background-color: #ffd530;
+      background-color: colours.$yellow;
       border-color: transparent;
-      color: #1f1f1f;
-      outline: 2px solid #1f1f1f;
+      color: colours.$black;
+      outline: 2px solid colours.$black;
       text-decoration: none;
-      -webkit-box-shadow: 0 0 0 2px #ffd530;
-      box-shadow: 0 0 0 2px #ffd530;
+      -webkit-box-shadow: 0 0 0 2px colours.$yellow;
+      box-shadow: 0 0 0 2px colours.$yellow;
     }
 
     @media print {
