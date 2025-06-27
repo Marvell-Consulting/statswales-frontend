@@ -189,6 +189,7 @@
   line-height: 20px;
   text-transform: uppercase;
   font-weight: bold;
+  overflow-wrap: anywhere;
 }
 .wg .topic-subhead {
   color: #666666;
