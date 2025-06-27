@@ -59,22 +59,23 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
               <span className={clsx('non-filtered-label', { 'js-hidden': filtered })}>{total}</span>)
             </h3>
             <div className="filter-container option-select">
-              <div className="filter-head non-js-hidden">
-                <Controls
-                  className="parent-controls"
-                  selectAllLabel={<T>filters.select_all</T>}
-                  noneLabel={<T>filters.none</T>}
-                />
-                <div className="govuk-checkboxes--small">
-                  <Checkbox
-                    checked={!values}
-                    label={<T>filters.no_filter</T>}
-                    name={`filter-${filter.factTableColumn}-all`}
-                    value="all"
-                    omitName
-                    values={Array.isArray(values) ? values : [values]}
+              <div className="padding-box">
+                <div className="filter-head non-js-hidden">
+                  <Controls
+                    className="parent-controls"
+                    selectAllLabel={<T>filters.select_all</T>}
+                    noneLabel={<T>filters.none</T>}
                   />
-                  <hr />
+                  <div className="govuk-checkboxes--small">
+                    <Checkbox
+                      checked={!values}
+                      label={<T>filters.no_filter</T>}
+                      name={`filter-${filter.factTableColumn}-all`}
+                      value="all"
+                      omitName
+                      values={Array.isArray(values) ? values : [values]}
+                    />
+                  </div>
                 </div>
               </div>
               <div className="filter-body">
