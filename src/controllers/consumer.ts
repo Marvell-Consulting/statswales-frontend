@@ -71,6 +71,13 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
     return;
   }
 
+  const selectedFilterOptions =
+    filter &&
+    Object.keys(filter).map((key) => ({
+      columnName: key,
+      values: filter[key]
+    }));
+
   const datasetMetadata = await getDatasetPreview(dataset, revision);
   const preview = await req.conapi.getPublishedDatasetView(
     dataset.id,
@@ -86,7 +93,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   pagination = generateSequenceForNumber(preview.current_page, preview.total_pages);
   const filters = await req.conapi.getPublishedDatasetFilters(dataset.id);
 
-  res.render('consumer/view', { ...preview, datasetMetadata, pagination, filters });
+  res.render('consumer/view', { ...preview, datasetMetadata, pagination, filters, selectedFilterOptions });
 };
 
 export const downloadPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
@@ -105,7 +112,10 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
     } else {
       attachmentName = `${dataset.id}-${revision.revision_index > 0 ? `v${revision.revision_index}` : 'draft'}`;
     }
-
+    let selectedFilterOptions: string | undefined = undefined;
+    if (req.query.view_type === 'filtered') {
+      selectedFilterOptions = req.query.selected_filter_options?.toString();
+    }
     const format = req.query.format as FileFormat;
     const lang = req.query.download_language as Locale;
     const headers = getDownloadHeaders(format, attachmentName);
@@ -114,7 +124,7 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
       throw new NotFoundException('invalid file format');
     }
 
-    const fileStream = await req.conapi.getCubeFileStream(dataset.id, format, lang);
+    const fileStream = await req.conapi.getCubeFileStream(dataset.id, format, lang, selectedFilterOptions);
     res.writeHead(200, headers);
     const readable: Readable = Readable.from(fileStream);
     readable.pipe(res);

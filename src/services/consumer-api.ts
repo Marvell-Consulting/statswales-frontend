@@ -115,11 +115,25 @@ export class ConsumerApi {
     );
   }
 
-  public async getCubeFileStream(datasetId: string, format: FileFormat, language: Locale): Promise<ReadableStream> {
+  public async getCubeFileStream(
+    datasetId: string,
+    format: FileFormat,
+    language: Locale,
+    selectedFilterOptions?: string,
+    sortBy?: string
+  ): Promise<ReadableStream> {
     logger.debug(`Fetching ${format} stream for dataset: ${datasetId}...`);
 
+    const searchParams = new URLSearchParams();
+
+    if (selectedFilterOptions) {
+      searchParams.set('filter', selectedFilterOptions);
+    }
+
+    if (sortBy) searchParams.append('sort_by', sortBy);
+
     return this.fetch({
-      url: `v1/${datasetId}/download/${format}`,
+      url: `v1/${datasetId}/download/${format}?${searchParams.toString()}`,
       lang: language
     }).then((response) => response.body as ReadableStream);
   }
