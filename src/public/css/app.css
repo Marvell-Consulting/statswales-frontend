@@ -2050,7 +2050,6 @@
 .wg .govuk-table__container {
   max-width: 100%;
   overflow-x: auto;
-  position: relative;
 }
 .wg .source-list-item,
 .wg .govuk-table__header,
