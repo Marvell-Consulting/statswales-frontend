@@ -2695,6 +2695,11 @@ export const taskDecision = async (req: Request, res: Response, next: NextFuncti
       return;
     }
 
+    if (!task.open) {
+      res.redirect(req.buildUrl(`/publish/${res.locals.datasetId}/overview`, req.language));
+      return;
+    }
+
     taskType = `${task.action}.${task.status}`;
 
     if (req.method === 'POST') {
