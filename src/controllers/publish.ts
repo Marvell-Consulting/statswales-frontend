@@ -515,7 +515,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
   const { id: datasetId, end_revision_id: endRevisionId } = res.locals.dataset;
   const query = qs.parse(req.originalUrl.split('?')[1]);
   const pageNumber = Number.parseInt(query.page_number as string, 10) || 1;
-  const pageSize = Number.parseInt(query.page_size as string, 10) || 10;
+  const pageSize = Number.parseInt(query.page_size as string, 10) || 25;
   const filter = query.filter as Record<string, string[]>;
   const sortBy = query.sort_by as unknown as SortByInterface;
 
