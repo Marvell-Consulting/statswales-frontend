@@ -2442,6 +2442,48 @@
     overflow-x: auto; // removing this breaks all tables.
   }
 
+  .govuk-table.sortable {
+    th {
+      position: relative;
+      padding-right: 2em;
+
+      a {
+        display: block;
+        color: colours.$black;
+      }
+
+      &::before,
+      &::after {
+        position: absolute;
+        display: block;
+        opacity: 0.125;
+        right: 10px;
+        line-height: 9px;
+        font-size: 0.8em;
+      }
+
+      &[aria-sort='descending']::after {
+        opacity: 1;
+        color: colours.$blue;
+      }
+
+      &[aria-sort='ascending']::before {
+        opacity: 1;
+        color: colours.$blue;
+      }
+
+      &::before {
+        top: 10px;
+        content: '▲';
+      }
+
+      &::after {
+        top: 22px;
+        content: '▼';
+      }
+    }
+  }
+
   .source-list-item,
   .govuk-table__header,
   .govuk-table__cell {

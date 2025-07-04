@@ -94,6 +94,7 @@ import { SingleLanguageRevision } from '../dtos/single-language/revision';
 import { appConfig } from '../config';
 import { FilterTable } from '../dtos/filter-table';
 import qs from 'qs';
+import { SortByInterface } from '../interfaces/sort-by';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -516,6 +517,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
   const pageNumber = Number.parseInt(query.page_number as string, 10) || 1;
   const pageSize = Number.parseInt(query.page_size as string, 10) || 10;
   const filter = query.filter as Record<string, string[]>;
+  const sortBy = query.sort_by as unknown as SortByInterface;
 
   let errors: ViewError[] | undefined;
   let previewData: ViewDTO | ViewErrDTO | undefined;
@@ -532,6 +534,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
           endRevisionId,
           pageNumber,
           pageSize,
+          sortBy,
           filter &&
             Object.keys(filter).map((key) => ({
               columnName: key,

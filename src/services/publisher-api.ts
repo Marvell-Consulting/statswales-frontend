@@ -43,6 +43,7 @@ import { TaskDecisionDTO } from '../dtos/task-decision';
 import { EventLogDTO } from '../dtos/event-log';
 import { FilterTable } from '../dtos/filter-table';
 import { FilterInterface } from '../interfaces/filterInterface';
+import { SortByInterface } from '../interfaces/sort-by';
 
 const config = appConfig();
 
@@ -359,6 +360,7 @@ export class PublisherApi {
     revisionId: string,
     pageNumber: number,
     pageSize: number,
+    sortBy?: SortByInterface,
     filter?: FilterInterface[]
   ): Promise<ViewDTO> {
     logger.debug(
@@ -372,6 +374,10 @@ export class PublisherApi {
 
     if (filter && filter.length) {
       query.set('filter', JSON.stringify(filter));
+    }
+
+    if (sortBy) {
+      query.set('sort_by', JSON.stringify([sortBy]));
     }
 
     return this.fetch({

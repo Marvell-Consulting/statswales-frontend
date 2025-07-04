@@ -13,6 +13,7 @@ import { FileFormat } from '../enums/file-format';
 import { PublishedTopicsDTO } from '../dtos/published-topics-dto';
 import { FilterInterface } from '../interfaces/filterInterface';
 import { FilterTable } from '../dtos/filter-table';
+import { SortByInterface } from '../interfaces/sort-by';
 
 const config = appConfig();
 
@@ -91,7 +92,7 @@ export class ConsumerApi {
     datasetId: string,
     pageSize: number,
     pageNumber: number,
-    sortBy?: string,
+    sortBy?: SortByInterface,
     filter?: FilterInterface[]
   ): Promise<ViewDTO> {
     logger.debug(`Fetching published view of dataset: ${datasetId}`);
@@ -101,7 +102,9 @@ export class ConsumerApi {
       searchParams.set('filter', JSON.stringify(filter));
     }
 
-    if (sortBy) searchParams.append('sort_by', sortBy);
+    if (sortBy) {
+      searchParams.append('sort_by', JSON.stringify([sortBy]));
+    }
 
     return this.fetch({ url: `v1/${datasetId}/view?${searchParams.toString()}` }).then(
       (response) => response.json() as unknown as ViewDTO
