@@ -36,4 +36,4 @@ EXPOSE 3000
 # set the user to non-root (node)
 USER node
 
-CMD [ "npm", "run", "start:container"]
+CMD [ "node", "dist/server.js"]
