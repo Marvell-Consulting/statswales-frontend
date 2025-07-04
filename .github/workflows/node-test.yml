@@ -35,6 +35,8 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2
         with:
           compose-version: 'latest'
+        env:
+          ACTIONS_STEP_DEBUG: true
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
