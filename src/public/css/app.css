@@ -2051,6 +2051,38 @@
   max-width: 100%;
   overflow-x: auto;
 }
+.wg .govuk-table.sortable th {
+  position: relative;
+  padding-right: 2em;
+}
+.wg .govuk-table.sortable th a {
+  display: block;
+  color: #1f1f1f;
+}
+.wg .govuk-table.sortable th::before, .wg .govuk-table.sortable th::after {
+  position: absolute;
+  display: block;
+  opacity: 0.125;
+  right: 10px;
+  line-height: 9px;
+  font-size: 0.8em;
+}
+.wg .govuk-table.sortable th[aria-sort=descending]::after {
+  opacity: 1;
+  color: #0360a6;
+}
+.wg .govuk-table.sortable th[aria-sort=ascending]::before {
+  opacity: 1;
+  color: #0360a6;
+}
+.wg .govuk-table.sortable th::before {
+  top: 10px;
+  content: "▲";
+}
+.wg .govuk-table.sortable th::after {
+  top: 22px;
+  content: "▼";
+}
 .wg .source-list-item,
 .wg .govuk-table__header,
 .wg .govuk-table__cell {
@@ -2328,7 +2360,7 @@
   align-items: flex-start;
   justify-content: space-between;
 }
-.filters-container button.clear-filters {
+.filters-container a.clear-filters {
   font-weight: bold;
   font-size: 14px;
   font-size: 0.875rem;
@@ -2339,11 +2371,11 @@
   border: 1px solid #aa1111;
   cursor: pointer;
 }
-.filters-container button.clear-filters:hover {
+.filters-container a.clear-filters:hover {
   color: #ffffff;
   background: #aa1111;
 }
-.filters-container button.clear-filters:focus {
+.filters-container a.clear-filters:focus {
   background-color: #ffd530 !important;
   border-color: transparent !important;
   color: #1f1f1f !important;

@@ -15,6 +15,7 @@ import { getDownloadHeaders } from '../utils/download-headers';
 import { logger } from '../utils/logger';
 import { Locale } from '../enums/locale';
 import { appConfig } from '../config';
+import { SortByInterface } from '../interfaces/sort-by';
 
 const config = appConfig();
 
@@ -65,6 +66,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   const pageSize = Number.parseInt(query.page_size as string, 10) || 100;
   let pagination: (string | number)[] = [];
   const filter = query.filter as Record<string, string[]>;
+  const sortBy = query.sort_by as unknown as SortByInterface;
 
   if (!dataset.live || !revision) {
     next(new NotFoundException('no published revision found'));
@@ -83,7 +85,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
     dataset.id,
     pageSize,
     pageNumber,
-    undefined,
+    sortBy,
     filter &&
       Object.keys(filter).map((key) => ({
         columnName: key,

@@ -2,7 +2,7 @@ import React from 'react';
 import { FilterTable } from '../../dtos/filter-table';
 import { Checkbox, CheckboxGroup, CheckboxOptions, Controls } from './CheckboxGroup';
 import qs from 'qs';
-import { flatten, get } from 'lodash';
+import { flatten, get, omit } from 'lodash';
 import clsx from 'clsx';
 import T from './T';
 
@@ -30,16 +30,19 @@ const filterOptionCount = (options: FilterTable['values']): number => {
 };
 
 export const Filters = ({ filters, url, title }: FiltersProps) => {
-  const parsedFilter = qs.parse(url.split('?')[1])?.filter;
+  const [baseUrl, query] = url.split('?');
+  const parsedQuery = qs.parse(query);
+  const parsedFilter = parsedQuery?.filter;
   const activeFilters = parsedFilter && flatten(Object.values(parsedFilter)).length;
+  const clearFiltersLink = `${baseUrl}?${qs.stringify(omit(parsedQuery, 'filter'))}`;
   return (
     <div className="filters-container">
       <div className="filters-head">
         <h2 className="govuk-heading-m">{title}</h2>
         {!!activeFilters && (
-          <button type="submit" name="_clear" value="filter" className={'clear-filters'}>
+          <a href={clearFiltersLink} className={'clear-filters'}>
             <T>filters.clear</T>
-          </button>
+          </a>
         )}
       </div>
 

@@ -3,6 +3,7 @@ import { isEmpty, omit } from 'lodash';
 
 import { logger } from '../utils/logger';
 import { Locale } from '../enums/locale';
+import qs from 'qs';
 
 import { ignoreRoutes, SUPPORTED_LOCALES } from './translation';
 
@@ -26,7 +27,7 @@ export const localeUrl = (
   // }
 
   const newPath = isEmpty(pathElements) ? '' : `/${pathElements.join('/')}`;
-  const queryString = isEmpty(query) ? '' : `?${new URLSearchParams(query).toString()}`;
+  const queryString = isEmpty(query) ? '' : `?${qs.stringify(query)}`;
   const anchorString = isEmpty(anchor) ? '' : `#${anchor}`;
   return `/${locale}${newPath}${queryString}${anchorString}`;
 };

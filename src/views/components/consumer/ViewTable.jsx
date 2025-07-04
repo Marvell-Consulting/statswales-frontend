@@ -16,5 +16,5 @@ export default function ViewTable(props) {
     className: col.source_type === 'line_number' ? 'line-number' : '',
     cellClassName: col.source_type === 'line_number' ? 'line-number' : ''
   }));
-  return <Table isSticky columns={columns} rows={props.data} />;
+  return <Table isSticky columns={columns} rows={props.data} isSortable />;
 }
