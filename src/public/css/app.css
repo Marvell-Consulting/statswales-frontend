@@ -429,7 +429,7 @@
 }
 .wg a:focus,
 .wg .govuk-link:focus {
-  outline: 3px solid transparent;
+  outline: 3px solid #ffd530;
   background-color: transparent;
   box-shadow: none;
 }
