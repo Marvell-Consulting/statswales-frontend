@@ -503,7 +503,7 @@
 
   a:focus,
   .govuk-link:focus {
-    outline: 3px solid transparent;
+    outline: 3px solid colours.$yellow;
     background-color: transparent;
     box-shadow: none;
   }

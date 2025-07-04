@@ -236,21 +236,19 @@ export default function ConsumerView(props) {
         </div>
       )}
 
-      <div className="govuk-tabs" data-module="govuk-tabs">
-        <h2 className="govuk-tabs__title">{props.t('toc')}</h2>
+      <Tabs
+        title={props.t('toc')}
+        tabs={[
+          ...(props?.isDeveloper && props?.showDeveloperTab
+            ? [{ label: props.t('developer.heading'), id: 'developer', children: <DeveloperView {...props} /> }]
+            : []),
+          { label: props.t('consumer_view.data'), id: 'data', children: DataPanel },
+          { label: props.t('consumer_view.about_this_dataset'), id: 'about_dataset', children: AboutPanel },
+          { label: props.t('consumer_view.download'), id: 'download_dataset', children: DownloadPanel }
+        ]}
+      />
 
-        <Tabs
-          tabs={[
-            ...(props?.isDeveloper && props?.showDeveloperTab
-              ? [{ label: props.t('developer.heading'), id: 'developer', children: <DeveloperView {...props} /> }]
-              : []),
-            { label: props.t('consumer_view.data'), id: 'data', children: DataPanel },
-            { label: props.t('consumer_view.about_this_dataset'), id: 'about_dataset', children: AboutPanel },
-            { label: props.t('consumer_view.download'), id: 'download_dataset', children: DownloadPanel }
-          ]}
-        />
-
-        {/* <div className="govuk-tabs__panel govuk-tabs__panel&#45;&#45;hidden" id="history" role="tabpanel" aria-labelledby="tab_history">
+      {/* <div className="govuk-tabs__panel govuk-tabs__panel&#45;&#45;hidden" id="history" role="tabpanel" aria-labelledby="tab_history">
                   <div className="govuk-grid-row">
                       <div className="govuk-grid-column-two-thirds">
 
@@ -280,7 +278,7 @@ export default function ConsumerView(props) {
                       </div>
                   </div>
               </div> */}
-      </div>
+      {/* </div> */}
     </LayoutComponent>
   );
 }

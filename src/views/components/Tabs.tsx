@@ -9,15 +9,16 @@ type Tab = {
 
 export type TabsProps = {
   tabs: Tab[];
-  tabIndexBase?: number;
+  title?: string;
 };
 
-export default function Tabs({ tabs, tabIndexBase = 0 }: TabsProps) {
+export default function Tabs({ tabs, title }: TabsProps) {
   return (
     <div className="govuk-tabs" data-module="govuk-tabs">
       <div className="tabs">
         <div className="govuk-width-container">
           <div className="govuk-main-wrapper govuk-!-padding-bottom-0">
+            {title && <h2 className="govuk-tabs__title">{title}</h2>}
             <ul className="govuk-tabs__list" role="tablist">
               {tabs.map((tab, i) => (
                 <li
@@ -31,7 +32,6 @@ export default function Tabs({ tabs, tabIndexBase = 0 }: TabsProps) {
                     id={`tab_${tab.id}`}
                     role="tab"
                     aria-controls={tab.id}
-                    tabIndex={tabIndexBase + i}
                   >
                     {tab.label}
                   </a>
