@@ -17,7 +17,9 @@ export default function Notes(props) {
               <ul className="govuk-list">
                 {props.notes.publishedRevisions.map((revision, index) => (
                   <li key={index}>
-                    <strong>{props.dateFormat(revision.publish_at, 'd MMMM yyyy')}</strong>
+                    <strong>
+                      {props.dateFormat(revision.publish_at, 'd MMMM yyyy', { locale: props.i18n.language })}
+                    </strong>
                   </li>
                 ))}
               </ul>

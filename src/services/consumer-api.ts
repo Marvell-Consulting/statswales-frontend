@@ -76,9 +76,9 @@ export class ConsumerApi {
 
   public async getPublishedDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {
     logger.debug(`Fetching published dataset list...`);
-    const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
+    const qs = `${new URLSearchParams({ page_number: page.toString(), page_size: limit.toString() }).toString()}`;
 
-    return this.fetch({ url: `v1/list?${qs}` }).then(
+    return this.fetch({ url: `v1?${qs}` }).then(
       (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
     );
   }
