@@ -24,7 +24,12 @@ export default function TaskDecision(props) {
             </p>
 
             <p className="govuk-body govuk-!-margin-0">
-              <T publishAt={props.dateFormat(props.revision.publish_at, 'h:mmaaa, d MMMM yyyy')} raw>
+              <T
+                publishAt={props.dateFormat(props.revision.publish_at, 'h:mmaaa, d MMMM yyyy', {
+                  locale: props.i18n.language
+                })}
+                raw
+              >
                 publish.overview.pending.publish_at
               </T>
             </p>
