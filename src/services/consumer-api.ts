@@ -78,7 +78,7 @@ export class ConsumerApi {
     logger.debug(`Fetching published dataset list...`);
     const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
 
-    return this.fetch({ url: `v1/list?${qs}` }).then(
+    return this.fetch({ url: `v1?${qs}` }).then(
       (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
     );
   }

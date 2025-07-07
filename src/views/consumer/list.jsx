@@ -1,15 +1,8 @@
 import React from 'react';
 import Layout from '../components/layouts/Publisher';
-import Pagination, { PaginationProps } from '../components/Pagination';
-import { Locals } from '../context/Locals';
-import { DatasetListItemDTO } from '../../dtos/dataset-list-item';
+import Pagination from '../components/Pagination';
 
-type ConsumerListProps = Locals &
-  PaginationProps & {
-    data: DatasetListItemDTO[];
-  };
-
-export default function ConsumerList(props: ConsumerListProps) {
+export default function ConsumerList(props) {
   return (
     <Layout {...props}>
       <div className="govuk-grid-row govuk-!-margin-bottom-6">
@@ -39,7 +32,7 @@ export default function ConsumerList(props: ConsumerListProps) {
                 <div className="index-list__meta">
                   <p>
                     <span className="govuk-body-s caption index-list__item__meta">
-                      {props.dateFormat(dataset.published_date, 'd MMMM yyyy')}
+                      {props.dateFormat(dataset.published_date, 'd MMMM yyyy', { locale: props.i18n.language })}
                     </span>
                   </p>
                 </div>
