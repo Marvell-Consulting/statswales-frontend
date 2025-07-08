@@ -209,7 +209,7 @@ export const uploadDataTable = async (req: Request, res: Response) => {
   let errors: ViewError[] = [];
 
   if (req.method === 'POST') {
-    logger.debug('User is uploading a fact table.');
+    logger.debug('Data table upload started...');
     try {
       if (!req.file) {
         logger.error('No file is present in the request');
@@ -217,10 +217,14 @@ export const uploadDataTable = async (req: Request, res: Response) => {
         throw new Error();
       }
 
+      logger.debug(
+        `Received file: ${req.file.originalname}, mimetype: ${req.file.mimetype}, size: ${req.file.size} bytes`
+      );
+
       const fileName = req.file.originalname;
       req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
       const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
-      logger.debug('Sending file to backend');
+      logger.debug('Sending data table file to the backend...');
 
       if (session.updateType) {
         logger.info('Performing an update to the dataset');
@@ -228,6 +232,8 @@ export const uploadDataTable = async (req: Request, res: Response) => {
       } else {
         await req.pubapi.uploadDataToDataset(dataset.id, fileData, fileName);
       }
+
+      logger.debug('Upload successful, redirecting to preview page...');
 
       set(req.session, `dataset[${dataset.id}]`, undefined);
       req.session.save();
