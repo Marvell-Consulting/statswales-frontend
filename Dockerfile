@@ -24,6 +24,8 @@ COPY package*.json ./
 # install only production dependencies
 RUN npm ci --omit=dev
 
+RUN chown -R node:node /app
+
 # copy in the built application source from the builder image
 COPY --from=builder --chown=node:node /app/dist ./dist
 
