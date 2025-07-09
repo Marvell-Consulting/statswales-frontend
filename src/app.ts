@@ -36,6 +36,8 @@ logger.info(`App config loaded for '${config.env}' env`);
 app.disable('x-powered-by');
 app.set('trust proxy', 1);
 
+app.use(strictTransport);
+
 // asset routes (bypass middleware)
 app.use('/public', express.static(`${__dirname}/public`));
 app.use('/css', express.static(`${__dirname}/css`));
@@ -43,7 +45,6 @@ app.use('/assets', express.static(`${__dirname}/assets`));
 app.use(handleAsset404);
 
 // enable middleware
-app.use(strictTransport);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(httpLogger);
