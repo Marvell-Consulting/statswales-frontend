@@ -112,7 +112,7 @@ function ActionsTab({
 
         {canMoveGroup && (
           <li>
-            <ActionLink path="move" action="move" />
+            <ActionLink path={`/publish/${datasetId}/move`} action="move" />
           </li>
         )}
       </ul>

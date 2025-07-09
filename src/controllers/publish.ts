@@ -2632,7 +2632,17 @@ export const updateDatatable = async (req: Request, res: Response) => {
 
 export const moveDatasetGroup = async (req: Request, res: Response, next: NextFunction) => {
   const dataset = res.locals.dataset;
-  const availableGroups = getApproverUserGroups(req.user).map((g) => singleLangUserGroup(g.group, req.language)) || [];
+  let user: UserDTO;
+
+  try {
+    user = await req.pubapi.getUser();
+  } catch (err) {
+    logger.error(err, `Failed to fetch current user`);
+    next(new UnknownException(`Couldn't fetch current user`));
+    return;
+  }
+
+  const availableGroups = getApproverUserGroups(user).map((g) => singleLangUserGroup(g.group, req.language)) || [];
   const validGroupIds = availableGroups.map((group) => group.id) as string[];
   let values = { group_id: dataset.user_group_id };
   let errors: ViewError[] = [];
