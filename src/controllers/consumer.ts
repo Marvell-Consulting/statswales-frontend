@@ -18,6 +18,8 @@ import { appConfig } from '../config';
 
 const config = appConfig();
 
+export const DEFAULT_PAGE_SIZE = 100;
+
 export const listTopics = async (req: Request, res: Response, next: NextFunction) => {
   const topicId = req.params.topicId ? req.params.topicId.match(/\d+/)?.[0] : undefined;
 
@@ -62,7 +64,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   const revision = dataset.published_revision;
   const query = qs.parse(req.originalUrl.split('?')[1]);
   const pageNumber = Number.parseInt(query.page_number as string, 10) || 1;
-  const pageSize = Number.parseInt(query.page_size as string, 10) || 100;
+  const pageSize = Number.parseInt(query.page_size as string, 10) || DEFAULT_PAGE_SIZE;
   let pagination: (string | number)[] = [];
   const filter = query.filter as Record<string, string[]>;
 

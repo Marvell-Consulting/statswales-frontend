@@ -94,6 +94,7 @@ import { SingleLanguageRevision } from '../dtos/single-language/revision';
 import { appConfig } from '../config';
 import { FilterTable } from '../dtos/filter-table';
 import qs from 'qs';
+import { DEFAULT_PAGE_SIZE } from './consumer';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -514,7 +515,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
   const { id: datasetId, end_revision_id: endRevisionId } = res.locals.dataset;
   const query = qs.parse(req.originalUrl.split('?')[1]);
   const pageNumber = Number.parseInt(query.page_number as string, 10) || 1;
-  const pageSize = Number.parseInt(query.page_size as string, 10) || 100;
+  const pageSize = Number.parseInt(query.page_size as string, 10) || DEFAULT_PAGE_SIZE;
   const filter = query.filter as Record<string, string[]>;
 
   let errors: ViewError[] | undefined;
