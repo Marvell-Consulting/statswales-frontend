@@ -2,10 +2,12 @@ import path from 'node:path';
 
 import express, { Application } from 'express';
 import cookieParser from 'cookie-parser';
+import expressReactViews from 'express-react-views';
 
 import { appConfig } from './config';
 import { checkConfig } from './config/check-config';
 import { httpLogger, logger } from './utils/logger';
+import { strictTransport } from './middleware/strict-transport';
 import session from './middleware/session';
 import { ensureAuthenticated } from './middleware/ensure-authenticated';
 import { rateLimiter } from './middleware/rate-limiter';
@@ -24,7 +26,6 @@ import { consumer } from './routes/consumer';
 import { cookies } from './routes/cookie';
 import { handleAsset404 } from './middleware/asset-404';
 import { admin } from './routes/admin';
-import expressReactViews from 'express-react-views';
 
 const app: Application = express();
 const config = appConfig();
@@ -42,6 +43,7 @@ app.use('/assets', express.static(`${__dirname}/assets`));
 app.use(handleAsset404);
 
 // enable middleware
+app.use(strictTransport);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(httpLogger);
