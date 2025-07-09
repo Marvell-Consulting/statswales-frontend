@@ -31,6 +31,6 @@ test.describe('Authed as a publisher', () => {
   test('Starts the publish journey', async ({ page }) => {
     await page.goto('/en-GB/publish');
     await page.getByRole('link', { name: 'Continue' }).click();
-    expect(page.url()).toContain(`${baseUrl}/en-GB/publish/title`);
+    expect(page.url()).toContain(`${baseUrl}/en-GB/publish/group`);
   });
 });

@@ -29,6 +29,8 @@ test.describe('Title page', () => {
     test.beforeEach(async ({ page }) => {
       await page.goto(`${baseUrl}/en-GB/publish`);
       await page.getByRole('link', { name: 'Continue' }).click();
+      await page.getByText('E2E tests', { exact: true }).click({ force: true });
+      await page.getByRole('button', { name: 'Continue' }).click();
     });
 
     test('Has a heading', async ({ page }) => {

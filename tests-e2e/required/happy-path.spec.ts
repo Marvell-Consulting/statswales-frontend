@@ -61,6 +61,11 @@ test.describe('Happy path', () => {
     await page.getByRole('link', { name: 'Create new dataset' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish`);
     await page.getByRole('link', { name: 'Continue' }).click();
+    expect(page.url()).toContain(`${baseUrl}/en-GB/publish/group`);
+
+    // Select group
+    await page.getByText('E2E tests', { exact: true }).click({ force: true });
+    await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/title`);
 
     // title
