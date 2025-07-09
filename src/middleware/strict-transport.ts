@@ -1,9 +1,19 @@
+import { Request, Response, NextFunction } from 'express';
 import helmet from 'helmet';
 
-export const strictTransport = helmet({
-  hsts: {
-    maxAge: 63072000, // 2 years in seconds
-    includeSubDomains: true,
-    preload: true
-  }
-});
+import { appConfig } from '../config';
+import { AppEnv } from '../config/env.enum';
+
+const config = appConfig();
+
+const bypass = (re: Request, res: Response, next: NextFunction) => next();
+
+export const strictTransport = [AppEnv.Ci, AppEnv.Local].includes(config.env)
+  ? bypass
+  : helmet({
+      hsts: {
+        maxAge: 63072000, // 2 years in seconds
+        includeSubDomains: true,
+        preload: true
+      }
+    });
