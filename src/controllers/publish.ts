@@ -207,6 +207,13 @@ export const uploadDataTable = async (req: Request, res: Response) => {
   const supportedFormats = Object.values(DuckDBSupportFileFormats).map((format) => format.toLowerCase());
   const session = get(req.session, `dataset[${dataset.id}]`, { updateType: undefined });
   let errors: ViewError[] = [];
+  let updateType: string | undefined;
+
+  if (session.updateType) {
+    updateType = session.updateType;
+  } else {
+    updateType = req.body?.updateType;
+  }
 
   if (req.method === 'POST') {
     logger.debug('User is uploading a fact table.');
@@ -221,14 +228,12 @@ export const uploadDataTable = async (req: Request, res: Response) => {
       req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
       const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
       logger.debug('Sending file to backend');
-
-      if (session.updateType) {
+      if (req.body?.updateType) {
         logger.info('Performing an update to the dataset');
-        await req.pubapi.uploadCSVToUpdateDataset(dataset.id, revision.id, fileData, fileName, session.updateType);
+        await req.pubapi.uploadCSVToUpdateDataset(dataset.id, revision.id, fileData, fileName, req.body?.updateType);
       } else {
         await req.pubapi.uploadDataToDataset(dataset.id, fileData, fileName);
       }
-
       set(req.session, `dataset[${dataset.id}]`, undefined);
       req.session.save();
       res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
@@ -252,7 +257,13 @@ export const uploadDataTable = async (req: Request, res: Response) => {
     }
   }
 
-  res.render('publish/upload', { revisit, supportedFormats: supportedFormats.join(', '), errors, uploadType: false });
+  res.render('publish/upload', {
+    revisit,
+    supportedFormats: supportedFormats.join(', '),
+    errors,
+    updateType,
+    uploadType: false
+  });
 };
 
 export const factTablePreview = async (req: Request, res: Response, next: NextFunction) => {
