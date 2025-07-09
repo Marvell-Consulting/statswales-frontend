@@ -22,7 +22,7 @@ export default function MoveGroup(props) {
                 value: group.id,
                 label: group.name
               }))}
-              value={values.group_id}
+              value={props.values.group_id}
             />
 
             <button type="submit" className="govuk-button" data-module="govuk-button">
