@@ -26,6 +26,10 @@ const Layout = ({ children }: PropsWithChildren) => {
         <link rel="manifest" href="/assets/manifest.json" />
         <link rel="stylesheet" href="/css/govuk-frontend.min.css" />
         <link rel="stylesheet" href="/css/app.css" />
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+        />
       </head>
 
       <body className="govuk-template__body app-body-className" data-test="My value" data-other="report:details">
