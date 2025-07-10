@@ -550,7 +550,7 @@
       "form": {
         "description": {
           "error": {
-            "missing":  "Nodwch grynodeb o’r set ddata hon a’i newidynnau"
+            "missing": "Nodwch grynodeb o’r set ddata hon a’i newidynnau"
           }
         }
       }

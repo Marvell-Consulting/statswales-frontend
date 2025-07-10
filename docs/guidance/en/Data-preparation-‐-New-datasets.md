@@ -326,6 +326,7 @@ Example measure lookup table for our council tax example:
 _Please note this example is for demonstration purposes only and is not a genuine lookup table for council tax data._
 
 Descriptions should clearly define what the data value represents. This should include the:
+
 - type of measure, such as 'number of' or 'rank of'
 - thing the measure represents, such as 'children' or 'businesses'
 

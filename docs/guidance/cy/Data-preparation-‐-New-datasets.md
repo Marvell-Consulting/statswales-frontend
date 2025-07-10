@@ -328,8 +328,9 @@ Tabl am-edrych mesur enghreifftiol ar gyfer ein henghraifft treth gyngor:
 _Sylwer mai enghraifft yw hon at ddibenion arddangos, ac nad yw’n dabl am-edrych go iawn ar gyfer data treth gyngor._
 
 Dylai disgrifiadau ddiffinio’r hyn y mae gwerth y data yn ei gynrychioli yn glir. Dylai hyn gynnwys:
+
 - y math o fesur, megis ‘nifer y’ neu ‘safle’
-- y peth y mae’r mesur yn ei gynrychioli, megis ‘plant’ neu ‘fusnesau’ 
+- y peth y mae’r mesur yn ei gynrychioli, megis ‘plant’ neu ‘fusnesau’
 
 Er enghraifft, ‘Nifer y plant a anwyd’ neu ‘Safle o ran perfformiad busnes’. Dylid geirio’r disgrifiad o’r data mewn ffordd sy’n peri i bob rhes o’r tabl data wneud synnwyr fel y mae defnyddiwr yn ei ‘ddarllen’. Er enghraifft, “Ganwyd 3,855 o blant yng Nghaerdydd yn 2021”.
 
