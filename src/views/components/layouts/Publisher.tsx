@@ -82,10 +82,6 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
         <meta name="msapplication-navbutton-color" content="#323232" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="#323232" />
-        <meta
-          httpEquiv="Content-Security-Policy"
-          content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'"
-        />
       </head>
 
       <body className="govuk-template__body app-body-className" data-test="My value" data-other="report:details">
