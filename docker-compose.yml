@@ -6,6 +6,8 @@ services:
 
   db:
     image: postgres:17
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready']
     ports:
       - '3002:5432'
     environment:
@@ -27,9 +29,12 @@ services:
     ports:
       - '3001:3001'
     depends_on:
-      - valkey
-      - db
-      - blobstorage
+      db:
+        condition: service_healthy
+      valkey:
+        condition: service_started
+      blobstorage:
+        condition: service_started
     healthcheck:
       test: curl --fail http://localhost:3001/healthcheck || exit 1
       interval: 40s
@@ -45,7 +50,7 @@ services:
       TEST_DB_SYNC: 'false'
       AZURE_BLOB_STORAGE_URL: 'http://blobstorage:10000/devstoreaccount1'
 
-    command: sh -c "npm run migration:run && npm run seed:required && npm run seed:ci && npm run start"
+    command: sh -c "npm run init:ci && npm run start"
 
   ready-for-tests:
     image: busybox

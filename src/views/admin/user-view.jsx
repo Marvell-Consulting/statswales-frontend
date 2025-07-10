@@ -44,7 +44,7 @@ export default function UserView(props) {
               <dt className="govuk-summary-list__key">{props.t('admin.user.view.details.login')}</dt>
               <dd className="govuk-summary-list__value">
                 {props.user.last_login_at
-                  ? props.dateFormat(props.user.last_login_at, 'd MMMM yyyy h:mm a')
+                  ? props.dateFormat(props.user.last_login_at, 'd MMMM yyyy h:mm a', { locale: props.i18n.language })
                   : props.t('admin.user.view.login_never')}
               </dd>
             </div>

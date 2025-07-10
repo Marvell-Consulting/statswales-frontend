@@ -10,7 +10,7 @@ export default function KeyInfo(props) {
           <dt className="govuk-summary-list__key">{props.t('dataset_view.key_information.last_update')}</dt>
           <dd className="govuk-summary-list__value">
             {props.keyInfo.updatedAt
-              ? props.dateFormat(props.keyInfo.updatedAt, 'd MMMM yyyy')
+              ? props.dateFormat(props.keyInfo.updatedAt, 'd MMMM yyyy', { locale: props.i18n.language })
               : props.t('dataset_view.key_information.update_missing')}
           </dd>
         </div>
@@ -19,7 +19,7 @@ export default function KeyInfo(props) {
           <dt className="govuk-summary-list__key">{props.t('dataset_view.key_information.next_update')}</dt>
           <dd className="govuk-summary-list__value">
             {props.keyInfo.nextUpdateAt
-              ? props.dateFormat(props.keyInfo.nextUpdateAt, 'MMMM yyyy')
+              ? props.dateFormat(props.keyInfo.nextUpdateAt, 'MMMM yyyy', { locale: props.i18n.language })
               : props.keyInfo.nextUpdateAt === false
                 ? props.t('dataset_view.key_information.not_updated')
                 : props.t('dataset_view.key_information.next_update_missing')}
@@ -76,8 +76,8 @@ export default function KeyInfo(props) {
           <dd className="govuk-summary-list__value">
             {props.keyInfo.timePeriod.start && props.keyInfo.timePeriod.end
               ? props.t('dataset_view.key_information.time_period', {
-                  start: props.dateFormat(props.keyInfo.timePeriod.start, 'MMMM yyyy'),
-                  end: props.dateFormat(props.keyInfo.timePeriod.end, 'MMMM yyyy')
+                  start: props.dateFormat(props.keyInfo.timePeriod.start, 'MMMM yyyy', { locale: props.i18n.language }),
+                  end: props.dateFormat(props.keyInfo.timePeriod.end, 'MMMM yyyy', { locale: props.i18n.language })
                 })
               : props.t('dataset_view.period_cover_missing')}
           </dd>

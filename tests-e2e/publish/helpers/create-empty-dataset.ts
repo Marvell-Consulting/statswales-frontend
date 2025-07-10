@@ -9,6 +9,8 @@ const baseUrl = config.frontend.url;
 export async function createEmptyDataset(page: Page, title: string) {
   await page.goto('/en-GB/publish');
   await page.getByRole('link', { name: 'Continue' }).click();
+  await page.getByText('E2E tests', { exact: true }).click({ force: true });
+  await page.getByRole('button', { name: 'Continue' }).click();
   const titlePage = new TitlePage(page);
   await titlePage.fillForm(`${title} - ${new Date().toISOString()}`);
   await titlePage.submit();

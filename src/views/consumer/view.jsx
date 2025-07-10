@@ -18,9 +18,13 @@ import { PublishingStatus } from '../../enums/publishing-status';
 import { DatasetStatus as DatasetStatusType } from '../../enums/dataset-status';
 import { PageInfo } from '../../dtos/view-dto';
 import { Filters } from '../components/Filters';
+import qs from 'qs';
 
 export default function ConsumerView(props) {
   const LayoutComponent = props.isDeveloper ? Layout : ConsumerLayout;
+  const [originalUrl, query] = props.url.split('?');
+  const parsedQuery = qs.parse(query);
+  const sortBy = parsedQuery.sort_by;
 
   const DataPanel = (
     <div className="govuk-width-container">
@@ -70,7 +74,7 @@ export default function ConsumerView(props) {
                   ))}
                 </select>
               </div>
-
+              <input type="hidden" name="sort_by" value={sortBy ? JSON.stringify(sortBy) : undefined} />
               <Filters filters={props.filters} url={props.url} title={props.t('consumer_view.filters')} />
               <br />
               <button

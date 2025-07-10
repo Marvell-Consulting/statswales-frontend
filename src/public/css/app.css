@@ -338,10 +338,10 @@
   display: none;
 }
 .wg .non-js-hidden {
-  display: none;
+  display: none !important;
 }
 .wg .js-hidden {
-  display: none;
+  display: none !important;
 }
 .wg .table-controls {
   background: #f1f1f1;
@@ -2049,6 +2049,39 @@
 }
 .wg .govuk-table__container {
   max-width: 100%;
+  overflow-x: auto;
+}
+.wg .govuk-table.sortable th {
+  position: relative;
+  padding-right: 2em;
+}
+.wg .govuk-table.sortable th a {
+  display: block;
+  color: #1f1f1f;
+}
+.wg .govuk-table.sortable th::before, .wg .govuk-table.sortable th::after {
+  position: absolute;
+  display: block;
+  opacity: 0.125;
+  right: 10px;
+  line-height: 9px;
+  font-size: 0.8em;
+}
+.wg .govuk-table.sortable th[aria-sort=descending]::after {
+  opacity: 1;
+  color: #0360a6;
+}
+.wg .govuk-table.sortable th[aria-sort=ascending]::before {
+  opacity: 1;
+  color: #0360a6;
+}
+.wg .govuk-table.sortable th::before {
+  top: 10px;
+  content: "▲";
+}
+.wg .govuk-table.sortable th::after {
+  top: 22px;
+  content: "▼";
 }
 .wg .source-list-item,
 .wg .govuk-table__header,
@@ -2327,17 +2360,22 @@
   align-items: flex-start;
   justify-content: space-between;
 }
-.filters-container button.clear-filters {
+.filters-container a.clear-filters {
   font-weight: bold;
   font-size: 14px;
   font-size: 0.875rem;
   float: right;
   color: #aa1111;
-  padding: 5px 10px;
+  background-color: #ffffff;
+  padding: 8px 10px;
   border: 1px solid #aa1111;
   cursor: pointer;
 }
-.filters-container button.clear-filters:focus {
+.filters-container a.clear-filters:hover {
+  color: #ffffff;
+  background: #aa1111;
+}
+.filters-container a.clear-filters:focus {
   background-color: #ffd530 !important;
   border-color: transparent !important;
   color: #1f1f1f !important;
@@ -2346,37 +2384,25 @@
   -webkit-box-shadow: 0 0 0 2px #ffd530;
   box-shadow: 0 0 0 2px #ffd530;
 }
-.filters-container button.clear-filters:hover {
-  color: #ffffff !important;
-  background: #aa1111;
+.filters-container .padding-box {
+  padding: 5px 10px;
 }
 .filters-container .filter-container {
-  padding: 5px 10px;
   border: 1px solid #666666;
 }
-.filters-container .filter-container .filter-container-outer {
-  padding: 5px 10px;
-  border: 1px solid #666666;
-}
-.filters-container .filter-container .filter-container-outer h4 {
-  font-size: 16px;
-  font-weight: bold;
-}
-.filters-container .filter-container .filter-container-outer .govuk-list {
-  margin-bottom: 0px;
+.filters-container .filter-container .filter-head {
+  border-bottom: 1px solid #eeeeee;
+  padding-bottom: 0.5em;
 }
 .filters-container .filter-container .filter-body {
+  padding: 5px 10px;
   overflow: auto;
   min-height: 90px;
-  max-height: 310px;
+  max-height: 350px;
 }
 .filters-container .filter-container .govuk-checkboxes {
   display: flex;
   flex-direction: column;
-}
-.filters-container .filter-container hr {
-  margin-left: 0;
-  margin-right: 0;
 }
 .filters-container .filter-container input[type=checkbox] {
   width: 24px;
@@ -2406,18 +2432,26 @@
 .filters-container .filter-container .govuk-checkboxes__item label {
   white-space: nowrap;
 }
+.filters-container .filter-container input:focus ~ label::before {
+  outline: 3px solid #ffd530 !important;
+  outline-offset: 0 !important;
+  border-width: 2px !important;
+}
 .filters-container .filter-container .govuk-checkboxes__label {
   margin-top: 0 !important;
-  line-height: 34px;
+  height: 34px;
   padding-left: 0.5em !important;
   max-width: unset;
+  display: flex;
+  align-items: center;
 }
 .filters-container .filter-container .govuk-checkboxes__label:before {
-  top: 5px !important;
-  left: 0 !important;
+  top: 50%;
+  margin-top: -12px;
 }
 .filters-container .filter-container .govuk-checkboxes__label:after {
-  top: 12px !important;
+  top: 50%;
+  margin-top: -5px;
 }
 .filters-container .filter-container .indent {
   margin-left: 30px;
@@ -2456,6 +2490,22 @@
   height: 24px;
   cursor: pointer;
   flex-shrink: 0;
+}
+@media all and (max-width: 640px) {
+  .filters-container .filter-container .govuk-checkboxes__label {
+    height: 40px;
+  }
+  .filters-container .filter-container details summary {
+    height: 40px;
+  }
+  .filters-container .filter-container details summary::before {
+    background-size: 22.5px 22.5px;
+    width: 36px;
+    height: 36px;
+  }
+  .filters-container .filter-container .indent {
+    margin-left: 36px;
+  }
 }
 
 .wg .govuk-header__link:hover {

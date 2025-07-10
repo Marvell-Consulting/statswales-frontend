@@ -95,6 +95,7 @@ import { appConfig } from '../config';
 import { FilterTable } from '../dtos/filter-table';
 import qs from 'qs';
 import { DEFAULT_PAGE_SIZE } from './consumer';
+import { SortByInterface } from '../interfaces/sort-by';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -216,7 +217,7 @@ export const uploadDataTable = async (req: Request, res: Response) => {
   }
 
   if (req.method === 'POST') {
-    logger.debug('User is uploading a fact table.');
+    logger.debug('Data table upload started...');
     try {
       if (!req.file) {
         logger.error('No file is present in the request');
@@ -224,16 +225,24 @@ export const uploadDataTable = async (req: Request, res: Response) => {
         throw new Error();
       }
 
+      logger.debug(
+        `Received file: ${req.file.originalname}, mimetype: ${req.file.mimetype}, size: ${req.file.size} bytes`
+      );
+
       const fileName = req.file.originalname;
       req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
       const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
       logger.debug('Sending file to backend');
+      logger.debug('Sending data table file to the backend...');
       if (req.body?.updateType) {
         logger.info('Performing an update to the dataset');
         await req.pubapi.uploadCSVToUpdateDataset(dataset.id, revision.id, fileData, fileName, req.body?.updateType);
       } else {
         await req.pubapi.uploadDataToDataset(dataset.id, fileData, fileName);
       }
+
+      logger.debug('Upload successful, redirecting to preview page...');
+
       set(req.session, `dataset[${dataset.id}]`, undefined);
       req.session.save();
       res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
@@ -528,6 +537,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
   const pageNumber = Number.parseInt(query.page_number as string, 10) || 1;
   const pageSize = Number.parseInt(query.page_size as string, 10) || DEFAULT_PAGE_SIZE;
   const filter = query.filter as Record<string, string[]>;
+  const sortBy = query.sort_by as unknown as SortByInterface;
 
   let errors: ViewError[] | undefined;
   let previewData: ViewDTO | ViewErrDTO | undefined;
@@ -544,6 +554,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
           endRevisionId,
           pageNumber,
           pageSize,
+          sortBy,
           filter &&
             Object.keys(filter).map((key) => ({
               columnName: key,
@@ -2635,7 +2646,17 @@ export const updateDatatable = async (req: Request, res: Response) => {
 
 export const moveDatasetGroup = async (req: Request, res: Response, next: NextFunction) => {
   const dataset = res.locals.dataset;
-  const availableGroups = getApproverUserGroups(req.user).map((g) => singleLangUserGroup(g.group, req.language)) || [];
+  let user: UserDTO;
+
+  try {
+    user = await req.pubapi.getUser();
+  } catch (err) {
+    logger.error(err, `Failed to fetch current user`);
+    next(new UnknownException(`Couldn't fetch current user`));
+    return;
+  }
+
+  const availableGroups = getApproverUserGroups(user).map((g) => singleLangUserGroup(g.group, req.language)) || [];
   const validGroupIds = availableGroups.map((group) => group.id) as string[];
   let values = { group_id: dataset.user_group_id };
   let errors: ViewError[] = [];
@@ -2701,6 +2722,11 @@ export const taskDecision = async (req: Request, res: Response, next: NextFuncti
     if (!task || task.dataset_id !== res.locals.datasetId) {
       logger.error('Failed to find task');
       next(new NotFoundException('errors.task_missing'));
+      return;
+    }
+
+    if (!task.open) {
+      res.redirect(req.buildUrl(`/publish/${res.locals.datasetId}/overview`, req.language));
       return;
     }
 

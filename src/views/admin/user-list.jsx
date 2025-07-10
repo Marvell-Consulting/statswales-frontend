@@ -26,7 +26,9 @@ export default function UserList(props) {
       key: 'last_login_at',
       label: props.t('admin.user.list.table.login'),
       format: (value) =>
-        value ? props.dateFormat(value, 'd MMMM yyyy h:mm a') : props.t('admin.user.view.login_never')
+        value
+          ? props.dateFormat(value, 'd MMMM yyyy h:mm a', { locale: props.i18n.language })
+          : props.t('admin.user.view.login_never')
     },
     {
       key: 'status',

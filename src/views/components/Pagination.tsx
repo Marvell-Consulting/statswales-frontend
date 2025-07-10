@@ -3,6 +3,7 @@ import React from 'react';
 import T from './T';
 import { useLocals } from '../context/Locals';
 import { PageInfo } from '../../dtos/view-dto';
+import qs from 'qs';
 
 export type PaginationProps = {
   pagination: (number | string)[];
@@ -27,6 +28,8 @@ export default function Pagination({
   if (total_pages <= 1) {
     return null;
   }
+  const [baseUrl, query] = url.split('?');
+  const parsedQuery = qs.parse(query);
   return (
     <>
       <div className="govuk-grid-row">
@@ -56,9 +59,9 @@ export default function Pagination({
                 <a
                   className="govuk-link govuk-pagination__link"
                   href={buildUrl(
-                    url.split('?')[0],
+                    baseUrl,
                     i18n.language,
-                    { page_number: current_page - 1, page_size },
+                    { ...parsedQuery, page_number: current_page - 1, page_size },
                     anchor
                   )}
                   rel="prev"
@@ -92,9 +95,9 @@ export default function Pagination({
                       <a
                         className="govuk-link govuk-pagination__link"
                         href={buildUrl(
-                          url.split('?')[0],
+                          baseUrl,
                           i18n.language,
-                          { page_number: item, page_size: page_size },
+                          { ...parsedQuery, page_number: item, page_size: page_size },
                           anchor
                         )}
                         aria-label={`Page ${item}`}
@@ -116,9 +119,9 @@ export default function Pagination({
                 <a
                   className="govuk-link govuk-pagination__link"
                   href={buildUrl(
-                    url.split('?')[0],
+                    baseUrl,
                     i18n.language,
-                    { page_number: current_page + 1, page_size },
+                    { ...parsedQuery, page_number: current_page + 1, page_size },
                     anchor
                   )}
                   rel="next"

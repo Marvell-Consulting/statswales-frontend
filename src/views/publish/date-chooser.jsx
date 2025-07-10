@@ -28,7 +28,7 @@ export default function DateChooser(props) {
       switch (col.name) {
         case 'start_date':
         case 'end_date':
-          return props.dateFormat(props.parseISO(value.split('T')[0]), 'do MMMM yyyy');
+          return props.dateFormat(props.parseISO(value.split('T')[0]), 'do MMMM yyyy', { locale: props.i18n.language });
       }
       return value;
     }

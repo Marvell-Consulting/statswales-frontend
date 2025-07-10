@@ -2,7 +2,7 @@ import React from 'react';
 import { FilterTable } from '../../dtos/filter-table';
 import { Checkbox, CheckboxGroup, CheckboxOptions, Controls } from './CheckboxGroup';
 import qs from 'qs';
-import { flatten, get } from 'lodash';
+import { flatten, get, omit } from 'lodash';
 import clsx from 'clsx';
 import T from './T';
 
@@ -30,16 +30,19 @@ const filterOptionCount = (options: FilterTable['values']): number => {
 };
 
 export const Filters = ({ filters, url, title }: FiltersProps) => {
-  const parsedFilter = qs.parse(url.split('?')[1])?.filter;
+  const [baseUrl, query] = url.split('?');
+  const parsedQuery = qs.parse(query);
+  const parsedFilter = parsedQuery?.filter;
   const activeFilters = parsedFilter && flatten(Object.values(parsedFilter)).length;
+  const clearFiltersLink = `${baseUrl}?${qs.stringify(omit(parsedQuery, 'filter'))}`;
   return (
     <div className="filters-container">
       <div className="filters-head">
         <h2 className="govuk-heading-m">{title}</h2>
         {!!activeFilters && (
-          <button type="submit" name="_clear" value="filter" className={'clear-filters'}>
+          <a href={clearFiltersLink} className={'clear-filters'}>
             <T>filters.clear</T>
-          </button>
+          </a>
         )}
       </div>
 
@@ -59,22 +62,23 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
               <span className={clsx('non-filtered-label', { 'js-hidden': filtered })}>{total}</span>)
             </h3>
             <div className="filter-container option-select">
-              <div className="filter-head non-js-hidden">
-                <Controls
-                  className="parent-controls"
-                  selectAllLabel={<T>filters.select_all</T>}
-                  noneLabel={<T>filters.none</T>}
-                />
-                <div className="govuk-checkboxes--small">
-                  <Checkbox
-                    checked={!values}
-                    label={<T>filters.no_filter</T>}
-                    name={`filter-${filter.factTableColumn}-all`}
-                    value="all"
-                    omitName
-                    values={Array.isArray(values) ? values : [values]}
+              <div className="padding-box">
+                <div className="filter-head non-js-hidden">
+                  <Controls
+                    className="parent-controls"
+                    selectAllLabel={<T>filters.select_all</T>}
+                    noneLabel={<T>filters.none</T>}
                   />
-                  <hr />
+                  <div className="govuk-checkboxes--small">
+                    <Checkbox
+                      checked={!values}
+                      label={<T>filters.no_filter</T>}
+                      name={`filter-${filter.factTableColumn}-all`}
+                      value="all"
+                      omitName
+                      values={Array.isArray(values) ? values : [values]}
+                    />
+                  </div>
                 </div>
               </div>
               <div className="filter-body">

@@ -9,12 +9,12 @@ export default function ViewTable(props) {
       col.source_type === 'line_number' ? (
         <span className="linespan">{value}</span>
       ) : col.name === props.t('consumer_view.start_data') || col.name === props.t('consumer_view.end_data') ? (
-        props.dateFormat(props.parseISO(value.split('T')[0]), 'do MMMM yyyy')
+        props.dateFormat(props.parseISO(value.split('T')[0]), 'do MMMM yyyy', { locale: props.i18n.language })
       ) : (
         value
       ),
     className: col.source_type === 'line_number' ? 'line-number' : '',
     cellClassName: col.source_type === 'line_number' ? 'line-number' : ''
   }));
-  return <Table isSticky columns={columns} rows={props.data} />;
+  return <Table isSticky columns={columns} rows={props.data} isSortable />;
 }

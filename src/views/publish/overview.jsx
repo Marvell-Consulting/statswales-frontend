@@ -112,7 +112,7 @@ function ActionsTab({
 
         {canMoveGroup && (
           <li>
-            <ActionLink path="move" action="move" />
+            <ActionLink path={`/publish/${datasetId}/move`} action="move" />
           </li>
         )}
       </ul>
@@ -199,7 +199,9 @@ export default function Overview(props) {
                   className="govuk-body govuk-!-margin-0"
                   dangerouslySetInnerHTML={{
                     __html: props.t('publish.overview.pending.publish_at', {
-                      publishAt: props.dateFormat(props.revision?.publish_at, 'h:mmaaa, d MMMM yyyy')
+                      publishAt: props.dateFormat(props.revision?.publish_at, 'h:mmaaa, d MMMM yyyy', {
+                        locale: props.i18n.language
+                      })
                     })
                   }}
                 />
@@ -219,7 +221,9 @@ export default function Overview(props) {
                 className="govuk-body"
                 dangerouslySetInnerHTML={{
                   __html: props.t('publish.overview.scheduled.publish_at', {
-                    publishAt: props.dateFormat(props.revision?.publish_at, 'h:mmaaa, d MMMM yyyy')
+                    publishAt: props.dateFormat(props.revision?.publish_at, 'h:mmaaa, d MMMM yyyy', {
+                      locale: props.i18n.language
+                    })
                   })
                 }}
               ></p>
