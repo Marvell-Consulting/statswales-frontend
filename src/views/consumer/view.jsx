@@ -74,7 +74,13 @@ export default function ConsumerView(props) {
                   ))}
                 </select>
               </div>
-              <input type="hidden" name="sort_by" value={sortBy ? JSON.stringify(sortBy) : undefined} />
+              {sortBy && (
+                <>
+                  <input type="hidden" name="sort_by[columnName]" value={sortBy.columnName} />
+                  <input type="hidden" name="sort_by[direction]" value={sortBy.direction} />
+                </>
+              )}
+
               <Filters filters={props.filters} url={props.url} title={props.t('consumer_view.filters')} />
               <br />
               <button
