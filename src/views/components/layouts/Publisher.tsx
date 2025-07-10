@@ -308,7 +308,6 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
               `
           }}
         />
-        <script src="https://kit.fontawesome.com/f6f4af2d4c.js" crossOrigin="anonymous"></script>
       </body>
     </html>
   );

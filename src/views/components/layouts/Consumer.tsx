@@ -152,7 +152,6 @@ const Layout = ({ children }: PropsWithChildren) => {
             `
           }}
         />
-        <script src="https://kit.fontawesome.com/f6f4af2d4c.js" crossOrigin="anonymous" />
       </body>
     </html>
   );
