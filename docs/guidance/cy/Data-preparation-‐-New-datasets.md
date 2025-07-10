@@ -96,6 +96,8 @@ Mae’r system yn cynnwys tablau am-edrych safonol ar gyfer pob daearyddiaeth gy
 
 Ni fydd angen i chi lanlwytho’r tablau am-edrych safonol hyn pan fyddwch yn creu eich set ddata yn SW3. Dim ond dweud wrth y system pa ddaearyddiaeth yr ydych chi wedi’i defnyddio y bydd angen i chi ei wneud.
 
+Dim ond mewn dimensiwn y gallwch ddefnyddio un hierarchaeth daearyddiaeth. Er enghraifft, ni allech gael awdurdodau lleol ac etholaethau’r Senedd yn yr un dimensiwn. Ond gallech gael awdurdodau lleol a byrddau iechyd lleol, gan bod y rhain yn rhan o hierarchaeth sengl.
+
 Efallai y bydd amgylchiadau prin pan na fydd y tablau safonol yn cynnwys y data priodol ar gyfer eich set ddata. Er enghraifft, os bydd angen i chi gyfuno ardaloedd daearyddol penodol am resymau cyfrinachedd. Yn yr achosion hyn, dylech [baratoi eich tablau am-edrych eich hun](#guidance-tablau-am-edrych).
 
 Bydd angen i chi nodi’r rheswm pam nad ydych chi wedi defnyddio tabl safonol hefyd. Bydd y rheswm hwn yn weladwy i’r defnyddiwr fel rhan o’r adran metadata ‘Ardaloedd daearyddol sydd wedi’u cynnwys’.
@@ -325,6 +327,14 @@ Tabl am-edrych mesur enghreifftiol ar gyfer ein henghraifft treth gyngor:
 
 _Sylwer mai enghraifft yw hon at ddibenion arddangos, ac nad yw’n dabl am-edrych go iawn ar gyfer data treth gyngor._
 
+Dylai disgrifiadau ddiffinio’r hyn y mae gwerth y data yn ei gynrychioli yn glir. Dylai hyn gynnwys:
+- y math o fesur, megis ‘nifer y’ neu ‘safle’
+- y peth y mae’r mesur yn ei gynrychioli, megis ‘plant’ neu ‘fusnesau’ 
+
+Er enghraifft, ‘Nifer y plant a anwyd’ neu ‘Safle o ran perfformiad busnes’. Dylid geirio’r disgrifiad o’r data mewn ffordd sy’n peri i bob rhes o’r tabl data wneud synnwyr fel y mae defnyddiwr yn ei ‘ddarllen’. Er enghraifft, “Ganwyd 3,855 o blant yng Nghaerdydd yn 2021”.
+
+Sylwer bod y gwerthoedd data yn y tabl data yn dangos rhifau yn unig. Felly, er enghraifft, ar gyfer canran o ‘35%’, dylai’r gwerth data fod yn ‘35’ a dylai’r disgrifiad o’r mesur nodi’n glir mai canran ydyw, megis ‘% o’r holl blant yng Nghymru’.
+
 ## Nodiadau
 
 ### Nodiadau gwerthoedd data (troednodiadau a data coll yn flaenorol)
@@ -409,12 +419,12 @@ Mae’r canlynol yn cynrychioli’r holl fetadata y bydd angen i chi ei ddarparu
 
 Enw byr, disgrifiadol ac unigryw ar gyfer y set ddata ar gyfer gwefan StatsCymru. Bydd y system yn dweud wrthych os byddwch yn nodi teitl sydd eisoes yn cael ei ddefnyddio gan set ddata fyw, wedi’i chyhoeddi
 
-#### Crynodeb
+#### Crynodeb o set ddata a newidynnau
 
 Mae hyn yn esbonio'r hyn y mae'r set ddata yn ymwneud ag ef a'r hyn y mae'n ei ddangos. Dylai:
 
 - ddefnyddio brawddegau byr, syml
-- disgrifio pa ddimensiynau a ddefnyddiwyd a pham
+- diffiniwch a disgrifiwch y newidynnau (dimensiynau) a ddefnyddiwyd
 - heb fod yn hirach na 2-3 paragraff yn ddelfrydol
 - peidio cynnwys unrhyw beth sy'n ymwneud â chasglu data neu ansawdd data – dylai hwn fod yn yr adran berthnasol yn lle hynny
 

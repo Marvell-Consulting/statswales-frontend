@@ -84,8 +84,8 @@ Once you’ve completed all text entry fields, you’ll be able to export all th
 1. In summary, all possible text fields are:
    - dimension names
    - title
-   - summary
-   - data collection
+   - summary of dataset and variables
+   - data collection or calculation
    - statistical quality
    - rounding applied
    - related report link text(s)
