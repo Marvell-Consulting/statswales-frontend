@@ -24,7 +24,11 @@ export const strictTransport = [AppEnv.Ci, AppEnv.Local].includes(config.env)
         helmet.contentSecurityPolicy({
           directives: {
             defaultSrc: ['*'],
-            styleSrc: ["'self'", "'unsafe-inline'"],
+            styleSrc: [
+              "'self'",
+              "'unsafe-inline'",
+              'https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/fira_code.min.css'
+            ],
             scriptSrc: ["'self'", "'unsafe-inline'"],
             imgSrc: ['*', 'data:']
           }
