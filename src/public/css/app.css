@@ -167,6 +167,10 @@
   background: #ffffff;
   font-size: 16px;
 }
+.wg .govuk-select#page_size {
+  min-width: 100%;
+  max-width: 100%;
+}
 .wg .govuk-task-list,
 .wg .actions .govuk-list,
 .wg ul.govuk-summary-list__actions-list {
