@@ -542,15 +542,15 @@
       }
     },
     "summary": {
-      "heading": "Beth yw’r crynodeb o’r set ddata hon a’i newidynnau?",
+      "heading": "Beth yw'r crynodeb o'r set ddata hon a'i newidynnau?",
       "explain": "Mewn brawddegau syml a byr:",
-      "explain_1": "esboniwch beth mae’r set ddata hon amdano a’r hyn y mae’n ei ddangos",
+      "explain_1": "esboniwch beth mae'r set ddata hon amdano a'r hyn y mae'n ei ddangos",
       "explain_2": "diffiniwch a disgrifiwch y newidynnau (dimensiynau) a ddefnyddiwyd",
       "language": "Dylid nodi hyn yn yr iaith yr ydych chi'n defnyddio'r gwasanaeth hwn.",
       "form": {
         "description": {
           "error": {
-            "missing": "Nodwch grynodeb o’r set ddata hon a’i newidynnau"
+            "missing": "Nodwch grynodeb o'r set ddata hon a'i newidynnau"
           }
         }
       }
