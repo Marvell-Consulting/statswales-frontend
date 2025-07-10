@@ -35,13 +35,13 @@ test.describe('Metadata Summary', () => {
 
     test('Has a heading', async ({ page }) => {
       await summaryPage.goto(id);
-      await expect(page.getByRole('heading', { name: 'What is the summary of this dataset?' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'What is the summary of this dataset and its variables?' })).toBeVisible();
     });
 
     test('Can switch to Welsh', async ({ page }) => {
       await summaryPage.goto(id);
       await page.getByText('Cymraeg').click();
-      await expect(page.getByRole('heading', { name: `Beth yw'r crynodeb o'r set ddata hon?` })).toBeVisible();
+      await expect(page.getByRole('heading', { name: `Beth yw'r crynodeb o'r set ddata hon a'i newidynnau?` })).toBeVisible();
     });
 
     test.describe('Form validation', () => {
