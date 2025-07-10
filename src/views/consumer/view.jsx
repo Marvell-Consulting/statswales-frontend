@@ -247,38 +247,6 @@ export default function ConsumerView(props) {
           { label: props.t('consumer_view.download'), id: 'download_dataset', children: DownloadPanel }
         ]}
       />
-
-      {/* <div className="govuk-tabs__panel govuk-tabs__panel&#45;&#45;hidden" id="history" role="tabpanel" aria-labelledby="tab_history">
-                  <div className="govuk-grid-row">
-                      <div className="govuk-grid-column-two-thirds">
-
-                          <p><b>Next update expected (provisional):</b>  This dataset will not be updated</p>
-
-                          <h2 className="govuk-heading-m">Updates</h2>
-
-                          <dl className="govuk-summary-list">
-                              <div className="govuk-summary-list__row">
-                                  <dt style="width:16%" className="govuk-summary-list__key">
-                                      19 December 2019
-                                  </dt>
-                                  <dd className="govuk-summary-list__value">
-                                      Provisional values for Isle of Anglesey were revised. The 2019 dataset is now completed and will not be updated further.
-                                  </dd>
-                              </div>
-                              <div className="govuk-summary-list__row">
-                                  <dt className="govuk-summary-list__key">
-                                      14 September 2019
-                                  </dt>
-                                  <dd className="govuk-summary-list__value">
-                                      Dataset first published.
-                                  </dd>
-                              </div>
-                          </dl>
-
-                      </div>
-                  </div>
-              </div> */}
-      {/* </div> */}
     </LayoutComponent>
   );
 }
