@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, Router } from 'express';
 import helmet from 'helmet';
 
 import { appConfig } from '../config';
@@ -10,10 +10,22 @@ const bypass = (re: Request, res: Response, next: NextFunction) => next();
 
 export const strictTransport = [AppEnv.Ci, AppEnv.Local].includes(config.env)
   ? bypass
-  : helmet({
-      hsts: {
-        maxAge: 63072000, // 2 years in seconds
-        includeSubDomains: true,
-        preload: true
-      }
-    });
+  : Router()
+      .use(
+        helmet({
+          hsts: {
+            maxAge: 63072000, // 2 years in seconds
+            includeSubDomains: true,
+            preload: true
+          }
+        })
+      )
+      .use(
+        helmet.contentSecurityPolicy({
+          directives: {
+            defaultSrc: ['*'],
+            styleSrc: ["'self'", "'unsafe-inline'"],
+            scriptSrc: ["'self'", "'unsafe-inline'"]
+          }
+        })
+      );
