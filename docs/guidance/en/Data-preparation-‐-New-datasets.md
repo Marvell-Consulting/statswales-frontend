@@ -96,6 +96,8 @@ The system contains standardised lookup tables for all commonly used geographies
 
 You will not need to upload these standardised lookup tables when you build your dataset in SW3. You will only need to tell the system which geography you've used.
 
+You can only use one geography hierarchy in a dimension. For example, you couldn't have local authorities and Senedd constituencies in the same dimension. But you could have local authorities and local health boards, as these are part of a single hierarchy.
+
 There may be rare circumstances where the standardised tables do not contain the appropriate data for your dataset. For example, if you need to aggregate certain geographical areas for confidentiality reasons. In these cases you should [prepare your own lookup tables](#guidance-lookup-tables).
 
 You'll also need to provide the reason you've not used a standard table. This reason will be visible to the consumer as part of the 'Geographical areas covered' metadata section.
@@ -323,6 +325,15 @@ Example measure lookup table for our council tax example:
 
 _Please note this example is for demonstration purposes only and is not a genuine lookup table for council tax data._
 
+Descriptions should clearly define what the data value represents. This should include the:
+
+- type of measure, such as 'number of' or 'rank of'
+- thing the measure represents, such as 'children' or 'businesses'
+
+For example, 'Number of children born' or 'Rank of business performance'. The data description should be worded in a way that makes each row of the data table make sense as a user 'reads' it. For example, "There were 3,855 children born in Cardiff in 2021".
+
+Note that data values in the data table only show numbers. So for example for a percentage of '35%', the data value should be '35' and the measure description should make it clear that it's a percentage, such as '% of all children in Wales'.
+
 ## Notes
 
 ### Data value notes (formerly footnotes and missing data)
@@ -408,12 +419,12 @@ The following is all the metadata you’ll need to provide.
 
 A short, descriptive and unique name for the dataset for the StatsWales website. The system will tell you if you enter a title that is already in use by a live, published dataset.
 
-#### Summary
+#### Summary of dataset and variables
 
 This explains what the dataset is about and what it shows. It should:
 
 - use short, simple sentences
-- describe which dimensions have been used and why
+- define and describe the variables (dimensions) that have been used
 - ideally be no more than 2-3 paragraphs long
 - not include anything related to data collection or data quality - this should be in the relevant section instead
 

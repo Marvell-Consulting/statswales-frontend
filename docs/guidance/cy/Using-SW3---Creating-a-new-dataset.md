@@ -84,8 +84,8 @@ Ar ôl i chi lenwi’r holl feysydd cofnodi testun, byddwch yn gallu allgludo’
 3. I grynhoi, mae’r holl feysydd testun posibl fel a ganlyn:
    - enwau dimensiwn
    - teitl
-   - crynodeb
-   - casglu data
+   - crynodeb o set ddata a newidynnau
+   - gasglu new cyfrifo data
    - ansawdd ystadegol
    - wedi’u talgrynnu
    - testun(au) cyswllt adroddiad cysylltiedig

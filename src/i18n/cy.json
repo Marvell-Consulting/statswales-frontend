@@ -168,8 +168,8 @@
     "about": {
       "heading": "Am y set ddata hon",
       "overview": "Trosolwg",
-      "summary": "Crynodeb",
-      "data_collection": "Caglu a chyfrifo data",
+      "summary": "Crynodeb o set ddata a newidynnau ",
+      "data_collection": "Gasglu new cyfrifo data",
       "statistical_quality": "Ansawdd ystadegol",
       "designation": "Dynodiad",
       "designations": {
@@ -542,15 +542,15 @@
       }
     },
     "summary": {
-      "heading": "Beth yw'r crynodeb o'r set ddata hon?",
-      "explain": "Mewn brawddegau byr a syml, esboniwch:",
-      "explain_1": "set ddata am beth yw hon a'r hyn y mae'n ei ddangos",
-      "explain_2": "dimensiynau'r set ddata hon a pham y'u defnyddiwyd, yn ôl yr angen",
+      "heading": "Beth yw'r crynodeb o'r set ddata hon a'i newidynnau?",
+      "explain": "Mewn brawddegau syml a byr:",
+      "explain_1": "esboniwch beth mae'r set ddata hon amdano a'r hyn y mae'n ei ddangos",
+      "explain_2": "diffiniwch a disgrifiwch y newidynnau (dimensiynau) a ddefnyddiwyd",
       "language": "Dylid nodi hyn yn yr iaith yr ydych chi'n defnyddio'r gwasanaeth hwn.",
       "form": {
         "description": {
           "error": {
-            "missing": "Nodwch y crynodeb o'r set ddata hon"
+            "missing": "Nodwch grynodeb o'r set ddata hon a'i newidynnau"
           }
         }
       }
@@ -929,8 +929,8 @@
       "metadata": {
         "subheading": "Metadata",
         "title": "Teitl",
-        "summary": "Crynodeb",
-        "data_collection": "Casglu data",
+        "summary": "Crynodeb o set ddata a newidynnau",
+        "data_collection": "Gasglu new cyfrifo data",
         "statistical_quality": "Ansawdd ystadegol",
         "data_sources": "Ffynonellau data",
         "related_reports": "Adroddiadau cysylltiedig",
@@ -1085,8 +1085,8 @@
       },
       "field": {
         "title": "Teitl",
-        "summary": "Crynodeb",
-        "collection": "Casglu data",
+        "summary": "Crynodeb o set ddata a newidynnau",
+        "collection": "Gasglu new cyfrifo data",
         "quality": "Ansawdd ystadegol",
         "roundingDescription": "Wedi'i dalgrynnu"
       },
