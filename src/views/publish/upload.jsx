@@ -33,6 +33,8 @@ export default function Title(props) {
           />
         </div>
         <div className="govuk-button-group">
+          <input type="hidden" name="updateType" value={props.updateType} />
+          <input type="hidden" name="test" value="test" />
           <button
             type="submit"
             className="govuk-button"

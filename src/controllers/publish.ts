@@ -94,6 +94,7 @@ import { SingleLanguageRevision } from '../dtos/single-language/revision';
 import { appConfig } from '../config';
 import { FilterTable } from '../dtos/filter-table';
 import qs from 'qs';
+import { DEFAULT_PAGE_SIZE } from './consumer';
 import { SortByInterface } from '../interfaces/sort-by';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
@@ -207,6 +208,13 @@ export const uploadDataTable = async (req: Request, res: Response) => {
   const supportedFormats = Object.values(DuckDBSupportFileFormats).map((format) => format.toLowerCase());
   const session = get(req.session, `dataset[${dataset.id}]`, { updateType: undefined });
   let errors: ViewError[] = [];
+  let updateType: string | undefined;
+
+  if (session.updateType) {
+    updateType = session.updateType;
+  } else {
+    updateType = req.body?.updateType;
+  }
 
   if (req.method === 'POST') {
     logger.debug('Data table upload started...');
@@ -224,11 +232,11 @@ export const uploadDataTable = async (req: Request, res: Response) => {
       const fileName = req.file.originalname;
       req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
       const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
+      logger.debug('Sending file to backend');
       logger.debug('Sending data table file to the backend...');
-
-      if (session.updateType) {
+      if (req.body?.updateType) {
         logger.info('Performing an update to the dataset');
-        await req.pubapi.uploadCSVToUpdateDataset(dataset.id, revision.id, fileData, fileName, session.updateType);
+        await req.pubapi.uploadCSVToUpdateDataset(dataset.id, revision.id, fileData, fileName, req.body?.updateType);
       } else {
         await req.pubapi.uploadDataToDataset(dataset.id, fileData, fileName);
       }
@@ -258,7 +266,13 @@ export const uploadDataTable = async (req: Request, res: Response) => {
     }
   }
 
-  res.render('publish/upload', { revisit, supportedFormats: supportedFormats.join(', '), errors, uploadType: false });
+  res.render('publish/upload', {
+    revisit,
+    supportedFormats: supportedFormats.join(', '),
+    errors,
+    updateType,
+    uploadType: false
+  });
 };
 
 export const factTablePreview = async (req: Request, res: Response, next: NextFunction) => {
@@ -521,7 +535,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
   const { id: datasetId, end_revision_id: endRevisionId } = res.locals.dataset;
   const query = qs.parse(req.originalUrl.split('?')[1]);
   const pageNumber = Number.parseInt(query.page_number as string, 10) || 1;
-  const pageSize = Number.parseInt(query.page_size as string, 10) || 10;
+  const pageSize = Number.parseInt(query.page_size as string, 10) || DEFAULT_PAGE_SIZE;
   const filter = query.filter as Record<string, string[]>;
   const sortBy = query.sort_by as unknown as SortByInterface;
 
