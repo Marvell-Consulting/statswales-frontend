@@ -25,7 +25,8 @@ export const strictTransport = [AppEnv.Ci, AppEnv.Local].includes(config.env)
           directives: {
             defaultSrc: ['*'],
             styleSrc: ["'self'", "'unsafe-inline'"],
-            scriptSrc: ["'self'", "'unsafe-inline'"]
+            scriptSrc: ["'self'", "'unsafe-inline'"],
+            imgSrc: ['*', 'data:']
           }
         })
       );
