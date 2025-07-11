@@ -66,7 +66,12 @@ export default function ConsumerView(props) {
                 <label className="govuk-label region-subhead" htmlFor="page_size">
                   {props.t('consumer_view.page_size')}
                 </label>
-                <select className="govuk-select" id="page_size" name="page_size" defaultValue={props.page_size}>
+                <select
+                  className="govuk-select full-width"
+                  id="page_size"
+                  name="page_size"
+                  defaultValue={props.page_size}
+                >
                   {[5, 10, 25, 50, 100, 250, 500].map((size) => (
                     <option key={size} value={size}>
                       {size}
