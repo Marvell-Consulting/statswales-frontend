@@ -1209,7 +1209,7 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
   try {
     if (req.method === 'POST') {
       if (!req.body?.yearType) {
-        logger.error('User failed to select an option for year type');
+        logger.warn('User failed to select an option for year type');
         res.status(400);
         res.render('publish/year-type', {
           dimension,
@@ -1224,6 +1224,74 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
           ]
         });
         return;
+      }
+      if (req.body.yearType === 'rolling') {
+        let key: string | undefined;
+        let field = 'start_date';
+        if (!req.body?.start_day) {
+          logger.warn('User failed to enter a start day');
+          res.status(400);
+          key = key ? key : 'errors.dimension.start_date_required';
+          field = 'start_day';
+        }
+        if (req.body?.start_day) {
+          if (!/^[0-9]{1,2}$/.test(req.body?.start_day)) {
+            logger.warn('User entered in something other than a number');
+            res.status(400);
+            key = key ? key : 'errors.dimension.start_day_must_be_a_number';
+            field = 'start_day';
+          }
+        }
+        if (parseInt(req.body.start_day, 10) > 31 || parseInt(req.body.start_day, 10) < 1) {
+          logger.warn('User entered an unsupported number');
+          res.status(400);
+          key = key ? key : 'errors.dimension.start_day_must_be_a_number';
+          field = 'start_day';
+        }
+        if (!req.body?.start_month) {
+          key = key ? key : 'errors.dimension.start_date_required';
+          logger.warn('User failed to enter a start month');
+          res.status(400);
+          field = 'start_month';
+        }
+        if (req.body?.start_month) {
+          if (!/^[0-9]{1,2}$/.test(req.body?.start_month)) {
+            logger.warn('User entered in something other than a number');
+            res.status(400);
+            key = key ? key : 'errors.dimension.start_month_must_be_a_number';
+            field = 'start_month';
+          }
+        }
+        if (parseInt(req.body.start_month, 10) > 12 || parseInt(req.body.start_month, 10) < 1) {
+          logger.warn('User entered an unsupported number');
+          res.status(400);
+          key = key ? key : 'errors.dimension.start_month_must_be_a_number';
+          field = 'start_month';
+        }
+        const startDay = String(req.body.start_day).padStart(2, '0');
+        const startMonth = String(req.body.start_month).padStart(2, '0');
+        const date = new Date(`2024-${startMonth}-${startDay}`);
+        if (isNaN(date.getTime())) {
+          logger.warn('User entered an invalid date');
+          res.status(400);
+          key = key ? key : 'errors.dimension.start_date_must_be_valid';
+        }
+        if (key) {
+          res.render('publish/year-type', {
+            dimension,
+            revisit,
+            yearType: req.body?.yearType,
+            start_day: req.body?.start_day,
+            start_month: req.body?.start_month,
+            errors: [
+              {
+                field,
+                message: { key }
+              }
+            ]
+          });
+          return;
+        }
       }
       if (req.body?.yearType === 'calendar') {
         session.dimensionPatch = {
