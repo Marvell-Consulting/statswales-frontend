@@ -4,11 +4,12 @@ import ErrorHandler from '../components/ErrorHandler';
 import clsx from 'clsx';
 
 export default function UserCreate(props) {
+  const title = props.t('admin.user.create.heading');
   return (
-    <Layout {...props} formPage>
+    <Layout {...props} formPage title={title}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
-          <h1 className="govuk-heading-xl">{props.t('admin.user.create.heading')}</h1>
+          <h1 className="govuk-heading-xl">{title}</h1>
 
           <ErrorHandler />
 

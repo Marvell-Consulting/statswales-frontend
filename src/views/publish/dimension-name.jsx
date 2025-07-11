@@ -24,14 +24,14 @@ export default function DimensionName(props) {
   }
   const backLink = getBackLink();
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const title =
+    props.dimensionType === 'measure'
+      ? props.t('publish.dimension_name.measure_heading')
+      : props.t('publish.dimension_name.dimension_heading');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <p className="govuk-body-l region-subhead govuk-!-font-weight-bold">{props.columnName}</p>
-      <h1 className="govuk-heading-xl">
-        {props.dimensionType === 'measure'
-          ? props.t('publish.dimension_name.measure_heading')
-          : props.t('publish.dimension_name.dimension_heading')}
-      </h1>
+      <h1 className="govuk-heading-xl">{title}</h1>
 
       <ErrorHandler />
 

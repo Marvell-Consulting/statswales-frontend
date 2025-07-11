@@ -6,11 +6,12 @@ import clsx from 'clsx';
 export default function UserGroupName(props) {
   const nameCyError = props.errors?.find((e) => e.field === 'name_cy');
   const nameEnError = props.errors?.find((e) => e.field === 'name_en');
+  const title = props.t('admin.group.name.heading');
   return (
-    <Layout {...props} formPage>
+    <Layout {...props} formPage title={title}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
-          <h1 className="govuk-heading-xl">{props.t('admin.group.name.heading')}</h1>
+          <h1 className="govuk-heading-xl">{title}</h1>
           <ErrorHandler />
 
           <form encType="multipart/form-data" method="post">

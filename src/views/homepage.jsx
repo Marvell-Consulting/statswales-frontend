@@ -57,14 +57,16 @@ export default function Homepage(props) {
     }
   ];
 
+  const title = props.t('homepage.heading');
+
   return (
-    <Layout {...props}>
+    <Layout {...props} title={title}>
       <FlashMessages />
       <ErrorHandler />
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
-          <h1 className="govuk-heading-xl">{props.t('homepage.heading')}</h1>
+          <h1 className="govuk-heading-xl">{title}</h1>
         </div>
       </div>
 

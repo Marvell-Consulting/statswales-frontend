@@ -39,11 +39,12 @@ export default function UserList(props) {
       )
     }
   ];
+  const title = props.t('admin.user.list.heading');
   return (
-    <Layout {...props}>
+    <Layout {...props} title={title}>
       <FlashMessages />
 
-      <h1 className="govuk-heading-xl">{props.t('admin.user.list.heading')}</h1>
+      <h1 className="govuk-heading-xl">{title}</h1>
 
       <a href={props.buildUrl(`/admin/user/create`, props.i18n.language)} className="govuk-button">
         {props.t('admin.user.list.buttons.add')}

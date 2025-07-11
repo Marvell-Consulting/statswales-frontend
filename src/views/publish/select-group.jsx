@@ -4,12 +4,13 @@ import ErrorHandler from '../components/ErrorHandler';
 import RadioGroup from '../components/RadioGroup';
 
 export default function SelectGroup(props) {
+  const title = props.t('publish.group.heading');
   return (
-    <Layout {...props} formPage>
+    <Layout {...props} formPage title={title}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <h1 className="govuk-heading-xl" id="group-id">
-            {props.t('publish.group.heading')}
+            {title}
           </h1>
 
           <form encType="multipart/form-data" method="post">

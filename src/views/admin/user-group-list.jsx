@@ -22,11 +22,13 @@ export default function UserGroupList(props) {
     'dataset_count'
   ];
 
+  const title = props.t('admin.group.list.heading');
+
   return (
-    <Layout {...props}>
+    <Layout {...props} title={title}>
       <FlashMessages />
 
-      <h1 className="govuk-heading-xl">{props.t('admin.group.list.heading')}</h1>
+      <h1 className="govuk-heading-xl">{title}</h1>
 
       <a href={props.buildUrl(`/admin/group/create`, props.i18n.language)} className="govuk-button">
         {props.t('admin.group.list.buttons.add')}

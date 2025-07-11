@@ -44,11 +44,10 @@ export default function Preview(props) {
       cellClassNameName: header.source_type
     };
   });
+  const title = props.revisit ? props.t('publish.preview.heading_summary') : props.t('publish.preview.heading');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
-      <h1 className="govuk-heading-xl">
-        {props.revisit ? props.t('publish.preview.heading_summary') : props.t('publish.preview.heading')}
-      </h1>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
+      <h1 className="govuk-heading-xl">{title}</h1>
 
       <ErrorHandler />
 

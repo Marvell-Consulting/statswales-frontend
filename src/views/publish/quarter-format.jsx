@@ -9,12 +9,14 @@ export default function QuarterFormat(props) {
     : props.buildUrl(`/publish/${props.datasetId}/dates/${props.dimension.id}/period/type`, props.i18n.language);
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
 
+  const title = props.t(`publish.quarter_format.${props.quarterTotals ? 'heading-alt' : 'heading'}`);
+
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <span className="region-subhead">{props.dimension.metadata.name}</span>
 
       <h1 className="govuk-heading-xl" id="quarter-type">
-        {props.t(`publish.quarter_format.${props.quarterTotals ? 'heading-alt' : 'heading'}`)}
+        {title}
       </h1>
 
       <ErrorHandler />

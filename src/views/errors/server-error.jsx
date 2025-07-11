@@ -2,9 +2,10 @@ import React from 'react';
 import Layout from '../components/layouts/Publisher';
 
 export default function ServerError(props) {
+  const title = props.t('errors.server_error');
   return (
-    <Layout {...props}>
-      <h1 className="govuk-heading-xl">{props.t('errors.server_error')}</h1>
+    <Layout {...props} title={title}>
+      <h1 className="govuk-heading-xl">{title}</h1>
     </Layout>
   );
 }

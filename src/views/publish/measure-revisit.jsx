@@ -6,12 +6,11 @@ import MeasurePreviewTable from '../components/MeasurePreviewTable';
 export default function MeasureRevisit(props) {
   const backLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const title = props.measure.metadata?.name || props.t('publish.time_dimension_review.unknown_name');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink}>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} title={title}>
       <span className="region-subhead">{props.measure.metadata.name}</span>
-      <h1 className="govuk-heading-xl">
-        {props.measure.metadata?.name || props.t('publish.time_dimension_review.unknown_name')}
-      </h1>
+      <h1 className="govuk-heading-xl">{title}</h1>
       <ErrorHandler />
 
       {props.data && (

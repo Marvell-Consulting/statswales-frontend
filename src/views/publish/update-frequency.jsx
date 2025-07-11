@@ -35,13 +35,14 @@ export default function UpdateFrequency(props) {
 
   const oneYearFromNow = format(addYears(new Date(), 1), 'dd MM yyyy');
 
+  const title = props.t('publish.update_frequency.heading');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <div className="govuk-width-container">
         <div className="govuk-grid-row">
           <div className="govuk-grid-column-two-thirds">
             <h1 className="govuk-heading-xl" id="is-updated">
-              {props.t('publish.update_frequency.heading')}
+              {title}
             </h1>
 
             <form encType="multipart/form-data" method="post">

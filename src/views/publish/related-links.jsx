@@ -50,111 +50,117 @@ export default function RelatedLinks(props) {
       cellClassNameName: 'nowrap'
     }
   ];
+
+  const title =
+    props.related_links.length > 0 && !props.editId
+      ? props.t('publish.related.list.heading')
+      : props.t('publish.related.add.heading');
+
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <div className="govuk-width-container">
         <div className="govuk-grid-row">
-          {props.related_links.length > 0 && !props.editId ? (
-            <div className="govuk-grid-column-two-thirds">
-              <h1 className="govuk-heading-xl">{props.t('publish.related.list.heading')}</h1>
+          <div className="govuk-grid-column-two-thirds">
+            <h1 className="govuk-heading-xl">{title}</h1>
 
-              <ErrorHandler />
-              <Table columns={columns} rows={props.related_links} />
+            <ErrorHandler />
+            {props.related_links.length > 0 && !props.editId ? (
+              <>
+                <Table columns={columns} rows={props.related_links} />
 
-              <form encType="multipart/form-data" method="post">
-                <input type="hidden" name="add_another" value="true" />
-                <RadioGroup
-                  name="add_link"
-                  label={<T>publish.related.list.form.add_another.heading</T>}
-                  options={[
-                    {
-                      value: 'true',
-                      label: <T>publish.related.list.form.add_another.options.yes.label</T>
-                    },
-                    {
-                      value: 'false',
-                      label: <T>publish.related.list.form.add_another.options.no.label</T>
-                    }
-                  ]}
-                />
-                <button type="submit" className="govuk-button" data-module="govuk-button">
-                  {props.t('buttons.continue')}
-                </button>
-              </form>
-            </div>
-          ) : (
-            <div className="govuk-grid-column-two-thirds">
-              <h1 className="govuk-heading-xl">{props.t('publish.related.add.heading')}</h1>
+                <form encType="multipart/form-data" method="post">
+                  <input type="hidden" name="add_another" value="true" />
+                  <RadioGroup
+                    name="add_link"
+                    label={<T>publish.related.list.form.add_another.heading</T>}
+                    options={[
+                      {
+                        value: 'true',
+                        label: <T>publish.related.list.form.add_another.options.yes.label</T>
+                      },
+                      {
+                        value: 'false',
+                        label: <T>publish.related.list.form.add_another.options.no.label</T>
+                      }
+                    ]}
+                  />
+                  <button type="submit" className="govuk-button" data-module="govuk-button">
+                    {props.t('buttons.continue')}
+                  </button>
+                </form>
+              </>
+            ) : (
+              <>
+                <p className="govuk-body">{props.t('publish.related.add.explain')}</p>
 
-              <ErrorHandler />
+                <ul className="govuk-list govuk-list--bullet">
+                  <li>{props.t('publish.related.add.explain_1')}</li>
+                  <li>{props.t('publish.related.add.explain_2')}</li>
+                  <li>{props.t('publish.related.add.explain_3')}</li>
+                </ul>
 
-              <p className="govuk-body">{props.t('publish.related.add.explain')}</p>
-
-              <ul className="govuk-list govuk-list--bullet">
-                <li>{props.t('publish.related.add.explain_1')}</li>
-                <li>{props.t('publish.related.add.explain_2')}</li>
-                <li>{props.t('publish.related.add.explain_3')}</li>
-              </ul>
-
-              <form encType="multipart/form-data" method="post">
-                <fieldset className="govuk-fieldset">
-                  <input type="hidden" name="link_id" value={props.link.id} />
-                  <div
-                    className={clsx('govuk-form-group', {
-                      'govuk-form-group--error': props.errors?.find((e) => e.field === 'link_url')
-                    })}
-                  >
-                    <label className="govuk-label" htmlFor="link_url">
-                      {props.t('publish.related.add.form.link_url.label')}
-                    </label>
-                    <div className="govuk-hint">{props.t('publish.related.add.form.link_url.hint')}</div>
-                    {props.errors?.find((e) => e.field === 'link_url') && (
-                      <p id="link_url-error" className="govuk-error-message">
-                        {props.t(`publish.related.add.form.link_url.error.${props.link?.url ? 'invalid' : 'missing'}`)}
-                      </p>
-                    )}
-
-                    <input
-                      className={clsx('govuk-input', {
-                        'govuk-input--error': props.errors?.find((e) => e.field === 'link_url')
+                <form encType="multipart/form-data" method="post">
+                  <fieldset className="govuk-fieldset">
+                    <input type="hidden" name="link_id" value={props.link.id} />
+                    <div
+                      className={clsx('govuk-form-group', {
+                        'govuk-form-group--error': props.errors?.find((e) => e.field === 'link_url')
                       })}
-                      id="link_url"
-                      name="link_url"
-                      type="text"
-                      defaultValue={props.link.url}
-                    />
-                  </div>
-                  <div
-                    className={clsx('govuk-form-group', {
-                      'govuk-form-group--error': props.errors?.find((e) => e.field === 'link_label')
-                    })}
-                  >
-                    <label className="govuk-label" htmlFor="link_label">
-                      {props.t('publish.related.add.form.link_label.label')}
-                    </label>
-                    <div className="govuk-hint">{props.t('publish.related.add.form.link_label.hint')}</div>
-                    {props.errors?.find((e) => e.field === 'link_label') && (
-                      <p id="link_label-error" className="govuk-error-message">
-                        {props.t('publish.related.add.form.link_label.error.missing')}
-                      </p>
-                    )}
-                    <input
-                      className={clsx('govuk-input', {
-                        'govuk-input--error': props.errors?.find((e) => e.field === 'link_label')
+                    >
+                      <label className="govuk-label" htmlFor="link_url">
+                        {props.t('publish.related.add.form.link_url.label')}
+                      </label>
+                      <div className="govuk-hint">{props.t('publish.related.add.form.link_url.hint')}</div>
+                      {props.errors?.find((e) => e.field === 'link_url') && (
+                        <p id="link_url-error" className="govuk-error-message">
+                          {props.t(
+                            `publish.related.add.form.link_url.error.${props.link?.url ? 'invalid' : 'missing'}`
+                          )}
+                        </p>
+                      )}
+
+                      <input
+                        className={clsx('govuk-input', {
+                          'govuk-input--error': props.errors?.find((e) => e.field === 'link_url')
+                        })}
+                        id="link_url"
+                        name="link_url"
+                        type="text"
+                        defaultValue={props.link.url}
+                      />
+                    </div>
+                    <div
+                      className={clsx('govuk-form-group', {
+                        'govuk-form-group--error': props.errors?.find((e) => e.field === 'link_label')
                       })}
-                      id="link_label"
-                      name="link_label"
-                      type="text"
-                      value={props.link.label}
-                    />
-                  </div>
-                </fieldset>
-                <button type="submit" className="govuk-button" data-module="govuk-button">
-                  {props.t('buttons.continue')}
-                </button>
-              </form>
-            </div>
-          )}
+                    >
+                      <label className="govuk-label" htmlFor="link_label">
+                        {props.t('publish.related.add.form.link_label.label')}
+                      </label>
+                      <div className="govuk-hint">{props.t('publish.related.add.form.link_label.hint')}</div>
+                      {props.errors?.find((e) => e.field === 'link_label') && (
+                        <p id="link_label-error" className="govuk-error-message">
+                          {props.t('publish.related.add.form.link_label.error.missing')}
+                        </p>
+                      )}
+                      <input
+                        className={clsx('govuk-input', {
+                          'govuk-input--error': props.errors?.find((e) => e.field === 'link_label')
+                        })}
+                        id="link_label"
+                        name="link_label"
+                        type="text"
+                        value={props.link.label}
+                      />
+                    </div>
+                  </fieldset>
+                  <button type="submit" className="govuk-button" data-module="govuk-button">
+                    {props.t('buttons.continue')}
+                  </button>
+                </form>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </Layout>

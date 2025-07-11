@@ -6,11 +6,14 @@ import clsx from 'clsx';
 export default function UserGroupEmail(props) {
   const emailCyError = props.errors?.find((e) => e.field === 'email_cy');
   const emailEnError = props.errors?.find((e) => e.field === 'email_en');
+
+  const title = props.t('admin.group.email.heading');
+
   return (
-    <Layout {...props} formPage>
+    <Layout {...props} formPage title={title}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
-          <h1 className="govuk-heading-xl">{props.t('admin.group.email.heading')}</h1>
+          <h1 className="govuk-heading-xl">{title}</h1>
 
           <ErrorHandler />
 

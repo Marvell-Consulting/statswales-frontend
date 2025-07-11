@@ -3,9 +3,10 @@ import ErrorHandler from '../components/ErrorHandler';
 import Layout from '../components/layouts/Publisher';
 
 export default function Start(props) {
+  const title = props.t('publish.start.title');
   return (
-    <Layout {...props}>
-      <h1 className="govuk-heading-xl">{props.t('publish.start.title')}</h1>
+    <Layout {...props} title={title}>
+      <h1 className="govuk-heading-xl">{title}</h1>
       <ErrorHandler />
 
       <p className="govuk-body">{props.t('publish.start.p1')}</p>

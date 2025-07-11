@@ -6,15 +6,17 @@ export default function Title(props) {
   const backLink = props.revisit && props.referrer;
   const returnLink =
     props.revisit && props.datasetId && props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+
+  const title =
+    props.uploadType === 'lookup'
+      ? props.t('publish.upload.lookup_heading')
+      : props.uploadType === 'measure'
+        ? props.t('publish.upload.measure_heading')
+        : props.t('publish.upload.title');
+
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
-      <h1 className="govuk-heading-xl">
-        {props.uploadType === 'lookup'
-          ? props.t('publish.upload.lookup_heading')
-          : props.uploadType === 'measure'
-            ? props.t('publish.upload.measure_heading')
-            : props.t('publish.upload.title')}
-      </h1>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
+      <h1 className="govuk-heading-xl">{title}</h1>
 
       <ErrorHandler />
 
