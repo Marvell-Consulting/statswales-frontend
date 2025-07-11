@@ -3,13 +3,12 @@ import Layout from '../components/layouts/Publisher';
 import DatasetStatus from '../components/dataset/DatasetStatus';
 
 export default function PreviewFailure(props) {
+  const title = props.t('errors.preview_failure.heading', { datasetTitle });
   return (
-    <Layout {...props}>
+    <Layout {...props} title={title}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
-          <h1 className="govuk-heading-xl govuk-!-margin-bottom-2">
-            {props.t('errors.preview_failure.heading', { datasetTitle })}
-          </h1>
+          <h1 className="govuk-heading-xl govuk-!-margin-bottom-2">{title}</h1>
         </div>
       </div>
 

@@ -8,12 +8,12 @@ export default function DimensionRevisit(props) {
   const backLink = props.url.includes('change-type')
     ? props.buildUrl(`/publish/${props.datasetId}/dimension/${props.dimension.id}`, props.i18n.language)
     : returnLink;
+
+  const title = props.dimension.metadata?.name || props.t('publish.time_dimension_review.unknown_name');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink}>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} title={title}>
       <span className="region-subhead">{props.dimension.metadata.name}</span>
-      <h1 className="govuk-heading-xl">
-        {props.dimension.metadata?.name || props.t('publish.time_dimension_review.unknown_name')}
-      </h1>
+      <h1 className="govuk-heading-xl">{title}</h1>
 
       <ErrorHandler />
 

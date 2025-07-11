@@ -7,10 +7,12 @@ export default function UploadLookup(props) {
   const backLink = props.buildUrl(`/publish/${props.datasetId}/dimension/${props.dimension.id}`, props.i18n.language);
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
 
+  const title = props.t('publish.upload.lookup_heading');
+
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <span className="region-subhead">{props.dimension.metadata.name}</span>
-      <h1 className="govuk-heading-xl">{props.t('publish.upload.lookup_heading')}</h1>
+      <h1 className="govuk-heading-xl">{title}</h1>
 
       <ErrorHandler />
 

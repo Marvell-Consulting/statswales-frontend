@@ -8,10 +8,11 @@ export default function MeasurePreview(props) {
   const backLink = props.url.includes('change-lookup')
     ? props.buildUrl(`/publish/${props.datasetId}/measure`, props.i18n.language)
     : returnLink;
+  const title = props.t('publish.measure_preview.heading');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <span className="region-subhead">{props.measure.metadata.name}</span>
-      <h1 className="govuk-heading-xl">{props.t('publish.measure_preview.heading')}</h1>
+      <h1 className="govuk-heading-xl">{title}</h1>
       <ErrorHandler />
       {props.data && !props.errors && (
         <div className="govuk-grid-row">

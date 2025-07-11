@@ -3,19 +3,19 @@ import Layout from '../components/layouts/Publisher';
 import DimensionPreviewTable from '../components/DimensionPreviewTable';
 
 export default function DuplicateFact(props) {
+  const title =
+    props.data.length > 499
+      ? props.t('errors.fact_table_validation.duplicate_fact_500', { count: props.data.length })
+      : props.data
+        ? props.t('errors.fact_table_validation.duplicate_fact', { count: props.data.length })
+        : props.t('errors.fact_table_validation.duplicate_fact_missing');
   return (
-    <Layout {...props}>
+    <Layout {...props} title={title}>
       <div className="govuk-grid-row govuk-!-margin-bottom-4">
         <div className="govuk-grid-column-full">
           <div className="warning-background">
             <div className="govuk-error-message alert-warning">
-              <h1 className="govuk-heading-xl">
-                {props.data.length > 499
-                  ? props.t('errors.fact_table_validation.duplicate_fact_500', { count: props.data.length })
-                  : props.data
-                    ? props.t('errors.fact_table_validation.duplicate_fact', { count: props.data.length })
-                    : props.t('errors.fact_table_validation.duplicate_fact_missing')}
-              </h1>
+              <h1 className="govuk-heading-xl">{title}</h1>
 
               <p className="govuk-body">{props.t('errors.fact_table_validation.duplicate_fact_info')}</p>
             </div>

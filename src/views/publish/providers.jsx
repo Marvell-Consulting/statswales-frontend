@@ -3,7 +3,6 @@ import ErrorHandler from '../components/ErrorHandler';
 import Layout from '../components/layouts/Publisher';
 import Table from '../components/Table';
 import RadioGroup from '../components/RadioGroup';
-import Select from '../components/Select';
 import T from '../components/T';
 import Autocomplete from '../components/Autocomplete';
 
@@ -37,8 +36,16 @@ export default function Providers(props) {
       cellClassNameName: 'nowrap'
     }
   ];
+
+  const title =
+    props.dataProviders?.length === 0 || props.editId === 'new'
+      ? props.t('publish.providers.add.heading')
+      : props.dataProviders?.length > 0 && !props.editId
+        ? props.t('publish.providers.list.heading')
+        : props.t('publish.providers.add_source.heading');
+
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <script src="/assets/js/accessible-autocomplete.min.js"></script>
 
       <div className="govuk-width-container">
@@ -46,7 +53,7 @@ export default function Providers(props) {
           <div className="govuk-grid-row">
             {/* Add provider form is displayed whenever we're adding a "new" provider, or if there aren't any saved currently */}
             <div className="govuk-grid-column-two-thirds">
-              <h1 className="govuk-heading-xl">{props.t('publish.providers.add.heading')}</h1>
+              <h1 className="govuk-heading-xl">{title}</h1>
               <ErrorHandler />
 
               <p

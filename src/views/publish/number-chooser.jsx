@@ -11,14 +11,14 @@ export default function NumberChooser(props) {
   const backLink = props.revisit
     ? props.buildUrl(`/publish/${props.datasetId}/dimension/${props.dimension.id}/change-type`, props.i18n.language)
     : props.buildUrl(`/publish/${props.datasetId}/dimension/${props.dimension.id}`, props.i18n.language);
+
+  const title = props.review
+    ? props.t('publish.number_chooser.heading')
+    : props.t('publish.number_chooser.review_heading');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <span className="region-subhead">{props.dimension.metadata.name}</span>
-      {props.review ? (
-        <h1 className="govuk-heading-xl">{props.t('publish.number_chooser.heading')}</h1>
-      ) : (
-        <h1 className="govuk-heading-xl">{props.t('publish.number_chooser.review_heading')}</h1>
-      )}
+      <h1 className="govuk-heading-xl">{title}</h1>
 
       <ErrorHandler />
 

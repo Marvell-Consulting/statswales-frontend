@@ -8,9 +8,10 @@ export default function Sources(props) {
   const returnLink =
     props.revisit && props.datasetId && props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   const backLink = returnLink;
+  const title = props.t('publish.sources.heading');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
-      <h1 className="govuk-heading-xl">{props.t('publish.sources.heading')}</h1>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
+      <h1 className="govuk-heading-xl">{title}</h1>
       <ErrorHandler />
       <form action={props.buildUrl(`/publish/${props.datasetId}/sources`, props.i18n.language)} method="post">
         <div

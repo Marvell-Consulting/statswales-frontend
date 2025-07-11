@@ -2,12 +2,16 @@ import React from 'react';
 import Layout from '../components/layouts/Publisher';
 import Pagination from '../components/Pagination';
 
+// TODO: This page is not linked to from anywhere
+// so we should probably remove it.
 export default function ConsumerList(props) {
+  const title = props.t('consumer.list.heading');
   return (
-    <Layout {...props}>
+    <Layout {...props} title={title}>
       <div className="govuk-grid-row govuk-!-margin-bottom-6">
         <div className="govuk-grid-column-full">
-          <h2 className="govuk-heading-m">{props.t('consumer.list.heading')}</h2>
+          {/* This should be a H1 if page is not removed */}
+          <h2 className="govuk-heading-m">{title}</h2>
         </div>
       </div>
 

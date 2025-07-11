@@ -9,11 +9,12 @@ export default function MonthFormat(props) {
     props.i18n.language
   );
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const title = props.t('publish.month_format.heading');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <span className="region-subhead">{props.dimension.metadata.name}</span>
       <h1 className="govuk-heading-xl" id="month-format">
-        {props.t('publish.month_format.heading')}
+        {title}
       </h1>
 
       <ErrorHandler />

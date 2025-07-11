@@ -3,10 +3,12 @@ import Layout from '../components/layouts/Publisher';
 import clsx from 'clsx';
 
 export default function LocalAuth(props) {
+  const title = props.t('login.heading');
   return (
-    <Layout {...props} formPage>
+    <Layout {...props} formPage title={title}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
+          <h1 className="govuk-heading-xl">{title}</h1>
           <div
             className="govuk-notification-banner"
             role="region"

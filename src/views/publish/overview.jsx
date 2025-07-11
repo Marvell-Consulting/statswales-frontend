@@ -181,7 +181,7 @@ export default function Overview(props) {
   const datasetId = props.dataset.id;
 
   return (
-    <Layout {...props}>
+    <Layout {...props} title={props.title}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
           <FlashMessages />

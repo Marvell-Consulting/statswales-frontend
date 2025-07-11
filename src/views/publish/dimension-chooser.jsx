@@ -9,11 +9,13 @@ export default function DimensionChooser(props) {
   const backLink = props.url.includes('change-type')
     ? props.buildUrl(`/publish/${props.datasetId}/dimension/${props.dimension.id}`, props.i18n.language)
     : returnLink;
+
+  const title = props.t('publish.dimension_type_chooser.heading');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <span className="region-subhead">{props.dimension.metadata.name}</span>
       <h1 className="govuk-heading-xl" id="dimension-type">
-        {props.t('publish.dimension_type_chooser.heading')}
+        {title}
       </h1>
 
       <ErrorHandler />

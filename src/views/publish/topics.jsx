@@ -5,11 +5,14 @@ import ErrorHandler from '../components/ErrorHandler';
 export default function Topics(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   const backLink = returnLink;
+
+  const title = props.t('publish.topics.heading');
+
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
-          <h1 className="govuk-heading-xl">{props.t('publish.topics.heading')}</h1>
+          <h1 className="govuk-heading-xl">{title}</h1>
           <ErrorHandler />
 
           <form encType="multipart/form-data" method="post">
