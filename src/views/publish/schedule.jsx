@@ -29,12 +29,14 @@ export default function Schedule(props) {
     );
   }
 
+  const title = props.t('publish.schedule.heading');
+
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <div className="govuk-width-container">
         <div className="govuk-grid-row">
           <div className="govuk-grid-column-two-thirds">
-            <h1 className="govuk-heading-xl">{props.t('publish.schedule.heading')}</h1>
+            <h1 className="govuk-heading-xl">{title}</h1>
 
             <ErrorHandler />
 

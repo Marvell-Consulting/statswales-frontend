@@ -33,14 +33,15 @@ export default function DateChooser(props) {
       return value;
     }
   }));
+
+  const title = props.review
+    ? props.t('publish.time_dimension_review.heading')
+    : props.t('publish.time_dimension_chooser.heading');
+
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <span className="region-subhead">{props.dimension.metadata.name}</span>
-      {props.review ? (
-        <h1 className="govuk-heading-xl">{props.t('publish.time_dimension_review.heading')}</h1>
-      ) : (
-        <h1 className="govuk-heading-xl">{props.t('publish.time_dimension_chooser.heading')}</h1>
-      )}
+      <h1 className="govuk-heading-xl">{title}</h1>
 
       <ErrorHandler />
 

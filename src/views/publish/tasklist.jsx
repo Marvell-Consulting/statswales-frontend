@@ -82,7 +82,7 @@ export default function Tasklist(props) {
   }
 
   return (
-    <Layout {...props}>
+    <Layout {...props} title={props.datasetTitle}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <span className="region-subhead">{props.t('publish.tasklist.subheading')}</span>

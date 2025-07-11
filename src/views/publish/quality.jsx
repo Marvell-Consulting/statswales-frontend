@@ -7,12 +7,14 @@ import RadioGroup from '../components/RadioGroup';
 export default function Quality(props) {
   const backLink = props.referrer;
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+
+  const title = props.t('publish.quality.heading');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <div className="govuk-width-container">
         <div className="govuk-grid-row">
           <div className="govuk-grid-column-two-thirds">
-            <h1 className="govuk-heading-xl">{props.t('publish.quality.heading')}</h1>
+            <h1 className="govuk-heading-xl">{title}</h1>
 
             <form encType="multipart/form-data" method="post">
               <ErrorHandler />

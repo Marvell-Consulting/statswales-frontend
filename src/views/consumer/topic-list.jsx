@@ -80,16 +80,15 @@ function Datasets({ datasets }) {
 }
 
 export default function TopicList(props) {
+  const title = props.selectedTopic ? props.selectedTopic.name : props.t('consumer.topic_list.heading');
   return (
-    <Layout {...props}>
+    <Layout {...props} title={title}>
       {!props.selectedTopic && (
         <Hero>
           <div className="govuk-width-container">
             <div className="govuk-grid-row govuk-!-margin-bottom-6">
               <div className="govuk-grid-column-two-thirds">
-                <h1 className="govuk-heading-xl govuk-!-margin-top-6">
-                  <T>consumer.topic_list.heading</T>
-                </h1>
+                <h1 className="govuk-heading-xl govuk-!-margin-top-6">{title}</h1>
               </div>
             </div>
           </div>
@@ -116,7 +115,7 @@ export default function TopicList(props) {
               <h2 className="topic-subhead">
                 <T>consumer.topic_list.topic</T>
               </h2>
-              <h1 className="govuk-heading-xl">{props.selectedTopic.name}</h1>
+              <h1 className="govuk-heading-xl">{title}</h1>
             </>
           )}
 

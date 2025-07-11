@@ -2,9 +2,10 @@ import React from 'react';
 import Layout from '../components/layouts/Publisher';
 
 export default function Login(props) {
+  const title = props.t('login.heading');
   return (
-    <Layout {...props}>
-      <h1 className="govuk-heading-xl">{props.t('login.heading')}</h1>
+    <Layout {...props} title={title}>
+      <h1 className="govuk-heading-xl">{title}</h1>
 
       {props.errors && (
         <div className="govuk-error-summary" data-module="govuk-error-summary">

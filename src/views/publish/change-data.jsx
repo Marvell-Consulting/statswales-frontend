@@ -6,11 +6,12 @@ import T from '../components/T';
 export default function ChangeData(props) {
   const backLink = 'javascript:history.back()';
   const returnLink = props.datasetId && props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const title = props.t('publish.change_data.title');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <span className="region-subhead">{props.dimension.metadata.name}</span>
       <h1 className="govuk-heading-xl" id="change-data">
-        <T>publish.change_data.title</T>
+        {title}
       </h1>
       <ErrorHandler />
 

@@ -6,10 +6,11 @@ import Layout from '../components/layouts/Publisher';
 export default function MeasureReview(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   const backLink = props.buildUrl(`/publish/${props.datasetId}/measure`, props.i18n.language);
+  const title = props.t('publish.measure_review.heading');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <span className="region-subhead">{props.measure.metadata.name}</span>
-      <h1 className="govuk-heading-xl">{props.t('publish.measure_review.heading')}</h1>
+      <h1 className="govuk-heading-xl">{title}</h1>
 
       <ErrorHandler />
 

@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import { Locals, LocalsProvider, useLocals } from '../../context/Locals';
 
-const Layout = ({ children }: PropsWithChildren) => {
+const Layout = ({ children, title }: PropsWithChildren<{ title?: string }>) => {
   const { i18n, t, buildUrl } = useLocals();
   const links = [
     'contact_us',
@@ -16,7 +16,10 @@ const Layout = ({ children }: PropsWithChildren) => {
     <html lang={i18n.language} className="govuk-template wg">
       <head>
         <meta charSet="utf-8" />
-        <title>StatsWales {t('beta')}</title>
+        <title>
+          {title ? `${title} | ` : ''}
+          {t('app_title')}
+        </title>
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="theme-color" content="#0b0c0c" />
         <link rel="icon" sizes="48x48" href="/assets/images/favicon.ico" />
@@ -156,7 +159,7 @@ const Layout = ({ children }: PropsWithChildren) => {
 export default function ConsumerLayout({ children, ...props }: PropsWithChildren<Locals>) {
   return (
     <LocalsProvider {...props}>
-      <Layout>{children}</Layout>
+      <Layout {...props}>{children}</Layout>
     </LocalsProvider>
   );
 }

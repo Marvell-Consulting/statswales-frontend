@@ -8,13 +8,15 @@ import T from '../components/T';
 export default function TaskDecision(props) {
   const reasonError = props.errors?.find((e) => e.field === 'reason');
 
+  const title = props.t('publish.task.decision.{props.taskType}.heading');
+
   return (
-    <Layout {...props} formPage>
+    <Layout {...props} formPage title={title}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <form encType="multipart/form-data" method="post">
             <h1 className="govuk-heading-xl govuk-!-margin-top-2" id="task-decision">
-              <T>publish.task.decision.{props.taskType}.heading</T>
+              {title}
             </h1>
 
             <p className="govuk-body govuk-!-margin-0">

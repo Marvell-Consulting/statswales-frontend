@@ -5,10 +5,11 @@ import TranslationsPreviewTable from '../../components/TranslationsPreviewTable'
 export default function Export(props) {
   const backLink = props.referrer;
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
+  const title = props.t('translations.export.heading');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink}>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} title={title}>
       <div className="govuk-width-container">
-        <h1 className="govuk-heading-xl">{props.t('translations.export.heading')}</h1>
+        <h1 className="govuk-heading-xl">{title}</h1>
 
         <TranslationsPreviewTable {...props} isImport={false} />
 

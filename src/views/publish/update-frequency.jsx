@@ -9,13 +9,15 @@ import Select from '../components/Select';
 export default function UpdateFrequency(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   const backLink = returnLink;
+
+  const title = props.t('publish.update_frequency.heading');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <div className="govuk-width-container">
         <div className="govuk-grid-row">
           <div className="govuk-grid-column-two-thirds">
             <h1 className="govuk-heading-xl" id="is-updated">
-              {props.t('publish.update_frequency.heading')}
+              {title}
             </h1>
 
             <form encType="multipart/form-data" method="post">
