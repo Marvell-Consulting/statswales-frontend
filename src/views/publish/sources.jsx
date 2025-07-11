@@ -8,6 +8,12 @@ export default function Sources(props) {
   const returnLink =
     props.revisit && props.datasetId && props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   const backLink = returnLink;
+
+  const sourceOptions = props.sourceTypes.map((val) => ({
+    value: val,
+    label: <T noWrap>publish.sources.types.{val}</T>
+  }));
+
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
       <h1 className="govuk-heading-xl">{props.t('publish.sources.heading')}</h1>
@@ -37,10 +43,7 @@ export default function Sources(props) {
                     label={source.name || <T colNum={idx + 1}>publish.preview.unnamed_column</T>}
                     labelClassName="govuk-label--s"
                     labelStyle={{ minWidth: '30%', display: 'inline-block' }}
-                    options={props.sourceTypes.map((val) => ({
-                      value: val,
-                      label: <T>publish.sources.types.{val}</T>
-                    }))}
+                    options={sourceOptions}
                     value={source.type}
                   />
                 </div>
