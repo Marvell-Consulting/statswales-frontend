@@ -14,6 +14,8 @@ export interface DimensionPatchDTO {
   month_format?: string;
   date_format?: string;
   fifth_quarter?: boolean;
+  start_day?: number;
+  start_month?: number;
   number_format?: NumberType;
   decimal_places?: number;
 }

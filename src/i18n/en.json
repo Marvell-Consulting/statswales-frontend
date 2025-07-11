@@ -444,7 +444,13 @@
         "academic": "Academic",
         "academic-hint": "1 September to 31 August",
         "meteorological": "Meteorological",
-        "meteorological-hint": "1 March to 28 or 29 February"
+        "meteorological-hint": "1 March to 28 or 29 February",
+        "rolling": "Other",
+        "rolling-hint": "Any other year start date",
+        "rolling-start-date": "Enter the date the year starts",
+        "rolling-start-date-hint": "For example, 01 06",
+        "day": "Day",
+        "month": "Month"
       }
     },
     "year_format": {
@@ -1321,7 +1327,11 @@
       "quarter_total_type_required": "Select whether a fifth quarter is used to represent yearly totals",
       "month_type_required": "Select the format used for months in the dimension",
       "number_type_required": "Select what kind of numbers this dimension contains",
-      "invalid_unicode": "CSV and JSON files must be in UTF-8 format. Save the file in the correct format and upload it again."
+      "invalid_unicode": "CSV and JSON files must be in UTF-8 format. Save the file in the correct format and upload it again.",
+      "start_date_required": "A start date is required for other types of year",
+      "start_day_must_be_a_number": "The day must be a number between 1 and 31",
+      "start_month_must_be_a_number": "The month must be a number between 1 and 12",
+      "start_date_must_be_valid": "The start date must be a valid"
     },
     "upload": {
       "no_csv": "Select a lookup table",
