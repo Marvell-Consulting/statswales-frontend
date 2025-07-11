@@ -190,7 +190,7 @@
     background: colours.$white;
     font-size: 16px;
 
-    &#page_size {
+    &.full-width {
       min-width: 100%;
       max-width: 100%;
     }
