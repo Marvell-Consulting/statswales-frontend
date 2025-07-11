@@ -902,6 +902,25 @@
         "time": "Dimension containing dates",
         "ignore": "This column can be ignored",
         "unknown": "Select"
+      },
+      "errors": {
+        "dimension": {
+          "invalid": "There should be at least one column in the data table for a dimension"
+        },
+        "measure": {
+          "invalid": "There should be one column in the data table for measure or data types"
+        },
+        "data_values": {
+          "invalid": "There should be one column in the data table for data values"
+        },
+        "note_codes": {
+          "invalid": "There should be one column in the data table for note codes"
+        },
+        "unknown": {
+          "invalid": "Select what each column in the data table contains"
+        },
+        "check": "Check you've selected the correct options or check the data table is correct",
+        "api": "Dimensions could not be created. Check you've selected the correct options or check the data table is correct."
       }
     },
     "tasklist": {

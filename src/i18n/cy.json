@@ -1209,14 +1209,6 @@
       "current_import_missing": "Ni ellir canfod tabl data. Ceisiwch lanlwytho tabl data.",
       "no_sources_on_import": "Nid yw'r tabl a ddewiswyd yn cynnig unrhyw ddimensiynau. Gwiriwch bod y tabl yn gywir."
     },
-    "sources": {
-      "unknowns_found": "Dewiswch beth y mae pob colofn yn y tabl data yn ei gynnwys",
-      "no_notes_column": "Dylai fod un colofn yn y tabl data ar gyfer codau nodiadau. Gwiriwch eich bod wedi dewis yr opsiynau cywir neu gwiriwch bod y tabl data yn gywir.",
-      "multiple_datavalues": "Dylai fod un colofn yn unig yn y tabl data ar gyfer gwerthoedd data. Gwiriwch eich bod wedi dewis yr opsiynau cywir neu gwiriwch bod y tabl data yn gywir.",
-      "multiple_footnotes": "Dylai fod un colofn yn unig yn y tabl data ar gyfer codau nodiadau. Gwiriwch eich bod wedi dewis yr opsiynau cywir neu gwiriwch bod y tabl data yn gywir.",
-      "multiple_measures": "Dylai fod un colofn yn unig yn y tabl data ar gyfer mathau o ddata neu fesur. Gwiriwch eich bod wedi dewis yr opsiynau cywir neu gwiriwch bod y tabl data yn gywir.",
-      "dimension_creation_failed": "Nid oedd modd creu dimensiynau. Gwiriwch eich bod wedi dewis yr opsiynau cywir neu gwiriwch bod y tabl data yn gywir."
-    },
     "preview": {
       "failed_to_get_preview": "Nid oedd modd creu rhagolwg o'r tabl. Gwiriwch eich bod wedi ychwanegu data cyfeirio i bob dimensiwn neu bod y tabl data yn gywir.",
       "remove_error": "Nid oedd modd gwaredu'r ffeil a lanlwythwyd o'r gweinydd. Rhowch gynnig arall ar hyn neu cysylltwch â chymorth.",

@@ -351,15 +351,14 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
 export const sources = async (req: Request, res: Response, next: NextFunction) => {
   const dataset = res.locals.dataset;
   const revision = dataset.draft_revision;
+  const sourceTypes = Object.values(SourceType);
+  let errors: ViewError[] = [];
 
   const factTable = dataset.fact_table.sort(
     (colA: FactTableColumnDto, colB: FactTableColumnDto) => colA.index - colB.index
   ) as FactTableColumnDto[];
 
   const revisit = factTable.filter((column: FactTableColumnDto) => column.type === SourceType.Unknown).length === 0;
-
-  let error: ViewError | undefined;
-  let errors: ViewError[] | undefined;
 
   if (!dataset || !revision || !factTable) {
     logger.error('Fact table not found');
@@ -370,57 +369,47 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
   try {
     if (req.method === 'POST') {
       logger.debug('Validating the source definition');
-      const counts = { unknown: 0, dataValues: 0, footnotes: 0, measure: 0 };
+      const counts = { unknown: 0, dataValues: 0, footnotes: 0, dimensions: 0, measure: 0 };
+
       const sourceAssignment: SourceAssignmentDTO[] = factTable.map((column: FactTableColumnDto) => {
         const sourceType = req.body[`column-${column.index}`];
         if (sourceType === SourceType.Unknown) counts.unknown++;
         if (sourceType === SourceType.DataValues) counts.dataValues++;
         if (sourceType === SourceType.NoteCodes) counts.footnotes++;
+        if (sourceType === SourceType.Dimension) counts.dimensions++;
         if (sourceType === SourceType.Measure) counts.measure++;
-        return {
-          column_index: column.index,
-          column_name: column.name,
-          column_type: sourceType
-        };
-      });
 
-      factTable.forEach((column: FactTableColumnDto) => {
-        column.type =
-          sourceAssignment.find((assignment: SourceAssignmentDTO) => assignment.column_index === column.index)
-            ?.column_type || SourceType.Unknown;
+        column.type = sourceType as SourceType; // remember selection when re-displaying the form
+
+        return { column_index: column.index, column_name: column.name, column_type: sourceType };
       });
 
       if (counts.unknown > 0) {
-        logger.error('User failed to identify all sources');
-        error = { field: 'source', message: { key: 'errors.sources.unknowns_found' } };
+        errors.push({ field: 'source', message: { key: 'publish.sources.errors.unknown.invalid' } });
       }
 
-      if (counts.footnotes === 0) {
-        logger.error('User failed to identify the mandated footnotes column');
-        error = { field: 'source', message: { key: 'errors.sources.no_notes_column' } };
+      if (counts.dataValues !== 1) {
+        errors.push({ field: 'source', message: { key: 'publish.sources.errors.data_values.invalid' } });
       }
 
-      if (counts.dataValues > 1) {
-        logger.error('User tried to specify multiple data value sources');
-        error = { field: 'source', message: { key: 'errors.sources.multiple_datavalues' } };
+      if (counts.measure !== 1) {
+        errors.push({ field: 'source', message: { key: 'publish.sources.errors.measure.invalid' } });
       }
 
-      if (counts.footnotes > 1) {
-        logger.error('User tried to specify multiple footnote sources');
-        error = { field: 'source', message: { key: 'errors.sources.multiple_footnotes' } };
+      if (counts.dimensions < 1) {
+        errors.push({ field: 'source', message: { key: 'publish.sources.errors.dimension.invalid' } });
       }
 
-      if (counts.measure > 1) {
-        logger.error('User tried to specify multiple measure sources');
-        error = { field: 'source', message: { key: 'errors.sources.multiple_measures' } };
+      if (counts.footnotes !== 1) {
+        errors.push({ field: 'source', message: { key: 'publish.sources.errors.note_codes.invalid' } });
       }
 
-      if (error) {
-        logger.error('There were errors validating the fact table');
-        errors = [error];
+      if (errors.length > 0) {
+        errors.push({ field: 'source', message: { key: 'publish.sources.errors.check' } });
+        logger.debug('There were errors validating the fact table');
         res.status(400);
       } else {
-        logger.debug('Sending request to the backend.');
+        logger.debug('Sending source assignment to the backend');
         await req.pubapi.assignSources(dataset.id, sourceAssignment);
         res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
         return;
@@ -432,28 +421,25 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
     if (viewErr.errors) {
       errors = viewErr.errors;
     } else {
-      errors = [{ field: 'source', message: { key: 'errors.sources.assign_failed' } }];
+      errors = [{ field: 'source', message: { key: 'publish.sources.errors.api' } }];
     }
     logger.error(err, `There was a problem assigning source types`);
     res.status(error.status || 500);
     if (errors[0].message.key === 'errors.fact_table_validation.incomplete_fact') {
       res.render('publish/empty-fact', { ...viewErr, dimension: { factTableColumn: '' } });
       return;
-    } else if (errors[0].message.key === 'errors.fact_table_validation.duplicate_fact') {
+    }
+    if (errors[0].message.key === 'errors.fact_table_validation.duplicate_fact') {
       res.render('publish/duplicate-fact', { ...viewErr, dimension: { factTableColumn: '' } });
       return;
-    } else if (errors[0].message.key === 'errors.fact_table_validation.bad_note_codes') {
+    }
+    if (errors[0].message.key === 'errors.fact_table_validation.bad_note_codes') {
       res.render('publish/bad-note-codes', { ...viewErr, dimension: { factTableColumn: '' } });
       return;
     }
   }
 
-  res.render('publish/sources', {
-    factTable,
-    sourceTypes: Object.values(SourceType),
-    revisit,
-    errors
-  });
+  res.render('publish/sources', { factTable, sourceTypes, revisit, errors });
 };
 
 export const taskList = async (req: Request, res: Response, next: NextFunction) => {
