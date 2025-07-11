@@ -49,6 +49,53 @@ export default function YearType(props) {
                   value: 'academic',
                   label: <T>publish.year_type.chooser.academic</T>,
                   hint: <T>publish.year_type.chooser.academic-hint</T>
+                },
+                {
+                  value: 'rolling',
+                  label: <T>publish.year_type.chooser.rolling</T>,
+                  hint: <T>publish.year_type.chooser.rolling-hint</T>,
+                  children: [
+                    <>
+                      <h2 className="govuk-fieldset__heading">
+                        <T>publish.year_type.chooser.rolling-start-date</T>
+                      </h2>
+                      ,
+                      <p className="govuk-hint">
+                        <T>publish.year_type.chooser.rolling-start-date-hint</T>
+                      </p>
+                      ,
+                      <div className="govuk-date-input">
+                        <div className="govuk-date-input__item">
+                          <div className="govuk-form-group">
+                            <label className="govuk-label, govuk-date-input__label" htmlFor="start_day">
+                              <T>publish.year_type.chooser.day</T>
+                            </label>
+                            <input
+                              className="govuk-input govuk-date-input__input govuk-input--width-2"
+                              type="text"
+                              name="start_day"
+                              placeholder="DD"
+                              inputMode="numeric"
+                            />
+                          </div>
+                        </div>
+                        <div className="govuk-date-input__item">
+                          <div className="govuk-form-group">
+                            <label className="govuk-label, govuk-date-input__label" htmlFor="start_month">
+                              <T>publish.year_type.chooser.month</T>
+                            </label>
+                            <input
+                              className="govuk-input govuk-date-input__input govuk-input--width-2"
+                              type="text"
+                              name="start_month"
+                              placeholder="MM"
+                              inputMode="numeric"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  ]
                 }
               ]}
             />

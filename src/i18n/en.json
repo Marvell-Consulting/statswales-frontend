@@ -444,7 +444,13 @@
         "academic": "Academic",
         "academic-hint": "1 September to 31 August",
         "meteorological": "Meteorological",
-        "meteorological-hint": "1 March to 28 or 29 February"
+        "meteorological-hint": "1 March to 28 or 29 February",
+        "rolling": "Other",
+        "rolling-hint": "Any other year start date",
+        "rolling-start-date": "Enter the date the year starts",
+        "rolling-start-date-hint": "For example, 01 06",
+        "day": "Day",
+        "month": "Month"
       }
     },
     "year_format": {

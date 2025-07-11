@@ -1242,7 +1242,9 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
         session.dimensionPatch = {
           dimension_id: req.params.dimensionId,
           dimension_type: DimensionType.Date,
-          date_type: req.body?.yearType
+          date_type: req.body?.yearType,
+          start_day: req.body?.start_day,
+          start_month: req.body?.start_month
         };
         set(req.session, `dataset[${dataset.id}]`, session);
         req.session.save();
