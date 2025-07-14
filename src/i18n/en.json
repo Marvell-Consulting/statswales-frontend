@@ -616,38 +616,40 @@
       }
     },
     "update_frequency": {
-      "heading": "Will this dataset be regularly updated?",
+      "heading": "Will this dataset be updated or replaced in the future?",
       "form": {
-        "is_updated": {
+        "update_type": {
           "options": {
-            "yes": {
-              "label": "Yes"
+            "update": {
+              "label": "An update is expected"
             },
-            "no": {
-              "label": "No"
+            "replacement": {
+              "label": "This dataset is not expected to be updated, but is expected to be replaced in the future"
+            },
+            "none": {
+              "label": "This dataset is not expected to be updated or replaced in the future"
             }
           },
+          "error": "Select whether this dataset will be updated or replaced in the future"
+        },
+        "date": {
+          "label": "Enter the date the next update is expected",
+          "hint": "For example, {{example}}. If you do not know the exact date, you must enter at least a month and a year.",
           "error": {
-            "missing": "Select if this dataset will be regularly updated or not"
+            "missing": "Enter the date the next update is expected",
+            "invalid": "The date the next update is expected must be a real date in the future"
           }
         },
-        "frequency_value": {
-          "label": "Enter the period between updates. For example, 1 year.",
-          "error": {
-            "missing": "Enter the number of weeks, months or years for the period between updates"
-          }
+        "day": {
+          "label": "Day"
         },
-        "frequency_unit": {
-          "options": {
-            "select": "Select",
-            "day": "days",
-            "week": "weeks",
-            "month": "months",
-            "year": "years"
-          },
-          "error": {
-            "missing": "Select whether the period between updates is in weeks, months or years"
-          }
+        "month": {
+          "label": "Month",
+          "error": "The date the next update is expected must include a month"
+        },
+        "year": {
+          "label": "Year",
+          "error": "The date the next update is expected must include a year"
         }
       }
     },
@@ -962,7 +964,7 @@
         "statistical_quality": "Statistical quality",
         "data_sources": "Data sources",
         "related_reports": "Related reports",
-        "update_frequency": "How often this dataset is updated",
+        "update_frequency": "If this dataset will be updated or replaced in the future",
         "designation": "Designation",
         "relevant_topics": "Relevant topics"
       },

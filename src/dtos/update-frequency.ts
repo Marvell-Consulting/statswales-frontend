@@ -1,5 +1,12 @@
+import { UpdateType } from '../enums/update-type';
+
+export interface UpdateDateDTO {
+  day?: string;
+  month: string;
+  year: string;
+}
+
 export interface UpdateFrequencyDTO {
-  is_updated?: boolean;
-  frequency_value?: number;
-  frequency_unit?: string;
+  update_type: UpdateType;
+  date?: UpdateDateDTO;
 }

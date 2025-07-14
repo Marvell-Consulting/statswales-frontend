@@ -7,7 +7,7 @@ export interface PreviewMetadata {
   title?: string;
   keyInfo: {
     updatedAt?: string;
-    nextUpdateAt?: Date | boolean;
+    nextUpdateAt?: string;
     designation?: Designation;
     providers?: {
       provider_name?: string;

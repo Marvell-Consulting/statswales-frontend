@@ -3,7 +3,7 @@ import { body, FieldValidationError, param, ValidationChain } from 'express-vali
 import { ResultWithContext } from 'express-validator/lib/chain/context-runner';
 
 import { Designation } from '../enums/designation';
-import { DurationUnit } from '../enums/duration-unit';
+import { UpdateType } from '../enums/update-type';
 
 export const hasError = async (validator: ValidationChain, req: Request) => {
   return !(await validator.run(req)).isEmpty();
@@ -58,12 +58,6 @@ export const roundingAppliedValidator = () => body('rounding_applied').notEmpty(
 export const roundingDescriptionValidator = () =>
   body('rounding_description').if(body('rounding_applied').equals('true')).trim().notEmpty();
 
-export const isUpdatedValidator = () => body('is_updated').notEmpty().bail().isBoolean().toBoolean();
-export const frequencyValueValidator = () =>
-  body('frequency_value').if(body('is_updated').equals('true')).notEmpty().bail().isInt().toInt(10);
-export const frequencyUnitValidator = () =>
-  body('frequency_unit').if(body('is_updated').equals('true')).isIn(Object.values(DurationUnit));
-
 export const linkIdValidator = () => body('link_id').trim().notEmpty();
 export const linkUrlValidator = () =>
   body('link_url').trim().notEmpty().bail().isURL({ require_tld: true, require_protocol: true });
@@ -88,3 +82,14 @@ export const groupIdValidator = (groupIds: string[]) => body('group_id').trim().
 export const taskDecisionValidator = () => body('decision').isIn(['approve', 'reject']);
 
 export const taskDecisionReasonValidator = () => body('reason').if(body('decision').equals('reject')).trim().notEmpty();
+
+export const updateTypeValidator = () => body('update_type').isIn(Object.values(UpdateType));
+
+export const updateDayValidator = () =>
+  body('day').if(body('update_type').equals('update')).isInt({ min: 1, max: 31, allow_leading_zeroes: true });
+
+export const updateMonthValidator = () =>
+  body('month').if(body('update_type').equals('update')).isInt({ min: 1, max: 12, allow_leading_zeroes: true });
+
+export const updateYearValidator = () =>
+  body('year').if(body('update_type').equals('update')).isInt({ min: 1000, max: 9999, allow_leading_zeroes: false });
