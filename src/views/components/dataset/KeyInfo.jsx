@@ -5,25 +5,26 @@ import { parse } from 'date-fns';
 
 export default function KeyInfo(props) {
   function NextUpdate() {
-    const nextUpdateAt = props.keyInfo.nextUpdateAt;
-    console.log(nextUpdateAt);
+    const nextUpdateAt = props.keyInfo?.nextUpdateAt;
 
-    switch (nextUpdateAt.update_type) {
-      case UpdateType.Update:
-        const { day, month, year } = nextUpdateAt.date || {};
-        const date = parse(`${day || '01'} ${month} ${year}`, 'dd MM yyyy', new Date());
+    if (nextUpdateAt?.update_type) {
+      switch (nextUpdateAt.update_type) {
+        case UpdateType.Update:
+          const { day, month, year } = nextUpdateAt.date || {};
+          const date = parse(`${day || '01'} ${month} ${year}`, 'dd MM yyyy', new Date());
 
-        if (day) {
-          return props.dateFormat(date, 'd MMMM yyyy', { locale: props.i18n.language });
-        } else {
-          return props.dateFormat(date, 'MMMM yyyy', { locale: props.i18n.language });
-        }
+          if (day) {
+            return props.dateFormat(date, 'd MMMM yyyy', { locale: props.i18n.language });
+          } else {
+            return props.dateFormat(date, 'MMMM yyyy', { locale: props.i18n.language });
+          }
 
-      case UpdateType.Replacement:
-        return <T>dataset_view.key_information.next_update_replacement</T>;
+        case UpdateType.Replacement:
+          return <T>dataset_view.key_information.next_update_replacement</T>;
 
-      case UpdateType.None:
-        return <T>dataset_view.key_information.next_update_none</T>;
+        case UpdateType.None:
+          return <T>dataset_view.key_information.next_update_none</T>;
+      }
     }
 
     return <T>dataset_view.key_information.next_update_missing</T>;
