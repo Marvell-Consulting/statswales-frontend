@@ -607,42 +607,6 @@
         }
       }
     },
-    "update_frequency": {
-      "heading": "A fydd y set ddata hon yn cael ei diweddaru'n rheolaidd?",
-      "form": {
-        "update_type": {
-          "options": {
-            "yes": {
-              "label": "Bydd"
-            },
-            "no": {
-              "label": "Na fydd"
-            }
-          },
-          "error": {
-            "missing": "Nodwch a fydd y set ddata hon yn cael ei diweddaru'n rheolaidd neu beidio"
-          }
-        },
-        "frequency_value": {
-          "label": "Nodwch y cyfnod rhwng diweddariadau. Er enghraifft, 1 blwyddyn.",
-          "error": {
-            "missing": "Nodwch nifer yr wythnosau, y misoedd neu'r blynyddoedd ar gyfer y cyfnod rhwng diweddariadau"
-          }
-        },
-        "frequency_unit": {
-          "options": {
-            "select": "Dewiswch",
-            "day": "diwrnodau",
-            "week": "wythnosau",
-            "month": "misoedd",
-            "year": "blynyddoedd"
-          },
-          "error": {
-            "missing": "Nodwch a yw'r cyfnod rhwng diweddariadau mewn wythnosau, misoedd neu flynyddoedd"
-          }
-        }
-      }
-    },
     "related": {
       "add": {
         "heading": "Ychwanegu dolen i adroddiad",
@@ -934,7 +898,6 @@
         "statistical_quality": "Ansawdd ystadegol",
         "data_sources": "Ffynonellau data",
         "related_reports": "Adroddiadau cysylltiedig",
-        "update_frequency": "Pa mor aml y caiff y set ddata hon ei diweddaru",
         "designation": "Dynodiad",
         "relevant_topics": "Pynciau perthnasol"
       },
