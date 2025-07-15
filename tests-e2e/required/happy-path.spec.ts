@@ -227,9 +227,11 @@ test.describe('Happy path', () => {
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
     // update frequency
-    await page.getByRole('link', { name: 'How often this dataset is updated' }).click();
+    await page.getByRole('link', { name: 'If this dataset will be updated or replaced in the future' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/update-frequency`);
-    await page.getByLabel('No').click({ force: true });
+    await page
+      .getByLabel('This dataset is not expected to be updated or replaced in the future')
+      .click({ force: true });
     await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
