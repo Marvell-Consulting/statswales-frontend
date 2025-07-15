@@ -20,7 +20,7 @@ export default function RelatedLinks(props) {
           ? row.label_en || `${row.label_cy} ${notTranslated}`
           : row.label_cy || `${row.label_en} ${notTranslated}`;
         return (
-          <a href="${value}" className="govuk-link">
+          <a href={value} className="govuk-link">
             {label}
           </a>
         );
