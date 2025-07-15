@@ -1,6 +1,34 @@
 import React, { Fragment } from 'react';
+import T from '../T';
+import { UpdateType } from '../../../enums/update-type';
+import { parse } from 'date-fns';
 
 export default function KeyInfo(props) {
+  function NextUpdate() {
+    const nextUpdateAt = props.keyInfo.nextUpdateAt;
+    console.log(nextUpdateAt);
+
+    switch (nextUpdateAt.update_type) {
+      case UpdateType.Update:
+        const { day, month, year } = nextUpdateAt.date || {};
+        const date = parse(`${day || '01'} ${month} ${year}`, 'dd MM yyyy', new Date());
+
+        if (day) {
+          return props.dateFormat(date, 'd MMMM yyyy', { locale: props.i18n.language });
+        } else {
+          return props.dateFormat(date, 'MMMM yyyy', { locale: props.i18n.language });
+        }
+
+      case UpdateType.Replacement:
+        return <T>dataset_view.key_information.next_update_replacement</T>;
+
+      case UpdateType.None:
+        return <T>dataset_view.key_information.next_update_none</T>;
+    }
+
+    return <T>dataset_view.key_information.next_update_missing</T>;
+  }
+
   return (
     <div className="dataset-key-information">
       <h2 className="govuk-heading-m">{props.t('dataset_view.key_information.heading')}</h2>
@@ -18,11 +46,7 @@ export default function KeyInfo(props) {
         <div id="next-updated" className="govuk-summary-list__row">
           <dt className="govuk-summary-list__key">{props.t('dataset_view.key_information.next_update')}</dt>
           <dd className="govuk-summary-list__value">
-            {props.keyInfo.nextUpdateAt
-              ? props.dateFormat(props.keyInfo.nextUpdateAt, 'MMMM yyyy', { locale: props.i18n.language })
-              : props.keyInfo.nextUpdateAt === false
-                ? props.t('dataset_view.key_information.not_updated')
-                : props.t('dataset_view.key_information.next_update_missing')}
+            <NextUpdate />
           </dd>
         </div>
 

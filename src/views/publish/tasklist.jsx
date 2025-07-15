@@ -163,12 +163,6 @@ export default function Tasklist(props) {
               describedBy="prepare-application-5-status"
             />
             <TasklistItem
-              id="update_frequency"
-              path="update-frequency"
-              status={props.taskList.metadata.frequency}
-              describedBy="prepare-application-5-status"
-            />
-            <TasklistItem
               id="designation"
               status={props.taskList.metadata.designation}
               describedBy="prepare-application-5-status"
@@ -177,6 +171,12 @@ export default function Tasklist(props) {
               id="relevant_topics"
               path="topics"
               status={props.taskList.metadata.topics}
+              describedBy="prepare-application-5-status"
+            />
+            <TasklistItem
+              id="update_frequency"
+              path="update-frequency"
+              status={props.taskList.metadata.frequency}
               describedBy="prepare-application-5-status"
             />
           </ul>

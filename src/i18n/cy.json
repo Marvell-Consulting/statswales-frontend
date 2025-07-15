@@ -610,7 +610,7 @@
     "update_frequency": {
       "heading": "A fydd y set ddata hon yn cael ei diweddaru'n rheolaidd?",
       "form": {
-        "is_updated": {
+        "update_type": {
           "options": {
             "yes": {
               "label": "Bydd"

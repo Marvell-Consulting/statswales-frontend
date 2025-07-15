@@ -13,13 +13,11 @@ import {
   collectionValidator,
   dayValidator,
   designationValidator,
-  frequencyUnitValidator,
-  frequencyValueValidator,
   getErrors,
   groupIdValidator,
   hasError,
   hourValidator,
-  isUpdatedValidator,
+  updateTypeValidator,
   linkIdValidator,
   linkLabelValidator,
   linkUrlValidator,
@@ -33,6 +31,9 @@ import {
   taskDecisionValidator,
   titleValidator,
   topicIdValidator,
+  updateDayValidator,
+  updateMonthValidator,
+  updateYearValidator,
   uuidValidator,
   yearValidator
 } from '../validators';
@@ -46,7 +47,6 @@ import { TaskListState } from '../dtos/task-list-state';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { singleLangDataset, singleLangRevision } from '../utils/single-lang-dataset';
 import { Designation } from '../enums/designation';
-import { DurationUnit } from '../enums/duration-unit';
 import { RelatedLinkDTO } from '../dtos/related-link';
 import { RevisionProviderDTO } from '../dtos/revision-provider';
 import { ProviderSourceDTO } from '../dtos/provider-source';
@@ -96,6 +96,7 @@ import { FilterTable } from '../dtos/filter-table';
 import qs from 'qs';
 import { DEFAULT_PAGE_SIZE } from './consumer';
 import { SortByInterface } from '../interfaces/sort-by';
+import { UpdateType } from '../enums/update-type';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -2106,40 +2107,52 @@ export const provideQuality = async (req: Request, res: Response) => {
 };
 
 export const provideUpdateFrequency = async (req: Request, res: Response) => {
-  let errors: ViewError[] | undefined;
   const dataset = singleLangDataset(res.locals.dataset, req.language);
   const revision = dataset.draft_revision;
-  let update_frequency = revision?.update_frequency;
+  let update_frequency = revision?.update_frequency || { update_type: undefined, date: undefined };
+  let errors: ViewError[] = [];
+  let dateError;
 
   if (req.method === 'POST') {
     update_frequency = {
-      is_updated: req.body?.is_updated ? req.body?.is_updated === 'true' : undefined,
-      frequency_unit: req.body?.is_updated === 'true' ? req.body?.frequency_unit : undefined,
-      frequency_value: req.body?.is_updated === 'true' ? req.body?.frequency_value : undefined
+      update_type: req.body?.update_type
     };
 
     try {
-      const validators = [isUpdatedValidator(), frequencyValueValidator(), frequencyUnitValidator()];
+      const validators = [updateTypeValidator(), updateDayValidator(), updateMonthValidator(), updateYearValidator()];
 
       errors = (await getErrors(validators, req)).map((error: FieldValidationError) => {
         return {
           field: error.path,
-          message: { key: `publish.update_frequency.form.${error.path}.error.missing` }
+          message: { key: `publish.update_frequency.form.${error.path}.error` }
         };
       });
+
+      if (update_frequency.update_type === UpdateType.Update) {
+        update_frequency.date = {
+          year: req.body?.year,
+          month: req.body?.month ? req.body?.month.padStart(2, '0') : '',
+          day: req.body?.day ? req.body?.day.padStart(2, '0') : ''
+        };
+
+        const updateDate = new TZDate(
+          Number(update_frequency.date.year),
+          // month is 0-11
+          Number(update_frequency.date.month) - 1,
+          Number(update_frequency.date.day || '1'),
+          'Europe/London'
+        );
+
+        if (!isValid(updateDate) || isBefore(updateDate, new Date())) {
+          dateError = { field: 'date', message: { key: 'publish.update_frequency.form.date.error.invalid' } };
+          errors.push(dateError);
+        }
+      }
 
       if (errors.length > 0) {
         res.status(400);
         throw new Error();
       }
-
-      const { is_updated, frequency_unit, frequency_value } = matchedData(req);
-
-      update_frequency = {
-        is_updated,
-        frequency_unit: is_updated ? frequency_unit : undefined,
-        frequency_value: is_updated ? frequency_value : undefined
-      };
 
       await req.pubapi.updateMetadata(dataset.id, { update_frequency, language: req.language });
       res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
@@ -2151,7 +2164,7 @@ export const provideUpdateFrequency = async (req: Request, res: Response) => {
     }
   }
 
-  res.render('publish/update-frequency', { ...update_frequency, unitOptions: Object.values(DurationUnit), errors });
+  res.render('publish/update-frequency', { update_frequency, errors });
 };
 
 export const provideDataProviders = async (req: Request, res: Response, next: NextFunction) => {
