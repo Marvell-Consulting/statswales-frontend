@@ -72,7 +72,8 @@ export default function UpdateFrequency(props) {
 
                           {props.dateError && (
                             <p id="publication-date-error" className="govuk-error-message">
-                              <span className="govuk-visually-hidden">Error:</span> {props.t(props.dateError.message.key)}
+                              <span className="govuk-visually-hidden">Error:</span>{' '}
+                              {props.t(props.dateError.message.key)}
                             </p>
                           )}
 

@@ -4,7 +4,7 @@ import { UpdateType } from '../../../enums/update-type';
 import { parse } from 'date-fns';
 
 export default function KeyInfo(props) {
-  function NextUpdate () {
+  function NextUpdate() {
     const nextUpdateAt = props.keyInfo.nextUpdateAt;
     console.log(nextUpdateAt);
 
