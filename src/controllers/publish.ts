@@ -2109,7 +2109,7 @@ export const provideQuality = async (req: Request, res: Response) => {
 export const provideUpdateFrequency = async (req: Request, res: Response) => {
   const dataset = singleLangDataset(res.locals.dataset, req.language);
   const revision = dataset.draft_revision;
-  let update_frequency = revision?.update_frequency;
+  let update_frequency = revision?.update_frequency || { update_type: undefined, date: undefined };
   let errors: ViewError[] = [];
   let dateError;
 
