@@ -77,9 +77,9 @@ export default function UpdateFrequency(props) {
                           )}
 
                           <div className="govuk-date-input" id="update-expected-date">
-                            <Field name="day" value={props.update_frequency.date?.day} />
-                            <Field name="month" value={props.update_frequency.date?.month} />
-                            <Field name="year"  value={props.update_frequency.date?.year} width={5} />
+                            <Field name="day" value={props.update_frequency?.date?.day} />
+                            <Field name="month" value={props.update_frequency?.date?.month} />
+                            <Field name="year" value={props.update_frequency?.date?.year} width={5} />
                           </div>
                         </fieldset>
                       </div>
@@ -94,7 +94,7 @@ export default function UpdateFrequency(props) {
                     label: <T>publish.update_frequency.form.update_type.options.none.label</T>
                   }
                 ]}
-                value={props.update_frequency.update_type}
+                value={props.update_frequency?.update_type}
               />
 
               <button type="submit" className="govuk-button" data-module="govuk-button">

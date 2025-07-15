@@ -1,7 +1,6 @@
 import { SingleLanguageDataset } from '../dtos/single-language/dataset';
 import { SingleLanguageRevision } from '../dtos/single-language/revision';
 
-import { nextUpdateAt } from './next-update-at';
 import { markdownToSafeHTML } from './markdown-to-html';
 import { isPublished } from './revision';
 import { PreviewMetadata } from '../interfaces/preview-metadata';
@@ -21,7 +20,7 @@ export const getDatasetPreview = async (
     title: revision.metadata.title,
     keyInfo: {
       updatedAt: revision?.publish_at,
-      nextUpdateAt: nextUpdateAt(revision),
+      nextUpdateAt: revision.update_frequency,
       designation,
       providers: providers?.map(({ provider_name, source_name }) => ({ provider_name, source_name })),
       timePeriod: { start: dataset.start_date, end: dataset.end_date }

@@ -86,7 +86,11 @@ export const taskDecisionReasonValidator = () => body('reason').if(body('decisio
 export const updateTypeValidator = () => body('update_type').isIn(Object.values(UpdateType));
 
 export const updateDayValidator = () =>
-  body('day').if(body('update_type').equals('update')).isInt({ min: 1, max: 31, allow_leading_zeroes: true });
+  body('day')
+    .trim()
+    .optional({ values: 'falsy' })
+    .if(body('update_type').equals('update'))
+    .isInt({ min: 1, max: 31, allow_leading_zeroes: true });
 
 export const updateMonthValidator = () =>
   body('month').if(body('update_type').equals('update')).isInt({ min: 1, max: 12, allow_leading_zeroes: true });

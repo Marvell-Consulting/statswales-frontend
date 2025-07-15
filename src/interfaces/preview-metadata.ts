@@ -2,12 +2,13 @@ import { Designation } from '../enums/designation';
 import { SingleLanguageRevision } from '../dtos/single-language/revision';
 import { RelatedLinkDTO } from '../dtos/related-link';
 import { OrganisationDTO } from '../dtos/organisation';
+import { UpdateFrequencyDTO } from '../dtos/update-frequency';
 
 export interface PreviewMetadata {
   title?: string;
   keyInfo: {
     updatedAt?: string;
-    nextUpdateAt?: string;
+    nextUpdateAt?: UpdateFrequencyDTO;
     designation?: Designation;
     providers?: {
       provider_name?: string;

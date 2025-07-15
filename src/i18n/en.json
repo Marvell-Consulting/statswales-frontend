@@ -133,7 +133,10 @@
     "key_information": {
       "heading": "Main information",
       "last_update": "Most recent update",
-      "next_update": "Next update expected (provisional)",
+      "next_update": "Next update expected",
+      "next_update_missing": "Next update expected not entered yet",
+      "next_update_replacement": "This dataset is not expected to be updated, but is expected to be replaced in the future",
+      "next_update_none": "This dataset is not expected to be updated or replaced in the future",
       "data_provider": "Data provider",
       "data_providers": "Data provider {{index}}",
       "data_source": "Data source",
@@ -143,7 +146,6 @@
       "time_covered": "Time period covered",
       "time_period": "{{start}} to {{end}}",
       "update_missing": "Publish date not entered yet",
-      "next_update_missing": "Publish date or update frequency not entered yet",
       "not_updated": "This dataset will not be updated"
     },
     "downloads": {
