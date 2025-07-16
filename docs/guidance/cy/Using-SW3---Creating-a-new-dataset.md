@@ -17,6 +17,7 @@ Yna, byddwch yn cael eich tywys i’ch rhestr dasgau ar gyfer eich set ddata. By
 Bydd clicio ar bob dimensiwn yn caniatáu i chi ddewis pa fath o ddata sydd yn y dimensiwn. Bydd hyn naill ai yn:
 
 <!-- - dyddiadau – yna byddwch yn ateb cwestiynau am ffurf y dyddiad a ddefnyddiwyd, neu byddwch yn lanlwytho eich tabl am-edrych eich hun os bydd angen -->
+
 - daearyddiaeth – yna byddwch yn dewis y data cyfeirio safonol priodol
 <!-- - dyddiadau – yna byddwch yn ateb cwestiynau am ffurf y dyddiad a ddefnyddiwyd, neu byddwch yn lanlwytho eich tabl am-edrych eich hun os bydd angen -->
 - daearyddiaeth – yna byddwch yn dewis y data cyfeirio safonol priodol

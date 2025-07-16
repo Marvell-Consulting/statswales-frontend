@@ -17,6 +17,7 @@ You'll then be taken to your dataset tasklist. It will list all the dimensions y
 Clicking on each dimension will let you select what kind of data the dimension contains. This will be either:
 
 <!-- - dates - you'll then answer questions about the date formatting used, or upload your own lookup table if necessary -->
+
 - dates - you'll then answer questions about the date formatting used
 <!-- - geography - you'll then select the appropriate standardised reference data, or upload your own lookup table if necessary -->
 - geography - you'll then select the appropriate standardised reference data
