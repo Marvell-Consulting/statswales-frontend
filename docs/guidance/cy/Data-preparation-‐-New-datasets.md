@@ -92,7 +92,7 @@ Ar gyfer unrhyw fath dimensiwn arall, dylech [baratoi eich tabl am-edrych eich h
 
 ### Daearyddiaeth
 
-Mae’r system yn cynnwys tablau am-edrych safonol ar gyfer pob daearyddiaeth gyffredin a ddefnyddir, fel y darparir gan [porth Open Geography SYG](https://geoportal.statistics.gov.uk/). Gallwch lawrlwytho’r tablau am-edrych hyn fel CSVs o [adran ‘Data cyfeirio’](#) y gwasanaeth hwn. Rhaid i chi ddefnyddio’r codau yn y tablau hyn wrth greu eich tablau data chi.
+Mae’r system yn cynnwys tablau am-edrych safonol ar gyfer pob daearyddiaeth gyffredin a ddefnyddir, fel y darparir gan [porth Open Geography SYG](https://geoportal.statistics.gov.uk/). Gallwch lawrlwytho’r tablau am-edrych hyn fel CSVs o [adran ‘Data cyfeirio’ [link TBD]](#) y gwasanaeth hwn. Rhaid i chi ddefnyddio’r codau yn y tablau hyn wrth greu eich tablau data chi.
 
 Ni fydd angen i chi lanlwytho’r tablau am-edrych safonol hyn pan fyddwch yn creu eich set ddata yn SW3. Dim ond dweud wrth y system pa ddaearyddiaeth yr ydych chi wedi’i defnyddio y bydd angen i chi ei wneud.
 
@@ -471,7 +471,7 @@ Mewn rhai achosion, efallai y byddwch yn gwybod darparwr y data yn unig, ac nid 
 
 Gallwch ychwanegu ffynonellau lluosog yn ôl y gofyn.
 
-Caiff [rhestr y darparwyr data a’r ffynonellau \[link TBD\]](#) ei rheoli yn ganolog. Os bydd angen i chi ychwanegu darparwr data neu ffynhonnell i’r rhestr, bydd angen i chi:
+Caiff [rhestr y darparwyr data a’r ffynonellau [link TBD]](#) ei rheoli yn ganolog. Os bydd angen i chi ychwanegu darparwr data neu ffynhonnell i’r rhestr, bydd angen i chi:
 
 - anfon e-bost at ... yn ... \[process TBD\]
 - nodi enw’r darparwr data a’r ffynhonnell yn Gymraeg ac yn Saesneg

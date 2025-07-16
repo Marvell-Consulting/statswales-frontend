@@ -46,14 +46,14 @@ Os byddwch yn newid unrhyw rai o’r meysydd testun, bydd angen i chi ddarparu c
 - nodiadau diweddariad
 - unrhyw feysydd testun y byddwch yn eu newid -->
 
-Dylech ddilyn yr un proses ag y byddwch yn ei dilyn er mwyn [cyfieithu set ddata newydd](Using-SW3---Creating-a-new-dataset#guidance-cyfieithiadau). Yr unig wahaniaeth yw y bydd y CSV a gaiff ei allgludo yn cynnwys colofnau ar gyfer:
+Dylech ddilyn yr un proses ag y byddwch yn ei dilyn er mwyn [cyfieithu set ddata newydd](Using-SW3---Creating-a-new-dataset#guidance-cyfieithiadau).
+
+<!-- Dylech ddilyn yr un proses ag y byddwch yn ei dilyn er mwyn [cyfieithu set ddata newydd](Using-SW3---Creating-a-new-dataset#guidance-cyfieithiadau). Yr unig wahaniaeth yw y bydd y CSV a gaiff ei allgludo yn cynnwys colofnau ar gyfer:
 
 - enw maes testun
-- testun blaenorol (Saesneg)
-- testun blaenorol (Cymraeg)
-<!-- - testun blaenorol (Saesneg) (heb fod yn berthnasol ar gyfer nodiadau diweddaru)
-- testun blaenorol (Cymraeg) (heb fod yn berthnasol ar gyfer nodiadau diweddaru) -->
+- testun blaenorol (Saesneg) (heb fod yn berthnasol ar gyfer nodiadau diweddaru)
+- testun blaenorol (Cymraeg) (heb fod yn berthnasol ar gyfer nodiadau diweddaru)
 - testun newydd (Saesneg)
 - testun newydd (Cymraeg)
 
-Caiff colofnau ‘testun blaenorol’ eu llenwi gyda’r cofnodion dwyieithog a gyhoeddwyd yn fwyaf diweddar ar gyfer y meysydd hyn. Bydd hyn yn cynorthwyo cyfieithwyr i nodi’r testun newydd yn yr iaith y cyfieithwyd iddi. Ni fydd yn rhaid iddynt gyfieithu popeth o’r newydd os mai mân newidiadau a wnaethpwyd i’r testun yn unig.
+Caiff colofnau ‘testun blaenorol’ eu llenwi gyda’r cofnodion dwyieithog a gyhoeddwyd yn fwyaf diweddar ar gyfer y meysydd hyn. Bydd hyn yn cynorthwyo cyfieithwyr i nodi’r testun newydd yn yr iaith y cyfieithwyd iddi. Ni fydd yn rhaid iddynt gyfieithu popeth o’r newydd os mai mân newidiadau a wnaethpwyd i’r testun yn unig. -->
