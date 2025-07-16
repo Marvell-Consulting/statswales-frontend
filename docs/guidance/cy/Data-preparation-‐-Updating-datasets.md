@@ -8,11 +8,6 @@ Dylai’r rhain fod yn yr **un fformat â’r tabl data a lanlwythwyd yn wreiddi
 
 <!-- Gallwch wirio fformat ffeiliau data a lanlwythwyd yn flaenorol trwy eu lawrlwytho o'r tab 'Hanes' ar dudalen trosolwg set ddata. -->
 
-<!-- Gallwch archwilio’r fformatio a cholofnau’r tabl data a lanlwythwyd yn wreiddiol yn SW3 trwy:
-
-- ddewis y set ddata y mae angen i chi ei diweddaru o’ch sgrin hafan
-- dewis ‘Gweld tabl data a lanlwythwyd yn wreiddiol’ -->
-
 ## Ychwanegu data newydd yn unig
 
 Mae hyn yn golygu ychwanegu gwerthoedd ar gyfer data nad yw yn y set ddata ar hyn o bryd. Er enghraifft, gwerthoedd data ar gyfer y flwyddyn ddiweddaraf. Dylai tabl data y diweddariad gynnwys **y gwerthoedd data newydd yr ydych chi’n eu hychwanegu yn unig**.

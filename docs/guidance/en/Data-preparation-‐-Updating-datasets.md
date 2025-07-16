@@ -8,11 +8,6 @@ These should be in the **same format as the originally uploaded data table** for
 
 <!-- You can check the formatting of previously uploaded data files by downloading them from the 'History' tab on a dataset's overview page. -->
 
-<!-- You can check the formatting and columns of the originally uploaded data table in SW3 by:
-
-- selecting the dataset you need to update from your home screen
-- selecting ‘View originally uploaded data table’ -->
-
 ## Adding new data only
 
 This means adding data values for data that is not currently in the dataset. For example, data values for the latest year. The update data table should contain **only the new data values you’re adding**.

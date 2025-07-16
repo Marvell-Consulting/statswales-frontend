@@ -16,12 +16,17 @@ Yna, byddwch yn cael eich tywys i’ch rhestr dasgau ar gyfer eich set ddata. By
 
 Bydd clicio ar bob dimensiwn yn caniatáu i chi ddewis pa fath o ddata sydd yn y dimensiwn. Bydd hyn naill ai yn:
 
-- dyddiadau – yna byddwch yn ateb cwestiynau am ffurf y dyddiad a ddefnyddiwyd, neu byddwch yn lanlwytho eich tabl am-edrych eich hun os bydd angen
-- daearyddiaeth – yna byddwch yn dewis y data cyfeirio safonol priodol, neu’n lanlwytho eich tabl am-edrych eich hun yn ôl yr angen
+<!-- - dyddiadau – yna byddwch yn ateb cwestiynau am ffurf y dyddiad a ddefnyddiwyd, neu byddwch yn lanlwytho eich tabl am-edrych eich hun os bydd angen -->
+
+- daearyddiaeth – yna byddwch yn dewis y data cyfeirio safonol priodol
+<!-- - dyddiadau – yna byddwch yn ateb cwestiynau am ffurf y dyddiad a ddefnyddiwyd, neu byddwch yn lanlwytho eich tabl am-edrych eich hun os bydd angen -->
+- daearyddiaeth – yna byddwch yn dewis y data cyfeirio safonol priodol
 - testun, [lle nad oes angen cael tabl am-edrych](Data-preparation-‐-New-datasets#guidance-dimensiynau-sy'n-cynnwys-testun-neu-rifau-lle-nad-oes-gofyn-cael-tabl-am-edrych)
 - rhifau, [lle nad oes angen cael tabl am-edrych](Data-preparation-‐-New-datasets#guidance-dimensiynau-sy'n-cynnwys-testun-neu-rifau-lle-nad-oes-gofyn-cael-tabl-am-edrych) - yna bydd angen i chi nodi'r math o rifau a ddefnyddir
   - Ar gyfer y dewis hwn, rhaid i'r dimensiwn gynnwys rhifau yn unig, heb unrhyw symbolau neu lythrennau.
 - rhywbeth arall – yna byddwch yn lanlwytho eich tabl am-edrych eich hun
+
+Yn yr achosion prin lle nad ydych chi wedi gallu defnyddio dyddiadau neu ddaearyddiaeth safonol, dylech ddewis 'Rhywbeth arall' a lanlwytho eich tablau am-edrych a baratowyd.
 
 Ar gyfer y rhan fwyaf o ddewisiadau, gofynnir i chi nodi enw i alw’r dimensiwn ar wefan StatsCymru. Dylai’r enw fod:
 

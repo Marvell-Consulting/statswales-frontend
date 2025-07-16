@@ -863,6 +863,25 @@
         "time": "Dimensiwn sy'n cynnwys dyddiadau",
         "ignore": "Gellir anwybyddu'r golofn hon",
         "unknown": "Dewis"
+      },
+      "errors": {
+        "dimension": {
+          "invalid": "Dylai fod o leiaf un colofn yn y tabl data ar gyfer dimensiwn"
+        },
+        "measure": {
+          "invalid": "Dylai fod un colofn yn y tabl data ar gyfer mathau data neu fesur"
+        },
+        "data_values": {
+          "invalid": "Dylai fod un colofn yn y tabl data ar gyfer gwerthoedd data"
+        },
+        "note_codes": {
+          "invalid": "Dylai fod un colofn yn y tabl data ar gyfer codau nodiadau"
+        },
+        "unknown": {
+          "invalid": "Dewiswch yr hyn y mae pob colofn yn y tabl data yn ei gynnwys"
+        },
+        "check": "Gwiriwch eich bod wedi dewis y dewisiadau cywir neu gwiriwch bod y tabl data yn gywir",
+        "api": "Ni ellid creu'r dimensiynau. Gwiriwch eich bod wedi dewis y dewisiadau cywir neu gwiriwch bod y tabl data yn gywir."
       }
     },
     "tasklist": {
@@ -1583,7 +1602,7 @@
     },
     "topic_list": {
       "heading": "Darganfod ystadegau a data am Gymru",
-      "api": "Pori fesul pwnc neu <a rel=\\\"noreferrer noopener\\\" target=\\\"_blank\\\" href=\\\"https://api.dev.stats.cymru/v1/docs/#/\\\"> gael mynediad API (yn agor mewn tab newydd)</a>.",
+      "api": "Pori fesul pwnc neu <a rel=\"noreferrer noopener\" target=\"_blank\" href=\"{{url}}\">gael mynediad API (yn agor mewn tab newydd)</a>.",
       "topics": "Pynciau",
       "topic": "Pwnc",
       "dataset": {

@@ -16,12 +16,17 @@ You'll then be taken to your dataset tasklist. It will list all the dimensions y
 
 Clicking on each dimension will let you select what kind of data the dimension contains. This will be either:
 
-- dates - you'll then answer questions about the date formatting used, or upload your own lookup table if necessary
-- geography - you'll then select the appropriate standardised reference data, or upload your own lookup table if necessary
+<!-- - dates - you'll then answer questions about the date formatting used, or upload your own lookup table if necessary -->
+
+- dates - you'll then answer questions about the date formatting used
+<!-- - geography - you'll then select the appropriate standardised reference data, or upload your own lookup table if necessary -->
+- geography - you'll then select the appropriate standardised reference data
 - text, [where no lookup table is needed](Data-preparation-‐-New-datasets#guidance-dimensions-containing-text-or-numbers-where-no-lookup-table-is-required)
 - numbers, [where no lookup table is needed](Data-preparation-‐-New-datasets#guidance-dimensions-containing-text-or-numbers-where-no-lookup-table-is-required) - you'll then indicate the kind of numbers used
   - For this option, the dimension must only contain numbers, with no symbols or letters.
 - something else - you'll then upload your own lookup table
+
+In the rare instances where you've been unable to use standardised geography or dates, you should select the 'Something else' option and upload your prepared lookup tables.
 
 For most options you'll be asked to enter a name for the dimension to be called on the StatsWales website. The name should be:
 

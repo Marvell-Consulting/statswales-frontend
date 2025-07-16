@@ -17,13 +17,11 @@ You can have more than one role within a group, and different roles across group
 
 ## Group management
 
-| Permission                                         | Editor                                                  | Approver                                                | Service administrator                                   |
-| :------------------------------------------------- | :------------------------------------------------------ | :------------------------------------------------------ | :------------------------------------------------------ |
-| View a list of groups you're in                    | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
-| View users and roles in groups you're in           | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
-| View a list of all groups across the service       | <strong class="govuk-tag govuk-tag--red">No</strong>    | <strong class="govuk-tag govuk-tag--red">No</strong>    | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
-| Create groups                                      | <strong class="govuk-tag govuk-tag--red">No</strong>    | <strong class="govuk-tag govuk-tag--red">No</strong>    | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
-| Update groups, for example changing a group's name | <strong class="govuk-tag govuk-tag--red">No</strong>    | <strong class="govuk-tag govuk-tag--red">No</strong>    | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
+| Permission                                         | Editor                                               | Approver                                             | Service administrator                                   |
+| :------------------------------------------------- | :--------------------------------------------------- | :--------------------------------------------------- | :------------------------------------------------------ |
+| View a list of all groups across the service       | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
+| Create groups                                      | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
+| Update groups, for example changing a group's name | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--red">No</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> |
 
 ## Datasets
 
@@ -41,6 +39,7 @@ These permissions only apply to the datasets in a specific group.
 | Temporarily unpublish datasets while they're being fixed              | <strong class="govuk-tag govuk-tag--red">No</strong>    | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--red">No</strong>    |
 | Request datasets be labelled as archived                              | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--red">No</strong>    |
 | Label datasets as archived                                            | <strong class="govuk-tag govuk-tag--red">No</strong>    | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--red">No</strong>    |
+| Move datasets between groups you're in                                | <strong class="govuk-tag govuk-tag--red">No</strong>    | <strong class="govuk-tag govuk-tag--green">Yes</strong> | <strong class="govuk-tag govuk-tag--red">No</strong>    |
 
 ## User management
 
