@@ -100,7 +100,7 @@ Dim ond mewn dimensiwn y gallwch ddefnyddio un hierarchaeth daearyddiaeth. Er en
 
 Efallai y bydd amgylchiadau prin pan na fydd y tablau safonol yn cynnwys y data priodol ar gyfer eich set ddata. Er enghraifft, os bydd angen i chi gyfuno ardaloedd daearyddol penodol am resymau cyfrinachedd. Yn yr achosion hyn, dylech [baratoi eich tablau am-edrych eich hun](#guidance-tablau-am-edrych).
 
-Bydd angen i chi nodi’r rheswm pam nad ydych chi wedi defnyddio tabl safonol hefyd. Bydd y rheswm hwn yn weladwy i’r defnyddiwr fel rhan o’r adran metadata ‘Ardaloedd daearyddol sydd wedi’u cynnwys’.
+<!-- Bydd angen i chi nodi’r rheswm pam nad ydych chi wedi defnyddio tabl safonol hefyd. Bydd y rheswm hwn yn weladwy i’r defnyddiwr fel rhan o’r adran metadata ‘Ardaloedd daearyddol sydd wedi’u cynnwys’. -->
 
 ### Fformatio dyddiadau
 
@@ -179,9 +179,11 @@ Gall eich set ddata gynnwys data ar gyfer cyfnodau amser lluosog. Er enghraifft,
 
 ##### Cyfnodau ansafonol
 
-Efallai y bydd amgylchiadau prin pan na fydd y ffurfiau safonol hyn yn briodol ar gyfer y data yn eich set ddata. Er enghraifft, os na fydd cyfnodau yn barhaus ac os byddant yn cynnwys rhannau o flynyddoedd penodol yn unig. Yn yr achosion hyn, dylech [baratoi eich tablau am-edrych data eich hun](#guidance-tablau-am-edrych-dyddiad).
+Efallai y bydd amgylchiadau prin pan na fydd y ffurfiau safonol hyn yn briodol ar gyfer y data yn eich set ddata. Er enghraifft, os na fydd cyfnodau yn barhaus ac os byddant yn cynnwys rhannau o flynyddoedd penodol yn unig. Yn yr achosion hyn, dylech [baratoi eich tablau am-edrych eich hun](#guidance-tablau-am-edrych).
 
-Bydd angen i chi nodi’r rheswm dros eich penderfyniad i beidio defnyddio’r ffurf safonol hefyd. Bydd y rheswm hwn yn weladwy i’r defnyddiwr fel rhan o adran metadata ‘Cyfnod amser dan sylw’.
+<!-- Yn yr achosion hyn, dylech [baratoi eich tablau am-edrych data eich hun](#guidance-tablau-am-edrych-dyddiad).
+
+Bydd angen i chi nodi’r rheswm dros eich penderfyniad i beidio defnyddio’r ffurf safonol hefyd. Bydd y rheswm hwn yn weladwy i’r defnyddiwr fel rhan o adran metadata ‘Cyfnod amser dan sylw’. -->
 
 ### Tablau am-edrych
 
@@ -269,7 +271,7 @@ Dylai disgrifiadau o’r holl werthoedd dimensiwn fod yn:
 
 Gellir darparu nodiadau tabl am-edrych, ond **nid ydynt yn cael eu dangos yn yr hyn y mae’r defnyddiwr yn ei weld ar hyn o bryd** yn SC3. Os yw nodiadau yn cynnwys gwybodaeth bwysig, dylech sicrhau bod y wybodaeth hon yn cael ei darparu yn yr [adran metadata](#guidance-metadata) mwyaf priodol hefyd.
 
-#### Tablau am-edrych dyddiad
+<!-- #### Tablau am-edrych dyddiad
 
 Yn yr achosion prin pan fydd angen i chi lanlwytho tabl am-edrych dyddiad, dylai hwn fod yn yr un ffurf â thablau am-edrych eraill, gyda’r colofnau ychwanegol canlynol:
 
@@ -284,7 +286,7 @@ Enghraifft tabl am-edrych dyddiad:
 | :----- | :--------- | :--------- | :---- | :------------ | :------------ |
 | 2022   | 2022-06-01 | 2022-08-31 | 1     | Summer 2022   | Haf 2022      |
 | 2023   | 2023-06-01 | 2023-08-31 | 2     | Summer 2023   | Haf 2023      |
-| 2024   | 2024-06-01 | 2024-08-31 | 3     | Summer 2024   | Haf 2024      |
+| 2024   | 2024-06-01 | 2024-08-31 | 3     | Summer 2024   | Haf 2024      | -->
 
 ### Dimensiynau sy'n cynnwys testun neu rifau lle nad oes gofyn cael tabl am-edrych
 

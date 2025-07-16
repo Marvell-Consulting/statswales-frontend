@@ -100,7 +100,7 @@ You can only use one geography hierarchy in a dimension. For example, you couldn
 
 There may be rare circumstances where the standardised tables do not contain the appropriate data for your dataset. For example, if you need to aggregate certain geographical areas for confidentiality reasons. In these cases you should [prepare your own lookup tables](#guidance-lookup-tables).
 
-You'll also need to provide the reason you've not used a standard table. This reason will be visible to the consumer as part of the 'Geographical areas covered' metadata section.
+<!-- You'll also need to provide the reason you've not used a standard table. This reason will be visible to the consumer as part of the 'Geographical areas covered' metadata section. -->
 
 ### Date formatting
 
@@ -177,9 +177,11 @@ You **must use consistent year formatting** for all time periods present in the 
 
 ##### Non-standard periods
 
-There may be rare circumstances where these standardised formats are not appropriate for the data in your dataset. For example, if periods are non-continuous and cover only parts of specific years. In these cases you should [prepare your own date lookup tables](#guidance-date-lookup-tables).
+There may be rare circumstances where these standardised formats are not appropriate for the data in your dataset. For example, if periods are non-continuous and cover only parts of specific years. In these cases you should [prepare your own lookup tables](#guidance-lookup-tables).
 
-You'll also need to provide the reason you've not used the standard formatting. This reason will be visible to the consumer as part of the 'Time period covered' metadata section.
+<!-- In these cases you should [prepare your own date lookup tables](#guidance-date-lookup-tables).
+
+You'll also need to provide the reason you've not used the standard formatting. This reason will be visible to the consumer as part of the 'Time period covered' metadata section. -->
 
 ### Lookup tables
 
@@ -267,7 +269,7 @@ Descriptions of all dimension values should be:
 
 Lookup table notes can be provided, but **are not currently shown in the consumer view** in SW3. If notes contain important information, you should ensure this information is also provided in the most appropriate [metadata section](#guidance-metadata).
 
-#### Date lookup tables
+<!-- #### Date lookup tables
 
 In the rare circumstance where you need to upload a date lookup table, this should be in the same format as other lookup tables, with the following additional columns:
 
@@ -282,7 +284,7 @@ Example date lookup table:
 | :------ | :--------- | :--------- | :--- | :------------- | :------------- |
 | 2022    | 2022-06-01 | 2022-08-31 | 1    | Summer 2022    | Haf 2022       |
 | 2023    | 2023-06-01 | 2023-08-31 | 2    | Summer 2023    | Haf 2023       |
-| 2024    | 2024-06-01 | 2024-08-31 | 3    | Summer 2024    | Haf 2024       |
+| 2024    | 2024-06-01 | 2024-08-31 | 3    | Summer 2024    | Haf 2024       | -->
 
 ### Dimensions containing text or numbers where no lookup table is required
 
