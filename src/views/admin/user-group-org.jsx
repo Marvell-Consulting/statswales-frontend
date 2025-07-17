@@ -4,13 +4,14 @@ import ErrorHandler from '../components/ErrorHandler';
 import RadioGroup from '../components/RadioGroup';
 
 export default function UserGroupOrg(props) {
+  const title = props.t('admin.group.organisation.heading');
   return (
-    <Layout {...props} formPage>
+    <Layout {...props} formPage title={title}>
       <div className="govuk-width-container">
         <div className="govuk-grid-row">
           <div className="govuk-grid-column-two-thirds">
             <h1 className="govuk-heading-xl" id="organisation">
-              {props.t('admin.group.organisation.heading')}
+              {title}
             </h1>
             <ErrorHandler />
 

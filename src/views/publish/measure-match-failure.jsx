@@ -4,10 +4,11 @@ import Layout from '../components/layouts/Publisher';
 export default function MeasureMatchFailure(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   const backLink = props.url;
+  const title = props.t('publish.measure_match_failure.heading');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink}>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} title={title}>
       <span className="region-subhead">{props.measure.metadata.name}</span>
-      <h1 className="govuk-heading-xl">{props.t('publish.measure_match_failure.heading')}</h1>
+      <h1 className="govuk-heading-xl">{title}</h1>
 
       <p className="govuk-body">
         {props.t('publish.measure_match_failure.information', { failureCount: props.extension.totalNonMatching })}

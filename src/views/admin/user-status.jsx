@@ -4,16 +4,15 @@ import FlashMessages from '../components/FlashMessages';
 import ErrorHandler from '../components/ErrorHandler';
 
 export default function UserStatus(props) {
+  const title = props.t(`admin.user.${props.action}.heading`, { userName: props.userName });
   return (
-    <Layout {...props} formPage>
+    <Layout {...props} formPage title={title}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <FlashMessages />
           <ErrorHandler />
 
-          <h1 className="govuk-heading-xl">
-            {props.t(`admin.user.${props.action}.heading`, { userName: props.userName })}
-          </h1>
+          <h1 className="govuk-heading-xl">{title}</h1>
 
           <p className="govuk-body">{props.t(`admin.user.${props.action}.description`)}</p>
 

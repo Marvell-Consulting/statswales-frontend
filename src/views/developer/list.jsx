@@ -85,13 +85,16 @@ export default function DeveloperList(props) {
       }
     }
   ];
+
+  const title = props.t('developer.heading');
+
   return (
-    <Layout {...props}>
+    <Layout {...props} title={title}>
       <FlashMessages />
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
-          <h1 className="govuk-heading-xl">{props.t('developer.heading')}</h1>
+          <h1 className="govuk-heading-xl">{title}</h1>
         </div>
       </div>
 

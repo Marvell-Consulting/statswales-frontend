@@ -19,13 +19,16 @@ export default function UserView(props) {
       format: (value) => value?.map((r) => props.t(`user_roles.${r}`)).join(', ')
     }
   ];
+
+  const title = props.user.full_name || props.user.email;
+
   return (
-    <Layout {...props}>
+    <Layout {...props} title={title}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <FlashMessages />
 
-          <h1 className="govuk-heading-xl">{props.user.full_name || props.user.email}</h1>
+          <h1 className="govuk-heading-xl">{title}</h1>
 
           <dl className="govuk-summary-list">
             <div className="govuk-summary-list__row">

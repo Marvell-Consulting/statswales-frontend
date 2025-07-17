@@ -887,7 +887,7 @@
       "showing_rows": "Showing {{start}} to {{end}} of {{total}} rows",
       "unnamed_column": "column {{colNum}}",
       "confirm_correct": "By continuing, you confirm the data table is correct.",
-      "revisit_question": "What do you need to do?",
+      "revisit_question": "What data table update do you need to make?",
       "upload_different": "Upload a different data table",
       "upload_different_hint": "Warning: This will remove all reference data from all dimensions",
       "change_source": "Change the definition of what each column in the data table contains",
@@ -1058,13 +1058,13 @@
       }
     },
     "update_type": {
-      "heading": "What do you need to do?",
+      "heading": "What data table update do you need to make?",
       "add": "Add new data only",
       "add_revise": "Add new data and revise existing data",
       "revise": "Revise existing data only",
       "replace_all": "Replace all existing data",
       "errors": {
-        "missing": "You need to select the type of update you wish to make"
+        "missing": "Select the data table update you need to make"
       }
     },
     "move_group": {

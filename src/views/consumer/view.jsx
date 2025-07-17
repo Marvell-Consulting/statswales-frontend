@@ -237,9 +237,11 @@ export default function ConsumerView(props) {
     </div>
   );
 
+  const title = props.datasetMetadata.title;
+
   return (
-    <LayoutComponent {...props}>
-      <h1 className="govuk-heading-xl">{props.datasetMetadata.title}</h1>
+    <LayoutComponent {...props} title={title}>
+      <h1 className="govuk-heading-xl">{title}</h1>
       {(props.preview || (props?.isDeveloper && props?.showDeveloperTab)) && <DatasetStatus {...props} />}
       {props.preview && (
         <div className="govuk-panel">

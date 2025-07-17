@@ -28,11 +28,12 @@ export default function UserGroupView(props) {
       )
     }
   ];
+  const title = props.group?.name;
   return (
-    <Layout {...props}>
+    <Layout {...props} title={title}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
-          <h1 className="govuk-heading-xl">{props.group?.name}</h1>
+          <h1 className="govuk-heading-xl">{title}</h1>
 
           <h2 className="govuk-heading-l">{props.t('admin.group.view.details.heading')}</h2>
           <dl className="govuk-summary-list">

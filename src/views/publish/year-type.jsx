@@ -9,11 +9,14 @@ export default function YearType(props) {
   const backLink = props.revisit
     ? props.buildUrl(`/publish/${props.datasetId}/dates/${props.dimension.id}/change-format`, props.i18n.language)
     : props.buildUrl(`/publish/${props.datasetId}/dates/${props.dimension.id}`, props.i18n.language);
+
+  const title = props.t('publish.year_type.heading');
+
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <span className="region-subhead">{props.dimension.metadata.name}</span>
       <h1 className="govuk-heading-xl" id="year-type">
-        {props.t('publish.year_type.heading')}
+        {title}
       </h1>
 
       <ErrorHandler />

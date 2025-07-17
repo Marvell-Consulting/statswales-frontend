@@ -10,11 +10,14 @@ export default function YearFormat(props) {
     `/publish/${props.datasetId}/dates/${props.dimension.id}/period`,
     props.i18n.language
   );
+
+  const title = props.t('publish.year_format.heading');
+
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <span className="region-subhead">{props.dimension.metadata.name}</span>
       <h1 className="govuk-heading-xl" id="year-type">
-        {props.t('publish.year_format.heading')}
+        {title}
       </h1>
 
       <ErrorHandler />

@@ -3,11 +3,12 @@ import Layout from '../components/layouts/Publisher';
 import Pagination from '../components/Pagination';
 
 export default function ConsumerList(props) {
+  const title = props.t('consumer.list.heading');
   return (
-    <Layout {...props}>
+    <Layout {...props} title={title}>
       <div className="govuk-grid-row govuk-!-margin-bottom-6">
         <div className="govuk-grid-column-full">
-          <h2 className="govuk-heading-m">{props.t('consumer.list.heading')}</h2>
+          <h1 className="govuk-heading-xl">{title}</h1>
         </div>
       </div>
 

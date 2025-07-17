@@ -4,14 +4,15 @@ import Layout from '../components/layouts/Publisher';
 export default function DimensionMatchFailure(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   const backLink = props.url;
+  const title =
+    props.patchRequest.dimension_type === 'lookup_table'
+      ? props.t('publish.dimension_match_failure.lookup_heading')
+      : props.t('publish.dimension_match_failure.heading');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink}>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} title={title}>
       <span className="region-subhead">{props.dimension.metadata.name}</span>
-      {props.patchRequest.dimension_type === 'lookup_table' ? (
-        <h1 className="govuk-heading-xl">{props.t('publish.dimension_match_failure.lookup_heading')}</h1>
-      ) : (
-        <h1 className="govuk-heading-xl">{props.t('publish.dimension_match_failure.heading')}</h1>
-      )}
+
+      <h1 className="govuk-heading-xl">{title}</h1>
 
       {props.patchRequest.dimension_type === 'lookup_table' ? (
         <>

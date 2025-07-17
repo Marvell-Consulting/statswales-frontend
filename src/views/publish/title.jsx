@@ -7,9 +7,11 @@ export default function Title(props) {
   const returnLink =
     props.revisit && props.datasetId && props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   const backLink = props.revisit && returnLink;
+
+  const title = props.t('publish.title.heading');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
-      <h1 className="govuk-heading-xl">{props.t('publish.title.heading')}</h1>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
+      <h1 className="govuk-heading-xl">{title}</h1>
 
       <ErrorHandler />
 

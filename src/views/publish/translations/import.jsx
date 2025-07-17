@@ -6,12 +6,14 @@ import ErrorHandler from '../../components/ErrorHandler';
 export default function Import(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   const backLink = returnLink;
+
+  const title = props.preview ? props.t('translations.import.heading_preview') : props.t('translations.import.heading');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <div className="govuk-width-container">
+        <h1 className="govuk-heading-xl">{title}</h1>
         {props.preview ? (
           <>
-            <h1 className="govuk-heading-xl">{props.t('translations.import.heading_preview')}</h1>
             <TranslationsPreviewTable {...props} isImport={true} />
 
             <a
@@ -26,8 +28,6 @@ export default function Import(props) {
           </>
         ) : (
           <>
-            <h1 className="govuk-heading-xl">{props.t('translations.import.heading')}</h1>
-
             <TranslationsPreviewTable {...props} translations={props.existingTranslations} isImport={true} />
 
             <div className="govuk-inset-text">{props.t('translations.import.note')}</div>

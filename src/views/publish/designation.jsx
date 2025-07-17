@@ -6,13 +6,14 @@ import RadioGroup from '../components/RadioGroup';
 export default function Designation(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   const backLink = returnLink;
+  const title = props.t('publish.designation.heading');
   return (
-    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage>
+    <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <div className="govuk-width-container">
         <div className="govuk-grid-row">
           <div className="govuk-grid-column-two-thirds">
             <h1 className="govuk-heading-xl" id="designation">
-              {props.t('publish.designation.heading')}
+              {title}
             </h1>
 
             <form encType="multipart/form-data" method="post">

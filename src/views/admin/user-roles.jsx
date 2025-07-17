@@ -4,13 +4,14 @@ import ErrorHandler from '../components/ErrorHandler';
 import Layout from '../components/layouts/Publisher';
 
 export default function UserRoles(props) {
+  const title = props.t('admin.user.roles.heading', { userName: props.userName });
   return (
-    <Layout {...props} formPage>
+    <Layout {...props} formPage title={title}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <FlashMessages />
 
-          <h1 className="govuk-heading-xl">{props.t('admin.user.roles.heading', { userName: props.userName })}</h1>
+          <h1 className="govuk-heading-xl">{title}</h1>
 
           <ErrorHandler />
 
