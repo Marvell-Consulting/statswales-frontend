@@ -238,7 +238,6 @@ export default function ConsumerView(props) {
   );
 
   const title = props.datasetMetadata.title;
-  console.log({ title });
 
   return (
     <LayoutComponent {...props} title={title}>
