@@ -169,7 +169,7 @@
       "heading": "Am y set ddata hon",
       "overview": "Trosolwg",
       "summary": "Crynodeb o set ddata a newidynnau ",
-      "data_collection": "Gasglu new cyfrifo data",
+      "data_collection": "Casglu neu gyfrifo data",
       "statistical_quality": "Ansawdd ystadegol",
       "designation": "Dynodiad",
       "designations": {
@@ -913,7 +913,7 @@
         "subheading": "Metadata",
         "title": "Teitl",
         "summary": "Crynodeb o set ddata a newidynnau",
-        "data_collection": "Gasglu new cyfrifo data",
+        "data_collection": "Casglu neu gyfrifo data",
         "statistical_quality": "Ansawdd ystadegol",
         "data_sources": "Ffynonellau data",
         "related_reports": "Adroddiadau cysylltiedig",
@@ -1068,7 +1068,7 @@
       "field": {
         "title": "Teitl",
         "summary": "Crynodeb o set ddata a newidynnau",
-        "collection": "Gasglu new cyfrifo data",
+        "collection": "Casglu neu gyfrifo data",
         "quality": "Ansawdd ystadegol",
         "roundingDescription": "Wedi'i dalgrynnu"
       },

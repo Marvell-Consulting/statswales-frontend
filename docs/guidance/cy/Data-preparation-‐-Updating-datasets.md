@@ -40,6 +40,8 @@ Rhesi enghreifftiol tabl data diweddariad ar gyfer bandiau treth gyngor, gan ddi
 
 _Sylwer mai enghraifft at ddibenion dangos yw hon, ac nid yw’n ddiweddariad go iawn._
 
+Bydd y system yn gwirio eich tabl data wedi'i ddiweddaru yn erbyn y data presennol. Ar gyfer yr holl werthoedd data sydd wedi newid, bydd y system yn ychwanegu cod nodiadau 'r' i'r golofn cod nodiadau yn awtomatig. Os bydd angen i chi ddileu cod nodiadau 'p' blaenorol, dylech sicrhau nad yw eich tabl data wedi'i ddiweddaru yn cynnwys cod nodiadau 'p'.
+
 ## Ychwanegu a diwygio data
 
 Os bydd angen i chi ychwanegu data newydd a diwygio data sy’n bodoli eisoes, rhaid i chi gyfuno’r rhain mewn **tabl diweddariad unigol.**
@@ -51,7 +53,6 @@ Efallai y bydd amgylchiadau prin pan fydd angen i chi ddisodli’r holl ddata pr
 - bod rheswm dilys dros ddisodli’r holl ddata
 - bod y data yn y tabl data diweddariad yn gywir
 - na chollir data o’r set ddata sydd wedi cael ei chyhoeddi ar hyn o bryd (oni bai bod angen ei [waredu am reswm dilys](#guidance-gwaredu-data))
-- bod yr holl werthoedd data diwygiedig yn cynnwys [‘r’ yn y golofn cod nodyn](Data-preparation-‐-New-datasets#guidance-nodiadau)
 
 ## Gwaredu data
 
@@ -61,7 +62,6 @@ I waredu gwerthoedd data, dylech ddilyn yr un broses â’r broses a ddilynir er
 
 - chelloedd gwag ar gyfer y gwerthoedd data a waredir
 - y [testun llaw-fer nodyn gwerth data priodol](Data-preparation-‐-New-datasets#guidance-nodiadau) i esbonio pam nad yw’r gwerth data yn bresennol mwyach
-- llaw-fer ‘r’ sy’n dynodi mai diwygiad yw hwn
 
 Gan ddibynnu ar y rheswm dros waredu, efallai y bydd angen ychwanegu esboniad i’r [adran metadata ‘ansawdd ystadegol](Data-preparation-‐-New-datasets#guidance-ansawdd-ystadegol)’.
 

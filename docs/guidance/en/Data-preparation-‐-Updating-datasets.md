@@ -40,6 +40,8 @@ Example rows of update data table for council tax bands, revising data for 2022/
 
 _Please note this example is for demonstration purposes only and is not a genuine update._
 
+The system will check your update data table against the existing data. For all data values that have changed, the system will automatically add an 'r' note code to the note code column. If you need to remove a previous 'p' note code, ensure your update data table does not contain the 'p' note code.
+
 ## Adding and revising data
 
 If you need to both add new data and revise existing data, you must combine these into **a single update table**.
@@ -51,7 +53,6 @@ There may be rare circumstances where you need to replace all existing data. It 
 - there is a legitimate reason for replacing all data
 - the data in the update data table is correct
 - no data will be lost from the currently published dataset (unless it needs to be [removed for a legitimate reason](#guidance-removing-data))
-- all revised data values have [an ‘r’ in the note code column](Data-preparation-‐-New-datasets#guidance-notes)
 
 ## Removing data
 
@@ -61,7 +62,6 @@ To remove data values, you should follow the same process as for revising data b
 
 - empty cells for the removed data values
 - the [appropriate data value note shorthand](Data-preparation-‐-New-datasets#guidance-notes) to explain why the data value is no longer present
-- an 'r’ shorthand indicating this is a revision
 
 Depending on the reason for removal, it may be necessary to add an explanation to the [‘Statistical quality’ metadata section](Data-preparation-‐-New-datasets#guidance-statistical-quality).
 
