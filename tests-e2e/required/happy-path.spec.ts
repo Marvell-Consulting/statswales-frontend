@@ -81,6 +81,8 @@ test.describe('Happy path', () => {
     // data table upload
     await setFile(page, path.join(csvDir, 'QryHLTH1250_Data.csv'));
     await page.getByRole('button', { name: 'Continue' }).click();
+    await page.waitForLoadState('networkidle');
+
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/preview`);
 
     // check table
