@@ -44,14 +44,14 @@ If you change any of the text fields, you’ll need to provide updated translati
 - update notes
 - any text fields you change -->
 
-You should follow the same process as for [translating a new dataset](Using-SW3---Creating-a-new-dataset#guidance-translations). The only difference is that the exported CSV will have columns for:
+You should follow the same process as for [translating a new dataset](Using-SW3---Creating-a-new-dataset#guidance-translations).
+
+<!-- You should follow the same process as for [translating a new dataset](Using-SW3---Creating-a-new-dataset#guidance-translations). The only difference is that the exported CSV will have columns for:
 
 - text field name
-- previous text (English)
-- previous text (Welsh)
-<!-- - previous text (English) (not applicable for update notes)
-- previous text (Welsh) (not applicable for update notes) -->
+- previous text (English) (not applicable for update notes)
+- previous text (Welsh) (not applicable for update notes)
 - new text (English)
 - new text (Welsh)
 
-The 'previous text' columns will be populated with the most recently published, bilingual entries for these fields. This will aid translators entering the new text in the translated language. They won’t have to retranslate everything if there have only been minor changes to the text.
+The 'previous text' columns will be populated with the most recently published, bilingual entries for these fields. This will aid translators entering the new text in the translated language. They won’t have to retranslate everything if there have only been minor changes to the text. -->

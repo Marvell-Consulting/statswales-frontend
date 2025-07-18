@@ -92,7 +92,7 @@ For any other dimension type, you should [prepare your own lookup table](#guidan
 
 ### Geography
 
-The system contains standardised lookup tables for all commonly used geographies, as provided by the [ONS Open Geography portal](https://geoportal.statistics.gov.uk/). You can download these lookup tables as CSVs from the ['Reference data' section](#) of this service. You must use the codes in these tables when creating your data tables.
+The system contains standardised lookup tables for all commonly used geographies, as provided by the [ONS Open Geography portal](https://geoportal.statistics.gov.uk/). You can download these lookup tables as CSVs from the ['Reference data' section [link TBD]](#) of this service. You must use the codes in these tables when creating your data tables.
 
 You will not need to upload these standardised lookup tables when you build your dataset in SW3. You will only need to tell the system which geography you've used.
 
