@@ -2468,12 +2468,52 @@
 
   .govuk-table.sortable {
     th {
+      padding: 0;
+      height: 100%;
       position: relative;
-      padding-right: 2em;
+      z-index: 1;
+
+      &:focus-within {
+        background-color: colours.$yellow !important;
+
+        a::before {
+          border-bottom: 2px solid colours.$black;
+        }
+
+        &[aria-sort='descending']::after {
+          color: colours.$black !important;
+        }
+
+        &[aria-sort='ascending']::before {
+          color: colours.$black !important;
+        }
+      }
 
       a {
-        display: block;
+        padding: 10px 2em 10px 0;
+        display: inline-block;
+        height: 100%;
+        width: 100%;
         color: colours.$black;
+        z-index: 1;
+
+        // nasty hack to make whole th clickable
+        &:before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 0;
+        }
+
+        &:focus {
+          outline: none !important;
+          background: none !important;
+          border: none !important;
+          box-shadow: none !important;
+        }
       }
 
       &::before,
@@ -2484,6 +2524,7 @@
         right: 10px;
         line-height: 9px;
         font-size: 0.8em;
+        pointer-events: none;
       }
 
       &[aria-sort='descending']::after {
