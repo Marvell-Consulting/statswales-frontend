@@ -22,16 +22,6 @@
       color: colours.$white;
       background: colours.$red;
     }
-
-    &:focus {
-      background-color: colours.$yellow !important;
-      border-color: transparent !important;
-      color: colours.$black !important;
-      outline: 2px solid colours.$black;
-      text-decoration: none !important;
-      -webkit-box-shadow: 0 0 0 2px colours.$yellow;
-      box-shadow: 0 0 0 2px colours.$yellow;
-    }
   }
 
   .padding-box {
@@ -90,16 +80,6 @@
 
       label {
         white-space: nowrap;
-      }
-    }
-
-    input {
-      &:focus {
-        & ~ label::before {
-          outline: 3px solid colours.$yellow !important;
-          outline-offset: 0 !important;
-          border-width: 2px !important;
-        }
       }
     }
 

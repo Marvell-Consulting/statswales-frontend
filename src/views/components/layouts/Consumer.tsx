@@ -107,9 +107,12 @@ const Layout = ({ children, title }: PropsWithChildren<{ title?: string }>) => {
 
         <nav className="primary js-primary-nav" aria-label="Primary Navigation">
           <div className="govuk-width-container nav__toggle">
-            <a href={buildUrl('/published', i18n.language)}>
-              <div className="statsWales-logo" role="img" aria-label="StatsWales logo"></div>
-            </a>
+            <a
+              className="statsWales-logo"
+              href={buildUrl('/', i18n.language)}
+              role="img"
+              aria-label={t('header.logo')}
+            />
           </div>
         </nav>
 

@@ -11,6 +11,10 @@ logs
 results
 tmp
 
+# We build these.
+src/public/css/app.css
+src/public/css/app.css.map
+
 # Coverage reports
 coverage
 
