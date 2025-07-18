@@ -92,10 +92,8 @@ export default function Title(props) {
 
               const formData = new FormData();
               const file = fileInput.files[0];
-              console.log(file)
-              console.log('${props.url}')
 
-              formData.append('csv', file, file.name);
+              formData.append('csv', file, file?.name);
               if (${props.updateType}) {
                 formData.append('updateType', '${props.updateType}');
               }
