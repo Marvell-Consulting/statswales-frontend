@@ -29,8 +29,6 @@ export default function Title(props) {
     </div>
   `;
 
-  console.log(errorHtml);
-
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <h1 className="govuk-heading-xl">{title}</h1>
@@ -98,7 +96,10 @@ export default function Title(props) {
               console.log('${props.url}')
 
               formData.append('csv', file, file.name);
-              formData.append('updateType', '${props.updateType}')
+              if (${props.updateType}) {
+                formData.append('updateType', '${props.updateType}');
+              }
+              console.log("${props.updateType}")
 
               try {
                 const res = await fetch('${props.url}', {
