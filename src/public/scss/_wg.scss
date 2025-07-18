@@ -149,6 +149,21 @@
     font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
   }
 
+  .loader {
+    border: 12px solid colours.$lightgrey;
+    border-bottom-color: colours.$brightred;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    -webkit-animation: 2s linear infinite;
+    animation: rotation 2s linear infinite;
+  }
+
+  .form-background .loader {
+    border: 12px solid colours.$lightgrey_mid;
+    border-bottom-color: colours.$brightred;
+  }
+
   ul.li,
   ol.li {
     font-size: 18px;

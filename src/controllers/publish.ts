@@ -246,7 +246,11 @@ export const uploadDataTable = async (req: Request, res: Response) => {
 
       set(req.session, `dataset[${dataset.id}]`, undefined);
       req.session.save();
-      res.redirect(req.buildUrl(`/publish/${dataset.id}/preview`, req.language));
+      const target = req.buildUrl(`/publish/${dataset.id}/preview`, req.language);
+      if (req.header('X-Requested-With') === 'XMLHttpRequest') {
+        return res.json({ redirectTo: target });
+      }
+      res.redirect(target);
       return;
     } catch (err) {
       logger.error(err, `There was a problem uploading the file`);
@@ -265,6 +269,15 @@ export const uploadDataTable = async (req: Request, res: Response) => {
           : [{ field: 'csv', message: { key: 'errors.fact_table_validation.unknown_error' } }];
       }
     }
+  }
+
+  if (req.header('X-Requested-With') === 'XMLHttpRequest') {
+    return res.json({
+      errors: errors.map((err) => ({
+        ...err,
+        message: { ...err.message, translated: req.t(err.message.key) }
+      }))
+    });
   }
 
   res.render('publish/upload', {
