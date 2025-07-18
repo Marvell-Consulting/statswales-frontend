@@ -12,6 +12,118 @@
     line-height: 24px;
   }
 
+  // focus states from GEL
+
+  a:link:not(.govuk-button, .govuk-tabs__tab, .govuk-phase-banner a, .statsWales-logo, .button, [role='button']):focus {
+    color: colours.$black !important;
+    background-color: colours.$yellow !important;
+    box-shadow:
+      0 -4px colours.$yellow,
+      0 2px colours.$black;
+    outline: 2px solid transparent;
+    text-decoration: none !important;
+  }
+
+  .statsWales-logo:focus {
+    display: block;
+    box-sizing: border-box;
+    background-color: colours.$white !important;
+    color: colours.$black !important;
+    box-shadow: 0 0 0 4px colours.$yellow;
+    outline: 2px solid colours.$black;
+    outline-offset: 2px;
+    text-decoration: none !important;
+  }
+
+  .govuk-phase-banner a:link:focus {
+    color: colours.$white !important;
+    background-color: colours.$black !important;
+    box-shadow:
+      0 0 0 2px colours.$black,
+      0 2px 0 2px colours.$white;
+    outline: 2px solid transparent;
+    text-decoration: none !important;
+  }
+
+  a:link.govuk-button:focus,
+  a.button:focus,
+  button:focus,
+  a[role='button']:focus {
+    color: colours.$black !important;
+    background-color: colours.$yellow !important;
+    box-shadow: 0 0 0 2px colours.$black !important;
+    outline: 2px solid transparent;
+    text-decoration: none !important;
+  }
+
+  input:focus {
+    color: colours.$black !important;
+    box-shadow: 0 0 0 4px colours.$yellow !important;
+    outline: 2px solid colours.$black !important;
+    text-decoration: none !important;
+  }
+
+  .govuk-back-link:focus {
+    color: colours.$black !important;
+    &:before {
+      border-color: colours.$black !important;
+    }
+  }
+
+  input[type='checkbox']:focus ~ label::before,
+  input[type='radio']:focus ~ label::before {
+    border: none !important;
+    color: colours.$black !important;
+    box-shadow: 0 0 0 2px colours.$yellow;
+    outline: 2px solid colours.$black;
+    outline-offset: -2px;
+    text-decoration: none !important;
+  }
+
+  details summary:focus {
+    color: colours.$black !important;
+    background-color: colours.$yellow !important;
+    box-shadow:
+      0 0 0 2px colours.$yellow,
+      0 2px 0 2px colours.$black;
+    outline: 2px solid transparent;
+    text-decoration: none !important;
+    overflow: visible;
+  }
+
+  .govuk-skip-link:focus {
+    background-color: colours.$yellow;
+  }
+
+  .govuk-tabs__list-item:focus-within {
+    color: colours.$black !important;
+    background-color: colours.$yellow !important;
+    outline: 2px solid black;
+    outline-offset: -2px;
+    text-decoration: none !important;
+    border-color: colours.$yellow !important;
+
+    a {
+      box-shadow: none !important;
+      border: none !important;
+      outline: none !important;
+      background-color: transparent !important;
+    }
+  }
+
+  nav.primary .nav__content ul li a:focus {
+    background: colours.$yellow !important;
+    color: colours.$black !important;
+    outline: 2px solid colours.$black;
+    outline-offset: -2px;
+  }
+
+  .govuk-pagination__link:focus span,
+  .govuk-pagination__link:focus {
+    background-color: colours.$yellow !important;
+    color: colours.$black !important;
+  }
+
   h1,
   h2,
   h3,
@@ -94,12 +206,6 @@
       color: colours.$white;
     }
 
-    &:focus {
-      border-color: inherit;
-      outline: none;
-      box-shadow: none;
-    }
-
     &:hover,
     &[disabled]:hover {
       background: colours.$brightred;
@@ -116,10 +222,6 @@
       box-shadow: none;
       outline: colours.$midgrey;
       border-color: rgba(0, 0, 0, 0);
-
-      &:focus {
-        background-color: colours.$midgrey;
-      }
 
       &:hover {
         background-color: colours.$charcoal;
@@ -162,8 +264,7 @@
     }
   }
 
-  .button-black,
-  .button-black:focus {
+  .button-black {
     background-color: colours.$black;
     border-color: colours.$black;
   }
@@ -174,10 +275,6 @@
     color: colours.$black;
     font-size: 16px;
     padding: 10px 15px;
-
-    &:focus {
-      background: colours.$white;
-    }
   }
 
   .govuk-textarea {
@@ -384,10 +481,6 @@
     color: colours.$white;
   }
 
-  .search-banner .govuk-input:focus {
-    background-color: colours.$white;
-  }
-
   .fa {
     position: relative;
     bottom: -3px;
@@ -505,19 +598,6 @@
     color: colours.$lightblue;
   }
 
-  .govuk-header__link:focus,
-  .govuk-button-group:focus .govuk-link:focus {
-    background-color: transparent;
-    box-shadow: none;
-  }
-
-  a:focus,
-  .govuk-link:focus {
-    outline: 3px solid colours.$yellow;
-    background-color: transparent;
-    box-shadow: none;
-  }
-
   .govuk-tag--blue {
     background-color: colours.$whiteblue;
     color: colours.$black;
@@ -573,10 +653,6 @@
     }
   }
 
-  .govuk-notification-banner:focus {
-    outline: none;
-  }
-
   .govuk-error-summary {
     background-color: colours.$whitered;
     border-left: 10px solid colours.$red;
@@ -584,10 +660,6 @@
     border-top: none;
     border-bottom: none;
     padding: 25px 20px 25px 20px;
-  }
-
-  .govuk-error-summary:focus {
-    outline: none;
   }
 
   h2.govuk-error-summary__title {
@@ -665,13 +737,6 @@
   .govuk-radios__input {
     width: 22px;
     height: 22px;
-  }
-
-  .govuk-radios__input:focus + .govuk-radios__label::before {
-    border-width: 1px;
-    outline: 3px solid transparent;
-    outline-offset: 1px;
-    box-shadow: 0 0 0 4px #ffdd00;
   }
 
   .govuk-inset-text {
@@ -782,14 +847,6 @@
   }
 
   .govuk-checkboxes--bg {
-    .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before {
-      background-color: colours.$white;
-      border-width: 4px;
-      outline: 3px solid transparent;
-      outline-offset: 1px;
-      box-shadow: 0 0 0 3px #ffdd00;
-    }
-
     .govuk-checkboxes__label::before {
       background: colours.$white;
       left: 20px;
@@ -810,10 +867,6 @@
     .govuk-checkboxes__conditional {
       margin-left: 30px;
       margin-bottom: 0px;
-    }
-
-    .govuk-checkboxes__input:focus + .govuk-checkboxes__label::before {
-      border-width: 1px;
     }
 
     .govuk-checkboxes__item:hover .govuk-checkboxes__input:not(:disabled) + .govuk-checkboxes__label::before {
@@ -1688,10 +1741,6 @@
       color: #3b7dc5;
     }
 
-    a:focus {
-      color: colours.$black;
-    }
-
     ul {
       margin: 0;
     }
@@ -1850,16 +1899,6 @@
       background-color: colours.$midgrey;
     }
 
-    .language-switcher-language-url a:focus {
-      background-color: colours.$midgrey;
-      border-color: transparent;
-      color: colours.$white;
-      outline: 2px solid colours.$black;
-      text-decoration: none;
-      -webkit-box-shadow: 0 0 0 2px colours.$yellow;
-      box-shadow: 0 0 0 2px colours.$yellow;
-    }
-
     .language-switcher-language-url ul {
       margin: 0 20px 0 0;
       padding: 0;
@@ -1912,16 +1951,6 @@
 
     .button:hover {
       background-color: #999999;
-    }
-
-    .button:focus {
-      background-color: colours.$yellow;
-      border-color: transparent;
-      color: colours.$black;
-      outline: 2px solid colours.$black;
-      text-decoration: none;
-      -webkit-box-shadow: 0 0 0 2px colours.$yellow;
-      box-shadow: 0 0 0 2px colours.$yellow;
     }
 
     .header__components {
@@ -2003,26 +2032,6 @@
 
     .is-active {
       display: block;
-    }
-
-    input:focus {
-      background-color: inherit;
-      border-color: colours.$black;
-      color: colours.$black;
-      outline: 2px solid transparent;
-      text-decoration: none;
-      -webkit-box-shadow: 0 0 0 2px colours.$yellow;
-      box-shadow: 0 0 0 2px colours.$yellow;
-    }
-
-    input[type='submit']:focus {
-      background-color: colours.$yellow;
-      border-color: transparent;
-      color: colours.$black;
-      outline: 2px solid colours.$black;
-      text-decoration: none;
-      -webkit-box-shadow: 0 0 0 2px colours.$yellow;
-      box-shadow: 0 0 0 2px colours.$yellow;
     }
 
     @media print {
