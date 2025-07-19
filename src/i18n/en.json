@@ -863,6 +863,8 @@
           "label": "The file should be in CSV, JSON or Parquet format"
         }
       },
+      "uploading": "Your file is uploading. This may take several minutes depending on the size of your file.",
+      "noscript": "Upload may take several minutes depending on the size of your file.",
       "buttons": {
         "upload": "Continue"
       },

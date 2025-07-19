@@ -25,5 +25,6 @@ export class UploadPage {
 
   async submit() {
     await this.page.getByRole('button', { name: 'Continue' }).click();
+    await this.page.waitForLoadState('networkidle');
   }
 }
