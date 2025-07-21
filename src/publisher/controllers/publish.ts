@@ -37,65 +37,65 @@ import {
   uuidValidator,
   yearValidator
 } from '../validators';
-import { ViewError } from '../dtos/view-error';
-import { logger } from '../utils/logger';
-import { ViewDTO, ViewErrDTO } from '../dtos/view-dto';
+import { ViewError } from '../../shared/dtos/view-error';
+import { logger } from '../../shared/utils/logger';
+import { ViewDTO, ViewErrDTO } from '../../shared/dtos/view-dto';
 import { SourceType } from '../../shared/enums/source-type';
-import { SourceAssignmentDTO } from '../dtos/source-assignment-dto';
+import { SourceAssignmentDTO } from '../../shared/dtos/source-assignment-dto';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
-import { TaskListState } from '../dtos/task-list-state';
+import { TaskListState } from '../../shared/dtos/task-list-state';
 import { NotFoundException } from '../../shared/exceptions/not-found.exception';
-import { singleLangDataset, singleLangRevision } from '../utils/single-lang-dataset';
+import { singleLangDataset, singleLangRevision } from '../../shared/utils/single-lang-dataset';
 import { Designation } from '../../shared/enums/designation';
-import { RelatedLinkDTO } from '../dtos/related-link';
-import { RevisionProviderDTO } from '../dtos/revision-provider';
-import { ProviderSourceDTO } from '../dtos/provider-source';
-import { generateSequenceForNumber } from '../utils/pagination';
-import { fileMimeTypeHandler } from '../utils/file-mimetype-handler';
-import { TopicDTO } from '../dtos/topic';
-import { NestedTopic, nestTopics } from '../utils/nested-topics';
+import { RelatedLinkDTO } from '../../shared/dtos/related-link';
+import { RevisionProviderDTO } from '../../shared/dtos/revision-provider';
+import { ProviderSourceDTO } from '../../shared/dtos/provider-source';
+import { generateSequenceForNumber } from '../../shared/utils/pagination';
+import { fileMimeTypeHandler } from '../../shared/utils/file-mimetype-handler';
+import { TopicDTO } from '../../shared/dtos/topic';
+import { NestedTopic, nestTopics } from '../../shared/utils/nested-topics';
 import { DimensionType } from '../../shared/enums/dimension-type';
-import { DimensionPatchDTO } from '../dtos/dimension-patch-dto';
+import { DimensionPatchDTO } from '../../shared/dtos/dimension-patch-dto';
 import { ApiException } from '../../shared/exceptions/api.exception';
-import { DimensionMetadataDTO } from '../dtos/dimension-metadata';
+import { DimensionMetadataDTO } from '../../shared/dtos/dimension-metadata';
 import { YearType } from '../../shared/enums/year-type';
-import { addEditLinks } from '../utils/add-edit-links';
-import { TranslationDTO } from '../dtos/translations';
-import { getDatasetStatus, getPublishingStatus } from '../utils/dataset-status';
-import { getDatasetPreview } from '../utils/dataset-preview';
+import { addEditLinks } from '../../shared/utils/add-edit-links';
+import { TranslationDTO } from '../../shared/dtos/translations';
+import { getDatasetStatus, getPublishingStatus } from '../../shared/utils/dataset-status';
+import { getDatasetPreview } from '../../shared/utils/dataset-preview';
 import { FileFormat } from '../../shared/enums/file-format';
-import { getDownloadHeaders } from '../utils/download-headers';
-import { FactTableColumnDto } from '../dtos/fact-table-column-dto';
-import { ProviderDTO } from '../dtos/provider';
+import { getDownloadHeaders } from '../../shared/utils/download-headers';
+import { FactTableColumnDto } from '../../shared/dtos/fact-table-column-dto';
+import { ProviderDTO } from '../../shared/dtos/provider';
 import { Locale } from '../../shared/enums/locale';
 import { DatasetInclude } from '../../shared/enums/dataset-include';
 import { NumberType } from '../../shared/enums/number-type';
-import { PreviewMetadata } from '../interfaces/preview-metadata';
+import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
 import slugify from 'slugify';
 import { DuckDBSupportFileFormats } from '../../shared/enums/support-fileformats';
 import { TZDate } from '@date-fns/tz';
-import { singleLangUserGroup } from '../utils/single-lang-user-group';
+import { singleLangUserGroup } from '../../shared/utils/single-lang-user-group';
 import {
   getApproverUserGroups,
   getEditorUserGroups,
   isApproverForDataset,
   isEditor,
   isEditorForDataset
-} from '../utils/user-permissions';
+} from '../../shared/utils/user-permissions';
 import { PublishingStatus } from '../../shared/enums/publishing-status';
 import { NotAllowedException } from '../../shared/exceptions/not-allowed.exception';
-import { DatasetDTO } from '../dtos/dataset';
-import { RevisionDTO } from '../dtos/revision';
+import { DatasetDTO } from '../../shared/dtos/dataset';
+import { RevisionDTO } from '../../shared/dtos/revision';
 import { TaskAction } from '../../shared/enums/task-action';
-import { UserDTO } from '../dtos/user/user';
-import { TaskDTO } from '../dtos/task';
-import { TaskDecisionDTO } from '../dtos/task-decision';
-import { SingleLanguageRevision } from '../dtos/single-language/revision';
-import { appConfig } from '../../config';
-import { FilterTable } from '../dtos/filter-table';
+import { UserDTO } from '../../shared/dtos/user/user';
+import { TaskDTO } from '../../shared/dtos/task';
+import { TaskDecisionDTO } from '../../shared/dtos/task-decision';
+import { SingleLanguageRevision } from '../../shared/dtos/single-language/revision';
+import { appConfig } from '../../shared/config';
+import { FilterTable } from '../../shared/dtos/filter-table';
 import qs from 'qs';
 import { DEFAULT_PAGE_SIZE } from '../../consumer/controllers/consumer';
-import { SortByInterface } from '../interfaces/sort-by';
+import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { UpdateType } from '../../shared/enums/update-type';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel

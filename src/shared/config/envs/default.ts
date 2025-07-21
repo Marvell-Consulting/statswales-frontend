@@ -3,7 +3,7 @@ import { Level } from 'pino';
 import { AppConfig } from '../app-config.interface';
 import { AppEnv } from '../env.enum';
 import { SessionStore } from '../session-store.enum';
-import { Locale } from '../../shared/enums/locale';
+import { Locale } from '../../enums/locale';
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
 

@@ -2,10 +2,10 @@ import { Request, Response, NextFunction } from 'express';
 import { sortBy, uniqBy } from 'lodash';
 import { FieldValidationError } from 'express-validator';
 
-import { logger } from '../utils/logger';
-import { ResultsetWithCount } from '../interfaces/resultset-with-count';
-import { UserGroupDTO } from '../dtos/user/user-group';
-import { ViewError } from '../dtos/view-error';
+import { logger } from '../../shared/utils/logger';
+import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count';
+import { UserGroupDTO } from '../../shared/dtos/user/user-group';
+import { ViewError } from '../../shared/dtos/view-error';
 import { getErrors, hasError } from '../validators';
 import {
   nameCyValidator,
@@ -18,26 +18,26 @@ import {
   userIdValidator
 } from '../validators/admin';
 import { ApiException } from '../../shared/exceptions/api.exception';
-import { OrganisationDTO } from '../dtos/organisation';
+import { OrganisationDTO } from '../../shared/dtos/organisation';
 import { Locale } from '../../shared/enums/locale';
-import { UserGroupMetadataDTO } from '../dtos/user/user-group-metadata-dto';
+import { UserGroupMetadataDTO } from '../../shared/dtos/user/user-group-metadata-dto';
 import { NotFoundException } from '../../shared/exceptions/not-found.exception';
-import { UserGroupListItemDTO } from '../dtos/user/user-group-list-item-dto';
-import { singleLangUserGroup } from '../utils/single-lang-user-group';
-import { UserDTO } from '../dtos/user/user';
-import { UserCreateDTO } from '../dtos/user/user-create-dto';
+import { UserGroupListItemDTO } from '../../shared/dtos/user/user-group-list-item-dto';
+import { singleLangUserGroup } from '../../shared/utils/single-lang-user-group';
+import { UserDTO } from '../../shared/dtos/user/user';
+import { UserCreateDTO } from '../../shared/dtos/user/user-create-dto';
 import { UserAction } from '../../shared/enums/user-action';
-import { SingleLanguageUserGroup } from '../dtos/single-language/user-group';
-import { AvailableRoles } from '../interfaces/available-roles';
-import { Organisation } from '../interfaces/organisation';
-import { groupByOrg } from '../utils/group-by-org';
+import { SingleLanguageUserGroup } from '../../shared/dtos/single-language/user-group';
+import { AvailableRoles } from '../../shared/interfaces/available-roles';
+import { Organisation } from '../../shared/interfaces/organisation';
+import { groupByOrg } from '../../shared/utils/group-by-org';
 import { GroupRole } from '../../shared/enums/group-role';
-import { RoleSelectionDTO } from '../dtos/user/role-selection-dto';
-import { getUserRoleFormValues } from '../utils/user-role-form-values';
-import { UserRoleFormValues } from '../interfaces/user-role-form-values';
+import { RoleSelectionDTO } from '../../shared/dtos/user/role-selection-dto';
+import { getUserRoleFormValues } from '../../shared/utils/user-role-form-values';
+import { UserRoleFormValues } from '../../shared/interfaces/user-role-form-values';
 import { differenceInSeconds } from 'date-fns';
 import { UserStatus } from '../../shared/enums/user-status';
-import { getPaginationProps } from '../utils/pagination';
+import { getPaginationProps } from '../../shared/utils/pagination';
 
 export const fetchUserGroup = async (req: Request, res: Response, next: NextFunction) => {
   const userGroupIdError = await hasError(userGroupIdValidator(), req);

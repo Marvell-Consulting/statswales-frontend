@@ -1,5 +1,5 @@
 import { Level } from 'pino';
-import { AuthProvider } from '../../shared/enums/auth-providers';
+import { AuthProvider } from '../../enums/auth-providers';
 import { AppConfig } from '../app-config.interface';
 import { defineConfig } from '../define-config';
 import { AppEnv } from '../env.enum';
