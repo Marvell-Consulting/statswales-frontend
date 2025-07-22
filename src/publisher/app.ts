@@ -38,8 +38,7 @@ app.set('trust proxy', 1);
 app.use(strictTransport);
 
 // asset routes (bypass middleware)
-app.use('/assets', express.static(`${__dirname}/../shared/public/assets`));
-app.use('/css', express.static(`${__dirname}/../shared/public/css`));
+app.use('/assets', express.static(path.join(__dirname, '../public')));
 app.use(handleAsset404);
 
 // enable middleware

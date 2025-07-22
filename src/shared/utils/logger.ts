@@ -14,7 +14,7 @@ export const httpLogger = pinoHttp({
   logger,
   autoLogging: {
     ignore: (req) => {
-      const ignorePathsRx = /^\/css|\/public|\/assets|\/favicon/;
+      const ignorePathsRx = /^\/assets|\/favicon/;
       return ignorePathsRx.test(req.url || '');
     }
   },

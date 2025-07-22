@@ -2388,13 +2388,13 @@
     width: 182px;
     height: 28px;
     margin-top: 7px;
-    background-image: url('../assets/images/StatsWales.svg');
+    background-image: url('../images/StatsWales.svg');
     background-size: cover;
   }
 
   &[lang^='cy'] {
     .statsWales-logo {
-      background-image: url('../assets/images/StatsCymru.svg');
+      background-image: url('../images/StatsCymru.svg');
       width: 183.75px;
       height: 31.5px;
     }
@@ -2620,7 +2620,7 @@
   .alert-warning {
     border-left: 10px solid colours.$red;
     padding-left: 120px;
-    background-image: URL('/assets/images/warning-sign.svg');
+    background-image: URL('/images/warning-sign.svg');
     background-repeat: no-repeat;
     background-position: 30px 20px;
     background-size: 54px;
