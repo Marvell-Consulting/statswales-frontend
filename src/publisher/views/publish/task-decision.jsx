@@ -8,7 +8,7 @@ import T from '../../../shared/views/components/T';
 export default function TaskDecision(props) {
   const reasonError = props.errors?.find((e) => e.field === 'reason');
 
-  const title = props.t('publish.task.decision.{props.taskType}.heading');
+  const title = props.t(`publish.task.decision.${props.taskType}.heading`);
 
   return (
     <Layout {...props} formPage title={title}>
