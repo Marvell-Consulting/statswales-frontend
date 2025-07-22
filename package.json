@@ -24,7 +24,7 @@
     "docker-compose-up": "bash -c 'f() { if [ $(command -v podman) ]; then podman compose up -d; else docker compose up -d; fi }; f'",
     "docker-compose-down": "bash -c 'f() { if [ $(command -v podman) ]; then podman compose stop; else docker compose stop; fi }; f'",
     "prelocalstack": "npm run docker-compose-up",
-    "localstack": "trap 'exit 0' SIGINT; nodemon --watch src -e ts,ejs,json,scss --exec npm run start:publisher && npm run start:consumer",
+    "localstack": "trap 'exit 0' SIGINT; nodemon --watch src -e ts,ejs,json,scss --exec npm run start:publisher | pino-colada & npm run start:consumer | pino-colada",
     "postlocalstack": "npm run docker-compose-down",
     "start:pubdev": "npm run build && node dist/publisher.js | pino-colada",
     "start:condev": "node dist/consumer.js | pino-colada",
