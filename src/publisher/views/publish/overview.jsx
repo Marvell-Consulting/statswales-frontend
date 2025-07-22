@@ -17,7 +17,7 @@ function ActionLink({ path, fullUrl, action, newTab, queryParams }) {
   return (
     <a
       className="govuk-link govuk-link--no-underline"
-      href={path ? buildUrl(path, i18n.language, queryParams) : fullUrl }
+      href={path ? buildUrl(path, i18n.language, queryParams) : fullUrl}
       target={newTab ? '_blank' : undefined}
     >
       <T>publish.overview.actions.{action}</T>
@@ -80,7 +80,11 @@ function ActionsTab({
 
         {datasetStatus === 'live' && (
           <li>
-            <ActionLink fullUrl={`${consumerUrl}/${i18n.language}/${datasetId}`} action="view_published_dataset" newTab />
+            <ActionLink
+              fullUrl={`${consumerUrl}/${i18n.language}/${datasetId}`}
+              action="view_published_dataset"
+              newTab
+            />
           </li>
         )}
 

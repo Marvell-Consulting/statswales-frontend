@@ -1,8 +1,8 @@
-import { DatasetDTO } from '../../src/dtos/dataset';
-import { DataTableDto } from '../../src/dtos/data-table';
-import { TaskListState } from '../../src/dtos/task-list-state';
-import { ViewDTO } from '../../src/dtos/view-dto';
-import { TaskListStatus } from '../../src/enums/task-list-status';
+import { DatasetDTO } from '../../src/shared/dtos/dataset';
+import { DataTableDto } from '../../src/shared/dtos/data-table';
+import { TaskListState } from '../../src/shared/dtos/task-list-state';
+import { ViewDTO } from '../../src/shared/dtos/view-dto';
+import { TaskListStatus } from '../../src/shared/enums/task-list-status';
 
 export const datasetWithTitle: DatasetDTO = {
   id: '5caeb8ed-ea64-4a58-8cf0-b728308833e5',
