@@ -26,10 +26,10 @@
     "prelocalstack": "npm run docker-compose-up",
     "localstack": "trap 'exit 0' SIGINT; nodemon --watch src -e ts,ejs,json,scss --exec npm run start:publisher | pino-colada & npm run start:consumer | pino-colada",
     "postlocalstack": "npm run docker-compose-down",
-    "start:pubdev": "npm run build && node dist/publisher.js | pino-colada",
-    "start:condev": "node dist/consumer.js | pino-colada",
-    "start:publisher": "node dist/publisher.js",
-    "start:consumer": "node dist/consumer.js"
+    "start:pubdev": "npm run build && node dist/publisher/server.js | pino-colada",
+    "start:condev": "node dist/consumer/server.js | pino-colada",
+    "start:publisher": "node dist/publisher/server.js",
+    "start:consumer": "node dist/consumer/server.js"
   },
   "keywords": [],
   "author": "",

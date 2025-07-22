@@ -1,8 +1,8 @@
 import 'dotenv/config';
 
-import { appConfig } from './shared/config';
-import app from './publisher/app';
-import { logger } from './shared/utils/logger';
+import { appConfig } from '../shared/config';
+import app from './app';
+import { logger } from '../shared/utils/logger';
 
 const PORT = appConfig().frontend.publisher.port;
 
