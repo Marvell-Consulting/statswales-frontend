@@ -2,8 +2,8 @@ import React from 'react';
 import ErrorHandler from '../components/ErrorHandler';
 import Layout from '../components/Layout';
 import clsx from 'clsx';
-import RadioGroup from '../components/RadioGroup';
-import T from '../components/T';
+import RadioGroup from '../../../shared/views/components/RadioGroup';
+import T from '../../../shared/views/components/T';
 
 export default function TaskDecision(props) {
   const reasonError = props.errors?.find((e) => e.field === 'reason');

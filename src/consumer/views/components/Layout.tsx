@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { Locals, LocalsProvider, useLocals } from '../../../../shared/views/context/Locals';
+import { Locals, LocalsProvider, useLocals } from '../../../shared/views/context/Locals';
 
 const Layout = ({ children, title }: PropsWithChildren<{ title?: string }>) => {
   const { i18n, t, buildUrl } = useLocals();

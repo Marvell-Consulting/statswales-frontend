@@ -1,5 +1,5 @@
 import React from 'react';
-import Table from '../../../views/components/Table';
+import Table from '../../../shared/views/components/Table';
 
 export default function ViewTable(props) {
   const columns = props.headers.map((col, index) => ({

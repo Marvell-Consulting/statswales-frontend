@@ -1,8 +1,8 @@
 import React from 'react';
 import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
-import Table from '../components/Table';
-import RadioGroup from '../components/RadioGroup';
+import Table from '../../../shared/views/components/Table';
+import RadioGroup from '../../../shared/views/components/RadioGroup';
 
 export default function DateChooser(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);

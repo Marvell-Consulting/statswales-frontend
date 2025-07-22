@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import T from '../../../../shared/views/components/T';
+import T from '../T';
 import { UpdateType } from '../../../enums/update-type';
 import { parse } from 'date-fns';
 

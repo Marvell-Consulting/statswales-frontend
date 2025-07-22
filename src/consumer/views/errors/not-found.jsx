@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '../components/layouts/Consumer';
+import Layout from '../components/Layout';
 
 export default function NotFound(props) {
   const title = props.t('errors.not_found');

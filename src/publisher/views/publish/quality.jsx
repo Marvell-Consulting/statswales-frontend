@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
 import clsx from 'clsx';
-import RadioGroup from '../components/RadioGroup';
+import RadioGroup from '../../../shared/views/components/RadioGroup';
 
 export default function Quality(props) {
   const backLink = props.referrer;

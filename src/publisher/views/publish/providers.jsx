@@ -1,9 +1,9 @@
 import React from 'react';
 import ErrorHandler from '../components/ErrorHandler';
 import Layout from '../components/Layout';
-import Table from '../components/Table';
-import RadioGroup from '../components/RadioGroup';
-import T from '../components/T';
+import Table from '../../../shared/views/components/Table';
+import RadioGroup from '../../../shared/views/components/RadioGroup';
+import T from '../../../shared/views/components/T';
 import Autocomplete from '../components/Autocomplete';
 
 export default function Providers(props) {

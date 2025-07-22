@@ -2,8 +2,8 @@ import React from 'react';
 import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
 import DimensionPreviewTable from '../components/DimensionPreviewTable';
-import RadioGroup from '../components/RadioGroup';
-import T from '../components/T';
+import RadioGroup from '../../../shared/views/components/RadioGroup';
+import T from '../../../shared/views/components/T';
 import Select from '../../../shared/views/components/Select';
 
 export default function NumberChooser(props) {

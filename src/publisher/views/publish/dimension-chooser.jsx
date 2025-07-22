@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
 import DimensionPreviewTable from '../components/DimensionPreviewTable';
-import RadioGroup from '../components/RadioGroup';
+import RadioGroup from '../../../shared/views/components/RadioGroup';
 
 export default function DimensionChooser(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);

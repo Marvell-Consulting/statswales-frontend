@@ -101,7 +101,7 @@ export const displayDatasetPreview = async (req: Request, res: Response) => {
       ignoreIllegals: true
     }).value;
 
-    res.render('consumer/view', {
+    res.render('dataset-view', {
       ...datasetView,
       datasetMetadata: previewMetadata,
       showDeveloperTab: true,

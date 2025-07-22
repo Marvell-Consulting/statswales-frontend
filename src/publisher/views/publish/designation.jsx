@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
-import RadioGroup from '../components/RadioGroup';
+import RadioGroup from '../../../shared/views/components/RadioGroup';
 
 export default function Designation(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);

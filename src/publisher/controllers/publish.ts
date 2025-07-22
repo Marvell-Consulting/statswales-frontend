@@ -579,7 +579,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
       if (!previewData) {
         previewData = { status: 500, errors, dataset_id: datasetId };
       }
-      res.render('consumer/view', {
+      res.render('dataset-view', {
         ...previewData,
         datasetMetadata: previewMetadata,
         filters: filtersDTO,

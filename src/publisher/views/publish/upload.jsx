@@ -1,8 +1,8 @@
 import React from 'react';
 import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
-import { Spinner } from '../components/Spinner';
-import T from '../components/T';
+import { Spinner } from '../../../shared/views/components/Spinner';
+import T from '../../../shared/views/components/T';
 
 export default function Title(props) {
   const backLink = props.revisit && props.referrer;

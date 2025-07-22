@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from './components/layouts/Consumer';
+import Layout from './components/Layout';
 import Pagination from '../components/Pagination';
 
 export default function ConsumerList(props) {

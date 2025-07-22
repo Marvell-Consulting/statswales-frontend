@@ -2,10 +2,10 @@ import React from 'react';
 import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
 import Pagination from '../../../shared/views/components/Pagination';
-import Table from '../components/Table';
-import RadioGroup from '../components/RadioGroup';
+import Table from '../../../shared/views/components/Table';
+import RadioGroup from '../../../shared/views/components/RadioGroup';
 import Select from '../../../shared/views/components/Select';
-import T from '../components/T';
+import T from '../../../shared/views/components/T';
 
 export default function Preview(props) {
   const returnLink =

@@ -4,8 +4,8 @@ import clsx from 'clsx';
 
 import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
-import RadioGroup from '../components/RadioGroup';
-import T from '../components/T';
+import RadioGroup from '../../../shared/views/components/RadioGroup';
+import T from '../../../shared/views/components/T';
 
 export default function UpdateFrequency(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);

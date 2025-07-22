@@ -5,9 +5,9 @@ import Layout from '../components/Layout';
 import FlashMessages from '../components/FlashMessages';
 import ErrorHandler from '../components/ErrorHandler';
 import DatasetStatus from '../components/dataset/DatasetStatus';
-import Tabs from '../components/Tabs';
-import T from '../components/T';
-import Table from '../components/Table';
+import Tabs from '../../../shared/views/components/Tabs';
+import T from '../../../shared/views/components/T';
+import Table from '../../../shared/views/components/Table';
 
 function ActionLink({ path, action, newTab, queryParams }) {
   const { buildUrl, i18n } = useLocals();

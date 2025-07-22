@@ -1,27 +1,28 @@
 import React, { Fragment } from 'react';
-import Layout from './components/layouts/Consumer';
-import ConsumerLayout from '../components/layouts/Consumer';
-import DatasetStatus from '../components/dataset/DatasetStatus';
-import Tabs from '../components/Tabs';
-import DeveloperView from '../components/developer/DeveloperView';
-import ViewTable from '../components/consumer/ViewTable';
-import Pagination from '../components/Pagination';
-import KeyInfo from '../components/dataset/KeyInfo';
-import Notes from '../components/dataset/Notes';
-import About from '../components/dataset/About';
-import Published from '../components/dataset/Published';
-import RadioGroup from '../components/RadioGroup';
-import { CheckboxGroup, CheckboxOptions } from '../components/CheckboxGroup';
-import { PreviewMetadata } from '../../interfaces/preview-metadata';
-import { DatasetDTO } from '../../dtos/dataset';
-import { PublishingStatus } from '../../shared/enums/publishing-status';
-import { DatasetStatus as DatasetStatusType } from '../../shared/enums/dataset-status';
-import { PageInfo } from '../../dtos/view-dto';
-import { Filters } from '../components/Filters';
 import qs from 'qs';
 
+import PublisherLayout from '../../publisher/views/components/Layout';
+import ConsumerLayout from './components/Layout';
+import DatasetStatus from '../../shared/views/components/dataset/DatasetStatus';
+import Tabs from '../../shared/views/components/Tabs';
+import DeveloperView from '../../publisher/views/components/developer/DeveloperView';
+import ViewTable from './components/ViewTable';
+import Pagination from '../../shared/views/components/Pagination';
+import KeyInfo from '../../shared/views/components/dataset/KeyInfo';
+import Notes from '../../shared/views/components/dataset/Notes';
+import About from '../../shared/views/components/dataset/About';
+import Published from '../../shared/views/components/dataset/Published';
+import RadioGroup from '../../shared/views/components/RadioGroup';
+import { Filters } from '../../shared/views/components/Filters';
+// import { CheckboxGroup, CheckboxOptions } from '../../shared/views/components/CheckboxGroup';
+// import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
+// import { DatasetDTO } from '../../shared/dtos/dataset';
+// import { PublishingStatus } from '../../shared/enums/publishing-status';
+// import { DatasetStatus as DatasetStatusType } from '../../shared/enums/dataset-status';
+// import { PageInfo } from '../../shared/dtos/view-dto';
+
 export default function ConsumerView(props) {
-  const LayoutComponent = props.isDeveloper ? Layout : ConsumerLayout;
+  const LayoutComponent = props.isDeveloper ? PublisherLayout : ConsumerLayout;
   const [originalUrl, query] = props.url.split('?');
   const parsedQuery = qs.parse(query);
   const sortBy = parsedQuery.sort_by;

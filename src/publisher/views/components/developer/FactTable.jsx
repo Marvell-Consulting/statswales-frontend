@@ -1,5 +1,5 @@
 import React from 'react';
-import Table from '../Table';
+import Table from '../../../../shared/views/components/Table';
 
 export default function FactTable(props) {
   return (
