@@ -11,7 +11,7 @@ import { strictTransport } from '../shared//middleware/strict-transport';
 import { rateLimiter } from '../shared//middleware/rate-limiter';
 import { i18next, i18nextMiddleware } from '../shared//middleware/translation';
 import { languageSwitcher } from '../shared//middleware/language-switcher';
-import { initServices } from '../publisher/middleware/services';
+import { initServices } from '../consumer/middleware/services';
 import { healthcheck } from '../shared/routes/healthcheck';
 import { errorHandler } from '../shared/routes/error-handler';
 import { notFound } from '../shared/routes/not-found';
@@ -31,9 +31,8 @@ app.set('trust proxy', 1);
 app.use(strictTransport);
 
 // asset routes (bypass middleware)
-app.use('/public', express.static(`${__dirname}/public`));
-app.use('/css', express.static(`${__dirname}/css`));
-app.use('/assets', express.static(`${__dirname}/assets`));
+app.use('/assets', express.static(`${__dirname}/../shared/public/assets`));
+app.use('/css', express.static(`${__dirname}/../shared/public/css`));
 app.use(handleAsset404);
 
 // enable middleware

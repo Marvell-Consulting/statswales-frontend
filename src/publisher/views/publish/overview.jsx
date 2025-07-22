@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useLocals } from '../context/Locals';
+import { useLocals } from '../../../shared/views/context/Locals';
 import Layout from '../components/layouts/Publisher';
 import FlashMessages from '../components/FlashMessages';
 import ErrorHandler from '../components/ErrorHandler';

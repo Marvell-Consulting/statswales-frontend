@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '../components/layouts/Publisher';
 import FlashMessages from '../components/FlashMessages';
-import Pagination from '../components/Pagination';
+import Pagination from '../../../shared/views/components/Pagination';
 import Table from '../components/Table';
 
 export default function UserGroupList(props) {

@@ -1,4 +1,4 @@
-import { Designation } from '../shared/enums/designation';
+import { Designation } from '../enums/designation';
 import { SingleLanguageRevision } from '../dtos/single-language/revision';
 import { RelatedLinkDTO } from '../dtos/related-link';
 import { OrganisationDTO } from '../dtos/organisation';

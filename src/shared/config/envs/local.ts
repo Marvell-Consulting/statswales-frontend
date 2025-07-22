@@ -12,8 +12,14 @@ export function getLocalConfig(): AppConfig {
   return defineConfig({
     env: AppEnv.Local,
     frontend: {
-      port: parseInt(process.env.FRONTEND_PORT || '3000', 10),
-      url: process.env.FRONTEND_URL || 'http://localhost:3000'
+      publisher: {
+        port: parseInt(process.env.PUBLISHER_PORT || '3000', 10),
+        url: process.env.PUBLISHER_URL || 'http://localhost:3000'
+      },
+      consumer: {
+        port: parseInt(process.env.CONSUMER_PORT || '3100', 10),
+        url: process.env.CONSUMER_URL || 'http://localhost:3100'
+      }
     },
     backend: {
       port: parseInt(process.env.BACKEND_PORT || '3001', 10),

@@ -1,5 +1,5 @@
-import { GlobalRole } from '../shared/enums/global-role';
-import { GroupRole } from '../shared/enums/group-role';
+import { GlobalRole } from '../enums/global-role';
+import { GroupRole } from '../enums/group-role';
 
 export interface AvailableRoles {
   global: GlobalRole[];

@@ -13,8 +13,14 @@ export interface AppConfig {
     cy: string;
   };
   frontend: {
-    port: number;
-    url: string;
+    publisher: {
+      port: number;
+      url: string;
+    };
+    consumer: {
+      port: number;
+      url: string;
+    };
   };
   backend: {
     port: number;

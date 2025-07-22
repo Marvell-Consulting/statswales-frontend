@@ -6,7 +6,7 @@ import {
   viewPublishedDataset,
   listPublishedDatasets
 } from '../controllers/consumer';
-import { fetchPublishedDataset } from '../../publisher/middleware/fetch-dataset';
+import { fetchPublishedDataset } from '../middleware/fetch-dataset';
 
 export const consumer = Router();
 

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
-import { useLocals } from '../../context/Locals';
-import T from '../T';
+import { useLocals } from '../../../../shared/views/context/Locals';
+import T from '../../../../shared/views/components/T';
 
 export type DatasetStatusProps = {
   publishingStatus: string;

@@ -38,9 +38,8 @@ app.set('trust proxy', 1);
 app.use(strictTransport);
 
 // asset routes (bypass middleware)
-app.use('/public', express.static(`${__dirname}/public`));
-app.use('/css', express.static(`${__dirname}/css`));
-app.use('/assets', express.static(`${__dirname}/assets`));
+app.use('/assets', express.static(`${__dirname}/../shared/public/assets`));
+app.use('/css', express.static(`${__dirname}/../shared/public/css`));
 app.use(handleAsset404);
 
 // enable middleware
@@ -76,6 +75,6 @@ app.use(notFound);
 // handle errors
 app.use(errorHandler);
 
-logger.info('Routes loaded');
+logger.info('Publisher routes loaded');
 
 export default app;

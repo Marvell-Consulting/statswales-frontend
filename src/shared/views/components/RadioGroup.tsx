@@ -1,6 +1,6 @@
 import React, { Fragment, ReactNode } from 'react';
 import clsx from 'clsx';
-import { useLocals } from '../context/Locals';
+import { useLocals } from '../../../shared/views/context/Locals';
 
 type Option = {
   value: string;

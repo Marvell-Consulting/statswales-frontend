@@ -1,6 +1,6 @@
 import React from 'react';
-import T from './T';
-import { useLocals } from '../context/Locals';
+import T from '../../../shared/views/components/T';
+import { useLocals } from '../../../shared/views/context/Locals';
 
 export type TasklistStatusProps = {
   status: string;

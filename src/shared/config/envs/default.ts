@@ -15,8 +15,14 @@ export const getDefaultConfig = (): AppConfig => {
       cy: process.env.SUPPORT_EMAIL_CY || 'StatsCymru@llyw.cymru'
     },
     frontend: {
-      port: parseInt(process.env.FRONTEND_PORT || '3000', 10),
-      url: process.env.FRONTEND_URL!
+      publisher: {
+        port: parseInt(process.env.PUBLISHER_PORT || '3000', 10),
+        url: process.env.PUBLISHER_URL!
+      },
+      consumer: {
+        port: parseInt(process.env.CONSUMER_PORT || '3000', 10),
+        url: process.env.CONSUMER_URL!
+      }
     },
     backend: {
       port: parseInt(process.env.BACKEND_PORT || '3000', 10),

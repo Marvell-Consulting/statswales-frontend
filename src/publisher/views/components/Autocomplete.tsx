@@ -1,5 +1,5 @@
 import React from 'react';
-import Select, { SelectProps } from './Select';
+import Select, { SelectProps } from '../../../shared/views/components/Select';
 
 export type AutocompleteProps = SelectProps & {
   autoSelect?: boolean;

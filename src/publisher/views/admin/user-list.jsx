@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '../components/layouts/Publisher';
 import FlashMessages from '../components/FlashMessages';
 import Table from '../components/Table';
-import Pagination from '../components/Pagination';
+import Pagination from '../../../shared/views/components/Pagination';
 
 export default function UserList(props) {
   const columns = [

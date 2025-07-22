@@ -1,10 +1,10 @@
 import React from 'react';
-import Table from './Table';
-import { CSVHeader, ViewDTO } from '../../dtos/view-dto';
-import { useLocals } from '../context/Locals';
-import T from './T';
-import { SingleLanguageDimension } from '../../dtos/single-language/dimension';
-import { SourceType } from '../../enums/source-type';
+import Table from '../../../shared/views/components/Table';
+import { CSVHeader, ViewDTO } from '../../../shared/dtos/view-dto';
+import { useLocals } from '../../../shared/views/context/Locals';
+import T from '../../../shared/views/components/T';
+import { SingleLanguageDimension } from '../../../shared/dtos/single-language/dimension';
+import { SourceType } from '../../../shared/enums/source-type';
 
 export type DimensionPreviewTableProps = {
   headers: Array<

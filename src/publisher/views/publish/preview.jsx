@@ -1,10 +1,10 @@
 import React from 'react';
 import Layout from '../components/layouts/Publisher';
 import ErrorHandler from '../components/ErrorHandler';
-import Pagination from '../components/Pagination';
+import Pagination from '../../../shared/views/components/Pagination';
 import Table from '../components/Table';
 import RadioGroup from '../components/RadioGroup';
-import Select from '../components/Select';
+import Select from '../../../shared/views/components/Select';
 import T from '../components/T';
 
 export default function Preview(props) {

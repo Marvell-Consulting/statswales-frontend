@@ -1,8 +1,8 @@
 import React from 'react';
-import Table from './Table';
-import { TranslationDTO } from '../../dtos/translations';
-import T from './T';
-import { useLocals } from '../context/Locals';
+import Table from '../../../shared/views/components/Table';
+import { TranslationDTO } from '../../../shared/dtos/translations';
+import T from '../../../shared/views/components/T';
+import { useLocals } from '../../../shared/views/context/Locals';
 
 export type TranslationsPreviewTableProps = {
   isImport?: boolean;

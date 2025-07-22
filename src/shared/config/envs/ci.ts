@@ -18,8 +18,14 @@ export function getCIConfig(): AppConfig {
       level: (process.env.LOG_LEVEL as Level) || 'silent'
     },
     frontend: {
-      port: 3000,
-      url: 'http://localhost:3000'
+      publisher: {
+        port: 3000,
+        url: 'http://localhost:3000'
+      },
+      consumer: {
+        port: 3100,
+        url: 'http://localhost:3100'
+      }
     },
     backend: {
       port: 3001,

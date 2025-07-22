@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import clsx from 'clsx';
-import T from '../T';
-import { Locals, LocalsProvider, useLocals } from '../../context/Locals';
+import T from '../../../../shared/views/components/T';
+import { Locals, LocalsProvider, useLocals } from '../../../../shared/views/context/Locals';
 
 export type LayoutProps = {
   title?: string;

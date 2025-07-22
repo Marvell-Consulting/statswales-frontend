@@ -196,7 +196,7 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
                     const evt = new Event("change");
                     checkbox.dispatchEvent(evt);
                   });
-                
+
                   return false;
                 })
               });

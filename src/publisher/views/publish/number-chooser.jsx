@@ -4,7 +4,7 @@ import ErrorHandler from '../components/ErrorHandler';
 import DimensionPreviewTable from '../components/DimensionPreviewTable';
 import RadioGroup from '../components/RadioGroup';
 import T from '../components/T';
-import Select from '../components/Select';
+import Select from '../../../shared/views/components/Select';
 
 export default function NumberChooser(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);

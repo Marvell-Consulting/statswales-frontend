@@ -1,7 +1,4 @@
 import * as shell from 'shelljs';
-
-// Copy all the view templates
-shell.cp('-R', 'src/views', 'dist/');
-shell.cp('-R', 'src/public/assets', 'dist/');
-shell.cp('-R', 'src/public/css', 'dist/');
-shell.cp('-R', 'src/i18n', 'dist/i18n/');
+shell.cp('-R', 'src/shared/public/assets', 'dist/');
+shell.cp('-R', 'src/shared/public/css', 'dist/');
+shell.cp('-R', 'src/shared/i18n', 'dist/shared/i18n/');

@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import Layout from '../components/layouts/Publisher';
+import Layout from './components/layouts/Consumer';
 import ConsumerLayout from '../components/layouts/Consumer';
 import DatasetStatus from '../components/dataset/DatasetStatus';
 import Tabs from '../components/Tabs';

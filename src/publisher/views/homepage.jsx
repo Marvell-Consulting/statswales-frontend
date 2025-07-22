@@ -2,7 +2,7 @@ import React from 'react';
 
 import ErrorHandler from './components/ErrorHandler';
 import FlashMessages from './components/FlashMessages';
-import Pagination from './components/Pagination';
+import Pagination from '../../shared/views/components/Pagination';
 import Table from './components/Table';
 import Layout from './components/layouts/Publisher';
 

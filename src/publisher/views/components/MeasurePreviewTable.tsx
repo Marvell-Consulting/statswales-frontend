@@ -1,8 +1,8 @@
 import React from 'react';
-import Table from './Table';
-import { ViewDTO } from '../../dtos/view-dto';
-import { useLocals } from '../context/Locals';
-import T from './T';
+import Table from '../../../shared/views/components/Table';
+import { ViewDTO } from '../../../shared/dtos/view-dto';
+import { useLocals } from '../../../shared/views/context/Locals';
+import T from '../../../shared/views/components/T';
 
 export type MeasurePreviewTableProps = {
   headers: ViewDTO['headers'];

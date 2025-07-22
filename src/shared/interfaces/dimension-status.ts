@@ -1,4 +1,4 @@
-import { TaskListStatus } from '../shared/enums/task-list-status';
+import { TaskListStatus } from '../enums/task-list-status';
 
 export interface DimensionStatus {
   id: string;

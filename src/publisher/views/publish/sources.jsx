@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '../components/layouts/Publisher';
 import ErrorHandler from '../components/ErrorHandler';
 import T from '../components/T';
-import Select from '../components/Select';
+import Select from '../../../shared/views/components/Select';
 
 export default function Sources(props) {
   const returnLink =
