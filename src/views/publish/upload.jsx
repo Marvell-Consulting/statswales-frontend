@@ -97,10 +97,9 @@ export default function Title(props) {
                 formData.append('csv', file, file.name);
               }
 
-              if (${props.updateType}) {
-                formData.append('updateType', '${props.updateType}');
+              if (document.getElementsByName('updateType').length > 0) {
+                formData.append('updateType', document.getElementsByName('updateType')[0].value);
               }
-              console.log("${props.updateType}")
 
               try {
                 const res = await fetch('${props.url}', {
