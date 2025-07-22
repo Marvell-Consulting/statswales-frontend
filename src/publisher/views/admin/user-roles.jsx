@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import FlashMessages from '../components/FlashMessages';
 import ErrorHandler from '../components/ErrorHandler';
-import Layout from '../components/layouts/Publisher';
+import Layout from '../components/Layout';
 
 export default function UserRoles(props) {
   const title = props.t('admin.user.roles.heading', { userName: props.userName });

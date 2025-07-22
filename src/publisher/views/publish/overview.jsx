@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useLocals } from '../../../shared/views/context/Locals';
-import Layout from '../components/layouts/Publisher';
+import Layout from '../components/Layout';
 import FlashMessages from '../components/FlashMessages';
 import ErrorHandler from '../components/ErrorHandler';
 import DatasetStatus from '../components/dataset/DatasetStatus';

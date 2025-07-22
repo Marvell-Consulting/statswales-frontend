@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '../components/layouts/Publisher';
+import Layout from '../components/Layout';
 import DimensionPreviewTable from '../components/DimensionPreviewTable';
 
 export default function DuplicateFact(props) {

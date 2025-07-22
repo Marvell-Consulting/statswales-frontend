@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '../components/layouts/Publisher';
+import Layout from '../components/Layout';
 
 export default function Login(props) {
   const title = props.t('login.heading');

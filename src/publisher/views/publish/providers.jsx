@@ -1,6 +1,6 @@
 import React from 'react';
 import ErrorHandler from '../components/ErrorHandler';
-import Layout from '../components/layouts/Publisher';
+import Layout from '../components/Layout';
 import Table from '../components/Table';
 import RadioGroup from '../components/RadioGroup';
 import T from '../components/T';

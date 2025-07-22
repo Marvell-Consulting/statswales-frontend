@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import clsx from 'clsx';
-import T from '../../../../shared/views/components/T';
-import { Locals, LocalsProvider, useLocals } from '../../../../shared/views/context/Locals';
+import T from '../../../shared/views/components/T';
+import { Locals, LocalsProvider, useLocals } from '../../../shared/views/context/Locals';
 
 export type LayoutProps = {
   title?: string;
@@ -65,12 +65,12 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
         <meta name="msapplication-TileColor" content="#b60404" />
         <meta name="msapplication-TileImage" content="/assets/images/ms-icon-144x144.png" />
         <link rel="manifest" href="/assets/manifest.json" />
-        <link rel="stylesheet" href="/css/govuk-frontend.min.css" />
-        <link rel="stylesheet" href="/css/accessible-autocomplete.min.css" />
-        <link rel="stylesheet" href="/css/app.css" />
+        <link rel="stylesheet" href="/assets/css/govuk-frontend.min.css" />
+        <link rel="stylesheet" href="/assets/css/accessible-autocomplete.min.css" />
+        <link rel="stylesheet" href="/assets/css/app.css" />
         {isDeveloper && (
           <>
-            <link rel="stylesheet" href="/css/highlight.css" />
+            <link rel="stylesheet" href="/assets/css/highlight.css" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/fira_code.min.css" />
           </>
         )}

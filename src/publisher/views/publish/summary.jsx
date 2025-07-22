@@ -1,6 +1,6 @@
 import React from 'react';
 import ErrorHandler from '../components/ErrorHandler';
-import Layout from '../components/layouts/Publisher';
+import Layout from '../components/Layout';
 import clsx from 'clsx';
 
 export default function Summary(props) {

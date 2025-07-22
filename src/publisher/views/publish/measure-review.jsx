@@ -1,7 +1,7 @@
 import React from 'react';
 import ErrorHandler from '../components/ErrorHandler';
 import MeasurePreviewTable from '../components/MeasurePreviewTable';
-import Layout from '../components/layouts/Publisher';
+import Layout from '../components/Layout';
 
 export default function MeasureReview(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);

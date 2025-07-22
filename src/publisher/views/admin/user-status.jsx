@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '../components/layouts/Publisher';
+import Layout from '../components/Layout';
 import FlashMessages from '../components/FlashMessages';
 import ErrorHandler from '../components/ErrorHandler';
 

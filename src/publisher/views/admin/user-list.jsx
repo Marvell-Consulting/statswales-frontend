@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '../components/layouts/Publisher';
+import Layout from '../components/Layout';
 import FlashMessages from '../components/FlashMessages';
 import Table from '../components/Table';
 import Pagination from '../../../shared/views/components/Pagination';

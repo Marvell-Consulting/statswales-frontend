@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '../components/layouts/Publisher';
+import Layout from '../components/Layout';
 
 export default function PeriodMatchFailure(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);

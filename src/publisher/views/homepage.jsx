@@ -3,8 +3,8 @@ import React from 'react';
 import ErrorHandler from './components/ErrorHandler';
 import FlashMessages from './components/FlashMessages';
 import Pagination from '../../shared/views/components/Pagination';
-import Table from './components/Table';
-import Layout from './components/layouts/Publisher';
+import Table from '../../shared/views//components/Table';
+import Layout from './components/Layout';
 
 export default function Homepage(props) {
   const columns = [

@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '../components/layouts/Publisher';
+import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
 import { Spinner } from '../components/Spinner';
 import T from '../components/T';
@@ -125,7 +125,7 @@ export default function Title(props) {
                     const innerHTML = "<a href='#" + error.field + "'>" + error.message.translated + "</a>";
                     li.innerHTML = innerHTML;
 
-                    innerWrapper.appendChild(li)  
+                    innerWrapper.appendChild(li)
                   });
                 }
               } catch (err) {

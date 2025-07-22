@@ -1,6 +1,6 @@
 import React from 'react';
 import ErrorHandler from '../components/ErrorHandler';
-import Layout from '../components/layouts/Publisher';
+import Layout from '../components/Layout';
 
 export default function Start(props) {
   const title = props.t('publish.start.title');
