@@ -4,18 +4,20 @@ import { useLocals } from '../../../shared/views/context/Locals';
 import Layout from '../components/Layout';
 import FlashMessages from '../components/FlashMessages';
 import ErrorHandler from '../components/ErrorHandler';
-import DatasetStatus from '../components/dataset/DatasetStatus';
+import DatasetStatus from '../../../shared/views/components/dataset/DatasetStatus';
 import Tabs from '../../../shared/views/components/Tabs';
 import T from '../../../shared/views/components/T';
 import Table from '../../../shared/views/components/Table';
+import { appConfig } from '../../../shared/config';
+const config = appConfig();
 
-function ActionLink({ path, action, newTab, queryParams }) {
+function ActionLink({ path, fullUrl, action, newTab, queryParams }) {
   const { buildUrl, i18n } = useLocals();
 
   return (
     <a
       className="govuk-link govuk-link--no-underline"
-      href={buildUrl(path, i18n.language, queryParams)}
+      href={path ? buildUrl(path, i18n.language, queryParams) : fullUrl }
       target={newTab ? '_blank' : undefined}
     >
       <T>publish.overview.actions.{action}</T>
@@ -33,6 +35,7 @@ function ActionsTab({
   openPublishTask
 }) {
   const { buildUrl, i18n } = useLocals();
+  const consumerUrl = config.frontend.consumer.url;
 
   return (
     <>
@@ -77,7 +80,7 @@ function ActionsTab({
 
         {datasetStatus === 'live' && (
           <li>
-            <ActionLink path={`/published/${datasetId}`} action="view_published_dataset" newTab />
+            <ActionLink fullUrl={`${consumerUrl}/${i18n.language}/${datasetId}`} action="view_published_dataset" newTab />
           </li>
         )}
 

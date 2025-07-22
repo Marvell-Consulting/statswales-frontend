@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
-import DatasetStatus from '../components/dataset/DatasetStatus';
+import DatasetStatus from '../../../shared/views/components/dataset/DatasetStatus';
 import ErrorHandler from '../components/ErrorHandler';
 
 export default function DeleteDraft(props) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
-import DatasetStatus from '../components/dataset/DatasetStatus';
+import DatasetStatus from '../../../shared/views/components/dataset/DatasetStatus';
 
 export default function PreviewFailure(props) {
   const title = props.t('errors.preview_failure.heading', { datasetTitle });

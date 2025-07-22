@@ -27,8 +27,8 @@ const Layout = ({ children, title }: PropsWithChildren<{ title?: string }>) => {
         <link rel="mask-icon" href="/assets/images/govuk-icon-mask.svg" color="#0b0c0c" />
         <link rel="apple-touch-icon" href="/assets/images/govuk-icon-180.png" />
         <link rel="manifest" href="/assets/manifest.json" />
-        <link rel="stylesheet" href="/css/govuk-frontend.min.css" />
-        <link rel="stylesheet" href="/css/app.css" />
+        <link rel="stylesheet" href="/assets/css/govuk-frontend.min.css" />
+        <link rel="stylesheet" href="/assets/css/app.css" />
       </head>
 
       <body className="govuk-template__body app-body-className" data-test="My value" data-other="report:details">

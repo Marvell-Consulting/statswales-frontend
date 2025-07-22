@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '../components/Layout';
 import TasklistStatus from '../components/TasklistStatus';
-import DatasetStatus from '../components/dataset/DatasetStatus';
+import DatasetStatus from '../../../shared/views/components/dataset/DatasetStatus';
 
 function Sidebar(props) {
   return (

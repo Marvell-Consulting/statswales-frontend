@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '../components/Layout';
 import FlashMessages from '../components/FlashMessages';
-import Table from '../components/Table';
+import Table from '../../../shared/views/components/Table';
 import Pagination from '../../../shared/views/components/Pagination';
 
 export default function UserList(props) {

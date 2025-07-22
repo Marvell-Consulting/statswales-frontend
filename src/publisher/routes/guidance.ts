@@ -13,7 +13,7 @@ import { logger } from '../../shared/utils/logger';
 import { t } from 'i18next';
 
 export const guidance = Router();
-const docsPath = path.join(__dirname, '..', '..', 'docs', 'guidance');
+const docsPath = path.join(__dirname, '..', '..', '..', 'docs', 'guidance');
 
 guidance.use((req: Request, res: Response, next: NextFunction) => {
   res.locals.activePage = 'guidance';

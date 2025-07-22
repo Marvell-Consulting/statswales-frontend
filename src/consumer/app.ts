@@ -31,8 +31,7 @@ app.set('trust proxy', 1);
 app.use(strictTransport);
 
 // asset routes (bypass middleware)
-app.use('/assets', express.static(`${__dirname}/../shared/public/assets`));
-app.use('/css', express.static(`${__dirname}/../shared/public/css`));
+app.use('/assets', express.static(path.join(__dirname, '../public')));
 app.use(handleAsset404);
 
 // enable middleware
@@ -51,8 +50,8 @@ app.engine('jsx', expressReactViews.createEngine());
 
 // public routes
 app.use('/healthcheck', rateLimiter, healthcheck);
-app.use('/:lang/published', rateLimiter, consumer);
 app.use('/:lang/cookies', rateLimiter, cookies);
+app.use('/:lang', rateLimiter, consumer);
 
 // handle 404s
 app.use(notFound);

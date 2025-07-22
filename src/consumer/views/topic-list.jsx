@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Layout from '../components/layouts/Consumer';
-import Hero from '../components/consumer/Hero';
-import T from '../components/T';
-import { useLocals } from '../context/Locals';
+import Layout from './components/Layout';
+import Hero from './components/Hero';
+import T from '../../shared/views/components/T';
+import { useLocals } from '../../shared/views/context/Locals';
 
 function Breadcrumbs({ parentTopics, selectedTopic }) {
   const { buildUrl, i18n } = useLocals();

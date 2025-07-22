@@ -11,7 +11,7 @@ import { NotFoundException } from '../exceptions/not-found.exception';
 import { docRenderer, createToc, getTitle } from '../services/marked';
 
 export const cookies = Router();
-const docsPath = path.join(__dirname, '..', '..', 'docs', 'cookies');
+const docsPath = path.join(__dirname, '..', '..', '..', 'docs', 'cookies');
 
 cookies.get('/', async (req: Request, res: Response, next: NextFunction) => {
   logger.debug('Rendering cookie statement page');
@@ -36,5 +36,5 @@ cookies.get('/', async (req: Request, res: Response, next: NextFunction) => {
   const toc = createToc(mardkwonFile);
   marked.use({ renderer: docRenderer });
   const content = domPurify.sanitize(await marked.parse(mardkwonFile));
-  res.render('guidance', { content, tableOfContents: toc, title });
+  res.render('cookies', { content, tableOfContents: toc, title });
 });

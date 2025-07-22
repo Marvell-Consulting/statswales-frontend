@@ -3,7 +3,7 @@ import React from 'react';
 import ErrorHandler from './components/ErrorHandler';
 import FlashMessages from './components/FlashMessages';
 import Pagination from '../../shared/views/components/Pagination';
-import Table from '../../shared/views//components/Table';
+import Table from '../../shared/views/components/Table';
 import Layout from './components/Layout';
 
 export default function Homepage(props) {

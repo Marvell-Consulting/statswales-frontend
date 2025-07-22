@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '../components/Layout';
 import FlashMessages from '../components/FlashMessages';
 import Pagination from '../../../shared/views/components/Pagination';
-import Table from '../components/Table';
+import Table from '../../../shared/views/components/Table';
 
 export default function UserGroupList(props) {
   const columns = [

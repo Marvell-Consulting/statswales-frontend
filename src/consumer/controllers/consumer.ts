@@ -38,7 +38,7 @@ export const listTopics = async (req: Request, res: Response, next: NextFunction
     const datasetItems = datasets?.data;
     const consumerApiUrl = `${config.backend.url}/v1/docs`;
 
-    res.render('consumer/topic-list', {
+    res.render('topic-list', {
       selectedTopic,
       childTopics,
       parentTopics,
@@ -59,7 +59,7 @@ export const listPublishedDatasets = async (req: Request, res: Response, next: N
     const { data, count } = results;
     const pagination = getPaginationProps(page, limit, count);
 
-    res.render('consumer/list', { data, count, ...pagination, hide_pagination_hint: true });
+    res.render('list', { data, count, ...pagination, hide_pagination_hint: true });
   } catch (err) {
     next(err);
   }
@@ -102,7 +102,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   pagination = generateSequenceForNumber(preview.current_page, preview.total_pages);
   const filters = await req.conapi.getPublishedDatasetFilters(dataset.id);
 
-  res.render('consumer/view', { ...preview, datasetMetadata, pagination, filters, selectedFilterOptions });
+  res.render('view', { ...preview, datasetMetadata, pagination, filters, selectedFilterOptions });
 };
 
 export const downloadPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {

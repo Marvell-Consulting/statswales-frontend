@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '../components/Layout';
 import FlashMessages from '../components/FlashMessages';
 import Pagination from '../../../shared/views/components/Pagination';
-import Table from '../components/Table';
+import Table from '../../../shared/views/components/Table';
 
 export default function DeveloperList(props) {
   const columns = [
@@ -11,7 +11,7 @@ export default function DeveloperList(props) {
       label: props.t('developer.list.table.title'),
       format: (value, row) => {
         const url = `/${props.i18n.language}/developer/${row.id}`;
-        const label = value || `${dataset.title_alt} [${props.t('homepage.table.not_translated')}]`;
+        const label = value || `${row.title_alt} [${props.t('homepage.table.not_translated')}]`;
         return (
           <a href={url} className="govuk-link">
             {label}
@@ -34,7 +34,7 @@ export default function DeveloperList(props) {
       label: props.t('developer.list.table.last_updated'),
       style: { width: '15%' },
       format: (value) => props.dateFormat(value, 'd MMMM yyyy', { locale: props.i18n.language }),
-      cellClassName: 'date white-space-nowrap;'
+      cellClassName: 'date white-space-nowrap'
     },
     {
       key: 'status',

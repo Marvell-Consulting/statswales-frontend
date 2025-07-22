@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
-import RadioGroup from '../components/RadioGroup';
+import RadioGroup from '../../../shared/views/components/RadioGroup';
 
 export default function UserGroupOrg(props) {
   const title = props.t('admin.group.organisation.heading');

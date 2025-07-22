@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from './components/Layout';
-import Pagination from '../components/Pagination';
+import Pagination from '../../shared/views/components/Pagination';
 
 export default function ConsumerList(props) {
   const title = props.t('consumer.list.heading');

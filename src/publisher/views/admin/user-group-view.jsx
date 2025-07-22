@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
-import Table from '../components/Table';
+import Table from '../../../shared/views/components/Table';
 
 export default function UserGroupView(props) {
   const columns = [
