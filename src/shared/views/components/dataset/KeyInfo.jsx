@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import T from '../T';
-import { UpdateType } from '../../../enums/update-type';
+import { NextUpdateType } from '../../../enums/next-update-type';
 import { parse } from 'date-fns';
 
 export default function KeyInfo(props) {
@@ -9,7 +9,7 @@ export default function KeyInfo(props) {
 
     if (nextUpdateAt?.update_type) {
       switch (nextUpdateAt.update_type) {
-        case UpdateType.Update:
+        case NextUpdateType.Update:
           const { day, month, year } = nextUpdateAt.date || {};
           const date = parse(`${day || '01'} ${month} ${year}`, 'dd MM yyyy', new Date());
 
@@ -19,10 +19,10 @@ export default function KeyInfo(props) {
             return props.dateFormat(date, 'MMMM yyyy', { locale: props.i18n.language });
           }
 
-        case UpdateType.Replacement:
+        case NextUpdateType.Replacement:
           return <T>dataset_view.key_information.next_update_replacement</T>;
 
-        case UpdateType.None:
+        case NextUpdateType.None:
           return <T>dataset_view.key_information.next_update_none</T>;
       }
     }

@@ -1,4 +1,4 @@
-import { UpdateType } from '../enums/update-type';
+import { NextUpdateType } from '../enums/next-update-type';
 
 export interface UpdateDateDTO {
   day?: string;
@@ -7,6 +7,6 @@ export interface UpdateDateDTO {
 }
 
 export interface UpdateFrequencyDTO {
-  update_type: UpdateType;
+  update_type: NextUpdateType;
   date?: UpdateDateDTO;
 }
