@@ -96,7 +96,7 @@ import { FilterTable } from '../../shared/dtos/filter-table';
 import qs from 'qs';
 import { DEFAULT_PAGE_SIZE } from '../../consumer/controllers/consumer';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
-import { UpdateType } from '../../shared/enums/update-type';
+import { NextUpdateType } from '../../shared/enums/next-update-type';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -2145,7 +2145,7 @@ export const provideUpdateFrequency = async (req: Request, res: Response) => {
         };
       });
 
-      if (update_frequency.update_type === UpdateType.Update) {
+      if (update_frequency.update_type === NextUpdateType.Update) {
         update_frequency.date = {
           year: req.body?.year,
           month: req.body?.month ? req.body?.month.padStart(2, '0') : '',

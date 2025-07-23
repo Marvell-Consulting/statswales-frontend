@@ -3,7 +3,7 @@ import { body, FieldValidationError, param, ValidationChain } from 'express-vali
 import { ResultWithContext } from 'express-validator/lib/chain/context-runner';
 
 import { Designation } from '../../shared/enums/designation';
-import { UpdateType } from '../../shared/enums/update-type';
+import { NextUpdateType } from '../enums/next-update-type';
 
 export const hasError = async (validator: ValidationChain, req: Request) => {
   return !(await validator.run(req)).isEmpty();
@@ -83,7 +83,7 @@ export const taskDecisionValidator = () => body('decision').isIn(['approve', 're
 
 export const taskDecisionReasonValidator = () => body('reason').if(body('decision').equals('reject')).trim().notEmpty();
 
-export const updateTypeValidator = () => body('update_type').isIn(Object.values(UpdateType));
+export const updateTypeValidator = () => body('update_type').isIn(Object.values(NextUpdateType));
 
 export const updateDayValidator = () =>
   body('day')
