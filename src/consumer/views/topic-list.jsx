@@ -13,7 +13,7 @@ function Breadcrumbs({ parentTopics, selectedTopic }) {
       <nav className="govuk-breadcrumbs" aria-label="Breadcrumb">
         <ol className="govuk-breadcrumbs__list">
           <li className="govuk-breadcrumbs__list-item">
-            <a className="govuk-breadcrumbs__link" href={buildUrl(`/published`, i18n.language)}>
+            <a className="govuk-breadcrumbs__link" href={buildUrl(`/`, i18n.language)}>
               Home
             </a>
           </li>
@@ -25,7 +25,7 @@ function Breadcrumbs({ parentTopics, selectedTopic }) {
               ) : (
                 <a
                   className="govuk-breadcrumbs__link"
-                  href={buildUrl(`/published/topic/${topic.id}/${topic.slug}`, i18n.language)}
+                  href={buildUrl(`/topic/${topic.id}/${topic.slug}`, i18n.language)}
                 >
                   {topic.name}
                 </a>
@@ -45,7 +45,7 @@ function ChildTopics({ childTopics }) {
     <ul className="govuk-list">
       {childTopics.map((topic) => (
         <li className="index-list__item" key={topic.id}>
-          <a href={buildUrl(`/published/topic/${topic.id}/${topic.slug}`, i18n.language)}>
+          <a href={buildUrl(`/topic/${topic.id}/${topic.slug}`, i18n.language)}>
             <h3 className="govuk-heading-s govuk-!-margin-bottom-0">{topic.name}</h3>
           </a>
         </li>
@@ -61,7 +61,7 @@ function Datasets({ datasets }) {
     <ul className="govuk-list">
       {datasets.map((dataset) => (
         <li className="index-list__item" key={dataset.id}>
-          <a href={buildUrl(`/published/${dataset.id}`, i18n.language)}>
+          <a href={buildUrl(`/${dataset.id}`, i18n.language)}>
             <h3 className="govuk-heading-s govuk-!-margin-bottom-0">{dataset.title}</h3>
           </a>
           <div className="index-list__meta">
