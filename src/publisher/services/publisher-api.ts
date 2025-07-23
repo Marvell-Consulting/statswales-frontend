@@ -113,12 +113,7 @@ export class PublisherApi {
   }
 
   public async ping(): Promise<boolean> {
-    logger.debug(`Pinging backend...`);
-
-    return this.fetch({ url: 'healthcheck' }).then(() => {
-      logger.debug('API responded to ping');
-      return true;
-    });
+    return this.fetch({ url: 'healthcheck' }).then(() => true);
   }
 
   public async getEnabledAuthProviders(): Promise<AuthProvider[]> {
