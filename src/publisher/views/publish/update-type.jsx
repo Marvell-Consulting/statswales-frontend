@@ -3,12 +3,17 @@ import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
 import RadioGroup from '../../../shared/views/components/RadioGroup';
 import T from '../../../shared/views/components/T';
+import { DataTableAction } from '../../../shared/enums/data-table-action';
 
 export default function UpdateType(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   const backLink = returnLink;
-
   const title = props.t('publish.update_type.heading');
+
+  const options = Object.values(DataTableAction).map((action) => ({
+    value: action,
+    label: <T>{`publish.update_type.${action}`}</T>
+  }));
 
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
@@ -23,12 +28,7 @@ export default function UpdateType(props) {
             <RadioGroup
               name="updateType"
               labelledBy="update-type-heading"
-              options={[
-                { value: 'add', label: <T>publish.update_type.add</T> },
-                { value: 'add_revise', label: <T>publish.update_type.add_revise</T> },
-                { value: 'revise', label: <T>publish.update_type.revise</T> },
-                { value: 'replace_all', label: <T>publish.update_type.replace_all</T> }
-              ]}
+              options={options}
             />
 
             <div className="govuk-button-group">

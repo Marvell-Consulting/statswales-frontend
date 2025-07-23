@@ -205,6 +205,7 @@ export const provideTitle = async (req: Request, res: Response) => {
 export const uploadDataTable = async (req: Request, res: Response) => {
   const dataset = res.locals.dataset;
   const revision = dataset.draft_revision;
+  const isUpdate = Boolean(revision.previous_revision_id);
   const revisit = dataset.dimensions?.length > 0;
   const supportedFormats = Object.values(DuckDBSupportFileFormats).map((format) => format.toLowerCase());
   const session = get(req.session, `dataset[${dataset.id}]`, { updateType: undefined });
@@ -213,6 +214,8 @@ export const uploadDataTable = async (req: Request, res: Response) => {
 
   if (session.updateType) {
     updateType = session.updateType;
+  } else if (isUpdate && revision.data_table?.action) {
+    updateType = revision.data_table.action;
   } else {
     updateType = req.body?.updateType;
   }
@@ -297,6 +300,7 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
   const isUpdate = Boolean(revision.previous_revision_id);
   const revisit = !isUpdate && !hasUnknownColumns;
   const session = get(req.session, `dataset[${dataset.id}]`, { updateType: undefined });
+  const updateType = isUpdate && dataTable.action;
 
   let errors: ViewError[] | undefined;
   let previewData: ViewDTO | undefined;
@@ -359,7 +363,7 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
     res.status(400);
     errors = [{ field: 'preview', message: { key: 'errors.preview.failed_to_get_preview' } }];
   }
-  res.render('publish/preview', { ...previewData, ignoredCount, pagination, revisit, errors });
+  res.render('publish/preview', { ...previewData, ignoredCount, pagination, revisit, updateType, errors });
 };
 
 export const sources = async (req: Request, res: Response, next: NextFunction) => {

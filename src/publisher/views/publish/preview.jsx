@@ -47,6 +47,9 @@ export default function Preview(props) {
   const title = props.revisit ? props.t('publish.preview.heading_summary') : props.t('publish.preview.heading');
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
+      {props.updateType && (
+        <span className="region-subhead"><T>{`publish.update_type.${props.updateType}`}</T></span>
+      )}
       <h1 className="govuk-heading-xl">{title}</h1>
 
       <ErrorHandler />
