@@ -27,7 +27,7 @@ export default function ConsumerList(props) {
           <ul className="govuk-list">
             {props.data.map((dataset, index) => (
               <li key={index} className="index-list__item">
-                <a href={props.buildUrl(`/published/${dataset.id}`, props.i18n.language)}>
+                <a href={props.buildUrl(`/${dataset.id}`, props.i18n.language)}>
                   <h3 className="govuk-heading-xs govuk-!-margin-bottom-0">{dataset.title}</h3>
                 </a>
                 <div className="index-list__meta">

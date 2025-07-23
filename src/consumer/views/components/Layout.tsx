@@ -69,12 +69,7 @@ const Layout = ({ children, title }: PropsWithChildren<{ title?: string }>) => {
             <div className="header" id="header">
               <div className="header__components container-fluid">
                 <div id="block-govwales-branding">
-                  <a
-                    href={buildUrl('/published', i18n.language)}
-                    title="Welsh Government"
-                    className="header__logo"
-                    id="logo"
-                  >
+                  <a href={buildUrl('/', i18n.language)} title="Welsh Government" className="header__logo" id="logo">
                     <span className="visually-hidden">{t('consumer.global.home_label')}</span>
                   </a>
                 </div>
