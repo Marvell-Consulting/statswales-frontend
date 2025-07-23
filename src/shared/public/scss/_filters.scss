@@ -1,0 +1,180 @@
+@use 'colours';
+
+.filters-container {
+  .filters-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  a.clear-filters {
+    font-weight: bold;
+    font-size: 14px;
+    font-size: 0.875rem;
+    float: right;
+    color: colours.$red;
+    background-color: colours.$white;
+    padding: 8px 10px;
+    border: 1px solid colours.$red;
+    cursor: pointer;
+
+    &:hover {
+      color: colours.$white;
+      background: colours.$red;
+    }
+  }
+
+  .padding-box {
+    padding: 5px 10px;
+  }
+
+  .filter-container {
+    border: 1px solid colours.$darkgrey;
+
+    .filter-head {
+      border-bottom: 1px solid colours.$lightgrey_light;
+      padding-bottom: 0.5em;
+    }
+
+    .filter-body {
+      padding: 5px 10px;
+      overflow: auto;
+      min-height: 90px;
+      max-height: 350px;
+    }
+
+    .govuk-checkboxes {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input[type='checkbox'] {
+      width: 24px;
+      height: 24px;
+      margin-left: 0;
+      margin-top: 5px;
+    }
+
+    .controls {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 0.25em;
+
+      > a {
+        font-size: 14px !important;
+      }
+    }
+
+    .govuk-checkboxes__item {
+      display: inline-flex;
+      flex-wrap: nowrap;
+
+      > * {
+        flex-shrink: 0;
+      }
+
+      &:not(summary > .govuk-checkboxes__item) {
+        padding-right: 1em; // allow slight overscroll
+      }
+
+      label {
+        white-space: nowrap;
+      }
+    }
+
+    // overrides for default checkboxes which have a
+    // strange clickable margin, this affects the click
+    // hit-box for the details/summary element
+    .govuk-checkboxes__label {
+      margin-top: 0 !important;
+      height: 34px;
+      padding-left: 0.5em !important;
+      max-width: unset;
+
+      display: flex;
+      align-items: center;
+
+      &:before {
+        top: 50%;
+        margin-top: -12px;
+      }
+      &:after {
+        top: 50%;
+        margin-top: -5px;
+      }
+    }
+
+    .indent {
+      margin-left: 30px;
+      position: relative;
+
+      &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: -20px;
+        width: 2px;
+        height: 100%;
+        background-color: colours.$lightgrey_light;
+      }
+    }
+
+    details {
+      &[open] {
+        > summary::before {
+          transform: rotate(90deg);
+        }
+      }
+
+      .govuk-checkboxes__item:not(summary > .govuk-checkboxes__item) {
+        margin-left: 30px;
+      }
+
+      summary {
+        display: flex;
+        position: relative;
+        white-space: nowrap;
+        height: 34px;
+        align-items: center;
+        gap: 6px;
+
+        &::before {
+          content: '';
+          background-image: url('../images/chevron.svg');
+          background-repeat: no-repeat;
+          background-size: 15px 15px;
+          background-position: center;
+          width: 24px;
+          height: 24px;
+          cursor: pointer;
+          // prevent controls from being hidden.
+          flex-shrink: 0;
+        }
+      }
+    }
+  }
+
+  @media all and (max-width: 640px) {
+    .filter-container {
+      .govuk-checkboxes__label {
+        height: 40px;
+      }
+
+      details {
+        summary {
+          height: 40px;
+          &::before {
+            background-size: 22.5px 22.5px;
+            width: 36px;
+            height: 36px;
+          }
+        }
+      }
+
+      .indent {
+        margin-left: 36px;
+      }
+    }
+  }
+}

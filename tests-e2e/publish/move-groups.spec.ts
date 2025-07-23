@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
 
-import { appConfig } from '../../src/config';
+import { appConfig } from '../../src/shared/config';
 import { users } from '../fixtures/logins';
 
 const config = appConfig();
-const baseUrl = config.frontend.url;
+const baseUrl = config.frontend.publisher.url;
 
 test.describe('Move dataset between groups', () => {
   const id = '7f247810-08c3-4cb2-acca-b2c77dc03770';

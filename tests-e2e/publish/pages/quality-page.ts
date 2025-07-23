@@ -1,9 +1,9 @@
 import type { Page, Locator } from '@playwright/test';
 
-import { appConfig } from '../../../src/config';
+import { appConfig } from '../../../src/shared/config';
 
 const config = appConfig();
-const baseUrl = config.frontend.url;
+const baseUrl = config.frontend.publisher.url;
 
 export class QualityPage {
   private readonly inputQuality: Locator;

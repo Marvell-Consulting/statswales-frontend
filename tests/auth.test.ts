@@ -2,10 +2,10 @@ import request from 'supertest';
 import JWT from 'jsonwebtoken';
 import { parse as parseCookies } from 'set-cookie-parser';
 
-import { i18next } from '../src/middleware/translation';
-import app from '../src/app';
-import { appConfig } from '../src/config';
-import { Locale } from '../src/enums/locale';
+import { i18next } from '../src/shared/middleware/translation';
+import app from '../src/publisher/app';
+import { appConfig } from '../src/shared/config';
+import { Locale } from '../src/shared/enums/locale';
 
 import { mockBackend } from './mocks/backend';
 

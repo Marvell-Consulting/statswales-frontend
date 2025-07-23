@@ -1,13 +1,13 @@
 import { test, expect } from '@playwright/test';
 
-import { appConfig } from '../../src/config';
+import { appConfig } from '../../src/shared/config';
 
 import { QualityPage } from './pages/quality-page';
 import { users } from '../fixtures/logins';
 import { createEmptyDataset } from './helpers/create-empty-dataset';
 
 const config = appConfig();
-const baseUrl = config.frontend.url;
+const baseUrl = config.frontend.publisher.url;
 
 test.describe('Metadata Quality', () => {
   let qualityPage: QualityPage;

@@ -1,8 +1,8 @@
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
 
-import { DatasetListItemDTO } from '../../src/dtos/dataset-list-item';
-import { appConfig } from '../../src/config';
+import { DatasetListItemDTO } from '../../src/shared/dtos/dataset-list-item';
+import { appConfig } from '../../src/shared/config';
 
 import {
   datasets,

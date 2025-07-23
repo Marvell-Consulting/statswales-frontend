@@ -1,10 +1,15 @@
 import { test, expect } from '@playwright/test';
+
 import { users } from '../fixtures/logins';
+import { appConfig } from '../../src/shared/config';
+
+const config = appConfig();
+const baseUrl = config.frontend.publisher.url;
 
 test.describe('Not authed', () => {
   test('Redirects to login page when not authenticated', async ({ page }) => {
     await page.goto('/');
-    expect(page.url()).toBe(`${process.env.FRONTEND_URL}/en-GB/auth/login`);
+    expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
   });
 });
 

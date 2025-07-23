@@ -1,14 +1,14 @@
 import { randomUUID } from 'crypto';
 
-import { appConfig } from '../src/config';
-import { HttpMethod } from '../src/enums/http-method';
-import { Locale } from '../src/enums/locale';
-import { SourceType } from '../src/enums/source-type';
-import { ApiException } from '../src/exceptions/api.exception';
-import { ViewException } from '../src/exceptions/view.exception';
-import { SourceAssignmentDTO } from '../src/dtos/source-assignment-dto';
-import { DatasetListItemDTO } from '../src/dtos/dataset-list-item';
-import { PublisherApi } from '../src/services/publisher-api';
+import { appConfig } from '../src/shared/config';
+import { HttpMethod } from '../src/shared/enums/http-method';
+import { Locale } from '../src/shared/enums/locale';
+import { SourceType } from '../src/shared/enums/source-type';
+import { ApiException } from '../src/shared/exceptions/api.exception';
+import { ViewException } from '../src/shared/exceptions/view.exception';
+import { SourceAssignmentDTO } from '../src/shared/dtos/source-assignment-dto';
+import { DatasetListItemDTO } from '../src/shared/dtos/dataset-list-item';
+import { PublisherApi } from '../src/publisher/services/publisher-api';
 
 describe('PublisherApi', () => {
   let statsWalesApi: PublisherApi;
@@ -49,7 +49,7 @@ describe('PublisherApi', () => {
     it('should throw an ApiException when the backend is unreachable', async () => {
       mockResponse = Promise.reject(new Error('Service Unavailable'));
       await expect(statsWalesApi.fetch({ url: 'example.com/api' })).rejects.toThrow(
-        new ApiException('Service Unavailable', undefined)
+        new ApiException('Service Unavailable', 503)
       );
     });
 
@@ -356,7 +356,7 @@ describe('PublisherApi', () => {
     it('should throw an exception when the backend is unreachable', async () => {
       mockResponse = Promise.reject(new Error('Service Unavailable'));
 
-      await expect(statsWalesApi.ping()).rejects.toThrow(new ApiException('Service Unavailable', undefined));
+      await expect(statsWalesApi.ping()).rejects.toThrow(new ApiException('Service Unavailable', 503));
 
       expect(fetchSpy).toHaveBeenCalledWith(`${baseUrl}/healthcheck`, { method: HttpMethod.Get, headers });
     });

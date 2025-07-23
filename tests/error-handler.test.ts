@@ -3,14 +3,14 @@ import { Request, Response, NextFunction } from 'express';
 import { http, HttpResponse } from 'msw';
 import { parse as parseCookies } from 'set-cookie-parser';
 
-import { i18next } from '../src/middleware/translation';
-import app from '../src/app';
-import { Locale } from '../src/enums/locale';
-import { appConfig } from '../src/config';
+import { i18next } from '../src/shared/middleware/translation';
+import app from '../src/publisher/app';
+import { Locale } from '../src/shared/enums/locale';
+import { appConfig } from '../src/shared/config';
 
 import { mockBackend } from './mocks/backend';
 
-jest.mock('../src/middleware/ensure-authenticated', () => ({
+jest.mock('../src/publisher/middleware/ensure-authenticated', () => ({
   ensureAuthenticated: (req: Request, res: Response, next: NextFunction) => next()
 }));
 

@@ -8,10 +8,10 @@ import { TZDate } from '@date-fns/tz';
 import { add } from 'date-fns';
 
 import { users } from '../fixtures/logins';
-import { appConfig } from '../../src/config';
+import { appConfig } from '../../src/shared/config';
 
 const config = appConfig();
-const baseUrl = config.frontend.url;
+const baseUrl = config.frontend.publisher.url;
 
 test.describe('Happy path', () => {
   test.use({ storageState: users.publisher.path });
