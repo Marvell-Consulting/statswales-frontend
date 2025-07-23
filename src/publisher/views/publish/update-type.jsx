@@ -25,11 +25,7 @@ export default function UpdateType(props) {
             {title}
           </h1>
           <form method="post" role="continue" id="updateType">
-            <RadioGroup
-              name="updateType"
-              labelledBy="update-type-heading"
-              options={options}
-            />
+            <RadioGroup name="updateType" labelledBy="update-type-heading" options={options} />
 
             <div className="govuk-button-group">
               <button
