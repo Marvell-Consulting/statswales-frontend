@@ -2,7 +2,7 @@ import path from 'node:path';
 
 import { test, expect } from '@playwright/test';
 
-import { appConfig } from '../../src/config';
+import { appConfig } from '../../src/shared/config';
 
 import { PreviewPage } from './pages/preview-page';
 import { UploadPage } from './pages/upload-page';
@@ -10,7 +10,7 @@ import { users } from '../fixtures/logins';
 import { createEmptyDataset } from './helpers/create-empty-dataset';
 
 const config = appConfig();
-const baseUrl = config.frontend.url;
+const baseUrl = config.frontend.publisher.url;
 
 // TODO: fix and re-enable this test
 test.fixme('Preview page', () => {

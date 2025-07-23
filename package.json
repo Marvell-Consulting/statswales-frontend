@@ -27,6 +27,7 @@
     "localstack": "trap 'exit 0' SIGINT; nodemon --watch src -e ts,ejs,json,scss --exec npm run start:publisher | pino-colada & npm run start:consumer | pino-colada",
     "postlocalstack": "npm run docker-compose-down",
     "start:dev": "npm run build && (node dist/publisher/server.js | pino-colada & node dist/consumer/server.js | pino-colada)",
+    "start:ci": "node dist/publisher/server.js & node dist/consumer/server.js",
     "start:publisher": "node dist/publisher/server.js",
     "start:consumer": "node dist/consumer/server.js"
   },

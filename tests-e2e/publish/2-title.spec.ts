@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test';
 
-import { appConfig } from '../../src/config';
+import { appConfig } from '../../src/shared/config';
 
 import { TitlePage } from './pages/title-page';
 import { users } from '../fixtures/logins';
 
 const config = appConfig();
-const baseUrl = config.frontend.url;
+const baseUrl = config.frontend.publisher.url;
 
 test.describe('Title page', () => {
   let titlePage: TitlePage;
