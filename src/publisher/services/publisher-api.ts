@@ -113,7 +113,7 @@ export class PublisherApi {
       .catch((error) => {
         if (error instanceof ApiException) throw error;
         logger.error(error, `An unknown fetch error occurred attempting to access ${this.backendUrl}/${url}`);
-        throw new UnknownException(error.mesage);
+        throw new UnknownException(error.message);
       });
   }
 

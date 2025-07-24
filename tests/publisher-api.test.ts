@@ -9,6 +9,7 @@ import { ViewException } from '../src/shared/exceptions/view.exception';
 import { SourceAssignmentDTO } from '../src/shared/dtos/source-assignment-dto';
 import { DatasetListItemDTO } from '../src/shared/dtos/dataset-list-item';
 import { PublisherApi } from '../src/publisher/services/publisher-api';
+import { UnknownException } from '../src/shared/exceptions/unknown.exception';
 
 describe('PublisherApi', () => {
   let statsWalesApi: PublisherApi;
@@ -46,10 +47,10 @@ describe('PublisherApi', () => {
   });
 
   describe('Error handling', () => {
-    it('should throw an ApiException when the backend is unreachable', async () => {
+    it('should throw an UnknownException when the backend is unreachable', async () => {
       mockResponse = Promise.reject(new Error('Service Unavailable'));
       await expect(statsWalesApi.fetch({ url: 'example.com/api' })).rejects.toThrow(
-        new ApiException('Service Unavailable', 503)
+        new UnknownException('Service Unavailable')
       );
     });
 
