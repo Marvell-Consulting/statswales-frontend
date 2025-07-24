@@ -15,7 +15,7 @@ export default function Publisher(props) {
         <div className="govuk-summary-list__row">
           <dt className="govuk-summary-list__key">{props.t('dataset_view.published.contact')}</dt>
           <dd className="govuk-summary-list__value">
-            {props.publisher.group.email || props.t('dataset_view.not_entered')}
+            {props.publisher?.group?.email || props.t('dataset_view.not_entered')}
           </dd>
         </div>
       </dl>
