@@ -96,7 +96,7 @@ function ActionsTab({
 
         {publishingStatus !== 'published' && (
           <li>
-            <ActionLink path={`/publish/${datasetId}/cube-preview`} action="preview" />
+            <ActionLink path={`/publish/${datasetId}/cube-preview`} action="preview" newTab />
           </li>
         )}
 
