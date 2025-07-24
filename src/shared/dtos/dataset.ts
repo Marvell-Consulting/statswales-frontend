@@ -3,6 +3,7 @@ import { RevisionDTO } from './revision';
 import { MeasureDTO } from './measure';
 import { FactTableColumnDto } from './fact-table-column-dto';
 import { TaskDTO } from './task';
+import { PublisherDTO } from './publisher-dto';
 
 export interface DatasetDTO {
   id: string;
@@ -25,4 +26,5 @@ export interface DatasetDTO {
   end_date?: string;
   user_group_id?: string;
   tasks?: TaskDTO[];
+  publisher?: PublisherDTO;
 }

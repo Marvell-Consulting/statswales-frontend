@@ -1,6 +1,7 @@
 import { SingleLanguageDimension } from './dimension';
 import { SingleLanguageRevision } from './revision';
 import { SingleLanguageMeasure } from './measure';
+import { PublisherDTO } from '../publisher-dto';
 
 export interface SingleLanguageDataset {
   id: string;
@@ -17,4 +18,5 @@ export interface SingleLanguageDataset {
   published_revision?: SingleLanguageRevision;
   start_date?: string;
   end_date?: string;
+  publisher?: PublisherDTO;
 }
