@@ -59,7 +59,11 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
               <T filtered={filtered} total={total} className={clsx('filtered-label', { 'js-hidden': !filtered })} raw>
                 filters.summary
               </T>
-              <span className={clsx('non-filtered-label', { 'js-hidden': filtered })}>{total}</span>)
+              <span className={clsx('non-filtered-label', { 'js-hidden': filtered })}>
+                {total}
+                <span className="govuk-visually-hidden"> selectable options</span>
+              </span>
+              )
             </h3>
             <div className="filter-container option-select">
               <div className="padding-box">
@@ -73,6 +77,7 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
                     <Checkbox
                       checked={!values}
                       label={<T>filters.no_filter</T>}
+                      description={`All options for ${filter.columnName}`}
                       name={`filter-${filter.factTableColumn}-all`}
                       value="all"
                       omitName
