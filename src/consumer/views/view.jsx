@@ -11,7 +11,7 @@ import Pagination from '../../shared/views/components/Pagination';
 import KeyInfo from '../../shared/views/components/dataset/KeyInfo';
 import Notes from '../../shared/views/components/dataset/Notes';
 import About from '../../shared/views/components/dataset/About';
-import Published from '../../shared/views/components/dataset/Published';
+import Publisher from '../../shared/views/components/dataset/Publisher';
 import RadioGroup from '../../shared/views/components/RadioGroup';
 import { Filters } from '../../shared/views/components/Filters';
 // import { CheckboxGroup, CheckboxOptions } from '../../shared/views/components/CheckboxGroup';
@@ -122,7 +122,7 @@ export default function ConsumerView(props) {
         <KeyInfo {...props} keyInfo={props.datasetMetadata.keyInfo} />
         <Notes {...props} notes={props.datasetMetadata.notes} />
         <About {...props} about={props.datasetMetadata.about} />
-        <Published {...props} published={props.datasetMetadata.published} />
+        <Publisher {...props} publisher={props.datasetMetadata.publisher} />
       </div>
     </div>
   );

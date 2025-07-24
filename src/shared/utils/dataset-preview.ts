@@ -36,9 +36,7 @@ export const getDatasetPreview = async (
       collection: await markdownToSafeHTML(collection),
       relatedLinks: related_links
     },
-    published: {
-      organisation: undefined
-    }
+    publisher: dataset.publisher
   };
 
   return preview;

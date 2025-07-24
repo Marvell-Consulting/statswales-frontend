@@ -1,8 +1,8 @@
 import { Designation } from '../enums/designation';
 import { SingleLanguageRevision } from '../dtos/single-language/revision';
 import { RelatedLinkDTO } from '../dtos/related-link';
-import { OrganisationDTO } from '../dtos/organisation';
 import { UpdateFrequencyDTO } from '../dtos/update-frequency';
+import { PublisherDTO } from '../dtos/publisher-dto';
 
 export interface PreviewMetadata {
   title?: string;
@@ -30,7 +30,5 @@ export interface PreviewMetadata {
     collection: string;
     relatedLinks?: RelatedLinkDTO[];
   };
-  published: {
-    organisation?: OrganisationDTO;
-  };
+  publisher?: PublisherDTO;
 }
