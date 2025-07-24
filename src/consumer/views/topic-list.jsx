@@ -45,8 +45,11 @@ function ChildTopics({ childTopics }) {
     <ul className="govuk-list">
       {childTopics.map((topic) => (
         <li className="index-list__item" key={topic.id}>
-          <a href={buildUrl(`/topic/${topic.id}/${topic.slug}`, i18n.language)}>
-            <h3 className="govuk-heading-s govuk-!-margin-bottom-0">{topic.name}</h3>
+          <a
+            className="govuk-heading-s govuk-!-margin-bottom-0 govuk-link inline"
+            href={buildUrl(`/topic/${topic.id}/${topic.slug}`, i18n.language)}
+          >
+            {topic.name}
           </a>
         </li>
       ))}
@@ -61,8 +64,11 @@ function Datasets({ datasets }) {
     <ul className="govuk-list">
       {datasets.map((dataset) => (
         <li className="index-list__item" key={dataset.id}>
-          <a href={buildUrl(`/${dataset.id}`, i18n.language)}>
-            <h3 className="govuk-heading-s govuk-!-margin-bottom-0">{dataset.title}</h3>
+          <a
+            className="govuk-heading-s govuk-!-margin-bottom-0 govuk-link inline"
+            href={buildUrl(`/${dataset.id}`, i18n.language)}
+          >
+            {dataset.title}
           </a>
           <div className="index-list__meta">
             <p className="govuk-!-margin-top-0">
