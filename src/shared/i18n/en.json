@@ -1015,7 +1015,7 @@
         "withdraw_update_revision": "Change update before publication",
         "continue_update": "Continue update",
         "continue": "Continue creating dataset",
-        "preview": "View dataset preview",
+        "preview": "View dataset preview (opens in new tab)",
         "move": "Move dataset to another group"
       },
       "history": {
