@@ -77,7 +77,7 @@ export class ConsumerApi {
       })
       .catch((error) => {
         if (error instanceof ApiException) throw error;
-        logger.error(error, `An unknown fetch error occurred attempting to access ${this.backendUrl}/${url}`);
+        logger.error(error, `An unknown error occurred attempting to fetch ${this.backendUrl}/${url}`);
         throw new UnknownException(error.mesage);
       });
   }
