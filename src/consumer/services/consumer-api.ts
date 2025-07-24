@@ -1,4 +1,5 @@
 import { ReadableStream } from 'node:stream/web';
+import { performance } from 'node:perf_hooks';
 
 import { logger as parentLogger } from '../../shared/utils/logger';
 import { DatasetDTO } from '../../shared/dtos/dataset';
@@ -14,10 +15,23 @@ import { PublishedTopicsDTO } from '../../shared/dtos/published-topics-dto';
 import { FilterInterface } from '../../shared/interfaces/filterInterface';
 import { FilterTable } from '../../shared/dtos/filter-table';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
+import { UnknownException } from '../../shared/exceptions/unknown.exception';
 
 const config = appConfig();
 
 const logger = parentLogger.child({ service: 'consumer-api' });
+
+const logRequestTime = (method: string, url: string, start: number) => {
+  const end = performance.now();
+  const time = Math.round(end - start);
+  const SLOW_RESPONSE_MS = 500;
+
+  if (time > SLOW_RESPONSE_MS) {
+    logger.warn(`SLOW: ${method} /${url} (${time}ms)`);
+  } else {
+    logger.debug(`${method} /${url} (${time}ms)`);
+  }
+};
 
 interface fetchParams {
   url: string;
@@ -44,21 +58,27 @@ export class ConsumerApi {
 
     // if json is passed, then body will be ignored
     const data = json ? JSON.stringify(json) : body;
+    const start = performance.now();
 
     return fetch(`${this.backendUrl}/${url}`, { method, headers: head, body: data })
+      .then((response: Response) => {
+        logRequestTime(method, url, start);
+        return response;
+      })
       .then(async (response: Response) => {
         if (!response.ok) {
-          const body = await new Response(response.body).text();
-          if (body) {
-            throw new ApiException(response.statusText, response.status, body);
-          }
-          throw new ApiException(response.statusText, response.status);
+          logger.error(
+            `API request to ${this.backendUrl}/${url} failed with status '${response.status}' and message '${response.statusText}'`
+          );
+          const body = (await new Response(response.body).text()) || undefined;
+          throw new ApiException(response.statusText, response.status, body);
         }
         return response;
       })
       .catch((error) => {
-        logger.error(`An api error occurred with status '${error.status}' and message '${error.message}'`);
-        throw new ApiException(error.message, error.status, error.body);
+        if (error instanceof ApiException) throw error;
+        logger.error(error, `An unknown fetch error occurred attempting to access ${this.backendUrl}/${url}`);
+        throw new UnknownException(error.mesage);
       });
   }
 

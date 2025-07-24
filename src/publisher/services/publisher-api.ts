@@ -44,6 +44,7 @@ import { EventLogDTO } from '../../shared/dtos/event-log';
 import { FilterTable } from '../../shared/dtos/filter-table';
 import { FilterInterface } from '../../shared/interfaces/filterInterface';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
+import { UnknownException } from '../../shared/exceptions/unknown.exception';
 
 const config = appConfig();
 
@@ -101,14 +102,18 @@ export class PublisherApi {
       })
       .then(async (response: Response) => {
         if (!response.ok) {
+          logger.error(
+            `API request to ${this.backendUrl}/${url} failed with status '${response.status}' and message '${response.statusText}'`
+          );
           const body = (await new Response(response.body).text()) || undefined;
           throw new ApiException(response.statusText, response.status, body);
         }
         return response;
       })
       .catch((error) => {
-        logger.error(`An api error occurred with status '${error.status}' and message '${error.message}'`);
-        throw new ApiException(error.message, error.status, error.body);
+        if (error instanceof ApiException) throw error;
+        logger.error(error, `An unknown fetch error occurred attempting to access ${this.backendUrl}/${url}`);
+        throw new UnknownException(error.mesage);
       });
   }
 
