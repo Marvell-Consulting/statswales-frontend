@@ -12,8 +12,23 @@ export type FiltersProps = {
   title: string;
 };
 
+function sortWithNumbers(arr: FilterTable['values']) {
+  return arr.sort((a, b) => {
+    const sRe = /[^0-9]+/;
+    const aText = sRe.exec(a.description)?.[0];
+    const bText = sRe.exec(b.description)?.[0];
+    if (aText && bText && aText !== bText) {
+      return aText > bText ? 1 : -1;
+    }
+    const dRe = /\d+/;
+    const aNum = dRe.exec(a.description);
+    const bNum = dRe.exec(b.description);
+    return Number(aNum?.[0] || 0) > Number(bNum?.[0] || 0) ? 1 : -1;
+  });
+}
+
 const normalizeFilters = (options: FilterTable['values']): CheckboxOptions[] => {
-  return options.map((opt) => {
+  return sortWithNumbers(options).map((opt) => {
     return {
       label: opt.description,
       value: opt.description,
