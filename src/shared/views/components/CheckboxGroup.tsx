@@ -46,8 +46,15 @@ export const Checkbox = ({
   checked,
   values,
   independentExpand,
+  description,
   omitName
-}: CheckboxOptions & { name: string; checked?: boolean; values: string[]; omitName?: boolean }) => {
+}: CheckboxOptions & {
+  name: string;
+  checked?: boolean;
+  values: string[];
+  omitName?: boolean;
+  description?: string;
+}) => {
   const CheckboxField = (
     <div className="govuk-checkboxes__item">
       <input
@@ -57,6 +64,7 @@ export const Checkbox = ({
         type="checkbox"
         value={value}
         data-aria-controls={children ? `conditional-${name}` : undefined}
+        aria-label={description || undefined}
         defaultChecked={checked}
       />
       <label className="govuk-label govuk-checkboxes__label checkboxes__label__filter" htmlFor={name}>

@@ -5,6 +5,7 @@ import qs from 'qs';
 import { flatten, get, omit } from 'lodash';
 import clsx from 'clsx';
 import T from './T';
+import { useLocals } from '../context/Locals';
 
 export type FiltersProps = {
   filters: FilterTable[];
@@ -31,6 +32,7 @@ const filterOptionCount = (options: FilterTable['values']): number => {
 
 export const Filters = ({ filters, url, title }: FiltersProps) => {
   const [baseUrl, query] = url.split('?');
+  const { t } = useLocals();
   const parsedQuery = qs.parse(query);
   const parsedFilter = parsedQuery?.filter;
   const activeFilters = parsedFilter && flatten(Object.values(parsedFilter)).length;
@@ -59,7 +61,10 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
               <T filtered={filtered} total={total} className={clsx('filtered-label', { 'js-hidden': !filtered })} raw>
                 filters.summary
               </T>
-              <span className={clsx('non-filtered-label', { 'js-hidden': filtered })}>{total}</span>)
+              <T total={total} className={clsx('non-filtered-label', { 'js-hidden': filtered })} raw>
+                filters.non-filtered-summary
+              </T>
+              )
             </h3>
             <div className="filter-container option-select">
               <div className="padding-box">
@@ -73,6 +78,7 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
                     <Checkbox
                       checked={!values}
                       label={<T>filters.no_filter</T>}
+                      description={t('filters.no_filter_description', { columnName: filter.columnName })}
                       name={`filter-${filter.factTableColumn}-all`}
                       value="all"
                       omitName
