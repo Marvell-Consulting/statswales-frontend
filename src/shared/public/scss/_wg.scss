@@ -953,6 +953,11 @@
     padding-top: 15px;
   }
 
+  .border-top-small {
+    border-top: 1px solid colours.$lightgrey_semi;
+    padding-top: 15px;
+  }
+
   .hmrc-account-menu__main {
     float: left;
     padding-inline-start: 0;
