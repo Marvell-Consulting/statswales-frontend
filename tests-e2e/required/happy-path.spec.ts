@@ -307,9 +307,7 @@ test.describe('Happy path', () => {
 
     // download files;
     await previewPage.click('#tab_download_dataset');
-    await previewPage.locator('#csv').waitFor({ state: 'visible' });
-    await previewPage.click('#csv', { force: true });
-    await previewPage.click('#en-GB', { force: true });
+    await previewPage.getByRole('button', { name: 'Download data' }).waitFor({ state: 'visible' });
     const csvDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
     await checkFile(testInfo, csvDownload);
     await previewPage.click('#json', { force: true });

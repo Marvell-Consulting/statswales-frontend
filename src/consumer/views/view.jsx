@@ -133,7 +133,7 @@ export default function ConsumerView(props) {
         <form
           method="get"
           action={props.buildUrl(
-            `/${props.preview ? 'publish' : 'published'}/${props.dataset.id}/download`,
+            `${props.preview ? '/publish' : ''}/${props.dataset.id}/download`,
             props.i18n.language
           )}
         >
@@ -150,6 +150,7 @@ export default function ConsumerView(props) {
                 label: props.t('consumer_view.default_download')
               }
             ]}
+            value={props.selectedFilterOptions ? 'filtered' : 'default'}
           />
 
           <RadioGroup
@@ -182,9 +183,11 @@ export default function ConsumerView(props) {
               //   hint: props.t('consumer_view.everything_hint')
               // }
             ]}
+            value="csv"
           />
 
-          <RadioGroup
+          {/* commenting out for now until https://marvellconsulting.atlassian.net/browse/SW-581 is completed */}
+          {/* <RadioGroup
             name="number_format"
             label={props.t('consumer_view.number_formating')}
             options={[
@@ -200,7 +203,9 @@ export default function ConsumerView(props) {
               }
             ]}
             value="raw"
-          />
+          /> */}
+          {/* TODO: remove this when the above is implemented */}
+          <input type="hidden" name="number_format" value="raw" />
 
           <RadioGroup
             name="download_language"
@@ -215,6 +220,7 @@ export default function ConsumerView(props) {
                 label: props.t('consumer_view.welsh')
               }
             ]}
+            value={props.i18n.language}
           />
 
           <input
