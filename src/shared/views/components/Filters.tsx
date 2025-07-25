@@ -120,7 +120,7 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
               const selectedLabel = filter.querySelector("span.number-selected");
               const filteredLabel = filter.querySelector("span.filtered-label");
               const nonFilteredLabel = filter.querySelector("span.non-filtered-label");
-              const childDetails = filter.querySelectorAll("details");
+              const childDetails = filter.querySelectorAll("details") || [];
 
               const childCheckboxes = [...filter.querySelectorAll('.filter-body [type="checkbox"]')];
 
@@ -193,7 +193,7 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
                   ":scope > .filter-body > .govuk-checkboxes .govuk-checkboxes__item > input[type='checkbox']:not(.all-filter)",
                 ];
                 const checkboxes = parent.querySelectorAll(selectors.join(", "));
-                const details = parent.querySelectorAll("details");
+                const details = parent.querySelectorAll("details") || [];
 
                 selectAll.addEventListener("click", (e) => {
                   e.preventDefault();
