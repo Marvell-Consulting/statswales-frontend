@@ -180,7 +180,8 @@ export default function ConsumerView(props) {
             value="csv"
           />
 
-          <RadioGroup
+          {/* commenting out for now until https://marvellconsulting.atlassian.net/browse/SW-581 is completed */}
+          {/* <RadioGroup
             name="number_format"
             label={props.t('consumer_view.number_formating')}
             options={[
@@ -196,7 +197,9 @@ export default function ConsumerView(props) {
               }
             ]}
             value="raw"
-          />
+          /> */}
+          {/* TODO: remove this when the above is implemented */}
+          <input type="hidden" name="number_format" value="raw" />
 
           <RadioGroup
             name="download_language"
