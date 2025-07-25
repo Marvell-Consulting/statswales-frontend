@@ -64,7 +64,7 @@ export const Checkbox = ({
         type="checkbox"
         value={value}
         data-aria-controls={children ? `conditional-${name}` : undefined}
-        aria-label={description}
+        aria-label={description || undefined}
         defaultChecked={checked}
       />
       <label className="govuk-label govuk-checkboxes__label checkboxes__label__filter" htmlFor={name}>

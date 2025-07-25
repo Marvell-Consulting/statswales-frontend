@@ -1381,7 +1381,9 @@
     "none": "None",
     "clear": "Clear all",
     "no_filter": "No filter",
-    "summary": "<span class=\"number-selected\">{{filtered}}</span> of {{total}} selected"
+    "no_filter_description": "All options for {{columnName}}",
+    "summary": "<span class=\"number-selected\">{{filtered}}</span> of {{total}} selected",
+    "non-filtered-summary": "{{total}}<span class=\"govuk-visually-hidden\"> selectable options</span>"
   },
   "consumer_view": {
     "about_this_dataset": "About this dataset",
