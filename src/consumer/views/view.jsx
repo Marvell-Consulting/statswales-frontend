@@ -57,8 +57,7 @@ export default function ConsumerView(props) {
           {/*  </form>*/}
           {/*</div>*/}
         </div>
-        <hr className="govuk-section-break govuk-section-break--m govuk-section-break--visible govuk-!-padding-top-0" />
-        <div className="govuk-grid-row">
+        <div className="govuk-grid-row border-top-small">
           {/* Sidebar filters */}
           <div className="govuk-grid-column-one-quarter">
             <form method="get">
