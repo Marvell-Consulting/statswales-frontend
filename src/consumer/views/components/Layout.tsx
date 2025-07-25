@@ -1,7 +1,8 @@
 import React, { PropsWithChildren } from 'react';
+import clsx from 'clsx';
 import { Locals, LocalsProvider, useLocals } from '../../../shared/views/context/Locals';
 
-const Layout = ({ children, title }: PropsWithChildren<{ title?: string }>) => {
+const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; noPad?: boolean }>) => {
   const { i18n, t, buildUrl } = useLocals();
   const links = [
     'contact_us',
@@ -113,7 +114,7 @@ const Layout = ({ children, title }: PropsWithChildren<{ title?: string }>) => {
 
         <hr className="govuk-section-break govuk-section-break--l govuk-!-margin-bottom-0 govuk-section-break--visible" />
 
-        <main className="govuk-main-wrapper govuk-!-padding-top-0" id="main-content" role="main">
+        <main className={clsx('govuk-main-wrapper', { 'govuk-!-padding-top-0': noPad })} id="main-content" role="main">
           <div className="govuk-width-container">{children}</div>
         </main>
 
