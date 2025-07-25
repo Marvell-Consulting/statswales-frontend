@@ -72,6 +72,7 @@ export default function ConsumerView(props) {
                   id="page_size"
                   name="page_size"
                   defaultValue={props.page_size}
+                  autoComplete="on"
                 >
                   {[5, 10, 25, 50, 100, 250, 500].map((size) => (
                     <option key={size} value={size}>

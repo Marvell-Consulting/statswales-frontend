@@ -27,11 +27,11 @@ export function Controls({
 }) {
   return (
     <div className={clsx('controls non-js-hidden', className)}>
-      <a href="#" className="govuk-link" data-action="select-all">
+      <a href="#" className="govuk-link nowrap" data-action="select-all">
         {selectAllLabel}
       </a>
       <span>|</span>
-      <a href="#" className="govuk-link" data-action="clear">
+      <a href="#" className="govuk-link nowrap" data-action="clear">
         {noneLabel}
       </a>
     </div>
@@ -46,29 +46,28 @@ export const Checkbox = ({
   checked,
   values,
   independentExpand,
-  description,
   omitName
 }: CheckboxOptions & {
   name: string;
   checked?: boolean;
   values: string[];
   omitName?: boolean;
-  description?: string;
 }) => {
+  const formattedId = name.replace(/\s+/g, '_');
   const CheckboxField = (
     <div className="govuk-checkboxes__item">
       <input
         className="govuk-checkboxes__input checkboxes__input__filter"
-        id={name}
-        name={omitName ? undefined : `${name}[]`}
+        id={formattedId}
+        name={omitName ? undefined : `${name}`}
         type="checkbox"
         value={value}
         data-aria-controls={children ? `conditional-${name}` : undefined}
-        aria-label={description || undefined}
         defaultChecked={checked}
       />
-      <label className="govuk-label govuk-checkboxes__label checkboxes__label__filter" htmlFor={name}>
+      <label className="govuk-label govuk-checkboxes__label checkboxes__label__filter" htmlFor={formattedId}>
         {label}
+        {!!children?.length && <span className="govuk-visually-hidden"> has child filters</span>}
       </label>
     </div>
   );
@@ -88,10 +87,20 @@ export const Checkbox = ({
     const isOpen = children.some((child) => hasValue(child, values));
     return (
       <details open={isOpen}>
-        <summary>
-          {CheckboxField} <Controls selectAllLabel={<T>filters.select_all</T>} noneLabel={<T>filters.none</T>} />
-        </summary>
+        <summary>{CheckboxField}</summary>
         <div className="indent">
+          <Controls
+            selectAllLabel={
+              <T columnName={label} raw>
+                filters.select_all
+              </T>
+            }
+            noneLabel={
+              <T columnName={label} raw>
+                filters.none
+              </T>
+            }
+          />
           <CheckboxGroup options={children} name={name} values={values} independentExpand={independentExpand} />
         </div>
       </details>
@@ -120,7 +129,7 @@ export const CheckboxGroup = ({ options, name, values = [], independentExpand }:
         return (
           <Checkbox
             key={index}
-            name={`${name}.${option.value}`}
+            name={`${name}.${option.value}[]`}
             checked={values.includes(option.value)}
             {...option}
             values={values}

@@ -50,7 +50,13 @@ export default function Select({
       )}
 
       {inline ? ' ' : null}
-      <select className="govuk-select" id={name} name={name} aria-describedby={hint ? `${name}-hint` : undefined}>
+      <select
+        className="govuk-select"
+        id={name}
+        name={name}
+        aria-describedby={hint ? `${name}-hint` : undefined}
+        autoComplete="on"
+      >
         {options.map((opt, index) => (
           <option
             key={index}
