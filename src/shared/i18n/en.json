@@ -1377,13 +1377,12 @@
     }
   },
   "filters": {
-    "select_all": "Select all",
-    "none": "None",
+    "select_all": "Select all<span class=\"govuk-visually-hidden\"> {{columnName}}</span>",
+    "none": "<span class=\"govuk-visually-hidden\">Select </span>None<span class=\"govuk-visually-hidden\"> of {{columnName}}</span>",
     "clear": "Clear all",
-    "no_filter": "No filter",
-    "no_filter_description": "All options for {{columnName}}",
+    "no_filter": "Not filtered<span class=\"govuk-visually-hidden\"> for{{columnName}}</span>",
     "summary": "<span class=\"number-selected\">{{filtered}}</span> of {{total}} selected",
-    "non-filtered-summary": "{{total}}<span class=\"govuk-visually-hidden\"> selectable options</span>"
+    "non-filtered-summary": "{{total}} selectable options"
   },
   "consumer_view": {
     "about_this_dataset": "About this dataset",

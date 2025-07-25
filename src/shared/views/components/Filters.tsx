@@ -5,7 +5,6 @@ import qs from 'qs';
 import { flatten, get, omit } from 'lodash';
 import clsx from 'clsx';
 import T from './T';
-import { useLocals } from '../context/Locals';
 
 export type FiltersProps = {
   filters: FilterTable[];
@@ -32,7 +31,6 @@ const filterOptionCount = (options: FilterTable['values']): number => {
 
 export const Filters = ({ filters, url, title }: FiltersProps) => {
   const [baseUrl, query] = url.split('?');
-  const { t } = useLocals();
   const parsedQuery = qs.parse(query);
   const parsedFilter = parsedQuery?.filter;
   const activeFilters = parsedFilter && flatten(Object.values(parsedFilter)).length;
@@ -71,14 +69,25 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
                 <div className="filter-head non-js-hidden">
                   <Controls
                     className="parent-controls"
-                    selectAllLabel={<T>filters.select_all</T>}
-                    noneLabel={<T>filters.none</T>}
+                    selectAllLabel={
+                      <T columnName={filter.columnName} raw>
+                        filters.select_all
+                      </T>
+                    }
+                    noneLabel={
+                      <T columnName={filter.columnName} raw>
+                        filters.none
+                      </T>
+                    }
                   />
                   <div className="govuk-checkboxes--small">
                     <Checkbox
                       checked={!values}
-                      label={<T>filters.no_filter</T>}
-                      description={t('filters.no_filter_description', { columnName: filter.columnName })}
+                      label={
+                        <T columnName={filter.columnName} raw>
+                          filters.no_filter
+                        </T>
+                      }
                       name={`filter-${filter.factTableColumn}-all`}
                       value="all"
                       omitName
@@ -111,6 +120,7 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
               const selectedLabel = filter.querySelector("span.number-selected");
               const filteredLabel = filter.querySelector("span.filtered-label");
               const nonFilteredLabel = filter.querySelector("span.non-filtered-label");
+              const childDetails = filter.querySelectorAll("details");
 
               const childCheckboxes = [...filter.querySelectorAll('.filter-body [type="checkbox"]')];
 
@@ -144,6 +154,8 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
                     });
                     c.dispatchEvent(event);
                   });
+                  // collapse children
+                  childDetails.forEach(el => el.removeAttribute("open"))
                 }
                 e.target.checked = true;
                 updateTotals();
@@ -168,18 +180,20 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
                 const selectAll = control.querySelector("[data-action='select-all']");
                 const clear = control.querySelector("[data-action='clear']");
 
-                const details = control.parentNode.parentNode;
+                const parent = control.parentNode.parentNode;
+
                 const selectors = [
                   // nested items with children
                   ":scope > .indent > .govuk-checkboxes > details > summary > .govuk-checkboxes__item > input[type='checkbox']",
                   // nested items without children
-                  ":scope > .indent > .govuk-checkboxes > .govuk-checkboxes__item > input[type='checkbox']",
+                  ":scope > .indent > .govuk-checkboxes .govuk-checkboxes__item > input[type='checkbox']",
                   // top-level items with children
                   ":scope > .filter-body > .govuk-checkboxes > details > summary > .govuk-checkboxes__item > input[type='checkbox']:not(.all-filter)",
                   // top-level items without children
-                  ":scope > .filter-body > .govuk-checkboxes > .govuk-checkboxes__item > input[type='checkbox']:not(.all-filter)",
+                  ":scope > .filter-body > .govuk-checkboxes .govuk-checkboxes__item > input[type='checkbox']:not(.all-filter)",
                 ];
-                const checkboxes = details.querySelectorAll(selectors.join(", "));
+                const checkboxes = parent.querySelectorAll(selectors.join(", "));
+                const details = parent.querySelectorAll("details");
 
                 selectAll.addEventListener("click", (e) => {
                   e.preventDefault();
@@ -188,9 +202,10 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
                     const evt = new Event("change");
                     checkbox.dispatchEvent(evt);
                   });
-                  if (details.tagName === "DETAILS") {
-                    details.setAttribute("open", true);
-                  }
+                  // expand all children
+                  details.forEach(el => {
+                    el.setAttribute("open", true);
+                  })
                   return false;
                 });
 
@@ -202,6 +217,10 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
                     const evt = new Event("change");
                     checkbox.dispatchEvent(evt);
                   });
+                  // collapse all children
+                  details.forEach(el => {
+                    el.removeAttribute("open");
+                  })
 
                   return false;
                 })

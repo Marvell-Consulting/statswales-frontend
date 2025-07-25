@@ -85,7 +85,7 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
       </head>
 
       <body className="govuk-template__body app-body-className" data-test="My value" data-other="report:details">
-        <a id="top"></a>
+        <span id="top"></span>
         <script
           dangerouslySetInnerHTML={{
             __html: `
