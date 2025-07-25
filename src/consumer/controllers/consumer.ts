@@ -125,6 +125,7 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
     if (req.query.view_type === 'filtered') {
       selectedFilterOptions = req.query.selected_filter_options?.toString();
     }
+
     const format = req.query.format as FileFormat;
     const lang = req.query.download_language as Locale;
     const headers = getDownloadHeaders(format, attachmentName);

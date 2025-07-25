@@ -130,13 +130,7 @@ export default function ConsumerView(props) {
   const DownloadPanel = (
     <div className="govuk-grid-row">
       <div className="govuk-grid-column-full">
-        <form
-          method="get"
-          action={props.buildUrl(
-            `/${props.preview ? 'publish' : 'published'}/${props.dataset.id}/download`,
-            props.i18n.language
-          )}
-        >
+        <form method="get" action={props.buildUrl(`/${props.dataset.id}/download`, props.i18n.language)}>
           <RadioGroup
             name="view_type"
             label={props.t('consumer_view.download_heading')}
@@ -150,6 +144,7 @@ export default function ConsumerView(props) {
                 label: props.t('consumer_view.default_download')
               }
             ]}
+            value={props.selectedFilterOptions ? 'filtered' : 'default'}
           />
 
           <RadioGroup
@@ -182,6 +177,7 @@ export default function ConsumerView(props) {
               //   hint: props.t('consumer_view.everything_hint')
               // }
             ]}
+            value="csv"
           />
 
           <RadioGroup
@@ -215,6 +211,7 @@ export default function ConsumerView(props) {
                 label: props.t('consumer_view.welsh')
               }
             ]}
+            value={props.i18n.language}
           />
 
           <input
