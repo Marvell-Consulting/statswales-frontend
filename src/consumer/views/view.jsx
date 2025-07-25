@@ -130,7 +130,13 @@ export default function ConsumerView(props) {
   const DownloadPanel = (
     <div className="govuk-grid-row">
       <div className="govuk-grid-column-full">
-        <form method="get" action={props.buildUrl(`/${props.dataset.id}/download`, props.i18n.language)}>
+        <form
+          method="get"
+          action={props.buildUrl(
+            `${props.preview ? '/publish' : ''}/${props.dataset.id}/download`,
+            props.i18n.language
+          )}
+        >
           <RadioGroup
             name="view_type"
             label={props.t('consumer_view.download_heading')}
