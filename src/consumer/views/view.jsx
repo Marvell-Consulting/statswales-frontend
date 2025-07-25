@@ -234,7 +234,7 @@ export default function ConsumerView(props) {
             name="action"
             value="download"
             type="submit"
-            className="govuk-button button-blue"
+            className="govuk-button"
             data-module="govuk-button"
           >
             {props.t('consumer_view.download_button')}
