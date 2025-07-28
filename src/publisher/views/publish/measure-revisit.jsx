@@ -41,14 +41,6 @@ export default function MeasureRevisit(props) {
                     {props.t('publish.lookup_table_review.change_lookup_table')}
                   </a>
                 </li>
-                <li>
-                  <a
-                    href={props.buildUrl(`/publish/${props.datasetId}/measure/change-name`, props.i18n.language)}
-                    className="govuk-link"
-                  >
-                    {props.t('publish.time_dimension_review.change_measure_name')}
-                  </a>
-                </li>
               </ul>
             </div>
           </div>
