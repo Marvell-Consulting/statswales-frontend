@@ -88,7 +88,7 @@ function Datasets({ datasets }) {
 export default function TopicList(props) {
   const title = props.selectedTopic ? props.selectedTopic.name : props.t('consumer.topic_list.heading');
   return (
-    <Layout {...props} title={title}>
+    <Layout {...props} noPad={true} title={title}>
       {!props.selectedTopic && (
         <Hero>
           <div className="govuk-width-container">
