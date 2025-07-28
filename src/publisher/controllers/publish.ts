@@ -733,7 +733,7 @@ export const measureReview = async (req: Request, res: Response, next: NextFunct
       logger.debug(`User has reviewed measure lookup table.`);
       switch (req.body?.confirm) {
         case 'continue':
-          res.redirect(req.buildUrl(`/publish/${dataset.id}/measure/name`, req.language));
+          res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
           break;
         case 'cancel':
           try {
