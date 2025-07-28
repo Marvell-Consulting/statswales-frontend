@@ -4,10 +4,10 @@ import DimensionPreviewTable from '../components/DimensionPreviewTable';
 
 export default function EmptyFact(props) {
   const title =
-    props.data.length > 499
-      ? props.t('errors.fact_table_validation.incomplete_fact_500', { count: data.length })
+    props.data?.length > 499
+      ? props.t('errors.fact_table_validation.incomplete_fact_500', { count: props.data.length })
       : props.data
-        ? props.t('errors.fact_table_validation.incomplete_fact', { count: data.length })
+        ? props.t('errors.fact_table_validation.incomplete_fact', { count: props.data.length })
         : props.t('errors.fact_table_validation.incomplete_fact_missing');
   return (
     <Layout {...props} title={title}>
@@ -30,11 +30,13 @@ export default function EmptyFact(props) {
               {props.data.length > 10 ? (
                 <details className="govuk-details" data-module="govuk-details">
                   <summary className="govuk-details__summary">
-                    {data.length > 499
-                      ? props.t('errors.fact_table_validation.incomplete_table_summary_500', { rows: data.length })
-                      : props.t('errors.fact_table_validation.incomplete_table_summary', { rows: data.length })}
+                    {props.data.length > 499
+                      ? props.t('errors.fact_table_validation.incomplete_table_summary_500', {
+                          rows: props.data.length
+                        })
+                      : props.t('errors.fact_table_validation.incomplete_table_summary', { rows: props.data.length })}
                   </summary>
-                  : <DimensionPreviewTable {...props} />
+                  <DimensionPreviewTable {...props} />
                 </details>
               ) : (
                 <DimensionPreviewTable {...props} />
