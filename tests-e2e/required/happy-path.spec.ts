@@ -106,9 +106,6 @@ test.describe('Happy path', () => {
     await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/measure/review`);
     await page.getByRole('button', { name: 'Continue' }).click();
-    expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/measure/name`);
-    await page.getByRole('textbox').fill(content.measureTable);
-    await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
     // year code
