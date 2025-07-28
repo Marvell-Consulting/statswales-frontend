@@ -230,13 +230,7 @@ export default function ConsumerView(props) {
             value={JSON.stringify(props.selectedFilterOptions)}
           ></input>
 
-          <button
-            name="action"
-            value="download"
-            type="submit"
-            className="govuk-button"
-            data-module="govuk-button"
-          >
+          <button name="action" value="download" type="submit" className="govuk-button" data-module="govuk-button">
             {props.t('consumer_view.download_button')}
           </button>
         </form>
