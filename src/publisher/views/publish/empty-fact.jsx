@@ -31,7 +31,9 @@ export default function EmptyFact(props) {
                 <details className="govuk-details" data-module="govuk-details">
                   <summary className="govuk-details__summary">
                     {props.data.length > 499
-                      ? props.t('errors.fact_table_validation.incomplete_table_summary_500', { rows: props.data.length })
+                      ? props.t('errors.fact_table_validation.incomplete_table_summary_500', {
+                          rows: props.data.length
+                        })
                       : props.t('errors.fact_table_validation.incomplete_table_summary', { rows: props.data.length })}
                   </summary>
                   <DimensionPreviewTable {...props} />
