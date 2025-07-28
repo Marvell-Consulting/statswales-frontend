@@ -11,8 +11,8 @@ export const getDefaultConfig = (): AppConfig => {
   return {
     env: AppEnv.Default, // MUST be overridden by other configs
     supportEmail: {
-      en: process.env.SUPPORT_EMAIL || 'StatsWales@gov.wales',
-      cy: process.env.SUPPORT_EMAIL_CY || 'StatsCymru@llyw.cymru'
+      en: 'StatsWales@gov.wales',
+      cy: 'StatsCymru@llyw.cymru'
     },
     frontend: {
       publisher: {
