@@ -1065,6 +1065,7 @@
       "add_revise": "Add new data and revise existing data",
       "revise": "Revise existing data only",
       "replace_all": "Replace all existing data",
+      "correction": "Change existing data without automated handling of note codes",
       "errors": {
         "missing": "Select the data table update you need to make"
       }
