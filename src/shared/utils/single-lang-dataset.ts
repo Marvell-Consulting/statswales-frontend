@@ -1,15 +1,32 @@
+import { t } from 'i18next';
 import { DatasetDTO } from '../dtos/dataset';
 import { RevisionDTO } from '../dtos/revision';
+import { RevisionMetadataDTO } from '../dtos/revision-metadata';
 import { SingleLanguageDataset } from '../dtos/single-language/dataset';
 import { SingleLanguageRevision } from '../dtos/single-language/revision';
 import { Locale } from '../enums/locale';
+
+const getTitle = (metadata: RevisionMetadataDTO[], lang: string): string => {
+  const metaEN = metadata.find((m) => m.language === Locale.EnglishGb);
+  const metaCY = metadata.find((m) => m.language === Locale.WelshGb);
+
+  if (lang.includes(Locale.English)) {
+    return metaEN?.title ? metaEN.title : `${metaCY?.title} [${t('homepage.table.not_translated', { lng: lang })}]`;
+  }
+  return metaCY?.title ? metaCY.title : `${metaEN?.title} [${t('homepage.table.not_translated', { lng: lang })}]`;
+};
 
 export const singleLangRevision = (revision?: RevisionDTO, lang?: string): SingleLanguageRevision | undefined => {
   if (!revision || !lang) return undefined;
 
   return {
     ...revision,
-    metadata: revision.metadata?.find((meta) => meta.language === lang),
+    metadata: revision.metadata
+      ? {
+          ...revision.metadata?.find((meta) => meta.language === lang),
+          title: getTitle(revision.metadata, lang)
+        }
+      : {},
     providers: (revision.providers || []).filter((provider) => provider.language === lang?.toLowerCase()),
     related_links: revision.related_links?.map((link) => ({
       ...link,
