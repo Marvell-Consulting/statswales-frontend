@@ -491,9 +491,9 @@ In some instances, you may only know the data provider and not a specific source
 
 You can add multiple sources if required.
 
-The [list of data providers and sources [link TBD]](#) is centrally managed. If you need to have a data provider or source added to the list, you need to:
+The list of data providers and sources is centrally managed. If you need to have a data provider or source added to the list, you need to:
 
-- email ... at ... [process TBD]
+- email StatsWales@gov.wales
 - provide the name of the data provider and source in both English and Welsh
 
 You’ll be notified once the data provider and source have been added to the list. You’ll then be able to select them in SW3.

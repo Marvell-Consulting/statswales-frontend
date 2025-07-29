@@ -492,9 +492,9 @@ Mewn rhai achosion, efallai y byddwch yn gwybod darparwr y data yn unig, ac nid 
 
 Gallwch ychwanegu ffynonellau lluosog yn ôl y gofyn.
 
-Caiff [rhestr y darparwyr data a’r ffynonellau [link TBD]](#) ei rheoli yn ganolog. Os bydd angen i chi ychwanegu darparwr data neu ffynhonnell i’r rhestr, bydd angen i chi:
+Caiff rhestr y darparwyr data a’r ffynonellau ei rheoli yn ganolog. Os bydd angen i chi ychwanegu darparwr data neu ffynhonnell i’r rhestr, bydd angen i chi:
 
-- anfon e-bost at ... yn ... \[process TBD\]
+- anfon e-bost at StatsWales@llyw.cymru
 - nodi enw’r darparwr data a’r ffynhonnell yn Gymraeg ac yn Saesneg
 
 Byddwch yn cael eich hysbysu ar ôl i’r darparwr data a’r ffynhonnell gael eu hychwanegu i’r rhestr. Yna, byddwch yn gallu eu dewis yn SC3.
