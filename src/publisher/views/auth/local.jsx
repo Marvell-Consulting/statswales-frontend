@@ -43,7 +43,7 @@ export default function LocalAuth(props) {
                 id="username"
                 name="username"
                 type="text"
-                value={props.username}
+                defaultValue={props.username}
               />
             </div>
             <button type="submit" className="govuk-button" data-module="govuk-button">

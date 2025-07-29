@@ -29,7 +29,7 @@ export default function UserGroupName(props) {
                 id="name_cy"
                 name="name_cy"
                 type="text"
-                value={props.values.name_cy}
+                defaultValue={props.values.name_cy}
               />
             </div>
             <div className="govuk-form-group">
@@ -46,7 +46,7 @@ export default function UserGroupName(props) {
                 id="name_en"
                 name="name_en"
                 type="text"
-                value={props.values.name_en}
+                defaultValue={props.values.name_en}
               />
             </div>
 

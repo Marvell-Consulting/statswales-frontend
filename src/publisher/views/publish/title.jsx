@@ -31,7 +31,7 @@ export default function Title(props) {
             id="title"
             name="title"
             type="text"
-            value={props.title}
+            defaultValue={props.title}
           />
         </div>
         <button type="submit" className="govuk-button" data-module="govuk-button">
