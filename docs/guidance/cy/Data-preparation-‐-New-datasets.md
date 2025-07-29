@@ -78,19 +78,21 @@ Pan fyddwch yn creu eich set ddata yn SC3, bydd angen i chi ddewis data cyfeirio
 
 ### Data cyfeirio safonol
 
-Mae data cyfeirio safonol a reolir yn ganolog yn helpu:
+Bydd data cyfeirio safonol, a reolir yn ganolog, yn helpu:
 
 - sicrhau gwell cysondeb ar draws StatsCymru
 - safoni disgrifiadau Cymraeg a Saesneg
 - gwella defnyddioldeb i ddefnyddwyr data
 
-Ar hyn o bryd, mae gan SC3 ddata cyfeirio safonol a reolir yn ganolog ar gyfer daearyddiaeth yn unig.
+Caiff tablau am-edrych safonol eu gweithredu ar hyn o bryd. Am nawr, dylech [baratoi eich tablau am-edrych eich hun](#guidance-lookup-tables), gan ddefnyddio codau a disgrifiad cyffredin a ddefnyddir pan fo modd, gydag eithriadau posibl ar gyfer rhai [dimensiynau sy’n cynnwys testun neu rifau](#guidance-dimensiynau-sy'n-cynnwys-testun-neu-rifau-lle-nad-oes-gofyn-cael-tabl-am-edrych).
+
+<!-- Ar hyn o bryd, mae gan SC3 ddata cyfeirio safonol a reolir yn ganolog ar gyfer daearyddiaeth yn unig. -->
 
 Nid yw SC3 yn defnyddio tablau am-edrych ar gyfer dimensiynau sy’n cynnwys dyddiadau. Yn hytrach, ceir [dull gweithredu safonol tuag at fformatio](#guidance-fformatio-dyddiadau).
 
-Ar gyfer unrhyw fath dimensiwn arall, dylech [baratoi eich tabl am-edrych eich hun](#guidance-tablau-am-edrych), gydag eithriadau posibl ar gyfer rhai [dimensiynau sy&#39;n cynnwys testun neu rifau](#guidance-dimensiynau-sy'n-cynnwys-testun-neu-rifau-lle-nad-oes-gofyn-cael-tabl-am-edrych).
+<!-- Ar gyfer unrhyw fath dimensiwn arall, dylech [baratoi eich tabl am-edrych eich hun](#guidance-tablau-am-edrych), gydag eithriadau posibl ar gyfer rhai [dimensiynau sy&#39;n cynnwys testun neu rifau](#guidance-dimensiynau-sy'n-cynnwys-testun-neu-rifau-lle-nad-oes-gofyn-cael-tabl-am-edrych). -->
 
-### Daearyddiaeth
+<!-- ### Daearyddiaeth
 
 Mae’r system yn cynnwys tablau am-edrych safonol ar gyfer pob daearyddiaeth gyffredin a ddefnyddir, fel y darparir gan [porth Open Geography SYG](https://geoportal.statistics.gov.uk/). Gallwch lawrlwytho’r tablau am-edrych hyn fel CSVs o [adran ‘Data cyfeirio’ [link TBD]](#) y gwasanaeth hwn. Rhaid i chi ddefnyddio’r codau yn y tablau hyn wrth greu eich tablau data chi.
 
@@ -98,7 +100,7 @@ Ni fydd angen i chi lanlwytho’r tablau am-edrych safonol hyn pan fyddwch yn cr
 
 Dim ond mewn dimensiwn y gallwch ddefnyddio un hierarchaeth daearyddiaeth. Er enghraifft, ni allech gael awdurdodau lleol ac etholaethau’r Senedd yn yr un dimensiwn. Ond gallech gael awdurdodau lleol a byrddau iechyd lleol, gan bod y rhain yn rhan o hierarchaeth sengl.
 
-Efallai y bydd amgylchiadau prin pan na fydd y tablau safonol yn cynnwys y data priodol ar gyfer eich set ddata. Er enghraifft, os bydd angen i chi gyfuno ardaloedd daearyddol penodol am resymau cyfrinachedd. Yn yr achosion hyn, dylech [baratoi eich tablau am-edrych eich hun](#guidance-tablau-am-edrych).
+Efallai y bydd amgylchiadau prin pan na fydd y tablau safonol yn cynnwys y data priodol ar gyfer eich set ddata. Er enghraifft, os bydd angen i chi gyfuno ardaloedd daearyddol penodol am resymau cyfrinachedd. Yn yr achosion hyn, dylech [baratoi eich tablau am-edrych eich hun](#guidance-tablau-am-edrych). -->
 
 <!-- Bydd angen i chi nodi’r rheswm pam nad ydych chi wedi defnyddio tabl safonol hefyd. Bydd y rheswm hwn yn weladwy i’r defnyddiwr fel rhan o’r adran metadata ‘Ardaloedd daearyddol sydd wedi’u cynnwys’. -->
 
@@ -342,6 +344,8 @@ Sylwer bod y gwerthoedd data yn y tabl data yn dangos rhifau yn unig. Felly, er 
 
 ### Nodiadau gwerthoedd data (troednodiadau a data coll yn flaenorol)
 
+<!-- #### Nodiadau safonedig -->
+
 Dim ond os bydd angen gwneud hynny er mwyn deall y data y dylech chi ychwanegu nodyn i werth data penodol. Fodd bynnag, **rhaid i chi gynnwys colofn ar gyfer codau nodiadau** yn eich tabl data, hyd yn oed os nad oes gennych chi unrhyw godau nodiadau i’w cynnwys.
 
 Mae SC3 yn defnyddio codau nodiadau llaw-fer, gydag esboniadau safonol, sy’n dilyn [safonau’r sector cyhoeddus](https://analysisfunction.civilservice.gov.uk/policy-store/symbols-in-tables-definitions-and-help/) yn agos. Nid yw’r codau yn gwahaniaethu rhwng priflythrennau a llythrennau bach.
@@ -365,9 +369,26 @@ Mae SC3 yn defnyddio codau nodiadau llaw-fer, gydag esboniadau safonol, sy’n d
 | x        | Ddim ar gael                                        | Er enghraifft, pan na chaiff gwerth data ei gasglu mewn rhanbarth                                                                                                                                                                  |
 | z        | Heb fod yn berthnasol                               | Er enghraifft, mewn tablau cyflogaeth pan na ellir cyflogi pobl dan 16 oed yn gyfreithlon                                                                                                                                          |
 
+Os bydd angen i chi ychwanegu codau nodiadau lluosog i un gwerth data, dylid gwahanu’r rhain gan ddefnyddio coma, er enghraifft ‘p,f’.
+
 Dylid darparu unrhyw esboniadau wedi’u haddasu yr ydych chi’n teimlo eu bod yn angenrheidiol er mwyn egluro unrhyw godau nodiadau, yn yr [adran metadata](#guidance-metadata) mwyaf priodol. Er enghraifft, os bydd angen i chi esbonio rhesymau lluosog pam bod gwerthoedd data wedi cael eu hatal.
 
-Os bydd angen i chi ychwanegu codau nodiadau lluosog i un gwerth data, dylid gwahanu’r rhain gan ddefnyddio coma, er enghraifft ‘p,f’.
+<!-- #### Nodiadau wedi’u teilwra
+
+Os bydd angen egluro unrhyw rai o’r codau nodiadau safonol a ddefnyddiwyd, gallwch ychwanegu esboniadau wedi’u teilwra.  Mae hyn yn golygu:
+- ychwanegu rhif i’r cod safonol yn y golofn cod nodiadau, er enghraifft 'p1' neu 'x1'
+- paratoi tabl am-edrych nodiadau gwerth data
+
+Dylai’r tabl am-edrych nodiadau gwerth data gynnwys colofnau ar gyfer cod nodiadau, disgrifiad_en a disgrifiad_cy.
+
+Tabl am-edrych enghreifftiol ar gyfer ein henghraifft treth gyngor:
+
+| codnodiadau | disgrifiad_en | disgrifiad_cy |
+| :------- | :------------- | :------------- |
+| p1       | Data value is provisional as the council tax amount has not been finalised for this band for 2025-26 | Mae’r gwerth data yn amodol gan nad yw swm y dreth gyngor wedi cael ei gadarnhau ar gyfer y band hwn ar gyfer 2025-26 |
+| x1       | Data value is not available because this council tax band did not exist prior to 1997-98 | Nid yw’r gwerth data ar gael gan nad oedd y band treth gyngor hwn yn bodoli cyn 1997-98 |
+
+_Sylwer mai enghraifft yw hon at ddibenion arddangos, ac nad yw’n dabl am-edrych go iawn ar gyfer data treth gyngor._ -->
 
 ### Nodiadau eraill
 

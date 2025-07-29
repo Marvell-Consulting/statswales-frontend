@@ -78,19 +78,21 @@ When you build your dataset in SW3, you’ll need to select reference data for e
 
 ### Standardised reference data
 
-Standardised, centrally-managed reference data helps:
+Standardised, centrally-managed reference data will help:
 
 - ensure better consistency across StatsWales
 - standardise English and Welsh descriptions
 - improve usability for data consumers
 
-SW3 currently has standardised, centrally-managed lookup tables for geography only.
+Standardised lookup tables are currently being implemented. For now, you should [prepare your own lookup tables](#guidance-lookup-tables), using commonly used codes and descriptions where possible, with possible exceptions for some [dimensions containing text or numbers](#guidance-dimensions-containing-text-or-numbers-where-no-lookup-table-is-required).
+
+<!-- SW3 currently has standardised, centrally-managed lookup tables for geography only. -->
 
 SW3 does not use lookup tables for dimensions containing dates. Instead there is a [standardised approach to formatting](#guidance-date-formatting).
 
-For any other dimension type, you should [prepare your own lookup table](#guidance-lookup-tables), with possible exceptions for some [dimensions containing text or numbers](#guidance-dimensions-containing-text-or-numbers-where-no-lookup-table-is-required).
+<!-- For any other dimension type, you should [prepare your own lookup table](#guidance-lookup-tables), with possible exceptions for some [dimensions containing text or numbers](#guidance-dimensions-containing-text-or-numbers-where-no-lookup-table-is-required). -->
 
-### Geography
+<!-- ### Geography
 
 The system contains standardised lookup tables for all commonly used geographies, as provided by the [ONS Open Geography portal](https://geoportal.statistics.gov.uk/). You can download these lookup tables as CSVs from the ['Reference data' section [link TBD]](#) of this service. You must use the codes in these tables when creating your data tables.
 
@@ -98,7 +100,7 @@ You will not need to upload these standardised lookup tables when you build your
 
 You can only use one geography hierarchy in a dimension. For example, you couldn't have local authorities and Senedd constituencies in the same dimension. But you could have local authorities and local health boards, as these are part of a single hierarchy.
 
-There may be rare circumstances where the standardised tables do not contain the appropriate data for your dataset. For example, if you need to aggregate certain geographical areas for confidentiality reasons. In these cases you should [prepare your own lookup tables](#guidance-lookup-tables).
+There may be rare circumstances where the standardised tables do not contain the appropriate data for your dataset. For example, if you need to aggregate certain geographical areas for confidentiality reasons. In these cases you should [prepare your own lookup tables](#guidance-lookup-tables). -->
 
 <!-- You'll also need to provide the reason you've not used a standard table. This reason will be visible to the consumer as part of the 'Geographical areas covered' metadata section. -->
 
@@ -340,6 +342,8 @@ Note that data values in the data table only show numbers. So for example for a 
 
 ### Data value notes (formerly footnotes and missing data)
 
+<!-- #### Standardised notes -->
+
 You should only add a note to a specific data value if it's necessary to understand the data. However, **you must include a column for note codes** in your data table, even if you do not have any note codes to include.
 
 SW3 uses shorthand note codes, with standardised explanations, closely following [public sector standards](https://analysisfunction.civilservice.gov.uk/policy-store/symbols-in-tables-definitions-and-help/). The codes are not case sensitive.
@@ -364,9 +368,26 @@ SW3 uses shorthand note codes, with standardised explanations, closely following
 | x         | Not available                                    | For example, where a data value is not collected in a region                                                                                                                                                                   |
 | z         | Not applicable                                   | For example, in tables of employment where people under 16 cannot legally be employed                                                                                                                                          |
 
+If you need to add multiple note codes to a single data value, these should be comma separated, for example ‘p,f’.
+
 Any custom explanations you feel are needed to clarify any note codes, should be provided in the most appropriate [metadata section](#guidance-metadata). For example, if you need to explain multiple reasons why data values have been suppressed.
 
-If you need to add multiple note codes to a single data value, these should be comma separated, for example ‘p,f’.
+<!-- #### Custom notes
+
+If it's necessary to clarify any of the standard note codes used, you can add custom explanations. This involves:
+- adding a number to the standard code in the note code column, for example 'p1' or 'x1'
+- preparing a data value notes lookup table
+
+The data value notes lookup table should have columns for notecode, description_en and description_cy.
+
+Example lookup table for our council tax example:
+
+| notecode | description_en | description_cy |
+| :------- | :------------- | :------------- |
+| p1       | Data value is provisional as the council tax amount has not been finalised for this band for 2025-26 | Mae’r gwerth data yn amodol gan nad yw swm y dreth gyngor wedi cael ei gadarnhau ar gyfer y band hwn ar gyfer 2025-26 |
+| x1       | Data value is not available because this council tax band did not exist prior to 1997-98 | Nid yw’r gwerth data ar gael gan nad oedd y band treth gyngor hwn yn bodoli cyn 1997-98 |
+
+_Please note this example is for demonstration purposes only and is not a genuine lookup table for council tax data._ -->
 
 ### Other notes
 
