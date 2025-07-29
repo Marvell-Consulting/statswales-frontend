@@ -8,10 +8,11 @@ Gan ddefnyddio eich [tabl data diweddariad a baratowyd](Data-preparation-‐-Upd
 
 1. Clicio ‘Tabl data’ o’ch rhestr dasgau ar gyfer eich set ddata.
 2. Dewis a oes angen i chi:
-   - Ychwanegu data newydd yn unig
-   - Ychwanegu data newydd a diwygio data sydd yno yn barod
-   - Diwygio’r data sydd yno yn barod yn unig
-   - Disodli’r holl ddata sydd yno yn barod
+   - ychwanegu data newydd yn unig
+   - ychwanegu data newydd a diwygio data sydd yno yn barod
+   - diwygio’r data sydd yno yn barod yn unig
+   - newid y data presennol heb drin codau nodiadau mewn ffordd awtomatig
+   - disodli’r holl ddata sydd yno yn barod
 3. Lanlwytho a gwirio eich tabl data diweddariad - os oes unrhyw broblemau gyda’ch tabl, bydd y system yn esbonio’r broblem a’r hyn y mae angen i chi ei wneud i’w drwsio
 4. Adolygu bod y diweddariadau’n gywir a chadarnhau’r diweddariad.
 

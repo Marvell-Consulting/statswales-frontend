@@ -11,6 +11,7 @@ Using your [prepared update data table](Data-preparation-‐-Updating-datasets),
    - add new data only
    - add new data and revise existing data
    - revise existing data only
+   - change existing data without automated handling of note codes
    - replace all existing data
 1. Upload and check your update data table - if there are any issues with your table, the system will explain the issue and what you need to do to fix it.
 1. Review the updates are correct and confirm the update.

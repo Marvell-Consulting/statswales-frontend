@@ -14,13 +14,14 @@ From your home screen, click ‘Create new dataset’. Using your [prepared data
 
 You'll then be taken to your dataset tasklist. It will list all the dimensions you indicated, except note codes as these are standardised.
 
+<!-- You'll then be taken to your dataset tasklist. It will list all the dimensions you indicated. If you have included any [custom note codes](Data-preparation-‐-New-datasets#guidance-custom-notes), there will also be a task for 'Custom data value notes' in the list. -->
+
 Clicking on each dimension will let you select what kind of data the dimension contains. This will be either:
 
-<!-- - dates - you'll then answer questions about the date formatting used, or upload your own lookup table if necessary -->
-<!-- - geography - you'll then select the appropriate standardised reference data, or upload your own lookup table if necessary -->
-
 - dates - you'll then answer questions about the date formatting used
-- geography - you'll then select the appropriate standardised reference data
+  <!-- - dates - you'll then answer questions about the date formatting used, or upload your own lookup table if necessary -->
+  <!-- - geography - you'll then select the appropriate standardised reference data -->
+  <!-- - geography - you'll then select the appropriate standardised reference data, or upload your own lookup table if necessary -->
 - text, [where no lookup table is needed](Data-preparation-‐-New-datasets#guidance-dimensions-containing-text-or-numbers-where-no-lookup-table-is-required)
 - numbers, [where no lookup table is needed](Data-preparation-‐-New-datasets#guidance-dimensions-containing-text-or-numbers-where-no-lookup-table-is-required) - you'll then indicate the kind of numbers used
   - For this option, the dimension must only contain numbers, with no symbols or letters.
@@ -36,6 +37,8 @@ For most options you'll be asked to enter a name for the dimension to be called 
 If you select standardised reference data, the dimension name will be automatically populated. You can change this, but you should only do so if absolutely necessary for understanding the dataset. For example, a migration-related dataset where there are 2 dimensions containing local authorities - one is the local authority someone moved from and the other is the one they moved to. In that scenario you might rename the dimensions to "Local authorities moved from" and "Local authorities moved to", to distinguish between them.
 
 For a dimension containing measure or data types, when you click on it from your dataset tasklist, you'll then need to upload the [appropriate lookup table](Data-preparation-‐-New-datasets#guidance-measure-or-data-types).
+
+<!-- If you have any custom data value notes, when you click on this from your dataset tasklist, you'll then need to upload the [appropriate lookup table](Data-preparation-‐-New-datasets#guidance-custom-notes). -->
 
 ### Date formatting questions
 

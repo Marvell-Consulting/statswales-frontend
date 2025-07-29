@@ -14,13 +14,14 @@ O’ch sgrin hafan, cliciwch ‘Creu set ddata newydd’. Gan ddefnyddio eich [d
 
 Yna, byddwch yn cael eich tywys i’ch rhestr dasgau ar gyfer eich set ddata. Bydd hon yn rhestru’r holl ddimensiynau a nodoch, ac eithrio codau nodiadau gan bod y rhain wedi cael eu safoni.
 
+<!-- Yna, byddwch yn cael eich tywys i’ch rhestr dasgau ar gyfer eich set ddata. Bydd hon yn rhestru’r holl ddimensiynau a nodoch. Os ydych chi wedi cynnwys unrhyw [godau nodiadau wedi’u teilwra](Data-preparation-‐-New-datasets#guidance-nodiadau-wedi’u-teilwra), bydd tasg ‘Nodiadau gwerth data wedi’u teilwra’ yn y rhestr. -->
+
 Bydd clicio ar bob dimensiwn yn caniatáu i chi ddewis pa fath o ddata sydd yn y dimensiwn. Bydd hyn naill ai yn:
 
-<!-- - dyddiadau – yna byddwch yn ateb cwestiynau am ffurf y dyddiad a ddefnyddiwyd, neu byddwch yn lanlwytho eich tabl am-edrych eich hun os bydd angen
-- daearyddiaeth – yna byddwch yn dewis y data cyfeirio safonol priodol, neu byddwch yn lanlwytho eich tabl am-edrych eich hun os bydd angen -->
-
 - dyddiadau – yna byddwch yn ateb cwestiynau am ffurf y dyddiad a ddefnyddiwyd
-- daearyddiaeth – yna byddwch yn dewis y data cyfeirio safonol priodol
+  <!-- - dyddiadau – yna byddwch yn ateb cwestiynau am ffurf y dyddiad a ddefnyddiwyd, neu byddwch yn lanlwytho eich tabl am-edrych eich hun os bydd angen -->
+  <!-- - daearyddiaeth – yna byddwch yn dewis y data cyfeirio safonol priodol -->
+  <!-- - daearyddiaeth – yna byddwch yn dewis y data cyfeirio safonol priodol, neu byddwch yn lanlwytho eich tabl am-edrych eich hun os bydd angen -->
 - testun, [lle nad oes angen cael tabl am-edrych](Data-preparation-‐-New-datasets#guidance-dimensiynau-sy'n-cynnwys-testun-neu-rifau-lle-nad-oes-gofyn-cael-tabl-am-edrych)
 - rhifau, [lle nad oes angen cael tabl am-edrych](Data-preparation-‐-New-datasets#guidance-dimensiynau-sy'n-cynnwys-testun-neu-rifau-lle-nad-oes-gofyn-cael-tabl-am-edrych) - yna bydd angen i chi nodi'r math o rifau a ddefnyddir
   - Ar gyfer y dewis hwn, rhaid i'r dimensiwn gynnwys rhifau yn unig, heb unrhyw symbolau neu lythrennau.
@@ -36,6 +37,8 @@ Ar gyfer y rhan fwyaf o ddewisiadau, gofynnir i chi nodi enw i alw’r dimensiwn
 Os byddwch yn dewis data cyfeirio safonol, llenwir yr enw dimensiwn yn awtomatig. Gallwch newid hwn, ond dim ond os bydd gwir angen gwneud hyn er mwyn deall y set ddata y dylech wneud hyn. Er enghraifft, set ddata ynghylch mudo lle y ceir 2 ddimensiwn sy’n cynnwys awdurdodau lleol – mae un yn awdurdod lleol y symudodd rhywun ohono a’r llall yw’r un y gwnaethant symud iddo. Yn y sefyllfa honno, efallai y byddech yn ailenwi’r dimensiynau yn “Awdurdodau lleol y symudwyd ohonynt” ac “Awdurdodau lleol y symudwyd iddynt” er mwyn gwahaniaethu rhyngddynt.
 
 Ar gyfer dimensiwn sy'n cynnwys mathau o ddata neu fesur, pan fyddwch yn clicio arno o'ch rhestr dasgau ar gyfer y set ddata, bydd angen i chi lanlwytho'r [tabl am-edrych priodol](Data-preparation-‐-New-datasets#guidance-mathau-data-neu-fesur) wedi hyn.
+
+<!-- Os oes gennych chi unrhyw nodiadau gwerth data wedi’u teilwra, pan fyddwch yn clicio ar hyn o restr tasgau eich set ddata, bydd angen i chi lanlwytho’r [tabl am-edrych priodol](Data-preparation-‐-New-datasets#guidance-nodiadau-wedi’u-teilwra). -->
 
 ### Cwestiynau am ffurf y dyddiadau
 
