@@ -25,7 +25,8 @@ i18next
       lookupHeader: 'accept-language',
       caches: ['cookie'],
       cookieDomain,
-      cookieSecure: config.session.secure
+      cookieSecure: config.session.secure,
+      cookieHttpOnly: true
     },
     backend: {
       loadPath: `${__dirname}/../i18n/{{lng}}.json`
