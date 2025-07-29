@@ -165,7 +165,7 @@ export default function Providers(props) {
                               className="govuk-fieldset__legend govuk-fieldset__legend--s"
                               dangerouslySetInnerHTML={{
                                 __html: props.t('publish.providers.add_source.form.source.note', {
-                                  request_data_source_url: props.request_data_source_url
+                                  request_data_provider_url: props.request_data_provider_url
                                 })
                               }}
                             />
