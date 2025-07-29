@@ -22,7 +22,7 @@ export default function UserCreate(props) {
                 id="email"
                 name="email"
                 type="email"
-                value={props.values.email}
+                defaultValue={props.values.email}
               />
             </div>
             <button type="submit" className="govuk-button" data-module="govuk-button">

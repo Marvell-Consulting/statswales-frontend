@@ -22,7 +22,7 @@ export default function Schedule(props) {
             name={name}
             type="text"
             inputMode="numeric"
-            value={props.values?.[name] ? props.values[name] : ''}
+            defaultValue={props.values?.[name] ? props.values[name] : ''}
           />
         </div>
       </div>

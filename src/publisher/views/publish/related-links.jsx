@@ -150,7 +150,7 @@ export default function RelatedLinks(props) {
                         id="link_label"
                         name="link_label"
                         type="text"
-                        value={props.link.label}
+                        defaultValue={props.link.label}
                       />
                     </div>
                   </fieldset>

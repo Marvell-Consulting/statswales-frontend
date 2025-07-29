@@ -32,7 +32,7 @@ export default function UserGroupEmail(props) {
                 id="email_cy"
                 name="email_cy"
                 type="email"
-                value={props.values.email_cy}
+                defaultValue={props.values.email_cy}
               />
             </div>
             <div className="govuk-form-group">
@@ -50,7 +50,7 @@ export default function UserGroupEmail(props) {
                 id="email_en"
                 name="email_en"
                 type="email"
-                value={props.values.email_en}
+                defaultValue={props.values.email_en}
               />
             </div>
 
