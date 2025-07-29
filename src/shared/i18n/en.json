@@ -738,7 +738,7 @@
             }
           },
           "source": {
-            "note": "If you cannot find the source in the list, you can <a class=\"govuk-link\" href=\"{{request_data_source_url}}\">request a data source be added</a>.",
+            "note": "If you cannot find the source in the list, you can <a class=\"govuk-link\" href=\"{{request_data_provider_url}}\">request a data source be added</a>.",
             "hint": "Start typing or select from the list",
             "error": {
               "missing": "Select a source from the list of sources for the selected data provider"

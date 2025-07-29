@@ -690,7 +690,7 @@
             }
           },
           "source": {
-            "note": "Os na allwch chi ddod o hyd i'r ffynhonnell yn y rhestr, gallwch <a class=\"govuk-link\" href=\"{{request_data_source_url}}\">ofyn bod ffynhonnell data yn cael ei hychwanegu</a>.",
+            "note": "Os na allwch chi ddod o hyd i'r ffynhonnell yn y rhestr, gallwch <a class=\"govuk-link\" href=\"{{request_data_provider_url}}\">ofyn bod ffynhonnell data yn cael ei hychwanegu</a>.",
             "hint": "Dechrau teipio neu ddewis o'r rhestr",
             "error": {
               "missing": "Dewis ffynhonnell o restr y ffynonellau ar gyfer y darparwr data a ddewiswyd"
