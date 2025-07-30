@@ -12,6 +12,7 @@ type CookieSettingsProps = {
 
 export default function CookieSettings(props: CookieSettingsProps) {
   const { buildUrl, i18n } = useLocals();
+  const { showBanner, measuring } = props.cookiePreferences;
 
   return (
     <>
@@ -32,13 +33,7 @@ export default function CookieSettings(props: CookieSettingsProps) {
                 { value: 'reject', label: i18n.t('cookies.settings.measuring.options.reject') },
                 { value: 'accept', label: i18n.t('cookies.settings.measuring.options.accept') }
               ]}
-              value={
-                props.cookiePreferences.measuring !== undefined
-                  ? props.cookiePreferences.measuring === true
-                    ? 'accept'
-                    : 'reject'
-                  : undefined
-              }
+              value={showBanner ? undefined : measuring ? 'accept' : 'reject'}
             />
             <div className="govuk-button-group">
               <button type="submit" className="govuk-button">
