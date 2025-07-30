@@ -1,26 +1,28 @@
-# Cwcis
+# Cookies on StatsWales
 
-Ffeiliau yw cwcis sy’n cael eu cadw ar eich ffôn, eich llechen neu eich cyfrifiadur pan fyddwch yn ymweld â gwefan.
+Cookies are files saved on your phone, tablet or computer when you visit a website.
 
-Rydym yn defnyddio cwcis i gofio eich manylion mewngofnodi, eich dewisiadau a’r wybodaeth a nodwyd gennych.
+We use cookies to store information about how you use the StatsWales website, such as the pages you visit. These cookies
+are not used to identify you personally.
 
-## Cwcis hanfodol
+## Cookie settings
 
-Mae cwcis hanfodol yn gwneud pethau fel cofio eich manylion mewngofnodi ac maent yn cadw eich cynnydd trwy ffurflen. Mae angen i’r cwcis hyn fod ymlaen bob amser.
+### Strictly necessary cookies
 
-| Enw                  | Diben                                                                                                | Yn dod i ben |
-| :------------------- | :--------------------------------------------------------------------------------------------------- | :----------- |
-| `jwt`                | Dweud wrthym pwy ydych chi ac mae’n caniatáu i chi gyflawni gweithredoedd ar y wefan hon             | 1 diwrnod    |
-| `lang`               | Mae’n dweud wrthym yr iaith yr ydych chi wedi dewis ei defnyddio                                     | 1 blwyddyn   |
-| `statswales.backend` | Cwcis sesiwn sy’n storio gwybodaeth a nodwyd gennych, fel nad oes yn rhaid i chi ei nodi eto bob tro | 1 diwrnod    |
+These essential cookies do things like:
 
-## FontAwesome
+ * display errors and success messages where these apply
+ * store information you've entered so you do not have to re-enter it every time
 
-Rydym yn defnyddio FontAwesome i ddangos eiconau mewn mannau amrywiol o gwmpas y wefan er mwyn gwneud y wefan yn haws i’w defnyddio. Mae FontAwesome yn defnyddio’r cwcis canlynol.
+These cookies always need to be on.
 
-| Enw            | Diben                                                                                                | Yn dod i ben |
-| :------------- | :--------------------------------------------------------------------------------------------------- | :----------- |
-| `_ga`          | Defnyddir y rhif hwn a gynhyrchir ar hap i bennu ymwelwyr unigryw sy’n defnyddio Font Awesome        | 2 flynedd    |
-| `_ga_*`        | Defnyddir y rhif hwn a gynhyrchir ar hap i bennu ymwelwyr unigryw sy’n defnyddio Font Awesome        | 18 mis       |
-| `__stripe_sid` | Mae Stripe yn gosod y cwci hwn fel rhan o weithgarwch darganfod ac atal twyll wrth brosesu taliadau. | 1 blwyddyn   |
-| `__stripe_mid` | Mae Stripe yn gosod y cwci hwn fel rhan o weithgarwch darganfod ac atal twyll wrth brosesu taliadau. | 1 awr        |
+
+### Cookies that measure website use
+We use Google Analytics to measure how you use the website so we can improve it based on user needs. Google Analytics
+sets cookies that store anonymised information about:
+
+ * how you got to the site
+ * the pages you visit on StatsWales, and how long you spend on each page
+ * what you click on while you're visiting the site
+
+We do not allow Google to use or share the data about how you use this site.

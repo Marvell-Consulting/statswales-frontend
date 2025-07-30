@@ -8,9 +8,9 @@ export default function CookieBanner() {
   if (!showCookieBanner) return null;
 
   return (
-    <div id="govwales-shared-cookie-message" className="container-fluid">
+    <div id="cookie-banner" className="cookie-banner container-fluid">
       <p className="govuk-body">
-        <T>cookie_banner.required.summary</T>
+        <T>cookies.banner.required.summary</T>
       </p>
 
       <ul className="govuk-list govuk-list--bullet">

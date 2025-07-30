@@ -276,7 +276,7 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
                 <a href="https://www.gov.wales/copyright-statement">{t('footer.copyright_statement')}</a>
               </li>
               <li className="menu__item">
-                <a href={`/${i18n.language}/cookies`}>{t('footer.cookies')}</a>
+                <a href={buildUrl(`/cookies`, i18n.language)}>{t('footer.cookies')}</a>
               </li>
               <li className="menu__item">
                 <a href="https://www.gov.wales/website-privacy-policy">{t('footer.privacy')}</a>

@@ -39,6 +39,10 @@
     text-decoration: none !important;
   }
 
+  .cookie-banner {
+    padding-top: 20px;
+  }
+
   .govuk-phase-banner a:link:focus {
     color: colours.$white !important;
     background-color: colours.$black !important;

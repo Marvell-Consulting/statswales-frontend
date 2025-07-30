@@ -78,6 +78,17 @@
         "accept_all": "Accept all cookies",
         "change_settings": "Change cookie settings"
       }
+    },
+    "settings": {
+      "measuring": {
+        "options": {
+          "reject": "Do not use cookies that measure my website use",
+          "accept": "Use cookies that measure my website use"
+        }
+      },
+      "buttons": {
+        "submit": "Save changes"
+      }
     }
   },
   "footer": {

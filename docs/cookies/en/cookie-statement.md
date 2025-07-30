@@ -1,26 +1,28 @@
-# Cookies
+# Cookies on StatsWales
 
 Cookies are files saved on your phone, tablet or computer when you visit a website.
 
-We use cookies to remember your login details, your preferences and the information you've entered.
+We use cookies to store information about how you use the StatsWales website, such as the pages you visit. These cookies
+are not used to identify you personally.
 
-## Essential cookies
+## Cookie settings
 
-Essential cookies do things like remember your login details and save your progress through a form. These cookies always need to be on.
+### Strictly necessary cookies
 
-| Name                 | Purpose                                                                                             | Expires |
-| :------------------- | :-------------------------------------------------------------------------------------------------- | :------ |
-| `jwt`                | Tells us who you are and allows you to perform actions on this site                                 | 1 day   |
-| `lang`               | Tells us the language you have chosen to use                                                        | 1 year  |
-| `statswales.backend` | Session cookies that stores information you've entered so you do not have to re-enter it every time | 1 day   |
+These essential cookies do things like:
 
-## FontAwesome
+ * display errors and success messages where these apply
+ * store information you've entered so you do not have to re-enter it every time
 
-We use FontAwesome to display icons in various places around the site to make the site easier to use. FontAwesome uses the following cookies.
+These cookies always need to be on.
 
-| Name           | Purpose                                                                                     | Expires   |
-| :------------- | :------------------------------------------------------------------------------------------ | :-------- |
-| `_ga`          | This randomly generated number is used to determine unique visitors using Font Awesome      | 2 years   |
-| `_ga_*`        | This randomly generated number is used to determine unique visitors using Font Awesome      | 18 months |
-| `__stripe_sid` | Stripe sets this cookie as part of fraud detection and prevention when processing payments. | 1 year    |
-| `__stripe_mid` | Stripe sets this cookie as part of fraud detection and prevention when processing payments. | 1 hour    |
+
+### Cookies that measure website use
+We use Google Analytics to measure how you use the website so we can improve it based on user needs. Google Analytics
+sets cookies that store anonymised information about:
+
+ * how you got to the site
+ * the pages you visit on StatsWales, and how long you spend on each page
+ * what you click on while you're visiting the site
+
+We do not allow Google to use or share the data about how you use this site.
