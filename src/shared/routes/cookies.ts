@@ -29,8 +29,8 @@ const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
       cookiePreferences.measuring = true;
       cookiePreferences.showBanner = false;
     } else if (measuring) {
-      cookiePreferences.acceptAll = true;
       cookiePreferences.measuring = measuring === 'accept';
+      cookiePreferences.acceptAll = false;
       cookiePreferences.showBanner = false;
     }
 
@@ -58,12 +58,12 @@ const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
   }
 
   const title = await getTitle(normalizedFilePath);
-  const mardkwonFile: string = fs.readFileSync(normalizedFilePath, 'utf8');
+  const markdownFile: string = fs.readFileSync(normalizedFilePath, 'utf8');
   const { window } = new JSDOM(`<!DOCTYPE html>`);
   const domPurify = DOMPurify(window);
-  const toc = createToc(mardkwonFile);
+  const toc = createToc(markdownFile);
   marked.use({ renderer: docRenderer });
-  const content = domPurify.sanitize(await marked.parse(mardkwonFile));
+  const content = domPurify.sanitize(await marked.parse(markdownFile));
 
   res.render('cookies', { content, tableOfContents: toc, title, cookiePreferences });
 };
