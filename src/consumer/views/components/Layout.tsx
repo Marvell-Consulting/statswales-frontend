@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import clsx from 'clsx';
 import { Locals, LocalsProvider, useLocals } from '../../../shared/views/context/Locals';
+import CookieBanner from '../../../shared/views/components/CookieBanner';
 
 const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; noPad?: boolean }>) => {
   const { i18n, t, buildUrl } = useLocals();
@@ -46,6 +47,8 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
         <a href="#main-content" className="govuk-skip-link" data-module="govuk-skip-link">
           Skip to main content
         </a>
+
+        <CookieBanner />
 
         <div className="govuk-phase-banner">
           <div className="govuk-width-container">

@@ -23,8 +23,9 @@ import { errorHandler } from '../shared/routes/error-handler';
 import { homepage } from './routes/homepage';
 import { notFound } from '../shared/routes/not-found';
 import { guidance } from './routes/guidance';
-import { cookies } from '../shared/routes/cookie';
+import { cookies } from '../shared/routes/cookies';
 import { admin } from './routes/admin';
+import { cookieBanner } from '../shared/middleware/cookie-banner';
 
 const app: Application = express();
 const config = appConfig();
@@ -47,6 +48,7 @@ app.use(express.json());
 app.use(httpLogger);
 app.use(cookieParser());
 app.use(session);
+app.use(cookieBanner);
 app.use(i18nextMiddleware.handle(i18next));
 app.use(languageSwitcher);
 app.use(initServices);

@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import clsx from 'clsx';
 import T from '../../../shared/views/components/T';
 import { Locals, LocalsProvider, useLocals } from '../../../shared/views/context/Locals';
+import CookieBanner from '../../../shared/views/components/CookieBanner';
 
 export type LayoutProps = {
   title?: string;
@@ -99,6 +100,8 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
         <a href="#main-content" className="govuk-skip-link" data-module="govuk-skip-link">
           {t('header.navigation.skip_to_content')}
         </a>
+
+        <CookieBanner />
 
         <div className="govuk-phase-banner">
           <div className="govuk-width-container">
