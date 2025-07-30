@@ -1012,6 +1012,7 @@
       "add": "Ychwanegu data newydd yn unig",
       "add_revise": "Ychwanegu data newydd a diwygio data presennol",
       "revise": "Diwygio data presennol yn unig",
+      "correction": "Newid y data presennol heb drin codau nodiadau mewn ffordd awtomatig",
       "replace_all": "Disodli'r holl ddata presennol",
       "errors": {
         "missing": "Mae angen i chi ddewis y math o ddiweddariad yr ydych yn dymuno ei wneud"
