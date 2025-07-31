@@ -88,6 +88,14 @@
       },
       "buttons": {
         "submit": "Save changes"
+      },
+      "not_saved": {
+        "heading": "Your cookie settings have not yet been saved",
+        "content": "StatsWales sets cookies when you visit our website. You can choose to change these settings to your own preferences. You need to save this page with your new choices."
+      },
+      "saved": {
+        "heading": "Your cookie settings were saved",
+        "link": "Go back to the page you were looking at"
       }
     }
   },

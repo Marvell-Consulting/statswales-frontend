@@ -657,6 +657,8 @@
   }
 
   .govuk-notification-banner {
+    background: colours.$lightgrey_light;
+    border-left: 10px solid colours.$blue;
     border: none;
     font-size: 18px;
 
@@ -668,6 +670,10 @@
     &__content {
       background-color: transparent;
       padding: 20px;
+
+      &>* {
+        max-width: none;
+      }
     }
 
     &__heading {
