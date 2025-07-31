@@ -16,7 +16,7 @@ import {
   userStatus
 } from '../controllers/admin';
 import { ensureAdmin } from '../middleware/ensure-admin';
-import { flashMessages } from '../middleware/flash';
+import { flashMessages } from '../../shared/middleware/flash';
 import { noCache } from '../../shared/middleware/no-cache';
 
 export const admin = Router();

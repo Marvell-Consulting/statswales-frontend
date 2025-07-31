@@ -48,7 +48,7 @@ import {
   taskDecision
 } from '../controllers/publish';
 import { DatasetInclude as Include } from '../../shared/enums/dataset-include';
-import { flashMessages } from '../middleware/flash';
+import { flashMessages } from '../../shared/middleware/flash';
 import { noCache } from '../../shared/middleware/no-cache';
 
 export const publish = Router();

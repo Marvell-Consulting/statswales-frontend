@@ -10,8 +10,15 @@ import { logger } from '../utils/logger';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { docRenderer, createToc, getTitle } from '../services/marked';
 import { CookiePreferences } from '../interfaces/cookie-preferences';
+import { appConfig } from '../config';
+import { flashMessages } from '../middleware/flash';
+import { RequestHistory } from '../interfaces/request-history';
+
+const config = appConfig();
 
 export const cookies = Router();
+
+cookies.use(flashMessages);
 
 const bodyParser = express.urlencoded({ extended: true });
 const docsPath = path.join(__dirname, '..', '..', '..', 'docs', 'cookies');
@@ -19,6 +26,8 @@ const docsPath = path.join(__dirname, '..', '..', '..', 'docs', 'cookies');
 const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
   const defaultPref: CookiePreferences = { acceptAll: false, measuring: false, showBanner: true };
   const cookiePreferences = req.cookies['cookiePref'] || defaultPref;
+  const referrer = res.locals.history?.find((h: RequestHistory) => h.url !== req.originalUrl)?.url || req.originalUrl;
+  const saved = res.locals.flash || false;
 
   if (req.method === 'POST') {
     logger.debug('Cookie preferences submitted...');
@@ -34,8 +43,16 @@ const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
       cookiePreferences.showBanner = false;
     }
 
-    res.cookie('cookiePref', cookiePreferences, { maxAge: 31536000000, httpOnly: true });
-    res.redirect(req.get('Referrer') || '/');
+    res.cookie('cookiePref', cookiePreferences, {
+      maxAge: 31536000000, // 1 year
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: config.session.secure
+    });
+
+    req.session.flash = [{ key: `cookies.referrer`, value: referrer }];
+    req.session.save();
+    res.redirect(req.buildUrl('/cookies', req.language));
     return;
   }
 
@@ -65,7 +82,7 @@ const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
   marked.use({ renderer: docRenderer });
   const content = domPurify.sanitize(await marked.parse(markdownFile));
 
-  res.render('cookies', { content, tableOfContents: toc, title, cookiePreferences });
+  res.render('cookies', { content, tableOfContents: toc, title, cookiePreferences, saved, referrer });
 };
 
 cookies.get('/', bodyParser, cookiePage);
