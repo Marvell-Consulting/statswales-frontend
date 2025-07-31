@@ -56,8 +56,8 @@ export default function Schedule(props) {
                     </p>
                   )}
 
-                  <Field name="hour" />
-                  <Field name="minute" />
+                  <DateField name="hour" label={<T>publish.schedule.form.hour.label</T>} />
+                  <DateField name="minute" label={<T>publish.schedule.form.minute.label</T>} />
                 </fieldset>
               </div>
               <button type="submit" className="govuk-button" data-module="govuk-button">
