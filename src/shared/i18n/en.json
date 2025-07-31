@@ -45,7 +45,9 @@
     "feedback": "You’re viewing a new version of StatsWales. You can get support on <a class=\"govuk-link\" href=\"http://statswales3support.slack.com\">Slack</a>.",
     "logo": "StatsWales logo",
     "navigation": {
-      "home": "Home",
+      "wghome": "Welsh Government",
+      "wgurl": "https://www.gov.wales",
+      "home": "StatsWales home",
       "menu": "Menu",
       "skip_to_content": "Skip to main content",
       "publish_dataset": "Publish a dataset",
@@ -1697,7 +1699,7 @@
   },
   "consumer": {
     "global": {
-      "home_label": "Home",
+      "wghome": "Welsh Government",
       "heading": "StatsWales",
       "phase_banner": {
         "beta": "Beta",

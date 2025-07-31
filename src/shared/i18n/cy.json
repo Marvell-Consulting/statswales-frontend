@@ -43,7 +43,9 @@
     "feedback": "Rydych chi'n edrych ar fersiwn newydd o StatsCymru. Gallwch gael cymorth trwy droi at <a class=\"govuk-link\" href=\"http://statswales3support.slack.com\">Slack</a>.",
     "logo": "Logo StatsCymru",
     "navigation": {
-      "home": "Hafan",
+      "wghome": "Llywodraeth Cymru",
+      "wgurl": "https://www.llyw.cymru",
+      "home": "Hafan StatsCymru",
       "menu": "Dewislen",
       "skip_to_content": "Neidio i'r prif gynnwys",
       "publish_dataset": "Cyhoeddi set ddata",
@@ -1627,7 +1629,7 @@
   },
   "consumer": {
     "global": {
-      "home_label": "Hafan",
+      "wghome": "Llywodraeth Cymru",
       "heading": "StatsCymru",
       "phase_banner": {
         "beta": "Beta",

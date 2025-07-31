@@ -66,8 +66,13 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
             <div className="header" id="header">
               <div className="header__components container-fluid">
                 <div id="block-govwales-branding">
-                  <a href={buildUrl('/', i18n.language)} title="Welsh Government" className="header__logo" id="logo">
-                    <span className="visually-hidden">{t('consumer.global.home_label')}</span>
+                  <a
+                    href={t('header.navigation.wgurl')}
+                    title={t('header.navigation.wghome')}
+                    className="header__logo"
+                    id="logo"
+                  >
+                    <span className="visually-hidden">{t('consumer.global.wghome')}</span>
                   </a>
                 </div>
                 <div
@@ -103,6 +108,7 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
               className="statsWales-logo"
               href={buildUrl('/', i18n.language)}
               role="img"
+              title={t('header.navigation.home')}
               aria-label={t('header.logo')}
             />
           </div>
