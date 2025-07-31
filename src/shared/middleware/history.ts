@@ -3,7 +3,7 @@ import { RequestHistory } from '../interfaces/request-history';
 
 // records the last 10 URLs visited by the user
 export const history = (req: Request, res: Response, next: NextFunction) => {
-  const history: RequestHistory[] = req.session.history || [];
+  const history: RequestHistory[] = req.session?.history || [];
   const currentUrl = req.originalUrl;
 
   if (currentUrl !== history[0]?.url) {

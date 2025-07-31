@@ -20,6 +20,7 @@ import { cookies } from '../shared/routes/cookies';
 import { handleAsset404 } from '../shared/middleware/asset-404';
 import { cookieBanner } from '../shared/middleware/cookie-banner';
 import { history } from '../shared/middleware/history';
+import session from '../shared/middleware/session';
 
 const app: Application = express();
 const config = appConfig();
@@ -45,6 +46,7 @@ app.use(cookieBanner);
 app.use(i18nextMiddleware.handle(i18next));
 app.use(languageSwitcher);
 app.use(initServices);
+app.use(session);
 app.use(history);
 
 // configure the view engine
