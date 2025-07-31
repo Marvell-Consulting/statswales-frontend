@@ -48,6 +48,7 @@
       "wghome": "Welsh Government",
       "wgurl": "https://www.gov.wales",
       "home": "StatsWales home",
+      "menu_home": "Home",
       "menu": "Menu",
       "skip_to_content": "Skip to main content",
       "publish_dataset": "Publish a dataset",
@@ -1699,7 +1700,6 @@
   },
   "consumer": {
     "global": {
-      "wghome": "Welsh Government",
       "heading": "StatsWales",
       "phase_banner": {
         "beta": "Beta",

@@ -72,7 +72,7 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
                     className="header__logo"
                     id="logo"
                   >
-                    <span className="visually-hidden">{t('consumer.global.wghome')}</span>
+                    <span className="visually-hidden">{t('consumer.navigation.wghome')}</span>
                   </a>
                 </div>
                 <div

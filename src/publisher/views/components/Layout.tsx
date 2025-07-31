@@ -184,7 +184,7 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
                     className={clsx({ 'is-active': activePage === 'home' })}
                     aria-current={activePage === 'home' ? 'page' : undefined}
                   >
-                    {t('header.navigation.home')}
+                    {t('header.navigation.menu_home')}
                   </a>
                 </li>
                 {isAdmin && (
