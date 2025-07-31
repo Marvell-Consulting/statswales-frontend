@@ -2,32 +2,12 @@ import React from 'react';
 import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
 import clsx from 'clsx';
+import { DateField } from '../components/DateField';
+import T from '../../../shared/views/components/T';
 
 export default function Schedule(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
   const backLink = returnLink;
-
-  function Field({ name, width = 3 }) {
-    return (
-      <div className="govuk-date-input__item">
-        <div className="govuk-form-group">
-          <label className="govuk-label govuk-date-input__label" htmlFor={`publication-${name}`}>
-            {props.t(`publish.schedule.form.${name}.label`)}
-          </label>
-          <input
-            className={clsx(`govuk-input govuk-date-input__input govuk-input--width-${width}`, {
-              'govuk-input--error': props.errors?.find((e) => e.field === name)
-            })}
-            id={`publication-${name}`}
-            name={name}
-            type="text"
-            inputMode="numeric"
-            defaultValue={props.values?.[name] ? props.values[name] : ''}
-          />
-        </div>
-      </div>
-    );
-  }
 
   const title = props.t('publish.schedule.heading');
 
@@ -56,9 +36,9 @@ export default function Schedule(props) {
                   )}
 
                   <div className="govuk-date-input" id="publication-date">
-                    <Field name="day" />
-                    <Field name="month" />
-                    <Field name="year" width={5} />
+                    <DateField name="day" label={<T>publish.schedule.form.day.label</T>} />
+                    <DateField name="month" label={<T>publish.schedule.form.month.label</T>} />
+                    <DateField name="year" label={<T>publish.schedule.form.year.label</T>} width={5} />
                   </div>
                 </fieldset>
               </div>
@@ -76,8 +56,8 @@ export default function Schedule(props) {
                     </p>
                   )}
 
-                  <Field name="hour" />
-                  <Field name="minute" />
+                  <DateField name="hour" label={<T>publish.schedule.form.hour.label</T>} />
+                  <DateField name="minute" label={<T>publish.schedule.form.minute.label</T>} />
                 </fieldset>
               </div>
               <button type="submit" className="govuk-button" data-module="govuk-button">
