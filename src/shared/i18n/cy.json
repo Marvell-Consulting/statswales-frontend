@@ -56,6 +56,19 @@
       "users": "Defnyddwyr"
     }
   },
+  "cookies": {
+    "settings": {
+      "measuring": {
+        "options": {
+          "reject": "Peidiwch â defnyddio cwcis sy'n mesur fy nefnydd o'r wefan",
+          "accept": "Defnyddiwch cwcis sy'n mesur fy nefnydd o'r wefan"
+        }
+      },
+      "buttons": {
+        "submit": "Cadw newidiadau"
+      }
+    }
+  },
   "footer": {
     "top_of_page": "Yn ôl i'r brig",
     "contact_us": "Cysylltu â ni",
