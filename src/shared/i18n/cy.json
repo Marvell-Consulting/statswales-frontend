@@ -46,6 +46,7 @@
       "wghome": "Llywodraeth Cymru",
       "wgurl": "https://www.llyw.cymru",
       "home": "Hafan StatsCymru",
+      "menu_home": "Hafan",
       "menu": "Dewislen",
       "skip_to_content": "Neidio i'r prif gynnwys",
       "publish_dataset": "Cyhoeddi set ddata",
@@ -1637,7 +1638,6 @@
   },
   "consumer": {
     "global": {
-      "wghome": "Llywodraeth Cymru",
       "heading": "StatsCymru",
       "phase_banner": {
         "beta": "Beta",
