@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
 import clsx from 'clsx';
 import { DateField } from '../components/DateField';
+import T from '../../../shared/views/components/T';
 
 export default function Schedule(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
