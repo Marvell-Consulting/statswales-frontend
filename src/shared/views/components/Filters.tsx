@@ -53,7 +53,7 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
         const total = filterOptionCount(filter.values);
 
         return (
-          <div className="filters" id={`filter-${filter.factTableColumn}`} key={index}>
+          <div className="filters" id={`filter-${filter.factTableColumn.replaceAll(/\s+/g, '_')}`} key={index}>
             <h3 className="region-subhead">
               {filter.columnName} (
               <T filtered={filtered} total={total} className={clsx('filtered-label', { 'js-hidden': !filtered })} raw>
