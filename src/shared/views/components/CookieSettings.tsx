@@ -19,30 +19,38 @@ export default function CookieSettings(props: CookieSettingsProps) {
   return (
     <>
       {showBanner && (
-        <div className="govuk-notification-banner" data-module="govuk-notification-banner">
-          <div className="govuk-notification-banner__content">
-            <h3 className="govuk-notification-banner__heading govuk-heading-m">
-              <T>cookies.settings.not_saved.heading</T>
-            </h3>
-            <p className="govuk-body">
-              <T>cookies.settings.not_saved.content</T>
-            </p>
+        <div className="govuk-grid-row">
+          <div className="govuk-grid-column-two-thirds">
+            <div className="govuk-notification-banner" data-module="govuk-notification-banner">
+              <div className="govuk-notification-banner__content">
+                <h3 className="govuk-notification-banner__heading govuk-heading-m">
+                  <T>cookies.settings.not_saved.heading</T>
+                </h3>
+                <p className="govuk-body">
+                  <T>cookies.settings.not_saved.content</T>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       )}
 
       {props.saved && (
-        <div
-          className="govuk-notification-banner govuk-notification-banner--success"
-          data-module="govuk-notification-banner"
-        >
-          <div className="govuk-notification-banner__content">
-            <h3 className="govuk-notification-banner__heading govuk-heading-m">
-              <T>cookies.settings.saved.heading</T>
-            </h3>
-            <a href={props.referrer} className="govuk-link">
-              <T>cookies.settings.saved.link</T>
-            </a>
+        <div className="govuk-grid-row">
+          <div className="govuk-grid-column-two-thirds">
+            <div
+              className="govuk-notification-banner govuk-notification-banner--success"
+              data-module="govuk-notification-banner"
+            >
+              <div className="govuk-notification-banner__content">
+                <h3 className="govuk-notification-banner__heading govuk-heading-m">
+                  <T>cookies.settings.saved.heading</T>
+                </h3>
+                <a href={props.referrer} className="govuk-link">
+                  <T>cookies.settings.saved.link</T>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       )}

@@ -61,17 +61,10 @@
   "cookies": {
     "banner": {
       "required": {
-        "summary": "We've saved some files called cookies on your device. These cookies are:",
-        "list": {
-          "essential": "essential for the site to work"
-        }
+        "summary": "We've saved some files called cookies on your device. These cookies are essential for the site to work."
       },
       "optional": {
-        "summary": "We would also like to save some cookies to help:",
-        "list": {
-          "improve": "improve our website by collecting and reporting information on how you use it",
-          "tailor": "tailor communications"
-        }
+        "summary": "We would also like to save some cookies to help improve our website by collecting and reporting information on how you use it."
       },
       "buttons": {
         "accept_all": "Accept all cookies",

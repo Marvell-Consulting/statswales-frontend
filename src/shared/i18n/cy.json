@@ -57,6 +57,18 @@
     }
   },
   "cookies": {
+    "banner": {
+      "required": {
+        "summary": "Ry'n ni wedi cadw ffeiliau a elwir yn cwcis ar eich dyfais. Mae'r cwcis hyn yn hanfodol i'r safle weithio."
+      },
+      "optional": {
+        "summary": "Byddem hefyd yn hoffi cadw rhai cwcis i'n helpu ni i wella'n gwefan drwy gasglu ac adrodd gwybodaeth ar sut yr ydych yn defnyddio'r safle."
+      },
+      "buttons": {
+        "accept_all": "Derbyn pob cwci",
+        "change_settings": "Newid gosodiadau cwcis"
+      }
+    },
     "settings": {
       "measuring": {
         "options": {
@@ -66,6 +78,14 @@
       },
       "buttons": {
         "submit": "Cadw newidiadau"
+      },
+      "not_saved": {
+        "heading": "Nid yw eich dewisiadau cwcis wedi eu cadw eto",
+        "content": "Mae StatsCymru yn gosod cwcis pan fyddwch yn ymweld â'n gwefan. Gallwch newid y gosodiadau hyn i'ch dewis chi. Mae angen i chi gadw'r dudalen hon gyda'ch dewisiadau newydd."
+      },
+      "saved": {
+        "heading": "Cafodd eich dewisiadau cwcis eu cadw",
+        "link": "Mynd yn ôl i'r dudalen roeddech yn edrych arni"
       }
     }
   },
