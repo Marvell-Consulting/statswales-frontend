@@ -1,11 +1,10 @@
 import React, { PropsWithChildren } from 'react';
 import clsx from 'clsx';
-import T from '../../../shared/views/components/T';
 import { Locals, LocalsProvider, useLocals } from '../../../shared/views/context/Locals';
 import CookieBanner from '../../../shared/views/components/CookieBanner';
 
 const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; noPad?: boolean }>) => {
-  const { i18n, t, buildUrl, supportEmail } = useLocals();
+  const { i18n, t, buildUrl } = useLocals();
 
   return (
     <html lang={i18n.language} className="govuk-template wg">
@@ -131,32 +130,28 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
           <div className="govuk-width-container govuk-!-padding-top-9">
             <ul className="footer-menu govuk-list">
               <li className="menu__item">
-                <a href={`mailto:${supportEmail}`}>
-                  <T>footer.contact_us</T>
-                </a>
+                <a href={t('footer.contact_us_link')}>{t('footer.contact_us')}</a>
               </li>
               <li className="menu__item">
-                <a href="https://www.gov.wales/accessibility-statement-govwales">{t('footer.accessibility')}</a>
+                <a href={t('footer.accessibility_link')}>{t('footer.accessibility')}</a>
               </li>
               <li className="menu__item">
-                <a href="https://www.gov.wales/copyright-statement">{t('footer.copyright_statement')}</a>
+                <a href={t('footer.copyright_statement_link')}>{t('footer.copyright_statement')}</a>
               </li>
               <li className="menu__item">
                 <a href={buildUrl(`/cookies`, i18n.language)}>{t('footer.cookies')}</a>
               </li>
               <li className="menu__item">
-                <a href="https://www.gov.wales/website-privacy-policy">{t('footer.privacy')}</a>
+                <a href={t('footer.privacy_link')}>{t('footer.privacy')}</a>
               </li>
               <li className="menu__item">
-                <a href="https://www.gov.wales/terms-and-conditions">{t('footer.terms_conditions')}</a>
+                <a href={t('footer.terms_conditions_link')}>{t('footer.terms_conditions')}</a>
               </li>
               <li className="menu__item">
-                <a href="https://www.gov.wales/welsh-government-modern-slavery-statement">
-                  {t('footer.modern_slavery')}
-                </a>
+                <a href={t('footer.modern_slavery_link')}>{t('footer.modern_slavery')}</a>
               </li>
               <li className="menu__item">
-                <a href="https://www.gov.wales/alternative-languages">Alternative languages</a>
+                <a href={t('footer.alternative_languages_link')}>{t('footer.alternative_languages')}</a>
               </li>
             </ul>
             <div className="wg-footer-logo"></div>
