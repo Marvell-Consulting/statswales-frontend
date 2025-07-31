@@ -100,7 +100,15 @@
     "privacy": "Preifatrwydd",
     "terms_conditions": "Amodau a thelerau",
     "modern_slavery": "Datganiad caethwasiaeth fodern",
-    "welsh_gov": "Llywodraeth Cymru"
+    "alternative_languages": "Ieithoedd amgen",
+    "welsh_gov": "Llywodraeth Cymru",
+    "contact_us_link": "https://www.llyw.cymru/cysylltiadau-ar-gyfer-ystadegau",
+    "accessibility_link": "https://www.llyw.cymru/datganiad-hygyrchedd-llywcymru",
+    "copyright_statement_link": "https://www.llyw.cymru/datganiad-hawlfraint",
+    "privacy_link": "https://www.llyw.cymru/help/polisi-preifatrwydd-wefan",
+    "terms_conditions_link": "https://www.llyw.cymru/telerau-ac-amodau",
+    "modern_slavery_link": "https://www.llyw.cymru/datganiad-caethwasiaeth-fodern-llywodraeth-cymru",
+    "alternative_languages_link": "https://www.llyw.cymru/ieithoedd-amgen"
   },
   "login": {
     "heading": "Mewngofnodi",
