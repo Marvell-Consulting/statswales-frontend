@@ -53,7 +53,7 @@ export const Checkbox = ({
   values: string[];
   omitName?: boolean;
 }) => {
-  const formattedId = name.replace(/\s+/g, '_');
+  const formattedId = name.replaceAll(/\s+/g, '_');
   const CheckboxField = (
     <div className="govuk-checkboxes__item">
       <input
