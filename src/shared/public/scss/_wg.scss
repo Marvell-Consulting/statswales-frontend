@@ -658,8 +658,8 @@
 
   .govuk-notification-banner {
     background: colours.$lightgrey_light;
-    border-left: 10px solid colours.$blue;
     border: none;
+    border-left: 10px solid colours.$blue;
     font-size: 18px;
 
     &--success {
