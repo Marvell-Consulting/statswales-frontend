@@ -1,11 +1,10 @@
 import React, { PropsWithChildren } from 'react';
 import clsx from 'clsx';
-import T from '../../../shared/views/components/T';
 import { Locals, LocalsProvider, useLocals } from '../../../shared/views/context/Locals';
 import CookieBanner from '../../../shared/views/components/CookieBanner';
 
 const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; noPad?: boolean }>) => {
-  const { i18n, t, buildUrl, supportEmail } = useLocals();
+  const { i18n, t, buildUrl } = useLocals();
 
   return (
     <html lang={i18n.language} className="govuk-template wg">

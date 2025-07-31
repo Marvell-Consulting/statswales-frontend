@@ -48,6 +48,7 @@ jobs:
           SESSION_STORE: memory
           SESSION_SECRET: peakaboo
           JWT_SECRET: jwtsecret
+          SUPPORT_EMAIL: support@example.com
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:

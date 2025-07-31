@@ -12,7 +12,7 @@ export type LayoutProps = {
 };
 
 const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithChildren<LayoutProps>) => {
-  const { i18n, t, supportEmail, isAuthenticated, buildUrl, activePage, isAdmin, isDeveloper } = useLocals();
+  const { i18n, t, isAuthenticated, buildUrl, activePage, isAdmin, isDeveloper } = useLocals();
   return (
     <html lang={i18n.language} className="govuk-template wg">
       <head>
