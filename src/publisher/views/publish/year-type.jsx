@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
 import RadioGroup from '../../../shared/views/components/RadioGroup';
 import T from '../../../shared/views/components/T';
+import { DateField } from '../components/DateField';
 
 export default function YearType(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
@@ -59,50 +60,18 @@ export default function YearType(props) {
                   label: <T>publish.year_type.chooser.rolling</T>,
                   hint: <T>publish.year_type.chooser.rolling-hint</T>,
                   children: (
-                    <>
-                      <h2 className="govuk-fieldset__heading">
+                    <div className="govuk-form-group">
+                      <label className="govuk-label">
                         <T>publish.year_type.chooser.rolling-start-date</T>
-                      </h2>
-                      <p className="govuk-hint">
+                      </label>
+                      <div className="govuk-hint">
                         <T>publish.year_type.chooser.rolling-start-date-hint</T>
-                      </p>
-                      <div className="govuk-date-input">
-                        <div className="govuk-date-input__item">
-                          <div className="govuk-form-group" id="start_date">
-                            <label className="govuk-label, govuk-date-input__label" htmlFor="start_day">
-                              <T>publish.year_type.chooser.day</T>
-                            </label>
-                            <input
-                              className="govuk-input govuk-date-input__input govuk-input--width-2"
-                              type="text"
-                              name="start_day"
-                              id="start_day"
-                              placeholder="DD"
-                              inputMode="numeric"
-                              defaultValue={props.start_day}
-                              maxLength={2}
-                            />
-                          </div>
-                        </div>
-                        <div className="govuk-date-input__item">
-                          <div className="govuk-form-group">
-                            <label className="govuk-label, govuk-date-input__label" htmlFor="start_month">
-                              <T>publish.year_type.chooser.month</T>
-                            </label>
-                            <input
-                              className="govuk-input govuk-date-input__input govuk-input--width-2"
-                              type="text"
-                              name="start_month"
-                              id="start_month"
-                              placeholder="MM"
-                              inputMode="numeric"
-                              defaultValue={props.start_month}
-                              maxLength={2}
-                            />
-                          </div>
-                        </div>
                       </div>
-                    </>
+                      <div className="govuk-date-input">
+                        <DateField name="start_day" label={<T>publish.year_type.chooser.day</T>} />
+                        <DateField name="start_month" label={<T>publish.year_type.chooser.month</T>} />
+                      </div>
+                    </div>
                   )
                 }
               ]}
