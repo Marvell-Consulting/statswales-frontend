@@ -1,26 +1,28 @@
-# Cwcis
+# Cwcis ar StatsCymru
 
-Ffeiliau yw cwcis sy’n cael eu cadw ar eich ffôn, eich llechen neu eich cyfrifiadur pan fyddwch yn ymweld â gwefan.
+Ffeiliau sy'n cael eu cadw ar eich ffôn, tabled neu gyfrifiadur pan fyddwch yn ymweld â gwefan yw cwcis.
 
-Rydym yn defnyddio cwcis i gofio eich manylion mewngofnodi, eich dewisiadau a’r wybodaeth a nodwyd gennych.
+Rydym yn defnyddio cwcis i storio gwybodaeth ynghylch sut yr ydych yn defnyddio gwefan StatsCymru, megis y tudalennau yr
+ydych yn ymweld â nhw. Nid yw'r cwcis hyn yn cael eu defnyddio i'ch adnabod chi'n bersonol.
 
-## Cwcis hanfodol
+## Gosodiadau cwcis
 
-Mae cwcis hanfodol yn gwneud pethau fel cofio eich manylion mewngofnodi ac maent yn cadw eich cynnydd trwy ffurflen. Mae angen i’r cwcis hyn fod ymlaen bob amser.
+### Cwcis sy'n angenrheidiol
 
-| Enw                  | Diben                                                                                                | Yn dod i ben |
-| :------------------- | :--------------------------------------------------------------------------------------------------- | :----------- |
-| `jwt`                | Dweud wrthym pwy ydych chi ac mae’n caniatáu i chi gyflawni gweithredoedd ar y wefan hon             | 1 diwrnod    |
-| `lang`               | Mae’n dweud wrthym yr iaith yr ydych chi wedi dewis ei defnyddio                                     | 1 blwyddyn   |
-| `statswales.backend` | Cwcis sesiwn sy’n storio gwybodaeth a nodwyd gennych, fel nad oes yn rhaid i chi ei nodi eto bob tro | 1 diwrnod    |
+Mae'r cwcis hyn yn hanfodol ar gyfer pethau fel:
 
-## FontAwesome
+- display errors and success messages where these apply
+- store information you've entered so you do not have to re-enter it every time
 
-Rydym yn defnyddio FontAwesome i ddangos eiconau mewn mannau amrywiol o gwmpas y wefan er mwyn gwneud y wefan yn haws i’w defnyddio. Mae FontAwesome yn defnyddio’r cwcis canlynol.
+Bydd angen i'r cwcis yma fod ymlaen drwy'r amser.
 
-| Enw            | Diben                                                                                                | Yn dod i ben |
-| :------------- | :--------------------------------------------------------------------------------------------------- | :----------- |
-| `_ga`          | Defnyddir y rhif hwn a gynhyrchir ar hap i bennu ymwelwyr unigryw sy’n defnyddio Font Awesome        | 2 flynedd    |
-| `_ga_*`        | Defnyddir y rhif hwn a gynhyrchir ar hap i bennu ymwelwyr unigryw sy’n defnyddio Font Awesome        | 18 mis       |
-| `__stripe_sid` | Mae Stripe yn gosod y cwci hwn fel rhan o weithgarwch darganfod ac atal twyll wrth brosesu taliadau. | 1 blwyddyn   |
-| `__stripe_mid` | Mae Stripe yn gosod y cwci hwn fel rhan o weithgarwch darganfod ac atal twyll wrth brosesu taliadau. | 1 awr        |
+### Cwcis sy'n mesur defnydd y wefan
+
+Rydym yn defnyddio Google Analytics i fesur sut ydych yn defnyddio'r wefan er mwyn i ni ei wella yn seiliedig ar angen
+defnyddwyr. Mae Google Analytics yn gosod cwcis sy'n storio gwybodaeth wedi anonymeiddio ynghylch:
+
+- sut ddaethoch chi i'r safle
+- y tudalennau yr ydych yn ymweld â nhw ar StatsCymru, a pha mor hir yr ydych chi'n treulio ar bob tudalen
+- beth ydych chi'n clicio arno wrth ymweld â'r safle
+
+Nid ydym yn caniatâu i Google ddefnyddio na rhannu'r data ynghylch sut yr ydych yn defnyddio'r safle.

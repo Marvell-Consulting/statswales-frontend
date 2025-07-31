@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from 'express';
 
-import { flashErrors, flashMessages } from '../middleware/flash';
+import { flashErrors, flashMessages } from '../../shared/middleware/flash';
 import { DatasetListItemDTO } from '../../shared/dtos/dataset-list-item';
 import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count';
 import { getPaginationProps } from '../../shared/utils/pagination';

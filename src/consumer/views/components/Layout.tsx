@@ -1,18 +1,12 @@
 import React, { PropsWithChildren } from 'react';
 import clsx from 'clsx';
+import T from '../../../shared/views/components/T';
 import { Locals, LocalsProvider, useLocals } from '../../../shared/views/context/Locals';
+import CookieBanner from '../../../shared/views/components/CookieBanner';
 
 const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; noPad?: boolean }>) => {
-  const { i18n, t, buildUrl } = useLocals();
-  const links = [
-    'contact_us',
-    'accessibility',
-    'copyright_statement',
-    'cookies',
-    'privacy',
-    'terms_conditions',
-    'modern_slavery'
-  ];
+  const { i18n, t, buildUrl, supportEmail } = useLocals();
+
   return (
     <html lang={i18n.language} className="govuk-template wg">
       <head>
@@ -46,6 +40,8 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
         <a href="#main-content" className="govuk-skip-link" data-module="govuk-skip-link">
           Skip to main content
         </a>
+
+        <CookieBanner />
 
         <div className="govuk-phase-banner">
           <div className="govuk-width-container">
@@ -119,21 +115,45 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
         </main>
 
         <footer className="wg-footer">
+          <div className="footer-top">
+            <div className="govuk-width-container">
+              <a href="#top" role="button" className="govuk-button govuk-button--secondary govuk-button--top">
+                {t('footer.top_of_page')}
+              </a>
+            </div>
+          </div>
           <div className="govuk-width-container govuk-!-padding-top-9">
             <ul className="footer-menu govuk-list">
-              {links.map((link) => (
-                <li className="govuk-footer__inline-list-item" key={link}>
-                  <a className="govuk-footer__link" href="#">
-                    {t(`footer.${link}`)}
-                  </a>
-                </li>
-              ))}
+              <li className="menu__item">
+                <a href={`mailto:${supportEmail}`}>
+                  <T>footer.contact_us</T>
+                </a>
+              </li>
+              <li className="menu__item">
+                <a href="https://www.gov.wales/accessibility-statement-govwales">{t('footer.accessibility')}</a>
+              </li>
+              <li className="menu__item">
+                <a href="https://www.gov.wales/copyright-statement">{t('footer.copyright_statement')}</a>
+              </li>
+              <li className="menu__item">
+                <a href={buildUrl(`/cookies`, i18n.language)}>{t('footer.cookies')}</a>
+              </li>
+              <li className="menu__item">
+                <a href="https://www.gov.wales/website-privacy-policy">{t('footer.privacy')}</a>
+              </li>
+              <li className="menu__item">
+                <a href="https://www.gov.wales/terms-and-conditions">{t('footer.terms_conditions')}</a>
+              </li>
+              <li className="menu__item">
+                <a href="https://www.gov.wales/welsh-government-modern-slavery-statement">
+                  {t('footer.modern_slavery')}
+                </a>
+              </li>
+              <li className="menu__item">
+                <a href="https://www.gov.wales/alternative-languages">Alternative languages</a>
+              </li>
             </ul>
             <div className="wg-footer-logo"></div>
-            <div>
-              <br />
-              <br />
-            </div>
           </div>
         </footer>
 

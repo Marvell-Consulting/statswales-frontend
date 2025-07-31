@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 
 import { ensureDeveloper } from '../middleware/ensure-developer';
-import { flashMessages } from '../middleware/flash';
+import { flashMessages } from '../../shared/middleware/flash';
 import { noCache } from '../../shared/middleware/no-cache';
 import {
   displayDatasetPreview,

@@ -39,6 +39,10 @@
     text-decoration: none !important;
   }
 
+  .cookie-banner {
+    padding-top: 20px;
+  }
+
   .govuk-phase-banner a:link:focus {
     color: colours.$white !important;
     background-color: colours.$black !important;
@@ -653,7 +657,9 @@
   }
 
   .govuk-notification-banner {
+    background: colours.$lightgrey_light;
     border: none;
+    border-left: 10px solid colours.$blue;
     font-size: 18px;
 
     &--success {
@@ -664,6 +670,10 @@
     &__content {
       background-color: transparent;
       padding: 20px;
+
+      & > * {
+        max-width: none;
+      }
     }
 
     &__heading {

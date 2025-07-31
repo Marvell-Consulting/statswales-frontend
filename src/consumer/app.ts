@@ -16,8 +16,10 @@ import { healthcheck } from '../shared/routes/healthcheck';
 import { errorHandler } from '../shared/routes/error-handler';
 import { notFound } from '../shared/routes/not-found';
 import { consumer } from './routes/consumer';
-import { cookies } from '../shared/routes/cookie';
+import { cookies } from '../shared/routes/cookies';
 import { handleAsset404 } from '../shared/middleware/asset-404';
+import { cookieBanner } from '../shared/middleware/cookie-banner';
+import { history } from '../shared/middleware/history';
 
 const app: Application = express();
 const config = appConfig();
@@ -39,9 +41,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(httpLogger);
 app.use(cookieParser());
+app.use(cookieBanner);
 app.use(i18nextMiddleware.handle(i18next));
 app.use(languageSwitcher);
 app.use(initServices);
+app.use(history);
 
 // configure the view engine
 app.set('views', path.join(__dirname, 'views'));
