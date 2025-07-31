@@ -115,7 +115,7 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
           (() => {
             function addListeners(filter) {
               const name = filter.getAttribute("id");
-              const checkboxId = name + "-all";
+              const checkboxId = name.trim() + "-all";
               const allCheckbox = filter.querySelector(".filter-head input#" + checkboxId);
               const selectedLabel = filter.querySelector("span.number-selected");
               const filteredLabel = filter.querySelector("span.filtered-label");
