@@ -70,10 +70,11 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
             <div className="header" id="header">
               <div className="header__components container-fluid">
                 <div id="block-govwales-branding">
-                  <a 
+                  <a
                     href={t('header.navigation.wgurl')}
                     title={t('header.navigation.wghome')}
-                    className="header__logo" id="logo"
+                    className="header__logo"
+                    id="logo"
                   >
                     <span className="visually-hidden">{t('consumer.global.wghome')}</span>
                   </a>
