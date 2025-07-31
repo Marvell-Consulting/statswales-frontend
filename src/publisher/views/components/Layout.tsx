@@ -119,12 +119,12 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
               <div className="header__components container-fluid">
                 <div id="block-govwales-branding">
                   <a
-                    href={buildUrl('/', i18n.language)}
-                    title={t('header.navigation.home')}
+                    href={t('header.navigation.wgurl')}
+                    title={t('header.navigation.wghome')}
                     className="header__logo"
                     id="logo"
                   >
-                    <span className="visually-hidden">{t('consumer.global.home_label')}</span>
+                    <span className="visually-hidden">{t('header.navigation.wghome')}</span>
                   </a>
                 </div>
                 <div
@@ -160,6 +160,7 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
               className="statsWales-logo"
               href={buildUrl('/', i18n.language)}
               role="img"
+              title={t('header.navigation.home')}
               aria-label={t('header.logo')}
             />
             {isAuthenticated && (

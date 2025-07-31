@@ -34,9 +34,9 @@ Ar gyfer y rhan fwyaf o ddewisiadau, gofynnir i chi nodi enw i alw’r dimensiwn
 - yn gryno, gan esbonio'n glir yr hyn y mae'r dimensiwn yn ei gynnwys
 - yn wahanol i enwau dimensiwn eraill yn y set ddata
 
-Os byddwch yn dewis data cyfeirio safonol, llenwir yr enw dimensiwn yn awtomatig. Gallwch newid hwn, ond dim ond os bydd gwir angen gwneud hyn er mwyn deall y set ddata y dylech wneud hyn. Er enghraifft, set ddata ynghylch mudo lle y ceir 2 ddimensiwn sy’n cynnwys awdurdodau lleol – mae un yn awdurdod lleol y symudodd rhywun ohono a’r llall yw’r un y gwnaethant symud iddo. Yn y sefyllfa honno, efallai y byddech yn ailenwi’r dimensiynau yn “Awdurdodau lleol y symudwyd ohonynt” ac “Awdurdodau lleol y symudwyd iddynt” er mwyn gwahaniaethu rhyngddynt.
+<!-- Os byddwch yn dewis data cyfeirio safonol, llenwir yr enw dimensiwn yn awtomatig. Gallwch newid hwn, ond dim ond os bydd gwir angen gwneud hyn er mwyn deall y set ddata y dylech wneud hyn. Er enghraifft, set ddata ynghylch mudo lle y ceir 2 ddimensiwn sy’n cynnwys awdurdodau lleol – mae un yn awdurdod lleol y symudodd rhywun ohono a’r llall yw’r un y gwnaethant symud iddo. Yn y sefyllfa honno, efallai y byddech yn ailenwi’r dimensiynau yn “Awdurdodau lleol y symudwyd ohonynt” ac “Awdurdodau lleol y symudwyd iddynt” er mwyn gwahaniaethu rhyngddynt. -->
 
-Ar gyfer dimensiwn sy'n cynnwys mathau o ddata neu fesur, pan fyddwch yn clicio arno o'ch rhestr dasgau ar gyfer y set ddata, bydd angen i chi lanlwytho'r [tabl am-edrych priodol](Data-preparation-‐-New-datasets#guidance-mathau-data-neu-fesur) wedi hyn.
+Ar gyfer dimensiwn sy'n cynnwys mathau o ddata neu fesur, pan fyddwch yn clicio arno o'ch rhestr dasgau ar gyfer y set ddata, bydd angen i chi lanlwytho'r [tabl am-edrych priodol](Data-preparation-‐-New-datasets#guidance-mathau-data-neu-fesur) wedi hyn. Gan nad yw'r term 'mesur' yn gyfarwydd i bob defnyddiwr efallai, yr enw a roddir i bob dimensiwn mesur yn awtomatig fydd 'Disgrifiad o'r data'. Hwn fydd yr enw ar restr tasgau y set ddata ar ôl i chi lanlwytho eich tabl am-edrych mesur, ac yn y set ddata ar yr ochr i ddefnyddwyr.
 
 <!-- Os oes gennych chi unrhyw nodiadau gwerth data wedi’u teilwra, pan fyddwch yn clicio ar hyn o restr tasgau eich set ddata, bydd angen i chi lanlwytho’r [tabl am-edrych priodol](Data-preparation-‐-New-datasets#guidance-nodiadau-wedi’u-teilwra). -->
 
