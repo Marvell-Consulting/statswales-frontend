@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import qs from 'qs';
 
 import PublisherLayout from '../../publisher/views/components/Layout';
@@ -14,6 +14,7 @@ import About from '../../shared/views/components/dataset/About';
 import Publisher from '../../shared/views/components/dataset/Publisher';
 import RadioGroup from '../../shared/views/components/RadioGroup';
 import { Filters } from '../../shared/views/components/Filters';
+import { T } from '../../shared/views/components/T';
 // import { CheckboxGroup, CheckboxOptions } from '../../shared/views/components/CheckboxGroup';
 // import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
 // import { DatasetDTO } from '../../shared/dtos/dataset';
@@ -242,6 +243,17 @@ export default function ConsumerView(props) {
             {props.t('consumer_view.download_button')}
           </button>
         </form>
+
+        <div className="download-metadata govuk-!-margin-top-5">
+          <h2 className="govuk-heading-m">{props.t('consumer_view.metadata_download.heading')}</h2>
+          <p className="govuk-body">{props.t('consumer_view.metadata_download.description')}</p>
+          <a
+            href={props.buildUrl(`/${props.dataset.id}/download/metadata`, props.i18n.language)}
+            className="govuk-button button-primary"
+          >
+            {props.t('consumer_view.metadata_download.button')}
+          </a>
+        </div>
       </div>
     </div>
   );
