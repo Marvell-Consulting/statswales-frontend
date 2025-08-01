@@ -67,7 +67,7 @@ export const displayDatasetPreview = async (req: Request, res: Response) => {
     datasetView = await req.pubapi.getRevisionPreview(datasetId, revision.id, pageNumber, pageSize);
     pagination = generateSequenceForNumber(datasetView.current_page, datasetView.total_pages);
   } catch (err: any) {
-    logger.error(err, `Failed to fetch the revision preview for dataset ${datasetId} and revision ${revision.id}`);
+    logger.error(err, `Failed to fetch the cube preview for dataset ${datasetId} and revision ${revision.id}`);
     previewFailed = err.message; // carry on, but without the cube preview
   }
 
