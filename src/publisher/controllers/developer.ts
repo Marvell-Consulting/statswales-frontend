@@ -18,7 +18,7 @@ import { FileImportDto } from '../../shared/dtos/file-import';
 import { FileFormat } from '../../shared/enums/file-format';
 import { getDownloadHeaders } from '../../shared/utils/download-headers';
 import { LookupTableDTO } from '../../shared/dtos/lookup-table';
-import { getDatasetPreview } from '../../shared/utils/dataset-preview';
+import { getDatasetMetadata } from '../../shared/utils/dataset-metadata';
 import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
 import { ViewError } from '../../shared/dtos/view-error';
 import { DatasetInclude } from '../../shared/enums/dataset-include';
@@ -75,7 +75,7 @@ export const displayDatasetPreview = async (req: Request, res: Response) => {
     const datasetStatus = getDatasetStatus(dataset);
     const publishingStatus = getPublishingStatus(dataset);
     const datasetTitle = revision?.metadata?.title || datasetId;
-    datasetMetadata = await getDatasetPreview(singleLangDataset(dataset, req.language), revision);
+    datasetMetadata = await getDatasetMetadata(singleLangDataset(dataset, req.language), revision);
     logger.debug(`Sending request to backend for file list of dataset ${datasetId}...`);
 
     unProcessedFilelist = await req.pubapi.getDatasetFileList(datasetId);

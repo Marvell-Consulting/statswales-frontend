@@ -12,7 +12,7 @@ import { ConsumerApi } from '../services/consumer-api';
 
 const config = appConfig();
 
-const dateFormat = (date: DateArg<Date> & {}, formatStr: string, options?: any): string => {
+export const dateFormat = (date: DateArg<Date> & {}, formatStr: string, options?: any): string => {
   const tzDate = new TZDate(date as Date, 'Europe/London');
   if (options?.locale) {
     options.locale = options.locale.includes('cy') ? cy : enGB;
