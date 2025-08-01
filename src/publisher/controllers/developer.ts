@@ -23,6 +23,8 @@ import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
 import { ViewError } from '../../shared/dtos/view-error';
 import { DatasetInclude } from '../../shared/enums/dataset-include';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
+import { SingleLanguageRevision } from '../../shared/dtos/single-language/revision';
+import { DatasetDTO } from '../../shared/dtos/dataset';
 
 export const listAllDatasets = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -39,30 +41,44 @@ export const listAllDatasets = async (req: Request, res: Response, next: NextFun
 };
 
 export const displayDatasetPreview = async (req: Request, res: Response) => {
+  const datasetId = req.params.datasetId;
+  let dataset: DatasetDTO;
+  let revision: SingleLanguageRevision;
   let pagination: (string | number)[] = [];
   let errors: ViewError[] | undefined;
   let datasetView: ViewDTO | undefined;
   let unProcessedFilelist: FileImportDto[] = [];
-  let previewMetadata: PreviewMetadata | undefined = undefined;
-  const datasetId = req.params.datasetId;
+  let datasetMetadata: PreviewMetadata | undefined = undefined;
+  let previewFailed: boolean | string = false;
 
   try {
-    const dataset = await req.pubapi.getDataset(datasetId, DatasetInclude.Developer);
+    dataset = await req.pubapi.getDataset(datasetId, DatasetInclude.Developer);
     const revWithMeta = await req.pubapi.getRevision(datasetId, dataset.end_revision_id!);
-    const revision = singleLangRevision(revWithMeta, req.language)!;
+    revision = singleLangRevision(revWithMeta, req.language)!;
+  } catch (err) {
+    // can't really recover from this if there's no dataset or revision
+    logger.error(err, `Failed to get basic info for dataset ${datasetId}`);
+    throw new NotFoundException('errors.dataset_missing');
+  }
+
+  try {
+    const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
+    const pageSize = Number.parseInt(req.query.page_size as string, 10) || 100;
+    datasetView = await req.pubapi.getRevisionPreview(datasetId, revision.id, pageNumber, pageSize);
+    pagination = generateSequenceForNumber(datasetView.current_page, datasetView.total_pages);
+  } catch (err: any) {
+    logger.error(err, `Failed to fetch the revision preview for dataset ${datasetId} and revision ${revision.id}`);
+    previewFailed = err.message; // carry on, but without the cube preview
+  }
+
+  try {
     const datasetStatus = getDatasetStatus(dataset);
     const publishingStatus = getPublishingStatus(dataset);
     const datasetTitle = revision?.metadata?.title || datasetId;
-    const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
-    const pageSize = Number.parseInt(req.query.page_size as string, 10) || 100;
-
-    datasetView = await req.pubapi.getRevisionPreview(datasetId, revision.id, pageNumber, pageSize);
-    previewMetadata = await getDatasetPreview(singleLangDataset(dataset, req.language), revision);
-    pagination = generateSequenceForNumber(datasetView.current_page, datasetView.total_pages);
+    datasetMetadata = await getDatasetPreview(singleLangDataset(dataset, req.language), revision);
     logger.debug(`Sending request to backend for file list of dataset ${datasetId}...`);
 
     unProcessedFilelist = await req.pubapi.getDatasetFileList(datasetId);
-
     unProcessedFilelist = unProcessedFilelist.sort((fileA, fileB) => fileA.filename.localeCompare(fileB.filename));
     unProcessedFilelist.unshift({
       filename: t('developer.display.all_files', { lng: req.language }),
@@ -103,7 +119,7 @@ export const displayDatasetPreview = async (req: Request, res: Response) => {
 
     res.render('dataset-view', {
       ...datasetView,
-      datasetMetadata: previewMetadata,
+      datasetMetadata,
       showDeveloperTab: true,
       datasetJson,
       fileList,
@@ -112,7 +128,8 @@ export const displayDatasetPreview = async (req: Request, res: Response) => {
       errors,
       datasetStatus,
       publishingStatus,
-      datasetTitle
+      datasetTitle,
+      previewFailed
     });
   } catch (error) {
     logger.error(error, `Failed to get developer preview data`);

@@ -101,16 +101,26 @@ export default function ConsumerView(props) {
             </form>
           </div>
 
-          {/* Main column */}
-          <div className="govuk-grid-column-three-quarters">
-            {/* Table */}
-            <div className="govuk-!-padding-top-5 govuk-!-margin-bottom-2">
-              <ViewTable {...props} />
-            </div>
-
-            {/* Pagination */}
-            <Pagination {...props} />
-          </div>
+          {/* In developer view, if the preview has failed just hide the table and still render the rest of the page */}
+          {
+            (props?.isDeveloper && props?.previewFailed) ? (
+              <div className="govuk-grid-column-three-quarters">
+                <div className="govuk-error-summary" data-module="govuk-error-summary">
+                  <div role="alert">
+                    <h2 className="govuk-error-summary__title">Cube preview failed to load</h2>
+                    <p>{props.previewFailed}</p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="govuk-grid-column-three-quarters">
+                <div className="govuk-!-padding-top-5 govuk-!-margin-bottom-2">
+                  <ViewTable {...props} />
+                </div>
+                <Pagination {...props} />
+              </div>
+            )
+          }
         </div>
       </div>
     </div>
