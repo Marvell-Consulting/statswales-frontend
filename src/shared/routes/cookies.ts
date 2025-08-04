@@ -50,9 +50,9 @@ const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
       secure: config.session.secure
     });
 
-    req.session.flash = [{ key: `cookies.referrer`, value: referrer }];
+    req.session.flash = [`cookies.settings.saved.heading`];
     req.session.save();
-    res.redirect(req.buildUrl('/cookies', req.language));
+    res.redirect(acceptAll === 'true' ? referrer : req.buildUrl('/cookies', req.language));
     return;
   }
 
