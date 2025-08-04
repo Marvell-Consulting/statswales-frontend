@@ -62,7 +62,7 @@ import { YearType } from '../../shared/enums/year-type';
 import { addEditLinks } from '../../shared/utils/add-edit-links';
 import { TranslationDTO } from '../../shared/dtos/translations';
 import { getDatasetStatus, getPublishingStatus } from '../../shared/utils/dataset-status';
-import { getDatasetPreview } from '../../shared/utils/dataset-preview';
+import { getDatasetMetadata } from '../../shared/utils/dataset-metadata';
 import { FileFormat } from '../../shared/enums/file-format';
 import { getDownloadHeaders } from '../../shared/utils/download-headers';
 import { FactTableColumnDto } from '../../shared/dtos/fact-table-column-dto';
@@ -575,7 +575,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
     const datasetTitle = revision?.metadata?.title;
 
     pagination = generateSequenceForNumber(previewDTO.current_page, previewDTO.total_pages);
-    previewMetadata = await getDatasetPreview(dataset, revision);
+    previewMetadata = await getDatasetMetadata(dataset, revision);
     previewData = previewDTO;
 
     if (previewMetadata) {

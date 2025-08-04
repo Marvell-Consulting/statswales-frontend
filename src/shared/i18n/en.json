@@ -176,6 +176,7 @@
   "dataset_view": {
     "key_information": {
       "heading": "Main information",
+      "title": "Dataset title",
       "last_update": "Most recent update",
       "next_update": "Next update expected",
       "next_update_missing": "Next update expected not entered yet",
@@ -1458,7 +1459,12 @@
     "select_language": "Select language",
     "english": "English",
     "welsh": "Welsh",
-    "download_button": "Download data"
+    "download_button": "Download data",
+    "metadata_download": {
+      "heading": "Metadata",
+      "description": "The metadata for this dataset is not included when you download the data. You can download this separately. This contains all the information from the 'About this dataset' tab.",
+      "button": "Download metadata"
+    }
   },
   "routes": {
     "healthcheck": "healthcheck",

@@ -3,12 +3,13 @@ import { Readable } from 'node:stream';
 import { Request, Response, NextFunction } from 'express';
 import slugify from 'slugify';
 import qs from 'qs';
+import { stringify } from 'csv-stringify/sync';
 
 import { DatasetListItemDTO } from '../../shared/dtos/dataset-list-item';
 import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count';
 import { generateSequenceForNumber, getPaginationProps } from '../../shared/utils/pagination';
 import { singleLangDataset } from '../../shared/utils/single-lang-dataset';
-import { getDatasetPreview } from '../../shared/utils/dataset-preview';
+import { getDatasetMetadata, metadataToCSV } from '../../shared/utils/dataset-metadata';
 import { NotFoundException } from '../../shared/exceptions/not-found.exception';
 import { FileFormat } from '../../shared/enums/file-format';
 import { getDownloadHeaders } from '../../shared/utils/download-headers';
@@ -87,7 +88,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
       values: filter[key]
     }));
 
-  const datasetMetadata = await getDatasetPreview(dataset, revision);
+  const datasetMetadata = await getDatasetMetadata(dataset, revision);
   const preview = await req.conapi.getPublishedDatasetView(
     dataset.id,
     pageSize,
@@ -103,6 +104,28 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   const filters = await req.conapi.getPublishedDatasetFilters(dataset.id);
 
   res.render('view', { ...preview, datasetMetadata, pagination, filters, selectedFilterOptions });
+};
+
+export const downloadPublishedMetadata = async (req: Request, res: Response, next: NextFunction) => {
+  logger.debug('downloading published dataset metadata');
+  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const revision = dataset.published_revision;
+
+  if (!dataset.live || !revision) {
+    next(new NotFoundException('no published revision found'));
+    return;
+  }
+
+  try {
+    const metadata = await getDatasetMetadata(dataset, revision, false);
+    const downloadMeta = metadataToCSV(metadata, req.language as Locale);
+
+    res.setHeader('content-type', 'text/csv; charset=utf-8');
+    res.setHeader('content-disposition', `attachment; filename="${metadata.title}-meta.csv"`);
+    res.send(stringify(downloadMeta, { bom: true, header: false, quoted: true }));
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const downloadPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
