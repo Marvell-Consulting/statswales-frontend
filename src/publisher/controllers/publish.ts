@@ -843,9 +843,19 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
           return;
         }
 
+        if (error.status === 500 && body?.errors?.[0]?.message?.key?.includes('lookup_table_loading_failed')) {
+          const failurePreview = body as ViewErrDTO;
+          res.render('publish/dimension-match-failure', {
+            ...failurePreview,
+            patchRequest: { dimension_type: DimensionType.LookupTable },
+            dimension
+          });
+          return;
+        }
+
         logger.error(error, 'Something went wrong other than not matching');
         res.status(500);
-        errors = [{ field: 'unknown', message: { key: 'errors.csv.unknown' } }];
+        errors = [{ field: 'unknown', message: { key: 'errors.dimension_validation.unknown_error' } }];
         throw new Error();
       }
     } catch (err: any) {
