@@ -16,13 +16,13 @@ export default function DimensionMatchFailure(props) {
 
       {props.patchRequest.dimension_type === 'lookup_table' ? (
         <>
-          { props.extension?.totalNonMatching &&
+          {props.extension?.totalNonMatching && (
             <p className="govuk-body">
               {props.t('publish.dimension_match_failure.lookup_information', {
                 failureCount: props.extension.totalNonMatching
               })}
             </p>
-          }
+          )}
           <p className="govuk-body">{props.t('publish.dimension_match_failure.you_should_check')}</p>
           <ul className="govuk-list govuk-list--bullet">
             <li className="govuk-list--bullet">{props.t('publish.dimension_match_failure.formatting')}</li>
