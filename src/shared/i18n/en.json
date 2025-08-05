@@ -533,6 +533,7 @@
       "ref_information": "{{failureCount, number}} instances of reference codes in the data table could not be found in the selected standardised reference data.",
       "you_should_check_ref": "You should check you selected the correct data table and reference data. You should also check the data table:",
       "formatting": "contain the correct reference codes",
+      "empty_rows": "do not contain any empty rows",
       "choices": "do not contain any trailing spaces after any values",
       "ref_formatting": "contains the correct reference codes",
       "ref_choices": "does not contain any trailing spaces after any values",
