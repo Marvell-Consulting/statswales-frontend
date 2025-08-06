@@ -7,7 +7,7 @@ import Pagination from '../../../shared/views/components/Pagination';
 export default function UserList(props) {
   const columns = [
     {
-      key: 'full_name',
+      key: 'name',
       label: props.t('admin.user.list.table.name'),
       format: (value, row) => {
         const url = props.buildUrl(`/admin/user/${row.id}`, props.i18n.language);

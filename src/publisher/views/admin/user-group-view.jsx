@@ -10,7 +10,7 @@ export default function UserGroupView(props) {
         const url = props.buildUrl(`/admin/user/${row.id}`, props.i18n.language);
         return (
           <a href={url} className="govuk-link">
-            {row.full_name || row.email}
+            {row.name || row.email}
           </a>
         );
       }
