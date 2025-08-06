@@ -46,9 +46,6 @@ export default function DimensionPreviewTable(props: DimensionPreviewTableProps)
         case 'end_date': {
           return dateFormat(parseISO(value.split('T')[0]), 'do MMMM yyyy');
         }
-        case 'date_type': {
-          return <T>publish.time_dimension_review.year_type.{value}</T>;
-        }
       }
       return value;
     },
