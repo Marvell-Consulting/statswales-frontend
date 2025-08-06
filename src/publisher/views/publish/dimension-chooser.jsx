@@ -62,10 +62,14 @@ export default function DimensionChooser(props) {
                       value: 'Date',
                       label: props.t('publish.dimension_type_chooser.chooser.date')
                     },
-                    {
-                      value: 'Geog',
-                      label: props.t('publish.dimension_type_chooser.chooser.geography')
-                    },
+                    ...(false
+                      ? [
+                          {
+                            value: 'Geog',
+                            label: props.t('publish.dimension_type_chooser.chooser.geography')
+                          }
+                        ]
+                      : []),
                     {
                       value: 'Number',
                       label: props.t('publish.dimension_type_chooser.chooser.number')

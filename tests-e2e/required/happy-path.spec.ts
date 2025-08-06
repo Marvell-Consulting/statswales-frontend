@@ -168,8 +168,10 @@ test.describe('Happy path', () => {
     if (areaCodeMatch) {
       areaCodeId = areaCodeMatch[1];
     }
+
+    // For the happy path test treat area as a text dimension in this case
     expect(areaCodeUrl).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${areaCodeId}`);
-    await page.getByLabel('Geography').click({ force: true });
+    await page.getByLabel('Text').click({ force: true });
     await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/lookup/${areaCodeId}/review`);
     await page.getByRole('button', { name: 'Continue' }).click();
@@ -177,6 +179,17 @@ test.describe('Happy path', () => {
     await page.getByRole('textbox').fill(content.areaCodeField);
     await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+
+    // Original Geography route disabled for now
+    // expect(areaCodeUrl).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${areaCodeId}`);
+    // await page.getByLabel('Geography').click({ force: true });
+    // await page.getByRole('button', { name: 'Continue' }).click();
+    // expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/lookup/${areaCodeId}/review`);
+    // await page.getByRole('button', { name: 'Continue' }).click();
+    // expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${areaCodeId}/name`);
+    // await page.getByRole('textbox').fill(content.areaCodeField);
+    // await page.getByRole('button', { name: 'Continue' }).click();
+    // expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
     // summary
     await page.getByRole('link', { name: 'Summary' }).click();
