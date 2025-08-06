@@ -67,15 +67,19 @@ const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
     return;
   }
 
-  const title = await getTitle(normalizedFilePath);
-  const markdownFile: string = await readFile(normalizedFilePath, 'utf8');
-  const { window } = new JSDOM(`<!DOCTYPE html>`);
-  const domPurify = DOMPurify(window);
-  const toc = createToc(markdownFile);
-  marked.use({ renderer: docRenderer });
-  const content = domPurify.sanitize(await marked.parse(markdownFile));
-
-  res.render('cookies', { content, tableOfContents: toc, title, cookiePreferences, saved, referrer });
+  try {
+    const title = await getTitle(normalizedFilePath);
+    const markdownFile: string = await readFile(normalizedFilePath, 'utf8');
+    const { window } = new JSDOM(`<!DOCTYPE html>`);
+    const domPurify = DOMPurify(window);
+    const toc = createToc(markdownFile);
+    marked.use({ renderer: docRenderer });
+    const content = domPurify.sanitize(await marked.parse(markdownFile));
+    res.render('cookies', { content, tableOfContents: toc, title, cookiePreferences, saved, referrer });
+  } catch (err) {
+    logger.error(err, 'Could not render cookies page');
+    next(new NotFoundException());
+  }
 };
 
 cookies.get('/', bodyParser, cookiePage);
