@@ -22,7 +22,8 @@ staticPages.get('/accessibility', async (req: Request, res: Response, next: Next
   const normalizedFilePath = path.resolve(requestedFilePath);
 
   if (!normalizedFilePath.startsWith(docsPath) && !fs.existsSync(normalizedFilePath)) {
-    next(new NotFoundException('missing accessibility docs'));
+    logger.error('Could not find accessibility docs file');
+    next(new NotFoundException());
     return;
   }
 
