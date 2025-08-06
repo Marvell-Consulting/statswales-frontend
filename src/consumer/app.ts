@@ -21,6 +21,7 @@ import { handleAsset404 } from '../shared/middleware/asset-404';
 import { cookieBanner } from '../shared/middleware/cookie-banner';
 import { history } from '../shared/middleware/history';
 import session from '../shared/middleware/session';
+import { staticPages } from '../shared/routes/static-pages';
 
 const app: Application = express();
 const config = appConfig();
@@ -57,6 +58,7 @@ app.engine('jsx', expressReactViews.createEngine());
 // public routes
 app.use('/healthcheck', rateLimiter, healthcheck);
 app.use('/:lang/cookies', rateLimiter, cookies);
+app.use('/:lang', rateLimiter, staticPages);
 app.use('/:lang', rateLimiter, consumer);
 
 // handle 404s
