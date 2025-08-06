@@ -305,7 +305,7 @@ export const viewUser = async (req: Request, res: Response) => {
 
 export const editUserRoles = async (req: Request, res: Response) => {
   const user: UserDTO = res.locals.user;
-  const userName = user.full_name || user.email;
+  const userName = user.name || user.email;
   let errors: ViewError[] = [];
   let availableRoles: AvailableRoles = { global: [], group: [] };
   let availableGroups: SingleLanguageUserGroup[] = [];
@@ -391,7 +391,7 @@ export const editUserRoles = async (req: Request, res: Response) => {
 
 export const userStatus = async (req: Request, res: Response) => {
   const user: UserDTO = res.locals.user;
-  const userName = user.full_name || user.email;
+  const userName = user.name || user.email;
   let errors: ViewError[] = [];
 
   const action = user.status === UserStatus.Active ? UserAction.Deactivate : UserAction.Reactivate;

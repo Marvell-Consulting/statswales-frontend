@@ -7,9 +7,7 @@ export interface UserDTO {
   provider: string;
   provider_user_id?: string;
   email: string;
-  given_name?: string;
-  family_name?: string;
-  full_name?: string;
+  name?: string;
   global_roles: GlobalRole[];
   groups: UserGroupWithRolesDTO[];
   status: UserStatus;

@@ -20,7 +20,7 @@ export default function UserView(props) {
     }
   ];
 
-  const title = props.user.full_name || props.user.email;
+  const title = props.user.name || props.user.email;
 
   return (
     <Layout {...props} title={title}>
