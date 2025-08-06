@@ -61,7 +61,7 @@ const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
   const requestedFilePath = path.join(docsPath, `cookies.${lang}.md`);
   const normalizedFilePath = path.resolve(requestedFilePath);
 
-  if (!normalizedFilePath.startsWith(docsPath) && !fs.existsSync(normalizedFilePath)) {
+  if (!normalizedFilePath.startsWith(docsPath) || !fs.existsSync(normalizedFilePath)) {
     logger.error(`File does not exist in guidance: ${req.params.file}`);
     next(new NotFoundException());
     return;
