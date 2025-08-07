@@ -1739,5 +1739,8 @@
   "languages": {
     "en": "English",
     "cy": "Welsh"
+  },
+  "accessibility": {
+    "title": "Accessibility statement for StatsWales"
   }
 }
