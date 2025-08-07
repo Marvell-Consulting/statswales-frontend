@@ -62,7 +62,7 @@ Mae’r wefan hon yn cydymffurfio’n llawn â safon
 
 ## Llunio’r datganiad hygyrchedd hwn
 
-Lluniwyd y datganiad hygyrchedd hwn ar 14 Gorffennaf 2020. Cafodd ei ddiweddaru ddiwethaf ar 5 Gorffenaf 2024.
+Lluniwyd y datganiad hygyrchedd hwn ar 31 Gorffennaf 2025. Cafodd ei ddiweddaru ddiwethaf ar 31 Gorffennaf 2025.
 
-Profwyd y wefan hon ddiwethaf ym mis Awst 2020. Cynhaliwyd y prawf gan ddefnyddio cyfuniad o brofion â llaw a phrofion
-awtomataidd. Cynhaliwyd y profion awtomataidd gan ddefnyddio offer archwilio Lighthouse Accessibility.
+Profwyd y wefan hon ddiwethaf ym mis Gorffennaf 2025. Cynhaliwyd y prawf gan ddefnyddio cyfuniad o brofion â llaw a
+phrofion awtomataidd. Cynhaliwyd y profion awtomataidd gan ddefnyddio offer archwilio Lighthouse Accessibility.
