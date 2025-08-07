@@ -52,9 +52,13 @@ export interface AppConfig {
       secret: string;
       cookieDomain: string;
     };
+    basic?: {
+      username?: string;
+      password?: string;
+    };
   };
 }
 
 // list any optional properties here so we can ignore missing values when we check the config on boot
 // it would be nice to get them directly from the interface, but interfaces are compile-time only
-export const optionalProperties = ['redisUrl', 'redisPassword'];
+export const optionalProperties = ['redisUrl', 'redisPassword', 'basic'];

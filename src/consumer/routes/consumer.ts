@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import basicAuth from 'express-basic-auth';
 
 import {
   listTopics,
@@ -8,8 +9,25 @@ import {
   downloadPublishedMetadata
 } from '../controllers/consumer';
 import { fetchPublishedDataset } from '../middleware/fetch-dataset';
+import { appConfig } from '../../shared/config';
+import { logger } from '../../shared/utils/logger';
+
+const config = appConfig();
 
 export const consumer = Router();
+
+if (config.auth.basic?.username && config.auth.basic?.password) {
+  logger.warn('Consumer view password configured, basic auth enabled for consumer routes');
+  consumer.use(
+    basicAuth({
+      challenge: true,
+      realm: 'sw3-consumer',
+      users: {
+        [config.auth.basic.username]: config.auth.basic.password
+      }
+    })
+  );
+}
 
 consumer.get('/', listTopics);
 

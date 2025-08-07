@@ -53,7 +53,13 @@ export const getDefaultConfig = (): AppConfig => {
       jwt: {
         secret: process.env.JWT_SECRET!,
         cookieDomain: process.env.JWT_COOKIE_DOMAIN!
-      }
+      },
+      ...(process.env.CONSUMER_VIEW_PASSWORD && {
+        basic: {
+          username: process.env.CONSUMER_VIEW_USERNAME,
+          password: process.env.CONSUMER_VIEW_PASSWORD
+        }
+      })
     }
   };
 };
