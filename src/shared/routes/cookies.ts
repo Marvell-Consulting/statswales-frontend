@@ -1,5 +1,6 @@
 import path from 'node:path';
 import fs from 'node:fs';
+import { readFile } from 'node:fs/promises';
 
 import express, { NextFunction, Request, Response, Router } from 'express';
 import { JSDOM } from 'jsdom';
@@ -21,7 +22,7 @@ export const cookies = Router();
 cookies.use(flashMessages);
 
 const bodyParser = express.urlencoded({ extended: true });
-const docsPath = path.join(__dirname, '..', '..', '..', 'docs', 'cookies');
+const docsPath = path.join(__dirname, '..', '..', '..', 'docs', 'static-pages');
 
 const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
   const defaultPref: CookiePreferences = { acceptAll: false, measuring: false, showBanner: true };
@@ -56,33 +57,29 @@ const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
     return;
   }
 
-  let fullDocsPath = path.join(docsPath, 'en');
-
-  for (const dir of fs.readdirSync(docsPath)) {
-    if (dir === req.language.split('-')[0].toLowerCase()) {
-      fullDocsPath = path.join(docsPath, dir);
-      break;
-    }
-  }
-
-  const requestedFilePath = path.join(fullDocsPath, 'cookie-statement.md');
+  const lang = req.language.split('-')[0]?.toLowerCase() || 'en';
+  const requestedFilePath = path.join(docsPath, `cookies.${lang}.md`);
   const normalizedFilePath = path.resolve(requestedFilePath);
 
-  if (!normalizedFilePath.startsWith(fullDocsPath) && !fs.existsSync(normalizedFilePath)) {
+  if (!normalizedFilePath.startsWith(docsPath) || !fs.existsSync(normalizedFilePath)) {
     logger.error(`File does not exist in guidance: ${req.params.file}`);
     next(new NotFoundException());
     return;
   }
 
-  const title = await getTitle(normalizedFilePath);
-  const markdownFile: string = fs.readFileSync(normalizedFilePath, 'utf8');
-  const { window } = new JSDOM(`<!DOCTYPE html>`);
-  const domPurify = DOMPurify(window);
-  const toc = createToc(markdownFile);
-  marked.use({ renderer: docRenderer });
-  const content = domPurify.sanitize(await marked.parse(markdownFile));
-
-  res.render('cookies', { content, tableOfContents: toc, title, cookiePreferences, saved, referrer });
+  try {
+    const title = await getTitle(normalizedFilePath);
+    const markdownFile: string = await readFile(normalizedFilePath, 'utf8');
+    const { window } = new JSDOM(`<!DOCTYPE html>`);
+    const domPurify = DOMPurify(window);
+    const toc = createToc(markdownFile);
+    marked.use({ renderer: docRenderer });
+    const content = domPurify.sanitize(await marked.parse(markdownFile));
+    res.render('cookies', { content, tableOfContents: toc, title, cookiePreferences, saved, referrer });
+  } catch (err) {
+    logger.error(err, 'Could not render cookies page');
+    next(new NotFoundException());
+  }
 };
 
 cookies.get('/', bodyParser, cookiePage);

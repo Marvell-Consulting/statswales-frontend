@@ -269,7 +269,7 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
                 <a href={t('footer.contact_us_link')}>{t('footer.contact_us')}</a>
               </li>
               <li className="menu__item">
-                <a href={t('footer.accessibility_link')}>{t('footer.accessibility')}</a>
+                <a href={buildUrl('/accessibility', i18n.language)}>{t('footer.accessibility')}</a>
               </li>
               <li className="menu__item">
                 <a href={t('footer.copyright_statement_link')}>{t('footer.copyright_statement')}</a>

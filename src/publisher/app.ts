@@ -27,6 +27,7 @@ import { cookies } from '../shared/routes/cookies';
 import { admin } from './routes/admin';
 import { cookieBanner } from '../shared/middleware/cookie-banner';
 import { history } from '../shared/middleware/history';
+import { staticPages } from '../shared/routes/static-pages';
 
 const app: Application = express();
 const config = appConfig();
@@ -65,6 +66,7 @@ app.use('/healthcheck', rateLimiter, healthcheck);
 app.use('/:lang/auth', rateLimiter, auth);
 app.use('/:lang/guidance', rateLimiter, guidance);
 app.use('/:lang/cookies', rateLimiter, cookies);
+app.use('/:lang', rateLimiter, staticPages);
 
 // authenticated routes
 app.use('/:lang/publish', rateLimiter, ensureAuthenticated, publish);
