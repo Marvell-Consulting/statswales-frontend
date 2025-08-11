@@ -1,6 +1,10 @@
+import { Readable } from 'node:stream';
+
 import { Request } from 'express';
+import { parse } from 'csv-parse';
 
 import { TranslationDTO } from '../dtos/translations';
+import { markdownToSafeHTML } from './markdown-to-html';
 
 export const addEditLinks = (translations: TranslationDTO[], datasetId: string, req: Request) => {
   return translations.map((translation) => {
@@ -30,4 +34,30 @@ export const addEditLinks = (translations: TranslationDTO[], datasetId: string, 
     }
     return translation;
   });
+};
+
+export const parseUploadedTranslations = async (fileBuffer: Buffer): Promise<TranslationDTO[]> => {
+  const translations: TranslationDTO[] = [];
+
+  const csvParser: AsyncIterable<TranslationDTO> = Readable.from(fileBuffer).pipe(
+    parse({ bom: true, columns: true, skip_records_with_empty_values: true })
+  );
+
+  for await (const row of csvParser) {
+    translations.push(row);
+  }
+
+  return translations;
+};
+
+export const markdownToHtml = async (translations: TranslationDTO[]): Promise<TranslationDTO[]> => {
+  return Promise.all(
+    translations.map(async (translation: TranslationDTO) => {
+      if (translation.type === 'metadata') {
+        translation.english = await markdownToSafeHTML(translation.english);
+        translation.cymraeg = await markdownToSafeHTML(translation.cymraeg);
+      }
+      return translation;
+    })
+  );
 };
