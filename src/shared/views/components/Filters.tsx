@@ -16,7 +16,7 @@ const normalizeFilters = (options: FilterTable['values']): CheckboxOptions[] => 
   return options.map((opt) => {
     return {
       label: opt.description,
-      value: opt.description,
+      value: encodeURIComponent(opt.description), // this is used in checkbox input name
       children: opt.children ? normalizeFilters(opt.children) : undefined
     };
   });
