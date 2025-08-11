@@ -131,10 +131,10 @@ export class ConsumerApi {
     );
   }
 
-  public async getPublishedDatasetFilters(datasetId: string): Promise<FilterTable> {
+  public async getPublishedDatasetFilters(datasetId: string): Promise<FilterTable[]> {
     logger.debug(`Fetching published view of dataset: ${datasetId}`);
     return this.fetch({ url: `v1/${datasetId}/view/filters` }).then(
-      (response) => response.json() as unknown as FilterTable
+      (response) => response.json() as unknown as FilterTable[]
     );
   }
 

@@ -18,6 +18,7 @@ import { Locale } from '../../shared/enums/locale';
 import { appConfig } from '../../shared/config';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { TopicDTO } from '../../shared/dtos/topic';
+import { parseFilters } from '../../shared/utils/parse-filters';
 
 const config = appConfig();
 
@@ -73,20 +74,13 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   const pageNumber = Number.parseInt(query.page_number as string, 10) || 1;
   const pageSize = Number.parseInt(query.page_size as string, 10) || DEFAULT_PAGE_SIZE;
   let pagination: (string | number)[] = [];
-  const filter = query.filter as Record<string, string[]>;
   const sortBy = query.sort_by as unknown as SortByInterface;
+  const selectedFilterOptions = parseFilters(query.filter as Record<string, string[]>);
 
   if (!dataset.live || !revision) {
     next(new NotFoundException('no published revision found'));
     return;
   }
-
-  const selectedFilterOptions =
-    filter &&
-    Object.keys(filter).map((key) => ({
-      columnName: key,
-      values: filter[key]
-    }));
 
   const datasetMetadata = await getDatasetMetadata(dataset, revision);
   const preview = await req.conapi.getPublishedDatasetView(
@@ -94,11 +88,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
     pageSize,
     pageNumber,
     sortBy,
-    filter &&
-      Object.keys(filter).map((key) => ({
-        columnName: key,
-        values: filter[key]
-      }))
+    selectedFilterOptions
   );
   pagination = generateSequenceForNumber(preview.current_page, preview.total_pages);
   const filters = await req.conapi.getPublishedDatasetFilters(dataset.id);
