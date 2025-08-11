@@ -18,6 +18,10 @@ import { Locale } from '../../shared/enums/locale';
 import { appConfig } from '../../shared/config';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { TopicDTO } from '../../shared/dtos/topic';
+import { parseFilters } from '../../shared/utils/parse-filters';
+import { FilterTable } from '../../shared/dtos/filter-table';
+import { ViewDTO } from '../../shared/dtos/view-dto';
+import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
 
 const config = appConfig();
 
@@ -73,35 +77,21 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   const pageNumber = Number.parseInt(query.page_number as string, 10) || 1;
   const pageSize = Number.parseInt(query.page_size as string, 10) || DEFAULT_PAGE_SIZE;
   let pagination: (string | number)[] = [];
-  const filter = query.filter as Record<string, string[]>;
   const sortBy = query.sort_by as unknown as SortByInterface;
+  const selectedFilterOptions = parseFilters(query.filter as Record<string, string[]>);
 
   if (!dataset.live || !revision) {
     next(new NotFoundException('no published revision found'));
     return;
   }
 
-  const selectedFilterOptions =
-    filter &&
-    Object.keys(filter).map((key) => ({
-      columnName: key,
-      values: filter[key]
-    }));
+  const [datasetMetadata, preview, filters]: [PreviewMetadata, ViewDTO, FilterTable[]] = await Promise.all([
+    getDatasetMetadata(dataset, revision),
+    req.conapi.getPublishedDatasetView(dataset.id, pageSize, pageNumber, sortBy, selectedFilterOptions),
+    req.conapi.getPublishedDatasetFilters(dataset.id)
+  ]);
 
-  const datasetMetadata = await getDatasetMetadata(dataset, revision);
-  const preview = await req.conapi.getPublishedDatasetView(
-    dataset.id,
-    pageSize,
-    pageNumber,
-    sortBy,
-    filter &&
-      Object.keys(filter).map((key) => ({
-        columnName: key,
-        values: filter[key]
-      }))
-  );
   pagination = generateSequenceForNumber(preview.current_page, preview.total_pages);
-  const filters = await req.conapi.getPublishedDatasetFilters(dataset.id);
 
   res.render('view', { ...preview, datasetMetadata, pagination, filters, selectedFilterOptions });
 };

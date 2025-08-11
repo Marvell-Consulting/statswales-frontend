@@ -97,6 +97,7 @@ import qs from 'qs';
 import { DEFAULT_PAGE_SIZE } from '../../consumer/controllers/consumer';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { NextUpdateType } from '../../shared/enums/next-update-type';
+import { parseFilters } from '../../shared/utils/parse-filters';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -540,8 +541,8 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
   const query = qs.parse(req.originalUrl.split('?')[1]);
   const pageNumber = Number.parseInt(query.page_number as string, 10) || 1;
   const pageSize = Number.parseInt(query.page_size as string, 10) || DEFAULT_PAGE_SIZE;
-  const filter = query.filter as Record<string, string[]>;
   const sortBy = query.sort_by as unknown as SortByInterface;
+  const filter = parseFilters(query.filter as Record<string, string[]>);
 
   let errors: ViewError[] | undefined;
   let previewData: ViewDTO | ViewErrDTO | undefined;
@@ -553,18 +554,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
       await Promise.all([
         req.pubapi.getDataset(datasetId, DatasetInclude.Preview),
         req.pubapi.getRevision(datasetId, endRevisionId),
-        req.pubapi.getRevisionPreview(
-          datasetId,
-          endRevisionId,
-          pageNumber,
-          pageSize,
-          sortBy,
-          filter &&
-            Object.keys(filter).map((key) => ({
-              columnName: key,
-              values: filter[key]
-            }))
-        ),
+        req.pubapi.getRevisionPreview(datasetId, endRevisionId, pageNumber, pageSize, sortBy, filter),
         req.pubapi.getRevisionFilters(datasetId, endRevisionId)
       ]);
 
