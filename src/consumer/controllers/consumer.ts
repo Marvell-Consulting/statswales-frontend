@@ -19,6 +19,9 @@ import { appConfig } from '../../shared/config';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { TopicDTO } from '../../shared/dtos/topic';
 import { parseFilters } from '../../shared/utils/parse-filters';
+import { FilterTable } from '../../shared/dtos/filter-table';
+import { ViewDTO } from '../../shared/dtos/view-dto';
+import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
 
 const config = appConfig();
 
@@ -82,16 +85,13 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
     return;
   }
 
-  const datasetMetadata = await getDatasetMetadata(dataset, revision);
-  const preview = await req.conapi.getPublishedDatasetView(
-    dataset.id,
-    pageSize,
-    pageNumber,
-    sortBy,
-    selectedFilterOptions
-  );
+  const [datasetMetadata, preview, filters]: [PreviewMetadata, ViewDTO, FilterTable[]] = await Promise.all([
+    getDatasetMetadata(dataset, revision),
+    req.conapi.getPublishedDatasetView(dataset.id, pageSize, pageNumber, sortBy, selectedFilterOptions),
+    req.conapi.getPublishedDatasetFilters(dataset.id)
+  ]);
+
   pagination = generateSequenceForNumber(preview.current_page, preview.total_pages);
-  const filters = await req.conapi.getPublishedDatasetFilters(dataset.id);
 
   res.render('view', { ...preview, datasetMetadata, pagination, filters, selectedFilterOptions });
 };
