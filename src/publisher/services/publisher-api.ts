@@ -221,9 +221,18 @@ export class PublisherApi {
   }
 
   // should only be used for developer view
-  public async getFullDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {
+  public async getFullDatasetList(
+    page = 1,
+    limit = 20,
+    search?: string
+  ): Promise<ResultsetWithCount<DatasetListItemDTO>> {
     logger.debug(`Fetching full dataset list...`);
-    const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
+
+    const searchParams = search
+      ? new URLSearchParams({ page: page.toString(), limit: limit.toString(), search })
+      : new URLSearchParams({ page: page.toString(), limit: limit.toString() });
+
+    const qs = searchParams.toString();
 
     return this.fetch({ url: `developer/dataset?${qs}` }).then(
       (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>

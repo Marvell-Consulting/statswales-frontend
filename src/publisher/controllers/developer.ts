@@ -30,11 +30,12 @@ export const listAllDatasets = async (req: Request, res: Response, next: NextFun
   try {
     const page = parseInt(req.query.page_number as string, 10) || 1;
     const limit = parseInt(req.query.page_size as string, 10) || 20;
-    const results: ResultsetWithCount<DatasetListItemDTO> = await req.pubapi.getFullDatasetList(page, limit);
+    const search = req.query.search as string | undefined;
+    const results: ResultsetWithCount<DatasetListItemDTO> = await req.pubapi.getFullDatasetList(page, limit, search);
     const { data, count } = results;
     const pagination = getPaginationProps(page, limit, count);
     const flash = res.locals.flash;
-    res.render('developer/list', { data, ...pagination, statusToColour, flash });
+    res.render('developer/list', { data, ...pagination, search, statusToColour, flash });
   } catch (err) {
     next(err);
   }

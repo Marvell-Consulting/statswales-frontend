@@ -93,8 +93,24 @@ export default function DeveloperList(props) {
       <FlashMessages />
 
       <div className="govuk-grid-row">
-        <div className="govuk-grid-column-full">
+        <div className="govuk-grid-column-two-thirds">
           <h1 className="govuk-heading-xl">{title}</h1>
+        </div>
+        <div className="govuk-grid-column-one-third" style={{ textAlign: 'right' }}>
+          <form method="GET">
+            <div className="govuk-form-group govuk-form-group--inline">
+              <input
+                type="text"
+                name="search"
+                className="govuk-input"
+                placeholder={props.t('developer.list.search.placeholder')}
+                defaultValue={props.search || ''}
+              />
+            </div>
+            <button type="submit" className="govuk-button govuk-button-small govuk-!-display-inline">
+              {props.t('developer.list.search.button')}
+            </button>
+          </form>
         </div>
       </div>
 
