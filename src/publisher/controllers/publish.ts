@@ -7,7 +7,6 @@ import { customAlphabet } from 'nanoid';
 import { alphanumeric } from 'nanoid-dictionary';
 import { v4 as uuid } from 'uuid';
 import { isBefore, isValid } from 'date-fns';
-import { parse } from 'csv-parse';
 
 import {
   collectionValidator,
@@ -59,7 +58,7 @@ import { DimensionPatchDTO } from '../../shared/dtos/dimension-patch-dto';
 import { ApiException } from '../../shared/exceptions/api.exception';
 import { DimensionMetadataDTO } from '../../shared/dtos/dimension-metadata';
 import { YearType } from '../../shared/enums/year-type';
-import { addEditLinks } from '../../shared/utils/add-edit-links';
+import { addEditLinks, markdownToHtml, parseUploadedTranslations } from '../../shared/utils/translations';
 import { TranslationDTO } from '../../shared/dtos/translations';
 import { getDatasetStatus, getPublishingStatus } from '../../shared/utils/dataset-status';
 import { getDatasetMetadata } from '../../shared/utils/dataset-metadata';
@@ -2579,24 +2578,11 @@ export const exportTranslations = async (req: Request, res: Response, next: Next
 
     let translations = await req.pubapi.getTranslationPreview(dataset.id);
     translations = addEditLinks(translations, dataset.id, req);
+    translations = await markdownToHtml(translations);
     res.render('publish/translations/export', { translations });
   } catch (_err) {
     next(new UnknownException());
   }
-};
-
-const parseUploadedTranslations = async (fileBuffer: Buffer): Promise<TranslationDTO[]> => {
-  const translations: TranslationDTO[] = [];
-
-  const csvParser: AsyncIterable<TranslationDTO> = Readable.from(fileBuffer).pipe(
-    parse({ bom: true, columns: true, skip_records_with_empty_values: true })
-  );
-
-  for await (const row of csvParser) {
-    translations.push(row);
-  }
-
-  return translations;
 };
 
 export const importTranslations = async (req: Request, res: Response) => {
@@ -2624,6 +2610,7 @@ export const importTranslations = async (req: Request, res: Response) => {
 
       preview = true;
       translations = await parseUploadedTranslations(req.file.buffer);
+      translations = await markdownToHtml(translations);
     }
   } catch (err) {
     res.status(400);
@@ -2642,7 +2629,8 @@ export const importTranslations = async (req: Request, res: Response) => {
     }
   }
 
-  const existingTranslations = await req.pubapi.getTranslationPreview(dataset.id);
+  let existingTranslations = await req.pubapi.getTranslationPreview(dataset.id);
+  existingTranslations = await markdownToHtml(existingTranslations);
 
   res.render('publish/translations/import', { preview, translations, errors, existingTranslations });
 };

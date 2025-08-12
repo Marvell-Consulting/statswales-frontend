@@ -37,7 +37,8 @@ export default function TranslationsPreviewTable({ isImport, translations }: Tra
         )
       ) : (
         <T>translations.export.table.value</T>
-      )
+      ),
+      format: (value: string) => <div dangerouslySetInnerHTML={{ __html: value }} />
     },
     ...(isImport
       ? [
@@ -47,7 +48,8 @@ export default function TranslationsPreviewTable({ isImport, translations }: Tra
               <T>translations.import.table.welsh</T>
             ) : (
               <T>translations.import.table.english</T>
-            )
+            ),
+            format: (value: string) => <div dangerouslySetInnerHTML={{ __html: value }} />
           }
         ]
       : [
