@@ -142,7 +142,7 @@ export default function ConsumerView(props) {
         <form
           method="get"
           action={props.buildUrl(
-            `${props.preview ? '/publish' : ''}/${props.dataset.id}/download`,
+            `${props.preview || props.isDeveloper ? '/publish' : ''}/${props.dataset.id}/download`,
             props.i18n.language
           )}
         >
