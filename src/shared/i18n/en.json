@@ -1210,6 +1210,10 @@
       "heading": "List Datasets",
       "details": "Details",
       "tasklist": "Task List",
+      "search": {
+        "placeholder": "Search datasets by title",
+        "button": "Search"
+      },
       "error": {
         "no_datasets": "No datasets are currently listed in the database. If you need help, contact a member of the development team."
       },
