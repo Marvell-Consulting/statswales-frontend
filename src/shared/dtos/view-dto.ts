@@ -3,7 +3,7 @@ import { DatasetDTO } from './dataset';
 import { DataTableDto } from './data-table';
 import { FactTableColumnType } from './fact-table-column-type';
 
-export interface CSVHeader {
+export interface ColumnHeader {
   index: number;
   name: string;
   source_type?: FactTableColumnType;
@@ -20,7 +20,7 @@ export interface ViewErrDTO {
   status: number;
   errors: ViewError[];
   dataset_id: string | undefined;
-  headers?: CSVHeader[];
+  headers?: ColumnHeader[];
   data?: string[][];
   extension?: object;
 }
@@ -34,6 +34,6 @@ export interface ViewDTO {
   pages: (string | number)[];
   page_size: number;
   total_pages: number;
-  headers: CSVHeader[];
+  headers: ColumnHeader[];
   data: string[][];
 }
