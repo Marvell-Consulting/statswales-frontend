@@ -1,5 +1,5 @@
 import React from 'react';
-import { parse } from 'date-fns';
+import { isValid, parse } from 'date-fns';
 
 import Table from '../../../shared/views/components/Table';
 import { ColumnHeader } from '../../../shared/dtos/view-dto';
@@ -26,10 +26,12 @@ export default function ViewTable(props: ViewTableProps) {
         case col.source_type === FactTableColumnType.LineNumber:
           return <span className="linespan">{value}</span>;
 
-        case col.source_type === FactTableColumnType.Time && typeof col.extractor?.dateFormat === 'string':
-          return props.dateFormat(parse(value, col.extractor.dateFormat, new Date()), 'do MMMM yyyy', {
-            locale: props.i18n.language
-          });
+        case col.source_type === FactTableColumnType.Time && typeof col.extractor?.dateFormat === 'string': {
+          const parsedDate = parse(value, col.extractor.dateFormat, new Date());
+          return isValid(parsedDate)
+            ? props.dateFormat(parsedDate, 'do MMMM yyyy', { locale: props.i18n.language })
+            : value;
+        }
 
         case col.name === props.t('consumer_view.start_data') || col.name === props.t('consumer_view.end_data'):
           return props.dateFormat(props.parseISO(value.split('T')[0]), 'do MMMM yyyy', { locale: props.i18n.language });
