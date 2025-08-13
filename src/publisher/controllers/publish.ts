@@ -97,6 +97,7 @@ import { DEFAULT_PAGE_SIZE } from '../../consumer/controllers/consumer';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { NextUpdateType } from '../../shared/enums/next-update-type';
 import { parseFilters } from '../../shared/utils/parse-filters';
+import { FactTableColumnType } from '../../shared/dtos/fact-table-column-type';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -354,7 +355,7 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
     const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
     const pageSize = Number.parseInt(req.query.page_size as string, 10) || 10;
     previewData = await req.pubapi.getImportPreview(dataset.id, revision.id, pageNumber, pageSize);
-    ignoredCount = previewData.headers.filter((header) => header.source_type === SourceType.Ignore).length;
+    ignoredCount = previewData.headers.filter((header) => header.source_type === FactTableColumnType.Ignore).length;
     if (!previewData) {
       throw new Error('No preview data found.');
     }

@@ -1,13 +1,13 @@
-import { SourceType } from '../enums/source-type';
-
 import { ViewError } from './view-error';
 import { DatasetDTO } from './dataset';
 import { DataTableDto } from './data-table';
+import { FactTableColumnType } from './fact-table-column-type';
 
 export interface CSVHeader {
   index: number;
   name: string;
-  source_type?: SourceType;
+  source_type?: FactTableColumnType;
+  extractor?: Record<string, string>;
 }
 
 export interface PageInfo {
