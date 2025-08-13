@@ -26,6 +26,8 @@ export default function DateChooser(props) {
           : col.name,
     format: (value) => {
       switch (col.name) {
+        case 'date_type':
+          return props.t(`publish.time_dimension_review.year_type.${value}`);
         case 'start_date':
         case 'end_date':
           return props.dateFormat(props.parseISO(value.split('T')[0]), 'do MMMM yyyy', { locale: props.i18n.language });
