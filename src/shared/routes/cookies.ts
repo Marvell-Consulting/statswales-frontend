@@ -47,7 +47,7 @@ const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
     res.cookie('cookiePref', cookiePreferences, {
       maxAge: 31536000000, // 1 year
       httpOnly: true,
-      sameSite: 'strict',
+      sameSite: 'lax',
       secure: config.session.secure
     });
 
