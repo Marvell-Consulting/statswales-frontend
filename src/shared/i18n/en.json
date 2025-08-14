@@ -1746,5 +1746,8 @@
   },
   "accessibility": {
     "title": "Accessibility statement for StatsWales"
+  },
+  "shorthand": {
+    "title": "Shorthand for labelling data values"
   }
 }
