@@ -26,7 +26,8 @@ i18next
       caches: ['cookie'],
       cookieDomain,
       cookieSecure: config.session.secure,
-      cookieHttpOnly: true
+      cookieHttpOnly: true,
+      cookieSameSite: 'lax'
     },
     backend: {
       loadPath: `${__dirname}/../i18n/{{lng}}.json`
