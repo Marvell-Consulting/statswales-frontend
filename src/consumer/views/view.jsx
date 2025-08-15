@@ -28,9 +28,33 @@ export default function ConsumerView(props) {
   const parsedQuery = qs.parse(query);
   const sortBy = parsedQuery.sort_by;
 
+  const NoteCodesLegend = () => {
+    if (!props.note_codes || props.note_codes.length === 0) return null;
+
+    return (
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-full">
+          <p className="govuk-body standard-shorthand">
+            <span
+              dangerouslySetInnerHTML={{
+                __html: props.t('dataset_view.notes.shorthand', { shorthand_url: props.shorthandUrl })
+              }}
+            ></span>
+            {props.note_codes.map((code, idx) => (
+              <span key={code} className="govuk-body">
+                {` [${code}] = ${props.t(`dataset_view.notes.${code}`).toLowerCase()}${idx < props.note_codes.length - 1 ? ',' : '.'}`}
+              </span>
+            ))}
+          </p>
+        </div>
+      </div>
+    );
+  };
+
   const DataPanel = (
     <div className="govuk-width-container">
       <div className="govuk-main-wrapper govuk-!-padding-top-0">
+        <NoteCodesLegend />
         <div className="govuk-grid-row govuk-!-margin-bottom-0">
           {/* Disabled for consumer testing */}
           {/*<div className="govuk-grid-column-one-half">*/}
