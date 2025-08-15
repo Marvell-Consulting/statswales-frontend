@@ -583,7 +583,8 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
         errors,
         datasetStatus,
         publishingStatus,
-        datasetTitle
+        datasetTitle,
+        shorthandUrl: req.buildUrl(`/shorthand`, req.language)
       });
       return;
     }

@@ -79,6 +79,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   let pagination: (string | number)[] = [];
   const sortBy = query.sort_by as unknown as SortByInterface;
   const selectedFilterOptions = parseFilters(query.filter as Record<string, string[]>);
+  const shorthandUrl = req.buildUrl(`/shorthand`, req.language);
 
   if (!dataset.live || !revision) {
     next(new NotFoundException('no published revision found'));
@@ -93,7 +94,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
 
   pagination = generateSequenceForNumber(preview.current_page, preview.total_pages);
 
-  res.render('view', { ...preview, datasetMetadata, pagination, filters, selectedFilterOptions });
+  res.render('view', { ...preview, datasetMetadata, pagination, filters, selectedFilterOptions, shorthandUrl });
 };
 
 export const downloadPublishedMetadata = async (req: Request, res: Response, next: NextFunction) => {
