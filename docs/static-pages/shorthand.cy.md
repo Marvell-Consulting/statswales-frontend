@@ -1,6 +1,6 @@
 # Shorthand for labelling data values
 
-Some tables on StatsWales use symbols, also know as shorthand, to provide extra detail about specific data values.
+Some tables on StatsWales use symbols, also known as shorthand, to provide extra detail about specific data values.
 These are as follows:
 
 | Shorthand | Meaning                                          | Use                                                                                                                             |
