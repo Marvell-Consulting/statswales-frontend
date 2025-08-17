@@ -36,4 +36,5 @@ export interface ViewDTO {
   total_pages: number;
   headers: ColumnHeader[];
   data: string[][];
+  note_codes?: string[];
 }

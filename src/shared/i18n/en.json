@@ -198,6 +198,7 @@
     },
     "notes": {
       "heading": "Data notes",
+      "shorthand": "<a class=\"govuk-link\" href=\"{{shorthand_url}}\" target=\"_blank\">Standard shorthand</a> is used in this table:",
       "revisions": "Revisions",
       "data_value_shorthand": "Data value shorthand",
       "rounding": "Rounding applied",
@@ -1746,5 +1747,8 @@
   },
   "accessibility": {
     "title": "Accessibility statement for StatsWales"
+  },
+  "shorthand": {
+    "title": "Shorthand for labelling data values"
   }
 }
