@@ -2,12 +2,12 @@ import { Router, Request, Response } from 'express';
 import { FieldValidationError } from 'express-validator';
 import { NotifyClient } from 'notifications-node-client';
 
-import { i18next } from '../middleware/translation';
-import { ViewError } from '../dtos/view-error';
-import { getErrors, improveValidator, satisfactionValidator } from '../validators';
-import { appConfig } from '../config';
-import { flashMessages } from '../middleware/flash';
-import { logger } from '../utils/logger';
+import { i18next } from '../../shared/middleware/translation';
+import { flashMessages } from '../../shared/middleware/flash';
+import { ViewError } from '../../shared/dtos/view-error';
+import { getErrors, improveValidator, satisfactionValidator } from '../../shared/validators';
+import { appConfig } from '../../shared/config';
+import { logger } from '../../shared/utils/logger';
 
 const config = appConfig();
 

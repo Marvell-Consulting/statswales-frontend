@@ -17,7 +17,7 @@ import { errorHandler } from '../shared/routes/error-handler';
 import { notFound } from '../shared/routes/not-found';
 import { consumer } from './routes/consumer';
 import { cookies } from '../shared/routes/cookies';
-import { feedback } from '../shared/routes/feedback';
+import { feedback } from './routes/feedback';
 import { handleAsset404 } from '../shared/middleware/asset-404';
 import { cookieBanner } from '../shared/middleware/cookie-banner';
 import { history } from '../shared/middleware/history';

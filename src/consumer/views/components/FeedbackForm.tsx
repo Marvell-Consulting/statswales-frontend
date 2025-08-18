@@ -1,11 +1,11 @@
 import React from 'react';
-import { useLocals } from '../context/Locals';
-import RadioGroup from './RadioGroup';
-import T from './T';
+import { useLocals } from '../../../shared/views/context/Locals';
+import RadioGroup from '../../../shared/views/components/RadioGroup';
+import T from '../../../shared/views/components/T';
 import clsx from 'clsx';
-import { ViewError } from '../../dtos/view-error';
-import { SatisfactionOptions } from '../../enums/satisfaction-options';
-import FlashMessages from './FlashMessages';
+import { ViewError } from '../../../shared/dtos/view-error';
+import { SatisfactionOptions } from '../../../shared/enums/satisfaction-options';
+import FlashMessages from '../../../shared/views/components/FlashMessages';
 
 type FeedbackFormProps = {
   values: Record<string, any>;
