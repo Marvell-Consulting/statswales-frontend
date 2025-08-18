@@ -8,6 +8,7 @@ import { ViewError } from '../../shared/dtos/view-error';
 import { getErrors, improveValidator, satisfactionValidator } from '../../shared/validators';
 import { appConfig } from '../../shared/config';
 import { logger } from '../../shared/utils/logger';
+import { AppEnv } from '../../shared/config/env.enum';
 
 const config = appConfig();
 
@@ -30,22 +31,25 @@ const feedbackForm = async (req: Request, res: Response) => {
     });
 
     if (errors.length === 0) {
-      const supportEmail = req.language.includes('en') ? config.email.support.en : config.email.support.cy;
-      const notifyClient = new NotifyClient(config.email.notify.apikey);
-      const notifyTemplateId = '';
+      // don't send emails to notify in CI
+      if (config.env !== AppEnv.Ci) {
+        const supportEmail = req.language.includes('en') ? config.email.support.en : config.email.support.cy;
+        const notifyClient = new NotifyClient(config.email.notify.apikey);
+        const notifyTemplateId = '';
 
-      await notifyClient
-        .sendEmail(notifyTemplateId, supportEmail, {
-          personalisation: {
-            satisfaction: values.satisfaction,
-            improve: values.improve
-          },
-          reference: 'statswales-feedback-form'
-        })
-        .catch((err) => {
-          logger.error(err, 'There was a problem sending the feedback form to support address');
-          // not really much we can do here other than log the failure
-        });
+        await notifyClient
+          .sendEmail(notifyTemplateId, supportEmail, {
+            personalisation: {
+              satisfaction: values.satisfaction,
+              improve: values.improve
+            },
+            reference: 'statswales-feedback-form'
+          })
+          .catch((err) => {
+            logger.error(err, 'There was a problem sending the feedback form to support address');
+            // not really much we can do here other than log the failure
+          });
+      }
 
       req.session.flash = [`feedback.form.success`];
       req.session.save();
