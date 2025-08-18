@@ -16,7 +16,7 @@ const normalizeFilters = (options: FilterTable['values']): CheckboxOptions[] => 
   return options.map((opt) => {
     return {
       label: opt.description,
-      value: encodeURIComponent(opt.description), // this is used in checkbox input name
+      value: encodeURIComponent(opt.reference), // this is used in checkbox input name
       children: opt.children ? normalizeFilters(opt.children) : undefined
     };
   });
@@ -47,7 +47,7 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
       </div>
 
       {filters?.map((filter, index) => {
-        const values = get(parsedFilter, filter.columnName);
+        const values = get(parsedFilter, filter.factTableColumn);
 
         const filtered = values?.length;
         const total = filterOptionCount(filter.values);
@@ -98,7 +98,7 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
               </div>
               <div className="filter-body">
                 <CheckboxGroup
-                  name={`filter[${filter.columnName}]`}
+                  name={`filter[${filter.factTableColumn}]`}
                   options={normalizeFilters(filter.values)}
                   values={Array.isArray(values) ? values : [values]}
                   independentExpand
