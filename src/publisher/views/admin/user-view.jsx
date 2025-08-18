@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
-import FlashMessages from '../components/FlashMessages';
+import FlashMessages from '../../../shared/views/components/FlashMessages';
 import Table from '../../../shared/views/components/Table';
 
 export default function UserView(props) {

@@ -10,9 +10,14 @@ const ONE_DAY = 24 * 60 * 60 * 1000;
 export const getDefaultConfig = (): AppConfig => {
   return {
     env: AppEnv.Default, // MUST be overridden by other configs
-    supportEmail: {
-      en: 'StatsWales@gov.wales',
-      cy: 'StatsCymru@llyw.cymru'
+    email: {
+      support: {
+        en: 'StatsWales@gov.wales',
+        cy: 'StatsCymru@llyw.cymru'
+      },
+      notify: {
+        apikey: process.env.GOVUK_NOTIFY_APIKEY!
+      }
     },
     frontend: {
       publisher: {

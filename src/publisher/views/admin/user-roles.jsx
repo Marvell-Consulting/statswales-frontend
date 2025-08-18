@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import FlashMessages from '../components/FlashMessages';
+import FlashMessages from '../../../shared/views/components/FlashMessages';
 import ErrorHandler from '../components/ErrorHandler';
 import Layout from '../components/Layout';
 

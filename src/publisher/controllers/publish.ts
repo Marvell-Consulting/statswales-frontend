@@ -2189,7 +2189,7 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
   const deleteId = req.query.delete;
   const editId = req.query.edit;
   const config = appConfig();
-  const supportEmail = req.language.includes('en') ? config.supportEmail.en : config.supportEmail.cy;
+  const supportEmail = req.language.includes('en') ? config.email.support.en : config.email.support.cy;
   let availableProviders: ProviderDTO[] = [];
   let dataProviders: RevisionProviderDTO[] = [];
   let errors: ViewError[] | undefined;

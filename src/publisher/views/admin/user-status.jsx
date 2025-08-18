@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
-import FlashMessages from '../components/FlashMessages';
+import FlashMessages from '../../../shared/views/components/FlashMessages';
 import ErrorHandler from '../components/ErrorHandler';
 
 export default function UserStatus(props) {
