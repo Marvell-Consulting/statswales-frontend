@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ErrorHandler from './components/ErrorHandler';
-import FlashMessages from './components/FlashMessages';
+import FlashMessages from '../../shared/views/components/FlashMessages';
 import Pagination from '../../shared/views/components/Pagination';
 import Table from '../../shared/views/components/Table';
 import Layout from './components/Layout';

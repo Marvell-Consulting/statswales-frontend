@@ -4,6 +4,7 @@ import { ResultWithContext } from 'express-validator/lib/chain/context-runner';
 
 import { Designation } from '../../shared/enums/designation';
 import { NextUpdateType } from '../enums/next-update-type';
+import { SatisfactionOptions } from '../enums/satisfaction-options';
 
 export const hasError = async (validator: ValidationChain, req: Request) => {
   return !(await validator.run(req)).isEmpty();
@@ -97,3 +98,7 @@ export const updateMonthValidator = () =>
 
 export const updateYearValidator = () =>
   body('year').if(body('update_type').equals('update')).isInt({ min: 1000, max: 9999, allow_leading_zeroes: false });
+
+export const satisfactionValidator = () => body('satisfaction').isIn(Object.values(SatisfactionOptions));
+
+export const improveValidator = () => body('improve').trim().notEmpty();

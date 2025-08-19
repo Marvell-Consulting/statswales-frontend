@@ -8,9 +8,15 @@ import { SessionStore } from './session-store.enum';
 
 export interface AppConfig {
   env: AppEnv;
-  supportEmail: {
-    en: string;
-    cy: string;
+  email: {
+    support: {
+      en: string;
+      cy: string;
+    };
+    notify: {
+      apiKey: string;
+      templateId: string;
+    };
   };
   frontend: {
     publisher: {

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useLocals } from '../../../shared/views/context/Locals';
 import Layout from '../components/Layout';
-import FlashMessages from '../components/FlashMessages';
+import FlashMessages from '../../../shared/views/components/FlashMessages';
 import ErrorHandler from '../components/ErrorHandler';
 import DatasetStatus from '../../../shared/views/components/dataset/DatasetStatus';
 import Tabs from '../../../shared/views/components/Tabs';

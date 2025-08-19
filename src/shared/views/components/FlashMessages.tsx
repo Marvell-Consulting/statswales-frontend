@@ -1,6 +1,6 @@
 import React from 'react';
-import { useLocals } from '../../../shared/views/context/Locals';
-import T from '../../../shared/views/components/T';
+import { useLocals } from '../context/Locals';
+import T from './T';
 
 export default function FlashMessages() {
   const { flash } = useLocals();

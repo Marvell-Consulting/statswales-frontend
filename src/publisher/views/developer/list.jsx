@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
-import FlashMessages from '../components/FlashMessages';
+import FlashMessages from '../../../shared/views/components/FlashMessages';
 import Pagination from '../../../shared/views/components/Pagination';
 import Table from '../../../shared/views/components/Table';
 

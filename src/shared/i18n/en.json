@@ -1724,7 +1724,7 @@
       "heading": "StatsWales",
       "phase_banner": {
         "beta": "Beta",
-        "feedback": "You’re viewing a new version of StatsWales"
+        "feedback": "You’re viewing a new version of StatsWales. <a target=\"_blank\" href=\"{{url}}\" class=\"govuk-link\">Give feedback (opens in new tab)</a>."
       }
     },
     "topic_list": {
@@ -1750,5 +1750,40 @@
   },
   "shorthand": {
     "title": "Shorthand for labelling data values"
+  },
+  "feedback": {
+    "heading": "Give feedback on StatsWales",
+    "form": {
+      "satisfaction": {
+        "label": "Overall, how did you feel about the service you received today?",
+        "options": {
+          "very_satisfied": {
+            "label": "Very satisfied"
+          },
+          "satisfied": {
+            "label": "Satisfied"
+          },
+          "neutral": {
+            "label": "Neutral"
+          },
+          "dissatisfied": {
+            "label": "Dissatisfied"
+          },
+          "very_dissatisfied": {
+            "label": "Very dissatisfied"
+          }
+        },
+        "error": "Select how you feel about the service you received today"
+      },
+      "improve": {
+        "label": "How could we improve StatsWales?",
+        "hint": "Do not include personal information, like your name or email address",
+        "error": "Tell us how we could improve StatsWales"
+      },
+      "buttons": {
+        "submit": "Send feedback"
+      },
+      "success": "Thank you for your feedback"
+    }
   }
 }

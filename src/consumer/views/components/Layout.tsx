@@ -52,7 +52,7 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
                 className="govuk-phase-banner__text"
                 dangerouslySetInnerHTML={{
                   __html: t('consumer.global.phase_banner.feedback', {
-                    feedback_url: `/${i18n.language}/${t('routes.feedback')}`
+                    url: buildUrl('/feedback', i18n.language)
                   })
                 }}
               ></span>
