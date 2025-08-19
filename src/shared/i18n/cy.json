@@ -40,7 +40,7 @@
   "header": {
     "product_name": "StatsCymru V3.0",
     "beta": "Beta",
-    "feedback": "Rydych chi'n edrych ar fersiwn newydd o StatsCymru. Gallwch gael cymorth trwy droi at <a class=\"govuk-link\" href=\"http://statswales3support.slack.com\">Slack</a>.",
+    "feedback": "Rydych chi'n edrych ar fersiwn newydd o StatsCymru. Gallwch <a class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\" href=\"https://forms.gle/n8zZoZNUvQB6LUpF7\">roi adborth am ddefnyddio’r gwasanaeth</a> neu <a class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\" href=\"http://statswales3support.slack.com\">gael cymorth ar Slack</a>.",
     "logo": "Logo StatsCymru",
     "navigation": {
       "wghome": "Llywodraeth Cymru",
