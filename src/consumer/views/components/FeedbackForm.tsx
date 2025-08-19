@@ -59,6 +59,7 @@ export default function FeedbackForm(props: FeedbackFormProps) {
               name="improve"
               rows={10}
               defaultValue={props.values.improve}
+              aria-describedby="improve-hint improve-error"
             />
           </fieldset>
           <div className="govuk-button-group">
