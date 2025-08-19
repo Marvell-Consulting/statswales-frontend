@@ -16,7 +16,8 @@ export const getDefaultConfig = (): AppConfig => {
         cy: 'StatsCymru@llyw.cymru'
       },
       notify: {
-        apikey: process.env.GOVUK_NOTIFY_APIKEY!
+        apiKey: process.env.GOVUK_NOTIFY_APIKEY!,
+        templateId: process.env.GOVUK_NOTIFY_TEMPLATE_ID!
       }
     },
     frontend: {

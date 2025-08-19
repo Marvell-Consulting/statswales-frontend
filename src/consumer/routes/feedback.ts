@@ -31,14 +31,15 @@ const feedbackForm = async (req: Request, res: Response) => {
     });
 
     if (errors.length === 0) {
+      logger.debug('feedback received, sending to notify');
       // don't send emails to notify in CI
       if (config.env !== AppEnv.Ci) {
         const supportEmail = req.language.includes('en') ? config.email.support.en : config.email.support.cy;
-        const notifyClient = new NotifyClient(config.email.notify.apikey);
-        const notifyTemplateId = '';
+        const { apiKey, templateId } = config.email.notify;
+        const notifyClient = new NotifyClient(apiKey);
 
         await notifyClient
-          .sendEmail(notifyTemplateId, supportEmail, {
+          .sendEmail(templateId, supportEmail, {
             personalisation: {
               satisfaction: values.satisfaction,
               improve: values.improve
@@ -46,7 +47,10 @@ const feedbackForm = async (req: Request, res: Response) => {
             reference: 'statswales-feedback-form'
           })
           .catch((err) => {
-            logger.error(err, 'There was a problem sending the feedback form to support address');
+            logger.error(
+              err,
+              `Failed to send feedback form to '${supportEmail}' using apiKey: '${apiKey}' and templateId: '${templateId}'`
+            );
             // not really much we can do here other than log the failure
           });
       }

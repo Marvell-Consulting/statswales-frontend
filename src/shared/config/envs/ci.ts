@@ -16,7 +16,8 @@ export function getCIConfig(): AppConfig {
         cy: 'support@example.com'
       },
       notify: {
-        apikey: 'not-a-real-api-key'
+        apiKey: 'not-a-real-api-key',
+        templateId: 'not-a-real-template-id'
       }
     },
     logger: {

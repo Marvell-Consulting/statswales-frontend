@@ -14,7 +14,8 @@ export interface AppConfig {
       cy: string;
     };
     notify: {
-      apikey: string;
+      apiKey: string;
+      templateId: string;
     };
   };
   frontend: {
