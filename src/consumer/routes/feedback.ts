@@ -47,9 +47,10 @@ const feedbackForm = async (req: Request, res: Response) => {
             reference: 'statswales-feedback-form'
           })
           .catch((err) => {
+            const redactedKey = `${apiKey?.substring(0, 6)}...`;
             logger.error(
               err,
-              `Failed to send feedback form to '${supportEmail}' using apiKey: '${apiKey}' and templateId: '${templateId}'`
+              `Failed to send feedback form to '${supportEmail}' using apiKey: '${redactedKey}' and templateId: '${templateId}'`
             );
             // not really much we can do here other than log the failure
           });
