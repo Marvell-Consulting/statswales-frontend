@@ -220,25 +220,31 @@ export default function ConsumerView(props) {
           />
 
           {/* commenting out for now until https://marvellconsulting.atlassian.net/browse/SW-581 is completed */}
-          {/* <RadioGroup
+          <RadioGroup
             name="number_format"
             label={props.t('consumer_view.number_formating')}
             options={[
               {
-                value: 'default',
-                label: props.t('consumer_view.formatted_numbers'),
-                hint: props.t('consumer_view.formatted_numbers_hint'),
-                disabled: true
-              },
-              {
                 value: 'raw',
                 label: props.t('consumer_view.unformatted_numbers')
+              },
+              {
+                value: 'formatted',
+                label: props.t('consumer_view.formatted_numbers'),
+                hint: props.t('consumer_view.formatted_numbers_hint')
+              },
+              {
+                value: 'raw_extended',
+                label: props.t('consumer_view.unformatted_numbers_extended')
+              },
+              {
+                value: 'formatted_extended',
+                label: props.t('consumer_view.formatted_numbers_extended'),
+                hint: props.t('consumer_view.formatted_numbers_hint')
               }
             ]}
             value="raw"
-          /> */}
-          {/* TODO: remove this when the above is implemented */}
-          <input type="hidden" name="number_format" value="raw" />
+          />
 
           <RadioGroup
             name="download_language"

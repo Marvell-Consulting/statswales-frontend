@@ -135,10 +135,12 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
     } else {
       attachmentName = `${dataset.id}-${revision.revision_index > 0 ? `v${revision.revision_index}` : 'draft'}`;
     }
+    const view = req.query.number_format as string;
     let selectedFilterOptions: string | undefined = undefined;
     if (req.query.view_type === 'filtered') {
       selectedFilterOptions = req.query.selected_filter_options?.toString();
     }
+    logger.debug(`selectedFilterOptions = ${selectedFilterOptions}`);
 
     const format = req.query.format as FileFormat;
     const lang = req.query.download_language as Locale;
@@ -148,7 +150,7 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
       throw new NotFoundException('invalid file format');
     }
 
-    const fileStream = await req.conapi.getCubeFileStream(dataset.id, format, lang, selectedFilterOptions);
+    const fileStream = await req.conapi.getCubeFileStream(dataset.id, format, lang, view, selectedFilterOptions);
     res.writeHead(200, headers);
     const readable: Readable = Readable.from(fileStream);
     readable.pipe(res);
