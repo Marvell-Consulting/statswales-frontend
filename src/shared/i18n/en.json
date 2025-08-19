@@ -42,7 +42,7 @@
   "header": {
     "product_name": "StatsWales V3.0",
     "beta": "Beta",
-    "feedback": "You’re viewing a new version of StatsWales. You can get support on <a class=\"govuk-link\" href=\"http://statswales3support.slack.com\">Slack</a>.",
+    "feedback": "You’re viewing a new version of StatsWales. You <a class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\" href=\"https://forms.gle/4uiBVfzarkSE62rr7\">can give feedback about using the service</a> or get support on <a class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\" href=\"http://statswales3support.slack.com\">Slack</a>.",
     "logo": "StatsWales logo",
     "navigation": {
       "wghome": "Welsh Government",
