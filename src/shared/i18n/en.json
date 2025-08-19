@@ -1724,7 +1724,7 @@
       "heading": "StatsWales",
       "phase_banner": {
         "beta": "Beta",
-        "feedback": "You’re viewing a new version of StatsWales"
+        "feedback": "You’re viewing a new version of StatsWales. <a target=\"_blank\" href=\"{{url}}\" class=\"govuk-link\">Give feedback (opens in new tab)</a>."
       }
     },
     "topic_list": {
