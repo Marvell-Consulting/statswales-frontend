@@ -135,7 +135,7 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
     } else {
       attachmentName = `${dataset.id}-${revision.revision_index > 0 ? `v${revision.revision_index}` : 'draft'}`;
     }
-    const view = req.query.number_format as string;
+    const view = req.query.view_choice as string;
     let selectedFilterOptions: string | undefined = undefined;
     if (req.query.view_type === 'filtered') {
       selectedFilterOptions = req.query.selected_filter_options?.toString();

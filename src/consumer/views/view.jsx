@@ -219,9 +219,8 @@ export default function ConsumerView(props) {
             value="csv"
           />
 
-          {/* commenting out for now until https://marvellconsulting.atlassian.net/browse/SW-581 is completed */}
           <RadioGroup
-            name="number_format"
+            name="view_choice"
             label={props.t('consumer_view.number_formating')}
             options={[
               {

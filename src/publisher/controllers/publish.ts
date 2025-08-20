@@ -609,8 +609,7 @@ export const downloadDataset = async (req: Request, res: Response, next: NextFun
     const isDraft = revIndex === 0;
     const datasetTitle = revision.metadata?.title ? slugify(revision.metadata.title, { lower: true }) : datasetId;
     const attachmentName = `${datasetTitle}-${isDraft ? 'draft' : `v${revIndex}`}`;
-    const view = req.query.number_format as string;
-    logger.debug(`View = ${view}`);
+    const view = req.query.view_choice as string;
     let selectedFilterOptions: string | undefined = undefined;
     if (req.query.view_type === 'filtered') {
       selectedFilterOptions = req.query.selected_filter_options?.toString();
