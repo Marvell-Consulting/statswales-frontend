@@ -142,12 +142,17 @@ export class ConsumerApi {
     datasetId: string,
     format: FileFormat,
     language: Locale,
+    view?: string,
     selectedFilterOptions?: string,
     sortBy?: string
   ): Promise<ReadableStream> {
     logger.debug(`Fetching ${format} stream for dataset: ${datasetId}...`);
 
     const searchParams = new URLSearchParams();
+
+    if (view) {
+      searchParams.set('view', view);
+    }
 
     if (selectedFilterOptions) {
       searchParams.set('filter', selectedFilterOptions);

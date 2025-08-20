@@ -563,6 +563,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
     const datasetStatus = getDatasetStatus(datasetDTO);
     const publishingStatus = getPublishingStatus(datasetDTO, revision);
     const datasetTitle = revision?.metadata?.title;
+    const selectedFilterOptions = parseFilters(query.filter as Record<string, string[]>);
 
     pagination = generateSequenceForNumber(previewDTO.current_page, previewDTO.total_pages);
     previewMetadata = await getDatasetMetadata(dataset, revision);
@@ -584,6 +585,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
         datasetStatus,
         publishingStatus,
         datasetTitle,
+        selectedFilterOptions,
         shorthandUrl: req.buildUrl(`/shorthand`, req.language)
       });
       return;
@@ -607,14 +609,28 @@ export const downloadDataset = async (req: Request, res: Response, next: NextFun
     const isDraft = revIndex === 0;
     const datasetTitle = revision.metadata?.title ? slugify(revision.metadata.title, { lower: true }) : datasetId;
     const attachmentName = `${datasetTitle}-${isDraft ? 'draft' : `v${revIndex}`}`;
+    const view = req.query.view_choice as string;
+    let selectedFilterOptions: string | undefined = undefined;
+    if (req.query.view_type === 'filtered') {
+      selectedFilterOptions = req.query.selected_filter_options?.toString();
+    }
+
     const format = req.query.format as FileFormat;
+    const lang = req.query.download_language as Locale;
     const headers = getDownloadHeaders(format, attachmentName);
 
     if (!headers) {
       throw new NotFoundException('errors.preview.invalid_download_format');
     }
     logger.debug(`Getting file from backend...`);
-    const fileStream = await req.pubapi.getCubeFileStream(datasetId, revision.id, format);
+    const fileStream = await req.pubapi.getCubeFileStream(
+      datasetId,
+      revision.id,
+      format,
+      lang,
+      view,
+      selectedFilterOptions
+    );
     res.writeHead(200, headers);
     const readable: Readable = Readable.from(fileStream);
     readable.pipe(res);

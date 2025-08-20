@@ -68,6 +68,7 @@ interface fetchParams {
   body?: FormData | string;
   json?: unknown;
   headers?: Record<string, string>;
+  lang?: Locale;
 }
 
 export class PublisherApi {
@@ -81,10 +82,10 @@ export class PublisherApi {
     this.token = token;
   }
 
-  public async fetch({ url, method = HttpMethod.Get, body, json, headers }: fetchParams): Promise<Response> {
+  public async fetch({ url, method = HttpMethod.Get, body, json, headers, lang }: fetchParams): Promise<Response> {
     const head = {
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      'Accept-Language': this.lang,
+      'Accept-Language': lang || this.lang,
       ...(this.token ? { Authorization: `Bearer ${this.token}` } : {}),
       // eslint-disable-next-line @typescript-eslint/naming-convention
       ...(json ? { 'Content-Type': 'application/json; charset=UTF-8' } : {}),
@@ -279,15 +280,35 @@ export class PublisherApi {
     }).then((response) => response.body as ReadableStream);
   }
 
-  public async getCubeFileStream(datasetId: string, revisionId: string, format: FileFormat): Promise<ReadableStream> {
+  public async getCubeFileStream(
+    datasetId: string,
+    revisionId: string,
+    format: FileFormat,
+    language: Locale,
+    view?: string,
+    selectedFilterOptions?: string,
+    sortBy?: string
+  ): Promise<ReadableStream> {
     logger.debug(`Fetching ${format} stream for revision: ${revisionId}...`);
+
+    const searchParams = new URLSearchParams();
+
+    if (view) {
+      searchParams.set('view', view);
+    }
+
+    if (selectedFilterOptions) {
+      searchParams.set('filter', selectedFilterOptions);
+    }
+
+    if (sortBy) searchParams.append('sort_by', sortBy);
 
     const url =
       format === FileFormat.DuckDb
         ? `dataset/${datasetId}/revision/by-id/${revisionId}/cube`
-        : `dataset/${datasetId}/revision/by-id/${revisionId}/cube/${format}`;
-
-    return this.fetch({ url }).then((response) => response.body as ReadableStream);
+        : `dataset/${datasetId}/revision/by-id/${revisionId}/cube/${format}?${searchParams}`;
+    logger.debug(`Download URL = ${url}`);
+    return this.fetch({ url, lang: language }).then((response) => response.body as ReadableStream);
   }
 
   public async rebuildCube(datasetId: string, revisionId: string) {
