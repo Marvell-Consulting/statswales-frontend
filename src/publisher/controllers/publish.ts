@@ -236,7 +236,7 @@ export const uploadDataTable = async (req: Request, res: Response) => {
 
       const fileName = req.file.originalname;
       req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
-      const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
+      const fileData = new Blob([req.file.buffer as BlobPart], { type: req.file.mimetype });
       logger.debug('Sending file to backend');
       logger.debug('Sending data table file to the backend...');
       if (req.body?.updateType) {
@@ -675,7 +675,7 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
       try {
         const fileName = req.file.originalname;
         req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
-        const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
+        const fileData = new Blob([req.file.buffer as BlobPart], { type: req.file.mimetype });
         await req.pubapi.uploadMeasureLookup(dataset.id, fileData, fileName);
         res.redirect(req.buildUrl(`/publish/${dataset.id}/measure/review`, req.language));
         return;
@@ -821,7 +821,7 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
       }
       const fileName = req.file.originalname;
       req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
-      const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
+      const fileData = new Blob([req.file.buffer as BlobPart], { type: req.file.mimetype });
 
       try {
         logger.debug('Sending lookup table to backend');
@@ -1694,12 +1694,14 @@ export const periodReview = async (req: Request, res: Response, next: NextFuncti
     }
 
     const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
+
     if (errors) {
       res.status(errors.status || 500);
       res.render('publish/date-chooser', { ...dataPreview, review: true, dimension, errors });
-    } else {
-      res.render('publish/date-chooser', { ...dataPreview, review: true, dimension });
+      return;
     }
+
+    res.render('publish/date-chooser', { ...dataPreview, review: true, dimension });
   } catch (err) {
     logger.error('Failed to get dimension preview', err);
     next(new NotFoundException());
@@ -2623,7 +2625,7 @@ export const importTranslations = async (req: Request, res: Response) => {
       }
 
       const fileName = req.file.originalname;
-      const fileData = new Blob([req.file.buffer], { type: req.file.mimetype });
+      const fileData = new Blob([req.file.buffer as BlobPart], { type: req.file.mimetype });
       await req.pubapi.uploadTranslationImport(dataset.id, fileData, fileName);
 
       preview = true;
