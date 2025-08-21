@@ -1441,6 +1441,7 @@
     "about_this_dataset": "About this dataset",
     "overview": "Overview",
     "data": "Data",
+    "no_data": "No data available for the selected filters. Try a different selection.",
     "download": "Download",
     "data_view": "Data view",
     "select_view": "Select view",

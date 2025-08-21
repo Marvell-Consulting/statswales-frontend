@@ -4,6 +4,7 @@ import { isValid, parse } from 'date-fns';
 import Table from '../../../shared/views/components/Table';
 import { ColumnHeader } from '../../../shared/dtos/view-dto';
 import { FactTableColumnType } from '../../../shared/dtos/fact-table-column-type';
+import T from '../../../shared/views/components/T';
 
 type ViewTableProps = {
   headers: ColumnHeader[];
@@ -43,5 +44,14 @@ export default function ViewTable(props: ViewTableProps) {
     className: col.source_type === FactTableColumnType.LineNumber ? 'line-number' : '',
     cellClassName: col.source_type === FactTableColumnType.LineNumber ? 'line-number' : ''
   }));
+
+  if (props.data.length === 0) {
+    return (
+      <p className="govuk-body">
+        <T>consumer_view.no_data</T>
+      </p>
+    );
+  }
+
   return <Table isSticky columns={columns} rows={props.data} isSortable />;
 }
