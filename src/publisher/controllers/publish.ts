@@ -1694,12 +1694,14 @@ export const periodReview = async (req: Request, res: Response, next: NextFuncti
     }
 
     const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
+
     if (errors) {
       res.status(errors.status || 500);
       res.render('publish/date-chooser', { ...dataPreview, review: true, dimension, errors });
-    } else {
-      res.render('publish/date-chooser', { ...dataPreview, review: true, dimension });
+      return;
     }
+
+    res.render('publish/date-chooser', { ...dataPreview, review: true, dimension });
   } catch (err) {
     logger.error('Failed to get dimension preview', err);
     next(new NotFoundException());

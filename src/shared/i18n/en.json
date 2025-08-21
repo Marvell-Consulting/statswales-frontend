@@ -449,7 +449,7 @@
         "sort_order": "Sort Order",
         "hierarchy": "Hierarchy"
       },
-      "year_type": {
+      "date_type": {
         "calendar_year": "Calendar year",
         "calendar_quarter": "Calendar quarter",
         "calendar_month": "Calendar month",
