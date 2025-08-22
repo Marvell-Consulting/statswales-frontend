@@ -840,8 +840,16 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
         }
 
         if (error.status === 400) {
-          logger.error(err, 'Lookup table did not match data in the fact table.');
+          if (body?.errors?.[0]?.message?.key?.includes('primary_key_failed')) {
+            logger.error('Lookup table has duplicate rows');
+            errors = [{ field: 'csv', message: { key: `errors.dimension_validation.primary_key_failed` } }];
+            res.status(400);
+            throw new Error();
+          }
+
           const failurePreview = body as ViewErrDTO;
+          logger.error(err, 'Lookup table did not match data in the fact table.');
+
           res.render('publish/dimension-match-failure', {
             ...failurePreview,
             patchRequest: { dimension_type: DimensionType.LookupTable },
