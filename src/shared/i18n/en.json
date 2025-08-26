@@ -1734,6 +1734,7 @@
       "heading": "Find statistics and data about Wales",
       "topics": "Topics",
       "topic": "Topic",
+      "sub_topic": "Sub-topic",
       "api": "Browse by topic or <a rel=\"noreferrer noopener\" target=\"_blank\" href=\"{{url}}\">get API access (opens in new tab)</a>.",
       "dataset": {
         "first_published": "First published: {{published}}"
