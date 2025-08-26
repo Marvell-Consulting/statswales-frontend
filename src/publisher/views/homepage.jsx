@@ -81,7 +81,7 @@ export default function Homepage(props) {
           &nbsp;
         </div>
 
-        <div className="govuk-grid-column-one-third" style={{ textAlign: 'right' }}>
+        <div className="govuk-grid-column-one-third govuk-!-text-align-right">
           { showDatasetList && (
             <form method="GET">
               <div className="govuk-form-group govuk-form-group--inline">
