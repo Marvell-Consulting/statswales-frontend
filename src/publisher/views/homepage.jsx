@@ -82,7 +82,7 @@ export default function Homepage(props) {
         </div>
 
         <div className="govuk-grid-column-one-third govuk-!-text-align-right">
-          { showDatasetList && (
+          {showDatasetList && (
             <form method="GET">
               <div className="govuk-form-group govuk-form-group--inline">
                 <input
