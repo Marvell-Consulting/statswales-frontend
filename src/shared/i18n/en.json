@@ -138,6 +138,10 @@
   },
   "homepage": {
     "heading": "Datasets",
+    "search": {
+      "placeholder": "Search datasets by title",
+      "button": "Search"
+    },
     "table": {
       "id": "ID",
       "title": "Title",
