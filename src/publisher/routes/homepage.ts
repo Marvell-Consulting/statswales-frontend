@@ -4,7 +4,7 @@ import { flashErrors, flashMessages } from '../../shared/middleware/flash';
 import { DatasetListItemDTO } from '../../shared/dtos/dataset-list-item';
 import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count';
 import { getPaginationProps } from '../../shared/utils/pagination';
-import { getEditorUserGroups } from '../../shared/utils/user-permissions';
+import { getApproverUserGroups, getEditorUserGroups } from '../../shared/utils/user-permissions';
 
 export const homepage = Router();
 
@@ -21,15 +21,17 @@ homepage.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const page = parseInt(req.query.page_number as string, 10) || 1;
     const limit = parseInt(req.query.page_size as string, 10) || 20;
+    const search = req.query.search as string | undefined;
 
     // user must be an editor in at least one group to start a new dataset
     const canCreate = getEditorUserGroups(req.user).length > 0;
+    const canApprove = getApproverUserGroups(req.user).length > 0;
 
-    const results: ResultsetWithCount<DatasetListItemDTO> = await req.pubapi.getUserDatasetList(page, limit);
+    const results: ResultsetWithCount<DatasetListItemDTO> = await req.pubapi.getUserDatasetList(page, limit, search);
     const { data, count } = results;
     const pagination = getPaginationProps(page, limit, count);
     const flash = res.locals.flash;
-    res.render('homepage', { data, ...pagination, flash, canCreate, errors });
+    res.render('homepage', { data, ...pagination, flash, canCreate, canApprove, search, errors });
   } catch (err) {
     next(err);
   }

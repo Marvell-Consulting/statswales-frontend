@@ -58,6 +58,7 @@ export default function Homepage(props) {
   ];
 
   const title = props.t('homepage.heading');
+  const showDatasetList = props.canCreate || props.canApprove || props.isDeveloper;
 
   return (
     <Layout {...props} title={title}>
@@ -70,19 +71,39 @@ export default function Homepage(props) {
         </div>
       </div>
 
-      {props.canCreate && (
-        <div className="govuk-grid-row">
-          <div className="govuk-grid-column-one-half">
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-two-thirds">
+          {props.canCreate && (
             <a className="govuk-button" href={`${props.buildUrl(`/publish`, props.i18n.language)}`}>
               {props.t('homepage.buttons.create')}
             </a>
-          </div>
+          )}
+          &nbsp;
         </div>
-      )}
+
+        <div className="govuk-grid-column-one-third" style={{ textAlign: 'right' }}>
+          { showDatasetList && (
+            <form method="GET">
+              <div className="govuk-form-group govuk-form-group--inline">
+                <input
+                  type="text"
+                  name="search"
+                  className="govuk-input"
+                  placeholder={props.t('homepage.search.placeholder')}
+                  defaultValue={props.search || ''}
+                />
+              </div>
+              <button type="submit" className="govuk-button govuk-button-small govuk-!-display-inline">
+                {props.t('homepage.search.button')}
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
-          {props.data && props.data.length > 0 ? (
+          {showDatasetList ? (
             <>
               <Table columns={columns} rows={props.data} />
               <Pagination {...props} />

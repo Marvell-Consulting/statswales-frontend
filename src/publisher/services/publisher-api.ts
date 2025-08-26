@@ -212,9 +212,18 @@ export class PublisherApi {
     );
   }
 
-  public async getUserDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {
+  public async getUserDatasetList(
+    page = 1,
+    limit = 20,
+    search?: string
+  ): Promise<ResultsetWithCount<DatasetListItemDTO>> {
     logger.debug(`Fetching user dataset list...`);
-    const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
+
+    const searchParams = search
+      ? new URLSearchParams({ page: page.toString(), limit: limit.toString(), search })
+      : new URLSearchParams({ page: page.toString(), limit: limit.toString() });
+
+    const qs = searchParams.toString();
 
     return this.fetch({ url: `dataset?${qs}` }).then(
       (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
