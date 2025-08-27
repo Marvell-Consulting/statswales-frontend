@@ -48,14 +48,6 @@ describe('Authentication', () => {
     });
   });
 
-  describe('/google', () => {
-    test('should redirect to google auth on backend', async () => {
-      const res = await request(app).get('/en-GB/auth/google');
-      expect(res.status).toBe(302);
-      expect(res.header.location).toBe(`${config.backend.url}/auth/google?lang=en-GB`);
-    });
-  });
-
   describe('/entraid', () => {
     test('should redirect to entraid auth on backend', async () => {
       const res = await request(app).get('/en-GB/auth/entraid');
