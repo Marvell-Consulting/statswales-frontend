@@ -46,9 +46,29 @@ export default function UserList(props) {
 
       <h1 className="govuk-heading-xl">{title}</h1>
 
-      <a href={props.buildUrl(`/admin/user/create`, props.i18n.language)} className="govuk-button">
-        {props.t('admin.user.list.buttons.add')}
-      </a>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-two-thirds">
+          <a href={props.buildUrl(`/admin/user/create`, props.i18n.language)} className="govuk-button">
+            {props.t('admin.user.list.buttons.add')}
+          </a>
+        </div>
+        <div className="govuk-grid-column-one-third govuk-!-text-align-right">
+          <form method="GET" className="search-form">
+            <input
+              type="text"
+              name="search"
+              className="govuk-input"
+              placeholder={props.t('admin.user.list.search.placeholder')}
+              defaultValue={props.search || ''}
+            />
+            <button type="submit" className="govuk-button govuk-button-small">
+              {props.t('admin.user.list.search.button')}
+            </button>
+          </form>
+        </div>
+      </div>
+
+
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">

@@ -97,17 +97,15 @@ export default function DeveloperList(props) {
           <h1 className="govuk-heading-xl">{title}</h1>
         </div>
         <div className="govuk-grid-column-one-third govuk-!-text-align-right">
-          <form method="GET">
-            <div className="govuk-form-group govuk-form-group--inline">
-              <input
-                type="text"
-                name="search"
-                className="govuk-input"
-                placeholder={props.t('developer.list.search.placeholder')}
-                defaultValue={props.search || ''}
-              />
-            </div>
-            <button type="submit" className="govuk-button govuk-button-small govuk-!-display-inline">
+          <form method="GET" className="search-form">
+            <input
+              type="text"
+              name="search"
+              className="govuk-input"
+              placeholder={props.t('developer.list.search.placeholder')}
+              defaultValue={props.search || ''}
+            />
+            <button type="submit" className="govuk-button govuk-button-small">
               {props.t('developer.list.search.button')}
             </button>
           </form>
