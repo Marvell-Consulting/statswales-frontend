@@ -52,11 +52,6 @@ auth.all('/local', urlencoded({ extended: false }), (req: Request, res: Response
   res.render('auth/local');
 });
 
-auth.get('/google', (req: Request, res: Response) => {
-  logger.debug('Sending user to backend for google authentication');
-  res.redirect(`${config.backend.url}/auth/google?lang=${req.language}`);
-});
-
 auth.get('/entraid', (req: Request, res: Response) => {
   logger.debug('Sending user to backend for entraid authentication');
   res.redirect(`${config.backend.url}/auth/entraid?lang=${req.language}`);
