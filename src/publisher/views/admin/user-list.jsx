@@ -70,7 +70,7 @@ export default function UserList(props) {
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
-          {props?.users && props?.users.length > 0 && (
+          {props?.users && (
             <>
               <Table i18nBase="admin.user.list.table" columns={columns} rows={props.users} />
               <Pagination {...props} />
