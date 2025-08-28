@@ -723,9 +723,14 @@ export class PublisherApi {
     );
   }
 
-  public async listUsers(page = 1, limit = 20): Promise<ResultsetWithCount<UserDTO>> {
+  public async listUsers(page = 1, limit = 20, search?: string): Promise<ResultsetWithCount<UserDTO>> {
     logger.debug(`Fetching user list...`);
-    const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
+
+    const searchParams = search
+      ? new URLSearchParams({ page: page.toString(), limit: limit.toString(), search })
+      : new URLSearchParams({ page: page.toString(), limit: limit.toString() });
+
+    const qs = searchParams.toString();
 
     return this.fetch({ url: `admin/user?${qs}` }).then(
       (response) => response.json() as unknown as ResultsetWithCount<UserDTO>
