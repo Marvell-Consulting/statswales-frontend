@@ -68,8 +68,6 @@ export default function UserList(props) {
         </div>
       </div>
 
-
-
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
           {props?.users && props?.users.length > 0 && (
