@@ -219,9 +219,11 @@ export class PublisherApi {
   ): Promise<ResultsetWithCount<DatasetListItemDTO>> {
     logger.debug(`Fetching user dataset list...`);
 
-    const searchParams = search
-      ? new URLSearchParams({ page: page.toString(), limit: limit.toString(), search })
-      : new URLSearchParams({ page: page.toString(), limit: limit.toString() });
+    const searchParams = new URLSearchParams({ page: page.toString(), limit: limit.toString() });
+
+    if (search) {
+      searchParams.append('search', search);
+    }
 
     const qs = searchParams.toString();
 
@@ -238,9 +240,11 @@ export class PublisherApi {
   ): Promise<ResultsetWithCount<DatasetListItemDTO>> {
     logger.debug(`Fetching full dataset list...`);
 
-    const searchParams = search
-      ? new URLSearchParams({ page: page.toString(), limit: limit.toString(), search })
-      : new URLSearchParams({ page: page.toString(), limit: limit.toString() });
+    const searchParams = new URLSearchParams({ page: page.toString(), limit: limit.toString() });
+
+    if (search) {
+      searchParams.append('search', search);
+    }
 
     const qs = searchParams.toString();
 
@@ -726,9 +730,11 @@ export class PublisherApi {
   public async listUsers(page = 1, limit = 20, search?: string): Promise<ResultsetWithCount<UserDTO>> {
     logger.debug(`Fetching user list...`);
 
-    const searchParams = search
-      ? new URLSearchParams({ page: page.toString(), limit: limit.toString(), search })
-      : new URLSearchParams({ page: page.toString(), limit: limit.toString() });
+    const searchParams = new URLSearchParams({ page: page.toString(), limit: limit.toString() });
+
+    if (search) {
+      searchParams.append('search', search);
+    }
 
     const qs = searchParams.toString();
 
