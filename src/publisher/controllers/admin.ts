@@ -235,9 +235,10 @@ export const listUsers = async (req: Request, res: Response, next: NextFunction)
   try {
     const page = parseInt(req.query.page_number as string, 10) || 1;
     const limit = parseInt(req.query.page_size as string, 10) || 10;
-    const { data, count }: ResultsetWithCount<UserDTO> = await req.pubapi.listUsers(page, limit);
+    const search = req.query.search as string | undefined;
+    const { data, count }: ResultsetWithCount<UserDTO> = await req.pubapi.listUsers(page, limit, search);
     const pagination = getPaginationProps(page, limit, count);
-    res.render('admin/user-list', { users: data, count, ...pagination });
+    res.render('admin/user-list', { users: data, count, search, ...pagination });
   } catch (err) {
     next(err);
   }

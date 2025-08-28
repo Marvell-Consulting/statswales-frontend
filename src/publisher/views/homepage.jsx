@@ -83,17 +83,15 @@ export default function Homepage(props) {
 
         <div className="govuk-grid-column-one-third govuk-!-text-align-right">
           {showDatasetList && (
-            <form method="GET">
-              <div className="govuk-form-group govuk-form-group--inline">
-                <input
-                  type="text"
-                  name="search"
-                  className="govuk-input"
-                  placeholder={props.t('homepage.search.placeholder')}
-                  defaultValue={props.search || ''}
-                />
-              </div>
-              <button type="submit" className="govuk-button govuk-button-small govuk-!-display-inline">
+            <form method="GET" className="search-form">
+              <input
+                type="text"
+                name="search"
+                className="govuk-input"
+                placeholder={props.t('homepage.search.placeholder')}
+                defaultValue={props.search || ''}
+              />
+              <button type="submit" className="govuk-button govuk-button-small">
                 {props.t('homepage.search.button')}
               </button>
             </form>

@@ -1604,6 +1604,10 @@
     "user": {
       "list": {
         "heading": "Users",
+        "search": {
+          "placeholder": "Search users by name or email",
+          "button": "Search"
+        },
         "table": {
           "name": "Name or email address",
           "groups": "Groups",
