@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
 import T from '../T';
 import { NextUpdateType } from '../../../enums/next-update-type';
-import { parse } from 'date-fns';
+import { parse, format } from 'date-fns';
+import { dateFormat } from '../../../../consumer/middleware/services';
 
 export default function KeyInfo(props) {
   function NextUpdate() {
@@ -28,6 +29,27 @@ export default function KeyInfo(props) {
     }
 
     return <T>dataset_view.key_information.next_update_missing</T>;
+  }
+
+  function PeriodCovered(props) {
+    if (!props.timePeriod.start || !props.timePeriod.end) {
+      return false;
+    }
+    return (
+      <div id="time-period" className="govuk-summary-list__row">
+        <dt className="govuk-summary-list__key">
+          <T>dataset_view.key_information.time_covered</T>
+        </dt>
+        <dd className="govuk-summary-list__value">
+          <T
+            start={dateFormat(props.timePeriod.start, 'MMMM yyyy', props.lang)}
+            end={dateFormat(props.timePeriod.end, 'MMMM yyyy', props.lang)}
+          >
+            dataset_view.key_information.time_period
+          </T>
+        </dd>
+      </div>
+    );
   }
 
   return (
@@ -96,17 +118,7 @@ export default function KeyInfo(props) {
           </>
         )}
 
-        <div id="time-period" className="govuk-summary-list__row">
-          <dt className="govuk-summary-list__key">{props.t('dataset_view.key_information.time_covered')}</dt>
-          <dd className="govuk-summary-list__value">
-            {props.keyInfo.timePeriod.start && props.keyInfo.timePeriod.end
-              ? props.t('dataset_view.key_information.time_period', {
-                  start: props.dateFormat(props.keyInfo.timePeriod.start, 'MMMM yyyy', { locale: props.i18n.language }),
-                  end: props.dateFormat(props.keyInfo.timePeriod.end, 'MMMM yyyy', { locale: props.i18n.language })
-                })
-              : props.t('dataset_view.period_cover_missing')}
-          </dd>
-        </div>
+        <PeriodCovered lang={props.i18n.language} timePeriod={props.keyInfo.timePeriod} />
       </dl>
     </div>
   );
