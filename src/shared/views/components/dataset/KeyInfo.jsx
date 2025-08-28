@@ -32,24 +32,24 @@ export default function KeyInfo(props) {
   }
 
   function PeriodCovered(props) {
-    if (props.timePeriod.start && props.timePeriod.end) {
-      return (
-        <div id="time-period" className="govuk-summary-list__row">
-          <dt className="govuk-summary-list__key">
-            <T>dataset_view.key_information.time_covered</T>
-          </dt>
-          <dd className="govuk-summary-list__value">
-            <T
-              start={dateFormat(props.timePeriod.start, 'MMMM yyyy', props.lang)}
-              end={dateFormat(props.timePeriod.end, 'MMMM yyyy', props.lang)}
-            >
-              dataset_view.key_information.time_period
-            </T>
-          </dd>
-        </div>
-      );
+    if (!props.timePeriod.start || !props.timePeriod.end) {
+      return false;
     }
-    return <div></div>;
+    return (
+      <div id="time-period" className="govuk-summary-list__row">
+        <dt className="govuk-summary-list__key">
+          <T>dataset_view.key_information.time_covered</T>
+        </dt>
+        <dd className="govuk-summary-list__value">
+          <T
+            start={dateFormat(props.timePeriod.start, 'MMMM yyyy', props.lang)}
+            end={dateFormat(props.timePeriod.end, 'MMMM yyyy', props.lang)}
+          >
+            dataset_view.key_information.time_period
+          </T>
+        </dd>
+      </div>
+    );
   }
 
   return (
