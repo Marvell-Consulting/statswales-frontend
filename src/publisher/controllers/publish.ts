@@ -1297,21 +1297,23 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
           key = key ? key : 'errors.dimension.start_month_must_be_a_number';
           field = 'start_month';
         }
-        const startDay = String(req.body.start_day).padStart(2, '0');
-        const startMonth = String(req.body.start_month).padStart(2, '0');
-        const date = new Date(`2024-${startMonth}-${startDay}`);
-        if (isNaN(date.getTime())) {
+        const monthIdx = Number(req.body.start_month) - 1;
+        const day = Number(req.body.start_day);
+        const daysInMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][monthIdx];
+        if (day > daysInMonth) {
           logger.warn('User entered an invalid date');
           res.status(400);
           key = key ? key : 'errors.dimension.start_date_must_be_valid';
         }
+        const startDay = String(req.body.start_day).padStart(2, '0');
+        const startMonth = String(req.body.start_month).padStart(2, '0');
         if (key) {
           res.render('publish/year-type', {
             dimension,
             revisit,
             yearType: req.body?.yearType,
-            start_day: req.body?.start_day,
-            start_month: req.body?.start_month,
+            start_day: startDay,
+            start_month: startMonth,
             errors: [
               {
                 field,
