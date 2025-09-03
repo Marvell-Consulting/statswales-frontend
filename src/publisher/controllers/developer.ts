@@ -140,17 +140,21 @@ export const displayDatasetPreview = async (req: Request, res: Response) => {
 
 export const downloadDataTableFromRevision = async (req: Request, res: Response, next: NextFunction) => {
   const datasetId = req.params.datasetId;
+  const revisionId = req.params.revisionId;
 
   try {
     const dataset = await req.pubapi.getDataset(datasetId, DatasetInclude.LatestRevision);
-    const revision = dataset.end_revision;
-    const dataTable = await req.pubapi.getRevisionDataTable(datasetId, dataset.end_revision_id!);
+    if (!dataset) {
+      next(new NotFoundException('errors.dataset_missing'));
+      return;
+    }
 
-    if (!revision) {
+    if (!revisionId) {
       logger.error('Invalid or missing revisionId');
       next(new NotFoundException('errors.revision_missing'));
       return;
     }
+    const dataTable = await req.pubapi.getRevisionDataTable(datasetId, revisionId);
 
     if (!dataTable) {
       logger.error('Invalid or missing data table');
@@ -158,13 +162,13 @@ export const downloadDataTableFromRevision = async (req: Request, res: Response,
       return;
     }
 
-    const attachmentName: string = dataTable.original_filename || revision.id;
+    const attachmentName: string = dataTable.original_filename || revisionId;
     const headers = getDownloadHeaders(dataTable.file_type as FileFormat, attachmentName);
 
     if (!headers) {
       throw new NotFoundException('invalid file format');
     }
-    const fileStream = await req.pubapi.getOriginalUpload(datasetId, revision.id);
+    const fileStream = await req.pubapi.getOriginalUpload(datasetId, revisionId);
     res.writeHead(200, headers);
     const readable: Readable = Readable.from(fileStream);
     readable.pipe(res);
@@ -175,15 +179,24 @@ export const downloadDataTableFromRevision = async (req: Request, res: Response,
 };
 
 export const downloadLookupFileFromMeasure = async (req: Request, res: Response, next: NextFunction) => {
-  const dataset = res.locals.dataset;
+  const dataset = await req.pubapi.getDataset(req.params.datasetId, DatasetInclude.Measure);
+  if (!dataset) {
+    next(new NotFoundException('errors.dataset_missing'));
+    return;
+  }
   const measure = dataset.measure;
 
-  if (!measure && !measure.lookup_table) {
+  if (!measure && !measure!.lookup_table) {
     logger.error('Invalid or missing measure');
     next(new NotFoundException('errors.measure_missing'));
     return;
   }
-  const lookupTable: LookupTableDTO = measure.lookup_table;
+  const lookupTable: LookupTableDTO | undefined = measure!.lookup_table;
+  if (!lookupTable) {
+    logger.error('Invalid or missing lookup table');
+    next(new NotFoundException('errors.lookup_table_missing'));
+    return;
+  }
   try {
     const attachmentName: string = lookupTable.original_filename || dataset.id;
     const headers = getDownloadHeaders(lookupTable.file_type as FileFormat, attachmentName);
