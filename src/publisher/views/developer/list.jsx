@@ -17,7 +17,8 @@ export default function DeveloperList(props) {
             {label}
           </a>
         );
-      }
+      },
+      cellClassName: 'title'
     },
     {
       key: 'group_name',
@@ -27,14 +28,14 @@ export default function DeveloperList(props) {
     {
       key: 'revision_by',
       label: props.t('developer.list.table.revision_by'),
-      cellClassName: 'group'
+      cellClassName: 'author'
     },
     {
       key: 'last_updated',
       label: props.t('developer.list.table.last_updated'),
       style: { width: '15%' },
-      format: (value) => props.dateFormat(value, 'd MMMM yyyy', { locale: props.i18n.language }),
-      cellClassName: 'date white-space-nowrap'
+      format: (value) => props.dateFormat(value, 'dd-MM-yyyy HH:mm:ss', { locale: props.i18n.language }),
+      cellClassName: 'date'
     },
     {
       key: 'status',
@@ -48,7 +49,7 @@ export default function DeveloperList(props) {
           <strong className={`govuk-tag max-width-none govuk-tag--${props.statusToColour(value)}`}>{label}</strong>
         );
       },
-      cellClassName: 'status white-space-nowrap'
+      cellClassName: 'status nowrap'
     },
     {
       key: 'publishing_status',
@@ -62,7 +63,7 @@ export default function DeveloperList(props) {
           <strong className={`govuk-tag max-width-none govuk-tag--${props.statusToColour(value)}`}>{label}</strong>
         );
       },
-      cellClassName: 'status white-space-nowrap'
+      cellClassName: 'status nowrap'
     },
     {
       key: 'id',
@@ -82,7 +83,8 @@ export default function DeveloperList(props) {
             </li>
           </ul>
         );
-      }
+      },
+      cellClassName: 'actions nowrap'
     }
   ];
 
