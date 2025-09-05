@@ -13,7 +13,10 @@ export const ensureAuthenticated = (req: Request, res: Response, next: NextFunct
 
   try {
     if (!req.cookies.jwt) {
-      throw new Error('JWT cookie not found');
+      logger.warn('JWT cookie not found');
+      res.status(401);
+      res.redirect(req.buildUrl(`/auth/login`, req.language));
+      return;
     }
 
     // JWT_SECRET must be the same as the backend or the token will fail verification
@@ -24,9 +27,10 @@ export const ensureAuthenticated = (req: Request, res: Response, next: NextFunct
     const decoded = JWT.verify(token, secret) as JWTPayloadWithUser;
 
     if (decoded.exp && decoded.exp <= Date.now() / 1000) {
-      logger.error('JWT token has expired');
+      logger.warn('JWT token has expired');
       res.status(401);
-      return res.redirect(req.buildUrl(`/auth/login`, req.language, { error: 'expired' }));
+      res.redirect(req.buildUrl(`/auth/login`, req.language, { error: 'expired' }));
+      return;
     }
 
     // store the token string in the request as we need it for Authorization header in API requests
@@ -43,7 +47,8 @@ export const ensureAuthenticated = (req: Request, res: Response, next: NextFunct
   } catch (err) {
     logger.error(err, `authentication failed`);
     res.status(401);
-    return res.redirect(req.buildUrl(`/auth/login`, req.language));
+    res.redirect(req.buildUrl(`/auth/login`, req.language));
+    return;
   }
 
   return next();
