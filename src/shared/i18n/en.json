@@ -30,7 +30,9 @@
       "changes_requested": "Issues to fix",
       "scheduled": "Scheduled",
       "update_scheduled": "Update scheduled",
-      "published": "Published"
+      "published": "Published",
+      "unpublish_requested": "Unpublish requested",
+      "archive_requested": "Archive requested"
     }
   },
   "pagination": {
@@ -159,16 +161,6 @@
     "status": {
       "new": "New",
       "live": "Live"
-    },
-    "publishing_status": {
-      "incomplete": "Incomplete",
-      "update_incomplete": "Update incomplete",
-      "pending_approval": "Pending approval",
-      "update_pending_approval": "Update pending approval",
-      "changes_requested": "Issues to fix",
-      "scheduled": "Scheduled",
-      "update_scheduled": "Update scheduled",
-      "published": "Published"
     },
     "buttons": {
       "create": "Create new dataset"
@@ -1047,15 +1039,27 @@
     },
     "overview": {
       "subheading": "Dataset overview",
-      "pending": {
-        "publish_at": "Proposed publication date: <strong>{{publishAt}}</strong>",
-        "requested_by": "Publishing requested by: <strong>{{userName}}</strong>"
+      "publish": {
+        "pending": {
+          "publish_at": "Proposed publication date: <strong>{{publishAt}}</strong>",
+          "requested_by": "Publishing requested by: <strong>{{userName}}</strong>"
+        },
+        "scheduled": {
+          "publish_at": "Publishing scheduled: <strong>{{publishAt}}</strong>"
+        },
+        "rejected": {
+          "summary": "Dataset was not approved for publishing because it has issues to fix:"
+        }
       },
-      "scheduled": {
-        "publish_at": "Publishing scheduled: <strong>{{publishAt}}</strong>"
+      "unpublish": {
+        "pending": {
+          "requested_by": "Unpublishing requested by: <strong>{{userName}}</strong>"
+        }
       },
-      "rejected": {
-        "summary": "Dataset was not approved for publishing because it has issues to fix:"
+      "archive": {
+        "pending": {
+          "requested_by": "Archiving requested by: <strong>{{userName}}</strong>"
+        }
       },
       "tabs": {
         "actions": "Actions",
@@ -1064,6 +1068,8 @@
       "actions": {
         "view_published_dataset": "View published dataset (opens in new tab)",
         "update_dataset": "Update this dataset",
+        "unpublish_dataset": "Temporarily unpublish dataset",
+        "archive_dataset": "Label dataset as archived",
         "withdraw_first_revision": "Change dataset before publication",
         "withdraw_update_revision": "Change update before publication",
         "continue_update": "Continue update",
@@ -1097,6 +1103,21 @@
               "update_rejected": "Update rejected for publishing",
               "approved": "Dataset approved for publishing",
               "update_approved": "Update approved for publishing"
+            },
+            "unpublish": {
+              "requested": "Dataset unpublishing requested",
+              "rejected": "Dataset unpublishing rejected",
+              "approved": "Dataset unpublishing approved"
+            },
+            "archive": {
+              "requested": "Dataset archiving requested",
+              "rejected": "Dataset archiving rejected",
+              "approved": "Dataset archiving approved"
+            },
+            "unarchive": {
+              "requested": "Dataset unarchiving requested",
+              "rejected": "Dataset unarchiving rejected",
+              "approved": "Dataset unarchiving approved"
             }
           },
           "created_by": {
@@ -1105,11 +1126,14 @@
         }
       },
       "buttons": {
-        "pending_approval": "Respond to publishing request",
+        "respond_publish_request": "Respond to publishing request",
+        "respond_unpublish_request": "Respond to unpublishing request",
+        "respond_archive_request": "Respond to archive request",
+        "respond_unarchive_request": "Respond to unarchive request",
         "fix": "Fix issues with dataset"
       },
       "error": {
-        "withdraw": "Could not withdraw dataset from publication. You should contact support."
+        "withdraw": "Could not withdraw dataset publishing request. Try again later or contact support."
       }
     },
     "update_type": {
@@ -1128,6 +1152,33 @@
       "success": "Dataset moved to {{groupName}}"
     },
     "task": {
+      "action": {
+        "dataset_title": "Dataset title: <strong>{{title}}</strong>",
+        "unpublish": {
+          "form": {
+            "reason": {
+              "label": "Why should this dataset be temporarily unpublished?",
+              "error": {
+                "missing": "Enter why this dataset should be temporarily unpublished"
+              }
+            }
+          },
+          "success": "Dataset unpublishing requested",
+          "error": "Could not unpublish dataset. Try again later or contact support."
+        },
+        "archive": {
+          "form": {
+            "reason": {
+              "label": "Why should this dataset be labelled as archived?",
+              "error": {
+                "missing": "Enter why this dataset should be labelled as archived"
+              }
+            }
+          },
+          "success": "Dataset archiving requested",
+          "error": "Could not archive dataset. Try again later or contact support."
+        }
+      },
       "decision": {
         "dataset_title": "Dataset title: <strong>{{title}}</strong>",
         "publish": {
@@ -1158,6 +1209,36 @@
           "flash": {
             "approve": "Dataset approved for publishing",
             "reject": "Dataset not approved for publishing"
+          }
+        },
+        "unpublish": {
+          "requested": {
+            "heading": "Do you approve this dataset for unpublishing?",
+            "form": {
+              "decision": {
+                "options": {
+                  "yes": {
+                    "label": "Yes"
+                  },
+                  "no": {
+                    "label": "No"
+                  }
+                },
+                "error": {
+                  "missing": "Select yes if you approve this dataset for unpublishing"
+                }
+              },
+              "reason": {
+                "label": "Enter reason and required actions",
+                "error": {
+                  "missing": "Enter why you do not approve this dataset for unpublishing and the required actions"
+                }
+              }
+            }
+          },
+          "flash": {
+            "approve": "Dataset approved for unpublishing",
+            "reject": "Dataset not approved for unpublishing"
           }
         }
       }
