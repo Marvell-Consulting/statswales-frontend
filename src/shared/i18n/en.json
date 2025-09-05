@@ -331,7 +331,9 @@
         "period": "Periods",
         "period-hint": "For example, months or years for which data values apply to",
         "point": "Specific points",
-        "point-hint": "For example, specific dates when data values were collected"
+        "point-hint": "For example, specific dates when data values were collected",
+        "rolling": "Rolling or overlapping periods of time",
+        "rolling-hint": "For example, cumulative yearly values every 3 months"
       }
     },
     "number_chooser": {

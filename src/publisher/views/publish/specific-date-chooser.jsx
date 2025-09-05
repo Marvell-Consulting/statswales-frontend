@@ -41,7 +41,7 @@ export default function SpecificDateChooser(props) {
                   hint: <T example="14-10-2024">publish.point_in_time.example</T>
                 },
                 {
-                  value: '-yyyy-MM-dd',
+                  value: 'yyyy-MM-dd',
                   label: 'YYYY-MM-DD',
                   hint: <T example="2024-10-14">publish.point_in_time.example</T>
                 },

@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
 import Table from '../../../shared/views/components/Table';
 import RadioGroup from '../../../shared/views/components/RadioGroup';
+import { formatInTimeZone } from 'date-fns-tz';
 
 export default function DateChooser(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
@@ -34,7 +35,10 @@ export default function DateChooser(props) {
           }
         case 'start_date':
         case 'end_date':
-          return props.dateFormat(props.parseISO(value.split('T')[0]), 'do MMMM yyyy', { locale: props.i18n.language });
+          return props.dateFormat(new Date(value), 'do MMMM yyyy', {
+            locale: props.i18n.language,
+            timeZone: 'Europe/London'
+          });
       }
       return value;
     }
@@ -104,6 +108,11 @@ export default function DateChooser(props) {
                         value: 'time_period',
                         label: props.t('publish.time_dimension_chooser.chooser.period'),
                         hint: props.t('publish.time_dimension_chooser.chooser.period-hint')
+                      },
+                      {
+                        value: 'rolling_point',
+                        label: props.t('publish.time_dimension_chooser.chooser.rolling'),
+                        hint: props.t('publish.time_dimension_chooser.chooser.rolling-hint')
                       },
                       {
                         value: 'time_point',
