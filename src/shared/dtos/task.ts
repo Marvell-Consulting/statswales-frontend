@@ -16,4 +16,5 @@ export class TaskDTO {
   created_by_name?: string;
   updated_by_id?: string;
   updated_by_name?: string;
+  isUpdate?: boolean;
 }

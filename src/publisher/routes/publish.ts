@@ -45,17 +45,18 @@ import {
   deleteDraft,
   provideDatasetGroup,
   moveDatasetGroup,
-  taskDecision
+  taskDecision,
+  datasetAction
 } from '../controllers/publish';
 import { DatasetInclude as Include } from '../../shared/enums/dataset-include';
-import { flashMessages } from '../../shared/middleware/flash';
+import { flashMessages, flashErrors } from '../../shared/middleware/flash';
 import { noCache } from '../../shared/middleware/no-cache';
 
 export const publish = Router();
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-publish.use(noCache, flashMessages);
+publish.use(noCache, flashMessages, flashErrors);
 
 publish.get('/', start);
 
@@ -217,3 +218,6 @@ publish.post('/:datasetId/move', fetchDataset(), upload.none(), moveDatasetGroup
 
 publish.get('/:datasetId/task-decision/:taskId', fetchDataset(), taskDecision);
 publish.post('/:datasetId/task-decision/:taskId', fetchDataset(), upload.none(), taskDecision);
+
+publish.get('/:datasetId/:action', fetchDataset(), datasetAction);
+publish.post('/:datasetId/:action', fetchDataset(), upload.none(), datasetAction);

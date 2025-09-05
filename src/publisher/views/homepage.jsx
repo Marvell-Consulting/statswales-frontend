@@ -50,7 +50,7 @@ export default function Homepage(props) {
       format: (value) =>
         value ? (
           <strong className={`govuk-tag max-width-none govuk-tag--${props.statusToColour(value)}`}>
-            {props.t(`homepage.publishing_status.${value}`)}
+            {props.t(`badge.publishing_status.${value}`)}
           </strong>
         ) : null,
       cellClassName: 'status nowrap'
