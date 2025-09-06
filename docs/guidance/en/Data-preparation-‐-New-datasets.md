@@ -119,7 +119,7 @@ For example, specific dates when data values were collected.
 | YYYY-MM-DD           | 2022-01-01 | 1 January 2022                |
 | YYYYMMDD             | 20220101   | 1 January 2022                |
 
-#### Periods of time
+#### Standard periods of time
 
 For example, months, quarters or years for which data values apply to.
 
