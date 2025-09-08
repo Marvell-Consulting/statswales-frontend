@@ -24,6 +24,7 @@ function ActionLink({ path, fullUrl, action, newTab, queryParams }: ActionLinkPr
       className="govuk-link govuk-link--no-underline"
       href={path ? buildUrl(path, i18n.language, queryParams) : fullUrl}
       target={newTab ? '_blank' : undefined}
+      rel={newTab ? 'noreferrer' : undefined}
     >
       <T>publish.overview.actions.{action}</T>
     </a>
