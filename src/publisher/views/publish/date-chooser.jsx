@@ -34,7 +34,10 @@ export default function DateChooser(props) {
           }
         case 'start_date':
         case 'end_date':
-          return props.dateFormat(props.parseISO(value.split('T')[0]), 'do MMMM yyyy', { locale: props.i18n.language });
+          return props.dateFormat(new Date(value), 'do MMMM yyyy', {
+            locale: props.i18n.language,
+            timeZone: 'Europe/London'
+          });
       }
       return value;
     }
@@ -104,6 +107,11 @@ export default function DateChooser(props) {
                         value: 'time_period',
                         label: props.t('publish.time_dimension_chooser.chooser.period'),
                         hint: props.t('publish.time_dimension_chooser.chooser.period-hint')
+                      },
+                      {
+                        value: 'rolling_point',
+                        label: props.t('publish.time_dimension_chooser.chooser.rolling'),
+                        hint: props.t('publish.time_dimension_chooser.chooser.rolling-hint')
                       },
                       {
                         value: 'time_point',

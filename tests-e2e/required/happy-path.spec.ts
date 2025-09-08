@@ -122,7 +122,7 @@ test.describe('Happy path', () => {
     await page.getByLabel('Dates').click({ force: true });
     await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dates/${yearCodeId}`);
-    await page.getByLabel('Periods').click({ force: true });
+    await page.getByLabel(/^Periods/).click({ force: true });
     await page.getByRole('button', { name: 'Continue' }).click();
     expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dates/${yearCodeId}/period`);
     await page.getByLabel('Financial').click({ force: true });
