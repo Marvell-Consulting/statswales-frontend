@@ -61,13 +61,13 @@ const config = defineConfig([
           ignoreRestSiblings: true
         }
       ],
+      'import/no-deprecated': 'warn',
+      'import/no-empty-named-blocks': 'error',
       'import/no-extraneous-dependencies': 'error',
-      'import/no-unresolved': [
-        'error',
-        {
-          ignore: ['csv-parse/sync', 'csv-stringify/sync']
-        }
-      ]
+      'import/no-mutable-exports': 'error',
+      'import/no-unused-modules': 'error',
+      'import/enforce-node-protocol-usage': ['error', 'always'],
+      'import/no-unresolved': ['error', { ignore: ['csv-parse/sync', 'csv-stringify/sync'] }]
     }
   },
   {

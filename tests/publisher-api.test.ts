@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 
 import { appConfig } from '../src/shared/config';
 import { HttpMethod } from '../src/shared/enums/http-method';
