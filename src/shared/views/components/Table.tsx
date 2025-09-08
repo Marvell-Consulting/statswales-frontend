@@ -1,8 +1,8 @@
 import React, { CSSProperties, ReactNode } from 'react';
 import clsx from 'clsx';
 import T from './T';
-import { useLocals } from '../../../shared/views/context/Locals';
-import { SortByInterface } from '../../../shared/interfaces/sort-by';
+import { useLocals } from '../context/Locals';
+import { SortByInterface } from '../../interfaces/sort-by';
 import qs from 'qs';
 import { omit, size } from 'lodash';
 

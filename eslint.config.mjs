@@ -66,6 +66,9 @@ const config = defineConfig([
       'import/no-extraneous-dependencies': 'error',
       'import/no-mutable-exports': 'error',
       'import/no-unused-modules': 'error',
+      'import/no-absolute-path': 'error',
+      'import/no-self-import': 'error',
+      'import/no-useless-path-segments': 'error',
       'import/enforce-node-protocol-usage': ['error', 'always'],
       'import/no-unresolved': ['error', { ignore: ['csv-parse/sync', 'csv-stringify/sync'] }]
     }

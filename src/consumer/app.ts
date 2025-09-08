@@ -6,12 +6,12 @@ import expressReactViews from 'express-react-views';
 
 import { appConfig } from '../shared/config';
 import { checkConfig } from '../shared/config/check-config';
-import { httpLogger, logger } from '../shared//utils/logger';
-import { strictTransport } from '../shared//middleware/strict-transport';
-import { rateLimiter } from '../shared//middleware/rate-limiter';
-import { i18next, i18nextMiddleware } from '../shared//middleware/translation';
-import { languageSwitcher } from '../shared//middleware/language-switcher';
-import { initServices } from '../consumer/middleware/services';
+import { httpLogger, logger } from '../shared/utils/logger';
+import { strictTransport } from '../shared/middleware/strict-transport';
+import { rateLimiter } from '../shared/middleware/rate-limiter';
+import { i18next, i18nextMiddleware } from '../shared/middleware/translation';
+import { languageSwitcher } from '../shared/middleware/language-switcher';
+import { initServices } from './middleware/services';
 import { healthcheck } from '../shared/routes/healthcheck';
 import { errorHandler } from '../shared/routes/error-handler';
 import { notFound } from '../shared/routes/not-found';
