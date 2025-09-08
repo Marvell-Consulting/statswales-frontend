@@ -37,7 +37,7 @@ export default function About(props) {
               <ul className="govuk-list">
                 {props.about.relatedLinks.map((link, index) => (
                   <li key={index}>
-                    <a className="govuk-link govuk-link--no-underline" href={link.url} target="_blank">
+                    <a className="govuk-link govuk-link--no-underline" href={link.url} target="_blank" rel="noreferrer">
                       {link.label}
                     </a>
                   </li>

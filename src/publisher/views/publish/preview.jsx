@@ -18,9 +18,9 @@ export default function Preview(props) {
       ))}
     </>
   );
-  const columns = props.headers.map((header, index) => {
+  const columns = props.headers.map((header, idx) => {
     return {
-      key: index,
+      key: idx,
       label:
         header.source_type === 'line_number' ? (
           <span className="govuk-visually-hidden">{props.t('publish.preview.row_number')}</span>

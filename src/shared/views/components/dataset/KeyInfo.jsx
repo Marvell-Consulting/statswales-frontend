@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import T from '../T';
 import { NextUpdateType } from '../../../enums/next-update-type';
-import { parse, format } from 'date-fns';
+import { parse } from 'date-fns';
 import { dateFormat } from '../../../../consumer/middleware/services';
 
 export default function KeyInfo(props) {
@@ -10,7 +10,7 @@ export default function KeyInfo(props) {
 
     if (nextUpdateAt?.update_type) {
       switch (nextUpdateAt.update_type) {
-        case NextUpdateType.Update:
+        case NextUpdateType.Update: {
           const { day, month, year } = nextUpdateAt.date || {};
           const date = parse(`${day || '01'} ${month} ${year}`, 'dd MM yyyy', new Date());
 
@@ -19,6 +19,7 @@ export default function KeyInfo(props) {
           } else {
             return props.dateFormat(date, 'MMMM yyyy', { locale: props.i18n.language });
           }
+        }
 
         case NextUpdateType.Replacement:
           return <T>dataset_view.key_information.next_update_replacement</T>;
