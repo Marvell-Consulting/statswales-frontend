@@ -9,7 +9,7 @@ indent_size = 2
 rulers = 80, 100, 120
 max_line_length = 120
 
-[{src,scripts,test}/**.{ts,json,js,ejs}]
+[{src,scripts,test}/**.{ts,json,js,ejs,tsx,jsx,scss}]
 end_of_line = lf
 charset = utf-8
 trim_trailing_whitespace = true
