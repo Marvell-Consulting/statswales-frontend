@@ -19,6 +19,7 @@ function ActionLink({ path, fullUrl, action, newTab, queryParams }) {
       className="govuk-link govuk-link--no-underline"
       href={path ? buildUrl(path, i18n.language, queryParams) : fullUrl}
       target={newTab ? '_blank' : undefined}
+      rel={newTab ? 'noreferrer' : undefined}
     >
       <T>publish.overview.actions.{action}</T>
     </a>
@@ -185,8 +186,6 @@ function HistoryTab({ history }) {
 }
 
 export default function Overview(props) {
-  const datasetId = props.dataset.id;
-
   return (
     <Layout {...props} title={props.title}>
       <div className="govuk-grid-row">

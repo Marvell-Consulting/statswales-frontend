@@ -16,7 +16,11 @@ function Sidebar(props) {
         </li>
         <li className="govuk-task-list__item govuk-task-list__item--with-link tasklist-no-border">
           <div className="govuk-task-list__name-and-hint">
-            <a href={props.buildUrl(`/publish/${props.datasetId}/cube-preview`, props.i18n.language)} target="_blank">
+            <a
+              href={props.buildUrl(`/publish/${props.datasetId}/cube-preview`, props.i18n.language)}
+              target="_blank"
+              rel="noreferrer"
+            >
               {props.t('publish.tasklist.preview')}
             </a>
           </div>
@@ -24,7 +28,11 @@ function Sidebar(props) {
         {props?.isDeveloper && (
           <li className="govuk-task-list__item govuk-task-list__item--with-link tasklist-no-border">
             <div className="govuk-task-list__name-and-hint">
-              <a href={props.buildUrl(`/developer/${props.datasetId}`, props.i18n.language)} target="_blank">
+              <a
+                href={props.buildUrl(`/developer/${props.datasetId}`, props.i18n.language)}
+                target="_blank"
+                rel="noreferrer"
+              >
                 {props.t('publish.tasklist.open_developer_view')}
               </a>
             </div>

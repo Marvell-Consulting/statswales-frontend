@@ -14,17 +14,10 @@ import About from '../../shared/views/components/dataset/About';
 import Publisher from '../../shared/views/components/dataset/Publisher';
 import RadioGroup from '../../shared/views/components/RadioGroup';
 import { Filters } from '../../shared/views/components/Filters';
-import { T } from '../../shared/views/components/T';
-// import { CheckboxGroup, CheckboxOptions } from '../../shared/views/components/CheckboxGroup';
-// import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
-// import { DatasetDTO } from '../../shared/dtos/dataset';
-// import { PublishingStatus } from '../../shared/enums/publishing-status';
-// import { DatasetStatus as DatasetStatusType } from '../../shared/enums/dataset-status';
-// import { PageInfo } from '../../shared/dtos/view-dto';
 
 export default function ConsumerView(props) {
   const LayoutComponent = props.isDeveloper ? PublisherLayout : ConsumerLayout;
-  const [originalUrl, query] = props.url.split('?');
+  const [_originalUrl, query] = props.url.split('?');
   const parsedQuery = qs.parse(query);
   const sortBy = parsedQuery.sort_by;
 

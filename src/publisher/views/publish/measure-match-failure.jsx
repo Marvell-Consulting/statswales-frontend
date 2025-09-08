@@ -59,8 +59,9 @@ export default function MeasureMatchFailure(props) {
             {props.extension.nonMatchingLookupValues.length === 0 ? (
               <li className="govuk-list--bullet">{props.t('publish.dimension_match_failure.no_matches')}</li>
             ) : (
-              props.extension.nonMatchingLookupValues.map((value, index) => (
+              props.extension.nonMatchingLookupValues.map((value, idx) => (
                 <li
+                  key={idx}
                   className="govuk-list--bullet"
                   dangerouslySetInnerHTML={{
                     __html: `"${value.toString().replace(

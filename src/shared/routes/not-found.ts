@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { NotFoundException } from '../../shared/exceptions/not-found.exception';
+import { NotFoundException } from '../exceptions/not-found.exception';
 
 export const notFound = Router();
 

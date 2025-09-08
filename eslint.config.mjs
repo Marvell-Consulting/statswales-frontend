@@ -1,16 +1,25 @@
 // @ts-check
 import eslint from '@eslint/js';
+import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import reactPlugin from 'eslint-plugin-react';
+import importPlugin from 'eslint-plugin-import';
 
-export default tseslint.config([
+const config = defineConfig([
+  {
+    settings: {
+      react: {
+        version: 'detect'
+      }
+    }
+  },
   {
     // global ignores need to be in their own block otherwise they don't seem to work
     ignores: [
       '.github/**',
       '.vscode/**',
       'coverage/**',
-      'dist/**',
       'dist/**',
       'node_modules/**',
       'playwright/**',
@@ -21,7 +30,11 @@ export default tseslint.config([
   eslint.configs.recommended,
   tseslint.configs.recommended,
   eslintPluginPrettierRecommended,
+  reactPlugin.configs.flat.recommended,
+  importPlugin.flatConfigs.recommended,
+  importPlugin.flatConfigs.typescript,
   {
+    files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     rules: {
       'no-console': 'error',
       'line-comment-position': 'off',
@@ -47,13 +60,29 @@ export default tseslint.config([
           varsIgnorePattern: '^_',
           ignoreRestSiblings: true
         }
-      ]
+      ],
+      'import/no-deprecated': 'warn',
+      'import/no-empty-named-blocks': 'error',
+      'import/no-extraneous-dependencies': 'error',
+      'import/no-mutable-exports': 'error',
+      'import/no-unused-modules': 'error',
+      'import/no-absolute-path': 'error',
+      'import/no-self-import': 'error',
+      'import/no-useless-path-segments': 'error',
+      'import/enforce-node-protocol-usage': ['error', 'always'],
+      'import/no-unresolved': ['error', { ignore: ['csv-parse/sync', 'csv-stringify/sync'] }]
     }
   },
   {
-    files: ['**/*.tsx'],
+    files: ['**/*.tsx', '**/*.jsx'],
     rules: {
       '@typescript-eslint/naming-convention': 'off'
+    }
+  },
+  {
+    files: ['**/*.jsx'],
+    rules: {
+      'react/prop-types': 'off'
     }
   },
   {
@@ -69,3 +98,7 @@ export default tseslint.config([
     }
   }
 ]);
+
+// console.log(config);
+
+export default config;

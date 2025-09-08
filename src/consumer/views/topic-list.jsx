@@ -18,7 +18,7 @@ function Breadcrumbs({ parentTopics, selectedTopic }) {
             </a>
           </li>
 
-          {parentTopics.map((topic, index) => (
+          {parentTopics.map((topic) => (
             <li className="govuk-breadcrumbs__list-item" key={topic.id}>
               {topic.id === selectedTopic.id ? (
                 topic.name

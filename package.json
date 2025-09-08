@@ -20,11 +20,11 @@
     "posttest:e2e": "rm -rf playwright/.auth",
     "check": "npm-run-all prettier:fix lint:fix test build",
     "predev": "docker-compose up -d valkey",
-    "dev": "nodemon --watch src -e ts,ejs,jsx,tsx,json,scss --exec npm run start:dev",
+    "dev": "nodemon --watch src -e ts,jsx,tsx,json,scss --exec npm run start:dev",
     "docker-compose-up": "docker-compose up -d",
     "docker-compose-down": "docker-compose stop",
     "prelocalstack": "npm run docker-compose-up",
-    "localstack": "trap 'exit 0' SIGINT; nodemon --watch src -e ts,ejs,json,scss --exec npm run start:publisher | pino-colada & npm run start:consumer | pino-colada",
+    "localstack": "trap 'exit 0' SIGINT; nodemon --watch src -e ts,jsx,tsx,json,scss --exec npm run start:publisher | pino-colada & npm run start:consumer | pino-colada",
     "postlocalstack": "npm run docker-compose-down",
     "start:dev": "npm run build && (node dist/publisher/server.js | pino-colada & node dist/consumer/server.js | pino-colada)",
     "start:ci": "node dist/publisher/server.js & node dist/consumer/server.js",
@@ -58,7 +58,9 @@
     "@types/supertest": "^6.0.2",
     "@types/uuid": "^10.0.0",
     "eslint": "^9.22.0",
+    "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-react": "^7.37.5",
     "jest": "^29.7.0",
     "jest-junit": "^16.0.0",
     "jest-junit-reporter": "^1.1.0",
@@ -76,7 +78,7 @@
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "5.5",
-    "typescript-eslint": "^8.26.1"
+    "typescript-eslint": "^8.42.0"
   },
   "dependencies": {
     "@date-fns/tz": "^1.2.0",

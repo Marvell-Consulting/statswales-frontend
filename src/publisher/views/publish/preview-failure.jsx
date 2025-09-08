@@ -3,7 +3,7 @@ import Layout from '../components/Layout';
 import DatasetStatus from '../../../shared/views/components/dataset/DatasetStatus';
 
 export default function PreviewFailure(props) {
-  const title = props.t('errors.preview_failure.heading', { datasetTitle });
+  const title = props.t('errors.preview_failure.heading', { datasetTitle: props.datasetTitle });
   return (
     <Layout {...props} title={title}>
       <div className="govuk-grid-row">

@@ -2,7 +2,7 @@ import { Request } from 'express';
 import { body, FieldValidationError, param, ValidationChain } from 'express-validator';
 import { ResultWithContext } from 'express-validator/lib/chain/context-runner';
 
-import { Designation } from '../../shared/enums/designation';
+import { Designation } from '../enums/designation';
 import { NextUpdateType } from '../enums/next-update-type';
 import { SatisfactionOptions } from '../enums/satisfaction-options';
 

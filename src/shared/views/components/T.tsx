@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { useLocals } from '../../../shared/views/context/Locals';
+import { useLocals } from '../context/Locals';
 
 export type TProps = {
   children: ReactNode;
