@@ -44,55 +44,44 @@ export default function DimensionChooser(props) {
                   labelledBy="dimension-type"
                   options={[
                     // Disabled for private beta while a decision is made on reference data
-                    // ...(false
-                    //   ? [
-                    //       {
-                    //         value: 'Age',
-                    //         label: props.t('publish.dimension_type_chooser.chooser.age'),
-                    //         disabled: true
-                    //       },
-                    //       {
-                    //         value: 'Eth',
-                    //         label: props.t('publish.dimension_type_chooser.chooser.ethnicity'),
-                    //         disabled: true
-                    //       }
-                    //     ]
-                    //   : []),
                     // {
-                    //   value: 'Date',
-                    //   label: props.t('publish.dimension_type_chooser.chooser.date')
-                    // },
-                    // ...(false
-                    //   ? [
-                    //       {
-                    //         value: 'Geog',
-                    //         label: props.t('publish.dimension_type_chooser.chooser.geography')
-                    //       }
-                    //     ]
-                    //   : []),
-                    // {
-                    //   value: 'Number',
-                    //   label: props.t('publish.dimension_type_chooser.chooser.number')
+                    //   value: 'Age',
+                    //   label: props.t('publish.dimension_type_chooser.chooser.age'),
+                    //   disabled: true
                     // },
                     // {
-                    //   value: 'Text',
-                    //   label: props.t('publish.dimension_type_chooser.chooser.text')
+                    //   value: 'Eth',
+                    //   label: props.t('publish.dimension_type_chooser.chooser.ethnicity'),
+                    //   disabled: true
                     // },
+                    {
+                      value: 'Date',
+                      label: props.t('publish.dimension_type_chooser.chooser.date')
+                    },
                     // // Disabled for private beta while a decision is made on reference data
-                    // ...(false
-                    //   ? [
-                    //       {
-                    //         value: 'Rlgn',
-                    //         label: props.t('publish.dimension_type_chooser.chooser.religion'),
-                    //         disabled: true
-                    //       },
-                    //       {
-                    //         value: 'Gen',
-                    //         label: props.t('publish.dimension_type_chooser.chooser.sex_gender'),
-                    //         disabled: true
-                    //       }
-                    //     ]
-                    //   : []),
+                    // {
+                    //   value: 'Geog',
+                    //   label: props.t('publish.dimension_type_chooser.chooser.geography')
+                    // },
+                    {
+                      value: 'Number',
+                      label: props.t('publish.dimension_type_chooser.chooser.number')
+                    },
+                    {
+                      value: 'Text',
+                      label: props.t('publish.dimension_type_chooser.chooser.text')
+                    },
+                    // // Disabled for private beta while a decision is made on reference data
+                    // {
+                    //   value: 'Rlgn',
+                    //   label: props.t('publish.dimension_type_chooser.chooser.religion'),
+                    //   disabled: true
+                    // },
+                    // {
+                    //   value: 'Gen',
+                    //   label: props.t('publish.dimension_type_chooser.chooser.sex_gender'),
+                    //   disabled: true
+                    // },
                     {
                       divider: 'or'
                     },
