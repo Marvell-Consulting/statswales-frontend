@@ -1705,7 +1705,6 @@ export const periodReview = async (req: Request, res: Response, next: NextFuncti
     }
 
     const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
-    logger.debug(JSON.stringify(dataPreview, null, 2));
 
     if (errors) {
       res.status(errors.status || 500);
