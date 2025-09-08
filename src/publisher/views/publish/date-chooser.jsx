@@ -3,7 +3,6 @@ import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
 import Table from '../../../shared/views/components/Table';
 import RadioGroup from '../../../shared/views/components/RadioGroup';
-import { formatInTimeZone } from 'date-fns-tz';
 
 export default function DateChooser(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
