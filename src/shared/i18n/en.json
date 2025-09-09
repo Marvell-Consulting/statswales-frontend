@@ -1040,7 +1040,7 @@
     "overview": {
       "subheading": "Dataset overview",
       "publish": {
-        "pending": {
+        "requested": {
           "publish_at": "Proposed publication date: <strong>{{publishAt}}</strong>",
           "requested_by": "Publishing requested by: <strong>{{userName}}</strong>"
         },
@@ -1052,12 +1052,14 @@
         }
       },
       "unpublish": {
-        "pending": {
+        "requested": {
+          "summary": "Dataset unpublishing requested for the following reason:",
           "requested_by": "Unpublishing requested by: <strong>{{userName}}</strong>"
         }
       },
       "archive": {
-        "pending": {
+        "requested": {
+          "summary": "Dataset archiving requested for the following reason:",
           "requested_by": "Archiving requested by: <strong>{{userName}}</strong>"
         }
       },
@@ -1239,6 +1241,36 @@
           "flash": {
             "approve": "Dataset approved for unpublishing",
             "reject": "Dataset not approved for unpublishing"
+          }
+        },
+        "archive": {
+          "requested": {
+            "heading": "Do you approve this dataset for archiving?",
+            "form": {
+              "decision": {
+                "options": {
+                  "yes": {
+                    "label": "Yes"
+                  },
+                  "no": {
+                    "label": "No"
+                  }
+                },
+                "error": {
+                  "missing": "Select yes if you approve this dataset for archiving"
+                }
+              },
+              "reason": {
+                "label": "Enter reason and required actions",
+                "error": {
+                  "missing": "Enter why you do not approve this dataset for archiving and the required actions"
+                }
+              }
+            }
+          },
+          "flash": {
+            "approve": "Dataset approved for archiving",
+            "reject": "Dataset not approved for archiving"
           }
         }
       }

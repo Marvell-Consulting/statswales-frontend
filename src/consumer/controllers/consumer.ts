@@ -81,7 +81,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   const selectedFilterOptions = parseFilters(query.filter as Record<string, string[]>);
   const shorthandUrl = req.buildUrl(`/shorthand`, req.language);
 
-  if (!dataset.live || !revision) {
+  if (!dataset.first_published_at || !revision) {
     next(new NotFoundException('no published revision found'));
     return;
   }
@@ -102,7 +102,7 @@ export const downloadPublishedMetadata = async (req: Request, res: Response, nex
   const dataset = singleLangDataset(res.locals.dataset, req.language);
   const revision = dataset.published_revision;
 
-  if (!dataset.live || !revision) {
+  if (!dataset.first_published_at || !revision) {
     next(new NotFoundException('no published revision found'));
     return;
   }
@@ -125,7 +125,7 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
   const revision = dataset.published_revision;
 
   try {
-    if (!dataset.live || !revision) {
+    if (!dataset.first_published_at || !revision) {
       throw new NotFoundException('no published revision found');
     }
 

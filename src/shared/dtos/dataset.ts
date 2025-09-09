@@ -9,8 +9,8 @@ export interface DatasetDTO {
   id: string;
   created_at: string;
   created_by: string;
-  live?: string;
-  archive?: string;
+  first_published_at?: string;
+  archived_at?: string;
   fact_table?: FactTableColumnDto[];
   measure?: MeasureDTO;
   dimensions?: DimensionDTO[];

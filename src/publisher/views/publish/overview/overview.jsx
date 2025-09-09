@@ -32,7 +32,7 @@ export default function Overview(props) {
                 <p
                   className="govuk-body govuk-!-margin-0"
                   dangerouslySetInnerHTML={{
-                    __html: props.t('publish.overview.publish.pending.publish_at', {
+                    __html: props.t('publish.overview.publish.requested.publish_at', {
                       publishAt: props.dateFormat(props.revision?.publish_at, 'h:mmaaa, d MMMM yyyy', {
                         locale: props.i18n.language
                       })
@@ -42,7 +42,7 @@ export default function Overview(props) {
                 <p
                   className="govuk-body govuk-!-margin-0"
                   dangerouslySetInnerHTML={{
-                    __html: props.t('publish.overview.publish.pending.requested_by', {
+                    __html: props.t('publish.overview.publish.requested.requested_by', {
                       userName: openPublishTask?.created_by_name
                     })
                   }}
@@ -56,7 +56,7 @@ export default function Overview(props) {
                 <p
                   className="govuk-body govuk-!-margin-0"
                   dangerouslySetInnerHTML={{
-                    __html: props.t('publish.overview.unpublish.pending.requested_by', {
+                    __html: props.t('publish.overview.unpublish.requested.requested_by', {
                       userName: openUnpublishTask?.created_by_name
                     })
                   }}
@@ -70,7 +70,7 @@ export default function Overview(props) {
                 <p
                   className="govuk-body govuk-!-margin-0"
                   dangerouslySetInnerHTML={{
-                    __html: props.t('publish.overview.archive.pending.requested_by', {
+                    __html: props.t('publish.overview.archive.requested.requested_by', {
                       userName: openArchiveTask?.created_by_name
                     })
                   }}

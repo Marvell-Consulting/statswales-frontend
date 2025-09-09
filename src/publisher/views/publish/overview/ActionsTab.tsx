@@ -5,6 +5,7 @@ import T from '../../../../shared/views/components/T';
 import { useLocals } from '../../../../shared/views/context/Locals';
 import { appConfig } from '../../../../shared/config';
 import { TaskAction } from '../../../../shared/enums/task-action';
+import { TaskStatus } from '../../../../shared/enums/task-status';
 
 const config = appConfig();
 
@@ -60,7 +61,7 @@ export function ActionsTab({
   return (
     <>
       <div className="task-decision-buttons">
-        {canApprove && openPublishTask && (
+        {canApprove && openPublishTask?.status === TaskStatus.Requested && (
           <a
             className="govuk-button govuk-!-margin-top-4"
             href={buildUrl(`/publish/${datasetId}/task-decision/${openPublishTask?.id}`, i18n.language)}
@@ -69,37 +70,10 @@ export function ActionsTab({
           </a>
         )}
 
-        {canApprove && openUnpublishTask && (
-          <a
-            className="govuk-button govuk-!-margin-top-4"
-            href={buildUrl(`/publish/${datasetId}/task-decision/${openUnpublishTask?.id}`, i18n.language)}
-          >
-            <T>publish.overview.buttons.respond_unpublish_request</T>
-          </a>
-        )}
-
-        {canApprove && openArchiveTask && (
-          <a
-            className="govuk-button govuk-!-margin-top-4"
-            href={buildUrl(`/publish/${datasetId}/task-decision/${openArchiveTask?.id}`, i18n.language)}
-          >
-            <T>publish.overview.buttons.respond_archive_request</T>
-          </a>
-        )}
-
-        {canApprove && openUnarchiveTask && (
-          <a
-            className="govuk-button govuk-!-margin-top-4"
-            href={buildUrl(`/publish/${datasetId}/task-decision/${openUnarchiveTask?.id}`, i18n.language)}
-          >
-            <T>publish.overview.buttons.respond_unarchive_request</T>
-          </a>
-        )}
-
-        {canEdit && openPublishTask?.status === 'rejected' && (
+        {canEdit && openPublishTask?.status === TaskStatus.Rejected && (
           <>
             <p className="govuk-body">
-              <T>publish.overview.rejected.summary</T>
+              <T>publish.overview.publish.rejected.summary</T>
             </p>
             <p className="govuk-body">{openPublishTask?.comment}</p>
             <a
@@ -109,6 +83,45 @@ export function ActionsTab({
               <T>publish.overview.buttons.fix</T>
             </a>
           </>
+        )}
+
+        {canApprove && openUnpublishTask && (
+          <>
+            <p className="govuk-body">
+              <T>publish.overview.unpublish.requested.summary</T>
+            </p>
+            <p className="govuk-body">{openUnpublishTask?.comment}</p>
+            <a
+              className="govuk-button govuk-!-margin-top-4"
+              href={buildUrl(`/publish/${datasetId}/task-decision/${openUnpublishTask?.id}`, i18n.language)}
+            >
+              <T>publish.overview.buttons.respond_unpublish_request</T>
+            </a>
+          </>
+        )}
+
+        {canApprove && openArchiveTask && (
+          <>
+            <p className="govuk-body">
+              <T>publish.overview.archive.requested.summary</T>
+            </p>
+            <p className="govuk-body">{openArchiveTask?.comment}</p>
+            <a
+              className="govuk-button govuk-!-margin-top-4"
+              href={buildUrl(`/publish/${datasetId}/task-decision/${openArchiveTask?.id}`, i18n.language)}
+            >
+              <T>publish.overview.buttons.respond_archive_request</T>
+            </a>
+          </>
+        )}
+
+        {canApprove && openUnarchiveTask && (
+          <a
+            className="govuk-button govuk-!-margin-top-4"
+            href={buildUrl(`/publish/${datasetId}/task-decision/${openUnarchiveTask?.id}`, i18n.language)}
+          >
+            <T>publish.overview.buttons.respond_unarchive_request</T>
+          </a>
         )}
       </div>
 

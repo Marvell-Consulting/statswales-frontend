@@ -2856,7 +2856,7 @@ export const taskDecision = async (req: Request, res: Response, next: NextFuncti
 
       const decision = values.decision!;
       await req.pubapi.taskDecision(task.id, { decision, reason: values.reason || undefined });
-      req.session.flash = [`publish.task.decision.publish.flash.${decision}`];
+      req.session.flash = [`publish.task.decision.${task.action}.flash.${decision}`];
       req.session.save();
       res.redirect(req.buildUrl(`/publish/${res.locals.datasetId}/overview`, req.language));
       return;

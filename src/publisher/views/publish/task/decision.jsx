@@ -32,14 +32,14 @@ export default function TaskDecision(props) {
                   })}
                   raw
                 >
-                  {`publish.overview.${props.task.action}.pending.publish_at`}
+                  {`publish.overview.${props.task.action}.requested.publish_at`}
                 </T>
               </p>
             )}
 
             <p className="govuk-body govuk-!-margin-top-0">
               <T userName={props.task.created_by_name} raw>
-                {`publish.overview.${props.task.action}.pending.requested_by`}
+                {`publish.overview.${props.task.action}.requested.requested_by`}
               </T>
             </p>
 

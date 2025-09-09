@@ -1,11 +1,14 @@
+import { TaskAction } from '../enums/task-action';
+import { TaskStatus } from '../enums/task-status';
+
 interface TaskMetadata {
   [key: string]: any;
 }
 
 export class TaskDTO {
   id: string;
-  action: string;
-  status: string;
+  action: TaskAction;
+  status: TaskStatus;
   open: boolean;
   dataset_id?: string;
   comment?: string;

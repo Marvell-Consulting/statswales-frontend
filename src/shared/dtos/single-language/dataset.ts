@@ -7,7 +7,7 @@ export interface SingleLanguageDataset {
   id: string;
   created_at: string;
   created_by: string;
-  live?: string;
+  first_published_at?: string;
   archive?: string;
   measure?: SingleLanguageMeasure;
   dimensions?: SingleLanguageDimension[];

@@ -55,8 +55,10 @@ export default function DeveloperSummary(props) {
                     {props.t('developer.display.live')}
                   </th>
                   <td className="govuk-table__cell">
-                    {props.dataset.live &&
-                      props.dateFormat(props.dataset.live, 'd MMMM yyyy h:mm a', { locale: props.i18n.language })}
+                    {props.dataset.first_published_at &&
+                      props.dateFormat(props.dataset.first_published_at, 'd MMMM yyyy h:mm a', {
+                        locale: props.i18n.language
+                      })}
                   </td>
                 </tr>
               </tbody>
