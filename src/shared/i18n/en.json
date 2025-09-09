@@ -1074,6 +1074,7 @@
         "update_dataset": "Update this dataset",
         "unpublish_dataset": "Temporarily unpublish dataset",
         "archive_dataset": "Label dataset as archived",
+        "unarchive_dataset": "Unarchive dataset",
         "withdraw_first_revision": "Change dataset before publication",
         "withdraw_update_revision": "Change update before publication",
         "continue_update": "Continue update",
