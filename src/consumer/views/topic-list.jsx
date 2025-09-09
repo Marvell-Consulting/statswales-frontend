@@ -73,7 +73,7 @@ function Datasets({ datasets }) {
           <div className="index-list__meta">
             <p className="govuk-!-margin-top-0">
               <span className="govuk-body-s caption index-list__item__meta">
-                <T published={dateFormat(dataset.published_date, 'd MMMM yyyy')}>
+                <T published={dateFormat(dataset.first_published_at, 'd MMMM yyyy')}>
                   consumer.topic_list.dataset.first_published
                 </T>
               </span>
