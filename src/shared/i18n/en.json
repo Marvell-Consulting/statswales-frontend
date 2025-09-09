@@ -20,7 +20,8 @@
   "badge": {
     "dataset_status": {
       "new": "New dataset",
-      "live": "Live dataset"
+      "live": "Live dataset",
+      "archived": "Archived dataset"
     },
     "publishing_status": {
       "incomplete": "Incomplete",
@@ -160,7 +161,8 @@
     },
     "status": {
       "new": "New",
-      "live": "Live"
+      "live": "Live",
+      "archived": "Archived"
     },
     "buttons": {
       "create": "Create new dataset"

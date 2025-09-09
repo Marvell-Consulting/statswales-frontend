@@ -11,6 +11,10 @@ import { TaskAction } from '../enums/task-action';
 import { TaskStatus } from '../enums/task-status';
 
 export const getDatasetStatus = (dataset: DatasetDTO): DatasetStatus => {
+  if (dataset.archived_at && isBefore(dataset.archived_at, new Date())) {
+    return DatasetStatus.Archived;
+  }
+
   return dataset.first_published_at && isBefore(dataset.first_published_at, new Date())
     ? DatasetStatus.Live
     : DatasetStatus.New;
