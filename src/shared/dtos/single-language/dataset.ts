@@ -8,6 +8,7 @@ export interface SingleLanguageDataset {
   created_at: string;
   created_by: string;
   first_published_at?: string;
+  unpublished_at?: string;
   archived_at?: string;
   measure?: SingleLanguageMeasure;
   dimensions?: SingleLanguageDimension[];

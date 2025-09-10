@@ -21,6 +21,7 @@
     "dataset_status": {
       "new": "New dataset",
       "live": "Live dataset",
+      "offline": "Offline dataset",
       "archived": "Archived dataset"
     },
     "publishing_status": {
@@ -32,6 +33,7 @@
       "scheduled": "Scheduled",
       "update_scheduled": "Update scheduled",
       "published": "Published",
+      "unpublished": "Unpublished",
       "unpublish_requested": "Unpublish requested",
       "archive_requested": "Archive requested",
       "unarchive_requested": "Unarchive requested"

@@ -15,6 +15,10 @@ export const getDatasetStatus = (dataset: DatasetDTO): DatasetStatus => {
     return DatasetStatus.Archived;
   }
 
+  if (dataset.unpublished_at && isBefore(dataset.unpublished_at, new Date())) {
+    return DatasetStatus.Offline;
+  }
+
   return dataset.first_published_at && isBefore(dataset.first_published_at, new Date())
     ? DatasetStatus.Live
     : DatasetStatus.New;
@@ -51,6 +55,10 @@ export const getPublishingStatus = (
 
   if (openUnarchiveTask) {
     return PublishingStatus.UnarchiveRequested;
+  }
+
+  if (datasetStatus === DatasetStatus.Offline) {
+    return PublishingStatus.Unpublished;
   }
 
   if (datasetStatus === DatasetStatus.New) {

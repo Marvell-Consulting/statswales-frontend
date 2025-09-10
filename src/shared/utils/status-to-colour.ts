@@ -11,6 +11,7 @@ export const statusToColour = (status: TaskListStatus | DatasetStatus | Publishi
     case TaskListStatus.Incomplete:
       return 'blue';
 
+    case DatasetStatus.Offline:
     case TaskListStatus.NotStarted:
     case UserStatus.Inactive:
     case PublishingStatus.ChangesRequested:
@@ -24,6 +25,7 @@ export const statusToColour = (status: TaskListStatus | DatasetStatus | Publishi
     case PublishingStatus.UnpublishRequested:
     case PublishingStatus.ArchiveRequested:
     case PublishingStatus.UnarchiveRequested:
+    case PublishingStatus.Unpublished:
       return 'orange';
 
     case DatasetStatus.Live:
