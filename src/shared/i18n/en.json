@@ -33,7 +33,8 @@
       "update_scheduled": "Update scheduled",
       "published": "Published",
       "unpublish_requested": "Unpublish requested",
-      "archive_requested": "Archive requested"
+      "archive_requested": "Archive requested",
+      "unarchive_requested": "Unarchive requested"
     }
   },
   "pagination": {
@@ -1065,6 +1066,12 @@
           "requested_by": "Archiving requested by: <strong>{{userName}}</strong>"
         }
       },
+      "unarchive": {
+        "requested": {
+          "summary": "Dataset unarchiving requested for the following reason:",
+          "requested_by": "Unarchiving requested by: <strong>{{userName}}</strong>"
+        }
+      },
       "tabs": {
         "actions": "Actions",
         "history": "History"
@@ -1182,6 +1189,18 @@
           },
           "success": "Dataset archiving requested",
           "error": "Could not archive dataset. Try again later or contact support."
+        },
+        "unarchive": {
+          "form": {
+            "reason": {
+              "label": "Why should this dataset be unarchived?",
+              "error": {
+                "missing": "Enter why this dataset should be unarchived"
+              }
+            }
+          },
+          "success": "Dataset unarchiving requested",
+          "error": "Could not unarchive dataset. Try again later or contact support."
         }
       },
       "decision": {
@@ -1274,6 +1293,36 @@
           "flash": {
             "approve": "Dataset approved for archiving",
             "reject": "Dataset not approved for archiving"
+          }
+        },
+        "unarchive": {
+          "requested": {
+            "heading": "Do you approve this dataset for unarchiving?",
+            "form": {
+              "decision": {
+                "options": {
+                  "yes": {
+                    "label": "Yes"
+                  },
+                  "no": {
+                    "label": "No"
+                  }
+                },
+                "error": {
+                  "missing": "Select yes if you approve this dataset for unarchiving"
+                }
+              },
+              "reason": {
+                "label": "Enter reason and required actions",
+                "error": {
+                  "missing": "Enter why you do not approve this dataset for unarchiving and the required actions"
+                }
+              }
+            }
+          },
+          "flash": {
+            "approve": "Dataset approved for unarchiving",
+            "reject": "Dataset not approved for unarchiving"
           }
         }
       }

@@ -30,6 +30,7 @@ export const getPublishingStatus = (
   const openPublishTask = openTasks.find((task) => task.action === TaskAction.Publish);
   const openUnpublishTask = openTasks.find((task) => task.action === TaskAction.Unpublish);
   const openArchiveTask = openTasks.find((task) => task.action === TaskAction.Archive);
+  const openUnarchiveTask = openTasks.find((task) => task.action === TaskAction.Unarchive);
 
   if (openPublishTask) {
     if (openPublishTask.status === TaskStatus.Requested) {
@@ -46,6 +47,10 @@ export const getPublishingStatus = (
 
   if (openArchiveTask) {
     return PublishingStatus.ArchiveRequested;
+  }
+
+  if (openUnarchiveTask) {
+    return PublishingStatus.UnarchiveRequested;
   }
 
   if (datasetStatus === DatasetStatus.New) {

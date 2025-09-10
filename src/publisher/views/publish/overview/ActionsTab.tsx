@@ -118,12 +118,18 @@ export function ActionsTab({
         )}
 
         {canApprove && openUnarchiveTask && (
-          <a
-            className="govuk-button govuk-!-margin-top-4"
-            href={buildUrl(`/publish/${datasetId}/task-decision/${openUnarchiveTask?.id}`, i18n.language)}
-          >
-            <T>publish.overview.buttons.respond_unarchive_request</T>
-          </a>
+          <>
+            <p className="govuk-body">
+              <T>publish.overview.unarchive.requested.summary</T>
+            </p>
+            <p className="govuk-body">{openUnarchiveTask?.comment}</p>
+            <a
+              className="govuk-button govuk-!-margin-top-4"
+              href={buildUrl(`/publish/${datasetId}/task-decision/${openUnarchiveTask?.id}`, i18n.language)}
+            >
+              <T>publish.overview.buttons.respond_unarchive_request</T>
+            </a>
+          </>
         )}
       </div>
 

@@ -13,6 +13,7 @@ export default function Overview(props) {
   const openPublishTask = props.openTasks.find((task) => task.action === 'publish');
   const openUnpublishTask = props.openTasks.find((task) => task.action === 'unpublish');
   const openArchiveTask = props.openTasks.find((task) => task.action === 'archive');
+  const openUnarchiveTask = props.openTasks.find((task) => task.action === 'unarchive');
 
   return (
     <Layout {...props} title={props.title}>
@@ -72,6 +73,20 @@ export default function Overview(props) {
                   dangerouslySetInnerHTML={{
                     __html: props.t('publish.overview.archive.requested.requested_by', {
                       userName: openArchiveTask?.created_by_name
+                    })
+                  }}
+                />
+              </>
+            )}
+
+            {openUnarchiveTask && (
+              <>
+                <p className="govuk-body govuk-!-margin-0"></p>
+                <p
+                  className="govuk-body govuk-!-margin-0"
+                  dangerouslySetInnerHTML={{
+                    __html: props.t('publish.overview.unarchive.requested.requested_by', {
+                      userName: openUnarchiveTask?.created_by_name
                     })
                   }}
                 />
