@@ -1575,6 +1575,7 @@
     "apply_filters": "Apply",
     "start_date": "Start Date",
     "end_date": "End Date",
+    "archived_dataset": "This dataset has been archived and will no longer be updated.",
     "download_heading": "Select the filtered or whole dataset to download",
     "filtered_download": "Filtered dataset (using currently active filters)",
     "default_download": "Whole dataset",

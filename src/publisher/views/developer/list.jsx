@@ -31,7 +31,7 @@ export default function DeveloperList(props) {
       cellClassName: 'author'
     },
     {
-      key: 'last_updated',
+      key: 'last_updated_at',
       label: props.t('developer.list.table.last_updated'),
       style: { width: '15%' },
       format: (value) => props.dateFormat(value, 'dd-MM-yyyy HH:mm:ss', { locale: props.i18n.language }),
