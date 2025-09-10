@@ -97,7 +97,7 @@ export default function Overview(props) {
               <p
                 className="govuk-body"
                 dangerouslySetInnerHTML={{
-                  __html: props.t('publish.overview.scheduled.publish_at', {
+                  __html: props.t('publish.overview.publish.scheduled.publish_at', {
                     publishAt: props.dateFormat(props.revision?.publish_at, 'h:mmaaa, d MMMM yyyy', {
                       locale: props.i18n.language
                     })
