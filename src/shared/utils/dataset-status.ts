@@ -15,7 +15,7 @@ export const getDatasetStatus = (dataset: DatasetDTO): DatasetStatus => {
     return DatasetStatus.Archived;
   }
 
-  if (dataset.unpublished_at && isBefore(dataset.unpublished_at, new Date())) {
+  if (dataset.published_revision?.unpublished_at) {
     return DatasetStatus.Offline;
   }
 

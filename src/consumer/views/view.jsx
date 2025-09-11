@@ -14,6 +14,7 @@ import About from '../../shared/views/components/dataset/About';
 import Publisher from '../../shared/views/components/dataset/Publisher';
 import RadioGroup from '../../shared/views/components/RadioGroup';
 import { Filters } from '../../shared/views/components/Filters';
+import NotificationBanner from './components/NotificationBanner';
 
 export default function ConsumerView(props) {
   const LayoutComponent = props.isDeveloper ? PublisherLayout : ConsumerLayout;
@@ -282,23 +283,20 @@ export default function ConsumerView(props) {
 
   const title = props.datasetMetadata.title;
 
+  if (props.isUnpublished) {
+    return (
+      <LayoutComponent {...props} title={title}>
+        <h1 className="govuk-heading-xl">{title}</h1>
+        <NotificationBanner {...props} notification="consumer_view.unpublished_dataset" />
+      </LayoutComponent>
+    );
+  }
+
   return (
     <LayoutComponent {...props} title={title}>
       <h1 className="govuk-heading-xl">{title}</h1>
 
-      {props.isArchived && (
-        <div className="govuk-grid-row">
-          <div className="govuk-grid-column-full">
-            <div className="govuk-notification-banner" data-module="govuk-notification-banner">
-              <div className="govuk-notification-banner__content">
-                <h3 className="govuk-notification-banner__heading govuk-heading-m">
-                  {props.t('consumer_view.archived_dataset')}
-                </h3>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {props.isArchived && <NotificationBanner {...props} notification="consumer_view.archived_dataset" />}
 
       {(props.preview || (props?.isDeveloper && props?.showDeveloperTab)) && <DatasetStatus {...props} />}
       {props.preview && (

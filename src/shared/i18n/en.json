@@ -165,6 +165,7 @@
     "status": {
       "new": "New",
       "live": "Live",
+      "offline": "Offline",
       "archived": "Archived"
     },
     "buttons": {
@@ -1088,6 +1089,7 @@
         "withdraw_update_revision": "Change update before publication",
         "continue_update": "Continue update",
         "continue": "Continue creating dataset",
+        "update_and_republish": "Update this dataset",
         "preview": "View dataset preview (opens in new tab)",
         "move": "Move dataset to another group"
       },
@@ -1627,6 +1629,7 @@
     "start_date": "Start Date",
     "end_date": "End Date",
     "archived_dataset": "This dataset has been archived and will no longer be updated.",
+    "unpublished_dataset": "This dataset has been temporarily unpublished while we make important fixes to it. When it is republished, any changes will be clearly communicated in the dataset history.",
     "download_heading": "Select the filtered or whole dataset to download",
     "filtered_download": "Filtered dataset (using currently active filters)",
     "default_download": "Whole dataset",

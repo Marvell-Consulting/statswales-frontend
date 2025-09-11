@@ -140,9 +140,15 @@ export function ActionsTab({
           </li>
         )}
 
-        {canEdit && publishingStatus === 'update_incomplete' && (
+        {canEdit && publishingStatus === PublishingStatus.UpdateIncomplete && (
           <li>
             <ActionLink path={`/publish/${datasetId}/tasklist`} action="continue_update" />
+          </li>
+        )}
+
+        {canEdit && publishingStatus === PublishingStatus.Unpublished && (
+          <li>
+            <ActionLink path={`/publish/${datasetId}/tasklist`} action="update_and_republish" />
           </li>
         )}
 

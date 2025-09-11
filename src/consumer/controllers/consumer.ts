@@ -80,6 +80,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   const sortBy = query.sort_by as unknown as SortByInterface;
   const selectedFilterOptions = parseFilters(query.filter as Record<string, string[]>);
   const shorthandUrl = req.buildUrl(`/shorthand`, req.language);
+  const isUnpublished = revision?.unpublished_at || false;
   const isArchived = (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false;
 
   if (!dataset.first_published_at || !revision) {
@@ -102,6 +103,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
     filters,
     selectedFilterOptions,
     shorthandUrl,
+    isUnpublished,
     isArchived
   });
 };
