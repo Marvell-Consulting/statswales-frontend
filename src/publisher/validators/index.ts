@@ -83,6 +83,8 @@ export const taskDecisionValidator = () => body('decision').isIn(['approve', 're
 
 export const taskDecisionReasonValidator = () => body('reason').if(body('decision').equals('reject')).trim().notEmpty();
 
+export const taskActionReasonValidator = () => body('reason').trim().notEmpty();
+
 export const updateTypeValidator = () => body('update_type').isIn(Object.values(NextUpdateType));
 
 export const updateDayValidator = () =>

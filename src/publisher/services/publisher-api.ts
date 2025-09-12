@@ -45,6 +45,7 @@ import { FilterTable } from '../../shared/dtos/filter-table';
 import { FilterInterface } from '../../shared/interfaces/filterInterface';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
+import { TaskAction } from '../../shared/enums/task-action';
 
 const config = appConfig();
 
@@ -658,10 +659,18 @@ export class PublisherApi {
     );
   }
 
-  public async submitForPublication(datasetId: string, revisionId: string): Promise<DatasetDTO> {
-    logger.debug(`Attempting to submit draft revision for publication`);
+  public async requestPublishing(datasetId: string, revisionId: string): Promise<DatasetDTO> {
+    logger.debug(`Submitting draft revision ${revisionId} for publishing`);
     return this.fetch({
       url: `dataset/${datasetId}/revision/by-id/${revisionId}/submit`,
+      method: HttpMethod.Post
+    }).then((response) => response.json() as unknown as DatasetDTO);
+  }
+
+  public async withdrawFromPublishing(datasetId: string, revisionId: string): Promise<DatasetDTO> {
+    logger.debug(`Withdrawing publishing request for draft revision ${revisionId}`);
+    return this.fetch({
+      url: `dataset/${datasetId}/revision/by-id/${revisionId}/withdraw`,
       method: HttpMethod.Post
     }).then((response) => response.json() as unknown as DatasetDTO);
   }
@@ -678,12 +687,11 @@ export class PublisherApi {
     );
   }
 
-  public async withdrawFromPublication(datasetId: string, revisionId: string): Promise<DatasetDTO> {
-    logger.debug(`Attempting to withdraw scheduled revision from publication`);
-    return this.fetch({
-      url: `dataset/${datasetId}/revision/by-id/${revisionId}/withdraw`,
-      method: HttpMethod.Post
-    }).then((response) => response.json() as unknown as DatasetDTO);
+  public async requestAction(datasetId: string, action: TaskAction, reason?: string): Promise<boolean> {
+    logger.debug(`Submitting ${action} request for dataset: ${datasetId}`);
+    return this.fetch({ url: `dataset/${datasetId}/${action}`, method: HttpMethod.Post, json: { reason } }).then(
+      () => true
+    );
   }
 
   public async createRevision(datasetId: string): Promise<RevisionDTO> {

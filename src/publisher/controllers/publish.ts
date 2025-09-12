@@ -34,7 +34,8 @@ import {
   updateMonthValidator,
   updateYearValidator,
   uuidValidator,
-  yearValidator
+  yearValidator,
+  taskActionReasonValidator
 } from '../validators';
 import { ViewError } from '../../shared/dtos/view-error';
 import { logger } from '../../shared/utils/logger';
@@ -85,7 +86,6 @@ import { PublishingStatus } from '../../shared/enums/publishing-status';
 import { NotAllowedException } from '../../shared/exceptions/not-allowed.exception';
 import { DatasetDTO } from '../../shared/dtos/dataset';
 import { RevisionDTO } from '../../shared/dtos/revision';
-import { TaskAction } from '../../shared/enums/task-action';
 import { UserDTO } from '../../shared/dtos/user/user';
 import { TaskDTO } from '../../shared/dtos/task';
 import { TaskDecisionDTO } from '../../shared/dtos/task-decision';
@@ -98,6 +98,7 @@ import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { NextUpdateType } from '../../shared/enums/next-update-type';
 import { parseFilters } from '../../shared/utils/parse-filters';
 import { FactTableColumnType } from '../../shared/dtos/fact-table-column-type';
+import { TaskAction } from '../../shared/enums/task-action';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -476,7 +477,7 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
 
   try {
     if (req.method === 'POST') {
-      await req.pubapi.submitForPublication(dataset.id, draftRevision.id);
+      await req.pubapi.requestPublishing(dataset.id, draftRevision.id);
       req.session.flash = [`publish.tasklist.submit.success`];
       req.session.save();
       res.redirect(req.buildUrl(`/publish/${dataset.id}/overview`, req.language));
@@ -2683,7 +2684,7 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
 
     if (req.query.withdraw) {
       try {
-        await req.pubapi.withdrawFromPublication(dataset.id, revision.id);
+        await req.pubapi.withdrawFromPublishing(dataset.id, revision.id);
         res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
         return;
       } catch (err) {
@@ -2695,9 +2696,9 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
     const title = revision?.metadata?.title;
     const datasetStatus = getDatasetStatus(dataset);
     const publishingStatus = getPublishingStatus(dataset, revision);
-    const openPublishTask = dataset.tasks?.find((task) => task.open && task.action === TaskAction.Publish);
+    const openTasks = dataset.tasks?.filter((task) => task.open) || [];
 
-    res.render('publish/overview', {
+    res.render('publish/overview/overview', {
       dataset,
       revision,
       title,
@@ -2706,7 +2707,7 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
       canMoveGroup,
       canEdit,
       canApprove,
-      openPublishTask,
+      openTasks,
       history
     });
     return;
@@ -2718,7 +2719,7 @@ export const overview = async (req: Request, res: Response, next: NextFunction) 
     }
   }
 
-  res.render('publish/overview', { errors });
+  res.render('publish/overview/overview', { errors });
 };
 
 export const createNewUpdate = async (req: Request, res: Response) => {
@@ -2855,7 +2856,7 @@ export const taskDecision = async (req: Request, res: Response, next: NextFuncti
 
       const decision = values.decision!;
       await req.pubapi.taskDecision(task.id, { decision, reason: values.reason || undefined });
-      req.session.flash = [`publish.task.decision.publish.flash.${decision}`];
+      req.session.flash = [`publish.task.decision.${task.action}.flash.${decision}`];
       req.session.save();
       res.redirect(req.buildUrl(`/publish/${res.locals.datasetId}/overview`, req.language));
       return;
@@ -2866,7 +2867,7 @@ export const taskDecision = async (req: Request, res: Response, next: NextFuncti
     }
   }
 
-  res.render('publish/task-decision', {
+  res.render('publish/task/decision', {
     task,
     taskType,
     values,
@@ -2875,4 +2876,56 @@ export const taskDecision = async (req: Request, res: Response, next: NextFuncti
     title,
     errors
   });
+};
+
+export const datasetAction = async (req: Request, res: Response, next: NextFunction) => {
+  const action: TaskAction = req.params.action as TaskAction;
+
+  if (!action || !Object.values(TaskAction).includes(action)) {
+    next();
+    return;
+  }
+
+  const dataset = res.locals.dataset;
+  const user = req.user! as UserDTO;
+  const canEdit = isEditorForDataset(user, dataset);
+  const canApprove = isApproverForDataset(user, dataset);
+
+  let values = { reason: undefined };
+  let errors: ViewError[] = [];
+
+  try {
+    if (!canEdit && !canApprove) {
+      throw new NotAllowedException(`You do not have the required permissions to ${action} this dataset`);
+    }
+
+    if (req.method === 'POST') {
+      values = req.body;
+      const validators = [taskActionReasonValidator()];
+
+      errors = (await getErrors(validators, req)).map((error: FieldValidationError) => {
+        return {
+          field: error.path,
+          message: { key: `publish.task.action.${action}.form.${error.path}.error.missing` }
+        };
+      });
+
+      if (errors.length === 0) {
+        await req.pubapi.requestAction(dataset.id, action, values.reason);
+        req.session.flash = [`publish.task.action.${action}.success`];
+        req.session.save();
+        res.redirect(req.buildUrl(`/publish/${dataset.id}/overview`, req.language));
+        return;
+      } else {
+        res.status(400);
+      }
+    }
+  } catch (err) {
+    if (err instanceof ApiException) {
+      logger.warn(err, `Could not ${action} dataset`);
+      errors = [{ field: '', message: { key: `publish.task.action.${action}.error` } }];
+    }
+  }
+
+  res.render('publish/task/action', { dataset, action, values, errors });
 };

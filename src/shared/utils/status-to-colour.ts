@@ -5,15 +5,13 @@ import { UserStatus } from '../enums/user-status';
 
 export const statusToColour = (status: TaskListStatus | DatasetStatus | PublishingStatus | UserStatus): string => {
   switch (status) {
-    case DatasetStatus.Migrated:
-      return 'yellow';
-
     case DatasetStatus.New:
     case PublishingStatus.Incomplete:
     case PublishingStatus.UpdateIncomplete:
     case TaskListStatus.Incomplete:
       return 'blue';
 
+    case DatasetStatus.Offline:
     case TaskListStatus.NotStarted:
     case UserStatus.Inactive:
     case PublishingStatus.ChangesRequested:
@@ -24,6 +22,10 @@ export const statusToColour = (status: TaskListStatus | DatasetStatus | Publishi
     case PublishingStatus.UpdatePendingApproval:
     case PublishingStatus.Scheduled:
     case PublishingStatus.UpdateScheduled:
+    case PublishingStatus.UnpublishRequested:
+    case PublishingStatus.ArchiveRequested:
+    case PublishingStatus.UnarchiveRequested:
+    case PublishingStatus.Unpublished:
       return 'orange';
 
     case DatasetStatus.Live:
@@ -32,6 +34,7 @@ export const statusToColour = (status: TaskListStatus | DatasetStatus | Publishi
     case UserStatus.Active:
       return 'green';
 
+    case DatasetStatus.Archived:
     case TaskListStatus.Unchanged:
       return 'grey';
 

@@ -31,7 +31,7 @@ export default function DeveloperList(props) {
       cellClassName: 'author'
     },
     {
-      key: 'last_updated',
+      key: 'last_updated_at',
       label: props.t('developer.list.table.last_updated'),
       style: { width: '15%' },
       format: (value) => props.dateFormat(value, 'dd-MM-yyyy HH:mm:ss', { locale: props.i18n.language }),
@@ -58,7 +58,7 @@ export default function DeveloperList(props) {
         if (!value) {
           return;
         }
-        const label = props.t(`homepage.publishing_status.${value}`);
+        const label = props.t(`badge.publishing_status.${value}`);
         return (
           <strong className={`govuk-tag max-width-none govuk-tag--${props.statusToColour(value)}`}>{label}</strong>
         );

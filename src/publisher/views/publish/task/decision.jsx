@@ -1,13 +1,12 @@
 import React from 'react';
-import ErrorHandler from '../components/ErrorHandler';
-import Layout from '../components/Layout';
+import ErrorHandler from '../../components/ErrorHandler';
+import Layout from '../../components/Layout';
 import clsx from 'clsx';
-import RadioGroup from '../../../shared/views/components/RadioGroup';
-import T from '../../../shared/views/components/T';
+import RadioGroup from '../../../../shared/views/components/RadioGroup';
+import T from '../../../../shared/views/components/T';
 
 export default function TaskDecision(props) {
   const reasonError = props.errors?.find((e) => e.field === 'reason');
-
   const title = props.t(`publish.task.decision.${props.taskType}.heading`);
 
   return (
@@ -25,20 +24,22 @@ export default function TaskDecision(props) {
               </T>
             </p>
 
-            <p className="govuk-body govuk-!-margin-0">
-              <T
-                publishAt={props.dateFormat(props.revision.publish_at, 'h:mmaaa, d MMMM yyyy', {
-                  locale: props.i18n.language
-                })}
-                raw
-              >
-                publish.overview.pending.publish_at
-              </T>
-            </p>
+            {props.taskType === 'publish' && (
+              <p className="govuk-body govuk-!-margin-0">
+                <T
+                  publishAt={props.dateFormat(props.revision.publish_at, 'h:mmaaa, d MMMM yyyy', {
+                    locale: props.i18n.language
+                  })}
+                  raw
+                >
+                  {`publish.overview.${props.task.action}.requested.publish_at`}
+                </T>
+              </p>
+            )}
 
             <p className="govuk-body govuk-!-margin-top-0">
               <T userName={props.task.created_by_name} raw>
-                publish.overview.pending.requested_by
+                {`publish.overview.${props.task.action}.requested.requested_by`}
               </T>
             </p>
 
