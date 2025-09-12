@@ -5,7 +5,6 @@ import clsx from 'clsx';
 import T from '../../../../shared/views/components/T';
 
 export default function TaskAction(props) {
-  // const reasonError = props.errors?.find((e) => e.field === 'reason');
   const title = props.t(`publish.task.action.${props.action}.form.reason.label`);
 
   return (
