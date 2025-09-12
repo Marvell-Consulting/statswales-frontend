@@ -874,7 +874,7 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
         errors = [{ field: 'unknown', message: { key: 'errors.dimension_validation.unknown_error' } }];
         throw new Error();
       }
-    } catch (err) {
+    } catch (err: any) {
       logger.error(err, `There was a problem uploading the lookup`);
       res.status(res.statusCode || 500);
       errors = errors || [{ field: 'csv', message: { key: 'errors.upload.no_csv_data' } }];
@@ -2922,7 +2922,7 @@ export const datasetAction = async (req: Request, res: Response, next: NextFunct
     }
   } catch (err) {
     if (err instanceof ApiException) {
-      logger.warn(err, `Could not unpublish dataset`);
+      logger.warn(err, `Could not ${action} dataset`);
       errors = [{ field: '', message: { key: `publish.task.action.${action}.error` } }];
     }
   }
