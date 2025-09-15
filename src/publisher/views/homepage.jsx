@@ -27,7 +27,7 @@ export default function Homepage(props) {
       cellClassName: 'group nowrap'
     },
     {
-      key: 'last_updated',
+      key: 'last_updated_at',
       label: props.t('homepage.table.last_updated'),
       style: { width: '15%' },
       format: (value) => props.dateFormat(value, 'd MMMM yyyy', { locale: props.i18n.language }),
@@ -50,7 +50,7 @@ export default function Homepage(props) {
       format: (value) =>
         value ? (
           <strong className={`govuk-tag max-width-none govuk-tag--${props.statusToColour(value)}`}>
-            {props.t(`homepage.publishing_status.${value}`)}
+            {props.t(`badge.publishing_status.${value}`)}
           </strong>
         ) : null,
       cellClassName: 'status nowrap'

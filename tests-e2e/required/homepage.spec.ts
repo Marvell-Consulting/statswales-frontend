@@ -30,7 +30,6 @@ test.describe('Authed as a publisher', () => {
   test('Displays a table listing datasets', async ({ page }) => {
     await page.goto('/en-GB');
     await expect(page.getByRole('table')).toBeVisible();
-    // await expect(page.getByRole('columnheader', { name: 'ID' })).toBeVisible();
     await expect(page.getByRole('columnheader', { name: 'Title' })).toBeVisible();
     await expect(page.getByRole('columnheader', { name: 'Last updated' })).toBeVisible();
     await expect(page.getByRole('columnheader', { name: 'Dataset status' })).toBeVisible();

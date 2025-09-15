@@ -11,7 +11,7 @@ export default function Sources(props) {
 
   const sourceOptions = props.sourceTypes.map((val) => ({
     value: val,
-    label: <T noWrap>publish.sources.types.{val}</T>
+    label: props.t(`publish.sources.types.${val}`)
   }));
 
   const title = props.t('publish.sources.heading');

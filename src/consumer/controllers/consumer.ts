@@ -80,8 +80,10 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   const sortBy = query.sort_by as unknown as SortByInterface;
   const selectedFilterOptions = parseFilters(query.filter as Record<string, string[]>);
   const shorthandUrl = req.buildUrl(`/shorthand`, req.language);
+  const isUnpublished = revision?.unpublished_at || false;
+  const isArchived = (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false;
 
-  if (!dataset.live || !revision) {
+  if (!dataset.first_published_at || !revision) {
     next(new NotFoundException('no published revision found'));
     return;
   }
@@ -94,7 +96,16 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
 
   pagination = generateSequenceForNumber(preview.current_page, preview.total_pages);
 
-  res.render('view', { ...preview, datasetMetadata, pagination, filters, selectedFilterOptions, shorthandUrl });
+  res.render('view', {
+    ...preview,
+    datasetMetadata,
+    pagination,
+    filters,
+    selectedFilterOptions,
+    shorthandUrl,
+    isUnpublished,
+    isArchived
+  });
 };
 
 export const downloadPublishedMetadata = async (req: Request, res: Response, next: NextFunction) => {
@@ -102,7 +113,7 @@ export const downloadPublishedMetadata = async (req: Request, res: Response, nex
   const dataset = singleLangDataset(res.locals.dataset, req.language);
   const revision = dataset.published_revision;
 
-  if (!dataset.live || !revision) {
+  if (!dataset.first_published_at || !revision) {
     next(new NotFoundException('no published revision found'));
     return;
   }
@@ -125,7 +136,7 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
   const revision = dataset.published_revision;
 
   try {
-    if (!dataset.live || !revision) {
+    if (!dataset.first_published_at || !revision) {
       throw new NotFoundException('no published revision found');
     }
 

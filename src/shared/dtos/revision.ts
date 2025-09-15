@@ -16,6 +16,7 @@ export interface RevisionDTO {
   previous_revision_id?: string;
   online_cube_filename?: string;
   publish_at?: string;
+  unpublished_at?: string;
   approved_at?: string;
   approved_by?: string;
   created_by: string;
