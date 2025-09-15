@@ -72,18 +72,20 @@ export function ActionsTab({
           </a>
         )}
 
-        {canEdit && openPublishTask?.status === TaskStatus.Rejected && (
+        {openPublishTask?.status === TaskStatus.Rejected && (
           <>
             <p className="govuk-body">
               <T>publish.overview.publish.rejected.summary</T>
             </p>
             <p className="govuk-body">{openPublishTask?.comment}</p>
-            <a
-              className="govuk-button govuk-!-margin-top-4"
-              href={buildUrl(`/publish/${datasetId}/tasklist`, i18n.language)}
-            >
-              <T>publish.overview.buttons.fix</T>
-            </a>
+            {canEdit && (
+              <a
+                className="govuk-button govuk-!-margin-top-4"
+                href={buildUrl(`/publish/${datasetId}/tasklist`, i18n.language)}
+              >
+                <T>publish.overview.buttons.fix</T>
+              </a>
+            )}
           </>
         )}
 
