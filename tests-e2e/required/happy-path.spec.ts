@@ -58,21 +58,21 @@ test.describe('Happy path', () => {
       const filepath = path.join(testInfo.outputDir, download.suggestedFilename());
       await download.saveAs(filepath);
       const file = fs.readFileSync(filepath);
-      expect(file).toBeTruthy();
+      await expect(file).toBeTruthy();
     }
 
     test('Can fully create a new dataset', async ({ page, context }, testInfo) => {
       // start
       await page.goto('/en-GB');
       await page.getByRole('link', { name: 'Create new dataset' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish`);
       await page.getByRole('link', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/group`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/group`);
 
       // Select group
       await page.getByText('E2E tests', { exact: true }).click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/title`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/title`);
 
       // title
       await page.getByRole('textbox').fill(title);
@@ -82,18 +82,18 @@ test.describe('Happy path', () => {
       if (match) {
         id = match[1];
       }
-      expect(pageUrl).toContain(`${baseUrl}/en-GB/publish/${id}/upload`);
+      await expect(pageUrl).toContain(`${baseUrl}/en-GB/publish/${id}/upload`);
 
       // data table upload
       await setFile(page, path.join(csvDir, 'QryHLTH1250_Data.csv'));
       await page.getByRole('button', { name: 'Continue' }).click();
       await page.waitForLoadState('networkidle');
 
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/preview`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/preview`);
 
       // check table
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/sources`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/sources`);
 
       // input sources
       await page.getByLabel('YearCode').selectOption('Dimension');
@@ -103,16 +103,16 @@ test.describe('Happy path', () => {
       await page.getByLabel('Measure').selectOption('Measure or data types');
       await page.getByLabel('NoteCodes').selectOption('Note codes');
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
       // measure
       await page.getByRole('link', { name: 'Measure' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/measure`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/measure`);
       await setFile(page, path.join(csvDir, 'QryHLTH1250_Measure-fixed.csv'));
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/measure/review`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/measure/review`);
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
       // year code
       await page.getByRole('link', { name: 'YearCode' }).click();
@@ -123,27 +123,27 @@ test.describe('Happy path', () => {
       if (yearCodeMatch) {
         yearCodeId = yearCodeMatch[1];
       }
-      expect(yearCodeUrl).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${yearCodeId}`);
+      await expect(yearCodeUrl).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${yearCodeId}`);
       // force: true needed as label intercepts the click
       await page.getByLabel('Dates').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dates/${yearCodeId}`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dates/${yearCodeId}`);
       await page.getByLabel(/^Periods/).click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dates/${yearCodeId}/period`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dates/${yearCodeId}/period`);
       await page.getByLabel('Financial').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dates/${yearCodeId}/period/year-format`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dates/${yearCodeId}/period/year-format`);
       await page.getByLabel('YYYYYY', { exact: true }).click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dates/${yearCodeId}/period/type`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dates/${yearCodeId}/period/type`);
       await page.getByLabel('Years').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dates/${yearCodeId}/review`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dates/${yearCodeId}/review`);
       await page.getByRole('button', { name: 'Continue' }).click();
       await page.getByRole('textbox').fill(content.dateField);
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
       // row ref
       await page.getByRole('link', { name: 'RowRef' }).click();
@@ -152,18 +152,18 @@ test.describe('Happy path', () => {
       if (rowRefMatch) {
         rowRefId = rowRefMatch[1];
       }
-      expect(rowRefUrl).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${rowRefId}`);
+      await expect(rowRefUrl).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${rowRefId}`);
       await page.getByLabel('Something else').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/lookup/${rowRefId}`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/lookup/${rowRefId}`);
       await setFile(page, path.join(csvDir, 'QryHLTH1250_RowRef-fixed.csv'));
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/lookup/${rowRefId}/review`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/lookup/${rowRefId}/review`);
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${rowRefId}/name`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${rowRefId}/name`);
       await page.getByRole('textbox').fill(content.rowRefField);
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
       // area code
       await page.getByRole('link', { name: 'AreaCode' }).click();
@@ -176,103 +176,103 @@ test.describe('Happy path', () => {
       }
 
       // For the happy path test treat area as a text dimension in this case
-      expect(areaCodeUrl).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${areaCodeId}`);
+      await expect(areaCodeUrl).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${areaCodeId}`);
       await page.getByLabel('Text').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/lookup/${areaCodeId}/review`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/lookup/${areaCodeId}/review`);
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${areaCodeId}/name`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${areaCodeId}/name`);
       await page.getByRole('textbox').fill(content.areaCodeField);
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
       // Original Geography route disabled for now
-      // expect(areaCodeUrl).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${areaCodeId}`);
+      // await expect(areaCodeUrl).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${areaCodeId}`);
       // await page.getByLabel('Geography').click({ force: true });
       // await page.getByRole('button', { name: 'Continue' }).click();
-      // expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/lookup/${areaCodeId}/review`);
+      // await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/lookup/${areaCodeId}/review`);
       // await page.getByRole('button', { name: 'Continue' }).click();
-      // expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${areaCodeId}/name`);
+      // await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${areaCodeId}/name`);
       // await page.getByRole('textbox').fill(content.areaCodeField);
       // await page.getByRole('button', { name: 'Continue' }).click();
-      // expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+      // await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
       // summary
       await page.getByRole('link', { name: 'Summary' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/summary`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/summary`);
       await page.getByRole('textbox').fill(content.summary);
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
       // data collection
       await page.getByRole('link', { name: 'Data collection' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/collection`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/collection`);
       await page.getByRole('textbox').fill(content.dataCollection);
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
       // statistical quality
       await page.getByRole('link', { name: 'Statistical quality' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/quality`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/quality`);
       await page.getByRole('textbox').fill(content.statisticalQuality);
       await page.getByLabel('No').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
       // data sources
       await page.getByRole('link', { name: 'Data sources' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/providers`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/providers`);
       await page.locator('.autocomplete__wrapper').click();
       await page.locator('#provider_id__option--1').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/providers?edit`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/providers?edit`);
       await page.getByLabel('No specific source from data provider').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/providers`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/providers`);
       await page.getByLabel('No').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
       // related reports
       await page.getByRole('link', { name: 'Related reports' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/related`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/related`);
       await page.getByRole('textbox', { name: 'Link URL' }).fill(content.relatedReportLink);
       await page
         .getByRole('textbox', { name: 'Link text to appear on the webpage' })
         .fill(content.relatedReportLinkText);
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/related`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/related`);
       await page.getByLabel('No').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
       // update frequency
       await page.getByRole('link', { name: 'If this dataset will be updated or replaced in the future' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/update-frequency`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/update-frequency`);
       await page
         .getByLabel('This dataset is not expected to be updated or replaced in the future')
         .click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
       //designation
       await page.getByRole('link', { name: 'Designation' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/designation`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/designation`);
       await page.getByLabel('Official statistics', { exact: true }).click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
       // relevant topics
       await page.getByRole('link', { name: 'Relevant topics' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/topics`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/topics`);
       await page.getByLabel('Business, economy and labour market').click({ force: true });
       await page.getByLabel('Business', { exact: true }).click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
       // export translation
       await page.getByRole('link', { name: 'Export text fields for translation' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/translation/export`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/translation/export`);
 
       const download = await downloadFile(page, page.getByRole('link', { name: 'Export CSV' }));
       const filename = download.suggestedFilename();
@@ -298,30 +298,30 @@ test.describe('Happy path', () => {
 
       // import translations
       await page.getByRole('link', { name: 'Import translations' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/translation/import`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/translation/import`);
       await setFile(page, path.join(testInfo.outputDir, filename));
       await page.getByRole('button', { name: 'Import CSV' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/translation/import`);
-      expect(page.getByRole('heading')).toContainText('Check the translated text');
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/translation/import`);
+      await expect(page.getByRole('heading')).toContainText('Check the translated text');
       await page.getByRole('link', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
       // preview dataset
       const pagePromise = context.waitForEvent('page');
       await page.getByRole('link', { name: 'Preview (opens in new tab)' }).click();
       const previewPage = await pagePromise;
-      expect(previewPage.url()).toContain(`${baseUrl}/en-GB/publish/${id}/cube-preview`);
+      await expect(previewPage.url()).toContain(`${baseUrl}/en-GB/publish/${id}/cube-preview`);
 
       // check contents
-      expect(previewPage.getByText(title)).toBeTruthy();
-      expect(previewPage.getByText('This is a preview of this dataset.')).toBeTruthy();
-      expect(previewPage.getByText('Main information', { exact: true })).toBeTruthy();
-      expect(previewPage.getByText('Overview', { exact: true })).toBeTruthy();
-      expect(previewPage.getByText('Published by', { exact: true })).toBeTruthy();
-      expect(previewPage.getByText(content.summary, { exact: true })).toBeTruthy();
-      expect(previewPage.getByText(content.dataCollection, { exact: true })).toBeTruthy();
-      expect(previewPage.getByText(content.statisticalQuality, { exact: true })).toBeTruthy();
-      expect(previewPage.getByText(content.relatedReportLinkText, { exact: true })).toBeTruthy();
+      await expect(previewPage.getByText(title)).toBeTruthy();
+      await expect(previewPage.getByText('This is a preview of this dataset.')).toBeTruthy();
+      await expect(previewPage.getByText('Main information', { exact: true })).toBeTruthy();
+      await expect(previewPage.getByText('Overview', { exact: true })).toBeTruthy();
+      await expect(previewPage.getByText('Published by', { exact: true })).toBeTruthy();
+      await expect(previewPage.getByText(content.summary, { exact: true })).toBeTruthy();
+      await expect(previewPage.getByText(content.dataCollection, { exact: true })).toBeTruthy();
+      await expect(previewPage.getByText(content.statisticalQuality, { exact: true })).toBeTruthy();
+      await expect(previewPage.getByText(content.relatedReportLinkText, { exact: true })).toBeTruthy();
 
       // download files;
       await previewPage.click('#tab_download_dataset');
@@ -342,18 +342,18 @@ test.describe('Happy path', () => {
       // data table
       await previewPage.click('#tab_data');
       const heading = previewPage.locator('table > thead > tr');
-      expect(heading.getByText('Data Values')).toBeTruthy();
-      expect(heading.getByText(content.measureTable)).toBeTruthy();
-      expect(heading.getByText(content.dateField)).toBeTruthy();
-      expect(heading.getByText('Start Date')).toBeTruthy();
-      expect(heading.getByText('End Date')).toBeTruthy();
-      expect(heading.getByText(content.areaCodeField)).toBeTruthy();
-      expect(heading.getByText(content.rowRefField)).toBeTruthy();
-      expect(heading.getByText('Notes')).toBeTruthy();
+      await expect(heading.getByText('Data Values')).toBeTruthy();
+      await expect(heading.getByText(content.measureTable)).toBeTruthy();
+      await expect(heading.getByText(content.dateField)).toBeTruthy();
+      await expect(heading.getByText('Start Date')).toBeTruthy();
+      await expect(heading.getByText('End Date')).toBeTruthy();
+      await expect(heading.getByText(content.areaCodeField)).toBeTruthy();
+      await expect(heading.getByText(content.rowRefField)).toBeTruthy();
+      await expect(heading.getByText('Notes')).toBeTruthy();
 
       // publishing
       await page.getByRole('link', { name: 'When this dataset should be published' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/schedule`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/schedule`);
 
       // set publish date 1 min in the future to reduce time waiting for archive/unpublish tests later
       const now = new TZDate(new Date().toISOString(), 'Europe/London');
@@ -372,7 +372,7 @@ test.describe('Happy path', () => {
       await page.getByRole('textbox', { name: 'Minute' }).fill(String(mins));
 
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
     });
   });
 
@@ -382,8 +382,8 @@ test.describe('Happy path', () => {
     test('Submit dataset for approval', async ({ page }) => {
       await page.goto(`${baseUrl}/en-GB/publish/${id}/tasklist`);
       await page.getByRole('button', { name: 'Submit for approval' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
-      expect(page.getByText('Dataset submitted for approval')).toBeTruthy();
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
+      await expect(page.getByText('Dataset submitted for approval')).toBeTruthy();
 
       await page.goto('/en-GB');
       await expect(page.getByRole('link', { name: title })).toBeVisible();
@@ -396,19 +396,19 @@ test.describe('Happy path', () => {
     test('Reject dataset publication', async ({ page }) => {
       await page.goto(`/en-GB`);
       await page.getByRole('link', { name: title }).click();
-      expect(page.getByText(title)).toBeTruthy();
+      await expect(page.getByText(title)).toBeTruthy();
 
       await page.getByRole('link', { name: 'Respond to publishing request' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/task-decision`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/task-decision`);
 
       const rejectionReason = 'Testing dataset publication rejection';
       await page.getByLabel('No').click({ force: true });
       await page.getByRole('textbox').fill(rejectionReason);
       await page.getByRole('button', { name: 'Continue' }).click();
 
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
-      expect(page.getByText('Dataset was not approved for publishing')).toBeVisible();
-      expect(page.getByText(rejectionReason).first()).toBeVisible();
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
+      await expect(page.getByText('Dataset was not approved for publishing').first()).toBeVisible();
+      await expect(page.getByText(rejectionReason).first()).toBeVisible();
     });
   });
 
@@ -418,14 +418,14 @@ test.describe('Happy path', () => {
     test('Update and resubmit dataset for approval', async ({ page }) => {
       await page.goto(`/en-GB`);
       await page.getByRole('link', { name: title }).click();
-      expect(page.getByText(title)).toBeTruthy();
+      await expect(page.getByText(title)).toBeTruthy();
 
       await page.getByRole('link', { name: 'Fix issues with dataset' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
       await page.getByRole('button', { name: 'Submit for approval' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
-      expect(page.getByText('Dataset submitted for approval')).toBeTruthy();
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
+      await expect(page.getByText('Dataset submitted for approval')).toBeTruthy();
     });
   });
 
@@ -435,15 +435,15 @@ test.describe('Happy path', () => {
     test('Approve dataset publication', async ({ page }) => {
       await page.goto(`/en-GB`);
       await page.getByRole('link', { name: title }).click();
-      expect(page.getByText(title)).toBeTruthy();
+      await expect(page.getByText(title)).toBeTruthy();
 
       await page.getByRole('link', { name: 'Respond to publishing request' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/task-decision`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/task-decision`);
 
       await page.getByLabel('Yes').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
-      expect(page.getByText('Dataset approved for publishing').first()).toBeVisible();
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
+      await expect(page.getByText('Dataset approved for publishing').first()).toBeVisible();
     });
   });
 
@@ -467,17 +467,17 @@ test.describe('Happy path', () => {
     test('Request dataset archiving', async ({ page }) => {
       await page.goto(`/en-GB`);
       await page.getByRole('link', { name: title }).click();
-      expect(page.getByText(title)).toBeTruthy();
+      await expect(page.getByText(title)).toBeTruthy();
 
       await page.getByRole('link', { name: 'Label dataset as archived' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/archive`);
-      expect(page.getByText('Why should this dataset be labelled as archived?')).toBeVisible();
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/archive`);
+      await expect(page.getByText('Why should this dataset be labelled as archived?')).toBeVisible();
 
       const archiveReason = 'No longer updated';
       await page.getByRole('textbox').fill(archiveReason);
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
-      expect(page.getByText('Dataset archiving requested').first()).toBeVisible();
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
+      await expect(page.getByText('Dataset archiving requested').first()).toBeVisible();
     });
   });
 
@@ -487,19 +487,19 @@ test.describe('Happy path', () => {
     test('Approve dataset archiving', async ({ page }) => {
       await page.goto(`/en-GB`);
       await page.getByRole('link', { name: title }).click();
-      expect(page.getByText(title)).toBeTruthy();
+      await expect(page.getByText(title)).toBeTruthy();
 
       await page.getByRole('link', { name: 'Respond to archive request' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/task-decision`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/task-decision`);
 
       await page.getByLabel('Yes').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
-      expect(page.getByText('Dataset approved for archiving').first()).toBeVisible();
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
+      await expect(page.getByText('Dataset approved for archiving').first()).toBeVisible();
 
       const statusBadges = page.locator('.status-badges');
-      expect(statusBadges.getByText('Archived dataset', { exact: true })).toBeVisible();
-      expect(statusBadges.getByText('Published', { exact: true })).toBeVisible();
+      await expect(statusBadges.getByText('Archived dataset', { exact: true })).toBeVisible();
+      await expect(statusBadges.getByText('Published', { exact: true })).toBeVisible();
     });
   });
 
@@ -509,17 +509,17 @@ test.describe('Happy path', () => {
     test('Request dataset unarchiving', async ({ page }) => {
       await page.goto(`/en-GB`);
       await page.getByRole('link', { name: title }).click();
-      expect(page.getByText(title)).toBeTruthy();
+      await expect(page.getByText(title)).toBeTruthy();
 
       await page.getByRole('link', { name: 'Unarchive dataset' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/unarchive`);
-      expect(page.getByText('Why should this dataset be unarchived?')).toBeVisible();
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/unarchive`);
+      await expect(page.getByText('Why should this dataset be unarchived?')).toBeVisible();
 
       const unarchiveReason = 'Mistakenly archived';
       await page.getByRole('textbox').fill(unarchiveReason);
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
-      expect(page.getByText('Dataset unarchiving requested').first()).toBeVisible();
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
+      await expect(page.getByText('Dataset unarchiving requested').first()).toBeVisible();
     });
   });
 
@@ -529,20 +529,20 @@ test.describe('Happy path', () => {
     test('Approve dataset unarchiving', async ({ page }) => {
       await page.goto(`/en-GB`);
       await page.getByRole('link', { name: title }).click();
-      expect(page.getByText(title)).toBeTruthy();
-      expect(page.getByText('Mistakenly archived').first()).toBeVisible();
+      await expect(page.getByText(title)).toBeTruthy();
+      await expect(page.getByText('Mistakenly archived').first()).toBeVisible();
 
       await page.getByRole('link', { name: 'Respond to unarchive request' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/task-decision`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/task-decision`);
 
       await page.getByLabel('Yes').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
-      expect(page.getByText('Dataset approved for unarchiving').first()).toBeVisible();
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
+      await expect(page.getByText('Dataset approved for unarchiving').first()).toBeVisible();
 
       const statusBadges = page.locator('.status-badges');
-      expect(statusBadges.getByText('Live dataset', { exact: true })).toBeVisible();
-      expect(statusBadges.getByText('Published', { exact: true })).toBeVisible();
+      await expect(statusBadges.getByText('Live dataset', { exact: true })).toBeVisible();
+      await expect(statusBadges.getByText('Published', { exact: true })).toBeVisible();
     });
   });
 
@@ -552,21 +552,21 @@ test.describe('Happy path', () => {
     test('Request dataset be temporarily unpublished', async ({ page }) => {
       await page.goto(`/en-GB`);
       await page.getByRole('link', { name: title }).click();
-      expect(page.getByText(title)).toBeTruthy();
+      await expect(page.getByText(title)).toBeTruthy();
 
       await page.getByRole('link', { name: 'Temporarily unpublish dataset' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/unpublish`);
-      expect(page.getByText('Why should this dataset be temporarily unpublished?')).toBeVisible();
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/unpublish`);
+      await expect(page.getByText('Why should this dataset be temporarily unpublished?')).toBeVisible();
 
       const unpublishReason = 'Need to fix a mistake';
       await page.getByRole('textbox').fill(unpublishReason);
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
-      expect(page.getByText('Dataset unpublishing requested').first()).toBeVisible();
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
+      await expect(page.getByText('Dataset unpublishing requested').first()).toBeVisible();
 
       const statusBadges = page.locator('.status-badges');
-      expect(statusBadges.getByText('Live dataset', { exact: true })).toBeVisible();
-      expect(statusBadges.getByText('Unpublish requested', { exact: true })).toBeVisible();
+      await expect(statusBadges.getByText('Live dataset', { exact: true })).toBeVisible();
+      await expect(statusBadges.getByText('Unpublish requested', { exact: true })).toBeVisible();
     });
   });
 
@@ -576,20 +576,20 @@ test.describe('Happy path', () => {
     test('Approve dataset unpublishing', async ({ page }) => {
       await page.goto(`/en-GB`);
       await page.getByRole('link', { name: title }).click();
-      expect(page.getByText(title)).toBeTruthy();
-      expect(page.getByText('Need to fix a mistake').first()).toBeVisible();
+      await expect(page.getByText(title)).toBeTruthy();
+      await expect(page.getByText('Need to fix a mistake').first()).toBeVisible();
 
       await page.getByRole('link', { name: 'Respond to unpublishing request' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/task-decision`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/task-decision`);
 
       await page.getByLabel('Yes').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
-      expect(page.getByText('Dataset approved for unpublishing').first()).toBeVisible();
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
+      await expect(page.getByText('Dataset approved for unpublishing').first()).toBeVisible();
 
       const statusBadges = page.locator('.status-badges');
-      expect(statusBadges.getByText('Offline dataset', { exact: true })).toBeVisible();
-      expect(statusBadges.getByText('Unpublished', { exact: true })).toBeVisible();
+      await expect(statusBadges.getByText('Offline dataset', { exact: true })).toBeVisible();
+      await expect(statusBadges.getByText('Unpublished', { exact: true })).toBeVisible();
     });
   });
 
@@ -599,13 +599,13 @@ test.describe('Happy path', () => {
     test('Update unpublished dataset and republish', async ({ page }) => {
       await page.goto(`/en-GB`);
       await page.getByRole('link', { name: title }).click();
-      expect(page.getByText(title)).toBeTruthy();
+      await expect(page.getByText(title)).toBeTruthy();
 
       await page.getByRole('link', { name: 'Update this dataset' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
       await page.getByRole('link', { name: 'When this update should be published' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/schedule`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/schedule`);
 
       const now = new TZDate(new Date().toISOString(), 'Europe/London');
       const theFuture = add(now, { minutes: 1 });
@@ -622,15 +622,15 @@ test.describe('Happy path', () => {
       await page.getByRole('textbox', { name: 'Minute' }).fill(String(mins));
 
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
       await page.getByRole('button', { name: 'Submit for approval' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
-      expect(page.getByText('Dataset submitted for approval')).toBeTruthy();
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
+      await expect(page.getByText('Dataset submitted for approval')).toBeTruthy();
 
       const statusBadges = page.locator('.status-badges');
-      expect(statusBadges.getByText('Offline dataset', { exact: true })).toBeVisible();
-      expect(statusBadges.getByText('Pending approval', { exact: true })).toBeVisible();
+      await expect(statusBadges.getByText('Offline dataset', { exact: true })).toBeVisible();
+      await expect(statusBadges.getByText('Pending approval', { exact: true })).toBeVisible();
     });
   });
 
@@ -640,19 +640,19 @@ test.describe('Happy path', () => {
     test('Approve dataset update publication', async ({ page }) => {
       await page.goto(`/en-GB`);
       await page.getByRole('link', { name: title }).click();
-      expect(page.getByText(title)).toBeTruthy();
+      await expect(page.getByText(title)).toBeTruthy();
 
       await page.getByRole('link', { name: 'Respond to publishing request' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/task-decision`);
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/task-decision`);
 
       await page.getByLabel('Yes').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
-      expect(page.getByText('Dataset approved for publishing').first()).toBeVisible();
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/overview`);
+      await expect(page.getByText('Dataset approved for publishing').first()).toBeVisible();
 
       const statusBadges = page.locator('.status-badges');
-      expect(statusBadges.getByText('Live dataset', { exact: true })).toBeVisible();
-      expect(statusBadges.getByText('Update scheduled', { exact: true })).toBeVisible();
+      await expect(statusBadges.getByText('Live dataset', { exact: true })).toBeVisible();
+      await expect(statusBadges.getByText('Update scheduled', { exact: true })).toBeVisible();
     });
   });
 });
