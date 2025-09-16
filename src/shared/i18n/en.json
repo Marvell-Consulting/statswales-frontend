@@ -1921,6 +1921,9 @@
         "first_published": "First published: {{published}}",
         "last_updated": "Updated: {{updated}}",
         "archived": "Archived: {{archived}}"
+      },
+      "status": {
+        "archived": "Archived"
       }
     },
     "list": {
