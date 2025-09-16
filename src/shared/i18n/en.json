@@ -229,7 +229,8 @@
         "accredited": "Accredited official statistics",
         "in_development": "Official statistics in development",
         "management": "Management information",
-        "none": "No designation"
+        "none": "No designation",
+        "null": ""
       },
       "related_reports": "Related reports"
     },

@@ -46,7 +46,8 @@ import {
   provideDatasetGroup,
   moveDatasetGroup,
   taskDecision,
-  datasetAction
+  datasetAction,
+  downloadMetadata
 } from '../controllers/publish';
 import { DatasetInclude as Include } from '../../shared/enums/dataset-include';
 import { flashMessages, flashErrors } from '../../shared/middleware/flash';
@@ -91,6 +92,7 @@ publish.post('/:datasetId/delete', fetchDataset(Include.Meta), deleteDraft);
 /* Cube Preview */
 publish.get('/:datasetId/cube-preview', fetchDataset(), cubePreview);
 publish.get('/:datasetId/download', fetchDataset(), downloadDataset);
+publish.get('/:datasetId/download/metadata', fetchDataset(), downloadMetadata);
 
 /* Measure creation */
 publish.get('/:datasetId/measure', fetchDataset(), measurePreview);
