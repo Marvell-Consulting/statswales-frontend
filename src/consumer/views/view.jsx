@@ -154,132 +154,135 @@ export default function ConsumerView(props) {
     </div>
   );
 
-  const DownloadPanel = (
-    <div className="govuk-grid-row">
-      <div className="govuk-grid-column-full">
-        <form
-          method="get"
-          action={props.buildUrl(
-            `${props.preview || props.isDeveloper ? '/publish' : ''}/${props.dataset.id}/download`,
-            props.i18n.language
-          )}
-        >
-          <RadioGroup
-            name="view_type"
-            label={props.t('consumer_view.download_heading')}
-            options={[
-              {
-                value: 'filtered',
-                label: props.t('consumer_view.filtered_download')
-              },
-              {
-                value: 'default',
-                label: props.t('consumer_view.default_download')
-              }
-            ]}
-            value={props.selectedFilterOptions ? 'filtered' : 'default'}
-          />
+  const DownloadPanel = () => {
+    const downloadMetaUrl = props.preview
+      ? props.buildUrl(`/publish/${props.dataset.id}/download/metadata`, props.i18n.language)
+      : props.buildUrl(`/${props.dataset.id}/download/metadata`, props.i18n.language);
 
-          <RadioGroup
-            name="format"
-            label={props.t('consumer_view.download_format')}
-            options={[
-              {
-                value: 'csv',
-                label: 'CSV',
-                hint: props.t('consumer_view.data_only_hint')
-              },
-              {
-                value: 'xlsx',
-                label: 'Excel',
-                hint: props.t('consumer_view.data_only_hint')
-              },
-              {
-                value: 'json',
-                label: 'JSON',
-                hint: props.t('consumer_view.data_only_hint')
-              }
-              // {
-              //   value: 'parquet',
-              //   label: 'Parquet',
-              //   hint: props.t('consumer_view.data_metadata_hint')
-              // }
-              // {
-              //   value: 'duckdb',
-              //   label: 'DuckDB',
-              //   hint: props.t('consumer_view.everything_hint')
-              // }
-            ]}
-            value="csv"
-          />
-
-          <RadioGroup
-            name="view_choice"
-            label={props.t('consumer_view.number_formating')}
-            options={[
-              {
-                value: 'raw',
-                label: props.t('consumer_view.unformatted_numbers')
-              },
-              {
-                value: 'formatted',
-                label: props.t('consumer_view.formatted_numbers'),
-                hint: props.t('consumer_view.formatted_numbers_hint')
-              },
-              {
-                value: 'raw_extended',
-                label: props.t('consumer_view.unformatted_numbers_extended')
-              },
-              {
-                value: 'formatted_extended',
-                label: props.t('consumer_view.formatted_numbers_extended'),
-                hint: props.t('consumer_view.formatted_numbers_hint')
-              }
-            ]}
-            value="raw"
-          />
-
-          <RadioGroup
-            name="download_language"
-            label={props.t('consumer_view.select_language')}
-            options={[
-              {
-                value: 'en-GB',
-                label: props.t('consumer_view.english')
-              },
-              {
-                value: 'cy-GB',
-                label: props.t('consumer_view.welsh')
-              }
-            ]}
-            value={props.i18n.language}
-          />
-
-          <input
-            type="hidden"
-            id="selected_filter_options"
-            name="selected_filter_options"
-            value={JSON.stringify(props.selectedFilterOptions)}
-          ></input>
-
-          <button name="action" value="download" type="submit" className="govuk-button" data-module="govuk-button">
-            {props.t('consumer_view.download_button')}
-          </button>
-        </form>
-
-        <div className="download-metadata govuk-!-margin-top-5">
-          <h2 className="govuk-heading-m">{props.t('consumer_view.metadata_download.heading')}</h2>
-          <p className="govuk-body">{props.t('consumer_view.metadata_download.description')}</p>
-          <a
-            href={props.buildUrl(`/${props.dataset.id}/download/metadata`, props.i18n.language)}
-            className="govuk-button button-primary"
+    return (
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-full">
+          <form
+            method="get"
+            action={props.buildUrl(
+              `${props.preview || props.isDeveloper ? '/publish' : ''}/${props.dataset.id}/download`,
+              props.i18n.language
+            )}
           >
-            {props.t('consumer_view.metadata_download.button')}
-          </a>
+            <RadioGroup
+              name="view_type"
+              label={props.t('consumer_view.download_heading')}
+              options={[
+                {
+                  value: 'filtered',
+                  label: props.t('consumer_view.filtered_download')
+                },
+                {
+                  value: 'default',
+                  label: props.t('consumer_view.default_download')
+                }
+              ]}
+              value={props.selectedFilterOptions ? 'filtered' : 'default'}
+            />
+
+            <RadioGroup
+              name="format"
+              label={props.t('consumer_view.download_format')}
+              options={[
+                {
+                  value: 'csv',
+                  label: 'CSV',
+                  hint: props.t('consumer_view.data_only_hint')
+                },
+                {
+                  value: 'xlsx',
+                  label: 'Excel',
+                  hint: props.t('consumer_view.data_only_hint')
+                },
+                {
+                  value: 'json',
+                  label: 'JSON',
+                  hint: props.t('consumer_view.data_only_hint')
+                }
+                // {
+                //   value: 'parquet',
+                //   label: 'Parquet',
+                //   hint: props.t('consumer_view.data_metadata_hint')
+                // }
+                // {
+                //   value: 'duckdb',
+                //   label: 'DuckDB',
+                //   hint: props.t('consumer_view.everything_hint')
+                // }
+              ]}
+              value="csv"
+            />
+
+            <RadioGroup
+              name="view_choice"
+              label={props.t('consumer_view.number_formating')}
+              options={[
+                {
+                  value: 'raw',
+                  label: props.t('consumer_view.unformatted_numbers')
+                },
+                {
+                  value: 'formatted',
+                  label: props.t('consumer_view.formatted_numbers'),
+                  hint: props.t('consumer_view.formatted_numbers_hint')
+                },
+                {
+                  value: 'raw_extended',
+                  label: props.t('consumer_view.unformatted_numbers_extended')
+                },
+                {
+                  value: 'formatted_extended',
+                  label: props.t('consumer_view.formatted_numbers_extended'),
+                  hint: props.t('consumer_view.formatted_numbers_hint')
+                }
+              ]}
+              value="raw"
+            />
+
+            <RadioGroup
+              name="download_language"
+              label={props.t('consumer_view.select_language')}
+              options={[
+                {
+                  value: 'en-GB',
+                  label: props.t('consumer_view.english')
+                },
+                {
+                  value: 'cy-GB',
+                  label: props.t('consumer_view.welsh')
+                }
+              ]}
+              value={props.i18n.language}
+            />
+
+            <input
+              type="hidden"
+              id="selected_filter_options"
+              name="selected_filter_options"
+              value={JSON.stringify(props.selectedFilterOptions)}
+            ></input>
+
+            <button name="action" value="download" type="submit" className="govuk-button" data-module="govuk-button">
+              {props.t('consumer_view.download_button')}
+            </button>
+          </form>
+
+          <div className="download-metadata govuk-!-margin-top-5">
+            <h2 className="govuk-heading-m">{props.t('consumer_view.metadata_download.heading')}</h2>
+            <p className="govuk-body">{props.t('consumer_view.metadata_download.description')}</p>
+            <a href={downloadMetaUrl} className="govuk-button button-primary">
+              {props.t('consumer_view.metadata_download.button')}
+            </a>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const title = props.datasetMetadata.title;
 
@@ -313,7 +316,7 @@ export default function ConsumerView(props) {
             : []),
           { label: props.t('consumer_view.data'), id: 'data', children: DataPanel },
           { label: props.t('consumer_view.about_this_dataset'), id: 'about_dataset', children: AboutPanel },
-          { label: props.t('consumer_view.download'), id: 'download_dataset', children: DownloadPanel }
+          { label: props.t('consumer_view.download'), id: 'download_dataset', children: <DownloadPanel /> }
         ]}
       />
     </LayoutComponent>

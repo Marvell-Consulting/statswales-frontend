@@ -62,7 +62,7 @@ import { YearType } from '../../shared/enums/year-type';
 import { addEditLinks, markdownToHtml, parseUploadedTranslations } from '../../shared/utils/translations';
 import { TranslationDTO } from '../../shared/dtos/translations';
 import { getDatasetStatus, getPublishingStatus } from '../../shared/utils/dataset-status';
-import { getDatasetMetadata } from '../../shared/utils/dataset-metadata';
+import { getDatasetMetadata, metadataToCSV } from '../../shared/utils/dataset-metadata';
 import { FileFormat } from '../../shared/enums/file-format';
 import { getDownloadHeaders } from '../../shared/utils/download-headers';
 import { FactTableColumnDto } from '../../shared/dtos/fact-table-column-dto';
@@ -99,6 +99,7 @@ import { NextUpdateType } from '../../shared/enums/next-update-type';
 import { parseFilters } from '../../shared/utils/parse-filters';
 import { FactTableColumnType } from '../../shared/dtos/fact-table-column-type';
 import { TaskAction } from '../../shared/enums/task-action';
+import { stringify } from 'csv-stringify/sync';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -635,6 +636,29 @@ export const downloadDataset = async (req: Request, res: Response, next: NextFun
     res.writeHead(200, headers);
     const readable: Readable = Readable.from(fileStream);
     readable.pipe(res);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const downloadMetadata = async (req: Request, res: Response, next: NextFunction) => {
+  logger.debug('downloading dataset metadata');
+  const datasetId = res.locals.datasetId;
+  const draftRevisionId: string = res.locals.dataset?.draft_revision_id;
+
+  try {
+    const [datasetDTO, revisionDTO]: [DatasetDTO, RevisionDTO] = await Promise.all([
+      req.pubapi.getDataset(datasetId, DatasetInclude.Meta),
+      req.pubapi.getRevision(datasetId, draftRevisionId)
+    ]);
+    const dataset = singleLangDataset(datasetDTO, req.language);
+    const revision = singleLangRevision(revisionDTO, req.language)!;
+    const metadata = await getDatasetMetadata(dataset, revision, false);
+    const downloadMeta = metadataToCSV(metadata, req.language as Locale);
+
+    res.setHeader('content-type', 'text/csv; charset=utf-8');
+    res.setHeader('content-disposition', `attachment; filename="${metadata.title}-meta.csv"`);
+    res.send(stringify(downloadMeta, { bom: true, header: false, quoted: true }));
   } catch (err) {
     next(err);
   }

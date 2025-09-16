@@ -87,15 +87,17 @@ export const metadataToCSV = (metadata: PreviewMetadata, locale: Locale): string
     t(`dataset_view.about.designations.${metadata.keyInfo.designation}`)
   ]);
 
-  lines.push([
-    t('dataset_view.key_information.time_covered'),
-    t('dataset_view.key_information.time_period', {
-      start: metadata.keyInfo.timePeriod.start
-        ? dateFormat(metadata.keyInfo.timePeriod.start, 'MMMM yyyy', { locale })
-        : '',
-      end: metadata.keyInfo.timePeriod.end ? dateFormat(metadata.keyInfo.timePeriod.end, 'MMMM yyyy', { locale }) : ''
-    })
-  ]);
+  if (metadata.keyInfo.timePeriod.start) {
+    lines.push([
+      t('dataset_view.key_information.time_covered'),
+      t('dataset_view.key_information.time_period', {
+        start: metadata.keyInfo.timePeriod.start
+          ? dateFormat(metadata.keyInfo.timePeriod.start, 'MMMM yyyy', { locale })
+          : '',
+        end: metadata.keyInfo.timePeriod.end ? dateFormat(metadata.keyInfo.timePeriod.end, 'MMMM yyyy', { locale }) : ''
+      })
+    ]);
+  }
 
   metadata.keyInfo.providers?.forEach((provider) => {
     lines.push([t('dataset_view.key_information.data_provider'), provider.provider_name ?? '']);
@@ -112,8 +114,6 @@ export const metadataToCSV = (metadata: PreviewMetadata, locale: Locale): string
     ]);
   }
 
-  lines.push([t('dataset_view.about.summary'), metadata.about.summary!]);
-  lines.push([t('dataset_view.about.data_collection'), metadata.about.collection!]);
   lines.push([t('dataset_view.about.summary'), metadata.about.summary ?? '']);
   lines.push([t('dataset_view.about.data_collection'), metadata.about.collection ?? '']);
   lines.push([t('dataset_view.about.statistical_quality'), metadata.about.quality ?? '']);
@@ -130,8 +130,8 @@ export const metadataToCSV = (metadata: PreviewMetadata, locale: Locale): string
     ]);
   });
 
-  lines.push([t('dataset_view.published.org'), metadata.publisher?.organisation.name ?? '']);
-  lines.push([t('dataset_view.published.contact'), metadata.publisher?.group.email ?? '']);
+  lines.push([t('dataset_view.published.org'), metadata.publisher?.organisation?.name ?? '']);
+  lines.push([t('dataset_view.published.contact'), metadata.publisher?.group?.email ?? '']);
 
   return lines;
 };
