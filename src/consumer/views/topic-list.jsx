@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 
 import Layout from './components/Layout';
 import Hero from './components/Hero';
@@ -58,7 +59,7 @@ function ChildTopics({ childTopics }) {
 }
 
 function Datasets({ datasets }) {
-  const { buildUrl, i18n, dateFormat } = useLocals();
+  const { buildUrl, i18n, dateFormat, statusToColour } = useLocals();
 
   return (
     <ul className="govuk-list">
@@ -72,6 +73,18 @@ function Datasets({ datasets }) {
           </a>
           <div className="index-list__meta">
             <p className="govuk-!-margin-top-0">
+              {dataset.archived_at && (
+                <strong
+                  className={clsx(
+                    'govuk-tag',
+                    'dataset-status ',
+                    `govuk-tag--${statusToColour('archived')}`,
+                    'govuk-!-margin-right-2'
+                  )}
+                >
+                  <T>consumer.topic_list.status.archived</T>
+                </strong>
+              )}
               <span className="govuk-body-s caption index-list__item__meta">
                 <T published={dateFormat(dataset.first_published_at, 'd MMMM yyyy')}>
                   consumer.topic_list.dataset.first_published
