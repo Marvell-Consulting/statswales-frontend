@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { appConfig } from '../../../../shared/config';
 import Layout from '../../components/Layout';
 import FlashMessages from '../../../../shared/views/components/FlashMessages';
 import ErrorHandler from '../../components/ErrorHandler';
@@ -9,11 +10,14 @@ import T from '../../../../shared/views/components/T';
 import { ActionsTab } from './ActionsTab';
 import { HistoryTab } from './HistoryTab';
 
+const config = appConfig();
+
 export default function Overview(props) {
   const openPublishTask = props.openTasks.find((task) => task.action === 'publish');
   const openUnpublishTask = props.openTasks.find((task) => task.action === 'unpublish');
   const openArchiveTask = props.openTasks.find((task) => task.action === 'archive');
   const openUnarchiveTask = props.openTasks.find((task) => task.action === 'unarchive');
+  const eventualPublicUrl = `${config.frontend.consumer.url}/${props.i18n.language}/${props.dataset.id}`;
 
   return (
     <Layout {...props} title={props.title}>
@@ -26,6 +30,15 @@ export default function Overview(props) {
 
           <DatasetStatus {...props} />
           <ErrorHandler />
+
+          {props.datasetStatus === 'new' && (
+            <p
+              className="govuk-body govuk-!-margin-0"
+              dangerouslySetInnerHTML={{
+                __html: props.t('publish.overview.live_url', { url: eventualPublicUrl })
+              }}
+            />
+          )}
 
           <div className="overview-details">
             {openPublishTask && (

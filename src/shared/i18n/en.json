@@ -1046,6 +1046,7 @@
     },
     "overview": {
       "subheading": "Dataset overview",
+      "live_url": "Once published, the dataset will be available at: {{url}}",
       "publish": {
         "requested": {
           "publish_at": "Proposed publication date: <strong>{{publishAt}}</strong>",
