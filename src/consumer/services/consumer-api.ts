@@ -34,8 +34,9 @@ const logRequestTime = (method: string, url: string, start: number) => {
 };
 
 interface fetchParams {
-  url: string;
   method?: HttpMethod;
+  url: string;
+  query?: URLSearchParams | Record<string, string>;
   body?: FormData | string;
   json?: unknown;
   headers?: Record<string, string>;
@@ -47,10 +48,12 @@ export class ConsumerApi {
 
   constructor(private lang = Locale.English) {}
 
-  public async fetch({ url, method = HttpMethod.Get, body, json, headers, lang }: fetchParams): Promise<Response> {
+  public async fetch(params: fetchParams): Promise<Response> {
+    const { method = HttpMethod.Get, url, query, body, json, headers, lang = this.lang } = params;
+
     /* eslint-disable @typescript-eslint/naming-convention */
     const head = {
-      'Accept-Language': lang || this.lang,
+      'Accept-Language': lang,
       ...(json ? { 'Content-Type': 'application/json; charset=UTF-8' } : {}),
       ...headers
     };
@@ -59,8 +62,15 @@ export class ConsumerApi {
     // if json is passed, then body will be ignored
     const data = json ? JSON.stringify(json) : body;
     const start = performance.now();
+    const queryParams = new URLSearchParams(query);
 
-    return fetch(`${this.backendUrl}/${url}`, { method, headers: head, body: data })
+    if (lang) {
+      queryParams.set('lang', lang); // azure front door cache does not support passthrough of accept-language header
+    }
+
+    const qs = queryParams.size > 0 ? `?${queryParams.toString()}` : '';
+
+    return fetch(`${this.backendUrl}/${url}${qs}`, { method, headers: head, body: data })
       .then((response: Response) => {
         logRequestTime(method, url, start);
         return response;
@@ -88,17 +98,17 @@ export class ConsumerApi {
 
   public async getPublishedTopics(topicId?: string, page = 1, limit = 20): Promise<PublishedTopicsDTO> {
     logger.debug(`Fetching published datasets for topic: ${topicId}`);
-    const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
-    const url = topicId ? `v1/topic/${topicId}?${qs}` : `v1/topic`;
+    const url = topicId ? `v1/topic/${topicId}` : `v1/topic`;
+    const query = { page_number: page.toString(), page_size: limit.toString() };
 
-    return this.fetch({ url }).then((response) => response.json() as unknown as PublishedTopicsDTO);
+    return this.fetch({ url, query }).then((response) => response.json() as unknown as PublishedTopicsDTO);
   }
 
   public async getPublishedDatasetList(page = 1, limit = 20): Promise<ResultsetWithCount<DatasetListItemDTO>> {
     logger.debug(`Fetching published dataset list...`);
-    const qs = `${new URLSearchParams({ page_number: page.toString(), page_size: limit.toString() }).toString()}`;
+    const query = { page_number: page.toString(), page_size: limit.toString() };
 
-    return this.fetch({ url: `v1?${qs}` }).then(
+    return this.fetch({ url: `v1`, query }).then(
       (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
     );
   }
@@ -116,19 +126,17 @@ export class ConsumerApi {
     filter?: FilterInterface[]
   ): Promise<ViewDTO> {
     logger.debug(`Fetching published view of dataset: ${datasetId}`);
-    const searchParams = new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString() });
+    const query = new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString() });
 
     if (filter && filter.length) {
-      searchParams.set('filter', JSON.stringify(filter));
+      query.set('filter', JSON.stringify(filter));
     }
 
     if (sortBy) {
-      searchParams.append('sort_by', JSON.stringify([sortBy]));
+      query.append('sort_by', JSON.stringify([sortBy]));
     }
 
-    return this.fetch({ url: `v1/${datasetId}/view?${searchParams.toString()}` }).then(
-      (response) => response.json() as unknown as ViewDTO
-    );
+    return this.fetch({ url: `v1/${datasetId}/view`, query }).then((response) => response.json() as unknown as ViewDTO);
   }
 
   public async getPublishedDatasetFilters(datasetId: string): Promise<FilterTable[]> {
@@ -141,28 +149,28 @@ export class ConsumerApi {
   public async getCubeFileStream(
     datasetId: string,
     format: FileFormat,
-    language: Locale,
+    lang: Locale,
     view?: string,
     selectedFilterOptions?: string,
     sortBy?: string
   ): Promise<ReadableStream> {
     logger.debug(`Fetching ${format} stream for dataset: ${datasetId}...`);
-
-    const searchParams = new URLSearchParams();
+    const query = new URLSearchParams();
 
     if (view) {
-      searchParams.set('view', view);
+      query.set('view', view);
     }
 
     if (selectedFilterOptions) {
-      searchParams.set('filter', selectedFilterOptions);
+      query.set('filter', selectedFilterOptions);
     }
 
-    if (sortBy) searchParams.append('sort_by', sortBy);
+    if (sortBy) {
+      query.append('sort_by', sortBy);
+    }
 
-    return this.fetch({
-      url: `v1/${datasetId}/download/${format}?${searchParams.toString()}`,
-      lang: language
-    }).then((response) => response.body as ReadableStream);
+    return this.fetch({ url: `v1/${datasetId}/download/${format}`, query, lang }).then(
+      (response) => response.body as ReadableStream
+    );
   }
 }
