@@ -50,7 +50,7 @@ import { Designation } from '../../shared/enums/designation';
 import { RelatedLinkDTO } from '../../shared/dtos/related-link';
 import { RevisionProviderDTO } from '../../shared/dtos/revision-provider';
 import { ProviderSourceDTO } from '../../shared/dtos/provider-source';
-import { generateSequenceForNumber } from '../../shared/utils/pagination';
+import { paginationSequence } from '../../shared/utils/pagination';
 import { fileMimeTypeHandler } from '../../shared/utils/file-mimetype-handler';
 import { TopicDTO } from '../../shared/dtos/topic';
 import { NestedTopic, nestTopics } from '../../shared/utils/nested-topics';
@@ -361,7 +361,7 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
     if (!previewData) {
       throw new Error('No preview data found.');
     }
-    pagination = generateSequenceForNumber(previewData.current_page, previewData.total_pages);
+    pagination = paginationSequence(previewData.current_page, previewData.total_pages);
   } catch (_err) {
     res.status(400);
     errors = [{ field: 'preview', message: { key: 'errors.preview.failed_to_get_preview' } }];
@@ -567,7 +567,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
     const datasetTitle = revision?.metadata?.title;
     const selectedFilterOptions = parseFilters(query.filter as Record<string, string[]>);
 
-    pagination = generateSequenceForNumber(previewDTO.current_page, previewDTO.total_pages);
+    pagination = paginationSequence(previewDTO.current_page, previewDTO.total_pages);
     previewMetadata = await getDatasetMetadata(dataset, revision);
     previewData = previewDTO;
 

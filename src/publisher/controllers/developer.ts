@@ -10,7 +10,7 @@ import { DatasetListItemDTO } from '../../shared/dtos/dataset-list-item';
 import { logger } from '../../shared/utils/logger';
 import { ViewDTO } from '../../shared/dtos/view-dto';
 import { NotFoundException } from '../../shared/exceptions/not-found.exception';
-import { generateSequenceForNumber, getPaginationProps } from '../../shared/utils/pagination';
+import { paginationSequence, pageInfo } from '../../shared/utils/pagination';
 import { singleLangDataset, singleLangRevision } from '../../shared/utils/single-lang-dataset';
 import { statusToColour } from '../../shared/utils/status-to-colour';
 import { getDatasetStatus, getPublishingStatus } from '../../shared/utils/dataset-status';
@@ -33,7 +33,7 @@ export const listAllDatasets = async (req: Request, res: Response, next: NextFun
     const search = req.query.search as string | undefined;
     const results: ResultsetWithCount<DatasetListItemDTO> = await req.pubapi.getFullDatasetList(page, limit, search);
     const { data, count } = results;
-    const pagination = getPaginationProps(page, limit, count);
+    const pagination = pageInfo(page, limit, count);
     const flash = res.locals.flash;
     res.render('developer/list', { data, ...pagination, search, statusToColour, flash });
   } catch (err) {
@@ -66,7 +66,7 @@ export const displayDatasetPreview = async (req: Request, res: Response) => {
     const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
     const pageSize = Number.parseInt(req.query.page_size as string, 10) || 100;
     datasetView = await req.pubapi.getRevisionPreview(datasetId, revision.id, pageNumber, pageSize);
-    pagination = generateSequenceForNumber(datasetView.current_page, datasetView.total_pages);
+    pagination = paginationSequence(datasetView.current_page, datasetView.total_pages);
   } catch (err: any) {
     logger.error(err, `Failed to fetch the cube preview for dataset ${datasetId} and revision ${revision.id}`);
     previewFailed = err.message; // carry on, but without the cube preview

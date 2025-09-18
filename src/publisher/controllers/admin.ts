@@ -37,7 +37,7 @@ import { getUserRoleFormValues } from '../../shared/utils/user-role-form-values'
 import { UserRoleFormValues } from '../../shared/interfaces/user-role-form-values';
 import { differenceInSeconds } from 'date-fns';
 import { UserStatus } from '../../shared/enums/user-status';
-import { getPaginationProps } from '../../shared/utils/pagination';
+import { pageInfo } from '../../shared/utils/pagination';
 
 export const fetchUserGroup = async (req: Request, res: Response, next: NextFunction) => {
   const userGroupIdError = await hasError(userGroupIdValidator(), req);
@@ -101,7 +101,7 @@ export const listUserGroups = async (req: Request, res: Response, next: NextFunc
     const limit = parseInt(req.query.page_size as string, 10) || 10;
     const flash = res.locals.flash;
     const { data, count }: ResultsetWithCount<UserGroupListItemDTO> = await req.pubapi.listUserGroups(page, limit);
-    const pagination = getPaginationProps(page, limit, count);
+    const pagination = pageInfo(page, limit, count);
     res.render('admin/user-group-list', { groups: data, ...pagination, flash });
   } catch (err) {
     next(err);
@@ -237,7 +237,7 @@ export const listUsers = async (req: Request, res: Response, next: NextFunction)
     const limit = parseInt(req.query.page_size as string, 10) || 10;
     const search = req.query.search as string | undefined;
     const { data, count }: ResultsetWithCount<UserDTO> = await req.pubapi.listUsers(page, limit, search);
-    const pagination = getPaginationProps(page, limit, count);
+    const pagination = pageInfo(page, limit, count);
     res.render('admin/user-list', { users: data, count, search, ...pagination });
   } catch (err) {
     next(err);

@@ -604,7 +604,7 @@
   }
 
   .govuk-button-group .govuk-link,
-  a,
+  a:not(.govuk-pagination__link),
   a:visited,
   .govuk-task-list__link,
   .govuk-button-group .app-task-list__task-name > a {
@@ -950,7 +950,7 @@
   }
 
   .govuk-pagination {
-    justify-content: space-between;
+    justify-content: flex-end;
   }
 
   .govuk-pagination__prev .govuk-pagination__link,
