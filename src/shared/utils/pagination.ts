@@ -1,76 +1,59 @@
-// Special thanks ChatGPT...  The GovUK pagination algorithm
-export function generateSequenceForNumber(highlight: number, end: number): (string | number)[] {
+export function paginationSequence(currentPage: number, totalPages: number): (string | number)[] {
+  if (totalPages <= 1) {
+    return [];
+  }
+
+  if (totalPages <= 4) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  const pages = new Set<number>();
+
+  // Always include first, current, and last pages
+  pages.add(1);
+  pages.add(currentPage);
+  pages.add(totalPages);
+
+  // Include adjacent pages to current page
+  if (currentPage > 1) pages.add(currentPage - 1);
+  if (currentPage < totalPages) pages.add(currentPage + 1);
+
+  // Convert to sorted array
+  const sortedPages = Array.from(pages).sort((a, b) => a - b);
+
+  // Build result with ellipses
   const sequence: (string | number)[] = [];
 
-  // Validate input
-  if (highlight < 1 || highlight > end) {
-    throw new Error(`Highlighted number must be between 1 and ${end}.`);
-  }
+  for (let i = 0; i < sortedPages.length; i++) {
+    const currentPageNum = sortedPages[i];
+    const nextPageNum = sortedPages[i + 1];
 
-  if (end - 1 < 3) {
-    sequence.push(
-      ...Array.from({ length: end - 1 + 1 }, (_, index) => 1 + index).map((num) => (num === highlight ? num : num))
-    );
-    return sequence;
-  }
+    sequence.push(currentPageNum);
 
-  // Case 1: Highlight is within the first 3 pages
-  if (highlight <= 3) {
-    sequence.push(...Array.from({ length: 3 }, (_, index) => 1 + index));
-    sequence[highlight - 1] = highlight; // Highlight the specific number
-    if (end > 4) {
+    // Add ellipsis if there's a gap of more than 1
+    if (nextPageNum && nextPageNum - currentPageNum > 2) {
       sequence.push('...');
-      sequence.push(end);
+    } else if (nextPageNum && nextPageNum - currentPageNum === 2) {
+      // If gap is exactly 1 page, show that page instead of ellipsis
+      sequence.push(currentPageNum + 1);
     }
-    return sequence;
-  }
-
-  // Case 2: Highlight is near or at the last 3 pages
-  if (highlight >= end - 2) {
-    if (end - 3 > 1) {
-      sequence.push(1, '...');
-    }
-    for (let i = end - 3; i <= end; i++) {
-      if (i === highlight) {
-        sequence.push(i);
-      } else {
-        sequence.push(i);
-      }
-    }
-    return sequence;
-  }
-
-  // Case 3: General case
-  if (highlight - 2 > 1) {
-    sequence.push(1, '...');
-    sequence.push(highlight - 1);
-  } else {
-    sequence.push(...Array.from({ length: highlight - 1 }, (_, index) => index + 1));
-  }
-
-  sequence.push(highlight); // Highlight the number
-
-  if (highlight + 1 < end) {
-    sequence.push(highlight + 1, '...', end);
-  } else {
-    sequence.push(...Array.from({ length: end - highlight }, (_, index) => highlight + 1 + index));
   }
 
   return sequence;
 }
 
-export const getPaginationProps = (page: number, limit: number, totalRows: number) => {
-  const totalPages = Math.ceil(totalRows / limit);
+export const pageInfo = (currentPage: number, pageSize: number, totalRows: number) => {
+  const totalPages = Math.ceil(totalRows / pageSize);
 
   return {
-    current_page: page,
+    current_page: currentPage,
     total_pages: totalPages,
-    page_size: limit,
+    page_size: pageSize,
     page_info: {
       total_records: totalRows,
-      start_record: (page - 1) * limit + 1,
-      end_record: Math.min(page * limit, totalRows)
+      start_record: (currentPage - 1) * pageSize + 1,
+      end_record: Math.min(currentPage * pageSize, totalRows)
     },
-    pagination: totalPages > 1 ? generateSequenceForNumber(page, totalPages) : []
+    pagination: totalPages > 1 ? paginationSequence(currentPage, totalPages) : []
   };
 };

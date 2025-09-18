@@ -50,12 +50,8 @@ export default function Pagination({
         </div>
         <div className="govuk-grid-column-two-thirds">
           <nav className="govuk-pagination" aria-label="Pagination">
-            <div className={clsx('govuk-pagination__prev', { 'govuk-pagination__inactive': current_page === 1 })}>
-              {current_page === 1 ? (
-                <span className="govuk-pagination__link-title">
-                  <T>pagination.previous</T>
-                </span>
-              ) : (
+            {current_page > 1 && (
+              <div className={clsx('govuk-pagination__prev')}>
                 <a
                   className="govuk-link govuk-pagination__link"
                   href={buildUrl(
@@ -70,52 +66,48 @@ export default function Pagination({
                     <T>pagination.previous</T>
                   </span>
                 </a>
-              )}
-            </div>
+              </div>
+            )}
             <ul className="govuk-pagination__list">
-              {pagination.map((item, index) => {
-                if (item === '...') {
+              {pagination.map((page, index) => {
+                if (page === '...') {
                   return (
                     <li key={index} className="govuk-pagination__item govuk-pagination__item--ellipses">
                       ⋯
                     </li>
                   );
-                } else if (item === current_page) {
+                }
+                if (page === current_page) {
                   return (
                     <li
                       key={index}
                       className="govuk-pagination__item govuk-pagination__item--current govuk-pagination__inactive"
                     >
-                      <span aria-current="page">{item}</span>
-                    </li>
-                  );
-                } else {
-                  return (
-                    <li key={index} className="govuk-pagination__item">
-                      <a
-                        className="govuk-link govuk-pagination__link"
-                        href={buildUrl(
-                          baseUrl,
-                          i18n.language,
-                          { ...parsedQuery, page_number: item, page_size: page_size },
-                          anchor
-                        )}
-                        aria-label={`Page ${item}`}
-                      >
-                        {item}
-                      </a>
+                      <span aria-current="page">{page}</span>
                     </li>
                   );
                 }
+                return (
+                  <li key={index} className="govuk-pagination__item">
+                    <a
+                      className="govuk-link govuk-pagination__link"
+                      href={buildUrl(
+                        baseUrl,
+                        i18n.language,
+                        { ...parsedQuery, page_number: page, page_size: page_size },
+                        anchor
+                      )}
+                      aria-label={`Page ${page}`}
+                    >
+                      {page}
+                    </a>
+                  </li>
+                );
               })}
             </ul>
 
-            <div
-              className={clsx('govuk-pagination__next', {
-                'govuk-pagination__inactive': current_page >= total_pages
-              })}
-            >
-              {current_page < total_pages ? (
+            {current_page < total_pages && (
+              <div className={clsx('govuk-pagination__next')}>
                 <a
                   className="govuk-link govuk-pagination__link"
                   href={buildUrl(
@@ -130,12 +122,8 @@ export default function Pagination({
                     <T>pagination.next</T>
                   </span>
                 </a>
-              ) : (
-                <span className="govuk-pagination__link-title">
-                  <T>pagination.next</T>
-                </span>
-              )}
-            </div>
+              </div>
+            )}
           </nav>
         </div>
       </div>

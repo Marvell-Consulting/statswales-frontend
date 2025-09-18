@@ -3,7 +3,7 @@ import { NextFunction, Request, Response, Router } from 'express';
 import { flashErrors, flashMessages } from '../../shared/middleware/flash';
 import { DatasetListItemDTO } from '../../shared/dtos/dataset-list-item';
 import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count';
-import { getPaginationProps } from '../../shared/utils/pagination';
+import { pageInfo } from '../../shared/utils/pagination';
 import { getApproverUserGroups, getEditorUserGroups } from '../../shared/utils/user-permissions';
 
 export const homepage = Router();
@@ -29,7 +29,7 @@ homepage.get('/', async (req: Request, res: Response, next: NextFunction) => {
 
     const results: ResultsetWithCount<DatasetListItemDTO> = await req.pubapi.getUserDatasetList(page, limit, search);
     const { data, count } = results;
-    const pagination = getPaginationProps(page, limit, count);
+    const pagination = pageInfo(page, limit, count);
     const flash = res.locals.flash;
     res.render('homepage', { data, ...pagination, flash, canCreate, canApprove, search, errors });
   } catch (err) {

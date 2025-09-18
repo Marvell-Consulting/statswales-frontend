@@ -7,7 +7,7 @@ import { stringify } from 'csv-stringify/sync';
 
 import { DatasetListItemDTO } from '../../shared/dtos/dataset-list-item';
 import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count';
-import { generateSequenceForNumber, getPaginationProps } from '../../shared/utils/pagination';
+import { pageInfo } from '../../shared/utils/pagination';
 import { singleLangDataset } from '../../shared/utils/single-lang-dataset';
 import { getDatasetMetadata, metadataToCSV } from '../../shared/utils/dataset-metadata';
 import { NotFoundException } from '../../shared/exceptions/not-found.exception';
@@ -62,7 +62,7 @@ export const listPublishedDatasets = async (req: Request, res: Response, next: N
     const results: ResultsetWithCount<DatasetListItemDTO> = await req.conapi.getPublishedDatasetList(page, limit);
 
     const { data, count } = results;
-    const pagination = getPaginationProps(page, limit, count);
+    const pagination = pageInfo(page, limit, count);
 
     res.render('list', { data, count, ...pagination, hide_pagination_hint: true });
   } catch (err) {
@@ -76,7 +76,6 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   const query = qs.parse(req.originalUrl.split('?')[1]);
   const pageNumber = Number.parseInt(query.page_number as string, 10) || 1;
   const pageSize = Number.parseInt(query.page_size as string, 10) || DEFAULT_PAGE_SIZE;
-  let pagination: (string | number)[] = [];
   const sortBy = query.sort_by as unknown as SortByInterface;
   const selectedFilterOptions = parseFilters(query.filter as Record<string, string[]>);
   const shorthandUrl = req.buildUrl(`/shorthand`, req.language);
@@ -94,12 +93,12 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
     req.conapi.getPublishedDatasetFilters(dataset.id)
   ]);
 
-  pagination = generateSequenceForNumber(preview.current_page, preview.total_pages);
+  const pagination = pageInfo(preview.current_page, pageSize, preview.page_info?.total_records || 0);
 
   res.render('view', {
     ...preview,
+    ...pagination,
     datasetMetadata,
-    pagination,
     filters,
     selectedFilterOptions,
     shorthandUrl,
