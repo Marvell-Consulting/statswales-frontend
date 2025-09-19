@@ -99,10 +99,15 @@ export const listUserGroups = async (req: Request, res: Response, next: NextFunc
   try {
     const page = parseInt(req.query.page_number as string, 10) || 1;
     const limit = parseInt(req.query.page_size as string, 10) || 10;
+    const search = req.query.search as string | undefined;
     const flash = res.locals.flash;
-    const { data, count }: ResultsetWithCount<UserGroupListItemDTO> = await req.pubapi.listUserGroups(page, limit);
+    const { data, count }: ResultsetWithCount<UserGroupListItemDTO> = await req.pubapi.listUserGroups(
+      page,
+      limit,
+      search
+    );
     const pagination = pageInfo(page, limit, count);
-    res.render('admin/user-group-list', { groups: data, ...pagination, flash });
+    res.render('admin/user-group-list', { groups: data, ...pagination, search, flash });
   } catch (err) {
     next(err);
   }

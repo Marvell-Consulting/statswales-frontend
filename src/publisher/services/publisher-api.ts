@@ -702,9 +702,19 @@ export class PublisherApi {
     }).then((response) => response.json() as unknown as RevisionDTO);
   }
 
-  public async listUserGroups(page = 1, limit = 20): Promise<ResultsetWithCount<UserGroupListItemDTO>> {
+  public async listUserGroups(
+    page = 1,
+    limit = 20,
+    search?: string
+  ): Promise<ResultsetWithCount<UserGroupListItemDTO>> {
     logger.debug(`Fetching user group list...`);
-    const qs = `${new URLSearchParams({ page: page.toString(), limit: limit.toString() }).toString()}`;
+    const searchParams = new URLSearchParams({ page: page.toString(), limit: limit.toString() });
+
+    if (search) {
+      searchParams.append('search', search);
+    }
+
+    const qs = searchParams.toString();
 
     return this.fetch({ url: `admin/group/list?${qs}` }).then(
       (response) => response.json() as unknown as ResultsetWithCount<UserGroupListItemDTO>

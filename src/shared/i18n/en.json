@@ -1673,11 +1673,17 @@
     "group": {
       "list": {
         "heading": "Groups",
+        "search": {
+          "placeholder": "Search groups by name or email",
+          "button": "Search"
+        },
         "table": {
-          "name": "Name",
+          "name": "Group Name",
+          "organisation": "Organisation",
           "email": "Contact",
           "user_count": "Users",
-          "dataset_count": "Datasets"
+          "dataset_count": "Datasets",
+          "status": "Status"
         },
         "buttons": {
           "add": "Add group"
