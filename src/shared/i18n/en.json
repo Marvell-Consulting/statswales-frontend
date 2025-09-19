@@ -1723,7 +1723,7 @@
           "edit": {
             "label": "Change group details"
           },
-         "deactivate": {
+          "deactivate": {
             "label": "Deactivate group"
           },
           "reactivate": {
