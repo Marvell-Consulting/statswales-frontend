@@ -135,7 +135,7 @@ export const groupStatus = async (req: Request, res: Response) => {
     }
   } catch (err) {
     if (err instanceof ApiException) {
-      logger.error(err, 'there was a problem updating the user status');
+      logger.error(err, 'there was a problem updating the user group status');
       errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
     }
   }
