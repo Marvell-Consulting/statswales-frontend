@@ -31,6 +31,13 @@ export default function Overview(props) {
           <DatasetStatus {...props} />
           <ErrorHandler />
 
+          <p
+            className="govuk-body govuk-!-margin-0"
+            dangerouslySetInnerHTML={{
+              __html: props.t('publish.overview.group', { groupName: props.dataset.publisher?.group?.name })
+            }}
+          />
+
           {props.datasetStatus === 'new' && (
             <p
               className="govuk-body govuk-!-margin-0"

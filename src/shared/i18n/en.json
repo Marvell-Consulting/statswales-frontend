@@ -1046,7 +1046,8 @@
     },
     "overview": {
       "subheading": "Dataset overview",
-      "live_url": "Once published, the dataset will be available at: {{url}}",
+      "group": "Group: <strong>{{groupName}}</strong>",
+      "live_url": "Once published, the dataset will be available at: <strong>{{url}}</strong>",
       "publish": {
         "requested": {
           "publish_at": "Proposed publication date: <strong>{{publishAt}}</strong>",
