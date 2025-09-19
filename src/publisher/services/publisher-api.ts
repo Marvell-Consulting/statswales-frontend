@@ -46,6 +46,7 @@ import { FilterInterface } from '../../shared/interfaces/filterInterface';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
 import { TaskAction } from '../../shared/enums/task-action';
+import { UserGroupStatus } from '../../shared/enums/user-group-status';
 
 const config = appConfig();
 
@@ -721,9 +722,11 @@ export class PublisherApi {
     );
   }
 
-  public async getAllUserGroups(): Promise<UserGroupDTO[]> {
-    logger.debug(`Fetching all user groups...`);
-    return this.fetch({ url: `admin/group` }).then((response) => response.json() as unknown as UserGroupDTO[]);
+  public async getAllUserGroups(status?: UserGroupStatus): Promise<UserGroupDTO[]> {
+    logger.debug(`Fetching all user groups with status: ${status || 'any'}...`);
+    const qs = status ? `?${new URLSearchParams({ status }).toString()}` : '';
+
+    return this.fetch({ url: `admin/group${qs}` }).then((response) => response.json() as unknown as UserGroupDTO[]);
   }
 
   public async getUserGroup(groupId: string): Promise<UserGroupDTO> {
@@ -741,6 +744,14 @@ export class PublisherApi {
   public async updateUserGroup(group: UserGroupDTO): Promise<UserGroupDTO> {
     logger.debug(`Updating user group`);
     return this.fetch({ url: `admin/group/${group.id}`, method: HttpMethod.Patch, json: group }).then(
+      (response) => response.json() as unknown as UserGroupDTO
+    );
+  }
+
+  public async updateUserGroupStatus(groupId: string, status: UserGroupStatus): Promise<UserGroupDTO> {
+    logger.debug(`Updating user group status to ${status}...`);
+    const json = { status };
+    return this.fetch({ url: `admin/group/${groupId}/status`, method: HttpMethod.Patch, json }).then(
       (response) => response.json() as unknown as UserGroupDTO
     );
   }

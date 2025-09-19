@@ -16,4 +16,5 @@ export interface UserGroupDTO {
   metadata?: UserGroupMetadataDTO[];
   created_at?: string;
   updated_at?: string;
+  status?: string;
 }
