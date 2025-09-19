@@ -119,7 +119,7 @@ export const groupStatus = async (req: Request, res: Response) => {
   const groupName = group.metadata?.find((m) => lang.includes(m.language!))?.name || '---';
   let errors: ViewError[] = [];
 
-  const action = group.status === UserStatus.Active ? UserGroupAction.Deactivate : UserGroupAction.Reactivate;
+  const action = group.status === UserGroupStatus.Active ? UserGroupAction.Deactivate : UserGroupAction.Reactivate;
 
   try {
     if (req.method === 'POST') {
