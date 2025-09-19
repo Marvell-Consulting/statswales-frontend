@@ -604,7 +604,7 @@
   }
 
   .govuk-button-group .govuk-link,
-  a:not(.govuk-pagination__link),
+  a,
   a:visited,
   .govuk-task-list__link,
   .govuk-button-group .app-task-list__task-name > a {
@@ -1498,6 +1498,10 @@
   .govuk-tabs__tab:visited,
   .govuk-pagination__link:visited {
     background: none;
+  }
+
+  a.govuk-pagination__link {
+    font-size: inherit;
   }
 
   .govuk-tabs__tab {
