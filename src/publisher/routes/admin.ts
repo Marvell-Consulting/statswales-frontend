@@ -13,7 +13,8 @@ import {
   createUser,
   editUserRoles,
   viewUser,
-  userStatus
+  userStatus,
+  groupStatus
 } from '../controllers/admin';
 import { ensureAdmin } from '../middleware/ensure-admin';
 import { flashMessages } from '../../shared/middleware/flash';
@@ -45,6 +46,9 @@ admin.post('/group/:userGroupId/organisation', fetchUserGroup, upload.none(), pr
 
 admin.get('/group/:userGroupId/email', fetchUserGroup, provideGroupEmail);
 admin.post('/group/:userGroupId/email', fetchUserGroup, upload.none(), provideGroupEmail);
+
+admin.get('/group/:userGroupId/status', fetchUserGroup, groupStatus);
+admin.post('/group/:userGroupId/status', fetchUserGroup, upload.none(), groupStatus);
 
 admin.use('/user', (req: Request, res: Response, next: NextFunction) => {
   res.locals.activePage = 'users';

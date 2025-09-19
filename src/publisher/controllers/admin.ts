@@ -38,6 +38,8 @@ import { UserRoleFormValues } from '../../shared/interfaces/user-role-form-value
 import { differenceInSeconds } from 'date-fns';
 import { UserStatus } from '../../shared/enums/user-status';
 import { pageInfo } from '../../shared/utils/pagination';
+import { UserGroupAction } from '../../shared/enums/user-group-action';
+import { UserGroupStatus } from '../../shared/enums/user-group-status';
 
 export const fetchUserGroup = async (req: Request, res: Response, next: NextFunction) => {
   const userGroupIdError = await hasError(userGroupIdValidator(), req);
@@ -91,8 +93,54 @@ export const fetchUser = async (req: Request, res: Response, next: NextFunction)
 
 export const viewGroup = async (req: Request, res: Response) => {
   const group = singleLangUserGroup(res.locals.group, req.language);
-  const datsetCount = group.datasets?.length || 0;
-  res.render('admin/user-group-view', { group, datsetCount });
+  const datasetCount = group.datasets?.length || 0;
+  const actions = [{ key: UserGroupAction.Edit, url: req.buildUrl(`/admin/group/${group.id}/name`, req.language) }];
+
+  if (group.status === UserGroupStatus.Active && datasetCount === 0) {
+    actions.push({
+      key: UserGroupAction.Deactivate,
+      url: req.buildUrl(`/admin/group/${group.id}/status`, req.language)
+    });
+  }
+
+  if (group.status === UserGroupStatus.Inactive) {
+    actions.push({
+      key: UserGroupAction.Reactivate,
+      url: req.buildUrl(`/admin/group/${group.id}/status`, req.language)
+    });
+  }
+
+  res.render('admin/user-group-view', { group, datasetCount, actions });
+};
+
+export const groupStatus = async (req: Request, res: Response) => {
+  const group: UserGroupDTO = res.locals.group;
+  const lang = req.language as Locale;
+  const groupName = group.metadata?.find((m) => lang.includes(m.language!))?.name || '---';
+  let errors: ViewError[] = [];
+
+  const action = group.status === UserStatus.Active ? UserGroupAction.Deactivate : UserGroupAction.Reactivate;
+
+  try {
+    if (req.method === 'POST') {
+      if (action === UserGroupAction.Deactivate) {
+        await req.pubapi.updateUserGroupStatus(group.id, UserGroupStatus.Inactive);
+      } else {
+        await req.pubapi.updateUserGroupStatus(group.id, UserGroupStatus.Active);
+      }
+      req.session.flash = [{ key: `admin.group.${action}.success`, params: { groupName } }];
+      req.session.save();
+      res.redirect(req.buildUrl(`/admin/group/${group.id}`, req.language));
+      return;
+    }
+  } catch (err) {
+    if (err instanceof ApiException) {
+      logger.error(err, 'there was a problem updating the user status');
+      errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+    }
+  }
+
+  res.render('admin/user-group-status', { group, groupName, action, errors });
 };
 
 export const listUserGroups = async (req: Request, res: Response, next: NextFunction) => {
@@ -323,7 +371,9 @@ export const editUserRoles = async (req: Request, res: Response) => {
 
   try {
     [availableGroups, availableRoles] = await Promise.all([
-      req.pubapi.getAllUserGroups().then((groups) => groups.map((group) => singleLangUserGroup(group, req.language))),
+      req.pubapi
+        .getAllUserGroups(UserGroupStatus.Active)
+        .then((groups) => groups.map((group) => singleLangUserGroup(group, req.language))),
       req.pubapi.getAvailableUserRoles()
     ]);
 

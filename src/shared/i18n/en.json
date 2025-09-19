@@ -1699,7 +1699,8 @@
           "email": {
             "heading": "Contact email",
             "not_set": "Not set"
-          }
+          },
+          "status": "Status"
         },
         "users": {
           "heading": "Users",
@@ -1714,8 +1715,20 @@
           "heading": "Datasets",
           "dataset": "There is {{count}} dataset",
           "dataset_other": "There are {{count}} datasets",
-          "some": "$t(admin.group.view.datasets.dataset, {\"count\": {{count}} }) assigned to this group",
+          "some": "$t(admin.group.view.datasets.dataset, {\"count\": {{count}} }) assigned to this group. If you need to deactivate the group, you must first move these datasets to another group.",
           "none": "No datasets assigned to this group"
+        },
+        "actions": {
+          "heading": "Actions",
+          "edit": {
+            "label": "Change group details"
+          },
+         "deactivate": {
+            "label": "Deactivate group"
+          },
+          "reactivate": {
+            "label": "Reactivate group"
+          }
         },
         "buttons": {
           "edit": "Change group details"
@@ -1779,6 +1792,28 @@
         "success": {
           "create": "Group created successfully",
           "update": "Group updated successfully"
+        }
+      },
+      "deactivate": {
+        "heading": "Are you sure you want to deactivate {{groupName}}?",
+        "description": "Any associated users will be removed from this group and it will no longer be assignable to users or datasets.",
+        "success": "{{groupName}} deactivated",
+        "error": {
+          "saving": "Group could not be deactivated. Try again later."
+        }
+      },
+      "reactivate": {
+        "heading": "Are you sure you want to reactivate {{groupName}}?",
+        "description": "This group will be assignable to datasets and users.",
+        "success": "{{groupName}} reactivated",
+        "error": {
+          "saving": "Group could not be reactivated. Try again later."
+        }
+      },
+      "badge": {
+        "status": {
+          "active": "Active",
+          "inactive": "Deactivated"
         }
       }
     },

@@ -10,6 +10,7 @@ export const singleLangUserGroup = (group: UserGroupDTO, lang: string): SingleLa
     ...pick(group, ['id', 'users', 'datasets', 'created_at', 'updated_at']),
     name: meta?.name,
     email: meta?.email,
-    organisation: group.organisation?.name
+    organisation: group.organisation?.name,
+    status: group.status
   };
 };

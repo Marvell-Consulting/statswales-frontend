@@ -1,6 +1,7 @@
 import React from 'react';
 import Layout from '../components/Layout';
 import Table from '../../../shared/views/components/Table';
+import FlashMessages from '../../../shared/views/components/FlashMessages';
 
 export default function UserGroupView(props) {
   const columns = [
@@ -31,12 +32,22 @@ export default function UserGroupView(props) {
   const title = props.group?.name;
   return (
     <Layout {...props} title={title}>
+      <FlashMessages />
+
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <h1 className="govuk-heading-xl">{title}</h1>
 
           <h2 className="govuk-heading-l">{props.t('admin.group.view.details.heading')}</h2>
           <dl className="govuk-summary-list">
+            <div className="govuk-summary-list__row">
+              <dt className="govuk-summary-list__key">{props.t('admin.group.view.details.status')}</dt>
+              <dd className="govuk-summary-list__value">
+                <strong className={`govuk-tag govuk-tag--${props.statusToColour(props.group.status)}`}>
+                  {props.t(`admin.group.badge.status.${props.group.status}`)}
+                </strong>
+              </dd>
+            </div>
             <div className="govuk-summary-list__row">
               <dt className="govuk-summary-list__key">{props.t('admin.group.view.details.organisation.heading')}</dt>
               <dd className="govuk-summary-list__value">
@@ -50,10 +61,6 @@ export default function UserGroupView(props) {
               </dd>
             </div>
           </dl>
-
-          <a href={props.buildUrl(`/admin/group/${props.group.id}/name`, props.i18n.language)} className="govuk-link">
-            {props.t('admin.group.view.buttons.edit')}
-          </a>
         </div>
       </div>
 
@@ -81,8 +88,26 @@ export default function UserGroupView(props) {
           {!props.group?.datasets || props.group.datasets.length === 0 ? (
             <p>{props.t('admin.group.view.datasets.none')}</p>
           ) : (
-            <p>{props.t('admin.group.view.datasets.some', { count: props.datsetCount })}</p>
+            <p>{props.t('admin.group.view.datasets.some', { count: props.datasetCount })}</p>
           )}
+        </div>
+      </div>
+
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-two-thirds">
+          <h2 className="govuk-heading-l">{props.t('admin.group.view.actions.heading')}</h2>
+
+          <div className="actions">
+            <ul className="govuk-list">
+              {props.actions?.map((action, index) => (
+                <li key={index}>
+                  <a className="govuk-link govuk-link--no-underline" href={action.url}>
+                    {props.t(`admin.group.view.actions.${action.key}.label`)}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </Layout>

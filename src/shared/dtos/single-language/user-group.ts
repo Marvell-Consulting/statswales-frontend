@@ -10,4 +10,5 @@ export interface SingleLanguageUserGroup {
   datasets?: DatasetDTO[];
   created_at?: string;
   updated_at?: string;
+  status?: string;
 }
