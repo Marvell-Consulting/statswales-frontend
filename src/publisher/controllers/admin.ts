@@ -40,6 +40,7 @@ import { UserStatus } from '../../shared/enums/user-status';
 import { pageInfo } from '../../shared/utils/pagination';
 import { UserGroupAction } from '../../shared/enums/user-group-action';
 import { UserGroupStatus } from '../../shared/enums/user-group-status';
+import { i18next } from '../../shared/middleware/translation';
 
 export const fetchUserGroup = async (req: Request, res: Response, next: NextFunction) => {
   const userGroupIdError = await hasError(userGroupIdValidator(), req);
@@ -472,4 +473,20 @@ export const userStatus = async (req: Request, res: Response) => {
   }
 
   res.render('admin/user-status', { user, userName, action, errors });
+};
+
+export const dashboard = async (req: Request, res: Response, next: NextFunction) => {
+  res.locals.activePage = 'dashboard';
+  try {
+    const stats = await req.pubapi.getDashboardStats();
+    const title = i18next.t('admin.dashboard.heading', { lng: req.language });
+    res.render('admin/dashboard', { stats, title });
+  } catch (err: any) {
+    logger.error(err, 'there was a problem fetching dashboard stats');
+    if ([401, 403].includes(err.status)) {
+      next(err);
+      return;
+    }
+    next(new NotFoundException('errors.dashboard_stats_missing'));
+  }
 };

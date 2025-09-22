@@ -64,7 +64,8 @@
       "login": "Sign in",
       "developer": "Developer",
       "groups": "Groups",
-      "users": "Users"
+      "users": "Users",
+      "dashboard": "Statistics"
     }
   },
   "cookies": {
@@ -1671,6 +1672,38 @@
     "tasklist": "tasklist"
   },
   "admin": {
+    "dashboard": {
+      "heading": "Service statistics",
+      "stats": {
+        "datasets": {
+          "heading": "Datasets",
+          "total": {
+            "heading": "Total datasets",
+            "description": "All datasets, including incomplete, pending, published, etc"
+          },
+          "incomplete": {
+            "heading": "Incomplete",
+            "description": "Datasets in progress that have not yet been published"
+          },
+          "pending": {
+            "heading": "Pending approval",
+            "description": "Datasets awaiting review"
+          },
+          "published": {
+            "heading": "Published",
+            "description": "Datasets currently available on StatsWales"
+          },
+          "archived": {
+            "heading": "Archived",
+            "description": "Datasets no longer actively maintained"
+          },
+          "unpublished": {
+            "heading": "Unpublished",
+            "description": "Datasets temporarily removed from public view"
+          }
+        }
+      }
+    },
     "group": {
       "list": {
         "heading": "Groups",

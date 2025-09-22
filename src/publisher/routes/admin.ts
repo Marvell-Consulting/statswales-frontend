@@ -14,7 +14,8 @@ import {
   editUserRoles,
   viewUser,
   userStatus,
-  groupStatus
+  groupStatus,
+  dashboard
 } from '../controllers/admin';
 import { ensureAdmin } from '../middleware/ensure-admin';
 import { flashMessages } from '../../shared/middleware/flash';
@@ -55,6 +56,7 @@ admin.use('/user', (req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
+admin.get('/dashboard', dashboard);
 admin.get('/user', listUsers);
 
 admin.get('/user/create', createUser);
