@@ -18,32 +18,38 @@ const Dashboard = (props) => {
     {
       title: props.t('admin.dashboard.stats.datasets.total.heading'),
       description: props.t('admin.dashboard.stats.datasets.total.description'),
-      value: datasetStats.total,
+      value: datasetStats?.total || 0,
       className: 'stat-card--total'
     },
     {
       title: props.t('admin.dashboard.stats.datasets.incomplete.heading'),
       description: props.t('admin.dashboard.stats.datasets.incomplete.description'),
-      value: datasetStats.incomplete,
+      value: datasetStats?.incomplete || 0,
       className: 'stat-card--incomplete'
     },
     {
       title: props.t('admin.dashboard.stats.datasets.pending.heading'),
       description: props.t('admin.dashboard.stats.datasets.pending.description'),
-      value: datasetStats.pendingApproval,
+      value: datasetStats?.pendingApproval || 0,
       className: 'stat-card--pending'
     },
     {
       title: props.t('admin.dashboard.stats.datasets.published.heading'),
       description: props.t('admin.dashboard.stats.datasets.published.description'),
-      value: datasetStats.published,
+      value: datasetStats?.published || 0,
       className: 'stat-card--published'
     },
     {
       title: props.t('admin.dashboard.stats.datasets.archived.heading'),
       description: props.t('admin.dashboard.stats.datasets.archived.description'),
-      value: datasetStats.archived,
+      value: datasetStats?.archived || 0,
       className: 'stat-card--archived'
+    },
+    {
+      title: props.t('admin.dashboard.stats.datasets.offline.heading'),
+      description: props.t('admin.dashboard.stats.datasets.offline.description'),
+      value: datasetStats?.offline || 0,
+      className: 'stat-card--offline'
     }
   ];
 

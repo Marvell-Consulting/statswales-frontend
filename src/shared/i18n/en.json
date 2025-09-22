@@ -1697,7 +1697,7 @@
             "heading": "Archived",
             "description": "Datasets no longer actively maintained"
           },
-          "unpublished": {
+          "offline": {
             "heading": "Unpublished",
             "description": "Datasets temporarily removed from public view"
           }
