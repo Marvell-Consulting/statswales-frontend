@@ -47,6 +47,7 @@ import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
 import { TaskAction } from '../../shared/enums/task-action';
 import { UserGroupStatus } from '../../shared/enums/user-group-status';
+import { DashboardStats } from '../../shared/interfaces/dashboard-stats';
 
 const config = appConfig();
 
@@ -701,6 +702,11 @@ export class PublisherApi {
       url: `dataset/${datasetId}/revision`,
       method: HttpMethod.Post
     }).then((response) => response.json() as unknown as RevisionDTO);
+  }
+
+  public async getDashboardStats(): Promise<DashboardStats> {
+    logger.debug('Fetching dashboard stats...');
+    return this.fetch({ url: 'admin/dashboard' }).then((response) => response.json() as unknown as DashboardStats);
   }
 
   public async listUserGroups(

@@ -188,6 +188,17 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
                   </a>
                 </li>
                 {isAdmin && (
+                  <li>
+                    <a
+                      href={buildUrl('/admin/dashboard', i18n.language)}
+                      className={clsx({ 'is-active': activePage === 'dashboard' })}
+                      aria-current={activePage === 'dashboard' ? 'page' : undefined}
+                    >
+                      {t('header.navigation.dashboard')}
+                    </a>
+                  </li>
+                )}
+                {isAdmin && (
                   <>
                     <li>
                       <a
