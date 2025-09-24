@@ -775,6 +775,7 @@
       },
       "add_source": {
         "heading": "Add a data source from the selected data provider",
+        "no_available_sources": "This provider has no specific sources available to select.",
         "selected_provider": "Selected data provider",
         "form": {
           "has_source": {
