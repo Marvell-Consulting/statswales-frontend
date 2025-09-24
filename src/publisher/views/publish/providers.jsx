@@ -44,6 +44,46 @@ export default function Providers(props) {
         ? props.t('publish.providers.list.heading')
         : props.t('publish.providers.add_source.heading');
 
+  const addSourceOpts = [
+    props.availableSources.length > 0 && {
+      value: 'true',
+      label: props.t('publish.providers.add_source.form.has_source.options.yes.label'),
+      children: (
+        <div className="govuk-form-group">
+          <fieldset className="govuk-fieldset" role="group" aria-describedby="addYes">
+            <legend
+              className="govuk-fieldset__legend govuk-fieldset__legend--s"
+              dangerouslySetInnerHTML={{
+                __html: props.t('publish.providers.add_source.form.source.note', {
+                  request_data_provider_url: props.request_data_provider_url
+                })
+              }}
+            />
+
+            <br />
+
+            <Autocomplete
+              name="source_id"
+              hint={<T>publish.providers.add_source.form.source.hint</T>}
+              options={[
+                {
+                  value: '',
+                  disabled: true
+                },
+                ...props.availableSources.map((source) => ({ value: source.id, label: source.name }))
+              ]}
+              value=""
+            />
+          </fieldset>
+        </div>
+      )
+    },
+    {
+      value: 'false',
+      label: props.t('publish.providers.add_source.form.has_source.options.no.label')
+    }
+  ].filter(Boolean);
+
   return (
     <Layout {...props} backLink={backLink} returnLink={returnLink} formPage title={title}>
       <script src="/assets/js/accessible-autocomplete.min.js"></script>
@@ -148,51 +188,18 @@ export default function Providers(props) {
               </h3>
               <p className="govuk-body">{props.dataProvider.provider_name}</p>
 
+              {props.availableSources.length === 0 && (
+                <p className="govuk-body">{props.t('publish.providers.add_source.no_available_sources')}</p>
+              )}
+
               <form encType="multipart/form-data" method="post">
                 <input type="hidden" name="provider_id" value={props.dataProvider?.provider_id} />
 
                 <RadioGroup
                   name="add_source"
                   labelledBy="add-source"
-                  options={[
-                    {
-                      value: 'true',
-                      label: props.t('publish.providers.add_source.form.has_source.options.yes.label'),
-                      children: (
-                        <div className="govuk-form-group">
-                          <fieldset className="govuk-fieldset" role="group" aria-describedby="addYes">
-                            <legend
-                              className="govuk-fieldset__legend govuk-fieldset__legend--s"
-                              dangerouslySetInnerHTML={{
-                                __html: props.t('publish.providers.add_source.form.source.note', {
-                                  request_data_provider_url: props.request_data_provider_url
-                                })
-                              }}
-                            />
-
-                            <br />
-
-                            <Autocomplete
-                              name="source_id"
-                              hint={<T>publish.providers.add_source.form.source.hint</T>}
-                              options={[
-                                {
-                                  value: '',
-                                  disabled: true
-                                },
-                                ...props.availableSources.map((source) => ({ value: source.id, label: source.name }))
-                              ]}
-                              value=""
-                            />
-                          </fieldset>
-                        </div>
-                      )
-                    },
-                    {
-                      value: 'false',
-                      label: props.t('publish.providers.add_source.form.has_source.options.no.label')
-                    }
-                  ]}
+                  options={addSourceOpts}
+                  value={props.availableSources.length === 0 ? 'false' : undefined}
                 />
 
                 <button type="submit" className="govuk-button" data-module="govuk-button">
