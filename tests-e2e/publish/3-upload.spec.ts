@@ -45,7 +45,7 @@ test.describe('Upload page', () => {
 
     test('Can switch to Welsh', async ({ page }) => {
       await page.getByText('Cymraeg').click();
-      await expect(page.getByRole('heading', { name: "Lanlwytho'r tabl data" })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'Lanlwytho’r tabl data' })).toBeVisible();
     });
 
     test.describe('Form', () => {
