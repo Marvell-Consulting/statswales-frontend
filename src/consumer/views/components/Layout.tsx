@@ -4,6 +4,22 @@ import { Locals, LocalsProvider, useLocals } from '../../../shared/views/context
 import CookieBanner from '../../../shared/views/components/CookieBanner';
 import { AppEnv } from '../../../shared/config/env.enum';
 
+const CanonicalUrls = () => {
+  const { buildUrl, protocol, hostname, url } = useLocals();
+  const currentUrl = `${protocol}://${hostname}${url}`;
+  const englishUrl = buildUrl(url, 'en-GB');
+  const welshUrl = buildUrl(url, 'cy-GB');
+
+  return (
+    <>
+      <link rel="alternate" hrefLang="en-GB" href={`https://stats.gov.wales${englishUrl}`} />
+      <link rel="alternate" hrefLang="cy-GB" href={`https://stats.llyw.cymru${welshUrl}`} />
+      <link rel="alternate" hrefLang="x-default" href={currentUrl} />
+      <link rel="canonical" href={currentUrl} />
+    </>
+  );
+};
+
 const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; noPad?: boolean }>) => {
   const { i18n, t, buildUrl, appEnv } = useLocals();
 
@@ -24,6 +40,8 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
         <link rel="manifest" href="/assets/manifest.json" />
         <link rel="stylesheet" href="/assets/css/govuk-frontend.min.css" />
         <link rel="stylesheet" href="/assets/css/app.css" />
+
+        <CanonicalUrls />
 
         {[AppEnv.Staging, AppEnv.Prod].includes(appEnv) && (
           <>
