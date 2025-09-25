@@ -27,6 +27,7 @@ export const initServices = (req: Request, res: Response, next: NextFunction): v
   req.buildUrl = localeUrl;
 
   // for use in templates (added to res.locals)
+  res.locals.appEnv = config.env;
   res.locals.buildUrl = localeUrl;
   res.locals.statusToColour = statusToColour;
   res.locals.url = req.originalUrl;
