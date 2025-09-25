@@ -66,6 +66,9 @@
       "dashboard": "Statistics"
     }
   },
+  "breadcrumbs": {
+    "home": "Home"
+  },
   "cookies": {
     "banner": {
       "required": {

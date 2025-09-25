@@ -64,6 +64,9 @@
       "users": "Defnyddwyr"
     }
   },
+  "breadcrumbs": {
+    "home": "Hafan"
+  },
   "cookies": {
     "banner": {
       "required": {
