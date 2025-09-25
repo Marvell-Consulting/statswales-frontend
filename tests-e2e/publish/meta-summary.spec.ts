@@ -44,7 +44,7 @@ test.describe('Metadata Summary', () => {
       await summaryPage.goto(id);
       await page.getByText('Cymraeg').click();
       await expect(
-        page.getByRole('heading', { name: `Beth yw'r crynodeb o'r set ddata hon a'i newidynnau?` })
+        page.getByRole('heading', { name: `Beth yw’r crynodeb o’r set ddata hon a’i newidynnau?` })
       ).toBeVisible();
     });
 

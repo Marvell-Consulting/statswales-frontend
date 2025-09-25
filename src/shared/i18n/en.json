@@ -3,8 +3,6 @@
   "developer_warning": "<strong class=\"govuk-tag govuk-tag--red govuk-phase-banner__content__tag\">Warning</strong> This is a developer page and has not been through user research",
   "developer_tag": "<span class=\"govuk-tag govuk-tag--yellow govuk-phase-banner__content__tag\">Developer Page</span>",
   "external_tag": "<span class=\"govuk-tag govuk-tag--orange govuk-phase-banner__content__tag\">External Page</span>",
-  "yes": "Yes",
-  "no": "No",
   "toc": "Contents",
   "user_roles": {
     "editor": "Editor",
