@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import T from '../../../shared/views/components/T';
 import { Locals, LocalsProvider, useLocals } from '../../../shared/views/context/Locals';
 import CookieBanner from '../../../shared/views/components/CookieBanner';
+import { AppEnv } from '../../../shared/config/env.enum';
 
 export type LayoutProps = {
   title?: string;
@@ -12,7 +13,7 @@ export type LayoutProps = {
 };
 
 const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithChildren<LayoutProps>) => {
-  const { i18n, t, isAuthenticated, buildUrl, activePage, isAdmin, isDeveloper } = useLocals();
+  const { i18n, t, isAuthenticated, buildUrl, activePage, isAdmin, isDeveloper, appEnv } = useLocals();
   return (
     <html lang={i18n.language} className="govuk-template wg">
       <head>
@@ -83,6 +84,18 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
         <meta name="msapplication-navbutton-color" content="#323232" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="#323232" />
+
+        {[AppEnv.Staging, AppEnv.Prod].includes(appEnv) && (
+          <>
+            {/* Google tag (gtag.js) */}
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-955WY5XQTC"></script>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-955WY5XQTC');`
+              }}
+            />
+          </>
+        )}
       </head>
 
       <body className="govuk-template__body app-body-className" data-test="My value" data-other="report:details">

@@ -2,9 +2,10 @@ import React, { PropsWithChildren } from 'react';
 import clsx from 'clsx';
 import { Locals, LocalsProvider, useLocals } from '../../../shared/views/context/Locals';
 import CookieBanner from '../../../shared/views/components/CookieBanner';
+import { AppEnv } from '../../../shared/config/env.enum';
 
 const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; noPad?: boolean }>) => {
-  const { i18n, t, buildUrl } = useLocals();
+  const { i18n, t, buildUrl, appEnv } = useLocals();
 
   return (
     <html lang={i18n.language} className="govuk-template wg">
@@ -23,6 +24,18 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
         <link rel="manifest" href="/assets/manifest.json" />
         <link rel="stylesheet" href="/assets/css/govuk-frontend.min.css" />
         <link rel="stylesheet" href="/assets/css/app.css" />
+
+        {[AppEnv.Staging, AppEnv.Prod].includes(appEnv) && (
+          <>
+            {/* Google tag (gtag.js) */}
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-955WY5XQTC"></script>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-955WY5XQTC');`
+              }}
+            />
+          </>
+        )}
       </head>
 
       <body className="govuk-template__body app-body-className" data-test="My value" data-other="report:details">
