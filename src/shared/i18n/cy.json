@@ -64,6 +64,9 @@
       "users": "Defnyddwyr"
     }
   },
+  "breadcrumbs": {
+    "home": "Hafan"
+  },
   "cookies": {
     "banner": {
       "required": {
@@ -197,7 +200,7 @@
     },
     "notes": {
       "heading": "Nodiadau data",
-      "shorthand": "Defnyddir <a class=\"govuk-link\" href=\"{{shorthand_url}}\" target=\"_blank\">Standard shorthand</a> yn y tabl hwn:",
+      "shorthand": "Defnyddir <a class=\"govuk-link\" href=\"{{shorthand_url}}\" target=\"_blank\">Llawfer safonol</a> yn y tabl hwn:",
       "revisions": "Diwygiadau",
       "data_value_shorthand": "Llaw-fer gwerth data",
       "rounding": "Talgrynnu wedi'i wneud",
