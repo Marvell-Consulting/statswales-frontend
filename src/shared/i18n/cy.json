@@ -1918,7 +1918,7 @@
       "topics": "Pynciau",
       "topic": "Pwnc",
       "sub_topic": "Is-bwnc",
-      "api": "Pori fesul pwnc neu <a rel=\"noreferrer noopener\" target=\"_blank\" href=\"{{url}}\">gael mynediad API (yn agor mewn tab newydd)</a>.",
+      "api": "Pori fesul pwnc neu <a rel=\"noreferrer noopener\" target=\"_blank\" href=\"{{url}}\">gael mynediad API (yn agor mewn tab newydd, Saesneg yn unig)</a>.",
       "dataset": {
         "first_published": "Cyhoeddwyd yn gyntaf: {{published}}",
         "last_updated": "Diweddarwyd:  {{updated}}",
