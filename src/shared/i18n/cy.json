@@ -1608,7 +1608,7 @@
   },
   "filters": {
     "select_all": "Dewiswch bob <span class=\"govuk-visually-hidden\"> {{columnName}}</span>",
-    "none": "<span class=\"govuk-visually-hidden\">Select </span>None<span class=\"govuk-visually-hidden\"> o {{columnName}}</span>",
+    "none": "<span class=\"govuk-visually-hidden\">Dewiswch </span>Ddim<span class=\"govuk-visually-hidden\"> o {{columnName}}</span>",
     "clear": "Clirio popeth",
     "no_filter": "Heb ei hidlo <span class=\"govuk-visually-hidden\"> am {{columnName}}</span>",
     "summary": "<span class=\"number-selected\">{{filtered}}</span> o {{total}} wedi'u dewis",
@@ -1918,7 +1918,7 @@
       "topics": "Pynciau",
       "topic": "Pwnc",
       "sub_topic": "Is-bwnc",
-      "api": "Pori fesul pwnc neu <a rel=\"noreferrer noopener\" target=\"_blank\" href=\"{{url}}\">gael mynediad API (yn agor mewn tab newydd)</a>.",
+      "api": "Pori fesul pwnc neu <a rel=\"noreferrer noopener\" target=\"_blank\" href=\"{{url}}\">gael mynediad API (yn agor mewn tab newydd, Saesneg yn unig)</a>.",
       "dataset": {
         "first_published": "Cyhoeddwyd yn gyntaf: {{published}}",
         "last_updated": "Diweddarwyd:  {{updated}}",
