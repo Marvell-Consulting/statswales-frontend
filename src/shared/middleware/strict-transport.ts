@@ -29,7 +29,7 @@ export const strictTransport = [AppEnv.Ci, AppEnv.Local].includes(config.env)
               "'unsafe-inline'",
               'https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/fira_code.min.css'
             ],
-            scriptSrc: ["'self'", "'unsafe-inline'"],
+            scriptSrc: ["'self'", "'unsafe-inline'", 'https://www.googletagmanager.com/gtag/js?id=G-955WY5XQTC'],
             imgSrc: ['*', 'data:']
           }
         })
