@@ -6,11 +6,8 @@ import i18nextMiddleware, { LanguageDetector } from 'i18next-http-middleware';
 
 import { appConfig } from '../config';
 
-const ignoreRoutes = ['/public', '/css', '/assets', '/healthcheck'];
-
 const config = appConfig();
-const cookieDomain = new URL(config.auth.jwt.cookieDomain).hostname;
-
+const ignoreRoutes = ['/public', '/css', '/assets', '/healthcheck'];
 const TRANSLATIONS = config.language.availableTranslations;
 const SUPPORTED_LOCALES = config.language.supportedLocales;
 
@@ -41,7 +38,6 @@ i18next
       lookupCookie: 'lang',
       lookupHeader: 'accept-language',
       caches: ['cookie'],
-      cookieDomain,
       cookieSecure: config.session.secure,
       cookieHttpOnly: true,
       cookieSameSite: 'lax'
