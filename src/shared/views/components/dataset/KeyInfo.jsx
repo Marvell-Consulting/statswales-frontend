@@ -32,8 +32,8 @@ export default function KeyInfo(props) {
     return <T>dataset_view.key_information.next_update_missing</T>;
   }
 
-  function PeriodCovered(props) {
-    if (!props.timePeriod.start || !props.timePeriod.end) {
+  function PeriodCovered({ timePeriod, locale }) {
+    if (!timePeriod.start || !timePeriod.end) {
       return false;
     }
     return (
@@ -43,8 +43,8 @@ export default function KeyInfo(props) {
         </dt>
         <dd className="govuk-summary-list__value">
           <T
-            start={dateFormat(props.timePeriod.start, 'MMMM yyyy', props.lang)}
-            end={dateFormat(props.timePeriod.end, 'MMMM yyyy', props.lang)}
+            start={dateFormat(timePeriod.start, 'MMMM yyyy', { locale })}
+            end={dateFormat(timePeriod.end, 'MMMM yyyy', { locale })}
           >
             dataset_view.key_information.time_period
           </T>
@@ -119,7 +119,7 @@ export default function KeyInfo(props) {
           </>
         )}
 
-        <PeriodCovered lang={props.i18n.language} timePeriod={props.keyInfo.timePeriod} />
+        <PeriodCovered locale={props.i18n.language} timePeriod={props.keyInfo.timePeriod} />
       </dl>
     </div>
   );
