@@ -4,7 +4,7 @@ import { SingleLanguageRevision } from '../dtos/single-language/revision';
 import { markdownToSafeHTML } from './markdown-to-html';
 import { isPublished } from './revision';
 import { PreviewMetadata } from '../interfaces/preview-metadata';
-import { t } from 'i18next';
+import { i18next } from '../middleware/translation';
 import { Locale } from '../enums/locale';
 import { dateFormat } from '../../consumer/middleware/services';
 import { NextUpdateType } from '../enums/next-update-type';
@@ -50,6 +50,7 @@ export const getDatasetMetadata = async (
 
 export const metadataToCSV = (metadata: PreviewMetadata, locale: Locale): string[][] => {
   const lines = [];
+  const t = (key: string, params?: Record<string, any>) => i18next.t(key, { lng: locale, ...params });
 
   lines.push([t('dataset_view.key_information.title'), metadata.title ?? '']);
   lines.push([
