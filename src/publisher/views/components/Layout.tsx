@@ -82,7 +82,7 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
         <meta name="theme-color" content="#323232" media="(prefers-color-scheme: light)" />
         <meta name="theme-color" content="#323232" media="(prefers-color-scheme: dark)" />
         <meta name="msapplication-navbutton-color" content="#323232" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="#323232" />
 
         {[AppEnv.Staging, AppEnv.Prod].includes(appEnv) && (
