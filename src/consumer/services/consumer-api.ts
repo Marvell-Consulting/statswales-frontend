@@ -69,8 +69,9 @@ export class ConsumerApi {
     }
 
     const qs = queryParams.size > 0 ? `?${queryParams.toString()}` : '';
+    const fullUrl = `${this.backendUrl}/${url}${qs}`;
 
-    return fetch(`${this.backendUrl}/${url}${qs}`, { method, headers: head, body: data })
+    return fetch(fullUrl, { method, headers: head, body: data })
       .then((response: Response) => {
         logRequestTime(method, url, start);
         return response;
@@ -78,7 +79,7 @@ export class ConsumerApi {
       .then(async (response: Response) => {
         if (!response.ok) {
           logger.error(
-            `API request to ${this.backendUrl}/${url} failed with status '${response.status}' and message '${response.statusText}'`
+            `API request to ${fullUrl} failed with status '${response.status}' and message '${response.statusText}'`
           );
           const body = (await new Response(response.body).text()) || undefined;
           throw new ApiException(response.statusText, response.status, body);
@@ -87,7 +88,7 @@ export class ConsumerApi {
       })
       .catch((error) => {
         if (error instanceof ApiException) throw error;
-        logger.error(error, `An unknown error occurred attempting to fetch ${this.backendUrl}/${url}`);
+        logger.error(error, `An unknown error occurred attempting to fetch ${fullUrl}`);
         throw new UnknownException(error.mesage);
       });
   }
