@@ -5,6 +5,7 @@ import Layout from './components/Layout';
 import Hero from './components/Hero';
 import T from '../../shared/views/components/T';
 import { useLocals } from '../../shared/views/context/Locals';
+import Pagination from '../../shared/views/components/Pagination';
 
 function Breadcrumbs({ parentTopics, selectedTopic }) {
   const { buildUrl, i18n } = useLocals();
@@ -154,7 +155,12 @@ export default function TopicList(props) {
 
           {props.childTopics?.length > 0 && <ChildTopics {...props} />}
 
-          {props.datasets?.length > 0 && <Datasets {...props} />}
+          {props.datasets?.length > 0 && (
+            <>
+              <Datasets {...props} />
+              <Pagination {...props} />
+            </>
+          )}
         </div>
       </div>
     </Layout>
