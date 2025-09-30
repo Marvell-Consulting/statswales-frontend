@@ -29,9 +29,11 @@ export const DEFAULT_PAGE_SIZE = 100;
 
 export const listTopics = async (req: Request, res: Response, next: NextFunction) => {
   const topicId = req.params.topicId ? req.params.topicId.match(/\d+/)?.[0] : undefined;
+  const page = parseInt(req.query.page_number as string, 10) || 1;
+  const limit = parseInt(req.query.page_size as string, 10) || 20;
 
   try {
-    const { selectedTopic, children, parents, datasets } = await req.conapi.getPublishedTopics(topicId);
+    const { selectedTopic, children, parents, datasets } = await req.conapi.getPublishedTopics(topicId, page, limit);
 
     // add slug for friendlier URLs
     const childTopics =
@@ -40,14 +42,17 @@ export const listTopics = async (req: Request, res: Response, next: NextFunction
     const parentTopics =
       parents?.map((topic: TopicDTO) => ({ ...topic, slug: slugify(topic.name, { lower: true }) })) || [];
 
-    const datasetItems = datasets?.data;
     const consumerApiUrl = `${config.backend.url}/v1/docs`;
+
+    const { data, count } = datasets || { data: [], count: 0 };
+    const pagination = pageInfo(page, limit, count);
 
     res.render('topic-list', {
       selectedTopic,
       childTopics,
       parentTopics,
-      datasets: datasetItems,
+      datasets: data,
+      ...pagination,
       consumerApiUrl
     });
   } catch (err) {
