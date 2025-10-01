@@ -36,6 +36,10 @@ app.set('trust proxy', 1);
 app.use(strictTransport);
 
 // asset routes (bypass middleware)
+app.use('/robots.txt', rateLimiter, (req, res) => {
+  res.type('text/plain');
+  res.sendFile(path.join(__dirname, '../public/robots.txt'));
+});
 app.use('/assets', express.static(path.join(__dirname, '../public')));
 app.use(handleAsset404);
 
