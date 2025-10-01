@@ -1,3 +1,8 @@
 User-agent: *
-Disallow: /?sort_by[columnName]=
-Disallow: /?page_number=
+# Sort
+Disallow: /*sort_by
+# Filter
+Disallow: /*filter
+# Pagination
+Disallow: /*page_number
+Disallow: /*page_size
