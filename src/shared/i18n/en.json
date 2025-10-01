@@ -1397,7 +1397,8 @@
     "list": {
       "heading": "List Datasets",
       "details": "Details",
-      "tasklist": "Task List",
+      "overview": "Overview",
+      "rebuild_cube": "Rebuild cube",
       "search": {
         "placeholder": "Search datasets by title or id",
         "button": "Search"

@@ -72,13 +72,13 @@ export default function DeveloperList(props) {
         return (
           <ul className="govuk-summary-list__actions-list govuk-!-margin-bottom-0">
             <li className="govuk-summary-list__actions-list-item">
-              <a href={`/${props.i18n.language}/publish/${datasetId}/tasklist`} className="govuk-link">
-                <i className="fa-solid fa-list-check"></i> {props.t('developer.list.tasklist')}
+              <a href={`/${props.i18n.language}/publish/${datasetId}/overview`} className="govuk-link">
+                <i className="fa-solid fa-list-check"></i> {props.t('developer.list.overview')}
               </a>
             </li>
             <li className="govuk-summary-list__actions-list-item">
               <a href={`/${props.i18n.language}/developer/${datasetId}/rebuild`} className="govuk-link">
-                {props.t('publish.tasklist.rebuild_cube')}
+                {props.t('developer.list.rebuild_cube')}
               </a>
             </li>
           </ul>

@@ -998,7 +998,7 @@
       "overview": "Trosolwg o set ddata",
       "preview": "Rhagolwg (yn agor mewn tab newydd)",
       "open_developer_view": "Golwg y datblygwr (yn agor mewn tab newydd)",
-      "rebuild_cube": "Ailadeiladu'r ciwb",
+      "rebuild_cube": "Ailadeiladu ciwb",
       "delete": {
         "dataset": "Dileu'r set ddata hon",
         "update": "Dileu'r diweddariad hwn"
@@ -1391,7 +1391,7 @@
     "list": {
       "heading": "Rhestru Setiau Data",
       "details": "Manylion",
-      "tasklist": "Rhestr Tasgau",
+      "overview": "Trosolwg",
       "search": {
         "placeholder": "Chwilio setiau data yn ôl teitl neu id",
         "button": "Chwilio"
