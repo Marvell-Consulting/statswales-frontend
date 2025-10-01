@@ -6,7 +6,7 @@ import { AppEnv } from '../../../shared/config/env.enum';
 
 const CanonicalUrls = () => {
   const { buildUrl, protocol, hostname, url } = useLocals();
-  const [pathname] = url.split('?');
+  const pathname = new URL(url, `${protocol}://${hostname}`).pathname;
   const currentUrl = `${protocol}://${hostname}${pathname}`;
   const englishUrl = buildUrl(pathname, 'en-GB');
   const welshUrl = buildUrl(pathname, 'cy-GB');
