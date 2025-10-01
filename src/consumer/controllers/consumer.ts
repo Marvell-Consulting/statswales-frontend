@@ -87,7 +87,12 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   const isUnpublished = revision?.unpublished_at || false;
   const isArchived = (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false;
 
-  if (!dataset.first_published_at || !revision) {
+  if (
+    !dataset.first_published_at ||
+    dataset.first_published_at > new Date().toISOString() ||
+    !revision?.publish_at ||
+    revision.publish_at > new Date().toISOString()
+  ) {
     next(new NotFoundException('no published revision found'));
     return;
   }
