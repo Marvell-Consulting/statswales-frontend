@@ -13,9 +13,9 @@ const CanonicalUrls = () => {
 
   return (
     <>
-      <link rel="alternate" hrefLang="en-GB" href={`${process.env.FRONTEND_URL}${englishUrl}`} />
-      {process.env.FRONTEND_WELSH_URL && (
-        <link rel="alternate" hrefLang="cy-GB" href={`${process.env.FRONTEND_WELSH_URL}${welshUrl}`} />
+      <link rel="alternate" hrefLang="en-GB" href={`${process.env.CONSUMER_URL}${englishUrl}`} />
+      {process.env.CONSUMER_WELSH_URL && (
+        <link rel="alternate" hrefLang="cy-GB" href={`${process.env.CONSUMER_WELSH_URL}${welshUrl}`} />
       )}
       <link rel="alternate" hrefLang="x-default" href={currentUrl} />
       <link rel="canonical" href={currentUrl} />
