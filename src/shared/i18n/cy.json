@@ -48,7 +48,7 @@
     "feedback": "Rydych chi'n edrych ar fersiwn newydd o StatsCymru. Gallwch <a class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\" href=\"https://forms.gle/4uiBVfzarkSE62rr7\"> roi cymorth am ddefnyddio'r gwasanaeth</a> neu gael cymorth ar <a class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\" href=\"http://statswales3support.slack.com\">Slack</a>.",
     "logo": "Logo StatsCymru",
     "not_prod": {
-      "warning": "Fersiwn an-gynhyrchu o StatsWales a ddefnyddir ar gyfer profi yw hon. Defnyddiwch y <a class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\" href=\"https://publisher.stats.gov.wales\">fersiwn fyw o'r wefan</a> i gyhoeddi setiau data."
+      "warning": "Amgylchedd profi — nid ar gyfer cyhoeddi. Defnyddiwch <a class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\" href=\"https://publisher.stats.gov.wales\">wefan byw StatsCymru</a> i gyhoeddi setiau data."
     },
     "navigation": {
       "wghome": "Llywodraeth Cymru",
