@@ -4,6 +4,9 @@ import T from '../../../shared/views/components/T';
 import { Locals, LocalsProvider, useLocals } from '../../../shared/views/context/Locals';
 import CookieBanner from '../../../shared/views/components/CookieBanner';
 import { AppEnv } from '../../../shared/config/env.enum';
+import { appConfig } from '../../../shared/config';
+
+const configConsumer = appConfig().frontend.consumer;
 
 const CanonicalUrls = () => {
   const { buildUrl, protocol, hostname, url } = useLocals();
@@ -14,9 +17,9 @@ const CanonicalUrls = () => {
 
   return (
     <>
-      <link rel="alternate" hrefLang="en-GB" href={`${process.env.CONSUMER_URL}${englishUrl}`} />
-      {process.env.CONSUMER_WELSH_URL && (
-        <link rel="alternate" hrefLang="cy-GB" href={`${process.env.CONSUMER_WELSH_URL}${welshUrl}`} />
+      <link rel="alternate" hrefLang="en-GB" href={`${configConsumer.url}${englishUrl}`} />
+      {configConsumer.welshUrl && (
+        <link rel="alternate" hrefLang="cy-GB" href={`${configConsumer.welshUrl}${welshUrl}`} />
       )}
       <link rel="alternate" hrefLang="x-default" href={currentUrl} />
       <link rel="canonical" href={currentUrl} />

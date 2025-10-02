@@ -27,7 +27,8 @@ export const getDefaultConfig = (): AppConfig => {
       },
       consumer: {
         port: parseInt(process.env.CONSUMER_PORT || '3000', 10),
-        url: process.env.CONSUMER_URL!
+        url: process.env.CONSUMER_URL!,
+        welshUrl: process.env.CONSUMER_WELSH_URL
       }
     },
     backend: {
