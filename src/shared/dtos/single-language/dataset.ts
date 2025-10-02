@@ -2,6 +2,7 @@ import { SingleLanguageDimension } from './dimension';
 import { SingleLanguageRevision } from './revision';
 import { SingleLanguageMeasure } from './measure';
 import { PublisherDTO } from '../publisher-dto';
+import { TaskDTO } from '../task';
 
 export interface SingleLanguageDataset {
   id: string;
@@ -20,4 +21,5 @@ export interface SingleLanguageDataset {
   start_date?: string;
   end_date?: string;
   publisher?: PublisherDTO;
+  tasks?: TaskDTO[];
 }
