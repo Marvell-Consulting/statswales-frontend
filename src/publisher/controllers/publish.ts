@@ -100,6 +100,7 @@ import { parseFilters } from '../../shared/utils/parse-filters';
 import { FactTableColumnType } from '../../shared/dtos/fact-table-column-type';
 import { TaskAction } from '../../shared/enums/task-action';
 import { stringify } from 'csv-stringify/sync';
+import { hasOpenPublishRequest } from '../../shared/utils/task';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -470,25 +471,37 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
   const publishingStatus = getPublishingStatus(res.locals.dataset);
   const user = req.user! as UserDTO;
   const canEdit = isEditorForDataset(user, res.locals.dataset);
+  const openPublishRequest = hasOpenPublishRequest(dataset);
 
-  if (!draftRevision || !canEdit) {
+  if (!draftRevision || !canEdit || openPublishRequest) {
+    logger.warn(
+      `tasklist unavailable, redirecting to overview canEdit: ${canEdit}, openPublishRequest: ${openPublishRequest}`
+    );
     res.redirect(req.buildUrl(`/publish/${dataset.id}/overview`, req.language));
-    return; // tasklist only available for draft revisions and editors
+    return; // tasklist only available for unsubmitted draft revisions and editors
   }
 
-  try {
-    if (req.method === 'POST') {
+  if (req.method === 'POST') {
+    try {
       await req.pubapi.requestPublishing(dataset.id, draftRevision.id);
       req.session.flash = [`publish.tasklist.submit.success`];
       req.session.save();
       res.redirect(req.buildUrl(`/publish/${dataset.id}/overview`, req.language));
       return;
+    } catch (err) {
+      if (err instanceof ApiException && err.status === 400) {
+        logger.warn('possible double-click on the submit for publication button, redirecting to overview');
+        res.redirect(req.buildUrl(`/publish/${dataset.id}/overview`, req.language));
+        return;
+      }
     }
+  }
 
+  try {
     const datasetTitle = draftRevision.metadata?.title;
     const dimensions = dataset.dimensions;
     const taskList: TaskListState = await req.pubapi.getTaskList(dataset.id);
-    const canSubmit = canEdit && taskList.canPublish;
+    const canSubmit = canEdit && taskList.canPublish && !openPublishRequest;
 
     res.render('publish/tasklist', {
       datasetTitle,
