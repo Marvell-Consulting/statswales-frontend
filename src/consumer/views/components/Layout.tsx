@@ -6,14 +6,17 @@ import { AppEnv } from '../../../shared/config/env.enum';
 
 const CanonicalUrls = () => {
   const { buildUrl, protocol, hostname, url } = useLocals();
-  const currentUrl = `${protocol}://${hostname}${url}`;
-  const englishUrl = buildUrl(url, 'en-GB');
-  const welshUrl = buildUrl(url, 'cy-GB');
+  const pathname = new URL(url, `${protocol}://${hostname}`).pathname;
+  const currentUrl = `${protocol}://${hostname}${pathname}`;
+  const englishUrl = buildUrl(pathname, 'en-GB');
+  const welshUrl = buildUrl(pathname, 'cy-GB');
 
   return (
     <>
-      <link rel="alternate" hrefLang="en-GB" href={`https://stats.gov.wales${englishUrl}`} />
-      <link rel="alternate" hrefLang="cy-GB" href={`https://stats.llyw.cymru${welshUrl}`} />
+      <link rel="alternate" hrefLang="en-GB" href={`${process.env.FRONTEND_URL}${englishUrl}`} />
+      {process.env.FRONTEND_WELSH_URL && (
+        <link rel="alternate" hrefLang="cy-GB" href={`${process.env.FRONTEND_WELSH_URL}${welshUrl}`} />
+      )}
       <link rel="alternate" hrefLang="x-default" href={currentUrl} />
       <link rel="canonical" href={currentUrl} />
     </>
