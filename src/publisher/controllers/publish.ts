@@ -494,6 +494,8 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
         res.redirect(req.buildUrl(`/publish/${dataset.id}/overview`, req.language));
         return;
       }
+      next(err);
+      return;
     }
   }
 
