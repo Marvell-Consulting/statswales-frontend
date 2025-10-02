@@ -29,7 +29,13 @@ const CanonicalUrls = () => {
 
 const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; noPad?: boolean }>) => {
   const { i18n, t, buildUrl, appEnv, hostname } = useLocals();
-  const subdomain = hostname?.split('.')[0] ?? '';
+  const envBadge = hostname.includes('dev')
+    ? 'dev'
+    : hostname.includes('preview')
+      ? 'preview'
+      : hostname.includes('localhost')
+        ? 'local'
+        : '';
 
   return (
     <html lang={i18n.language} className="govuk-template wg">
@@ -100,7 +106,7 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
           <div className="govuk-phase-banner app-env">
             <div className="govuk-width-container">
               <p className="govuk-phase-banner__content">
-                <strong className="govuk-tag govuk-phase-banner__content__tag">{subdomain.toUpperCase()}</strong>
+                <strong className="govuk-tag govuk-phase-banner__content__tag">{envBadge.toUpperCase()}</strong>
                 <T className="govuk-phase-banner__text" raw>
                   header.not_prod.warning
                 </T>

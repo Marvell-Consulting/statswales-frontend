@@ -14,7 +14,13 @@ export type LayoutProps = {
 
 const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithChildren<LayoutProps>) => {
   const { i18n, t, isAuthenticated, buildUrl, activePage, isAdmin, isDeveloper, appEnv, hostname } = useLocals();
-  const subdomain = hostname?.split('.')[0] ?? '';
+  const envBadge = hostname.includes('dev')
+    ? 'dev'
+    : hostname.includes('preview')
+      ? 'preview'
+      : hostname.includes('localhost')
+        ? 'local'
+        : '';
 
   return (
     <html lang={i18n.language} className="govuk-template wg">
@@ -135,7 +141,7 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
           <div className="govuk-phase-banner app-env">
             <div className="govuk-width-container">
               <p className="govuk-phase-banner__content">
-                <strong className="govuk-tag govuk-phase-banner__content__tag">{subdomain.toUpperCase()}</strong>
+                <strong className="govuk-tag govuk-phase-banner__content__tag">{envBadge.toUpperCase()}</strong>
                 <T className="govuk-phase-banner__text" raw>
                   header.not_prod.warning
                 </T>
