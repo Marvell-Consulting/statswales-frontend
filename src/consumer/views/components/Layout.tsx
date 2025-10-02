@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import clsx from 'clsx';
+import T from '../../../shared/views/components/T';
 import { Locals, LocalsProvider, useLocals } from '../../../shared/views/context/Locals';
 import CookieBanner from '../../../shared/views/components/CookieBanner';
 import { AppEnv } from '../../../shared/config/env.enum';
@@ -24,7 +25,8 @@ const CanonicalUrls = () => {
 };
 
 const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; noPad?: boolean }>) => {
-  const { i18n, t, buildUrl, appEnv } = useLocals();
+  const { i18n, t, buildUrl, appEnv, hostname } = useLocals();
+  const subdomain = hostname?.split('.')[0] ?? '';
 
   return (
     <html lang={i18n.language} className="govuk-template wg">
@@ -76,23 +78,33 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
 
         <CookieBanner />
 
-        <div className="govuk-phase-banner">
-          <div className="govuk-width-container">
-            <p className="govuk-phase-banner__content">
-              <strong className="govuk-tag govuk-phase-banner__content__tag">
-                {t('consumer.global.phase_banner.beta')}
-              </strong>
-              <span
-                className="govuk-phase-banner__text"
-                dangerouslySetInnerHTML={{
-                  __html: t('consumer.global.phase_banner.feedback', {
-                    url: buildUrl('/feedback', i18n.language)
-                  })
-                }}
-              ></span>
-            </p>
+        {appEnv === AppEnv.Prod && (
+          <div className="govuk-phase-banner">
+            <div className="govuk-width-container">
+              <p className="govuk-phase-banner__content">
+                <strong className="govuk-tag govuk-phase-banner__content__tag">
+                  {t('consumer.global.phase_banner.beta')}
+                </strong>
+                <T className="govuk-phase-banner__text" raw url={buildUrl('/feedback', i18n.language)}>
+                  consumer.global.phase_banner.feedback
+                </T>
+              </p>
+            </div>
           </div>
-        </div>
+        )}
+
+        {appEnv !== AppEnv.Prod && (
+          <div className="govuk-phase-banner app-env">
+            <div className="govuk-width-container">
+              <p className="govuk-phase-banner__content">
+                <strong className="govuk-tag govuk-phase-banner__content__tag">{subdomain.toUpperCase()}</strong>
+                <T className="govuk-phase-banner__text" raw>
+                  header.not_prod.warning
+                </T>
+              </p>
+            </div>
+          </div>
+        )}
 
         <header id="wg-header" className="wg-header" style={{ backgroundColor: '#323232' }}>
           <div className="layout-container">
