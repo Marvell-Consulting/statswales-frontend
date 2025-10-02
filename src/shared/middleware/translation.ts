@@ -14,10 +14,13 @@ const SUPPORTED_LOCALES = config.language.supportedLocales;
 const domainDetector = {
   name: 'domain',
   lookup: (req: Request): string | undefined => {
-    if (config.frontend.consumer.welshUrl && req.hostname?.includes(config.frontend.consumer.welshUrl)) {
+    if (
+      config.frontend.consumer.welshUrl &&
+      req.hostname?.includes(new URL(config.frontend.consumer.welshUrl).hostname)
+    ) {
       return 'cy-GB';
     }
-    if (req.hostname?.includes(config.frontend.consumer.url)) {
+    if (req.hostname?.includes(new URL(config.frontend.consumer.url).hostname)) {
       return 'en-GB';
     }
   }
