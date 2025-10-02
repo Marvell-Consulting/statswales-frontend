@@ -48,6 +48,9 @@
     "beta": "Beta",
     "feedback": "You’re viewing a new version of StatsWales. You <a class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\" href=\"https://forms.gle/4uiBVfzarkSE62rr7\">can give feedback about using the service</a> or get support on <a class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\" href=\"http://statswales3support.slack.com\">Slack</a>.",
     "logo": "StatsWales logo",
+    "not_prod": {
+      "warning": "This is a non-production version of StatsWales used for testing. Use the <a class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\" href=\"https://publisher.stats.gov.wales\">live version of the site</a> to publish datasets."
+    },
     "navigation": {
       "wghome": "Welsh Government",
       "wgurl": "https://www.gov.wales",

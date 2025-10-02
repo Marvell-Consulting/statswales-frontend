@@ -1133,6 +1133,14 @@
     background-color: colours.$yellow;
     border-bottom: none;
     font-size: 16px;
+
+    &.app-env {
+      background-color: colours.$orange;
+
+      .govuk-tag {
+        color: colours.$orange;
+      }
+    }
   }
 
   .govuk-phase-banner .govuk-link {

@@ -13,7 +13,9 @@ export type LayoutProps = {
 };
 
 const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithChildren<LayoutProps>) => {
-  const { i18n, t, isAuthenticated, buildUrl, activePage, isAdmin, isDeveloper, appEnv } = useLocals();
+  const { i18n, t, isAuthenticated, buildUrl, activePage, isAdmin, isDeveloper, appEnv, hostname } = useLocals();
+  const subdomain = hostname?.split('.')[0] ?? '';
+
   return (
     <html lang={i18n.language} className="govuk-template wg">
       <head>
@@ -116,18 +118,31 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
 
         <CookieBanner />
 
-        <div className="govuk-phase-banner">
-          <div className="govuk-width-container">
-            <p className="govuk-phase-banner__content">
-              <strong className="govuk-tag govuk-phase-banner__content__tag">
-                {t('consumer.global.phase_banner.beta')}
-              </strong>
-              <T className="govuk-phase-banner__text" raw>
-                header.feedback
-              </T>
-            </p>
+        {appEnv === AppEnv.Prod && (
+          <div className="govuk-phase-banner">
+            <div className="govuk-width-container">
+              <p className="govuk-phase-banner__content">
+                <strong className="govuk-tag govuk-phase-banner__content__tag">{t('header.beta')}</strong>
+                <T className="govuk-phase-banner__text" raw>
+                  header.feedback
+                </T>
+              </p>
+            </div>
           </div>
-        </div>
+        )}
+
+        {appEnv !== AppEnv.Prod && (
+          <div className="govuk-phase-banner app-env">
+            <div className="govuk-width-container">
+              <p className="govuk-phase-banner__content">
+                <strong className="govuk-tag govuk-phase-banner__content__tag">{subdomain.toUpperCase()}</strong>
+                <T className="govuk-phase-banner__text" raw>
+                  header.not_prod.warning
+                </T>
+              </p>
+            </div>
+          </div>
+        )}
 
         <header id="wg-header" className="wg-header">
           <div className="layout-container">
