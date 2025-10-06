@@ -1689,29 +1689,42 @@
       "stats": {
         "datasets": {
           "heading": "Datasets",
+          "table":{
+            "status": "Status",
+            "description": "Description",
+            "count": "Count"
+          },
           "total": {
-            "heading": "Total datasets",
-            "description": "All datasets, including incomplete, pending, published, etc"
+            "label": "Total datasets",
+            "description": "All datasets on StatsWales platform"
           },
           "incomplete": {
-            "heading": "Incomplete",
-            "description": "Datasets in progress that have not yet been published"
+            "label": "Incomplete",
+            "description": "New datasets or updates in progress, not yet submitted for review"
           },
-          "pending": {
-            "heading": "Pending approval",
-            "description": "Datasets awaiting review"
+          "pending_approval": {
+            "label": "Pending approval",
+            "description": "New datasets or updates awaiting review from an approver"
+          },
+          "scheduled": {
+            "label": "Scheduled",
+            "description": "New datasets or updates approved and scheduled for publishing"
           },
           "published": {
-            "heading": "Published",
-            "description": "Datasets currently available on StatsWales"
+            "label": "Published",
+            "description": "Datasets live on consumer site"
+          },
+          "action_requested": {
+            "label": "Action requested",
+            "description": "Archive, unarchive or unpublish requests"
           },
           "archived": {
-            "heading": "Archived",
-            "description": "Datasets no longer actively maintained"
+            "label": "Archived",
+            "description": "Datasets no longer maintained, but still published on consumer site"
           },
           "offline": {
-            "heading": "Unpublished",
-            "description": "Datasets temporarily removed from public view"
+            "label": "Unpublished",
+            "description": "Datasets temporarily removed from consumer site"
           }
         }
       }
