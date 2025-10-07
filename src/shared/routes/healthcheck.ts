@@ -37,4 +37,6 @@ const stillAlive = async (req: Request, res: Response) => {
 };
 
 healthcheck.get('/ready', stillAlive);
-healthcheck.get('/live', stillAlive);
+healthcheck.get('/live', (_req: Request, res: Response) => {
+  res.json({ message: 'success' });
+});
