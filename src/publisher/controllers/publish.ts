@@ -2364,7 +2364,7 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
 
       // create a new data provider - generate id on the frontend so we can redirect the user to add sources
       dataProvider = {
-        id: randomUUID().toLowerCase(),
+        id: randomUUID(),
         revision_id: dataset.draft_revision.id,
         provider_id,
         language: req.language
