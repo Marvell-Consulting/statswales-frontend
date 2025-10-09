@@ -1,6 +1,7 @@
 import type { Config } from 'jest';
 
 const config: Config = {
+  transformIgnorePatterns: ['/node_modules/(?!(marked|nanoid|until-async)/)'],
   verbose: true,
   reporters: ['default', ['jest-junit', { outputDirectory: 'coverage/test-report', outputName: 'junit-report.xml' }]],
   testEnvironment: 'node',
