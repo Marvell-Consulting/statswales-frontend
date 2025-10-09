@@ -1,11 +1,11 @@
 import { Readable } from 'node:stream';
+import { randomUUID } from 'node:crypto';
 
 import { NextFunction, Request, Response } from 'express';
 import { get, set, sortBy } from 'lodash';
 import { FieldValidationError, matchedData } from 'express-validator';
 import { customAlphabet } from 'nanoid';
 import { alphanumeric } from 'nanoid-dictionary';
-import { v4 as uuid } from 'uuid';
 import { isBefore, isValid } from 'date-fns';
 
 import {
@@ -2363,7 +2363,12 @@ export const provideDataProviders = async (req: Request, res: Response, next: Ne
       logger.debug('Adding a new data provider');
 
       // create a new data provider - generate id on the frontend so we can redirect the user to add sources
-      dataProvider = { id: uuid(), revision_id: dataset.draft_revision.id, provider_id, language: req.language };
+      dataProvider = {
+        id: randomUUID().toLowerCase(),
+        revision_id: dataset.draft_revision.id,
+        provider_id,
+        language: req.language
+      };
 
       await req.pubapi.addDatasetProvider(dataset.id, dataProvider);
       res.redirect(req.buildUrl(`/publish/${dataset.id}/providers?edit=${dataProvider.id}`, req.language));

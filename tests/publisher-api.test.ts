@@ -356,7 +356,7 @@ describe('PublisherApi', () => {
     it('should throw an exception when the backend is unreachable', async () => {
       mockResponse = Promise.reject(new Error('Service Unavailable'));
 
-      await expect(statsWalesApi.ping()).rejects.toThrow(new ApiException('Service Unavailable', 503));
+      await expect(statsWalesApi.ping()).rejects.toThrow(new UnknownException('Service Unavailable', 503));
 
       expect(fetchSpy).toHaveBeenCalledWith(`${baseUrl}/healthcheck`, { method: HttpMethod.Get, headers });
     });
