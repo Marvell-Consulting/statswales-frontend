@@ -758,7 +758,7 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
 
     res.render(template, { ...preview, supportedFormats, langCol, measure });
   } catch (err) {
-    logger.error('Failed to get dimension preview', err);
+    logger.error(err, 'Failed to get dimension preview');
     next(new NotFoundException());
   }
 };
@@ -813,7 +813,7 @@ export const measureReview = async (req: Request, res: Response, next: NextFunct
     }
     res.render('publish/measure-review', { ...dataPreview, measure, review: true, errors });
   } catch (err) {
-    logger.error('Failed to get dimension preview', err);
+    logger.error(err, 'Failed to get dimension preview');
     next(new NotFoundException());
   }
 };
@@ -986,7 +986,7 @@ export const lookupReview = async (req: Request, res: Response, next: NextFuncti
       res.render('publish/lookup-table-preview', { ...dataPreview, review: true, dimension });
     }
   } catch (err) {
-    logger.error('Failed to get dimension preview', err);
+    logger.error(err, 'Failed to get dimension preview');
     next(new NotFoundException());
   }
 };
@@ -1086,7 +1086,7 @@ export const setupNumberDimension = async (req: Request, res: Response, next: Ne
       });
     }
   } catch (err) {
-    logger.error('Failed to get dimension preview', err);
+    logger.error(err, 'Failed to get dimension preview');
     next(new NotFoundException());
   }
 };
@@ -1204,7 +1204,7 @@ export const fetchDimensionPreview = async (req: Request, res: Response, next: N
       });
     }
   } catch (err) {
-    logger.error('Failed to get dimension preview', err);
+    logger.error(err, 'Failed to get dimension preview');
     next(new NotFoundException());
   }
 };
@@ -1259,7 +1259,7 @@ export const fetchTimeDimensionPreview = async (req: Request, res: Response, nex
       res.render('publish/date-chooser', { ...dataPreview, dimension });
     }
   } catch (err) {
-    logger.error('Failed to get dimension preview', err);
+    logger.error(err, 'Failed to get dimension preview');
     next(new NotFoundException());
   }
 };
@@ -1400,7 +1400,7 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
 
     res.render('publish/year-type', { dimension, revisit });
   } catch (err) {
-    logger.error('Failed to get dimension preview', err);
+    logger.error(err, 'Failed to get dimension preview');
     next(new NotFoundException());
   }
 };
@@ -1449,7 +1449,7 @@ export const yearFormat = async (req: Request, res: Response, next: NextFunction
 
     res.render('publish/year-format', { dimension });
   } catch (err) {
-    logger.error('Failed to get dimension preview', err);
+    logger.error(err, 'Failed to get dimension preview');
     next(new NotFoundException());
   }
 };
@@ -1488,12 +1488,12 @@ export const periodType = async (req: Request, res: Response, next: NextFunction
             logger.debug(`Error is: ${JSON.stringify(error, null, 2)}`);
             if (error.status === 400) {
               res.status(400);
-              logger.error('Date dimension had inconsistent formats than supplied by the user.', err);
+              logger.error(err, 'Date dimension had inconsistent formats than supplied by the user.');
               const failurePreview = JSON.parse(error.body as string) as ViewErrDTO;
               res.render('publish/period-match-failure', { ...failurePreview, patchRequest, dimension });
               return;
             }
-            logger.error('Something went wrong other than not matching');
+            logger.error(err, 'Something went wrong other than not matching');
             res.status(500);
             res.render('publish/period-type', {
               dimension,
@@ -1540,7 +1540,7 @@ export const periodType = async (req: Request, res: Response, next: NextFunction
     }
     res.render('publish/period-type', { dimension });
   } catch (err) {
-    logger.error('Failed to get dimension preview', err);
+    logger.error(err, 'Failed to get dimension preview');
     next(new NotFoundException());
   }
 };
@@ -1632,7 +1632,7 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
     }
     res.render('publish/quarter-format', { quarterTotals, dimension });
   } catch (err) {
-    logger.error('Failed to get dimension preview', err);
+    logger.error(err, 'Failed to get dimension preview');
     next(new NotFoundException());
   }
 };
@@ -1693,7 +1693,7 @@ export const monthChooser = async (req: Request, res: Response, next: NextFuncti
     const dataPreview = await req.pubapi.getDimensionPreview(res.locals.dataset.id, dimension.id);
     res.render('publish/month-format', { ...dataPreview, dimension });
   } catch (err) {
-    logger.error('Failed to get dimension preview', err);
+    logger.error(err, 'Failed to get dimension preview');
     next(new NotFoundException());
   }
 };
@@ -1754,7 +1754,7 @@ export const periodReview = async (req: Request, res: Response, next: NextFuncti
 
     res.render('publish/date-chooser', { ...dataPreview, review: true, dimension });
   } catch (err) {
-    logger.error('Failed to get dimension preview', err);
+    logger.error(err, 'Failed to get dimension preview');
     next(new NotFoundException());
   }
 };
