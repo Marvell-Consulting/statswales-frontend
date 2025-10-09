@@ -1,12 +1,11 @@
 import { test, expect } from '@playwright/test';
 
-import { appConfig } from '../../src/shared/config';
+import { config } from '../../src/shared/config';
 
 import { ProviderPage } from './pages/provider-page';
 import { users } from '../fixtures/logins';
 import { createEmptyDataset } from './helpers/create-empty-dataset';
 
-const config = appConfig();
 const baseUrl = config.frontend.publisher.url;
 
 test.describe.configure({ mode: 'serial' }); // tests in this file must be performed in order to avoid test failures

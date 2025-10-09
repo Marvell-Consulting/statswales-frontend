@@ -15,15 +15,13 @@ import { FileFormat } from '../../shared/enums/file-format';
 import { getDownloadHeaders } from '../../shared/utils/download-headers';
 import { logger } from '../../shared/utils/logger';
 import { Locale } from '../../shared/enums/locale';
-import { appConfig } from '../../shared/config';
+import { config } from '../../shared/config';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { TopicDTO } from '../../shared/dtos/topic';
 import { parseFilters } from '../../shared/utils/parse-filters';
 import { FilterTable } from '../../shared/dtos/filter-table';
 import { ViewDTO } from '../../shared/dtos/view-dto';
 import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
-
-const config = appConfig();
 
 export const DEFAULT_PAGE_SIZE = 100;
 

@@ -9,10 +9,8 @@ import {
   downloadPublishedMetadata
 } from '../controllers/consumer';
 import { fetchPublishedDataset } from '../middleware/fetch-dataset';
-import { appConfig } from '../../shared/config';
+import { config } from '../../shared/config';
 import { logger } from '../../shared/utils/logger';
-
-const config = appConfig();
 
 export const consumer = Router();
 

@@ -1,9 +1,8 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 
-import { appConfig } from '../config';
+import { config } from '../config';
 import { logger } from '../utils/logger';
 
-const config = appConfig();
 const cookieDomain = new URL(config.auth.jwt.cookieDomain).hostname;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

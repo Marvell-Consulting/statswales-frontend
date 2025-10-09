@@ -3,17 +3,17 @@ import { walkObject, UnknownObject } from '../utils/walk-object';
 
 import { optionalProperties } from './app-config.interface';
 
-import { appConfig } from '.';
+import { config } from '.';
 
 export const checkConfig = () => {
-  const config = appConfig() as unknown as UnknownObject;
+  logger.debug(`Checking app config for '${config.env}' env...`);
 
-  logger.info(`Checking app config for '${config.env}' env...`);
-
-  walkObject(config, ({ key, value, location, isLeaf }) => {
+  walkObject(config as unknown as UnknownObject, ({ key, value, location, isLeaf }) => {
     if (isLeaf && !optionalProperties.includes(key) && value === undefined) {
       const configPath = location.join('.');
       throw new Error(`${configPath} is invalid or missing, stopping server`);
     }
   });
+
+  logger.info(`App config loaded for '${config.env}' env`);
 };

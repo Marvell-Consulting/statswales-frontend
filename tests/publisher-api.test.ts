@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 
-import { appConfig } from '../src/shared/config';
+import { config } from '../src/shared/config';
 import { HttpMethod } from '../src/shared/enums/http-method';
 import { Locale } from '../src/shared/enums/locale';
 import { SourceType } from '../src/shared/enums/source-type';
@@ -16,7 +16,6 @@ describe('PublisherApi', () => {
   let fetchSpy: jest.SpyInstance;
   let mockResponse: Promise<Response>;
 
-  const config = appConfig();
   const baseUrl = config.backend.url;
   const token = 'thisissomemadeupjwt';
 

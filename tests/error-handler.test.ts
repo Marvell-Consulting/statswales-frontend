@@ -6,7 +6,7 @@ import { parse as parseCookies } from 'set-cookie-parser';
 import { i18next } from '../src/shared/middleware/translation';
 import app from '../src/publisher/app';
 import { Locale } from '../src/shared/enums/locale';
-import { appConfig } from '../src/shared/config';
+import { config } from '../src/shared/config';
 
 import { mockBackend } from './mocks/backend';
 
@@ -15,7 +15,6 @@ jest.mock('../src/publisher/middleware/ensure-authenticated', () => ({
 }));
 
 describe('Error handling', () => {
-  const config = appConfig();
   const t = i18next.t;
 
   beforeAll(() => {

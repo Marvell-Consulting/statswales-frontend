@@ -4,9 +4,9 @@ import T from '../../../shared/views/components/T';
 import { Locals, LocalsProvider, useLocals } from '../../../shared/views/context/Locals';
 import CookieBanner from '../../../shared/views/components/CookieBanner';
 import { AppEnv } from '../../../shared/config/env.enum';
-import { appConfig } from '../../../shared/config';
+import { config } from '../../../shared/config';
 
-const configConsumer = appConfig().frontend.consumer;
+const configConsumer = config.frontend.consumer;
 
 const CanonicalUrls = () => {
   const { buildUrl, protocol, hostname, url } = useLocals();

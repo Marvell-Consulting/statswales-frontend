@@ -2,15 +2,13 @@ import { NextFunction, Request, Response } from 'express';
 import { DateArg, format, parseISO } from 'date-fns';
 import { enGB, cy } from 'date-fns/locale';
 
-import { appConfig } from '../../shared/config';
+import { config } from '../../shared/config';
 import { Locale } from '../../shared/enums/locale';
 
 import { localeUrl } from '../../shared/middleware/language-switcher';
 import { statusToColour } from '../../shared/utils/status-to-colour';
 import { TZDate } from '@date-fns/tz';
 import { ConsumerApi } from '../services/consumer-api';
-
-const config = appConfig();
 
 export const dateFormat = (date: DateArg<Date> & {}, formatStr: string, options?: any): string => {
   const tzDate = new TZDate(date as Date, 'Europe/London');

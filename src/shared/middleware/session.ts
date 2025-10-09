@@ -3,10 +3,8 @@ import session, { MemoryStore, Store } from 'express-session';
 import { createClient } from 'redis';
 
 import { logger } from '../utils/logger';
-import { appConfig } from '../config';
+import { config } from '../config';
 import { SessionStore } from '../config/session-store.enum';
-
-const config = appConfig();
 
 let store: Store;
 

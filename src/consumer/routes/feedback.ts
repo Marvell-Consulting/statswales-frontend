@@ -6,11 +6,9 @@ import { i18next } from '../../shared/middleware/translation';
 import { flashMessages } from '../../shared/middleware/flash';
 import { ViewError } from '../../shared/dtos/view-error';
 import { getErrors, improveValidator, satisfactionValidator } from '../../shared/validators';
-import { appConfig } from '../../shared/config';
+import { config } from '../../shared/config';
 import { logger } from '../../shared/utils/logger';
 import { AppEnv } from '../../shared/config/env.enum';
-
-const config = appConfig();
 
 export const feedback = Router();
 

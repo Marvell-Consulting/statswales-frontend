@@ -3,12 +3,11 @@ import JWT from 'jsonwebtoken';
 
 import { logger } from '../../shared/utils/logger';
 import { JWTPayloadWithUser } from '../../shared/interfaces/jwt-payload-with-user';
-import { appConfig } from '../../shared/config';
+import { config } from '../../shared/config';
 import { ViewError } from '../../shared/dtos/view-error';
 
 export const auth = Router();
 
-const config = appConfig();
 const cookieDomain = new URL(config.auth.jwt.cookieDomain).hostname;
 logger.debug(`JWT cookie domain is '${cookieDomain}'`);
 
