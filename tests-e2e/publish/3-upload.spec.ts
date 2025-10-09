@@ -2,13 +2,12 @@ import path from 'node:path';
 
 import { test, expect } from '@playwright/test';
 
-import { appConfig } from '../../src/shared/config';
+import { config } from '../../src/shared/config';
 
 import { UploadPage } from './pages/upload-page';
 import { users } from '../fixtures/logins';
 import { createEmptyDataset } from './helpers/create-empty-dataset';
 
-const config = appConfig();
 const baseUrl = config.frontend.publisher.url;
 
 test.describe('Upload page', () => {

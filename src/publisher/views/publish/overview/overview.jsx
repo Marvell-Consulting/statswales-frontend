@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { appConfig } from '../../../../shared/config';
+import { config } from '../../../../shared/config';
 import Layout from '../../components/Layout';
 import FlashMessages from '../../../../shared/views/components/FlashMessages';
 import ErrorHandler from '../../components/ErrorHandler';
@@ -9,8 +9,6 @@ import Tabs from '../../../../shared/views/components/Tabs';
 import T from '../../../../shared/views/components/T';
 import { ActionsTab } from './ActionsTab';
 import { HistoryTab } from './HistoryTab';
-
-const config = appConfig();
 
 export default function Overview(props) {
   const openPublishTask = props.openTasks.find((task) => task.action === 'publish');

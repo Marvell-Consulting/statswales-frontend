@@ -4,13 +4,12 @@ import { parse as parseCookies } from 'set-cookie-parser';
 
 import { i18next } from '../src/shared/middleware/translation';
 import app from '../src/publisher/app';
-import { appConfig } from '../src/shared/config';
+import { config } from '../src/shared/config';
 import { Locale } from '../src/shared/enums/locale';
 
 import { mockBackend } from './mocks/backend';
 
 describe('Authentication', () => {
-  const config = appConfig();
   const t = i18next.t;
 
   beforeAll(() => {

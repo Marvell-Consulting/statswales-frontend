@@ -3,10 +3,8 @@ import JWT from 'jsonwebtoken';
 
 import { JWTPayloadWithUser } from '../../shared/interfaces/jwt-payload-with-user';
 import { logger } from '../../shared/utils/logger';
-import { appConfig } from '../../shared/config';
+import { config } from '../../shared/config';
 import { GlobalRole } from '../../shared/enums/global-role';
-
-const config = appConfig();
 
 export const ensureAuthenticated = (req: Request, res: Response, next: NextFunction) => {
   logger.debug(`Checking if user is authenticated for route ${req.originalUrl}...`);

@@ -11,11 +11,9 @@ import { logger } from '../utils/logger';
 import { NotFoundException } from '../exceptions/not-found.exception';
 import { docRenderer, createToc, getTitle } from '../services/marked';
 import { CookiePreferences } from '../interfaces/cookie-preferences';
-import { appConfig } from '../config';
+import { config } from '../config';
 import { flashMessages } from '../middleware/flash';
 import { RequestHistory } from '../interfaces/request-history';
-
-const config = appConfig();
 
 export const cookies = Router();
 

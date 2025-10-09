@@ -7,7 +7,7 @@ import { RevisionMetadataDTO } from '../../shared/dtos/revision-metadata';
 import { DataTableDto } from '../../shared/dtos/data-table';
 import { SourceAssignmentDTO } from '../../shared/dtos/source-assignment-dto';
 import { logger as parentLogger } from '../../shared/utils/logger';
-import { appConfig } from '../../shared/config';
+import { config } from '../../shared/config';
 import { HttpMethod } from '../../shared/enums/http-method';
 import { ApiException } from '../../shared/exceptions/api.exception';
 import { ViewException } from '../../shared/exceptions/view.exception';
@@ -48,8 +48,6 @@ import { UnknownException } from '../../shared/exceptions/unknown.exception';
 import { TaskAction } from '../../shared/enums/task-action';
 import { UserGroupStatus } from '../../shared/enums/user-group-status';
 import { DashboardStats } from '../../shared/interfaces/dashboard-stats';
-
-const config = appConfig();
 
 const logger = parentLogger.child({ service: 'publisher-api' });
 

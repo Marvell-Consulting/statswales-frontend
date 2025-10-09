@@ -3,13 +3,11 @@ import React from 'react';
 import { TaskDTO } from '../../../../shared/dtos/task';
 import T from '../../../../shared/views/components/T';
 import { useLocals } from '../../../../shared/views/context/Locals';
-import { appConfig } from '../../../../shared/config';
+import { config } from '../../../../shared/config';
 import { TaskAction } from '../../../../shared/enums/task-action';
 import { TaskStatus } from '../../../../shared/enums/task-status';
 import { DatasetStatus } from '../../../../shared/enums/dataset-status';
 import { PublishingStatus } from '../../../../shared/enums/publishing-status';
-
-const config = appConfig();
 
 type ActionLinkProps = {
   path?: string;

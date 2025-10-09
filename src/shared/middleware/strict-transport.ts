@@ -1,10 +1,8 @@
 import { Request, Response, NextFunction, Router } from 'express';
 import helmet from 'helmet';
 
-import { appConfig } from '../config';
+import { config } from '../config';
 import { AppEnv } from '../config/env.enum';
-
-const config = appConfig();
 
 const bypass = (re: Request, res: Response, next: NextFunction) => next();
 

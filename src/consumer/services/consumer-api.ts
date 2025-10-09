@@ -3,7 +3,7 @@ import { performance } from 'node:perf_hooks';
 
 import { logger as parentLogger } from '../../shared/utils/logger';
 import { DatasetDTO } from '../../shared/dtos/dataset';
-import { appConfig } from '../../shared/config';
+import { config } from '../../shared/config';
 import { HttpMethod } from '../../shared/enums/http-method';
 import { ApiException } from '../../shared/exceptions/api.exception';
 import { Locale } from '../../shared/enums/locale';
@@ -16,8 +16,6 @@ import { FilterInterface } from '../../shared/interfaces/filterInterface';
 import { FilterTable } from '../../shared/dtos/filter-table';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
-
-const config = appConfig();
 
 const logger = parentLogger.child({ service: 'consumer-api' });
 

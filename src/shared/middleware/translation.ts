@@ -4,9 +4,8 @@ import i18next from 'i18next';
 import Backend from 'i18next-fs-backend';
 import i18nextMiddleware, { LanguageDetector } from 'i18next-http-middleware';
 
-import { appConfig } from '../config';
+import { config } from '../config';
 
-const config = appConfig();
 const ignoreRoutes = ['/public', '/css', '/assets', '/healthcheck'];
 const TRANSLATIONS = config.language.availableTranslations;
 const SUPPORTED_LOCALES = config.language.supportedLocales;

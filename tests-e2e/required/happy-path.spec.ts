@@ -8,9 +8,8 @@ import { TZDate } from '@date-fns/tz';
 import { add } from 'date-fns';
 
 import { users } from '../fixtures/logins';
-import { appConfig } from '../../src/shared/config';
+import { config } from '../../src/shared/config';
 
-const config = appConfig();
 const baseUrl = config.frontend.publisher.url;
 
 test.describe('Happy path', () => {

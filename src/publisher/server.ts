@@ -1,10 +1,10 @@
 import 'dotenv/config';
 
-import { appConfig } from '../shared/config';
+import { config } from '../shared/config';
 import app from './app';
 import { logger } from '../shared/utils/logger';
 
-const PORT = appConfig().frontend.publisher.port;
+const PORT = config.frontend.publisher.port;
 
 app.listen(PORT, () => {
   logger.info(`Publisher frontend is running on port ${PORT}`);

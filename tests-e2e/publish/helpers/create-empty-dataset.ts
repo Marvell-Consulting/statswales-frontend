@@ -1,9 +1,8 @@
 import { Page } from '@playwright/test';
-import { appConfig } from '../../../src/shared/config';
+import { config } from '../../../src/shared/config';
 import { TitlePage } from '../pages/title-page';
 import { escapeRegExp } from 'lodash';
 
-const config = appConfig();
 const baseUrl = config.frontend.publisher.url;
 
 export async function createEmptyDataset(page: Page, title: string) {

@@ -4,7 +4,6 @@ import express, { Application } from 'express';
 import cookieParser from 'cookie-parser';
 import expressReactViews from 'express-react-views';
 
-import { appConfig } from '../shared/config';
 import { checkConfig } from '../shared/config/check-config';
 import { httpLogger, logger } from '../shared/utils/logger';
 import { strictTransport } from '../shared/middleware/strict-transport';
@@ -30,10 +29,7 @@ import { history } from '../shared/middleware/history';
 import { staticPages } from '../shared/routes/static-pages';
 
 const app: Application = express();
-const config = appConfig();
 checkConfig();
-
-logger.info(`App config loaded for '${config.env}' env`);
 
 app.disable('x-powered-by');
 app.set('trust proxy', 1);

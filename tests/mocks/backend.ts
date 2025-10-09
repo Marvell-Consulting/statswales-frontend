@@ -2,7 +2,7 @@ import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
 
 import { DatasetListItemDTO } from '../../src/shared/dtos/dataset-list-item';
-import { appConfig } from '../../src/shared/config';
+import { config } from '../../src/shared/config';
 
 import {
   datasets,
@@ -131,7 +131,7 @@ export const mockBackend = setupServer(
   }),
 
   http.get('http://localhost:3001/auth/providers', () => {
-    const enabled = appConfig().auth.providers;
+    const enabled = config.auth.providers;
     return HttpResponse.json({ enabled });
   })
 );

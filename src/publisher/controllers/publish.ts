@@ -90,7 +90,7 @@ import { UserDTO } from '../../shared/dtos/user/user';
 import { TaskDTO } from '../../shared/dtos/task';
 import { TaskDecisionDTO } from '../../shared/dtos/task-decision';
 import { SingleLanguageRevision } from '../../shared/dtos/single-language/revision';
-import { appConfig } from '../../shared/config';
+import { config } from '../../shared/config';
 import { FilterTable } from '../../shared/dtos/filter-table';
 import qs from 'qs';
 import { DEFAULT_PAGE_SIZE } from '../../consumer/controllers/consumer';
@@ -2257,7 +2257,6 @@ export const provideUpdateFrequency = async (req: Request, res: Response) => {
 export const provideDataProviders = async (req: Request, res: Response, next: NextFunction) => {
   const deleteId = req.query.delete;
   const editId = req.query.edit;
-  const config = appConfig();
   const supportEmail = req.language.includes('en') ? config.email.support.en : config.email.support.cy;
   let availableProviders: ProviderDTO[] = [];
   let dataProviders: RevisionProviderDTO[] = [];
