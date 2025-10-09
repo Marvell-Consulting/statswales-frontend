@@ -1688,43 +1688,89 @@
       "heading": "Service statistics",
       "stats": {
         "datasets": {
-          "heading": "Datasets",
+          "summary": {
+            "heading": "Dataset summary",
+            "note": "*Datasets can be both published and have an incomplete or pending update. Therefore, the sum of datasets in each status may be greater than the total number of datasets.",
+            "table": {
+              "status": "Status",
+              "description": "Description",
+              "count": "Number of datasets"
+            },
+            "total": {
+              "label": "Total datasets",
+              "description": "All datasets on StatsWales platform*"
+            },
+            "incomplete": {
+              "label": "Incomplete",
+              "description": "New datasets or updates in progress, not yet submitted for review"
+            },
+            "pending_approval": {
+              "label": "Pending approval",
+              "description": "New datasets or updates awaiting review from an approver"
+            },
+            "scheduled": {
+              "label": "Scheduled",
+              "description": "New datasets or updates approved and scheduled for publishing"
+            },
+            "published": {
+              "label": "Published",
+              "description": "Datasets live on consumer site"
+            },
+            "action_requested": {
+              "label": "Action requested",
+              "description": "Archive, unarchive or unpublish requests"
+            },
+            "archived": {
+              "label": "Archived",
+              "description": "Datasets no longer maintained, but still published on consumer site"
+            },
+            "offline": {
+              "label": "Unpublished",
+              "description": "Datasets temporarily removed from consumer site"
+            }
+          },
+          "largest": {
+            "heading": "Largest datasets",
+            "table": {
+              "title": "Dataset title",
+              "row_count": "Number of rows",
+              "size_bytes": "Approx. download size (MB)"
+            }
+          },
+          "longest": {
+            "heading": "Longest time before publication",
+            "table": {
+              "title": "Dataset title",
+              "interval": "Time before publication",
+              "status": "Status"
+            }
+          }
+        },
+        "users": {
+          "heading": "User summary",
           "table":{
             "status": "Status",
             "description": "Description",
-            "count": "Count"
+            "count": "Number of users"
           },
           "total": {
-            "label": "Total datasets",
-            "description": "All datasets on StatsWales platform"
+            "label": "Total",
+            "description": "All users on the StatsWales platform (including deactivated)"
           },
-          "incomplete": {
-            "label": "Incomplete",
-            "description": "New datasets or updates in progress, not yet submitted for review"
-          },
-          "pending_approval": {
-            "label": "Pending approval",
-            "description": "New datasets or updates awaiting review from an approver"
-          },
-          "scheduled": {
-            "label": "Scheduled",
-            "description": "New datasets or updates approved and scheduled for publishing"
+          "active": {
+            "label": "Active users",
+            "description": "Users who have signed in at least once"
           },
           "published": {
-            "label": "Published",
-            "description": "Datasets live on consumer site"
-          },
-          "action_requested": {
-            "label": "Action requested",
-            "description": "Archive, unarchive or unpublish requests"
-          },
-          "archived": {
-            "label": "Archived",
-            "description": "Datasets no longer maintained, but still published on consumer site"
-          },
-          "offline": {
-            "label": "Unpublished",
-            "description": "Datasets temporarily removed from consumer site"
+            "label": "Published users",
+            "description": "Users with at least one published dataset"
+          }
+        },
+        "groups": {
+          "heading": "Most published groups",
+          "table":{
+            "name": "Group Name",
+            "count": "Number of datasets"
           }
         }
       }
