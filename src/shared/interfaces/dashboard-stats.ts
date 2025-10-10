@@ -27,8 +27,10 @@ export interface UserStats {
   most_published: MostPublishedUser[];
 }
 
+export type MostPublishedGroup = { name: string; count: number };
+
 export interface UserGroupStats {
-  most_published: [{ name: string; count: number }];
+  most_published: MostPublishedGroup[];
 }
 
 export interface DashboardStats {
