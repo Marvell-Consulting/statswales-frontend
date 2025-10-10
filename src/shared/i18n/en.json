@@ -1747,23 +1747,32 @@
           }
         },
         "users": {
-          "heading": "User summary",
-          "table":{
-            "status": "Status",
-            "description": "Description",
-            "count": "Number of users"
+          "summary": {
+            "heading": "User summary",
+            "table":{
+              "status": "Status",
+              "description": "Description",
+              "count": "Number of users"
+            },
+            "total": {
+              "label": "Total",
+              "description": "All users on the StatsWales platform (including deactivated)"
+            },
+            "active": {
+              "label": "Active users",
+              "description": "Users who have signed in at least once"
+            },
+            "published": {
+              "label": "Published users",
+              "description": "Users with at least one published dataset"
+            }
           },
-          "total": {
-            "label": "Total",
-            "description": "All users on the StatsWales platform (including deactivated)"
-          },
-          "active": {
-            "label": "Active users",
-            "description": "Users who have signed in at least once"
-          },
-          "published": {
-            "label": "Published users",
-            "description": "Users with at least one published dataset"
+          "most_published": {
+            "heading": "Most published users",
+            "table":{
+              "name": "Name",
+              "count": "Number of datasets"
+            }
           }
         },
         "groups": {

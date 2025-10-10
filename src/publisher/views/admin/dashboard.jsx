@@ -131,16 +131,16 @@ const DatasetStats = (props) => {
 };
 
 const UsertStats = (props) => {
-  const userStats = props.stats.users;
+  const { summary } = props.stats.users;
 
-  const columns = [
+  const summaryCols = [
     {
       key: 'status',
       format: (value) => {
         return value === 'total' ? (
-          <strong>{props.t('admin.dashboard.stats.users.total.label')}</strong>
+          <strong>{props.t('admin.dashboard.stats.users.summary.total.label')}</strong>
         ) : (
-          props.t(`admin.dashboard.stats.users.${value}.label`)
+          props.t(`admin.dashboard.stats.users.summary.${value}.label`)
         );
       }
     },
@@ -158,21 +158,54 @@ const UsertStats = (props) => {
     }
   ];
 
-  const rows = Object.keys(userStats).map((key) => {
+  const summaryRows = Object.keys(summary).map((key) => {
     return {
       status: key,
       description: props.t(`admin.dashboard.stats.users.${key}.description`),
-      count: userStats[key]
+      count: summary[key]
     };
   });
 
+  const mostPublishedCols = [
+    {
+      key: 'name',
+      format: (name, row) => {
+        return (
+          <a className="govuk-link" href={props.buildUrl(`admin/users/${row.id}`, props.i18n.language)}>
+            {name}
+          </a>
+        );
+      }
+    },
+    {
+      key: 'count',
+      format: (value) => {
+        return value ? Intl.NumberFormat(props.i18n.language).format(value) : '-';
+      }
+    }
+  ];
+  const mostPublishedRows = props.stats.users.most_published;
+
   return (
-    <div className="govuk-grid-row govuk-!-margin-bottom-5">
-      <div className="govuk-grid-column-full">
-        <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.users.heading')}</h2>
-        <Table i18nBase="admin.dashboard.stats.users.table" columns={columns} rows={rows} />
+    <>
+      <div className="govuk-grid-row govuk-!-margin-bottom-5">
+        <div className="govuk-grid-column-full">
+          <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.users.summary.heading')}</h2>
+          <Table i18nBase="admin.dashboard.stats.users.summary.table" columns={summaryCols} rows={summaryRows} />
+        </div>
       </div>
-    </div>
+
+      <div className="govuk-grid-row govuk-!-margin-bottom-5">
+        <div className="govuk-grid-column-full">
+          <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.users.most_published.heading')}</h2>
+          <Table
+            i18nBase="admin.dashboard.stats.users.most_published.table"
+            columns={mostPublishedCols}
+            rows={mostPublishedRows}
+          />
+        </div>
+      </div>
+    </>
   );
 };
 

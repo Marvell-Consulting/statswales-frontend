@@ -1,3 +1,6 @@
+export type LargestDataset = { title: string; row_count: number; size_bytes?: number };
+export type LongestDataset = { title: string; interval: string; status: string };
+
 export interface DatasetStats {
   summary: {
     incomplete: number;
@@ -9,14 +12,19 @@ export interface DatasetStats {
     offline: number;
     total: number;
   };
-  largest: [{ dataset_id: string; title: string; row_count: number; size_bytes?: number }];
-  longest: [{ dataset_id: string; title: string; interval: string; status: string }];
+  largest: LargestDataset[];
+  longest: LongestDataset[];
 }
 
+export type MostPublishedUser = { id: string; name: string; count: number };
+
 export interface UserStats {
-  active: number;
-  published: number;
-  total: number;
+  summary: {
+    active: number;
+    published: number;
+    total: number;
+  };
+  most_published: MostPublishedUser[];
 }
 
 export interface UserGroupStats {
