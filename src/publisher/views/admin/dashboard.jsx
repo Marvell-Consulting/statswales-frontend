@@ -161,17 +161,30 @@ const UsertStats = (props) => {
   const summaryRows = Object.keys(summary).map((key) => {
     return {
       status: key,
-      description: props.t(`admin.dashboard.stats.users.${key}.description`),
+      description: props.t(`admin.dashboard.stats.users.summary.${key}.description`),
       count: summary[key]
     };
   });
 
-  const mostPublishedCols = [
+  return (
+    <>
+      <div className="govuk-grid-row govuk-!-margin-bottom-5">
+        <div className="govuk-grid-column-full">
+          <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.users.summary.heading')}</h2>
+          <Table i18nBase="admin.dashboard.stats.users.summary.table" columns={summaryCols} rows={summaryRows} />
+        </div>
+      </div>
+    </>
+  );
+};
+
+const MostPublished = (props) => {
+  const userCols = [
     {
       key: 'name',
       format: (name, row) => {
         return (
-          <a className="govuk-link" href={props.buildUrl(`admin/users/${row.id}`, props.i18n.language)}>
+          <a className="govuk-link" href={props.buildUrl(`admin/user/${row.id}`, props.i18n.language)}>
             {name}
           </a>
         );
@@ -184,43 +197,25 @@ const UsertStats = (props) => {
       }
     }
   ];
-  const mostPublishedRows = props.stats.users.most_published;
+
+  const userRows = props.stats.users.most_published;
+  const groupStats = props.stats.groups;
+  const groupCols = ['name', 'count'];
 
   return (
     <>
       <div className="govuk-grid-row govuk-!-margin-bottom-5">
-        <div className="govuk-grid-column-full">
-          <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.users.summary.heading')}</h2>
-          <Table i18nBase="admin.dashboard.stats.users.summary.table" columns={summaryCols} rows={summaryRows} />
-        </div>
-      </div>
-
-      <div className="govuk-grid-row govuk-!-margin-bottom-5">
-        <div className="govuk-grid-column-full">
+        <div className="govuk-grid-column-one-half">
           <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.users.most_published.heading')}</h2>
-          <Table
-            i18nBase="admin.dashboard.stats.users.most_published.table"
-            columns={mostPublishedCols}
-            rows={mostPublishedRows}
-          />
+          <Table i18nBase="admin.dashboard.stats.users.most_published.table" columns={userCols} rows={userRows} />
+        </div>
+
+        <div className="govuk-grid-column-one-half">
+          <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.groups.heading')}</h2>
+          <Table i18nBase="admin.dashboard.stats.groups.table" columns={groupCols} rows={groupStats.most_published} />
         </div>
       </div>
     </>
-  );
-};
-
-const GroupStats = (props) => {
-  const groupStats = props.stats.groups;
-
-  const columns = ['name', 'count'];
-
-  return (
-    <div className="govuk-grid-row govuk-!-margin-bottom-5">
-      <div className="govuk-grid-column-full">
-        <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.groups.heading')}</h2>
-        <Table i18nBase="admin.dashboard.stats.groups.table" columns={columns} rows={groupStats.most_published} />
-      </div>
-    </div>
   );
 };
 
@@ -238,7 +233,7 @@ const Dashboard = (props) => {
 
         <DatasetStats {...props} />
         <UsertStats {...props} />
-        <GroupStats {...props} />
+        <MostPublished {...props} />
       </div>
     </Layout>
   );
