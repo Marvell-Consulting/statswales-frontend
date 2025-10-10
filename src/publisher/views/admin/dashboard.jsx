@@ -130,7 +130,7 @@ const DatasetStats = (props) => {
   );
 };
 
-const UsertStats = (props) => {
+const UserStats = (props) => {
   const { summary } = props.stats.users;
 
   const summaryCols = [
@@ -232,7 +232,7 @@ const Dashboard = (props) => {
         </div>
 
         <DatasetStats {...props} />
-        <UsertStats {...props} />
+        <UserStats {...props} />
         <MostPublished {...props} />
       </div>
     </Layout>
