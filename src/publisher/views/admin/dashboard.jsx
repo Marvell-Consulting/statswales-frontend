@@ -1,57 +1,226 @@
 import React from 'react';
+import clsx from 'clsx';
+import { formatDistanceToNow, subSeconds } from 'date-fns';
+import { enGB, cy } from 'date-fns/locale';
 
 import Layout from '../components/Layout';
+import Table from '../../../shared/views/components/Table';
 
-const StatCard = ({ title, value, description, className }) => (
-  <div className={`stat-card ${className}`}>
-    <h2 className="stat-card__value">{value}</h2>
-    <h3 className="stat-card__title">{title}</h3>
-    <p className="stat-card__description">{description}</p>
-  </div>
-);
+const DatasetStats = (props) => {
+  const { summary } = props.stats.datasets;
 
-const Dashboard = (props) => {
-  const { stats, title } = props;
-  const datasetStats = stats.datasets;
-
-  const datasetCards = [
+  const summaryCols = [
     {
-      title: props.t('admin.dashboard.stats.datasets.total.heading'),
-      description: props.t('admin.dashboard.stats.datasets.total.description'),
-      value: datasetStats?.total || 0,
-      className: 'stat-card--total'
+      key: 'status',
+      format: (value) => {
+        if (value === 'total') {
+          return <strong>{props.t('admin.dashboard.stats.datasets.summary.total.label')}</strong>;
+        }
+        return (
+          <strong className={clsx('govuk-tag', 'publishing-status', `govuk-tag--${props.statusToColour(value)}`)}>
+            {props.t(`admin.dashboard.stats.datasets.summary.${value}.label`)}
+          </strong>
+        );
+      }
     },
     {
-      title: props.t('admin.dashboard.stats.datasets.incomplete.heading'),
-      description: props.t('admin.dashboard.stats.datasets.incomplete.description'),
-      value: datasetStats?.incomplete || 0,
-      className: 'stat-card--incomplete'
+      key: 'description',
+      format: (value, row) => {
+        return row.status === 'total' ? <strong>{value}</strong> : value;
+      }
     },
     {
-      title: props.t('admin.dashboard.stats.datasets.pending.heading'),
-      description: props.t('admin.dashboard.stats.datasets.pending.description'),
-      value: datasetStats?.pendingApproval || 0,
-      className: 'stat-card--pending'
-    },
-    {
-      title: props.t('admin.dashboard.stats.datasets.published.heading'),
-      description: props.t('admin.dashboard.stats.datasets.published.description'),
-      value: datasetStats?.published || 0,
-      className: 'stat-card--published'
-    },
-    {
-      title: props.t('admin.dashboard.stats.datasets.archived.heading'),
-      description: props.t('admin.dashboard.stats.datasets.archived.description'),
-      value: datasetStats?.archived || 0,
-      className: 'stat-card--archived'
-    },
-    {
-      title: props.t('admin.dashboard.stats.datasets.offline.heading'),
-      description: props.t('admin.dashboard.stats.datasets.offline.description'),
-      value: datasetStats?.offline || 0,
-      className: 'stat-card--offline'
+      key: 'count',
+      format: (value, row) => {
+        return row.status === 'total' ? <strong>{value}</strong> : value;
+      }
     }
   ];
+
+  const summaryRows = Object.keys(summary).map((key) => {
+    return {
+      status: key,
+      description: props.t(`admin.dashboard.stats.datasets.summary.${key}.description`),
+      count: summary[key]
+    };
+  });
+
+  const largestCols = [
+    {
+      key: 'title',
+      format: (value, row) => {
+        return (
+          <a className="govuk-link" href={props.buildUrl(`publish/${row.dataset_id}/overview`, props.i18n.language)}>
+            {value}
+          </a>
+        );
+      }
+    },
+    {
+      key: 'row_count',
+      format: (value) => {
+        return value ? Intl.NumberFormat(props.i18n.language).format(value) : '-';
+      }
+    },
+    {
+      key: 'size_bytes',
+      format: (value) => {
+        return value ? `${(value / 1024 / 1024).toFixed(2)} MB` : '-';
+      }
+    }
+  ];
+  const largestRows = props.stats.datasets.largest;
+
+  const longestCols = [
+    {
+      key: 'title',
+      format: (value, row) => {
+        return (
+          <a className="govuk-link" href={props.buildUrl(`publish/${row.dataset_id}/overview`, props.i18n.language)}>
+            {value}
+          </a>
+        );
+      }
+    },
+    {
+      key: 'interval',
+      format: (seconds) => {
+        const locale = props.i18n.language.includes('cy') ? cy : enGB;
+        const start = subSeconds(new Date(), seconds || 0);
+        return seconds ? formatDistanceToNow(start, { locale }) : '-';
+      }
+    },
+    {
+      key: 'status',
+      format: (value) => {
+        return (
+          <span className={clsx('govuk-tag', 'publishing-status', `govuk-tag--${props.statusToColour(value)}`)}>
+            {props.t(`admin.dashboard.stats.datasets.summary.${value}.label`)}
+          </span>
+        );
+      }
+    }
+  ];
+  const longestRows = props.stats.datasets.longest;
+
+  return (
+    <>
+      <div className="govuk-grid-row govuk-!-margin-bottom-5">
+        <div className="govuk-grid-column-full">
+          <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.datasets.summary.heading')}</h2>
+          <Table i18nBase="admin.dashboard.stats.datasets.summary.table" columns={summaryCols} rows={summaryRows} />
+          <p className="govuk-body-s">{props.t('admin.dashboard.stats.datasets.summary.note')}</p>
+        </div>
+      </div>
+
+      <div className="govuk-grid-row govuk-!-margin-bottom-5">
+        <div className="govuk-grid-column-full">
+          <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.datasets.largest.heading')}</h2>
+          <Table i18nBase="admin.dashboard.stats.datasets.largest.table" columns={largestCols} rows={largestRows} />
+        </div>
+      </div>
+
+      <div className="govuk-grid-row govuk-!-margin-bottom-5">
+        <div className="govuk-grid-column-full">
+          <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.datasets.longest.heading')}</h2>
+          <Table i18nBase="admin.dashboard.stats.datasets.longest.table" columns={longestCols} rows={longestRows} />
+        </div>
+      </div>
+    </>
+  );
+};
+
+const UserStats = (props) => {
+  const { summary } = props.stats.users;
+
+  const summaryCols = [
+    {
+      key: 'status',
+      format: (value) => {
+        return value === 'total' ? (
+          <strong>{props.t('admin.dashboard.stats.users.summary.total.label')}</strong>
+        ) : (
+          props.t(`admin.dashboard.stats.users.summary.${value}.label`)
+        );
+      }
+    },
+    {
+      key: 'description',
+      format: (value, row) => {
+        return row.status === 'total' ? <strong>{value}</strong> : value;
+      }
+    },
+    {
+      key: 'count',
+      format: (value, row) => {
+        return row.status === 'total' ? <strong>{value}</strong> : value;
+      }
+    }
+  ];
+
+  const summaryRows = Object.keys(summary).map((key) => {
+    return {
+      status: key,
+      description: props.t(`admin.dashboard.stats.users.summary.${key}.description`),
+      count: summary[key]
+    };
+  });
+
+  return (
+    <>
+      <div className="govuk-grid-row govuk-!-margin-bottom-5">
+        <div className="govuk-grid-column-full">
+          <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.users.summary.heading')}</h2>
+          <Table i18nBase="admin.dashboard.stats.users.summary.table" columns={summaryCols} rows={summaryRows} />
+        </div>
+      </div>
+    </>
+  );
+};
+
+const MostPublished = (props) => {
+  const userCols = [
+    {
+      key: 'name',
+      format: (name, row) => {
+        return (
+          <a className="govuk-link" href={props.buildUrl(`admin/user/${row.id}`, props.i18n.language)}>
+            {name}
+          </a>
+        );
+      }
+    },
+    {
+      key: 'count',
+      format: (value) => {
+        return value ? Intl.NumberFormat(props.i18n.language).format(value) : '-';
+      }
+    }
+  ];
+
+  const userRows = props.stats.users.most_published;
+  const groupStats = props.stats.groups;
+  const groupCols = ['name', 'count'];
+
+  return (
+    <>
+      <div className="govuk-grid-row govuk-!-margin-bottom-5">
+        <div className="govuk-grid-column-one-half">
+          <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.users.most_published.heading')}</h2>
+          <Table i18nBase="admin.dashboard.stats.users.most_published.table" columns={userCols} rows={userRows} />
+        </div>
+
+        <div className="govuk-grid-column-one-half">
+          <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.groups.heading')}</h2>
+          <Table i18nBase="admin.dashboard.stats.groups.table" columns={groupCols} rows={groupStats.most_published} />
+        </div>
+      </div>
+    </>
+  );
+};
+
+const Dashboard = (props) => {
+  const { title } = props;
 
   return (
     <Layout {...props} formPage title={title}>
@@ -62,16 +231,9 @@ const Dashboard = (props) => {
           </div>
         </div>
 
-        <div className="govuk-grid-row">
-          <div className="govuk-grid-column-full">
-            <h2 className="govuk-heading-l">{props.t('admin.dashboard.stats.datasets.heading')}</h2>
-            <div className="stat-grid">
-              {datasetCards.map((card, index) => (
-                <StatCard key={index} {...card} />
-              ))}
-            </div>
-          </div>
-        </div>
+        <DatasetStats {...props} />
+        <UserStats {...props} />
+        <MostPublished {...props} />
       </div>
     </Layout>
   );

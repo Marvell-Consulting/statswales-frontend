@@ -41,6 +41,7 @@ import { pageInfo } from '../../shared/utils/pagination';
 import { UserGroupAction } from '../../shared/enums/user-group-action';
 import { UserGroupStatus } from '../../shared/enums/user-group-status';
 import { i18next } from '../../shared/middleware/translation';
+import { DashboardStats } from '../../shared/interfaces/dashboard-stats';
 
 export const fetchUserGroup = async (req: Request, res: Response, next: NextFunction) => {
   const userGroupIdError = await hasError(userGroupIdValidator(), req);
@@ -478,7 +479,7 @@ export const userStatus = async (req: Request, res: Response) => {
 export const dashboard = async (req: Request, res: Response, next: NextFunction) => {
   res.locals.activePage = 'dashboard';
   try {
-    const stats = await req.pubapi.getDashboardStats();
+    const stats: DashboardStats = await req.pubapi.getDashboardStats();
     const title = i18next.t('admin.dashboard.heading', { lng: req.language });
     res.render('admin/dashboard', { stats, title });
   } catch (err: any) {
