@@ -966,6 +966,9 @@
         "time": "Dimension containing dates",
         "ignore": "This column can be ignored",
         "unknown": "Unknown"
+      },
+      "buttons": {
+        "choose_different": "Choose a different data table"
       }
     },
     "sources": {

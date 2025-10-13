@@ -162,6 +162,9 @@ export default function Preview(props) {
                       >
                         {props.t('buttons.continue')}
                       </button>
+                      <button className="govuk-button govuk-button--secondary" name="confirm" value="false">
+                        {props.t('publish.preview.buttons.choose_different')}
+                      </button>
                     </div>
                   </fieldset>
                 </form>

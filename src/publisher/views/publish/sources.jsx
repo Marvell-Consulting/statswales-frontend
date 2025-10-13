@@ -54,11 +54,17 @@ export default function Sources(props) {
         </div>
         <div className="govuk-grid-row">
           <div className="govuk-grid-column-full">
-            <p className="govuk-body">
+            <div className="govuk-button-group">
               <button type="submit" className="govuk-button" data-module="govuk-button">
                 {props.t('buttons.continue')}
               </button>
-            </p>
+              <a
+                className="govuk-button govuk-button--secondary"
+                href={props.buildUrl(`/publish/${props.datasetId}/upload`, props.i18n.language)}
+              >
+                {props.t('publish.preview.buttons.choose_different')}
+              </a>
+            </div>
           </div>
         </div>
       </form>
