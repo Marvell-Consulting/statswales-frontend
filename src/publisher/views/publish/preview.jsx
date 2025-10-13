@@ -162,7 +162,15 @@ export default function Preview(props) {
                       >
                         {props.t('buttons.continue')}
                       </button>
-                      <button className="govuk-button govuk-button--secondary" name="confirm" value="false">
+                      <button
+                        type="submit"
+                        name="confirm"
+                        value="false"
+                        className="govuk-button govuk-button--secondary"
+                        data-module="govuk-button"
+                        style={{ verticalAlign: 'unset' }}
+                        data-prevent-double-click="true"
+                      >
                         {props.t('publish.preview.buttons.choose_different')}
                       </button>
                     </div>
