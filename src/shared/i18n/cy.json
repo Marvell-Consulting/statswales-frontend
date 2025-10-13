@@ -962,6 +962,9 @@
         "time": "Dimensiwn sy'n cynnwys dyddiadau",
         "ignore": "Gellir anwybyddu'r golofn hon",
         "unknown": "Anhysbys"
+      },
+      "buttons": {
+        "choose_different": "Dewiswch dabl data gwahanol"
       }
     },
     "sources": {
