@@ -9,8 +9,17 @@ import { add } from 'date-fns';
 
 import { users } from '../fixtures/logins';
 import { config } from '../../src/shared/config';
+import { TranslationDTO } from '../../src/shared/dtos/translations';
 
 const baseUrl = config.frontend.publisher.url;
+const csvDir = path.join(__dirname, '..', 'sample-csvs', 'happy-path');
+
+async function setFile(page: Page, filepath: string) {
+  const fileChooserPromise = page.waitForEvent('filechooser');
+  await page.locator('input[type="file"]').click();
+  const fileChooser = await fileChooserPromise;
+  await fileChooser.setFiles(filepath);
+}
 
 test.describe('Happy path', () => {
   // approval tests are dependant on dataset submission so disable fullyParallel mode  in this file
@@ -23,7 +32,6 @@ test.describe('Happy path', () => {
     // log in as test publisher
     test.use({ storageState: users.publisher.path });
 
-    const csvDir = path.join(__dirname, '..', 'sample-csvs', 'happy-path');
     let yearCodeId: string;
     let rowRefId: string;
     let areaCodeId: string;
@@ -39,13 +47,6 @@ test.describe('Happy path', () => {
       relatedReportLink: 'http://example.com',
       relatedReportLinkText: 'Example website'
     };
-
-    async function setFile(page: Page, filepath: string) {
-      const fileChooserPromise = page.waitForEvent('filechooser');
-      await page.locator('input[type="file"]').click();
-      const fileChooser = await fileChooserPromise;
-      await fileChooser.setFiles(filepath);
-    }
 
     async function downloadFile(page: Page, downloadButton: Locator) {
       const downloadPromise = page.waitForEvent('download');
@@ -185,17 +186,6 @@ test.describe('Happy path', () => {
       await page.getByRole('button', { name: 'Continue' }).click();
       await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
 
-      // Original Geography route disabled for now
-      // await expect(areaCodeUrl).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${areaCodeId}`);
-      // await page.getByLabel('Geography').click({ force: true });
-      // await page.getByRole('button', { name: 'Continue' }).click();
-      // await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/lookup/${areaCodeId}/review`);
-      // await page.getByRole('button', { name: 'Continue' }).click();
-      // await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/dimension/${areaCodeId}/name`);
-      // await page.getByRole('textbox').fill(content.areaCodeField);
-      // await page.getByRole('button', { name: 'Continue' }).click();
-      // await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
-
       // summary
       await page.getByRole('link', { name: 'Summary' }).click();
       await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/summary`);
@@ -280,16 +270,10 @@ test.describe('Happy path', () => {
 
       // update translations
       const file = fs.readFileSync(path.join(testInfo.outputDir, filename));
-      const parsed = parse(file, {
-        columns: true,
-        bom: true
-      });
+      const parsed = parse<TranslationDTO>(file, { columns: true, bom: true });
 
-      const mapped = parsed.map((row: Record<string, string>) => {
-        return {
-          ...row,
-          cymraeg: `${row.english} - CY`
-        };
+      const mapped = parsed.map((row: TranslationDTO): TranslationDTO => {
+        return { ...row, cymraeg: `${row.english} - CY` };
       });
 
       const newCsv = stringify(mapped, { columns: Object.keys(parsed[0]), header: true });
@@ -322,7 +306,7 @@ test.describe('Happy path', () => {
       await expect(previewPage.getByText(content.statisticalQuality, { exact: true })).toBeTruthy();
       await expect(previewPage.getByText(content.relatedReportLinkText, { exact: true })).toBeTruthy();
 
-      // download files;
+      // download files
       await previewPage.click('#tab_download_dataset');
       await previewPage.getByRole('button', { name: 'Download data' }).waitFor({ state: 'visible' });
       const csvDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
@@ -333,10 +317,6 @@ test.describe('Happy path', () => {
       await previewPage.click('#xlsx', { force: true });
       const excelDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
       await checkFile(testInfo, excelDownload);
-      // Disabled while DuckDB file download is unavailable
-      // await previewPage.click('#duckdb', { force: true });
-      // const duckDBDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
-      // await checkFile(testInfo, duckDBDownload);
 
       // data table
       await previewPage.click('#tab_data');
@@ -652,6 +632,51 @@ test.describe('Happy path', () => {
       const statusBadges = page.locator('.status-badges');
       await expect(statusBadges.getByText('Live dataset', { exact: true })).toBeVisible();
       await expect(statusBadges.getByText('Update scheduled', { exact: true })).toBeVisible();
+    });
+  });
+
+  test('Wait for dataset to be published', async ({ page }) => {
+    await page.goto(`${baseUrl}/en-GB/publish/${id}/overview`);
+
+    const statusBadges = page.locator('.status-badges');
+    let isPublished = false;
+
+    while (!isPublished) {
+      await page.waitForTimeout(5000); // refresh page every 5 seconds until the dataset is published
+      await page.reload();
+      isPublished = await statusBadges.getByText('Published').isVisible();
+    }
+  });
+
+  test.describe('Publisher - dataset update', () => {
+    test.use({ storageState: users.publisher.path });
+
+    test('Start the update', async ({ page }) => {
+      await page.goto(`/en-GB`);
+      await page.getByRole('link', { name: title }).click();
+      await expect(page.getByText(title)).toBeTruthy();
+
+      await page.getByRole('link', { name: 'Update this dataset' }).click();
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+    });
+
+    test('Update the data table', async ({ page }) => {
+      await page.getByRole('link', { name: 'Data table' }).click();
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/update-type`);
+
+      await page.getByText('Add new data only', { exact: true }).click({ force: true });
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      await setFile(page, path.join(csvDir, 'data-update.csv'));
+      await page.getByRole('button', { name: 'Continue' }).click();
+      await page.waitForLoadState('networkidle');
+
+      // check update table
+      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${id}/preview`);
+      await page.getByRole('button', { name: 'Continue' }).click();
+
+      const tasklistItem = await page.locator('li', { hasText: 'Data table' });
+      await expect(tasklistItem.locator('.govuk-tag').first()).toHaveText('Updated');
     });
   });
 });

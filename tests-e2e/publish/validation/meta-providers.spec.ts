@@ -1,27 +1,60 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 
-import { config } from '../../src/shared/config';
-
-import { ProviderPage } from './pages/provider-page';
-import { users } from '../fixtures/logins';
-import { createEmptyDataset } from './helpers/create-empty-dataset';
+import { config } from '../../../src/shared/config';
+import { users } from '../../fixtures/logins';
+import { startNewDataset, selectUserGroup, provideDatasetTitle } from '../helpers/publishing-steps';
 
 const baseUrl = config.frontend.publisher.url;
 
 test.describe.configure({ mode: 'serial' }); // tests in this file must be performed in order to avoid test failures
 
-test.describe('Metadata Data Providers', () => {
-  let providerPage: ProviderPage;
-  let id: string;
+test.describe('Metadata - Data providers', () => {
+  let datasetId: string;
 
-  test.beforeEach(async ({ page }) => {
-    providerPage = new ProviderPage(page);
-  });
+  async function filterProviders(page: Page, provider: string) {
+    await page.locator('input#provider_id').fill(provider);
+  }
+
+  async function selectProvider(page: Page, provider: string) {
+    await page.locator('input#provider_id').fill(provider);
+    await page.click(`text=${provider}`);
+  }
+
+  async function hasSource(page: Page, hasSource: boolean) {
+    if (hasSource) {
+      await page.getByText('Select source', { exact: true }).click();
+    } else {
+      await page.getByText('No specific source from data provider', { exact: true }).click();
+    }
+  }
+
+  async function filterSources(page: Page, source: string) {
+    await page.locator('input#source_id').fill(source);
+  }
+
+  async function selectSource(page: Page, source: string) {
+    await page.locator('input#source_id').fill(source);
+    await page.click(`text=${source}`);
+  }
+
+  async function addAnotherProvider(page: Page, addProvider: boolean) {
+    if (addProvider) {
+      await page.getByText('Yes', { exact: true }).click();
+    } else {
+      await page.getByText('No', { exact: true }).click();
+    }
+  }
+
+  async function removeAllProviders(page: Page) {
+    while (await page.getByRole('link', { name: 'Remove' }).first().isVisible()) {
+      await page.getByRole('link', { name: 'Remove' }).first().click();
+    }
+  }
 
   test.describe('Not authed', () => {
     test.use({ storageState: { cookies: [], origins: [] } });
     test('Redirects to login page when not authenticated', async ({ page }) => {
-      await providerPage.goto(id);
+      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/providers`);
       expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
     });
   });
@@ -31,37 +64,44 @@ test.describe('Metadata Data Providers', () => {
 
     test.beforeAll(async ({ browser }) => {
       const page = await browser.newPage();
-      id = await createEmptyDataset(page, 'Meta providers spec');
+      await startNewDataset(page);
+      await selectUserGroup(page, 'E2E tests');
+      datasetId = await provideDatasetTitle(page, 'Meta providers spec');
     });
 
-    test.beforeEach(async () => {
-      await providerPage.goto(id);
-      await providerPage.removeAllProviders();
+    test.beforeEach(async ({ page }) => {
+      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/providers`);
+      await removeAllProviders(page);
     });
 
     test('Has a heading', async ({ page }) => {
+      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/providers`);
       await expect(page.getByRole('heading', { name: 'Add a data provider' })).toBeVisible();
     });
 
     test('Can switch to Welsh', async ({ page }) => {
+      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/providers`);
       await page.getByText('Cymraeg').click();
       await expect(page.getByRole('heading', { name: 'Ychwanegu darparwr data' })).toBeVisible();
     });
 
     test.describe('Form validation', () => {
       test('Displays a validation error when no provider is selected', async ({ page }) => {
-        await providerPage.submit();
-        expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${id}/providers`);
+        await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/providers`);
+        await page.getByRole('button', { name: 'Continue' }).click();
+        expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetId}/providers`);
         await expect(page.getByText('Select a data provider from the list of data providers')).toBeVisible();
       });
 
       test('Displays an empty provider list if there are no matches', async ({ page }) => {
-        await providerPage.filterProviders('No matches');
+        await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/providers`);
+        await filterProviders(page, 'No matches');
         await expect(page.getByText('No results found')).toBeVisible();
       });
 
       test('Displays a list of matching providers', async ({ page }) => {
-        await providerPage.filterProviders('Department');
+        await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/providers`);
+        await filterProviders(page, 'Department');
         await expect(page.getByText('Department for Education').first()).toBeVisible();
         await expect(page.getByText('Department for Environment, Food and Rural Affairs').first()).toBeVisible();
         await expect(page.getByText('Department for Transport').first()).toBeVisible();
@@ -70,18 +110,19 @@ test.describe('Metadata Data Providers', () => {
       });
 
       test('Can successfully select a provider and proceed to the source select', async ({ page }) => {
-        await providerPage.selectProvider('Department for Transport');
-        await providerPage.submit();
+        await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/providers`);
+        await selectProvider(page, 'Department for Transport');
+        await page.getByRole('button', { name: 'Continue' }).click();
         await expect(
           page.getByRole('heading', { name: 'Add a data source from the selected data provider' })
         ).toBeVisible();
       });
 
       test('Displays a validation error when has source option not selected', async ({ page }) => {
-        await providerPage.selectProvider('Department for Transport');
-        await providerPage.submit();
+        await selectProvider(page, 'Department for Transport');
+        await page.getByRole('button', { name: 'Continue' }).click();
 
-        await providerPage.submit();
+        await page.getByRole('button', { name: 'Continue' }).click();
         await expect(
           page.getByText(
             'Select whether to select a source or indicate there is no specific source from the data provider'
@@ -90,11 +131,11 @@ test.describe('Metadata Data Providers', () => {
       });
 
       test('Displays a validation error when has source selected but no source option selected', async ({ page }) => {
-        await providerPage.selectProvider('Department for Transport');
-        await providerPage.submit();
+        await selectProvider(page, 'Department for Transport');
+        await page.getByRole('button', { name: 'Continue' }).click();
 
-        await providerPage.hasSource(true);
-        await providerPage.submit();
+        await hasSource(page, true);
+        await page.getByRole('button', { name: 'Continue' }).click();
 
         await expect(
           page.getByText('Select a source from the list of sources for the selected data provider')
@@ -102,23 +143,23 @@ test.describe('Metadata Data Providers', () => {
       });
 
       test('Displays a list of matching sources', async ({ page }) => {
-        await providerPage.selectProvider('Department for Transport');
-        await providerPage.submit();
+        await selectProvider(page, 'Department for Transport');
+        await page.getByRole('button', { name: 'Continue' }).click();
 
-        await providerPage.hasSource(true);
+        await hasSource(page, true);
 
-        await providerPage.filterSources('Traffic');
+        await filterSources(page, 'Traffic');
         await expect(page.getByText('Automated traffic counts').first()).toBeVisible();
         await expect(page.getByText('Manual traffic survey').first()).toBeVisible();
       });
 
       test('Can successfully select a provider with source', async ({ page }) => {
-        await providerPage.selectProvider('Department for Transport');
-        await providerPage.submit();
+        await selectProvider(page, 'Department for Transport');
+        await page.getByRole('button', { name: 'Continue' }).click();
 
-        await providerPage.hasSource(true);
-        await providerPage.selectSource('Automated traffic counts');
-        await providerPage.submit();
+        await hasSource(page, true);
+        await selectSource(page, 'Automated traffic counts');
+        await page.getByRole('button', { name: 'Continue' }).click();
 
         await expect(page.getByRole('heading', { name: 'Sources added' })).toBeVisible();
         await expect(page.getByRole('cell', { name: 'Department for Transport' })).toBeVisible();
@@ -126,27 +167,21 @@ test.describe('Metadata Data Providers', () => {
       });
 
       test('Displays a validation error if add another source option not selected', async ({ page }) => {
-        await providerPage.selectProvider('Department for Transport');
-        await providerPage.submit();
+        await selectProvider(page, 'Department for Transport');
+        await page.getByRole('button', { name: 'Continue' }).click();
 
-        await providerPage.hasSource(true);
-        await providerPage.selectSource('Automated traffic counts');
-        await providerPage.submit();
+        await hasSource(page, true);
+        await selectSource(page, 'Automated traffic counts');
+        await page.getByRole('button', { name: 'Continue' }).click();
 
-        await providerPage.submit();
+        await page.getByRole('button', { name: 'Continue' }).click();
         await expect(page.getByText('Select yes if you need to add another source')).toBeVisible();
       });
     });
 
     test.describe('Form success', () => {
-      let id: string;
-      test.beforeAll(async ({ browser }) => {
-        const page = await browser.newPage();
-        id = await createEmptyDataset(page, 'Meta providers spec');
-      });
-
-      test.beforeEach(async () => {
-        await providerPage.goto(id);
+      test.beforeEach(async ({ page }) => {
+        await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/providers`);
       });
 
       test('Can add single provider with no source', async ({ page }) => {
@@ -155,40 +190,40 @@ test.describe('Metadata Data Providers', () => {
         }
 
         // provider 1
-        await providerPage.selectProvider('Department for Transport');
-        await providerPage.submit();
+        await selectProvider(page, 'Department for Transport');
+        await page.getByRole('button', { name: 'Continue' }).click();
 
-        await providerPage.hasSource(false);
-        await providerPage.submit();
+        await hasSource(page, false);
+        await page.getByRole('button', { name: 'Continue' }).click();
 
         await expect(page.getByRole('heading', { name: 'Sources added' })).toBeVisible();
 
-        await providerPage.addAnotherProvider(false);
-        await providerPage.submit();
-        expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+        await addAnotherProvider(page, false);
+        await page.getByRole('button', { name: 'Continue' }).click();
+        expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
       });
 
       test('Can add multiple providers', async ({ page }) => {
-        await providerPage.addAnotherProvider(true);
-        await providerPage.submit();
+        await addAnotherProvider(page, true);
+        await page.getByRole('button', { name: 'Continue' }).click();
 
         // provider 2
-        await providerPage.selectProvider('Department for Education');
-        await providerPage.submit();
-        await providerPage.hasSource(true);
-        await providerPage.selectSource('Employer skills survey');
-        await providerPage.submit();
+        await selectProvider(page, 'Department for Education');
+        await page.getByRole('button', { name: 'Continue' }).click();
+        await hasSource(page, true);
+        await selectSource(page, 'Employer skills survey');
+        await page.getByRole('button', { name: 'Continue' }).click();
 
-        await providerPage.addAnotherProvider(true);
-        await providerPage.submit();
+        await addAnotherProvider(page, true);
+        await page.getByRole('button', { name: 'Continue' }).click();
 
         // provider 3
-        await providerPage.selectProvider('Sport Wales');
-        await providerPage.submit();
+        await selectProvider(page, 'Sport Wales');
+        await page.getByRole('button', { name: 'Continue' }).click();
 
-        await providerPage.hasSource(true);
-        await providerPage.selectSource('Geographical information');
-        await providerPage.submit();
+        await hasSource(page, true);
+        await selectSource(page, 'Geographical information');
+        await page.getByRole('button', { name: 'Continue' }).click();
 
         await expect(page.getByRole('heading', { name: 'Sources added' })).toBeVisible();
         await expect(page.getByRole('cell', { name: 'Department for Transport' })).toBeVisible();
@@ -198,9 +233,9 @@ test.describe('Metadata Data Providers', () => {
         await expect(page.getByRole('cell', { name: 'Sport Wales' })).toBeVisible();
         await expect(page.getByRole('cell', { name: 'Geographical information' })).toBeVisible();
 
-        await providerPage.addAnotherProvider(false);
-        await providerPage.submit();
-        expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${id}/tasklist`);
+        await addAnotherProvider(page, false);
+        await page.getByRole('button', { name: 'Continue' }).click();
+        expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
       });
 
       test('Can remove a single provider', async ({ page }) => {
