@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { nanoid } from 'nanoid';
 
 import { config } from '../../../src/shared/config';
 import { users } from '../../fixtures/logins';
@@ -7,6 +8,7 @@ import { startNewDataset, selectUserGroup, provideDatasetTitle } from '../helper
 const baseUrl = config.frontend.publisher.url;
 
 test.describe('Metadata Summary', () => {
+  const title = `meta-summary.spec - ${nanoid(5)}`;
   let datasetId: string;
 
   test.describe('Not authed', () => {
@@ -24,7 +26,7 @@ test.describe('Metadata Summary', () => {
       const page = await browser.newPage();
       await startNewDataset(page);
       await selectUserGroup(page, 'E2E tests');
-      datasetId = await provideDatasetTitle(page, 'Meta summary spec');
+      datasetId = await provideDatasetTitle(page, title);
     });
 
     test('Has a heading', async ({ page }) => {
@@ -48,14 +50,14 @@ test.describe('Metadata Summary', () => {
       });
 
       test('Displays a validation error when no input is provided', async ({ page }) => {
-        await page.getByRole('textbox', { name: 'Summary' }).fill('');
+        await page.getByRole('textbox').fill('');
         await page.getByRole('button', { name: 'Continue' }).click();
         expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetId}/summary`);
         await expect(page.getByText('Enter the summary of this dataset')).toBeVisible();
       });
 
       test('Displays a validation error when the input is only whitespace', async ({ page }) => {
-        await page.getByRole('textbox', { name: 'Summary' }).fill('   ');
+        await page.getByRole('textbox').fill('   ');
         await page.getByRole('button', { name: 'Continue' }).click();
         expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetId}/summary`);
         await expect(page.getByText('Enter the summary of this dataset')).toBeVisible();

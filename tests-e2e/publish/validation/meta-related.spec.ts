@@ -1,4 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
+import { nanoid } from 'nanoid';
 
 import { config } from '../../../src/shared/config';
 import { users } from '../../fixtures/logins';
@@ -9,6 +10,7 @@ const baseUrl = config.frontend.publisher.url;
 test.describe.configure({ mode: 'serial' }); // tests in this file must be performed in order to avoid test failures
 
 test.describe('Metadata Related Links', () => {
+  const title = `meta-related.spec - ${nanoid(5)}`;
   let datasetId: string;
 
   async function removeAllLinks(page: Page) {
@@ -32,7 +34,7 @@ test.describe('Metadata Related Links', () => {
       const page = await browser.newPage();
       await startNewDataset(page);
       await selectUserGroup(page, 'E2E tests');
-      datasetId = await provideDatasetTitle(page, 'Meta related spec');
+      datasetId = await provideDatasetTitle(page, title);
     });
 
     test('Has a heading', async ({ page }) => {

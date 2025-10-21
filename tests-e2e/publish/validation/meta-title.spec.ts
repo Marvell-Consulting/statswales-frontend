@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { nanoid } from 'nanoid';
 
 import { config } from '../../../src/shared/config';
 import { users } from '../../fixtures/logins';
@@ -7,6 +8,7 @@ import { startNewDataset, selectUserGroup, provideDatasetTitle } from '../helper
 const baseUrl = config.frontend.publisher.url;
 
 test.describe('Metadata Title', () => {
+  const title = `meta-title.spec - ${nanoid(5)}`;
   let datasetId: string;
 
   test.beforeEach(async ({ page }) => {
@@ -28,7 +30,7 @@ test.describe('Metadata Title', () => {
       const page = await browser.newPage();
       await startNewDataset(page);
       await selectUserGroup(page, 'E2E tests');
-      datasetId = await provideDatasetTitle(page, 'Meta title spec');
+      datasetId = await provideDatasetTitle(page, title);
     });
 
     test.beforeEach(async ({ page }) => {

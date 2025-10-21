@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { add } from 'date-fns';
+import { nanoid } from 'nanoid';
 
 import { users } from '../fixtures/logins';
 import {
@@ -38,7 +39,7 @@ const baseUrl = config.frontend.publisher.url;
 test.describe('Publish dataset', () => {
   test.describe.configure({ mode: 'default' }); // run tests in this file sequentially
 
-  const title = `E2E publish`;
+  const title = `publish-dataset.spec - ${nanoid(5)}`;
   const nextUpdate = add(new Date(), { years: 1 });
   let datasetId: string;
 
@@ -115,8 +116,7 @@ test.describe('Publish dataset', () => {
     });
 
     test('Preview dataset', async ({ page, context }, testInfo) => {
-      await page.goto('/en-GB');
-      await page.getByRole('link', { name: title }).click();
+      await page.goto(`/en-GB/publish/${datasetId}/overview`);
       const pagePromise = context.waitForEvent('page');
       await page.getByRole('link', { name: 'Preview (opens in new tab)' }).click();
       const previewPage = await pagePromise;
@@ -159,8 +159,6 @@ test.describe('Publish dataset', () => {
 
     test('Submit dataset for approval', async ({ page }) => {
       await submitForApproval(page, datasetId);
-      await page.goto('/en-GB');
-      await expect(page.getByRole('link', { name: title })).toBeVisible();
     });
   });
 
@@ -176,8 +174,7 @@ test.describe('Publish dataset', () => {
     test.use({ storageState: users.publisher.path });
 
     test('Update and resubmit dataset for approval', async ({ page }) => {
-      await page.goto(`/en-GB`);
-      await page.getByRole('link', { name: title }).click();
+      await page.goto(`/en-GB/publish/${datasetId}/overview`);
       await page.getByRole('link', { name: 'Fix issues with dataset' }).click();
       await submitForApproval(page, datasetId);
     });

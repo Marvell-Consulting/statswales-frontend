@@ -34,7 +34,7 @@ export async function checkFile(testInfo: TestInfo, download: Download) {
   await expect(file).toBeTruthy();
 }
 
-export async function checkTasklistItemComplete(page: Page, name: string) {
+export async function checkTasklistItemComplete(page: Page, name: string | RegExp) {
   const link = await page.getByRole('link', { name });
   const taskItem = await page.getByRole('listitem').filter({ has: link });
   await expect(taskItem).toContainText('Completed');
@@ -55,7 +55,7 @@ export async function selectUserGroup(page: Page, groupName: string) {
 }
 
 export async function provideDatasetTitle(page: Page, title: string): Promise<string> {
-  await page.getByRole('textbox').fill(`${title} - ${new Date().toISOString()}`);
+  await page.getByRole('textbox').fill(title);
   await page.getByRole('button', { name: 'Continue' }).click();
   const pageUrl = page.url();
   const match = pageUrl.match(new RegExp(`^${escapeRegExp(baseUrl)}/en-GB/publish/(.*)/upload$`));
@@ -114,7 +114,7 @@ export type DimensionConfig = {
 };
 
 export async function configureDimension(page: Page, datasetId: string, dimensionConfig: DimensionConfig) {
-  await page.getByRole('link', { name: dimensionConfig.originalColName }).click();
+  await page.getByRole('link', { name: dimensionConfig.originalColName, exact: true }).click();
 
   for (const option of dimensionConfig.optionSelections) {
     await page.getByLabel(option).first().click({ force: true });
@@ -296,7 +296,7 @@ export async function completeTranslations(page: Page, testInfo: TestInfo, datas
 }
 
 export async function completePublicationDate(page: Page, datasetId: string, minutesFromNow: number) {
-  await page.getByRole('link', { name: 'When this dataset should be published' }).click();
+  await page.getByRole('link', { name: /When this (dataset|update) should be published/ }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/schedule`);
 
   const now = new TZDate(new Date().toISOString(), 'Europe/London');
@@ -310,7 +310,7 @@ export async function completePublicationDate(page: Page, datasetId: string, min
 
   await page.getByRole('button', { name: 'Continue' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
-  await checkTasklistItemComplete(page, 'When this dataset should be published');
+  await checkTasklistItemComplete(page, /When this (dataset|update) should be published/);
 }
 
 export async function submitForApproval(page: Page, datasetId: string) {
@@ -342,4 +342,81 @@ export async function approvePublication(page: Page, datasetId: string) {
   await page.getByRole('button', { name: 'Continue' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
   await expect(page.getByText('Dataset approved for publishing').first()).toBeVisible();
+}
+
+export async function waitForPublication(page: Page, datasetId: string) {
+  await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
+
+  const statusBadges = page.locator('.status-badges');
+  let isPublished = false;
+
+  while (!isPublished) {
+    await page.waitForTimeout(5000); // refresh page every 5 seconds until the dataset is published
+    await page.reload();
+    isPublished = await statusBadges.getByText('Published').isVisible();
+  }
+}
+
+// needs to be called using a login with both publisher and approver roles (e.g. test_solo_1)
+export async function publishMinimalDataset(
+  page: Page,
+  testInfo: TestInfo,
+  title: string,
+  meta?: Record<string, any>
+): Promise<string> {
+  await startNewDataset(page);
+  await selectUserGroup(page, 'E2E tests');
+  const datasetId = await provideDatasetTitle(page, title);
+
+  await uploadDataTable(page, datasetId, 'minimal/data.csv');
+  await confirmDataTable(page, datasetId);
+
+  await assignColumnTypes(page, datasetId, [
+    { column: 'date', type: 'Dimension' },
+    { column: 'data', type: 'Data values' },
+    { column: 'measure', type: 'Measure or data types' },
+    { column: 'notes', type: 'Note codes' }
+  ]);
+
+  await configureMeasure(page, datasetId, 'minimal/measure.csv');
+  await configureDimension(page, datasetId, {
+    originalColName: 'date',
+    optionSelections: ['Dates', 'Periods', 'Calendar', 'Years'],
+    dimensionName: 'Year'
+  });
+
+  const metadata = meta || {
+    summary: 'Summary',
+    collection: 'Collection',
+    quality: 'Quality',
+    providerName: 'Welsh Government',
+    sourceName: 'National Survey for Wales',
+    reports: [{ title: 'Related report 1', url: 'https://example.com/report1' }],
+    topics: ['Welsh language']
+  };
+
+  await completeSummary(page, datasetId, metadata.summary);
+  await completeCollection(page, datasetId, metadata.collection);
+  await completeQuality(page, datasetId, metadata.quality);
+  await completeProviders(page, datasetId, metadata.providerName, metadata.sourceName);
+  await completeRelatedReports(page, datasetId, metadata.reports);
+  await completeDesignation(page, datasetId, Designation.Accredited);
+  await completeTopics(page, datasetId, metadata.topics);
+
+  const nextUpdate = add(new Date(), { years: 1 });
+
+  await completeUpdateFrequency(page, datasetId, {
+    year: nextUpdate.getFullYear(),
+    month: nextUpdate.getMonth() + 1,
+    day: nextUpdate.getDate()
+  });
+
+  await completeTranslations(page, testInfo, datasetId);
+  await completePublicationDate(page, datasetId, 1);
+
+  await submitForApproval(page, datasetId);
+  await approvePublication(page, datasetId);
+  await waitForPublication(page, datasetId);
+
+  return datasetId;
 }

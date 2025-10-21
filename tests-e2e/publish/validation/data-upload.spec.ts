@@ -1,4 +1,5 @@
 import path from 'node:path';
+import { nanoid } from 'nanoid';
 
 import { test, expect } from '@playwright/test';
 
@@ -9,6 +10,7 @@ import { provideDatasetTitle, selectUserGroup, startNewDataset } from '../helper
 const baseUrl = config.frontend.publisher.url;
 
 test.describe('Upload page', () => {
+  const title = `data-upload.spec - ${nanoid(5)}`;
   let datasetId: string;
 
   test.describe('Not authed', () => {
@@ -26,7 +28,7 @@ test.describe('Upload page', () => {
       const page = await browser.newPage();
       await startNewDataset(page);
       await selectUserGroup(page, 'E2E tests');
-      datasetId = await provideDatasetTitle(page, 'Upload spec');
+      datasetId = await provideDatasetTitle(page, title);
     });
 
     test.beforeEach(async ({ page }) => {

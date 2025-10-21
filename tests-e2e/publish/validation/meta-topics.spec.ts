@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { nanoid } from 'nanoid';
 
 import { config } from '../../../src/shared/config';
 import { users } from '../../fixtures/logins';
@@ -7,6 +8,7 @@ import { startNewDataset, selectUserGroup, provideDatasetTitle } from '../helper
 const baseUrl = config.frontend.publisher.url;
 
 test.describe('Metadata Topics', () => {
+  const title = `meta-topics.spec - ${nanoid(5)}`;
   let datasetId: string;
 
   test.describe('Not authed', () => {
@@ -24,7 +26,7 @@ test.describe('Metadata Topics', () => {
       const page = await browser.newPage();
       await startNewDataset(page);
       await selectUserGroup(page, 'E2E tests');
-      datasetId = await provideDatasetTitle(page, 'Meta topics spec');
+      datasetId = await provideDatasetTitle(page, title);
     });
 
     test('Has a heading', async ({ page }) => {

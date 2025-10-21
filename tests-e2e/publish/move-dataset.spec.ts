@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { nanoid } from 'nanoid';
 
 import { config } from '../../src/shared/config';
 import { users } from '../fixtures/logins';
@@ -9,6 +10,7 @@ const baseUrl = config.frontend.publisher.url;
 test.describe('Move dataset between groups', () => {
   test.describe.configure({ mode: 'default' }); // run tests in this file sequentially
 
+  const title = `move-dataset.spec - ${nanoid(5)}`;
   let datasetId: string;
 
   test.describe('As editor', () => {
@@ -18,7 +20,7 @@ test.describe('Move dataset between groups', () => {
       const page = await browser.newPage();
       await startNewDataset(page);
       await selectUserGroup(page, 'E2E tests');
-      datasetId = await provideDatasetTitle(page, 'Move dataset group spec');
+      datasetId = await provideDatasetTitle(page, title);
     });
 
     test('Is not allowed to move a dataset between groups', async ({ page }) => {

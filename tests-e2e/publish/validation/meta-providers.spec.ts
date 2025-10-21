@@ -1,4 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
+import { nanoid } from 'nanoid';
 
 import { config } from '../../../src/shared/config';
 import { users } from '../../fixtures/logins';
@@ -9,6 +10,7 @@ const baseUrl = config.frontend.publisher.url;
 test.describe.configure({ mode: 'serial' }); // tests in this file must be performed in order to avoid test failures
 
 test.describe('Metadata - Data providers', () => {
+  const title = `meta-providers.spec - ${nanoid(5)}`;
   let datasetId: string;
 
   async function filterProviders(page: Page, provider: string) {
@@ -66,12 +68,7 @@ test.describe('Metadata - Data providers', () => {
       const page = await browser.newPage();
       await startNewDataset(page);
       await selectUserGroup(page, 'E2E tests');
-      datasetId = await provideDatasetTitle(page, 'Meta providers spec');
-    });
-
-    test.beforeEach(async ({ page }) => {
-      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/providers`);
-      await removeAllProviders(page);
+      datasetId = await provideDatasetTitle(page, title);
     });
 
     test('Has a heading', async ({ page }) => {
@@ -86,21 +83,23 @@ test.describe('Metadata - Data providers', () => {
     });
 
     test.describe('Form validation', () => {
-      test('Displays a validation error when no provider is selected', async ({ page }) => {
+      test.beforeEach(async ({ page }) => {
         await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/providers`);
+        await removeAllProviders(page);
+      });
+
+      test('Displays a validation error when no provider is selected', async ({ page }) => {
         await page.getByRole('button', { name: 'Continue' }).click();
         expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetId}/providers`);
         await expect(page.getByText('Select a data provider from the list of data providers')).toBeVisible();
       });
 
       test('Displays an empty provider list if there are no matches', async ({ page }) => {
-        await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/providers`);
         await filterProviders(page, 'No matches');
         await expect(page.getByText('No results found')).toBeVisible();
       });
 
       test('Displays a list of matching providers', async ({ page }) => {
-        await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/providers`);
         await filterProviders(page, 'Department');
         await expect(page.getByText('Department for Education').first()).toBeVisible();
         await expect(page.getByText('Department for Environment, Food and Rural Affairs').first()).toBeVisible();
@@ -110,7 +109,6 @@ test.describe('Metadata - Data providers', () => {
       });
 
       test('Can successfully select a provider and proceed to the source select', async ({ page }) => {
-        await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/providers`);
         await selectProvider(page, 'Department for Transport');
         await page.getByRole('button', { name: 'Continue' }).click();
         await expect(
@@ -185,9 +183,7 @@ test.describe('Metadata - Data providers', () => {
       });
 
       test('Can add single provider with no source', async ({ page }) => {
-        while (await page.getByRole('link', { name: 'Remove' }).first().isVisible()) {
-          await page.getByRole('link', { name: 'Remove' }).first().click();
-        }
+        await removeAllProviders(page);
 
         // provider 1
         await selectProvider(page, 'Department for Transport');
@@ -204,6 +200,16 @@ test.describe('Metadata - Data providers', () => {
       });
 
       test('Can add multiple providers', async ({ page }) => {
+        await removeAllProviders(page);
+
+        // provider 1
+        await selectProvider(page, 'Department for Transport');
+        await page.getByRole('button', { name: 'Continue' }).click();
+
+        await hasSource(page, false);
+        await page.getByRole('button', { name: 'Continue' }).click();
+
+        await expect(page.getByRole('heading', { name: 'Sources added' })).toBeVisible();
         await addAnotherProvider(page, true);
         await page.getByRole('button', { name: 'Continue' }).click();
 
