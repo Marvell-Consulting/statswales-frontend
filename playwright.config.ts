@@ -20,7 +20,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Fail fast on CI */
-  maxFailures: process.env.CI ? 1 : 1,
+  maxFailures: 1,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Dir for test artifacts such as screenshots, videos, traces, etc. */
