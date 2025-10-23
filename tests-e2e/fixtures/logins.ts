@@ -15,5 +15,10 @@ export const users = {
     id: 'ce08727e-dd3f-48cc-921a-cae5c4dd4a18',
     username: 'test_approver_1',
     path: path.join(__dirname, '../../playwright/.auth/approver.json')
+  },
+  solo: {
+    id: '80d989fb-c26f-40dc-9a0b-6dc2083c0f0c',
+    username: 'test_solo_1',
+    path: path.join(__dirname, '../../playwright/.auth/solo.json')
   }
 };

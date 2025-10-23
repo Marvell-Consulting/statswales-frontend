@@ -20,7 +20,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Fail fast on CI */
-  maxFailures: process.env.CI ? 3 : undefined,
+  maxFailures: 1,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Dir for test artifacts such as screenshots, videos, traces, etc. */
@@ -41,48 +41,11 @@ export default defineConfig({
     { name: 'setup', testMatch: /.*\.setup\.ts/ },
 
     {
-      name: 'required',
-      testMatch: /\/tests-e2e\/required\/.*\.spec\.ts/,
-      use: { ...devices['Desktop Chrome'] },
-      dependencies: ['setup']
-    },
-
-    {
       name: 'publish',
       testMatch: /\/tests-e2e\/publish\/.*\.spec\.ts/,
       use: { ...devices['Desktop Chrome'] },
       dependencies: ['setup']
     }
-
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
-
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
   ],
 
   /* Run your local dev server before starting the tests */

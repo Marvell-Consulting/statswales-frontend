@@ -1,25 +1,20 @@
 import { test, expect } from '@playwright/test';
+import { nanoid } from 'nanoid';
 
-import { config } from '../../src/shared/config';
-
-import { SourcesPage } from './pages/sources-page';
-import { users } from '../fixtures/logins';
-import { createEmptyDataset } from './helpers/create-empty-dataset';
+import { config } from '../../../src/shared/config';
+import { users } from '../../fixtures/logins';
+import { startNewDataset, selectUserGroup, provideDatasetTitle, uploadDataTable } from '../helpers/publishing-steps';
 
 const baseUrl = config.frontend.publisher.url;
 
 test.describe('Sources page', () => {
-  let sourcesPage: SourcesPage;
-  let id: string;
-
-  test.beforeEach(async ({ page }) => {
-    sourcesPage = new SourcesPage(page);
-  });
+  const title = `assign-sources.spec - ${nanoid(5)}`;
+  let datasetId: string;
 
   test.describe('Not authed', () => {
     test.use({ storageState: { cookies: [], origins: [] } });
     test('Redirects to login page when not authenticated', async ({ page }) => {
-      await sourcesPage.goto(id);
+      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/sources`);
       expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
     });
   });
@@ -29,20 +24,21 @@ test.describe('Sources page', () => {
 
     test.beforeAll(async ({ browser }) => {
       const page = await browser.newPage();
-      id = await createEmptyDataset(page, 'Sources spec');
-    });
-
-    test.beforeEach(async () => {
-      await sourcesPage.goto(id);
+      await startNewDataset(page);
+      await selectUserGroup(page, 'E2E tests');
+      datasetId = await provideDatasetTitle(page, title);
+      await uploadDataTable(page, datasetId, 'minimal/data.csv');
     });
 
     test('Has a heading', async ({ page }) => {
+      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/sources`);
       await expect(
         page.getByRole('heading', { name: 'What does each column in the data table contain?' })
       ).toBeVisible();
     });
 
     test('Can switch to Welsh', async ({ page }) => {
+      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/sources`);
       await page.getByText('Cymraeg').click();
       await expect(
         page.getByRole('heading', { name: 'Beth mae pob colofn yn y tabl data yn ei gynnwys?' })

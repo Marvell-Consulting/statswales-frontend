@@ -111,8 +111,6 @@ export const datasetRevWithNoImports: DatasetDTO = {
   id: 'ccbd32ab-c8aa-4da1-a120-efd403598bf6',
   created_at: '2024-09-05T10:05:03.871Z',
   created_by: 'Test User',
-  live: '',
-  archive: '',
   dimensions: [],
   fact_table: [],
   revisions: [
@@ -133,8 +131,6 @@ export const completedDataset: DatasetDTO = {
   id: 'ef417041-37fc-4273-8e8c-227eb4674b29',
   created_at: '2024-09-05T10:05:03.871Z',
   created_by: 'Test User',
-  live: '',
-  archive: '',
   dimensions: [],
   fact_table: [],
   revisions: [
@@ -200,8 +196,6 @@ export const datasetView: ViewDTO = {
     id: '7d3d49c0-9fc9-4ce2-ba48-5c466f30946c',
     created_at: '2024-09-05T10:05:03.871Z',
     created_by: 'Test User',
-    live: '',
-    archive: '',
     fact_table: [],
     dimensions: [],
     revisions: []

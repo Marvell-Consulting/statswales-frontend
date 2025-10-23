@@ -24,3 +24,7 @@ setup('authenticate as publisher', async ({ page }) => {
 setup('authenticate as approver', async ({ page }) => {
   await login(page, users.approver);
 });
+
+setup('authenticate as publisher approver', async ({ page }) => {
+  await login(page, users.solo);
+});
