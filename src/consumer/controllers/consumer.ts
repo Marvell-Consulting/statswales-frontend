@@ -2,7 +2,7 @@ import { Readable } from 'node:stream';
 
 import { Request, Response, NextFunction } from 'express';
 import slugify from 'slugify';
-import qs from 'qs';
+import qs, { ParsedQs } from 'qs';
 import { stringify } from 'csv-stringify/sync';
 
 import { DatasetListItemDTO } from '../../shared/dtos/dataset-list-item';
@@ -80,7 +80,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   const pageNumber = Number.parseInt(query.page_number as string, 10) || 1;
   const pageSize = Number.parseInt(query.page_size as string, 10) || DEFAULT_PAGE_SIZE;
   const sortBy = query.sort_by as unknown as SortByInterface;
-  const selectedFilterOptions = parseFilters(query.filter as Record<string, string[]>);
+  const selectedFilterOptions = parseFilters(query.filter as ParsedQs);
   const shorthandUrl = req.buildUrl(`/shorthand`, req.language);
   const isUnpublished = revision?.unpublished_at || false;
   const isArchived = (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false;

@@ -1,20 +1,25 @@
 import { isObjectLike } from 'lodash';
+import { ParsedQs } from 'qs';
+
 import { FilterInterface } from '../interfaces/filterInterface';
 
-export const parseFilters = (filters?: Record<string, string[]>): FilterInterface[] | undefined => {
+export const parseFilters = (filters: ParsedQs): FilterInterface[] | undefined => {
   if (!filters) return undefined;
 
   return Object.keys(filters).map((columnName: string) => {
-    let values = filters[columnName];
+    const values = filters[columnName];
+    let parsedValues: string[] = [];
+
+    if (!values) return { columnName, values: [] };
 
     if (Array.isArray(values)) {
-      values = values.map((value: string) => decodeURIComponent(value));
+      parsedValues = values.map((value) => decodeURIComponent(value as string));
     } else if (isObjectLike(values)) {
-      values = Object.values(values).map((value) => decodeURIComponent(value as string));
+      parsedValues = Object.values(values).map((value) => (value ? decodeURIComponent(value.toString()) : ''));
     } else {
-      values = [decodeURIComponent(values as string)];
+      parsedValues = [decodeURIComponent(values as string)];
     }
 
-    return { columnName, values };
+    return { columnName, values: parsedValues };
   });
 };
