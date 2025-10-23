@@ -2,6 +2,7 @@ import { Readable } from 'node:stream';
 import { randomUUID } from 'node:crypto';
 
 import { NextFunction, Request, Response } from 'express';
+import qs, { ParsedQs } from 'qs';
 import { get, set, sortBy } from 'lodash';
 import { FieldValidationError, matchedData } from 'express-validator';
 import { customAlphabet } from 'nanoid';
@@ -92,7 +93,6 @@ import { TaskDecisionDTO } from '../../shared/dtos/task-decision';
 import { SingleLanguageRevision } from '../../shared/dtos/single-language/revision';
 import { config } from '../../shared/config';
 import { FilterTable } from '../../shared/dtos/filter-table';
-import qs from 'qs';
 import { DEFAULT_PAGE_SIZE } from '../../consumer/controllers/consumer';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { NextUpdateType } from '../../shared/enums/next-update-type';
@@ -559,7 +559,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
   const pageNumber = Number.parseInt(query.page_number as string, 10) || 1;
   const pageSize = Number.parseInt(query.page_size as string, 10) || DEFAULT_PAGE_SIZE;
   const sortBy = query.sort_by as unknown as SortByInterface;
-  const filter = parseFilters(query.filter as Record<string, string[]>);
+  const filter = parseFilters(query.filter as ParsedQs);
 
   let errors: ViewError[] | undefined;
   let previewData: ViewDTO | ViewErrDTO | undefined;
@@ -580,7 +580,6 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
     const datasetStatus = getDatasetStatus(datasetDTO);
     const publishingStatus = getPublishingStatus(datasetDTO, revision);
     const datasetTitle = revision?.metadata?.title;
-    const selectedFilterOptions = parseFilters(query.filter as Record<string, string[]>);
 
     pagination = paginationSequence(previewDTO.current_page, previewDTO.total_pages);
     previewMetadata = await getDatasetMetadata(dataset, revision);
@@ -602,7 +601,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
         datasetStatus,
         publishingStatus,
         datasetTitle,
-        selectedFilterOptions,
+        selectedFilterOptions: filter,
         shorthandUrl: req.buildUrl(`/shorthand`, req.language)
       });
       return;
