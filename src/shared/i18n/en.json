@@ -2084,6 +2084,16 @@
       },
       "status": {
         "archived": "Archived"
+      },
+      "sort": {
+        "label": "Sort by",
+        "options": {
+          "title_a_to_z": "Name (A to Z)",
+          "title_z_to_a": "Name (Z to A)",
+          "first_published": "Recently first published",
+          "last_updated": "Recently updated"
+        },
+        "button": "Sort"
       }
     },
     "list": {

@@ -113,6 +113,37 @@ function Datasets({ datasets }) {
   );
 }
 
+function Sort(props) {
+  const { sortBy, sortOptions } = props;
+
+  return (
+    <form className="govuk-!-margin-bottom-6" method="GET">
+      <div className="govuk-form-group">
+        <div className="govuk-input__wrapper">
+          <label className="govuk-label govuk-!-margin-right-2" htmlFor="sort-by">
+            <T>consumer.topic_list.sort.label</T>
+          </label>
+          <select
+            id="sort-by"
+            name="sort_by"
+            className="govuk-select govuk-!-width-auto"
+            defaultValue={sortBy?.value || ''}
+          >
+            {sortOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {props.t(`consumer.topic_list.sort.options.${option.value}`)}
+              </option>
+            ))}
+          </select>
+          <button type="submit" className="govuk-button govuk-!-margin-left-2">
+            <T>consumer.topic_list.sort.button</T>
+          </button>
+        </div>
+      </div>
+    </form>
+  );
+}
+
 export default function TopicList(props) {
   const title = props.selectedTopic ? props.selectedTopic.name : props.t('consumer.topic_list.heading');
   return (
@@ -157,6 +188,7 @@ export default function TopicList(props) {
 
           {props.datasets?.length > 0 && (
             <>
+              <Sort {...props} />
               <Datasets {...props} />
               <Pagination {...props} />
             </>

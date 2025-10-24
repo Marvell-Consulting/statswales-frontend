@@ -1,6 +1,7 @@
 import { Readable } from 'node:stream';
 
 import { Request, Response, NextFunction } from 'express';
+import { omit } from 'lodash';
 import slugify from 'slugify';
 import qs from 'qs';
 import { stringify } from 'csv-stringify/sync';
@@ -27,11 +28,29 @@ export const DEFAULT_PAGE_SIZE = 100;
 
 export const listTopics = async (req: Request, res: Response, next: NextFunction) => {
   const topicId = req.params.topicId ? req.params.topicId.match(/\d+/)?.[0] : undefined;
-  const page = parseInt(req.query.page_number as string, 10) || 1;
-  const limit = parseInt(req.query.page_size as string, 10) || 20;
+  const pageNumber = parseInt(req.query.page_number as string, 10) || 1;
+  const pageSize = parseInt(req.query.page_size as string, 10) || 20;
+
+  interface SortOptions extends SortByInterface {
+    value: string;
+  }
+
+  const sortOptions: SortOptions[] = [
+    { value: 'title_a_to_z', columnName: 'title', direction: 'ASC' },
+    { value: 'title_z_to_a', columnName: 'title', direction: 'DESC' },
+    { value: 'first_published', columnName: 'first_published_at', direction: 'DESC' },
+    { value: 'last_updated', columnName: 'last_updated_at', direction: 'DESC' }
+  ];
+
+  const sortBy = sortOptions.find((option) => option.value === (req.query.sort_by as string));
 
   try {
-    const { selectedTopic, children, parents, datasets } = await req.conapi.getPublishedTopics(topicId, page, limit);
+    const { selectedTopic, children, parents, datasets } = await req.conapi.getPublishedTopics(
+      topicId,
+      pageNumber,
+      pageSize,
+      sortBy ? omit(sortBy, 'value') : undefined
+    );
 
     // add slug for friendlier URLs
     const childTopics =
@@ -43,7 +62,7 @@ export const listTopics = async (req: Request, res: Response, next: NextFunction
     const consumerApiUrl = `${config.backend.url}/v1/docs`;
 
     const { data, count } = datasets || { data: [], count: 0 };
-    const pagination = pageInfo(page, limit, count);
+    const pagination = pageInfo(pageNumber, pageSize, count);
 
     res.render('topic-list', {
       selectedTopic,
@@ -51,7 +70,9 @@ export const listTopics = async (req: Request, res: Response, next: NextFunction
       parentTopics,
       datasets: data,
       ...pagination,
-      consumerApiUrl
+      consumerApiUrl,
+      sortBy,
+      sortOptions
     });
   } catch (err) {
     next(err);
@@ -97,7 +118,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
 
   const [datasetMetadata, preview, filters]: [PreviewMetadata, ViewDTO, FilterTable[]] = await Promise.all([
     getDatasetMetadata(dataset, revision),
-    req.conapi.getPublishedDatasetView(dataset.id, pageSize, pageNumber, sortBy, selectedFilterOptions),
+    req.conapi.getPublishedDatasetView(dataset.id, pageNumber, pageSize, sortBy, selectedFilterOptions),
     req.conapi.getPublishedDatasetFilters(dataset.id)
   ]);
 
