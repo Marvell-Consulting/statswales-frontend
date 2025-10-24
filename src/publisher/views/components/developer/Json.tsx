@@ -1,6 +1,10 @@
 import React from 'react';
 
-export default function Json(props) {
+type jsonDDisplayProps = {
+  datasetJson: string;
+};
+
+export default function Json({ datasetJson }: jsonDDisplayProps) {
   return (
     <div className="govuk-accordion__section">
       <div className="govuk-accordion__section-header">
@@ -13,7 +17,7 @@ export default function Json(props) {
       <div id="accordion-default-content-4" className="govuk-accordion__section-content">
         <div>
           <pre className="hljs mb-0 p-4 block min-h-full overflow-auto code-block">
-            <code dangerouslySetInnerHTML={{ __html: props.datasetJson }} />
+            <code dangerouslySetInnerHTML={{ __html: datasetJson }} />
           </pre>
           <style
             dangerouslySetInnerHTML={{

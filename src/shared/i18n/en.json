@@ -1095,7 +1095,26 @@
       },
       "tabs": {
         "actions": "Actions",
-        "history": "History"
+        "history": "History",
+        "build": "Build Result"
+      },
+      "build": {
+        "success": "Cube was rebuilt successfully",
+        "stats": "Build statistics",
+        "start_time": "Start time",
+        "finish_time": "Finish time",
+        "total_time": "Total time",
+        "memory_usage": "Memory usage",
+        "memory": {
+          "type": "Memory type",
+          "usage": "Usage in MB",
+          "rss": "Resident Set Size",
+          "heapTotal": "Total size of the heap",
+          "heapUsed": "Heap actually used",
+          "external": "External memory used",
+          "arrayBuffers": "Memory used by buffers"
+        },
+        "errors": "Build Errors"
       },
       "actions": {
         "view_published_dataset": "View published dataset (opens in new tab)",
@@ -1109,7 +1128,9 @@
         "continue": "Continue creating dataset",
         "update_and_republish": "Update this dataset",
         "preview": "View dataset preview (opens in new tab)",
-        "move": "Move dataset to another group"
+        "move": "Move dataset to another group",
+        "return_to_developer": "Return to developer page",
+        "rebuild_cube": "Rebuild the cube"
       },
       "history": {
         "table": {

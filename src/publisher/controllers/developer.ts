@@ -25,6 +25,8 @@ import { DatasetInclude } from '../../shared/enums/dataset-include';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
 import { SingleLanguageRevision } from '../../shared/dtos/single-language/revision';
 import { DatasetDTO } from '../../shared/dtos/dataset';
+import { ApiException } from '../../shared/exceptions/api.exception';
+import { CubeBuildResult } from '../../shared/dtos/cube-build-result';
 
 export const listAllDatasets = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -276,14 +278,66 @@ export const downloadAllDatasetFiles = async (req: Request, res: Response, next:
 };
 
 export const rebuildCube = async (req: Request, res: Response, next: NextFunction) => {
+  let errors: ViewError[] = [];
   const datasetId = req.params.datasetId;
+  const canMoveGroup = false;
+  const canEdit = false;
+  const canApprove = true;
 
+  let cubeBuildResult: CubeBuildResult;
+  const flash: string[] = [];
   try {
     const dataset = await req.pubapi.getDataset(datasetId);
-    await req.pubapi.rebuildCube(datasetId, dataset.end_revision_id!);
-    res.redirect(req.buildUrl(`/publish/${datasetId}/overview`, req.language));
-  } catch (_err) {
-    logger.error(_err, 'Error rebuilding the cube');
-    next(new NotFoundException('errors.import_missing'));
+    cubeBuildResult = await req.pubapi.rebuildCube(datasetId, dataset.end_revision_id!);
+    flash.push('publish.overview.build.success');
+  } catch (err) {
+    logger.error(err, 'Error rebuilding the cube');
+    cubeBuildResult = err as CubeBuildResult;
+    errors = [{ field: 'build', message: { key: 'publish.overview.build.failed' } }];
+  }
+  if (cubeBuildResult.error) {
+    cubeBuildResult.error = hljs.highlight(JSON.stringify(cubeBuildResult.error, null, 2), {
+      language: 'json',
+      ignoreIllegals: true
+    }).value;
+  }
+
+  try {
+    const [dataset, history] = await Promise.all([
+      req.pubapi.getDataset(datasetId, DatasetInclude.Overview),
+      req.pubapi.getDatasetHistory(datasetId)
+    ]);
+
+    const revision = singleLangRevision(dataset.end_revision, req.language)!;
+
+    const title = revision?.metadata?.title;
+    const datasetStatus = getDatasetStatus(dataset);
+    const publishingStatus = getPublishingStatus(dataset, revision);
+    const openTasks = dataset.tasks?.filter((task) => task.open) || [];
+
+    res.render('publish/overview/overview', {
+      dataset,
+      datasetId,
+      revision,
+      title,
+      datasetStatus,
+      publishingStatus,
+      canMoveGroup,
+      canEdit,
+      canApprove,
+      openTasks,
+      history,
+      cubeBuildResult,
+      isDeveloper: true,
+      flash,
+      errors
+    });
+    return;
+  } catch (err) {
+    if (err instanceof ApiException) {
+      logger.error(err, `Failed to fetch the dataset overview`);
+      next(new NotFoundException());
+      return;
+    }
   }
 };

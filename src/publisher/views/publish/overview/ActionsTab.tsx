@@ -37,6 +37,7 @@ type ActionsTabProps = {
   canEdit: boolean;
   canApprove: boolean;
   canMoveGroup: boolean;
+  isDeveloper: boolean;
   datasetStatus: DatasetStatus;
   publishingStatus: PublishingStatus;
   openTasks: TaskDTO[];
@@ -49,7 +50,8 @@ export function ActionsTab({
   canMoveGroup,
   datasetStatus,
   publishingStatus,
-  openTasks
+  openTasks,
+  isDeveloper
 }: ActionsTabProps) {
   const { buildUrl, i18n } = useLocals();
   const consumerUrl = config.frontend.consumer.url;
@@ -149,6 +151,18 @@ export function ActionsTab({
         {canEdit && publishingStatus === PublishingStatus.Unpublished && (
           <li>
             <ActionLink path={`/publish/${datasetId}/tasklist`} action="update_and_republish" />
+          </li>
+        )}
+
+        {isDeveloper && (
+          <li>
+            <ActionLink path={`/developer/`} action="return_to_developer" />
+          </li>
+        )}
+
+        {isDeveloper && (
+          <li>
+            <ActionLink path={`/developer/${datasetId}/rebuild`} action="rebuild_cube" />
           </li>
         )}
 

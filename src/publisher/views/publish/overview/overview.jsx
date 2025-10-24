@@ -9,6 +9,7 @@ import Tabs from '../../../../shared/views/components/Tabs';
 import T from '../../../../shared/views/components/T';
 import { ActionsTab } from './ActionsTab';
 import { HistoryTab } from './HistoryTab';
+import { BuildTab } from './BuildTab';
 
 export default function Overview(props) {
   const openPublishTask = props.openTasks.find((task) => task.action === 'publish');
@@ -16,6 +17,25 @@ export default function Overview(props) {
   const openArchiveTask = props.openTasks.find((task) => task.action === 'archive');
   const openUnarchiveTask = props.openTasks.find((task) => task.action === 'unarchive');
   const eventualPublicUrl = `${config.frontend.consumer.url}/${props.i18n.language}/${props.dataset.id}`;
+  const tabsArr = [
+    {
+      id: 'actions',
+      label: <T>publish.overview.tabs.actions</T>,
+      children: <ActionsTab {...props} />
+    },
+    {
+      id: 'history',
+      label: <T>publish.overview.tabs.history</T>,
+      children: <HistoryTab {...props} />
+    }
+  ];
+  if (props.cubeBuildResult && props.isDeveloper) {
+    tabsArr.push({
+      id: 'build',
+      label: <T>publish.overview.tabs.build</T>,
+      children: <BuildTab {...props} />
+    });
+  }
 
   return (
     <Layout {...props} title={props.title}>
@@ -125,20 +145,7 @@ export default function Overview(props) {
             )}
           </div>
 
-          <Tabs
-            tabs={[
-              {
-                id: 'actions',
-                label: <T>publish.overview.tabs.actions</T>,
-                children: <ActionsTab {...props} />
-              },
-              {
-                id: 'history',
-                label: <T>publish.overview.tabs.history</T>,
-                children: <HistoryTab {...props} />
-              }
-            ]}
-          />
+          <Tabs tabs={tabsArr} />
         </div>
       </div>
     </Layout>

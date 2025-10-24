@@ -48,6 +48,7 @@ import { UnknownException } from '../../shared/exceptions/unknown.exception';
 import { TaskAction } from '../../shared/enums/task-action';
 import { UserGroupStatus } from '../../shared/enums/user-group-status';
 import { DashboardStats } from '../../shared/interfaces/dashboard-stats';
+import { CubeBuildResult } from '../../shared/dtos/cube-build-result';
 
 const logger = parentLogger.child({ service: 'publisher-api' });
 
@@ -325,12 +326,12 @@ export class PublisherApi {
     return this.fetch({ url, lang: language }).then((response) => response.body as ReadableStream);
   }
 
-  public async rebuildCube(datasetId: string, revisionId: string) {
+  public async rebuildCube(datasetId: string, revisionId: string): Promise<CubeBuildResult> {
     logger.debug(`Rebuilding cube for revision: ${revisionId}...`);
     return this.fetch({
       url: `dataset/${datasetId}/revision/by-id/${revisionId}/`,
       method: HttpMethod.Post
-    });
+    }).then((response) => response.json() as unknown as CubeBuildResult);
   }
 
   public async confirmDataTable(datasetId: string, revisionId: string): Promise<DataTableDto> {
