@@ -7,6 +7,7 @@ export default function FlashMessages() {
   if (!flash || !flash.length) {
     return null;
   }
+
   return (
     <div
       className="govuk-notification-banner govuk-notification-banner--success"

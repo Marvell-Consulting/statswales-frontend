@@ -283,6 +283,7 @@ export const rebuildCube = async (req: Request, res: Response, next: NextFunctio
   const canMoveGroup = false;
   const canEdit = false;
   const canApprove = true;
+  const startTime = new Date();
 
   let cubeBuildResult: CubeBuildResult;
   const flash: string[] = [];
@@ -292,7 +293,18 @@ export const rebuildCube = async (req: Request, res: Response, next: NextFunctio
     flash.push('publish.overview.build.success');
   } catch (err) {
     logger.error(err, 'Error rebuilding the cube');
-    cubeBuildResult = err as CubeBuildResult;
+    if ((err as CubeBuildResult).total_time) {
+      cubeBuildResult = err as CubeBuildResult;
+    } else {
+      // Prefer results from backend but if missing use local times
+      cubeBuildResult = {
+        start_time: startTime,
+        finish_time: new Date(),
+        total_time: '?',
+        message: 'publish.overview.build.failed',
+        error: err as Error
+      };
+    }
     errors = [{ field: 'build', message: { key: 'publish.overview.build.failed' } }];
   }
   if (cubeBuildResult.error) {
