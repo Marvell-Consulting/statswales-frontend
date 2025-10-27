@@ -4,8 +4,8 @@ import { ParsedQs } from 'qs';
 import { Filter } from '../interfaces/filter';
 
 export const parseFilters = (filters: ParsedQs | undefined): Filter[] => {
-  const result: Filter[] = [];
-  if (!filters) return result;
+  const parsed: Filter[] = [];
+  if (!filters) return parsed;
 
   const tryDecode = (val: string): string => {
     try {
@@ -36,9 +36,9 @@ export const parseFilters = (filters: ParsedQs | undefined): Filter[] => {
   Object.keys(filters).forEach((columnName) => {
     const values = collectValues((filters as Record<string, unknown>)[columnName]);
     if (values.length > 0) {
-      result.push({ columnName, values });
+      parsed.push({ columnName, values });
     }
   });
 
-  return result;
+  return parsed;
 };
