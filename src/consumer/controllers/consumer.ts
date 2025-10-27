@@ -42,7 +42,8 @@ export const listTopics = async (req: Request, res: Response, next: NextFunction
     { value: 'last_updated', columnName: 'last_updated_at', direction: 'DESC' }
   ];
 
-  const sortBy = sortOptions.find((option) => option.value === (req.query.sort_by as string));
+  // if we don't find a match, default to 'last_updated'
+  const sortBy = sortOptions.find((option) => option.value === (req.query.sort_by as string)) || sortOptions[3];
 
   try {
     const { selectedTopic, children, parents, datasets } = await req.conapi.getPublishedTopics(
