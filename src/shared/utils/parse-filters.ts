@@ -1,25 +1,44 @@
 import { isObjectLike } from 'lodash';
 import { ParsedQs } from 'qs';
 
-import { FilterInterface } from '../interfaces/filterInterface';
+import { Filter } from '../interfaces/filter';
 
-export const parseFilters = (filters: ParsedQs): FilterInterface[] | undefined => {
-  if (!filters) return undefined;
+export const parseFilters = (filters: ParsedQs | undefined): Filter[] => {
+  const result: Filter[] = [];
+  if (!filters) return result;
 
-  return Object.keys(filters).map((columnName: string) => {
-    const values = filters[columnName];
-    let parsedValues: string[] = [];
+  const tryDecode = (val: string): string => {
+    try {
+      return decodeURIComponent(val);
+    } catch {
+      return val;
+    }
+  };
 
-    if (!values) return { columnName, values: [] };
+  const collectValues = (input: unknown): string[] => {
+    if (input == null) return [];
 
-    if (Array.isArray(values)) {
-      parsedValues = values.map((value) => decodeURIComponent(value as string));
-    } else if (isObjectLike(values)) {
-      parsedValues = Object.values(values).map((value) => (value ? decodeURIComponent(value.toString()) : ''));
-    } else {
-      parsedValues = [decodeURIComponent(values as string)];
+    if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
+      return [tryDecode(String(input))];
     }
 
-    return { columnName, values: parsedValues };
+    if (Array.isArray(input)) {
+      return input.flatMap((item) => collectValues(item));
+    }
+
+    if (isObjectLike(input)) {
+      return Object.values(input as Record<string, unknown>).flatMap((v) => collectValues(v));
+    }
+
+    return [];
+  };
+
+  Object.keys(filters).forEach((columnName) => {
+    const values = collectValues((filters as Record<string, unknown>)[columnName]);
+    if (values.length > 0) {
+      result.push({ columnName, values });
+    }
   });
+
+  return result;
 };

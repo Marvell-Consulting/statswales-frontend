@@ -49,33 +49,6 @@ export default function ConsumerView(props) {
     <div className="govuk-width-container">
       <div className="govuk-main-wrapper govuk-!-padding-top-0">
         <NoteCodesLegend />
-        <div className="govuk-grid-row govuk-!-margin-bottom-0">
-          {/* Disabled for consumer testing */}
-          {/*<div className="govuk-grid-column-one-half">*/}
-          {/*  <form method="get">*/}
-          {/*    <Select*/}
-          {/*      name="dataViewsChoice"*/}
-          {/*      label={<T>consumer_view.data_view</T>}*/}
-          {/*      labelClassName="govuk-label--s"*/}
-          {/*      options={[*/}
-          {/*        {*/}
-          {/*          value: '',*/}
-          {/*          label: <T>consumer_view.select_view</T>*/}
-          {/*        },*/}
-          {/*        {*/}
-          {/*          value: 'default',*/}
-          {/*          label: <T>consumer_view.data_table</T>*/}
-          {/*        }*/}
-          {/*      ]}*/}
-          {/*      value={new URLSearchParams(props.url.split('?')[1]).get('dataViewsChoice')}*/}
-          {/*      inline*/}
-          {/*    />{' '}*/}
-          {/*    <button type="submit" className="govuk-button button-black govuk-button-small" data-module="govuk-button">*/}
-          {/*      {props.t('consumer_view.apply_view')}*/}
-          {/*    </button>*/}
-          {/*  </form>*/}
-          {/*</div>*/}
-        </div>
         <div className="govuk-grid-row border-top-small">
           {/* Sidebar filters */}
           <div className="govuk-grid-column-one-quarter">
@@ -106,7 +79,12 @@ export default function ConsumerView(props) {
                 </>
               )}
 
-              <Filters filters={props.filters} url={props.url} title={props.t('consumer_view.filters')} />
+              <Filters
+                filters={props.filters}
+                url={props.url}
+                title={props.t('consumer_view.filters')}
+                selected={props.selectedFilterOptions}
+              />
               <br />
               <button
                 name="dataViewsChoice"
@@ -204,16 +182,6 @@ export default function ConsumerView(props) {
                   label: 'JSON',
                   hint: props.t('consumer_view.data_only_hint')
                 }
-                // {
-                //   value: 'parquet',
-                //   label: 'Parquet',
-                //   hint: props.t('consumer_view.data_metadata_hint')
-                // }
-                // {
-                //   value: 'duckdb',
-                //   label: 'DuckDB',
-                //   hint: props.t('consumer_view.everything_hint')
-                // }
               ]}
               value="csv"
             />

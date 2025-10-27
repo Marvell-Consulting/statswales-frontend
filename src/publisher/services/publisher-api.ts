@@ -42,7 +42,7 @@ import { TaskDTO } from '../../shared/dtos/task';
 import { TaskDecisionDTO } from '../../shared/dtos/task-decision';
 import { EventLogDTO } from '../../shared/dtos/event-log';
 import { FilterTable } from '../../shared/dtos/filter-table';
-import { FilterInterface } from '../../shared/interfaces/filterInterface';
+import { Filter } from '../../shared/interfaces/filter';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
 import { TaskAction } from '../../shared/enums/task-action';
@@ -405,7 +405,7 @@ export class PublisherApi {
     pageNumber: number,
     pageSize: number,
     sortBy?: SortByInterface,
-    filter?: FilterInterface[]
+    filter?: Filter[]
   ): Promise<ViewDTO> {
     logger.debug(
       `Fetching preview for dataset: ${datasetId}, revision: ${revisionId}, page: ${pageNumber}, pageSize: ${pageSize}`
