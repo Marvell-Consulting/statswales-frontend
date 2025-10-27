@@ -71,7 +71,7 @@ export class ConsumerApi {
 
     return fetch(fullUrl, { method, headers: head, body: data })
       .then((response: Response) => {
-        logRequestTime(method, url, start);
+        logRequestTime(method, fullUrl, start);
         return response;
       })
       .then(async (response: Response) => {
