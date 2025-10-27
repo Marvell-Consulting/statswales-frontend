@@ -117,28 +117,46 @@ function Sort(props) {
   const { sortBy, sortOptions } = props;
 
   return (
-    <form className="govuk-!-margin-bottom-6" method="GET">
+    <form id="sort-form" className="govuk-!-margin-bottom-6" method="GET">
+      <script
+        type="module"
+        dangerouslySetInnerHTML={{
+          __html: `
+          (() => {
+            const form = document.getElementById('sort-form');
+            const select = form.querySelector('select[name="sort_by"]');
+            select.addEventListener('change', () => {
+              form.submit();
+            });
+          })();
+          `
+        }}
+      />
+
       <div className="govuk-form-group">
-        <div className="govuk-input__wrapper">
-          <label className="govuk-label govuk-!-margin-right-2" htmlFor="sort-by">
-            <T>consumer.topic_list.sort.label</T>
-          </label>
-          <select
-            id="sort-by"
-            name="sort_by"
-            className="govuk-select govuk-!-width-auto"
-            defaultValue={sortBy?.value || ''}
+        <label className="govuk-label" htmlFor="sort-by">
+          <T>consumer.topic_list.sort.label</T>
+        </label>
+        <select
+          id="sort-by"
+          name="sort_by"
+          className="govuk-select govuk-!-width-auto"
+          defaultValue={sortBy?.value || ''}
+        >
+          {sortOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {props.t(`consumer.topic_list.sort.options.${option.value}`)}
+            </option>
+          ))}
+        </select>
+        <noscript>
+          <button
+            type="submit"
+            className="govuk-button govuk-button-small govuk-!-display-inline govuk-!-margin-left-2"
           >
-            {sortOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {props.t(`consumer.topic_list.sort.options.${option.value}`)}
-              </option>
-            ))}
-          </select>
-          <button type="submit" className="govuk-button govuk-!-margin-left-2">
             <T>consumer.topic_list.sort.button</T>
           </button>
-        </div>
+        </noscript>
       </div>
     </form>
   );
