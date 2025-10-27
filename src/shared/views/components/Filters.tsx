@@ -102,7 +102,7 @@ export const Filters = ({ filters, url, title, selected }: FiltersProps) => {
                 <CheckboxGroup
                   name={`filter[${filter.factTableColumn}]`}
                   options={normalizeFilters(filter.values)}
-                  values={values}
+                  values={values ?? []}
                   independentExpand
                 />
               </div>
