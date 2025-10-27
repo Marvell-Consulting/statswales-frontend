@@ -111,7 +111,7 @@ describe('parseFilters', () => {
           ab: {
             abc: {
               abcd: {
-                abdce: {
+                abcde: {
                   abcdef: {
                     abcdefg: ['Value1', 'Value2']
                   }
