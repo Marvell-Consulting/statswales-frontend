@@ -50,7 +50,7 @@ export const Filters = ({ filters, url, title, selected }: FiltersProps) => {
       </div>
 
       {filters?.map((filter, index) => {
-        const values = selected.find((f) => f.columnName === filter.factTableColumn)?.values?.filter(Boolean);
+        const values = selected.find((f) => f.columnName === filter.factTableColumn)?.values;
         const filtered = values?.length;
         const total = filterOptionCount(filter.values);
 
