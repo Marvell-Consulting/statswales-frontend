@@ -35,7 +35,7 @@ const filterOptionCount = (options: FilterValues[]): number => {
 export const Filters = ({ filters, url, title, selected }: FiltersProps) => {
   const [baseUrl, query] = url.split('?');
   const parsedQuery = qs.parse(query);
-  const activeFilters = selected.length;
+  const activeFilters = selected.length > 0;
   const clearFiltersLink = `${baseUrl}?${qs.stringify(omit(parsedQuery, 'filter'))}`;
 
   return (
