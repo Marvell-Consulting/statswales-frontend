@@ -1,18 +1,21 @@
 import React from 'react';
-import { FilterTable } from '../../dtos/filter-table';
-import { Checkbox, CheckboxGroup, CheckboxOptions, Controls } from './CheckboxGroup';
 import qs from 'qs';
-import { flatten, get, omit } from 'lodash';
 import clsx from 'clsx';
+import { omit } from 'lodash';
+
+import { FilterTable, FilterValues } from '../../dtos/filter-table';
+import { Checkbox, CheckboxGroup, CheckboxOptions, Controls } from './CheckboxGroup';
 import T from './T';
+import { Filter } from '../../interfaces/filter';
 
 export type FiltersProps = {
   filters: FilterTable[];
   url: string;
   title: string;
+  selected: Filter[];
 };
 
-const normalizeFilters = (options: FilterTable['values']): CheckboxOptions[] => {
+const normalizeFilters = (options: FilterValues[]): CheckboxOptions[] => {
   return options.map((opt) => {
     return {
       label: opt.description,
@@ -22,19 +25,19 @@ const normalizeFilters = (options: FilterTable['values']): CheckboxOptions[] => 
   });
 };
 
-const filterOptionCount = (options: FilterTable['values']): number => {
+const filterOptionCount = (options: FilterValues[]): number => {
   return options.reduce((count, opt) => {
     const childCount = opt.children ? filterOptionCount(opt.children) : 0;
     return count + childCount + 1;
   }, 0);
 };
 
-export const Filters = ({ filters, url, title }: FiltersProps) => {
+export const Filters = ({ filters, url, title, selected }: FiltersProps) => {
   const [baseUrl, query] = url.split('?');
   const parsedQuery = qs.parse(query);
-  const parsedFilter = parsedQuery?.filter;
-  const activeFilters = parsedFilter && flatten(Object.values(parsedFilter)).length;
+  const activeFilters = selected.length > 0;
   const clearFiltersLink = `${baseUrl}?${qs.stringify(omit(parsedQuery, 'filter'))}`;
+
   return (
     <div className="filters-container">
       <div className="filters-head">
@@ -47,8 +50,7 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
       </div>
 
       {filters?.map((filter, index) => {
-        const values = get(parsedFilter, filter.factTableColumn);
-
+        const values = selected.find((f) => f.columnName === filter.factTableColumn)?.values;
         const filtered = values?.length;
         const total = filterOptionCount(filter.values);
 
@@ -91,7 +93,7 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
                       name={`filter-${filter.factTableColumn}-all`}
                       value="all"
                       omitName
-                      values={Array.isArray(values) ? values : [values]}
+                      values={Array.isArray(values) ? values : []}
                     />
                   </div>
                 </div>
@@ -100,7 +102,7 @@ export const Filters = ({ filters, url, title }: FiltersProps) => {
                 <CheckboxGroup
                   name={`filter[${filter.factTableColumn}]`}
                   options={normalizeFilters(filter.values)}
-                  values={Array.isArray(values) ? values : [values]}
+                  values={values ?? []}
                   independentExpand
                 />
               </div>

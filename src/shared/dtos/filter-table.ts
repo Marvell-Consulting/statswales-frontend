@@ -1,4 +1,4 @@
-interface FilterValues {
+export interface FilterValues {
   reference: string;
   description: string;
   children?: FilterValues[];

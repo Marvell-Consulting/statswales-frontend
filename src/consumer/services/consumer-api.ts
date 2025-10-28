@@ -12,7 +12,7 @@ import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count
 import { ViewDTO } from '../../shared/dtos/view-dto';
 import { FileFormat } from '../../shared/enums/file-format';
 import { PublishedTopicsDTO } from '../../shared/dtos/published-topics-dto';
-import { FilterInterface } from '../../shared/interfaces/filterInterface';
+import { Filter } from '../../shared/interfaces/filter';
 import { FilterTable } from '../../shared/dtos/filter-table';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
@@ -131,7 +131,7 @@ export class ConsumerApi {
     pageNumber: number,
     pageSize: number,
     sortBy?: SortByInterface,
-    filter?: FilterInterface[]
+    filter?: Filter[]
   ): Promise<ViewDTO> {
     logger.debug(`Fetching published view of dataset: ${datasetId}`);
     const query = new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString() });
