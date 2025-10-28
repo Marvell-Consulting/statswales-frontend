@@ -113,6 +113,56 @@ function Datasets({ datasets }) {
   );
 }
 
+function Sort(props) {
+  const { sortBy, sortOptions } = props;
+
+  return (
+    <>
+      <form id="sort-form" className="govuk-!-margin-bottom-6" method="GET">
+        <div className="govuk-form-group">
+          <label className="govuk-label" htmlFor="sort-by">
+            <T>consumer.topic_list.sort.label</T>
+          </label>
+          <select
+            id="sort-by"
+            name="sort_by"
+            className="govuk-select govuk-!-width-auto"
+            defaultValue={sortBy?.value || ''}
+          >
+            {sortOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {props.t(`consumer.topic_list.sort.options.${option.value}`)}
+              </option>
+            ))}
+          </select>
+          <noscript>
+            <button
+              type="submit"
+              className="govuk-button govuk-button-small govuk-!-display-inline govuk-!-margin-left-2"
+            >
+              <T>consumer.topic_list.sort.button</T>
+            </button>
+          </noscript>
+        </div>
+      </form>
+      <script
+        type="module"
+        dangerouslySetInnerHTML={{
+          __html: `
+          (() => {
+            const form = document.getElementById('sort-form');
+            const select = form.querySelector('select[name="sort_by"]');
+            select.addEventListener('change', () => {
+              form.submit();
+            });
+          })();
+          `
+        }}
+      />
+    </>
+  );
+}
+
 export default function TopicList(props) {
   const title = props.selectedTopic ? props.selectedTopic.name : props.t('consumer.topic_list.heading');
   return (
@@ -157,6 +207,7 @@ export default function TopicList(props) {
 
           {props.datasets?.length > 0 && (
             <>
+              <Sort {...props} />
               <Datasets {...props} />
               <Pagination {...props} />
             </>

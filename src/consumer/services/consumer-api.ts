@@ -71,7 +71,7 @@ export class ConsumerApi {
 
     return fetch(fullUrl, { method, headers: head, body: data })
       .then((response: Response) => {
-        logRequestTime(method, url, start);
+        logRequestTime(method, fullUrl, start);
         return response;
       })
       .then(async (response: Response) => {
@@ -95,10 +95,19 @@ export class ConsumerApi {
     return this.fetch({ url: 'healthcheck' }).then(() => true);
   }
 
-  public async getPublishedTopics(topicId?: string, page = 1, limit = 20): Promise<PublishedTopicsDTO> {
+  public async getPublishedTopics(
+    topicId?: string,
+    pageNumber = 1,
+    pageSize = 20,
+    sortBy?: SortByInterface
+  ): Promise<PublishedTopicsDTO> {
     logger.debug(`Fetching published datasets for topic: ${topicId}`);
     const url = topicId ? `v1/topic/${topicId}` : `v1/topic`;
-    const query = { page_number: page.toString(), page_size: limit.toString() };
+    const query = new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString() });
+
+    if (sortBy) {
+      query.append('sort_by', JSON.stringify([sortBy]));
+    }
 
     return this.fetch({ url, query }).then((response) => response.json() as unknown as PublishedTopicsDTO);
   }
@@ -119,8 +128,8 @@ export class ConsumerApi {
 
   public async getPublishedDatasetView(
     datasetId: string,
-    pageSize: number,
     pageNumber: number,
+    pageSize: number,
     sortBy?: SortByInterface,
     filter?: FilterInterface[]
   ): Promise<ViewDTO> {
