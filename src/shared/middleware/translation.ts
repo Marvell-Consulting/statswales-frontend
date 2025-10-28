@@ -20,8 +20,10 @@ const domainDetector = {
         return 'cy-GB';
       }
     }
-    if (req.hostname?.includes(new URL(url).hostname)) {
-      return 'en-GB';
+    if (url && URL.canParse(url)) {
+      if (req.hostname?.includes(new URL(url).hostname)) {
+        return 'en-GB';
+      }
     }
   }
 };
