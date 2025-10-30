@@ -35,7 +35,7 @@ const filterOptionCount = (options: FilterValues[]): number => {
 export const Filters = ({ filters, url, title, selected }: FiltersProps) => {
   const [baseUrl, query] = url.split('?');
   const parsedQuery = qs.parse(query);
-  const activeFilters = selected.length > 0;
+  const activeFilters = selected?.length > 0;
   const clearFiltersLink = `${baseUrl}?${qs.stringify(omit(parsedQuery, 'filter'))}`;
 
   return (
@@ -50,7 +50,7 @@ export const Filters = ({ filters, url, title, selected }: FiltersProps) => {
       </div>
 
       {filters?.map((filter, index) => {
-        const values = selected.find((f) => f.columnName === filter.factTableColumn)?.values;
+        const values = selected?.find((f) => f.columnName === filter.factTableColumn)?.values;
         const filtered = values?.length;
         const total = filterOptionCount(filter.values);
 
