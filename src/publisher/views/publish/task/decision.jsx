@@ -4,6 +4,7 @@ import Layout from '../../components/Layout';
 import { clsx } from 'clsx';
 import RadioGroup from '../../../../shared/views/components/RadioGroup';
 import T from '../../../../shared/views/components/T';
+import { dateFormat } from '../../../../shared/utils/date-format';
 
 export default function TaskDecision(props) {
   const reasonError = props.errors?.find((e) => e.field === 'reason');
@@ -27,7 +28,7 @@ export default function TaskDecision(props) {
             {props.taskType === 'publish' && (
               <p className="govuk-body govuk-!-margin-0">
                 <T
-                  publishAt={props.dateFormat(props.revision.publish_at, 'h:mmaaa, d MMMM yyyy', {
+                  publishAt={dateFormat(props.revision.publish_at, 'h:mmaaa, d MMMM yyyy', {
                     locale: props.i18n.language
                   })}
                   raw

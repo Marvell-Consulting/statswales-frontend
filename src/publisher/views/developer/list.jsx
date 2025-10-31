@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import FlashMessages from '../../../shared/views/components/FlashMessages';
 import Pagination from '../../../shared/views/components/Pagination';
 import Table from '../../../shared/views/components/Table';
+import { dateFormat } from '../../../shared/utils/date-format';
 
 export default function DeveloperList(props) {
   const columns = [
@@ -34,7 +35,7 @@ export default function DeveloperList(props) {
       key: 'last_updated_at',
       label: props.t('developer.list.table.last_updated'),
       style: { width: '15%' },
-      format: (value) => props.dateFormat(value, 'dd-MM-yyyy HH:mm:ss', { locale: props.i18n.language }),
+      format: (value) => dateFormat(value, 'dd-MM-yyyy HH:mm:ss', { locale: props.i18n.language }),
       cellClassName: 'date'
     },
     {

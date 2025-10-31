@@ -5,7 +5,6 @@ import { Locale } from '../../shared/enums/locale';
 import { localeUrl } from '../../shared/middleware/language-switcher';
 import { statusToColour } from '../../shared/utils/status-to-colour';
 import { PublisherApi } from '../services/publisher-api';
-import { dateFormat } from '../../shared/utils/date-format';
 
 // initialise any request-scoped services required by the app. See @types/express/index.d.ts for details
 export const initServices = (req: Request, res: Response, next: NextFunction): void => {
@@ -21,7 +20,6 @@ export const initServices = (req: Request, res: Response, next: NextFunction): v
   res.locals.hostname = req.hostname;
   res.locals.url = req.originalUrl;
   res.locals.referrer = req.get('Referrer');
-  res.locals.dateFormat = dateFormat;
   res.locals.supportEmail = req.language.includes('en') ? config.email.support.en : config.email.support.cy;
 
   next();

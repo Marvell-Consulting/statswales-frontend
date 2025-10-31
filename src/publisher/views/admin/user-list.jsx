@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import FlashMessages from '../../../shared/views/components/FlashMessages';
 import Table from '../../../shared/views/components/Table';
 import Pagination from '../../../shared/views/components/Pagination';
+import { dateFormat } from '../../../shared/utils/date-format';
 
 export default function UserList(props) {
   const columns = [
@@ -27,7 +28,7 @@ export default function UserList(props) {
       label: props.t('admin.user.list.table.login'),
       format: (value) =>
         value
-          ? props.dateFormat(value, 'd MMMM yyyy h:mm a', { locale: props.i18n.language })
+          ? dateFormat(value, 'd MMMM yyyy h:mm a', { locale: props.i18n.language })
           : props.t('admin.user.view.login_never')
     },
     {

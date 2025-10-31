@@ -4,6 +4,7 @@ import ErrorHandler from './components/ErrorHandler';
 import FlashMessages from '../../shared/views/components/FlashMessages';
 import Pagination from '../../shared/views/components/Pagination';
 import Table from '../../shared/views/components/Table';
+import { dateFormat } from '../../shared/utils/date-format';
 import Layout from './components/Layout';
 
 export default function Homepage(props) {
@@ -30,7 +31,7 @@ export default function Homepage(props) {
       key: 'last_updated_at',
       label: props.t('homepage.table.last_updated'),
       style: { width: '15%' },
-      format: (value) => props.dateFormat(value, 'd MMMM yyyy', { locale: props.i18n.language }),
+      format: (value) => dateFormat(value, 'd MMMM yyyy', { locale: props.i18n.language }),
       cellClassName: 'date nowrap'
     },
     {

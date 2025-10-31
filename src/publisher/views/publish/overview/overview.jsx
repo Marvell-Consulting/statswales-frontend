@@ -7,6 +7,7 @@ import ErrorHandler from '../../components/ErrorHandler';
 import DatasetStatus from '../../../../shared/views/components/dataset/DatasetStatus';
 import Tabs from '../../../../shared/views/components/Tabs';
 import T from '../../../../shared/views/components/T';
+import { dateFormat } from '../../../../shared/utils/date-format';
 import { ActionsTab } from './ActionsTab';
 import { HistoryTab } from './HistoryTab';
 
@@ -52,7 +53,7 @@ export default function Overview(props) {
                   className="govuk-body govuk-!-margin-0"
                   dangerouslySetInnerHTML={{
                     __html: props.t('publish.overview.publish.requested.publish_at', {
-                      publishAt: props.dateFormat(props.revision?.publish_at, 'h:mmaaa, d MMMM yyyy', {
+                      publishAt: dateFormat(props.revision?.publish_at, 'h:mmaaa, d MMMM yyyy', {
                         locale: props.i18n.language
                       })
                     })
@@ -116,7 +117,7 @@ export default function Overview(props) {
                 className="govuk-body"
                 dangerouslySetInnerHTML={{
                   __html: props.t('publish.overview.publish.scheduled.publish_at', {
-                    publishAt: props.dateFormat(props.revision?.publish_at, 'h:mmaaa, d MMMM yyyy', {
+                    publishAt: dateFormat(props.revision?.publish_at, 'h:mmaaa, d MMMM yyyy', {
                       locale: props.i18n.language
                     })
                   })

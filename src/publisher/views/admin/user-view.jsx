@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from '../components/Layout';
 import FlashMessages from '../../../shared/views/components/FlashMessages';
 import Table from '../../../shared/views/components/Table';
+import { dateFormat } from '../../../shared/utils/date-format';
 
 export default function UserView(props) {
   const columns = [
@@ -47,7 +48,7 @@ export default function UserView(props) {
               <dt className="govuk-summary-list__key">{props.t('admin.user.view.details.login')}</dt>
               <dd className="govuk-summary-list__value">
                 {props.user.last_login_at
-                  ? props.dateFormat(props.user.last_login_at, 'd MMMM yyyy h:mm a', { locale: props.i18n.language })
+                  ? dateFormat(props.user.last_login_at, 'd MMMM yyyy h:mm a', { locale: props.i18n.language })
                   : props.t('admin.user.view.login_never')}
               </dd>
             </div>

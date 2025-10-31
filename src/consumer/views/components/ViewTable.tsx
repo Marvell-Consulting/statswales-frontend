@@ -5,6 +5,7 @@ import Table from '../../../shared/views/components/Table';
 import { ColumnHeader } from '../../../shared/dtos/view-dto';
 import { FactTableColumnType } from '../../../shared/dtos/fact-table-column-type';
 import T from '../../../shared/views/components/T';
+import { dateFormat } from '../../../shared/utils/date-format';
 
 type ViewTableProps = {
   headers: ColumnHeader[];
@@ -28,14 +29,12 @@ export default function ViewTable(props: ViewTableProps) {
 
         case col.source_type === FactTableColumnType.Time && typeof col.extractor?.dateFormat === 'string': {
           const parsedDate = parse(value, col.extractor.dateFormat, new Date());
-          return isValid(parsedDate)
-            ? props.dateFormat(parsedDate, 'do MMMM yyyy', { locale: props.i18n.language })
-            : value;
+          return isValid(parsedDate) ? dateFormat(parsedDate, 'do MMMM yyyy', { locale: props.i18n.language }) : value;
         }
 
         case col.name === props.t('consumer_view.start_data') || col.name === props.t('consumer_view.end_data'): {
           const parsedDate = parseISO(value.split('T')[0]);
-          return props.dateFormat(parsedDate, 'do MMMM yyyy', { locale: props.i18n.language });
+          return dateFormat(parsedDate, 'do MMMM yyyy', { locale: props.i18n.language });
         }
 
         default:
