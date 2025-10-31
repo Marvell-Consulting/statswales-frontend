@@ -1,4 +1,6 @@
 import React from 'react';
+import { parseISO } from 'date-fns';
+
 import Table from '../../../shared/views/components/Table';
 import { ViewDTO } from '../../../shared/dtos/view-dto';
 import { useLocals } from '../../../shared/views/context/Locals';
@@ -11,7 +13,7 @@ export type MeasurePreviewTableProps = {
 };
 
 export default function MeasurePreviewTable(props: MeasurePreviewTableProps) {
-  const { dateFormat, parseISO, i18n } = useLocals();
+  const { dateFormat, i18n } = useLocals();
   const columns = props.headers.map((col, index) => ({
     key: index,
     label: <T fallback={col.name}>publish.measure_review.column_headers.{col.name.toLowerCase()}</T>,

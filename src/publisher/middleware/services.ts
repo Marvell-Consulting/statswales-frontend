@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express';
-import { parseISO } from 'date-fns';
 
 import { config } from '../../shared/config';
 import { Locale } from '../../shared/enums/locale';
@@ -22,7 +21,6 @@ export const initServices = (req: Request, res: Response, next: NextFunction): v
   res.locals.hostname = req.hostname;
   res.locals.url = req.originalUrl;
   res.locals.referrer = req.get('Referrer');
-  res.locals.parseISO = parseISO;
   res.locals.dateFormat = dateFormat;
   res.locals.supportEmail = req.language.includes('en') ? config.email.support.en : config.email.support.cy;
 

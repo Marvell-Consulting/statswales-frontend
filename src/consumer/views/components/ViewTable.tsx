@@ -1,5 +1,5 @@
 import React from 'react';
-import { isValid, parse } from 'date-fns';
+import { isValid, parse, parseISO } from 'date-fns';
 
 import Table from '../../../shared/views/components/Table';
 import { ColumnHeader } from '../../../shared/dtos/view-dto';
@@ -14,7 +14,6 @@ type ViewTableProps = {
     language: string;
     exists: (key: string) => boolean;
   };
-  parseISO: (dateString: string) => Date;
   t: (key: string) => string;
 };
 
@@ -34,8 +33,10 @@ export default function ViewTable(props: ViewTableProps) {
             : value;
         }
 
-        case col.name === props.t('consumer_view.start_data') || col.name === props.t('consumer_view.end_data'):
-          return props.dateFormat(props.parseISO(value.split('T')[0]), 'do MMMM yyyy', { locale: props.i18n.language });
+        case col.name === props.t('consumer_view.start_data') || col.name === props.t('consumer_view.end_data'): {
+          const parsedDate = parseISO(value.split('T')[0]);
+          return props.dateFormat(parsedDate, 'do MMMM yyyy', { locale: props.i18n.language });
+        }
 
         default:
           return value;

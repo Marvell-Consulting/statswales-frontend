@@ -1,4 +1,6 @@
 import React from 'react';
+import { parseISO } from 'date-fns';
+
 import Table from '../../../shared/views/components/Table';
 import { ColumnHeader, ViewDTO } from '../../../shared/dtos/view-dto';
 import { useLocals } from '../../../shared/views/context/Locals';
@@ -18,7 +20,7 @@ export type DimensionPreviewTableProps = {
 };
 
 export default function DimensionPreviewTable(props: DimensionPreviewTableProps) {
-  const { i18n, dateFormat, parseISO } = useLocals();
+  const { i18n, dateFormat } = useLocals();
   const columns = props.headers.map((heading, index) => ({
     key: index,
     label:
