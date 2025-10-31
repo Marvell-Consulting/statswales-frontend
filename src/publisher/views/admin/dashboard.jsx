@@ -1,5 +1,5 @@
 import React from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { formatDistanceToNow, subSeconds } from 'date-fns';
 import { enGB, cy } from 'date-fns/locale';
 

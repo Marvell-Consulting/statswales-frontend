@@ -1,5 +1,5 @@
 import React from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 
 import Layout from './components/Layout';
 import Hero from './components/Hero';

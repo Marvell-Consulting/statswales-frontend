@@ -2,6 +2,7 @@ import { TaskAction } from '../enums/task-action';
 import { TaskStatus } from '../enums/task-status';
 
 interface TaskMetadata {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 

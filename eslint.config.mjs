@@ -38,6 +38,7 @@ const config = defineConfig([
     rules: {
       'no-console': 'error',
       'line-comment-position': 'off',
+      curly: ['error', 'multi-line', 'consistent'],
       'no-warning-comments': 'warn',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/member-ordering': 'off',
