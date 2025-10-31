@@ -4,6 +4,7 @@ import FlashMessages from '../../../shared/views/components/FlashMessages';
 import Pagination from '../../../shared/views/components/Pagination';
 import Table from '../../../shared/views/components/Table';
 import { dateFormat } from '../../../shared/utils/date-format';
+import { statusToColour } from '../../../shared/utils/status-to-colour';
 
 export default function DeveloperList(props) {
   const columns = [
@@ -46,9 +47,7 @@ export default function DeveloperList(props) {
           return;
         }
         const label = props.t(`homepage.status.${value}`);
-        return (
-          <strong className={`govuk-tag max-width-none govuk-tag--${props.statusToColour(value)}`}>{label}</strong>
-        );
+        return <strong className={`govuk-tag max-width-none govuk-tag--${statusToColour(value)}`}>{label}</strong>;
       },
       cellClassName: 'status nowrap'
     },
@@ -60,9 +59,7 @@ export default function DeveloperList(props) {
           return;
         }
         const label = props.t(`badge.publishing_status.${value}`);
-        return (
-          <strong className={`govuk-tag max-width-none govuk-tag--${props.statusToColour(value)}`}>{label}</strong>
-        );
+        return <strong className={`govuk-tag max-width-none govuk-tag--${statusToColour(value)}`}>{label}</strong>;
       },
       cellClassName: 'status nowrap'
     },

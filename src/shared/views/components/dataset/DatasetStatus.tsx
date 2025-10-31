@@ -1,15 +1,16 @@
 import { clsx } from 'clsx';
 import React from 'react';
-import { useLocals } from '../../context/Locals';
 import T from '../T';
+import { statusToColour } from '../../../utils/status-to-colour';
+import { PublishingStatus } from '../../../enums/publishing-status';
+import { DatasetStatus as DatasetStatusEnum } from '../../../enums/dataset-status';
 
 export type DatasetStatusProps = {
-  publishingStatus: string;
-  datasetStatus: string;
+  publishingStatus: PublishingStatus;
+  datasetStatus: DatasetStatusEnum;
 };
 
 export default function DatasetStatus({ publishingStatus, datasetStatus }: DatasetStatusProps) {
-  const { statusToColour } = useLocals();
   return (
     <div className="status-badges govuk-!-margin-bottom-8">
       <strong className={clsx('govuk-tag', 'dataset-status ', `govuk-tag--${statusToColour(datasetStatus)}`)}>

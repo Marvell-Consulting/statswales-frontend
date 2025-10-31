@@ -6,6 +6,7 @@ import Pagination from '../../shared/views/components/Pagination';
 import Table from '../../shared/views/components/Table';
 import { dateFormat } from '../../shared/utils/date-format';
 import Layout from './components/Layout';
+import { statusToColour } from '../../shared/utils/status-to-colour';
 
 export default function Homepage(props) {
   const columns = [
@@ -39,7 +40,7 @@ export default function Homepage(props) {
       label: props.t('homepage.table.dataset_status'),
       format: (value) =>
         value ? (
-          <strong className={`govuk-tag max-width-none govuk-tag--${props.statusToColour(value)}`}>
+          <strong className={`govuk-tag max-width-none govuk-tag--${statusToColour(value)}`}>
             {props.t(`homepage.status.${value}`)}
           </strong>
         ) : null,
@@ -50,7 +51,7 @@ export default function Homepage(props) {
       label: props.t('homepage.table.publish_status'),
       format: (value) =>
         value ? (
-          <strong className={`govuk-tag max-width-none govuk-tag--${props.statusToColour(value)}`}>
+          <strong className={`govuk-tag max-width-none govuk-tag--${statusToColour(value)}`}>
             {props.t(`badge.publishing_status.${value}`)}
           </strong>
         ) : null,

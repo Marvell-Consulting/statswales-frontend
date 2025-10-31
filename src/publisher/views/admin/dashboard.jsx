@@ -5,6 +5,7 @@ import { enGB, cy } from 'date-fns/locale';
 
 import Layout from '../components/Layout';
 import Table from '../../../shared/views/components/Table';
+import { statusToColour } from '../../../shared/utils/status-to-colour';
 
 const DatasetStats = (props) => {
   const { summary } = props.stats.datasets;
@@ -17,7 +18,7 @@ const DatasetStats = (props) => {
           return <strong>{props.t('admin.dashboard.stats.datasets.summary.total.label')}</strong>;
         }
         return (
-          <strong className={clsx('govuk-tag', 'publishing-status', `govuk-tag--${props.statusToColour(value)}`)}>
+          <strong className={clsx('govuk-tag', 'publishing-status', `govuk-tag--${statusToColour(value)}`)}>
             {props.t(`admin.dashboard.stats.datasets.summary.${value}.label`)}
           </strong>
         );
@@ -94,7 +95,7 @@ const DatasetStats = (props) => {
       key: 'status',
       format: (value) => {
         return (
-          <span className={clsx('govuk-tag', 'publishing-status', `govuk-tag--${props.statusToColour(value)}`)}>
+          <span className={clsx('govuk-tag', 'publishing-status', `govuk-tag--${statusToColour(value)}`)}>
             {props.t(`admin.dashboard.stats.datasets.summary.${value}.label`)}
           </span>
         );

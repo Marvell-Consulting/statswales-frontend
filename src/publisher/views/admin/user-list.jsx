@@ -4,6 +4,7 @@ import FlashMessages from '../../../shared/views/components/FlashMessages';
 import Table from '../../../shared/views/components/Table';
 import Pagination from '../../../shared/views/components/Pagination';
 import { dateFormat } from '../../../shared/utils/date-format';
+import { statusToColour } from '../../../shared/utils/status-to-colour';
 
 export default function UserList(props) {
   const columns = [
@@ -34,7 +35,7 @@ export default function UserList(props) {
     {
       key: 'status',
       format: (value) => (
-        <strong className={`govuk-tag govuk-tag--${props.statusToColour(value)}`}>
+        <strong className={`govuk-tag govuk-tag--${statusToColour(value)}`}>
           {props.t(`admin.user.badge.status.${value}`)}
         </strong>
       )
