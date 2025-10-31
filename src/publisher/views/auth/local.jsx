@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 
 export default function LocalAuth(props) {
   const title = props.t('login.heading');

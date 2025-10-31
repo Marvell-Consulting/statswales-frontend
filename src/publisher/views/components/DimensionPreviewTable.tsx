@@ -1,10 +1,13 @@
 import React from 'react';
+import { parseISO } from 'date-fns';
+
 import Table from '../../../shared/views/components/Table';
 import { ColumnHeader, ViewDTO } from '../../../shared/dtos/view-dto';
 import { useLocals } from '../../../shared/views/context/Locals';
 import T from '../../../shared/views/components/T';
 import { SingleLanguageDimension } from '../../../shared/dtos/single-language/dimension';
 import { SourceType } from '../../../shared/enums/source-type';
+import { dateFormat } from '../../../shared/utils/date-format';
 
 export type DimensionPreviewTableProps = {
   headers: Array<
@@ -18,7 +21,7 @@ export type DimensionPreviewTableProps = {
 };
 
 export default function DimensionPreviewTable(props: DimensionPreviewTableProps) {
-  const { i18n, dateFormat, parseISO } = useLocals();
+  const { i18n } = useLocals();
   const columns = props.headers.map((heading, index) => ({
     key: index,
     label:

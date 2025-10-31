@@ -5,13 +5,14 @@ import { TaskDTO } from '../../../../shared/dtos/task';
 import T from '../../../../shared/views/components/T';
 import Table from '../../../../shared/views/components/Table';
 import { useLocals } from '../../../../shared/views/context/Locals';
+import { dateFormat } from '../../../../shared/utils/date-format';
 
 type HistoryTabProps = {
   history: EventLogDTO[];
 };
 
 export function HistoryTab({ history }: HistoryTabProps) {
-  const { dateFormat, i18n } = useLocals();
+  const { i18n } = useLocals();
 
   const columns = [
     {

@@ -6,7 +6,7 @@ import { isPublished } from './revision';
 import { PreviewMetadata } from '../interfaces/preview-metadata';
 import { i18next } from '../middleware/translation';
 import { Locale } from '../enums/locale';
-import { dateFormat } from '../../consumer/middleware/services';
+import { dateFormat } from './date-format';
 import { NextUpdateType } from '../enums/next-update-type';
 import { parse } from 'date-fns';
 
@@ -50,6 +50,7 @@ export const getDatasetMetadata = async (
 
 export const metadataToCSV = (metadata: PreviewMetadata, locale: Locale): string[][] => {
   const lines = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const t = (key: string, params?: Record<string, any>) => i18next.t(key, { lng: locale, ...params });
 
   lines.push([t('dataset_view.key_information.title'), metadata.title ?? '']);

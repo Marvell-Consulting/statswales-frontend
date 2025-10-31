@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import T from '../../../shared/views/components/T';
 import { Locals, LocalsProvider, useLocals } from '../../../shared/views/context/Locals';
 import CookieBanner from '../../../shared/views/components/CookieBanner';

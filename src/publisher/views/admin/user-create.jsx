@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 
 export default function UserCreate(props) {
   const title = props.t('admin.user.create.heading');

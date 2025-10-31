@@ -17,7 +17,7 @@ feedback.use(flashMessages);
 const feedbackForm = async (req: Request, res: Response) => {
   const title = i18next.t('feedback.heading', { lng: req.language });
   let errors: ViewError[] = [];
-  let values: Record<string, any> = {};
+  let values: { satisfaction: string; improve: string } = { satisfaction: '', improve: '' };
 
   if (req.method === 'POST') {
     const validators = [satisfactionValidator(), improveValidator()];

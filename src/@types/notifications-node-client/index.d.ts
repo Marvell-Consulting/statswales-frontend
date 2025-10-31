@@ -1,3 +1,6 @@
+// typings for GovUK Notify Node.js client
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 declare module 'notifications-node-client' {
   class NotifyClient {
     constructor(apiKey: string);

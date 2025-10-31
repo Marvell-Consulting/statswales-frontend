@@ -3,6 +3,7 @@ import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
 import Table from '../../../shared/views/components/Table';
 import RadioGroup from '../../../shared/views/components/RadioGroup';
+import { dateFormat } from '../../../shared/utils/date-format';
 
 export default function DateChooser(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
@@ -34,7 +35,7 @@ export default function DateChooser(props) {
           }
         case 'start_date':
         case 'end_date':
-          return props.dateFormat(new Date(value), 'do MMMM yyyy', {
+          return dateFormat(new Date(value), 'do MMMM yyyy', {
             locale: props.i18n.language,
             timeZone: 'Europe/London'
           });

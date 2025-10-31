@@ -1,6 +1,6 @@
 import React from 'react';
 import qs from 'qs';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { omit } from 'lodash';
 
 import { FilterTable, FilterValues } from '../../dtos/filter-table';

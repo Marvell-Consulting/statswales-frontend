@@ -1,11 +1,13 @@
 import React from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 
 import Layout from './components/Layout';
 import Hero from './components/Hero';
 import T from '../../shared/views/components/T';
 import { useLocals } from '../../shared/views/context/Locals';
 import Pagination from '../../shared/views/components/Pagination';
+import { statusToColour } from '../../shared/utils/status-to-colour';
+import { dateFormat } from '../../shared/utils/date-format';
 
 function Breadcrumbs({ parentTopics, selectedTopic }) {
   const { buildUrl, i18n } = useLocals();
@@ -60,7 +62,7 @@ function ChildTopics({ childTopics }) {
 }
 
 function Datasets({ datasets }) {
-  const { buildUrl, i18n, dateFormat, statusToColour } = useLocals();
+  const { buildUrl, i18n } = useLocals();
 
   return (
     <ul className="govuk-list">

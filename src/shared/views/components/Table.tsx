@@ -1,5 +1,5 @@
 import React, { CSSProperties, ReactNode } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import T from './T';
 import { useLocals } from '../context/Locals';
 import { SortByInterface } from '../../interfaces/sort-by';
@@ -11,6 +11,7 @@ type ColumnBase<T> = {
   className?: string;
   cellClassName?: string;
   style?: CSSProperties;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   format?: (value: any, row: T) => ReactNode;
 };
 

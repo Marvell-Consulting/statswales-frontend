@@ -1,6 +1,6 @@
 import React from 'react';
 import { addYears, format } from 'date-fns';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 
 import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';

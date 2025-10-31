@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { useLocals } from '../../../shared/views/context/Locals';
 
 export function DateField({ name, width = 3, label }: { name: string; width: number; label: ReactNode }) {

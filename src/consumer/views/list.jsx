@@ -1,6 +1,7 @@
 import React from 'react';
 import Layout from './components/Layout';
 import Pagination from '../../shared/views/components/Pagination';
+import { dateFormat } from '../../shared/utils/date-format';
 
 export default function ConsumerList(props) {
   const title = props.t('consumer.list.heading');
@@ -33,7 +34,7 @@ export default function ConsumerList(props) {
                 <div className="index-list__meta">
                   <p>
                     <span className="govuk-body-s caption index-list__item__meta">
-                      {props.dateFormat(dataset.first_published_at, 'd MMMM yyyy', { locale: props.i18n.language })}
+                      {dateFormat(dataset.first_published_at, 'd MMMM yyyy', { locale: props.i18n.language })}
                     </span>
                   </p>
                 </div>

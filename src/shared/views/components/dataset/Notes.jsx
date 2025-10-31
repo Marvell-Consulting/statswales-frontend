@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { dateFormat } from '../../../utils/date-format';
+
 export default function Notes(props) {
   if (!props.notes.publishedRevisions.length && !props.notes.roundingApplied) {
     return null;
@@ -17,9 +19,7 @@ export default function Notes(props) {
               <ul className="govuk-list">
                 {props.notes.publishedRevisions.map((revision, index) => (
                   <li key={index}>
-                    <strong>
-                      {props.dateFormat(revision.publish_at, 'd MMMM yyyy', { locale: props.i18n.language })}
-                    </strong>
+                    <strong>{dateFormat(revision.publish_at, 'd MMMM yyyy', { locale: props.i18n.language })}</strong>
                   </li>
                 ))}
               </ul>
