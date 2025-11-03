@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from '../components/Layout';
 import Table from '../../../shared/views/components/Table';
 import FlashMessages from '../../../shared/views/components/FlashMessages';
+import { statusToColour } from '../../../shared/utils/status-to-colour';
 
 export default function UserGroupView(props) {
   const columns = [
@@ -23,7 +24,7 @@ export default function UserGroupView(props) {
     {
       key: 'status',
       format: (value) => (
-        <strong className={`govuk-tag govuk-tag--${props.statusToColour(value)}`}>
+        <strong className={`govuk-tag govuk-tag--${statusToColour(value)}`}>
           {props.t(`admin.user.badge.status.${value}`)}
         </strong>
       )
@@ -43,7 +44,7 @@ export default function UserGroupView(props) {
             <div className="govuk-summary-list__row">
               <dt className="govuk-summary-list__key">{props.t('admin.group.view.details.status')}</dt>
               <dd className="govuk-summary-list__value">
-                <strong className={`govuk-tag govuk-tag--${props.statusToColour(props.group.status)}`}>
+                <strong className={`govuk-tag govuk-tag--${statusToColour(props.group.status)}`}>
                   {props.t(`admin.group.badge.status.${props.group.status}`)}
                 </strong>
               </dd>

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import T from '../T';
 import { NextUpdateType } from '../../../enums/next-update-type';
 import { parse } from 'date-fns';
-import { dateFormat } from '../../../../consumer/middleware/services';
+import { dateFormat } from '../../../utils/date-format';
 
 export default function KeyInfo(props) {
   function NextUpdate() {
@@ -15,9 +15,9 @@ export default function KeyInfo(props) {
           const date = parse(`${day || '01'} ${month} ${year}`, 'dd MM yyyy', new Date());
 
           if (day) {
-            return props.dateFormat(date, 'd MMMM yyyy', { locale: props.i18n.language });
+            return dateFormat(date, 'd MMMM yyyy', { locale: props.i18n.language });
           } else {
-            return props.dateFormat(date, 'MMMM yyyy', { locale: props.i18n.language });
+            return dateFormat(date, 'MMMM yyyy', { locale: props.i18n.language });
           }
         }
 
@@ -62,7 +62,7 @@ export default function KeyInfo(props) {
           <dt className="govuk-summary-list__key">{props.t('dataset_view.key_information.last_update')}</dt>
           <dd className="govuk-summary-list__value">
             {props.keyInfo.updatedAt
-              ? props.dateFormat(props.keyInfo.updatedAt, 'd MMMM yyyy', { locale: props.i18n.language })
+              ? dateFormat(props.keyInfo.updatedAt, 'd MMMM yyyy', { locale: props.i18n.language })
               : props.t('dataset_view.key_information.update_missing')}
           </dd>
         </div>

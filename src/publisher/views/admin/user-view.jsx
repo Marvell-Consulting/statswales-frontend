@@ -2,6 +2,8 @@ import React from 'react';
 import Layout from '../components/Layout';
 import FlashMessages from '../../../shared/views/components/FlashMessages';
 import Table from '../../../shared/views/components/Table';
+import { dateFormat } from '../../../shared/utils/date-format';
+import { statusToColour } from '../../../shared/utils/status-to-colour';
 
 export default function UserView(props) {
   const columns = [
@@ -34,7 +36,7 @@ export default function UserView(props) {
             <div className="govuk-summary-list__row">
               <dt className="govuk-summary-list__key">{props.t('admin.user.view.details.status')}</dt>
               <dd className="govuk-summary-list__value">
-                <strong className={`govuk-tag govuk-tag--${props.statusToColour(props.user.status)}`}>
+                <strong className={`govuk-tag govuk-tag--${statusToColour(props.user.status)}`}>
                   {props.t(`admin.user.badge.status.${props.user.status}`)}
                 </strong>
               </dd>
@@ -47,7 +49,7 @@ export default function UserView(props) {
               <dt className="govuk-summary-list__key">{props.t('admin.user.view.details.login')}</dt>
               <dd className="govuk-summary-list__value">
                 {props.user.last_login_at
-                  ? props.dateFormat(props.user.last_login_at, 'd MMMM yyyy h:mm a', { locale: props.i18n.language })
+                  ? dateFormat(props.user.last_login_at, 'd MMMM yyyy h:mm a', { locale: props.i18n.language })
                   : props.t('admin.user.view.login_never')}
               </dd>
             </div>

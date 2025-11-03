@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { DateField } from '../components/DateField';
 import T from '../../../shared/views/components/T';
 

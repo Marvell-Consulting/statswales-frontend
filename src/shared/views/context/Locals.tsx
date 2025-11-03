@@ -5,6 +5,7 @@ import { ViewError } from '../../dtos/view-error';
 export type Locals = {
   errors?: ViewError[];
   flash?: FlashMessage[] | string[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } & Record<string, any>;
 
 const Context = createContext<Locals | undefined>(undefined);

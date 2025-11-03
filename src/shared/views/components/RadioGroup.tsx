@@ -1,5 +1,5 @@
 import React, { Fragment, ReactNode } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { useLocals } from '../context/Locals';
 
 type Option = {

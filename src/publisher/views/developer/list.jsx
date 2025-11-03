@@ -3,6 +3,8 @@ import Layout from '../components/Layout';
 import FlashMessages from '../../../shared/views/components/FlashMessages';
 import Pagination from '../../../shared/views/components/Pagination';
 import Table from '../../../shared/views/components/Table';
+import { dateFormat } from '../../../shared/utils/date-format';
+import { statusToColour } from '../../../shared/utils/status-to-colour';
 
 export default function DeveloperList(props) {
   const columns = [
@@ -34,7 +36,7 @@ export default function DeveloperList(props) {
       key: 'last_updated_at',
       label: props.t('developer.list.table.last_updated'),
       style: { width: '15%' },
-      format: (value) => props.dateFormat(value, 'dd-MM-yyyy HH:mm:ss', { locale: props.i18n.language }),
+      format: (value) => dateFormat(value, 'dd-MM-yyyy HH:mm:ss', { locale: props.i18n.language }),
       cellClassName: 'date'
     },
     {
@@ -45,9 +47,7 @@ export default function DeveloperList(props) {
           return;
         }
         const label = props.t(`homepage.status.${value}`);
-        return (
-          <strong className={`govuk-tag max-width-none govuk-tag--${props.statusToColour(value)}`}>{label}</strong>
-        );
+        return <strong className={`govuk-tag max-width-none govuk-tag--${statusToColour(value)}`}>{label}</strong>;
       },
       cellClassName: 'status nowrap'
     },
@@ -59,9 +59,7 @@ export default function DeveloperList(props) {
           return;
         }
         const label = props.t(`badge.publishing_status.${value}`);
-        return (
-          <strong className={`govuk-tag max-width-none govuk-tag--${props.statusToColour(value)}`}>{label}</strong>
-        );
+        return <strong className={`govuk-tag max-width-none govuk-tag--${statusToColour(value)}`}>{label}</strong>;
       },
       cellClassName: 'status nowrap'
     },

@@ -1,5 +1,5 @@
 import React, { CSSProperties, ReactNode } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 
 type Option = {
   value: string;

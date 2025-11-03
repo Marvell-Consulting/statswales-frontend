@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import React, { ReactNode } from 'react';
 import T from './T';
 

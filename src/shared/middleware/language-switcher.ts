@@ -20,12 +20,6 @@ export const localeUrl = (
     .filter(Boolean) // strip empty elements to avoid trailing slash
     .filter((element) => !locales.includes(element)); // strip language from the path if present
 
-  // TODO: re-enable path translation once the router knows how to handle it
-  // if (![Locale.English, Locale.EnglishGb].includes(locale as Locale)) {
-  //     // translate the url path to the new locale
-  //     pathElements = pathElements.map((element) => i18next.t(`routes.${element}`, { lng: locale }));
-  // }
-
   const newPath = isEmpty(pathElements) ? '' : `/${pathElements.join('/')}`;
   const queryString = isEmpty(query) ? '' : `?${qs.stringify(query)}`;
   const anchorString = isEmpty(anchor) ? '' : `#${anchor}`;

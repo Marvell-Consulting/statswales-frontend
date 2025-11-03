@@ -1,4 +1,5 @@
 import React from 'react';
+import { dateFormat } from '../../../../shared/utils/date-format';
 
 export default function DeveloperSummary(props) {
   return (
@@ -47,7 +48,7 @@ export default function DeveloperSummary(props) {
                   </th>
                   <td className="govuk-table__cell">
                     {props.dataset.created_at &&
-                      props.dateFormat(props.dataset.created_at, 'd MMMM yyyy h:mm a', { locale: props.i18n.language })}
+                      dateFormat(props.dataset.created_at, 'd MMMM yyyy h:mm a', { locale: props.i18n.language })}
                   </td>
                 </tr>
                 <tr>
@@ -56,7 +57,7 @@ export default function DeveloperSummary(props) {
                   </th>
                   <td className="govuk-table__cell">
                     {props.dataset.first_published_at &&
-                      props.dateFormat(props.dataset.first_published_at, 'd MMMM yyyy h:mm a', {
+                      dateFormat(props.dataset.first_published_at, 'd MMMM yyyy h:mm a', {
                         locale: props.i18n.language
                       })}
                   </td>

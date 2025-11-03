@@ -12,7 +12,6 @@ import { ViewDTO } from '../../shared/dtos/view-dto';
 import { NotFoundException } from '../../shared/exceptions/not-found.exception';
 import { paginationSequence, pageInfo } from '../../shared/utils/pagination';
 import { singleLangDataset, singleLangRevision } from '../../shared/utils/single-lang-dataset';
-import { statusToColour } from '../../shared/utils/status-to-colour';
 import { getDatasetStatus, getPublishingStatus } from '../../shared/utils/dataset-status';
 import { FileImportDto } from '../../shared/dtos/file-import';
 import { FileFormat } from '../../shared/enums/file-format';
@@ -35,7 +34,7 @@ export const listAllDatasets = async (req: Request, res: Response, next: NextFun
     const { data, count } = results;
     const pagination = pageInfo(page, limit, count);
     const flash = res.locals.flash;
-    res.render('developer/list', { data, ...pagination, search, statusToColour, flash });
+    res.render('developer/list', { data, ...pagination, search, flash });
   } catch (err) {
     next(err);
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 
 export default function Title(props) {
   const returnLink =

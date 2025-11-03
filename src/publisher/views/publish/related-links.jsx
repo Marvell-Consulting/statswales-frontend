@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '../components/Layout';
 import ErrorHandler from '../components/ErrorHandler';
 import Table from '../../../shared/views/components/Table';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import RadioGroup from '../../../shared/views/components/RadioGroup';
 import T from '../../../shared/views/components/T';
 

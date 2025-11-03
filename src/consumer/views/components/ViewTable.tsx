@@ -1,10 +1,11 @@
 import React from 'react';
-import { isValid, parse } from 'date-fns';
+import { isValid, parse, parseISO } from 'date-fns';
 
 import Table from '../../../shared/views/components/Table';
 import { ColumnHeader } from '../../../shared/dtos/view-dto';
 import { FactTableColumnType } from '../../../shared/dtos/fact-table-column-type';
 import T from '../../../shared/views/components/T';
+import { dateFormat } from '../../../shared/utils/date-format';
 
 type ViewTableProps = {
   headers: ColumnHeader[];
@@ -14,7 +15,6 @@ type ViewTableProps = {
     language: string;
     exists: (key: string) => boolean;
   };
-  parseISO: (dateString: string) => Date;
   t: (key: string) => string;
 };
 
@@ -29,13 +29,13 @@ export default function ViewTable(props: ViewTableProps) {
 
         case col.source_type === FactTableColumnType.Time && typeof col.extractor?.dateFormat === 'string': {
           const parsedDate = parse(value, col.extractor.dateFormat, new Date());
-          return isValid(parsedDate)
-            ? props.dateFormat(parsedDate, 'do MMMM yyyy', { locale: props.i18n.language })
-            : value;
+          return isValid(parsedDate) ? dateFormat(parsedDate, 'do MMMM yyyy', { locale: props.i18n.language }) : value;
         }
 
-        case col.name === props.t('consumer_view.start_data') || col.name === props.t('consumer_view.end_data'):
-          return props.dateFormat(props.parseISO(value.split('T')[0]), 'do MMMM yyyy', { locale: props.i18n.language });
+        case col.name === props.t('consumer_view.start_data') || col.name === props.t('consumer_view.end_data'): {
+          const parsedDate = parseISO(value.split('T')[0]);
+          return dateFormat(parsedDate, 'do MMMM yyyy', { locale: props.i18n.language });
+        }
 
         default:
           return value;

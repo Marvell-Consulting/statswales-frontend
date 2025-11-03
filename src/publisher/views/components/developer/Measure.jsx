@@ -1,5 +1,6 @@
 import React from 'react';
 import Table from '../../../../shared/views/components/Table';
+import { dateFormat } from '../../../../shared/utils/date-format';
 
 export default function Measure(props) {
   return (
@@ -57,7 +58,7 @@ export default function Measure(props) {
                     {
                       key: 'uploaded_at',
                       format: (value) =>
-                        props.dateFormat(value, 'd MMMM yyyy h:mm a', {
+                        dateFormat(value, 'd MMMM yyyy h:mm a', {
                           locale: props.i18n.language
                         })
                     },
