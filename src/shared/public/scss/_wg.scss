@@ -1760,7 +1760,14 @@
     }
 
     // focus states from GEL
-    a:link:not(.govuk-button, .govuk-tabs__tab, .govuk-phase-banner a, .statsWales-logo, .button, [role='button']):focus {
+    a:link:not(
+        .govuk-button,
+        .govuk-tabs__tab,
+        .govuk-phase-banner a,
+        .statsWales-logo,
+        .button,
+        [role='button']
+      ):focus {
       color: colours.$black !important;
       background-color: colours.$yellow !important;
       box-shadow:
