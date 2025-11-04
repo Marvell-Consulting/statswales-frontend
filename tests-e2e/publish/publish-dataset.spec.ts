@@ -37,8 +37,6 @@ import { config } from '../../src/shared/config';
 const baseUrl = config.frontend.publisher.url;
 
 test.describe('Publish dataset', () => {
-  test.describe.configure({ mode: 'default' }); // run tests in this file sequentially
-
   const title = `publish-dataset.spec - ${nanoid(5)}`;
   const nextUpdate = add(new Date(), { years: 1 });
   let datasetId: string;

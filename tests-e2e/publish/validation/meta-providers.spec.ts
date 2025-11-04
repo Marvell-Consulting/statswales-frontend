@@ -7,8 +7,6 @@ import { startNewDataset, selectUserGroup, provideDatasetTitle } from '../helper
 
 const baseUrl = config.frontend.publisher.url;
 
-test.describe.configure({ mode: 'serial' }); // tests in this file must be performed in order to avoid test failures
-
 test.describe('Metadata - Data providers', () => {
   const title = `meta-providers.spec - ${nanoid(5)}`;
   let datasetId: string;
@@ -52,14 +50,6 @@ test.describe('Metadata - Data providers', () => {
       await page.getByRole('link', { name: 'Remove' }).first().click();
     }
   }
-
-  test.describe('Not authed', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
-    test('Redirects to login page when not authenticated', async ({ page }) => {
-      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/providers`);
-      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
-    });
-  });
 
   test.describe('Authed as a publisher', () => {
     test.use({ storageState: users.publisher.path });
@@ -256,6 +246,14 @@ test.describe('Metadata - Data providers', () => {
         await expect(page.getByRole('cell', { name: 'Sport Wales' })).toBeVisible();
         await expect(page.getByRole('cell', { name: 'Geographical information' })).toBeVisible();
       });
+    });
+  });
+
+  test.describe('Not authed', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+    test('Redirects to login page when not authenticated', async ({ page }) => {
+      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/providers`);
+      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
     });
   });
 });

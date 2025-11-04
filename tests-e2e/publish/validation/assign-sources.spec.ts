@@ -11,14 +11,6 @@ test.describe('Sources page', () => {
   const title = `assign-sources.spec - ${nanoid(5)}`;
   let datasetId: string;
 
-  test.describe('Not authed', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
-    test('Redirects to login page when not authenticated', async ({ page }) => {
-      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/sources`);
-      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
-    });
-  });
-
   test.describe('Authed as a publisher', () => {
     test.use({ storageState: users.publisher.path });
 
@@ -50,5 +42,13 @@ test.describe('Sources page', () => {
     test.fixme('Displays an error if more than one value source is selected', async () => {});
     test.fixme('Displays an error if more than one notes source is selected', async () => {});
     test.fixme('Displays an error if more than one measure source is selected', async () => {});
+  });
+
+  test.describe('Not authed', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+    test('Redirects to login page when not authenticated', async ({ page }) => {
+      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/sources`);
+      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
+    });
   });
 });
