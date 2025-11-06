@@ -11,14 +11,6 @@ test.describe('Metadata Quality', () => {
   const title = `meta-quality.spec - ${nanoid(5)}`;
   let datasetId: string;
 
-  test.describe('Not authed', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
-    test('Redirects to login page when not authenticated', async ({ page }) => {
-      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/quality`);
-      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
-    });
-  });
-
   test.describe('Authed as a publisher', () => {
     test.use({ storageState: users.publisher.path });
 
@@ -79,6 +71,14 @@ test.describe('Metadata Quality', () => {
         expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetId}/quality`);
         await expect(page.getByText('Enter what rounding has been applied to the data values').first()).toBeVisible();
       });
+    });
+  });
+
+  test.describe('Not authed', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+    test('Redirects to login page when not authenticated', async ({ page }) => {
+      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/quality`);
+      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
     });
   });
 });

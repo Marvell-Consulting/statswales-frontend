@@ -11,18 +11,6 @@ test.describe('Metadata Title', () => {
   const title = `meta-title.spec - ${nanoid(5)}`;
   let datasetId: string;
 
-  test.beforeEach(async ({ page }) => {
-    await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/title`);
-  });
-
-  test.describe('Not authed', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
-    test('Redirects to login page when not authenticated', async ({ page }) => {
-      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/title`);
-      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
-    });
-  });
-
   test.describe('Authed as a publisher', () => {
     test.use({ storageState: users.publisher.path });
 
@@ -64,6 +52,14 @@ test.describe('Metadata Title', () => {
         await expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetId}/title`);
         await expect(page.getByText('Enter the title of this dataset')).toBeVisible();
       });
+    });
+  });
+
+  test.describe('Not authed', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+    test('Redirects to login page when not authenticated', async ({ page }) => {
+      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/title`);
+      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
     });
   });
 });

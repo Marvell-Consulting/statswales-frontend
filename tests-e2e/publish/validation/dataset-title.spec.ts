@@ -6,14 +6,6 @@ import { users } from '../../fixtures/logins';
 const baseUrl = config.frontend.publisher.url;
 
 test.describe('Title page', () => {
-  test.describe('Not authed', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
-    test('Redirects to login page when not authenticated', async ({ page }) => {
-      await page.goto(`${baseUrl}/en-GB/publish/title`);
-      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
-    });
-  });
-
   test.describe('Authed as a publisher', () => {
     test.use({ storageState: users.publisher.path });
 
@@ -46,6 +38,14 @@ test.describe('Title page', () => {
         expect(page.url()).toContain(`${baseUrl}/en-GB/publish/title`);
         await expect(page.getByText('Enter the title of this dataset')).toBeVisible();
       });
+    });
+  });
+
+  test.describe('Not authed', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+    test('Redirects to login page when not authenticated', async ({ page }) => {
+      await page.goto(`${baseUrl}/en-GB/publish/title`);
+      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
     });
   });
 });

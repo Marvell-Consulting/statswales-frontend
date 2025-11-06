@@ -11,14 +11,6 @@ test.describe('Metadata Summary', () => {
   const title = `meta-summary.spec - ${nanoid(5)}`;
   let datasetId: string;
 
-  test.describe('Not authed', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
-    test('Redirects to login page when not authenticated', async ({ page }) => {
-      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/summary`);
-      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
-    });
-  });
-
   test.describe('Authed as a publisher', () => {
     test.use({ storageState: users.publisher.path });
 
@@ -62,6 +54,14 @@ test.describe('Metadata Summary', () => {
         expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetId}/summary`);
         await expect(page.getByText('Enter the summary of this dataset')).toBeVisible();
       });
+    });
+  });
+
+  test.describe('Not authed', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+    test('Redirects to login page when not authenticated', async ({ page }) => {
+      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/summary`);
+      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
     });
   });
 });

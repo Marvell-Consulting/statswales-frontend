@@ -8,8 +8,6 @@ import { startNewDataset, selectUserGroup, provideDatasetTitle } from './helpers
 const baseUrl = config.frontend.publisher.url;
 
 test.describe('Move dataset between groups', () => {
-  test.describe.configure({ mode: 'default' }); // run tests in this file sequentially
-
   const title = `move-dataset.spec - ${nanoid(5)}`;
   let datasetId: string;
 

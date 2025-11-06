@@ -11,14 +11,6 @@ test.describe('Metadata Topics', () => {
   const title = `meta-topics.spec - ${nanoid(5)}`;
   let datasetId: string;
 
-  test.describe('Not authed', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
-    test('Redirects to login page when not authenticated', async ({ page }) => {
-      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/topics`);
-      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
-    });
-  });
-
   test.describe('Authed as a publisher', () => {
     test.use({ storageState: users.publisher.path });
 
@@ -50,6 +42,14 @@ test.describe('Metadata Topics', () => {
         expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetId}/topics`);
         await expect(page.getByText('Select which topics are relevant to this dataset').first()).toBeVisible();
       });
+    });
+  });
+
+  test.describe('Not authed', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+    test('Redirects to login page when not authenticated', async ({ page }) => {
+      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/topics`);
+      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
     });
   });
 });

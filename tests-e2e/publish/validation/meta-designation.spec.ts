@@ -11,14 +11,6 @@ test.describe('Metadata - Designation', () => {
   const title = `meta-designation.spec - ${nanoid(5)}`;
   let datasetId: string;
 
-  test.describe('Not authed', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
-    test('Redirects to login page when not authenticated', async ({ page }) => {
-      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/designation`);
-      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
-    });
-  });
-
   test.describe('Authed as a publisher', () => {
     test.use({ storageState: users.publisher.path });
 
@@ -47,6 +39,14 @@ test.describe('Metadata - Designation', () => {
         expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetId}/designation`);
         await expect(page.getByText('Select how this dataset is designated').first()).toBeVisible();
       });
+    });
+  });
+
+  test.describe('Not authed', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+    test('Redirects to login page when not authenticated', async ({ page }) => {
+      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/designation`);
+      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
     });
   });
 });

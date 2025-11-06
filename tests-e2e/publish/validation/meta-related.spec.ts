@@ -7,8 +7,6 @@ import { startNewDataset, selectUserGroup, provideDatasetTitle } from '../helper
 
 const baseUrl = config.frontend.publisher.url;
 
-test.describe.configure({ mode: 'serial' }); // tests in this file must be performed in order to avoid test failures
-
 test.describe('Metadata Related Links', () => {
   const title = `meta-related.spec - ${nanoid(5)}`;
   let datasetId: string;
@@ -18,14 +16,6 @@ test.describe('Metadata Related Links', () => {
       await page.getByRole('link', { name: 'Remove' }).first().click();
     }
   }
-
-  test.describe('Not authed', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
-    test('Redirects to login page when not authenticated', async ({ page }) => {
-      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/related`);
-      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
-    });
-  });
 
   test.describe('Authed as a publisher', () => {
     test.use({ storageState: users.publisher.path });
@@ -90,6 +80,14 @@ test.describe('Metadata Related Links', () => {
         await page.getByRole('button', { name: 'Continue' }).click();
         await expect(page.getByText('Select yes if you need to add a link to another report')).toBeVisible();
       });
+    });
+  });
+
+  test.describe('Not authed', () => {
+    test.use({ storageState: { cookies: [], origins: [] } });
+    test('Redirects to login page when not authenticated', async ({ page }) => {
+      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/related`);
+      expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
     });
   });
 });

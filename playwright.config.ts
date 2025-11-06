@@ -13,14 +13,14 @@ import 'dotenv/config';
  */
 export default defineConfig({
   testDir: './tests-e2e',
-  /* Run tests in files in parallel */
-  fullyParallel: true,
+  /* Whether to run tests inside files in parallel (default is to run separate files in parallel but not the tests within the same file) */
+  fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Fail fast on CI */
-  maxFailures: 1,
+  maxFailures: process.env.CI ? 1 : 3,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Dir for test artifacts such as screenshots, videos, traces, etc. */

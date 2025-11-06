@@ -10,8 +10,6 @@ import { publishMinimalDataset } from './helpers/publishing-steps';
 const baseUrl = config.frontend.publisher.url;
 
 test.describe('Unpublish dataset', () => {
-  test.describe.configure({ mode: 'default' }); // run tests in this file sequentially
-
   const title = `unpublish-dataset.spec - ${nanoid(5)}`;
   let datasetId: string;
 
