@@ -696,18 +696,19 @@
         },
         "date": {
           "label": "Nodwch y dyddiad pan ddisgwylir y diweddariad nesaf",
-          "hint": "Er enghraifft, {{example}}. Os nad ydych chi’n gwybod yr union ddyddiad, rhaid i chi nodi mis a blwyddyn o leiaf.",
+          "hint": "Er enghraifft, {{example}}. Os nad ydych chi’n gwybod yr union ddyddiad, rhaid i chi nodi blwyddyn o leiaf.",
           "error": {
             "missing": "Nodwch y dyddiad pan ddisgwylir y diweddariad nesaf",
             "invalid": "Rhaid i’r dyddiad pan ddisgwylir y diweddariad nesaf fod yn ddyddiad go iawn yn y dyfodol"
           }
         },
         "day": {
-          "label": "Diwrnod"
+          "label": "Diwrnod",
+          "error": "Rhaid i'r diwrnod fod yn ddiwrnod dilys o'r mis"
         },
         "month": {
           "label": "Mis",
-          "error": "Rhaid i’r dyddiad pan ddisgwylir y diweddariad nesaf gynnwys mis"
+          "error": "Rhaid i'r mis fod yn fis dilys"
         },
         "year": {
           "label": "Blwyddyn",

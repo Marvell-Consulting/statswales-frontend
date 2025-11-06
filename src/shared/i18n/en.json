@@ -699,18 +699,19 @@
         },
         "date": {
           "label": "Enter the date the next update is expected",
-          "hint": "For example, {{example}}. If you do not know the exact date, you must enter at least a month and a year.",
+          "hint": "For example, {{example}}. If you do not know the exact date, you must enter at least a year.",
           "error": {
             "missing": "Enter the date the next update is expected",
             "invalid": "The date the next update is expected must be a real date in the future"
           }
         },
         "day": {
-          "label": "Day"
+          "label": "Day",
+          "error": "The day must be a valid day of the month"
         },
         "month": {
           "label": "Month",
-          "error": "The date the next update is expected must include a month"
+          "error": "The month must be a valid month"
         },
         "year": {
           "label": "Year",
