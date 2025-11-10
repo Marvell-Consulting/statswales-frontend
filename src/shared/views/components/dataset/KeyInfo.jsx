@@ -12,12 +12,14 @@ export default function KeyInfo(props) {
       switch (nextUpdateAt.update_type) {
         case NextUpdateType.Update: {
           const { day, month, year } = nextUpdateAt.date || {};
-          const date = parse(`${day || '01'} ${month} ${year}`, 'dd MM yyyy', new Date());
+          const date = parse(`${day || '01'} ${month || '01'} ${year}`, 'dd MM yyyy', new Date());
 
-          if (day) {
+          if (day && month && year) {
             return dateFormat(date, 'd MMMM yyyy', { locale: props.i18n.language });
-          } else {
+          } else if (month && year) {
             return dateFormat(date, 'MMMM yyyy', { locale: props.i18n.language });
+          } else {
+            return dateFormat(date, 'yyyy', { locale: props.i18n.language });
           }
         }
 

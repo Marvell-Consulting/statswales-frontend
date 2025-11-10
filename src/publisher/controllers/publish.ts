@@ -7,7 +7,7 @@ import { get, set, sortBy } from 'lodash';
 import { FieldValidationError, matchedData } from 'express-validator';
 import { customAlphabet } from 'nanoid';
 import { alphanumeric } from 'nanoid-dictionary';
-import { isBefore, isValid } from 'date-fns';
+import { isBefore, isDate, isValid, parseISO } from 'date-fns';
 
 import {
   collectionValidator,
@@ -2221,15 +2221,21 @@ export const provideUpdateFrequency = async (req: Request, res: Response) => {
           day: req.body?.day ? req.body?.day.padStart(2, '0') : ''
         };
 
+        const maybeDate = `${update_frequency.date.year}-${update_frequency.date.month || '01'}-${update_frequency.date.day || '01'}`;
+
+        if (!isDate(parseISO(maybeDate)) || !isValid(parseISO(maybeDate))) {
+          dateError = { field: 'date', message: { key: 'publish.update_frequency.form.date.error.invalid' } };
+          errors.push(dateError);
+        }
+
         const updateDate = new TZDate(
           Number(update_frequency.date.year),
-          // month is 0-11
-          Number(update_frequency.date.month) - 1,
+          Number(update_frequency.date.month || '1') - 1, // month is 0-11
           Number(update_frequency.date.day || '1'),
           'Europe/London'
         );
 
-        if (!isValid(updateDate) || isBefore(updateDate, new Date())) {
+        if (isBefore(updateDate, new Date())) {
           dateError = { field: 'date', message: { key: 'publish.update_frequency.form.date.error.invalid' } };
           errors.push(dateError);
         }
@@ -2606,7 +2612,9 @@ export const providePublishDate = async (req: Request, res: Response) => {
         'Europe/London'
       );
 
-      if (!isValid(publishDate)) {
+      const maybeDate = `${values.year}-${values.month}-${values.day}T${values.hour}:${values.minute}:00`;
+
+      if (!isDate(parseISO(maybeDate)) || !isValid(parseISO(maybeDate))) {
         dateError = { field: 'date', message: { key: 'publish.schedule.form.date.error.invalid' } };
         errors.push(dateError);
       } else if (isBefore(publishDate, new Date())) {

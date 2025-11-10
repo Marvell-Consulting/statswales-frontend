@@ -95,7 +95,11 @@ export const updateDayValidator = () =>
     .isInt({ min: 1, max: 31, allow_leading_zeroes: true });
 
 export const updateMonthValidator = () =>
-  body('month').if(body('update_type').equals('update')).isInt({ min: 1, max: 12, allow_leading_zeroes: true });
+  body('month')
+    .trim()
+    .optional({ values: 'falsy' })
+    .if(body('update_type').equals('update'))
+    .isInt({ min: 1, max: 12, allow_leading_zeroes: true });
 
 export const updateYearValidator = () =>
   body('year').if(body('update_type').equals('update')).isInt({ min: 1000, max: 9999, allow_leading_zeroes: false });
