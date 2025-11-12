@@ -22,7 +22,11 @@ export function ParentTopicBreadcrumbs(props: TopicBreadcrumbsProps) {
     url: topic.id !== props.selectedTopic?.id ? buildUrl(`/topic/${topic.id}/${topic.slug}`, i18n.language) : undefined
   }));
 
-  return <Breadcrumbs breadcrumbs={breadcrumbs} />;
+  return (
+    <div className="govuk-breadcrumbs govuk-!-margin-top-4">
+      <Breadcrumbs breadcrumbs={breadcrumbs} />
+    </div>
+  );
 }
 
 type BreadcrumbsProps = {
