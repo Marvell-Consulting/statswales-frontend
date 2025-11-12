@@ -2,7 +2,6 @@ import { Readable } from 'node:stream';
 
 import { NextFunction, Request, Response } from 'express';
 import hljs from 'highlight.js';
-import slugify from 'slugify';
 import { t } from 'i18next';
 
 import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count';
@@ -244,8 +243,7 @@ export const downloadAllDatasetFiles = async (req: Request, res: Response, next:
     const dataset = await req.pubapi.getDataset(req.params.datasetId, DatasetInclude.LatestRevision);
     const latestRevision = singleLangDataset(dataset, req.language).end_revision;
     const datasetTitle = latestRevision?.metadata?.title || dataset.id;
-    const attachmentName = `${slugify(datasetTitle, { lower: true })}`;
-    const headers = getDownloadHeaders(FileFormat.Zip, attachmentName);
+    const headers = getDownloadHeaders(FileFormat.Zip, datasetTitle);
     const fileStream = await req.pubapi.getAllDatasetFiles(dataset.id);
     res.writeHead(200, headers);
     const readable: Readable = Readable.from(fileStream);

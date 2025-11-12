@@ -151,7 +151,7 @@ export const downloadPublishedMetadata = async (req: Request, res: Response, nex
     const metadata = await getDatasetMetadata(dataset, revision, false);
     const downloadMeta = metadataToCSV(metadata, req.language as Locale);
     const headers = getDownloadHeaders(FileFormat.Csv, `${metadata.title}-meta`);
-    res.setHeaders(new Headers(headers));
+    res.set(headers);
     res.send(stringify(downloadMeta, { bom: true, header: false, quoted: true }));
   } catch (err) {
     next(err);
