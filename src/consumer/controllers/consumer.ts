@@ -150,9 +150,8 @@ export const downloadPublishedMetadata = async (req: Request, res: Response, nex
   try {
     const metadata = await getDatasetMetadata(dataset, revision, false);
     const downloadMeta = metadataToCSV(metadata, req.language as Locale);
-
-    res.setHeader('content-type', 'text/csv; charset=utf-8');
-    res.setHeader('content-disposition', `attachment; filename="${metadata.title}-meta.csv"`);
+    const headers = getDownloadHeaders(FileFormat.Csv, `${metadata.title}-meta`);
+    res.setHeaders(new Headers(headers));
     res.send(stringify(downloadMeta, { bom: true, header: false, quoted: true }));
   } catch (err) {
     next(err);
@@ -171,7 +170,7 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
 
     let attachmentName: string;
     if (revision.metadata?.title) {
-      attachmentName = `${slugify(revision.metadata?.title, { lower: true })}-${revision.revision_index > 0 ? `v${revision.revision_index}` : 'draft'}`;
+      attachmentName = `${revision.metadata?.title}-${revision.revision_index > 0 ? `v${revision.revision_index}` : 'draft'}`;
     } else {
       attachmentName = `${dataset.id}-${revision.revision_index > 0 ? `v${revision.revision_index}` : 'draft'}`;
     }
@@ -185,11 +184,6 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
     const format = req.query.format as FileFormat;
     const lang = req.query.download_language as Locale;
     const headers = getDownloadHeaders(format, attachmentName);
-
-    if (!headers) {
-      throw new NotFoundException('invalid file format');
-    }
-
     const fileStream = await req.conapi.getCubeFileStream(dataset.id, format, lang, view, selectedFilterOptions);
     res.writeHead(200, headers);
     const readable: Readable = Readable.from(fileStream);
