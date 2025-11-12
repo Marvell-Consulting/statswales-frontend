@@ -68,7 +68,8 @@
     }
   },
   "breadcrumbs": {
-    "home": "Hafan"
+    "home": "Hafan",
+    "dataset_location": "Mae'r set ddata hon i'w chael yn:"
   },
   "cookies": {
     "banner": {

@@ -3,44 +3,12 @@ import { clsx } from 'clsx';
 
 import Layout from './components/Layout';
 import Hero from './components/Hero';
+import { ParentTopicBreadcrumbs } from './components/Breadcrumbs';
 import T from '../../shared/views/components/T';
 import { useLocals } from '../../shared/views/context/Locals';
 import Pagination from '../../shared/views/components/Pagination';
 import { statusToColour } from '../../shared/utils/status-to-colour';
 import { dateFormat } from '../../shared/utils/date-format';
-
-function Breadcrumbs({ parentTopics, selectedTopic }) {
-  const { buildUrl, i18n } = useLocals();
-
-  return (
-    <div className="govuk-!-margin-bottom-8">
-      <nav className="govuk-breadcrumbs" aria-label="Breadcrumb">
-        <ol className="govuk-breadcrumbs__list">
-          <li className="govuk-breadcrumbs__list-item">
-            <a className="govuk-breadcrumbs__link" href={buildUrl(`/`, i18n.language)}>
-              <T>breadcrumbs.home</T>
-            </a>
-          </li>
-
-          {parentTopics.map((topic) => (
-            <li className="govuk-breadcrumbs__list-item" key={topic.id}>
-              {topic.id === selectedTopic.id ? (
-                topic.name
-              ) : (
-                <a
-                  className="govuk-breadcrumbs__link"
-                  href={buildUrl(`/topic/${topic.id}/${topic.slug}`, i18n.language)}
-                >
-                  {topic.name}
-                </a>
-              )}
-            </li>
-          ))}
-        </ol>
-      </nav>
-    </div>
-  );
-}
 
 function ChildTopics({ childTopics }) {
   const { buildUrl, i18n } = useLocals();
@@ -183,21 +151,22 @@ export default function TopicList(props) {
 
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
-          <p>
-            <T url={props.consumerApiUrl} raw>
-              consumer.topic_list.api
-            </T>
-          </p>
-
           {!props.selectedTopic && (
-            <h2 className="govuk-heading-l">
-              <T>consumer.topic_list.topics</T>
-            </h2>
+            <>
+              <p>
+                <T url={props.consumerApiUrl} raw>
+                  consumer.topic_list.api
+                </T>
+              </p>
+              <h2 className="govuk-heading-l">
+                <T>consumer.topic_list.topics</T>
+              </h2>
+            </>
           )}
 
           {props.selectedTopic && (
             <>
-              <Breadcrumbs {...props} />
+              <ParentTopicBreadcrumbs {...props} />
               <h2 className="topic-subhead">
                 <T>{props.parentTopics.length > 0 ? 'consumer.topic_list.sub_topic' : 'consumer.topic_list.topic'}</T>
               </h2>

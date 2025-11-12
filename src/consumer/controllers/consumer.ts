@@ -23,6 +23,7 @@ import { parseFilters } from '../../shared/utils/parse-filters';
 import { FilterTable } from '../../shared/dtos/filter-table';
 import { ViewDTO } from '../../shared/dtos/view-dto';
 import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
+import { singleLangTopic } from '../../shared/utils/single-lang-topic';
 
 export const DEFAULT_PAGE_SIZE = 100;
 
@@ -123,6 +124,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
     req.conapi.getPublishedDatasetFilters(dataset.id)
   ]);
 
+  const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
   const pagination = pageInfo(preview.current_page, pageSize, preview.page_info?.total_records || 0);
 
   res.render('view', {
@@ -130,6 +132,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
     ...pagination,
     datasetMetadata,
     filters,
+    topics,
     selectedFilterOptions,
     shorthandUrl,
     isUnpublished,
