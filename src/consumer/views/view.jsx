@@ -3,6 +3,7 @@ import qs from 'qs';
 
 import PublisherLayout from '../../publisher/views/components/Layout';
 import ConsumerLayout from './components/Layout';
+import { MultiPathBreadcrumbs } from './components/Breadcrumbs';
 import DatasetStatus from '../../shared/views/components/dataset/DatasetStatus';
 import Tabs from '../../shared/views/components/Tabs';
 import DeveloperView from '../../publisher/views/components/developer/DeveloperView';
@@ -265,6 +266,8 @@ export default function ConsumerView(props) {
 
   return (
     <LayoutComponent {...props} title={title}>
+      <MultiPathBreadcrumbs {...props} />
+
       <h1 className="govuk-heading-xl">{title}</h1>
 
       {props.isArchived && <NotificationBanner {...props} notification="consumer_view.archived_dataset" />}
