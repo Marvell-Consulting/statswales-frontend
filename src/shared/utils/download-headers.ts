@@ -1,7 +1,9 @@
+import slugify from 'slugify';
+
 import { FileFormat } from '../enums/file-format';
 
-export const getDownloadHeaders = (format: FileFormat | undefined, downloadName: string) => {
-  if (!format) return undefined;
+export const getDownloadHeaders = (format: FileFormat | undefined, downloadName: string): Record<string, string> => {
+  format = format || FileFormat.Csv;
 
   const formats = {
     csv: { ext: 'csv', contentType: 'text/csv; charset=utf-8' },
@@ -20,10 +22,12 @@ export const getDownloadHeaders = (format: FileFormat | undefined, downloadName:
     throw new Error('unsupported file format');
   }
 
+  const sanitisedFilename = slugify(downloadName, { lower: true, strict: true });
+
   return {
     /* eslint-disable @typescript-eslint/naming-convention */
     'Content-Type': opts.contentType,
-    'Content-disposition': `attachment;filename=${downloadName}.${opts.ext}`
+    'Content-Disposition': `attachment; filename=${sanitisedFilename}.${opts.ext}`
     /* eslint-enable @typescript-eslint/naming-convention */
   };
 };

@@ -669,9 +669,9 @@ export const downloadMetadata = async (req: Request, res: Response, next: NextFu
     const revision = singleLangRevision(revisionDTO, req.language)!;
     const metadata = await getDatasetMetadata(dataset, revision, false);
     const downloadMeta = metadataToCSV(metadata, req.language as Locale);
+    const headers = getDownloadHeaders(FileFormat.Csv, `${metadata.title}-meta`);
 
-    res.setHeader('content-type', 'text/csv; charset=utf-8');
-    res.setHeader('content-disposition', `attachment; filename="${metadata.title}-meta.csv"`);
+    res.set(headers);
     res.send(stringify(downloadMeta, { bom: true, header: false, quoted: true }));
   } catch (err) {
     next(err);

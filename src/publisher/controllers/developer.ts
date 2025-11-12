@@ -2,7 +2,6 @@ import { Readable } from 'node:stream';
 
 import { NextFunction, Request, Response } from 'express';
 import hljs from 'highlight.js';
-import slugify from 'slugify';
 import { t } from 'i18next';
 
 import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count';
@@ -163,10 +162,6 @@ export const downloadDataTableFromRevision = async (req: Request, res: Response,
 
     const attachmentName: string = dataTable.original_filename || revisionId;
     const headers = getDownloadHeaders(dataTable.file_type as FileFormat, attachmentName);
-
-    if (!headers) {
-      throw new NotFoundException('invalid file format');
-    }
     const fileStream = await req.pubapi.getOriginalUpload(datasetId, revisionId);
     res.writeHead(200, headers);
     const readable: Readable = Readable.from(fileStream);
@@ -199,10 +194,6 @@ export const downloadLookupFileFromMeasure = async (req: Request, res: Response,
   try {
     const attachmentName: string = lookupTable.original_filename || dataset.id;
     const headers = getDownloadHeaders(lookupTable.file_type as FileFormat, attachmentName);
-
-    if (!headers) {
-      throw new NotFoundException('invalid file format');
-    }
     const fileStream = await req.pubapi.getOriginalUploadMeasure(dataset.id);
     res.writeHead(200, headers);
     const readable: Readable = Readable.from(fileStream);
@@ -237,11 +228,6 @@ export const downloadLookupFileFromDimension = async (req: Request, res: Respons
     const lookupTable: LookupTableDTO = dimension.lookupTable;
     const attachmentName: string = lookupTable.original_filename || dimension.id;
     const headers = getDownloadHeaders(lookupTable.file_type as FileFormat, attachmentName);
-
-    if (!headers) {
-      throw new NotFoundException('invalid file format');
-    }
-
     const fileStream = await req.pubapi.getOriginalUploadDimension(dataset.id, dimension.id);
     res.writeHead(200, headers);
     const readable: Readable = Readable.from(fileStream);
@@ -257,13 +243,7 @@ export const downloadAllDatasetFiles = async (req: Request, res: Response, next:
     const dataset = await req.pubapi.getDataset(req.params.datasetId, DatasetInclude.LatestRevision);
     const latestRevision = singleLangDataset(dataset, req.language).end_revision;
     const datasetTitle = latestRevision?.metadata?.title || dataset.id;
-    const attachmentName = `${slugify(datasetTitle, { lower: true })}`;
-    const headers = getDownloadHeaders(FileFormat.Zip, attachmentName);
-
-    if (!headers) {
-      throw new NotFoundException('invalid file format');
-    }
-
+    const headers = getDownloadHeaders(FileFormat.Zip, datasetTitle);
     const fileStream = await req.pubapi.getAllDatasetFiles(dataset.id);
     res.writeHead(200, headers);
     const readable: Readable = Readable.from(fileStream);
