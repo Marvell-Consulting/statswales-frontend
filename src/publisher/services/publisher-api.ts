@@ -48,6 +48,7 @@ import { UnknownException } from '../../shared/exceptions/unknown.exception';
 import { TaskAction } from '../../shared/enums/task-action';
 import { UserGroupStatus } from '../../shared/enums/user-group-status';
 import { DashboardStats } from '../../shared/interfaces/dashboard-stats';
+import { BuiltLogEntry } from '../../shared/dtos/build-log-entry';
 
 const logger = parentLogger.child({ service: 'publisher-api' });
 
@@ -456,20 +457,12 @@ export class PublisherApi {
     datasetId: string,
     dimensionId: string,
     metadata: DimensionMetadataDTO
-  ): Promise<DimensionDTO> {
+  ): Promise<{ dimension: DimensionDTO; build_id: string }> {
     return this.fetch({
       url: `dataset/${datasetId}/dimension/by-id/${dimensionId}/metadata`,
       method: HttpMethod.Patch,
       json: metadata
-    }).then((response) => response.json() as unknown as DimensionDTO);
-  }
-
-  public async updateMeasureMetadata(datasetId: string, metadata: DimensionMetadataDTO): Promise<DimensionMetadataDTO> {
-    return this.fetch({
-      url: `dataset/${datasetId}/measure/metadata`,
-      method: HttpMethod.Patch,
-      json: metadata
-    }).then((response) => response.json() as unknown as DimensionMetadataDTO);
+    }).then((response) => response.json() as unknown as { dimension: DimensionDTO; build_id: string });
   }
 
   public async updateMetadata(datasetId: string, metadata: RevisionMetadataDTO): Promise<DatasetDTO> {
@@ -821,5 +814,10 @@ export class PublisherApi {
   public async getUser(): Promise<UserDTO> {
     logger.debug(`Fetching the current user...`);
     return this.fetch({ url: 'user' }).then((response) => response.json() as unknown as UserDTO);
+  }
+
+  public async getBuildLogEntry(buildId: string): Promise<BuiltLogEntry> {
+    logger.debug(`Fetching build log entry with id ${buildId}...`);
+    return this.fetch({ url: `build/${buildId}` }).then((response) => response.json() as unknown as BuiltLogEntry);
   }
 }

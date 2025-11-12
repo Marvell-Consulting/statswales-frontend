@@ -40,14 +40,15 @@ import {
   downloadDataset,
   createNewUpdate,
   updateDatatable,
-  measureName,
   setupNumberDimension,
   deleteDraft,
   provideDatasetGroup,
   moveDatasetGroup,
   taskDecision,
   datasetAction,
-  downloadMetadata
+  downloadMetadata,
+  longBuildHandling,
+  ajaxRefreshBuildStatus
 } from '../controllers/publish';
 import { DatasetInclude as Include } from '../../shared/enums/dataset-include';
 import { flashMessages, flashErrors } from '../../shared/middleware/flash';
@@ -94,17 +95,16 @@ publish.get('/:datasetId/cube-preview', fetchDataset(), cubePreview);
 publish.get('/:datasetId/download', fetchDataset(), downloadDataset);
 publish.get('/:datasetId/download/metadata', fetchDataset(), downloadMetadata);
 
+publish.get('/:datasetId/build/:buildId', fetchDataset(), longBuildHandling);
+publish.get('/:datasetId/build/:buildId/refresh', fetchDataset(), ajaxRefreshBuildStatus);
+
 /* Measure creation */
 publish.get('/:datasetId/measure', fetchDataset(), measurePreview);
 publish.post('/:datasetId/measure', fetchDataset(), upload.single('csv'), measurePreview);
 publish.get('/:datasetId/measure/review', fetchDataset(Include.Measure), measureReview);
 publish.post('/:datasetId/measure/review', fetchDataset(Include.Measure), measureReview);
-publish.get('/:datasetId/measure/name', fetchDataset(Include.Measure), measureName);
 publish.get('/:datasetId/measure/change-lookup', fetchDataset(Include.Measure), measurePreview);
 publish.post('/:datasetId/measure/change-lookup', fetchDataset(Include.Measure), upload.single('csv'), measurePreview);
-publish.get('/:datasetId/measure/change-name', fetchDataset(Include.Measure), measureName);
-publish.post('/:datasetId/measure/name', upload.none(), fetchDataset(Include.Measure), measureName);
-publish.post('/:datasetId/measure/change-name', upload.none(), fetchDataset(Include.Measure), measureName);
 
 /* Dimension creation */
 publish.get('/:datasetId/dimension/:dimensionId', fetchDataset(Include.Dimensions), fetchDimensionPreview);

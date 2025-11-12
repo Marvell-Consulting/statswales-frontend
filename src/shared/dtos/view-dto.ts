@@ -37,4 +37,5 @@ export interface ViewDTO {
   headers: ColumnHeader[];
   data: string[][];
   note_codes?: string[];
+  extension?: object;
 }
