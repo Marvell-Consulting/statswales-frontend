@@ -70,6 +70,8 @@ type MultiPathBreadcrumbsProps = {
 
 // when a dataset is in multiple topics, show all paths
 export function MultiPathBreadcrumbs(props: MultiPathBreadcrumbsProps) {
+  if (!props.topics || props.topics.length === 0) return null;
+
   const { i18n, buildUrl } = useLocals();
   const nestedTopics = nestTopics(props.topics);
 
