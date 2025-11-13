@@ -23,7 +23,7 @@ const staticPageHandler = (pageName: string) => {
     const normalizedFilePath = path.resolve(requestedFilePath);
 
     if (!normalizedFilePath.startsWith(docsPath) || !fs.existsSync(normalizedFilePath)) {
-      logger.error(`Could not load ${normalizedFilePath}`);
+      logger.warn(`Could not load ${normalizedFilePath}`);
       next(new NotFoundException());
       return;
     }
@@ -38,7 +38,7 @@ const staticPageHandler = (pageName: string) => {
       const content = domPurify.sanitize(await marked.parse(markdownFile));
       res.render('static-page', { content, tableOfContents, title });
     } catch (err) {
-      logger.error(err, `Could not render ${pageName} page`);
+      logger.warn(err, `Could not render ${pageName} page`);
       next(new NotFoundException());
     }
   };

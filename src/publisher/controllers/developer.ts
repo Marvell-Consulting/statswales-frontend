@@ -148,14 +148,12 @@ export const downloadDataTableFromRevision = async (req: Request, res: Response,
     }
 
     if (!revisionId) {
-      logger.error('Invalid or missing revisionId');
       next(new NotFoundException('errors.revision_missing'));
       return;
     }
     const dataTable = await req.pubapi.getRevisionDataTable(datasetId, revisionId);
 
     if (!dataTable) {
-      logger.error('Invalid or missing data table');
       next(new NotFoundException('errors.data_table_missing'));
       return;
     }
@@ -167,7 +165,6 @@ export const downloadDataTableFromRevision = async (req: Request, res: Response,
     const readable: Readable = Readable.from(fileStream);
     readable.pipe(res);
   } catch (_err) {
-    logger.error(_err, 'Error downloading data table');
     next(new NotFoundException('errors.import_missing'));
   }
 };
@@ -181,13 +178,11 @@ export const downloadLookupFileFromMeasure = async (req: Request, res: Response,
   const measure = dataset.measure;
 
   if (!measure && !measure!.lookup_table) {
-    logger.error('Invalid or missing measure');
     next(new NotFoundException('errors.measure_missing'));
     return;
   }
   const lookupTable: LookupTableDTO | undefined = measure!.lookup_table;
   if (!lookupTable) {
-    logger.error('Invalid or missing lookup table');
     next(new NotFoundException('errors.lookup_table_missing'));
     return;
   }
@@ -199,7 +194,6 @@ export const downloadLookupFileFromMeasure = async (req: Request, res: Response,
     const readable: Readable = Readable.from(fileStream);
     readable.pipe(res);
   } catch (_err) {
-    logger.error(_err, 'Error downloading measure lookup file');
     next(new NotFoundException('errors.import_missing'));
   }
 };
@@ -214,13 +208,11 @@ export const downloadLookupFileFromDimension = async (req: Request, res: Respons
     const dimension = localisedDataset.dimensions?.find((dimension) => dimension.id === dimensionId);
 
     if (!dimension) {
-      logger.error(`Invalid or missing Dimension ID, requested id is ${dimensionId}`);
       next(new NotFoundException('errors.dimension_missing'));
       return;
     }
 
     if (!dimension.lookupTable) {
-      logger.error('Invalid or missing dimension lookup table');
       next(new NotFoundException('errors.dimension_lookup_missing'));
       return;
     }

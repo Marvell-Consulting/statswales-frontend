@@ -43,7 +43,7 @@ export const ensureAuthenticated = (req: Request, res: Response, next: NextFunct
     res.locals.isAuthenticated = true;
     logger.info('user is authenticated');
   } catch (err) {
-    logger.error(err, `authentication failed`);
+    logger.warn(err, `authentication failed`);
     res.status(401);
     res.redirect(req.buildUrl(`/auth/login`, req.language));
     return;

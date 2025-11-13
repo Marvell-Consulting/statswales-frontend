@@ -228,7 +228,7 @@ export const uploadDataTable = async (req: Request, res: Response) => {
     logger.debug('Data table upload started...');
     try {
       if (!req.file) {
-        logger.error('No file is present in the request');
+        logger.warn('No file is present in the request');
         errors.push({ field: 'csv', message: { key: 'publish.upload.errors.missing' } });
         throw new Error();
       }
@@ -260,7 +260,7 @@ export const uploadDataTable = async (req: Request, res: Response) => {
       res.redirect(target);
       return;
     } catch (err) {
-      logger.error(err, `There was a problem uploading the file`);
+      logger.warn(err, `There was a problem uploading the file`);
       if (err instanceof ApiException) {
         res.status(err.status);
         const body = JSON.parse(err.body?.toString() || '{}');
@@ -312,7 +312,7 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
   let pagination: (string | number)[] = [];
 
   if (!dataset || !revision || !dataTable) {
-    logger.error('Fact table not found');
+    logger.warn('Fact table not found');
     next(new UnknownException('errors.preview.import_missing'));
     return;
   }
@@ -383,7 +383,7 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
   const revisit = factTable.filter((column: FactTableColumnDto) => column.type === SourceType.Unknown).length === 0;
 
   if (!dataset || !revision || !factTable) {
-    logger.error('Fact table not found');
+    logger.warn('Fact table not found');
     next(new UnknownException('errors.preview.import_missing'));
     return;
   }
@@ -445,7 +445,7 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
     } else {
       errors = [{ field: 'source', message: { key: 'publish.sources.errors.api' } }];
     }
-    logger.error(err, `There was a problem assigning source types`);
+    logger.warn(err, `There was a problem assigning source types`);
     res.status(error.status || 500);
     if (errors[0].message.key === 'errors.fact_table_validation.incomplete_fact') {
       res.render('publish/empty-fact', { ...viewErr, dimension: { factTableColumn: '' } });
@@ -515,7 +515,7 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
       canSubmit
     });
   } catch (err) {
-    logger.error(err, `Failed to fetch the tasklist`);
+    logger.warn(err, `Failed to fetch the tasklist`);
     next(new NotFoundException());
   }
 };
@@ -704,7 +704,7 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
     if (req.method === 'POST') {
       logger.debug('User is uploading a measure lookup table..');
       if (!req.file) {
-        logger.error('No file attached to request');
+        logger.warn('No file attached to request');
         const errors: ViewError[] = [{ field: 'csv', message: { key: 'errors.upload.no_csv' } }];
         res.status(400);
         res.render('publish/measure-preview', { ...preview, measure, errors });
@@ -731,12 +731,12 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
             res.render('publish/measure-preview', { ...preview, supportedFormats, measure, errors: body.errors });
             return;
           }
-          logger.error(err, 'Measure lookup table did not match data in the fact table.');
+          logger.warn(err, 'Measure lookup table did not match data in the fact table.');
           res.render('publish/measure-match-failure', { measure, errors, extension: body.extension });
           return;
         }
 
-        logger.error(err, 'Something went wrong other than not matching');
+        logger.warn(err, 'Something went wrong other than not matching');
         res.render('publish/measure-preview', { ...preview, supportedFormats, measure, errors });
         return;
       }
@@ -768,7 +768,7 @@ export const measureReview = async (req: Request, res: Response, next: NextFunct
     const measure = dataset.measure;
 
     if (!measure) {
-      logger.error('Failed to find measure in dataset');
+      logger.warn('Failed to find measure in dataset');
       next(new NotFoundException());
       return;
     }
