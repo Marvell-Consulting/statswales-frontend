@@ -102,6 +102,7 @@ import { TaskAction } from '../../shared/enums/task-action';
 import { stringify } from 'csv-stringify/sync';
 import { hasOpenPublishRequest } from '../../shared/utils/task';
 import { CubeBuildStatus } from '../../shared/enums/cube-build-status';
+import { BuiltLogEntry } from '../../shared/dtos/build-log-entry';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -432,8 +433,11 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
         res.status(400);
       } else {
         logger.debug('Sending source assignment to the backend');
-        await req.pubapi.assignSources(dataset.id, sourceAssignment);
-        res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+        const { build_id } = await req.pubapi.assignSources(dataset.id, sourceAssignment);
+        req.session.buildPreviousAction = req.originalUrl;
+        req.session.buildNextAction = req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language);
+        req.session.save();
+        res.redirect(req.buildUrl(`/publish/${dataset.id}/build/${build_id}`, req.language));
         return;
       }
     }
@@ -716,6 +720,7 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
         req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
         const fileData = new Blob([req.file.buffer as BlobPart], { type: req.file.mimetype });
         const viewDTO = await req.pubapi.uploadMeasureLookup(dataset.id, fileData, fileName);
+        req.session.buildPreviousAction = req.originalUrl;
         req.session.buildNextAction = req.buildUrl(`/publish/${dataset.id}/measure/review`, req.language);
         req.session.save();
         logger.debug('Redirecting to build status page');
@@ -870,6 +875,7 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
         logger.debug('Sending lookup table to backend');
         const view = await req.pubapi.uploadLookupTable(dataset.id, dimension.id, fileData, fileName);
         const buildId = (view.extension as { build_id: string }).build_id;
+        req.session.buildPreviousAction = req.originalUrl;
         req.session.buildNextAction = req.buildUrl(
           `/publish/${dataset.id}/lookup/${dimension.id}/review`,
           req.language
@@ -1045,6 +1051,7 @@ export const setupNumberDimension = async (req: Request, res: Response, next: Ne
       try {
         const view = await req.pubapi.patchDimension(res.locals.dataset.id, dimension.id, dimensionPatch);
         const buildId = (view.extension as { build_id: string }).build_id;
+        req.session.buildPreviousAction = req.originalUrl;
         req.session.buildNextAction = req.buildUrl(
           `/publish/${dataset.id}/lookup/${dimension.id}/review`,
           req.language
@@ -1496,6 +1503,7 @@ export const periodType = async (req: Request, res: Response, next: NextFunction
             const view = await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
             const buildId = (view.extension as { build_id: string }).build_id;
             logger.debug('Matching complete for year... Redirecting Build log.');
+            req.session.buildPreviousAction = req.originalUrl;
             req.session.buildNextAction = req.buildUrl(
               `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`,
               req.language
@@ -1631,6 +1639,7 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
         const buildId = (view.extension as { build_id: string }).build_id;
         session.dimensionPatch = undefined;
         set(req.session, `dataset[${dataset.id}]`, session);
+        req.session.buildPreviousAction = req.originalUrl;
         req.session.buildNextAction = req.buildUrl(
           `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`,
           req.language
@@ -1707,6 +1716,7 @@ export const monthChooser = async (req: Request, res: Response, next: NextFuncti
 
         session.dimensionPatch = undefined;
         set(req.session, `dataset[${dataset.id}]`, session);
+        req.session.buildPreviousAction = req.originalUrl;
         req.session.buildNextAction = req.buildUrl(
           `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`,
           req.language
@@ -1858,6 +1868,7 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
       const metadata: DimensionMetadataDTO = { name: updatedName, language: req.language };
       try {
         const { build_id } = await req.pubapi.updateDimensionMetadata(dataset.id, dimension.id, metadata);
+        req.session.buildPreviousAction = req.originalUrl;
         req.session.buildNextAction = req.buildUrl(`/publish/${req.params.datasetId}/tasklist`, req.language);
         req.session.save();
         res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/build/${build_id}`, req.language));
@@ -1909,11 +1920,16 @@ export const pointInTimeChooser = async (req: Request, res: Response, next: Next
       date_type: YearType.PointInTime
     };
     try {
-      await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
+      const view = await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
       logger.debug('Matching complete for specific point in time... Redirecting to review.');
-      res.redirect(
-        req.buildUrl(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`, req.language)
+      const buildId = (view.extension as { build_id: string }).build_id;
+      req.session.buildPreviousAction = req.originalUrl;
+      req.session.buildNextAction = req.buildUrl(
+        `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`,
+        req.language
       );
+      req.session.save();
+      res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/build/${buildId}`, req.language));
       return;
     } catch (err) {
       const error = err as ApiException;
@@ -2875,9 +2891,17 @@ export const longBuildHandling = async (req: Request, res: Response) => {
   const buildId = req.params.buildId;
   const showBuildingPageTimeout = 10000;
   let totalTime = 0;
-  let buildLogEntry = await req.pubapi.getBuildLogEntry(buildId);
+  let buildLogEntry: BuiltLogEntry;
+  try {
+    buildLogEntry = await req.pubapi.getBuildLogEntry(buildId);
+  } catch (_) {
+    // Very occasionally, the build log entry is not yet available.
+    await sleep(RefreshPauseMS);
+    buildLogEntry = await req.pubapi.getBuildLogEntry(buildId);
+  }
+
   while (totalTime < showBuildingPageTimeout) {
-    if (buildLogEntry.status === CubeBuildStatus.Completed) {
+    if (buildLogEntry.status === CubeBuildStatus.Materializing || buildLogEntry.status === CubeBuildStatus.Completed) {
       logger.debug(`Build completed successfully redirecting to: ${req.session.buildNextAction}`);
       if (req.session.buildNextAction) res.redirect(req.session.buildNextAction);
       else res.redirect(req.buildUrl(`/publish/${res.locals.datasetId}/tasklist`, req.language));
@@ -2894,14 +2918,23 @@ export const longBuildHandling = async (req: Request, res: Response) => {
   const title = revision?.metadata?.title;
   const datasetStatus = getDatasetStatus(dataset);
   const publishingStatus = getPublishingStatus(dataset, revision);
+  const previousAction = req.session.buildPreviousAction;
   const nextAction = req.session.buildNextAction;
-  res.render('publish/long-build', { buildLogEntry, dataset, title, datasetStatus, publishingStatus, nextAction });
+  res.render('publish/long-build', {
+    buildLogEntry,
+    dataset,
+    title,
+    datasetStatus,
+    publishingStatus,
+    nextAction,
+    previousAction
+  });
 };
 
 export const ajaxRefreshBuildStatus = async (req: Request, res: Response) => {
   const buildId = req.params.buildId;
   const buildLogEntry = await req.pubapi.getBuildLogEntry(buildId);
-  res.status(200).send(buildLogEntry);
+  res.status(200).json(buildLogEntry).end();
 };
 
 const RefreshPauseMS = 500;

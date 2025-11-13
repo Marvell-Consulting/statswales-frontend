@@ -18,5 +18,6 @@ declare module 'express-session' {
       [id: string]: DatasetProps;
     };
     buildNextAction: string | undefined;
+    buildPreviousAction: string | undefined;
   }
 }
