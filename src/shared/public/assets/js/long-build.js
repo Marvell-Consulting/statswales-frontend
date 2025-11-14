@@ -8,6 +8,25 @@ let countDownTime = 10;
 let status = 'building';
 let intervalId = null;
 
+/**
+ * Sanitizes a potentially unsafe URL to prevent XSS in hrefs.
+ * Returns the URL if it is safe (starts with '/', './', 'http://', or 'https://'),
+ * otherwise returns '#' as a safe fallback.
+ */
+function sanitizeUrl(url) {
+  if (
+    typeof url === 'string' &&
+    (url.startsWith('/') ||
+      url.startsWith('./') ||
+      url.startsWith('http://') ||
+      url.startsWith('https://'))
+  ) {
+    return url;
+  }
+  // Anything else is potentially dangerous
+  return '#';
+}
+
 async function fetchBuildStatusAndUpdate() {
   const buildLogEntry = await fetch(`/${lang}/publish/${datasetId}/build/${buildId}/refresh`).then((response) =>
     response.json()
@@ -18,7 +37,7 @@ async function fetchBuildStatusAndUpdate() {
     case 'completed':
       document.getElementById('build-status-heading').innerText = translations.title.completed;
       document.getElementById('build-status-message').innerText = translations.message.completed;
-      document.getElementById('action-button').href = nextAction;
+      document.getElementById('action-button').href = sanitizeUrl(nextAction);
       document.getElementById('action-button').innerText = translations.buttons.continue;
       document.getElementById('spinner').style.visibility = 'hidden';
       document.getElementById('action-button').style.visibility = 'visible';
@@ -27,7 +46,7 @@ async function fetchBuildStatusAndUpdate() {
     case 'failed':
       document.getElementById('build-status-heading').innerText = translations.title.failed;
       document.getElementById('build-status-message').innerText = translations.message.failed;
-      document.getElementById('action-button').href = previousAction;
+      document.getElementById('action-button').href = sanitizeUrl(previousAction);
       document.getElementById('action-button').innerText = translations.buttons.back;
       document.getElementById('action-button').style.visibility = 'visible';
       clearInterval(intervalId);
