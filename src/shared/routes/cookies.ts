@@ -60,7 +60,7 @@ const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
   const normalizedFilePath = path.resolve(requestedFilePath);
 
   if (!normalizedFilePath.startsWith(docsPath) || !fs.existsSync(normalizedFilePath)) {
-    logger.error(`File does not exist in guidance: ${req.params.file}`);
+    logger.warn(`File does not exist in guidance: ${req.params.file}`);
     next(new NotFoundException());
     return;
   }
@@ -75,7 +75,7 @@ const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
     const content = domPurify.sanitize(await marked.parse(markdownFile));
     res.render('cookies', { content, tableOfContents: toc, title, cookiePreferences, saved, referrer });
   } catch (err) {
-    logger.error(err, 'Could not render cookies page');
+    logger.warn(err, 'Could not render cookies page');
     next(new NotFoundException());
   }
 };

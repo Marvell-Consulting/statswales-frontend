@@ -17,12 +17,12 @@ auth.get('/login', async (req: Request, res: Response) => {
   try {
     providers = await req.pubapi.getEnabledAuthProviders();
   } catch (err) {
-    logger.error(err, 'Could not fetch auth providers from backend');
+    logger.warn(err, 'Could not fetch auth providers from backend');
     providers = config.auth.providers;
   }
 
   if (req.query.error && req.query.error === 'expired') {
-    logger.error(`Authentication token has expired`);
+    logger.warn(`Authentication token has expired`);
     res.status(400);
     res.render('auth/login', { providers, errors: ['login.error.expired'] });
     return;
@@ -63,7 +63,7 @@ auth.get('/callback', async (req: Request, res: Response) => {
   try {
     providers = await req.pubapi.getEnabledAuthProviders();
   } catch (err) {
-    logger.error(err, 'Could not fetch auth providers from backend');
+    logger.warn(err, 'Could not fetch auth providers from backend');
     providers = config.auth.providers;
   }
 
@@ -81,7 +81,7 @@ auth.get('/callback', async (req: Request, res: Response) => {
     const decoded = JWT.verify(req.cookies.jwt, secret) as JWTPayloadWithUser;
     req.user = decoded.user;
   } catch (err) {
-    logger.error(`problem authenticating user ${err}`);
+    logger.warn(err, `problem authenticating user`);
     res.status(400);
     res.render('auth/login', { providers, errors: ['login.error.generic'] });
     return;

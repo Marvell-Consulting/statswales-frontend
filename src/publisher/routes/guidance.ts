@@ -51,7 +51,7 @@ guidance.get('/:file', async (req: Request, res: Response, next: NextFunction) =
   const requestedFilePath = path.join(fullDocsPath, `${req.params.file}.md`);
   const normalizedFilePath = path.resolve(requestedFilePath);
   if (!normalizedFilePath.startsWith(fullDocsPath) || !fs.existsSync(normalizedFilePath)) {
-    logger.error(`File does not exist in guidance: ${req.params.file}`);
+    logger.warn(`File does not exist in guidance: ${req.params.file}`);
     next(new NotFoundException());
     return;
   }

@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { NotFoundException } from '../../shared/exceptions/not-found.exception';
-import { logger } from '../../shared/utils/logger';
 import { hasError, datasetIdValidator } from '../../shared/validators';
 import { DatasetInclude } from '../../shared/enums/dataset-include';
 
@@ -10,7 +9,6 @@ export const fetchDataset = (include?: DatasetInclude) => {
     const datasetIdError = await hasError(datasetIdValidator(), req);
 
     if (datasetIdError) {
-      logger.error('Invalid or missing datasetId');
       next(new NotFoundException('errors.dataset_missing'));
       return;
     }

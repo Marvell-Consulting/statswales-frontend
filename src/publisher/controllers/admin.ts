@@ -47,7 +47,6 @@ export const fetchUserGroup = async (req: Request, res: Response, next: NextFunc
   const userGroupIdError = await hasError(userGroupIdValidator(), req);
 
   if (userGroupIdError) {
-    logger.error('Invalid or missing userGroupId');
     next(new NotFoundException('errors.user_group_missing'));
     return;
   }
@@ -72,7 +71,6 @@ export const fetchUser = async (req: Request, res: Response, next: NextFunction)
   const userIdError = await hasError(userIdValidator(), req);
 
   if (userIdError) {
-    logger.error('Invalid or missing userId');
     next(new NotFoundException('errors.user_missing'));
     return;
   }
