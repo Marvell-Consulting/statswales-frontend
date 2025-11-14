@@ -429,14 +429,17 @@ export class PublisherApi {
     }).then((response) => response.json() as unknown as FilterTable[]);
   }
 
-  public async assignSources(datasetId: string, sourceTypeAssignment: SourceAssignmentDTO[]): Promise<DatasetDTO> {
+  public async assignSources(
+    datasetId: string,
+    sourceTypeAssignment: SourceAssignmentDTO[]
+  ): Promise<{ dataset: DatasetDTO; build_id: string }> {
     logger.debug(`Assigning source types for dataset: ${datasetId}`);
 
     return this.fetch({
       url: `dataset/${datasetId}/sources`,
       method: HttpMethod.Patch,
       json: sourceTypeAssignment
-    }).then((response) => response.json() as unknown as DatasetDTO);
+    }).then((response) => response.json() as unknown as { dataset: DatasetDTO; build_id: string });
   }
 
   public async patchDimension(
