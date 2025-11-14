@@ -1,6 +1,6 @@
 import { CubeBuildStatus } from '../enums/cube-build-status';
 
-export class BuiltLogEntry {
+export class BuildLogEntry {
   id: string;
   status: CubeBuildStatus;
   type: string;

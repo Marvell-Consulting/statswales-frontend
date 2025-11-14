@@ -70,7 +70,6 @@ function checkBuildStatus() {
   } else {
     fetchBuildStatusAndUpdate().catch(console.error);
     countDownTime = 10;
-    sleep(2000);
   }
 }
 

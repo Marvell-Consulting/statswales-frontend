@@ -48,7 +48,7 @@ import { UnknownException } from '../../shared/exceptions/unknown.exception';
 import { TaskAction } from '../../shared/enums/task-action';
 import { UserGroupStatus } from '../../shared/enums/user-group-status';
 import { DashboardStats } from '../../shared/interfaces/dashboard-stats';
-import { BuiltLogEntry } from '../../shared/dtos/build-log-entry';
+import { BuildLogEntry } from '../../shared/dtos/build-log-entry';
 
 const logger = parentLogger.child({ service: 'publisher-api' });
 
@@ -819,8 +819,8 @@ export class PublisherApi {
     return this.fetch({ url: 'user' }).then((response) => response.json() as unknown as UserDTO);
   }
 
-  public async getBuildLogEntry(buildId: string): Promise<BuiltLogEntry> {
+  public async getBuildLogEntry(buildId: string): Promise<BuildLogEntry> {
     logger.debug(`Fetching build log entry with id ${buildId}...`);
-    return this.fetch({ url: `build/${buildId}` }).then((response) => response.json() as unknown as BuiltLogEntry);
+    return this.fetch({ url: `build/${buildId}` }).then((response) => response.json() as unknown as BuildLogEntry);
   }
 }

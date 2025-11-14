@@ -102,7 +102,7 @@ import { TaskAction } from '../../shared/enums/task-action';
 import { stringify } from 'csv-stringify/sync';
 import { hasOpenPublishRequest } from '../../shared/utils/task';
 import { CubeBuildStatus } from '../../shared/enums/cube-build-status';
-import { BuiltLogEntry } from '../../shared/dtos/build-log-entry';
+import { BuildLogEntry } from '../../shared/dtos/build-log-entry';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -2891,7 +2891,7 @@ export const longBuildHandling = async (req: Request, res: Response) => {
   const buildId = req.params.buildId;
   const showBuildingPageTimeout = 10000;
   let totalTime = 0;
-  let buildLogEntry: BuiltLogEntry;
+  let buildLogEntry: BuildLogEntry;
   try {
     buildLogEntry = await req.pubapi.getBuildLogEntry(buildId);
   } catch (_) {
