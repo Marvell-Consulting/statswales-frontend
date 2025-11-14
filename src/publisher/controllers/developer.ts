@@ -72,7 +72,7 @@ export const displayDatasetPreview = async (req: Request, res: Response) => {
 
   try {
     const datasetStatus = getDatasetStatus(dataset);
-    const publishingStatus = getPublishingStatus(dataset);
+    const publishingStatus = getPublishingStatus(dataset, revision);
     const datasetTitle = revision?.metadata?.title || datasetId;
     datasetMetadata = await getDatasetMetadata(singleLangDataset(dataset, req.language), revision);
     logger.debug(`Sending request to backend for file list of dataset ${datasetId}...`);

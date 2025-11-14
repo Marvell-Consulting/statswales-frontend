@@ -73,14 +73,14 @@ publish.get('/:datasetId', redirectToOverview);
 publish.get('/:datasetId/title', fetchDataset(Include.Meta), provideTitle);
 publish.post('/:datasetId/title', fetchDataset(Include.Meta), upload.none(), provideTitle);
 
-publish.get('/:datasetId/upload', fetchDataset(Include.Data), uploadDataTable);
-publish.post('/:datasetId/upload', fetchDataset(Include.Data), upload.single('csv'), uploadDataTable);
+publish.get('/:datasetId/upload', fetchDataset(Include.DraftDataTable), uploadDataTable);
+publish.post('/:datasetId/upload', fetchDataset(Include.DraftDataTable), upload.single('csv'), uploadDataTable);
 
-publish.get('/:datasetId/preview', fetchDataset(Include.Data), factTablePreview);
-publish.post('/:datasetId/preview', fetchDataset(Include.Data), upload.none(), factTablePreview);
+publish.get('/:datasetId/preview', fetchDataset(Include.DraftDataTable), factTablePreview);
+publish.post('/:datasetId/preview', fetchDataset(Include.DraftDataTable), upload.none(), factTablePreview);
 
-publish.get('/:datasetId/sources', fetchDataset(Include.Data), sources);
-publish.post('/:datasetId/sources', fetchDataset(Include.Data), upload.none(), sources);
+publish.get('/:datasetId/sources', fetchDataset(Include.DraftDataTable), sources);
+publish.post('/:datasetId/sources', fetchDataset(Include.DraftDataTable), upload.none(), sources);
 
 /* Tasklist */
 publish.get('/:datasetId/tasklist', fetchDataset(Include.Meta), taskList);

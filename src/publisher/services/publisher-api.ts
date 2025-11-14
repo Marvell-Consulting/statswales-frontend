@@ -333,15 +333,6 @@ export class PublisherApi {
     });
   }
 
-  public async confirmDataTable(datasetId: string, revisionId: string): Promise<DataTableDto> {
-    logger.debug(`Confirming data table import for revision: ${revisionId}...`);
-
-    return this.fetch({
-      url: `dataset/${datasetId}/revision/by-id/${revisionId}/data-table/confirm`,
-      method: HttpMethod.Patch
-    }).then((response) => response.json() as unknown as DataTableDto);
-  }
-
   public async getSourcesForDataset(datasetId: string): Promise<FactTableColumnDto[]> {
     logger.debug(`Fetching sources for dataset: ${datasetId}...`);
 

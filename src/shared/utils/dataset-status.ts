@@ -4,7 +4,6 @@ import { DatasetDTO } from '../dtos/dataset';
 import { DatasetStatus } from '../enums/dataset-status';
 import { PublishingStatus } from '../enums/publishing-status';
 
-import { getLatestRevision } from './revision';
 import { RevisionDTO } from '../dtos/revision';
 import { SingleLanguageRevision } from '../dtos/single-language/revision';
 import { TaskAction } from '../enums/task-action';
@@ -26,9 +25,8 @@ export const getDatasetStatus = (dataset: DatasetDTO): DatasetStatus => {
 
 export const getPublishingStatus = (
   dataset: DatasetDTO,
-  revision?: RevisionDTO | SingleLanguageRevision
+  revision: RevisionDTO | SingleLanguageRevision
 ): PublishingStatus => {
-  revision = revision ?? getLatestRevision(dataset);
   const datasetStatus = getDatasetStatus(dataset);
   const openTasks = dataset.tasks?.filter((task) => task.open) || [];
   const openPublishTask = openTasks.find((task) => task.action === TaskAction.Publish);
