@@ -297,7 +297,7 @@
         "materializing": "This may take a few minutes. You can press the 'Refresh page' button to check if the build has completed."
       },
       "message": {
-        "building": "This may take a few minutes. <span role=\"timer\" aria-live=\"polite\" aria-atomic=\"true\">Checking build status again in %time%</span> seconds"
+        "building": "This may take a few minutes. <span role=\"timer\" aria-live=\"polite\" aria-atomic=\"true\">Checking build status again in %time% seconds</span>"
       }
     },
     "cube_preview": {
