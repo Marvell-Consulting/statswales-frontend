@@ -81,7 +81,7 @@ auth.get('/callback', async (req: Request, res: Response) => {
     const decoded = JWT.verify(req.cookies.jwt, secret) as JWTPayloadWithUser;
     req.user = decoded.user;
   } catch (err) {
-    logger.warn(`problem authenticating user ${err}`);
+    logger.warn(err, `problem authenticating user`);
     res.status(400);
     res.render('auth/login', { providers, errors: ['login.error.generic'] });
     return;
