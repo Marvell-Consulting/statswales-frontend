@@ -338,7 +338,6 @@ export const factTablePreview = async (req: Request, res: Response, next: NextFu
           if (revision.revision_index === 0) {
             res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
           } else {
-            await req.pubapi.confirmDataTable(dataset.id, revision.id);
             res.redirect(req.buildUrl(`/publish/${dataset.id}/sources`, req.language));
           }
         } else if (revision.revision_index === 0) {
@@ -468,7 +467,7 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
   const dataset = singleLangDataset(res.locals.dataset, req.language);
   const draftRevision = dataset.draft_revision!;
   const datasetStatus = getDatasetStatus(res.locals.dataset);
-  const publishingStatus = getPublishingStatus(res.locals.dataset);
+  const publishingStatus = getPublishingStatus(res.locals.dataset, draftRevision);
   const user = req.user! as UserDTO;
   const canEdit = isEditorForDataset(user, res.locals.dataset);
   const openPublishRequest = hasOpenPublishRequest(dataset);
@@ -522,9 +521,9 @@ export const taskList = async (req: Request, res: Response, next: NextFunction) 
 
 export const deleteDraft = async (req: Request, res: Response) => {
   const dataset = singleLangDataset(res.locals.dataset, req.language);
-  const datasetStatus = getDatasetStatus(res.locals.dataset);
-  const publishingStatus = getPublishingStatus(res.locals.dataset);
   const draftRevision = dataset.draft_revision!;
+  const datasetStatus = getDatasetStatus(res.locals.dataset);
+  const publishingStatus = getPublishingStatus(res.locals.dataset, draftRevision);
   const draftType = publishingStatus === PublishingStatus.UpdateIncomplete ? 'update' : 'dataset';
   const datasetTitle = draftRevision.metadata?.title;
   const errors: ViewError[] = [];
