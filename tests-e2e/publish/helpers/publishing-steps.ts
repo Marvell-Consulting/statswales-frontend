@@ -89,7 +89,7 @@ export async function assignColumnTypes(page: Page, datasetId: string, assignmen
   }
 
   await page.getByRole('button', { name: 'Continue' }).click();
-  await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/build`);
+  await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
   await checkTasklistItemComplete(page, 'Data table');
 }
 
@@ -100,7 +100,6 @@ export async function configureMeasure(page: Page, datasetId: string, filename: 
   const filePath = path.join(__dirname, '..', '..', 'sample-csvs', filename);
   await uploadFile(page, filePath);
   await page.getByRole('button', { name: 'Continue' }).click();
-  await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/build`);
   await page.waitForURL(`${baseUrl}/en-GB/publish/${datasetId}/measure/review`);
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/measure/review`);
   await page.getByRole('button', { name: 'Continue' }).click();
