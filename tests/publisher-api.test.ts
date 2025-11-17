@@ -105,25 +105,6 @@ describe('PublisherApi', () => {
     });
   });
 
-  describe('confirmDataTable', () => {
-    it('should return a DataTableDTO', async () => {
-      const datasetId = randomUUID();
-      const revisionId = randomUUID();
-      const importId = randomUUID();
-      const dataTable = { dataset_id: datasetId, revision_id: revisionId, import_id: importId };
-
-      mockResponse = Promise.resolve(new Response(JSON.stringify(dataTable)));
-
-      const dataTableDTO = await statsWalesApi.confirmDataTable(datasetId, revisionId);
-
-      expect(fetchSpy).toHaveBeenCalledWith(
-        `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/data-table/confirm`,
-        { method: HttpMethod.Patch, headers }
-      );
-      expect(dataTableDTO).toEqual(dataTable);
-    });
-  });
-
   describe('getSourcesForDataset', () => {
     it('should return an array of FactTableColumnDto', async () => {
       const datasetId = randomUUID();
