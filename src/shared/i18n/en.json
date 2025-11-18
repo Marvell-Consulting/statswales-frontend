@@ -297,7 +297,12 @@
         "materializing": "This may take a few minutes. You can press the 'Refresh page' button to check if the build has completed."
       },
       "message": {
-        "building": "This may take a few minutes. <span role=\"timer\" aria-live=\"polite\" aria-atomic=\"true\">Checking build status again in %time% seconds</span>"
+        "completed": "Please press continue to go to the next step.",
+        "failed": "Press 'Back' and try the previous step again. If the cube build continues to fail, contact support",
+        "queued": "This may take a few minutes. <span role=\"timer\" aria-live=\"polite\" aria-atomic=\"true\">Checking build status again in <span id=\"timer\">%time%</span> seconds</span>",
+        "building": "This may take a few minutes. <span role=\"timer\" aria-live=\"polite\" aria-atomic=\"true\">Checking build status again in <span id=\"timer\">%time%</span> seconds</span>",
+        "schema_rename": "This may take a few minutes. <span role=\"timer\" aria-live=\"polite\" aria-atomic=\"true\">Checking build status again in <span id=\"timer\">%time%</span> seconds</span>",
+        "materializing": "This may take a few minutes. <span role=\"timer\" aria-live=\"polite\" aria-atomic=\"true\">Checking build status again in <span id=\"timer\">%time%</span> seconds</span>"
       }
     },
     "cube_preview": {

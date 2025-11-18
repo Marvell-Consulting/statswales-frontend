@@ -434,8 +434,12 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
       } else {
         logger.debug('Sending source assignment to the backend');
         const { build_id } = await req.pubapi.assignSources(dataset.id, sourceAssignment);
-        req.session.buildPreviousAction = req.originalUrl;
-        req.session.buildNextAction = req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language);
+        set(
+          req.session,
+          `dataset[${dataset.id}].buildNextAction`,
+          req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language)
+        );
+        set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
         req.session.save();
         res.redirect(req.buildUrl(`/publish/${dataset.id}/build/${build_id}`, req.language));
         return;
@@ -720,8 +724,12 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
         req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
         const fileData = new Blob([req.file.buffer as BlobPart], { type: req.file.mimetype });
         const viewDTO = await req.pubapi.uploadMeasureLookup(dataset.id, fileData, fileName);
-        req.session.buildPreviousAction = req.originalUrl;
-        req.session.buildNextAction = req.buildUrl(`/publish/${dataset.id}/measure/review`, req.language);
+        set(
+          req.session,
+          `dataset[${dataset.id}].buildNextAction`,
+          req.buildUrl(`/publish/${dataset.id}/measure/review`, req.language)
+        );
+        set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
         req.session.save();
         logger.debug('Redirecting to build status page');
         const buildId = (viewDTO.extension as { build_id: string }).build_id;
@@ -875,11 +883,12 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
         logger.debug('Sending lookup table to backend');
         const view = await req.pubapi.uploadLookupTable(dataset.id, dimension.id, fileData, fileName);
         const buildId = (view.extension as { build_id: string }).build_id;
-        req.session.buildPreviousAction = req.originalUrl;
-        req.session.buildNextAction = req.buildUrl(
-          `/publish/${dataset.id}/lookup/${dimension.id}/review`,
-          req.language
+        set(
+          req.session,
+          `dataset[${dataset.id}].buildNextAction`,
+          req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/review`, req.language)
         );
+        set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
         req.session.save();
         logger.debug('Redirecting to build page');
         res.redirect(req.buildUrl(`/publish/${dataset.id}/build/${buildId}`, req.language));
@@ -1051,11 +1060,12 @@ export const setupNumberDimension = async (req: Request, res: Response, next: Ne
       try {
         const view = await req.pubapi.patchDimension(res.locals.dataset.id, dimension.id, dimensionPatch);
         const buildId = (view.extension as { build_id: string }).build_id;
-        req.session.buildPreviousAction = req.originalUrl;
-        req.session.buildNextAction = req.buildUrl(
-          `/publish/${dataset.id}/lookup/${dimension.id}/review`,
-          req.language
+        set(
+          req.session,
+          `dataset[${dataset.id}].buildNextAction`,
+          req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/review`, req.language)
         );
+        set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
         req.session.save();
         res.redirect(req.buildUrl(`/publish/${dataset.id}/build/${buildId}`, req.language));
       } catch (error) {
@@ -1503,11 +1513,12 @@ export const periodType = async (req: Request, res: Response, next: NextFunction
             const view = await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
             const buildId = (view.extension as { build_id: string }).build_id;
             logger.debug('Matching complete for year... Redirecting Build log.');
-            req.session.buildPreviousAction = req.originalUrl;
-            req.session.buildNextAction = req.buildUrl(
-              `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`,
-              req.language
+            set(
+              req.session,
+              `dataset[${dataset.id}].buildNextAction`,
+              req.buildUrl(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`, req.language)
             );
+            set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
             req.session.save();
             res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/build/${buildId}`, req.language));
             return;
@@ -1638,12 +1649,12 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
         const view = await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
         const buildId = (view.extension as { build_id: string }).build_id;
         session.dimensionPatch = undefined;
-        set(req.session, `dataset[${dataset.id}]`, session);
-        req.session.buildPreviousAction = req.originalUrl;
-        req.session.buildNextAction = req.buildUrl(
-          `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`,
-          req.language
+        set(
+          req.session,
+          `dataset[${dataset.id}].buildNextAction`,
+          req.buildUrl(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`, req.language)
         );
+        set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
         req.session.save();
         res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/build/${buildId}`, req.language));
         return;
@@ -1716,11 +1727,12 @@ export const monthChooser = async (req: Request, res: Response, next: NextFuncti
 
         session.dimensionPatch = undefined;
         set(req.session, `dataset[${dataset.id}]`, session);
-        req.session.buildPreviousAction = req.originalUrl;
-        req.session.buildNextAction = req.buildUrl(
-          `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`,
-          req.language
+        set(
+          req.session,
+          `dataset[${dataset.id}].buildNextAction`,
+          req.buildUrl(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`, req.language)
         );
+        set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
         req.session.save();
         res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/build/${buildId}`, req.language));
         return;
@@ -1868,8 +1880,12 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
       const metadata: DimensionMetadataDTO = { name: updatedName, language: req.language };
       try {
         const { build_id } = await req.pubapi.updateDimensionMetadata(dataset.id, dimension.id, metadata);
-        req.session.buildPreviousAction = req.originalUrl;
-        req.session.buildNextAction = req.buildUrl(`/publish/${req.params.datasetId}/tasklist`, req.language);
+        set(
+          req.session,
+          `dataset[${dataset.id}].buildNextAction`,
+          req.buildUrl(`/publish/${req.params.datasetId}/tasklist`, req.language)
+        );
+        set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
         req.session.save();
         res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/build/${build_id}`, req.language));
         return;
@@ -1923,11 +1939,12 @@ export const pointInTimeChooser = async (req: Request, res: Response, next: Next
       const view = await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
       logger.debug('Matching complete for specific point in time... Redirecting to review.');
       const buildId = (view.extension as { build_id: string }).build_id;
-      req.session.buildPreviousAction = req.originalUrl;
-      req.session.buildNextAction = req.buildUrl(
-        `/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`,
-        req.language
+      set(
+        req.session,
+        `dataset[${dataset.id}].buildNextAction`,
+        req.buildUrl(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`, req.language)
       );
+      set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
       req.session.save();
       res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/build/${buildId}`, req.language));
       return;
@@ -2887,6 +2904,7 @@ export const datasetAction = async (req: Request, res: Response, next: NextFunct
 };
 
 export const longBuildHandling = async (req: Request, res: Response) => {
+  const datasetId = res.locals.datasetId;
   logger.debug('Trying to handle build in request...');
   const buildId = req.params.buildId;
   const showBuildingPageTimeout = 10000;
@@ -2900,10 +2918,15 @@ export const longBuildHandling = async (req: Request, res: Response) => {
     buildLogEntry = await req.pubapi.getBuildLogEntry(buildId);
   }
 
+  const nextAction =
+    get(req.session, `dataset[${datasetId}].buildNextAction`) ||
+    req.buildUrl(`/publish/${datasetId}/tasklist`, req.language);
+  const previousAction = get(req.session, `dataset[${datasetId}].buildPreviousAction`);
+
   while (totalTime < showBuildingPageTimeout) {
     if (buildLogEntry.status === CubeBuildStatus.Materializing || buildLogEntry.status === CubeBuildStatus.Completed) {
-      logger.debug(`Build completed successfully redirecting to: ${req.session.buildNextAction}`);
-      if (req.session.buildNextAction) res.redirect(req.session.buildNextAction);
+      logger.debug(`Build completed successfully redirecting to: ${nextAction}`);
+      if (nextAction) res.redirect(nextAction);
       else res.redirect(req.buildUrl(`/publish/${res.locals.datasetId}/tasklist`, req.language));
       return;
     } else {
@@ -2918,8 +2941,6 @@ export const longBuildHandling = async (req: Request, res: Response) => {
   const title = revision?.metadata?.title;
   const datasetStatus = getDatasetStatus(dataset);
   const publishingStatus = getPublishingStatus(dataset, revision);
-  const previousAction = req.session.buildPreviousAction;
-  const nextAction = req.session.buildNextAction;
   res.render('publish/long-build', {
     buildLogEntry,
     dataset,
@@ -2927,14 +2948,25 @@ export const longBuildHandling = async (req: Request, res: Response) => {
     datasetStatus,
     publishingStatus,
     nextAction,
-    previousAction
+    previousAction,
+    refresh: false
   });
 };
 
 export const ajaxRefreshBuildStatus = async (req: Request, res: Response) => {
   const buildId = req.params.buildId;
+  const datasetId = res.locals.datasetId;
   const buildLogEntry = await req.pubapi.getBuildLogEntry(buildId);
-  res.status(200).json(buildLogEntry).end();
+  const nextAction =
+    get(req.session, `dataset[${datasetId}].buildNextAction`) ||
+    req.buildUrl(`/publish/${datasetId}/tasklist`, req.language);
+  const previousAction = get(req.session, `dataset[${datasetId}].buildPreviousAction`);
+  res.render('publish/long-build-fragment', {
+    buildLogEntry,
+    nextAction,
+    previousAction,
+    refresh: true
+  });
 };
 
 const RefreshPauseMS = 500;

@@ -1,11 +1,4 @@
-const datasetId = document.getElementById('dataset-id').value;
-const buildId = document.getElementById('build-id').value;
-const nextAction = document.getElementById('next-action').value;
-const previousAction = document.getElementById('previous-action').value;
-const translations = JSON.parse(document.getElementById('translation-keys').value);
-const lang = document.getElementById('lang').value;
 let countDownTime = 10;
-let status = 'building';
 let intervalId = null;
 
 /**
@@ -16,10 +9,7 @@ let intervalId = null;
 function sanitizeUrl(url) {
   if (
     typeof url === 'string' &&
-    (url.startsWith('/') ||
-      url.startsWith('./') ||
-      url.startsWith('http://') ||
-      url.startsWith('https://'))
+    (url.startsWith('/') || url.startsWith('./') || url.startsWith('http://') || url.startsWith('https://'))
   ) {
     return url;
   }
@@ -27,55 +17,50 @@ function sanitizeUrl(url) {
   return '#';
 }
 
-async function fetchBuildStatusAndUpdate() {
-  const buildLogEntry = await fetch(`/${lang}/publish/${datasetId}/build/${buildId}/refresh`).then((response) =>
-    response.json()
-  );
-  status = buildLogEntry.status;
-  switch (status) {
-    case 'materializing':
-    case 'completed':
-      document.getElementById('build-status-heading').innerText = translations.title.completed;
-      document.getElementById('build-status-message').innerText = translations.message.completed;
-      document.getElementById('action-button').href = sanitizeUrl(nextAction);
-      document.getElementById('action-button').innerText = translations.buttons.continue;
-      document.getElementById('spinner').style.visibility = 'hidden';
+function updateTimer() {
+  document.getElementById('timer').innerText = countDownTime;
+}
+
+function refreshFragment() {
+  const fragmentElement = document.querySelector('#build_fragment');
+  fetch(sanitizeUrl(fragmentElement.dataset.refreshUrl))
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error, status = ${response.status}`);
+      }
+      return response.text();
+    })
+    .then((text) => {
+      fragmentElement.innerHTML = text;
+      const buildStatus = document.getElementById('action-button').dataset.buildStatus;
+      if (buildStatus === 'completed' || buildStatus === 'failed') {
+        clearInterval(intervalId);
+      } else {
+        updateTimer();
+        document.getElementById('build-status-message-failed').setAttribute('hidden', '');
+        document.getElementById('action-button').style.visibility = 'hidden';
+        document.getElementById('build-status-message').removeAttribute('hidden');
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      document.getElementById('build-status-message').setAttribute('hidden', '');
       document.getElementById('action-button').style.visibility = 'visible';
+      document.getElementById('build-status-message-failed').removeAttribute('hidden');
       clearInterval(intervalId);
-      return;
-    case 'failed':
-      document.getElementById('build-status-heading').innerText = translations.title.failed;
-      document.getElementById('build-status-message').innerText = translations.message.failed;
-      document.getElementById('action-button').href = sanitizeUrl(previousAction);
-      document.getElementById('action-button').innerText = translations.buttons.back;
-      document.getElementById('action-button').style.visibility = 'visible';
-      clearInterval(intervalId);
-      return;
-    default:
-      document.getElementById('build-status-heading').innerText = translations.title.building;
-      document.getElementById('build-status-message').innerHTML = translations.message.building.replace(
-        '%time%',
-        countDownTime
-      );
-  }
+    });
 }
 
 function checkBuildStatus() {
   if (countDownTime > 0) {
-    document.getElementById('build-status-message').innerHTML = translations.message.building.replace(
-      '%time%',
-      countDownTime
-    );
+    updateTimer();
     countDownTime--;
   } else {
-    fetchBuildStatusAndUpdate().catch(console.error);
+    refreshFragment();
     countDownTime = 10;
   }
 }
 
+refreshFragment();
+
 intervalId = setInterval(checkBuildStatus, 1000);
-document.getElementById('action-button').style.visibility = 'hidden';
-document.getElementById('build-status-message').innerHTML = translations.message.building.replace(
-  '%time%',
-  countDownTime
-);
