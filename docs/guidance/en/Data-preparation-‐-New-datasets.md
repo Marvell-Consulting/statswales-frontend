@@ -188,7 +188,12 @@ Examples:
 
 | Format in data table | Example      | How it will appear on website |
 | :------------------- | :----------- | :---------------------------- |
+| XYYYYY-MM-DD         | XY2022-03-31 | 10 years ending 31 March 2022 |
+| 5YYYYY-MM-DD         | 5Y2022-03-31 | 5 years ending 31 March 2022  |
+| 3YYYYY-MM-DD         | 3Y2022-03-31 | 3 years ending 31 March 2022  |
+| 2YYYYY-MM-DD         | 2Y2022-03-31 | 2 years ending 31 March 2022  |
 | YEYYYY-MM-DD         | YE2022-03-31 | Year ending 31 March 2022     |
+| HEYYYY-MM-DD         | HE2022-05-31 | Half year ending 31 May 2022  |
 | QEYYYY-MM-DD         | QE2022-05-30 | Quarter ending 30 May 2022    |
 | MEDD-MM-YYYY         | ME15-03-2022 | Month ending 15 March 2022    |
 | WEDD-MM-YYYY         | WE25-03-2022 | Week ending 25 March 2022     |
