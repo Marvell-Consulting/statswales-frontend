@@ -7,6 +7,8 @@ import { RequestHistory } from '../../shared/interfaces/request-history';
 interface DatasetProps {
   dimensionPatch: DimensionPatchDTO | undefined;
   updateType: string | undefined;
+  buildNextAction: string | undefined;
+  buildPreviousAction: string | undefined;
 }
 
 declare module 'express-session' {

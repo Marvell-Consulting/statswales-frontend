@@ -58,4 +58,12 @@
   .search-form {
     display: flex;
   }
+
+  .inline-spinner {
+    display: inline-block;
+    height: 50px;
+    width: 50px;
+    vertical-align: middle;
+    margin-left: 50px;
+  }
 }

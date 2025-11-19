@@ -17,7 +17,6 @@ import {
   groupIdValidator,
   hasError,
   hourValidator,
-  updateTypeValidator,
   linkIdValidator,
   linkLabelValidator,
   linkUrlValidator,
@@ -27,16 +26,17 @@ import {
   roundingAppliedValidator,
   roundingDescriptionValidator,
   summaryValidator,
+  taskActionReasonValidator,
   taskDecisionReasonValidator,
   taskDecisionValidator,
   titleValidator,
   topicIdValidator,
   updateDayValidator,
   updateMonthValidator,
+  updateTypeValidator,
   updateYearValidator,
   uuidValidator,
-  yearValidator,
-  taskActionReasonValidator
+  yearValidator
 } from '../validators';
 import { ViewError } from '../../shared/dtos/view-error';
 import { logger } from '../../shared/utils/logger';
@@ -101,6 +101,8 @@ import { FactTableColumnType } from '../../shared/dtos/fact-table-column-type';
 import { TaskAction } from '../../shared/enums/task-action';
 import { stringify } from 'csv-stringify/sync';
 import { hasOpenPublishRequest } from '../../shared/utils/task';
+import { CubeBuildStatus } from '../../shared/enums/cube-build-status';
+import { BuildLogEntry } from '../../shared/dtos/build-log-entry';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -431,8 +433,15 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
         res.status(400);
       } else {
         logger.debug('Sending source assignment to the backend');
-        await req.pubapi.assignSources(dataset.id, sourceAssignment);
-        res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+        const { build_id } = await req.pubapi.assignSources(dataset.id, sourceAssignment);
+        set(
+          req.session,
+          `dataset[${dataset.id}].buildNextAction`,
+          req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language)
+        );
+        set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
+        req.session.save();
+        res.redirect(req.buildUrl(`/publish/${dataset.id}/build/${build_id}`, req.language));
         return;
       }
     }
@@ -714,8 +723,17 @@ export const measurePreview = async (req: Request, res: Response, next: NextFunc
         const fileName = req.file.originalname;
         req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
         const fileData = new Blob([req.file.buffer as BlobPart], { type: req.file.mimetype });
-        await req.pubapi.uploadMeasureLookup(dataset.id, fileData, fileName);
-        res.redirect(req.buildUrl(`/publish/${dataset.id}/measure/review`, req.language));
+        const viewDTO = await req.pubapi.uploadMeasureLookup(dataset.id, fileData, fileName);
+        set(
+          req.session,
+          `dataset[${dataset.id}].buildNextAction`,
+          req.buildUrl(`/publish/${dataset.id}/measure/review`, req.language)
+        );
+        set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
+        req.session.save();
+        logger.debug('Redirecting to build status page');
+        const buildId = (viewDTO.extension as { build_id: string }).build_id;
+        res.redirect(req.buildUrl(`/publish/${dataset.id}/build/${buildId}`, req.language));
         return;
       } catch (err) {
         const error = err as ApiException;
@@ -863,8 +881,17 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
 
       try {
         logger.debug('Sending lookup table to backend');
-        await req.pubapi.uploadLookupTable(dataset.id, dimension.id, fileData, fileName);
-        res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/review`, req.language));
+        const view = await req.pubapi.uploadLookupTable(dataset.id, dimension.id, fileData, fileName);
+        const buildId = (view.extension as { build_id: string }).build_id;
+        set(
+          req.session,
+          `dataset[${dataset.id}].buildNextAction`,
+          req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/review`, req.language)
+        );
+        set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
+        req.session.save();
+        logger.debug('Redirecting to build page');
+        res.redirect(req.buildUrl(`/publish/${dataset.id}/build/${buildId}`, req.language));
         return;
       } catch (err) {
         const error = err as ApiException;
@@ -1031,8 +1058,16 @@ export const setupNumberDimension = async (req: Request, res: Response, next: Ne
         decimal_places: (req.body?.numberType as NumberType) === NumberType.Decimal ? req.body?.decimalPlaces : 0
       };
       try {
-        await req.pubapi.patchDimension(res.locals.dataset.id, dimension.id, dimensionPatch);
-        res.redirect(req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/review`, req.language));
+        const view = await req.pubapi.patchDimension(res.locals.dataset.id, dimension.id, dimensionPatch);
+        const buildId = (view.extension as { build_id: string }).build_id;
+        set(
+          req.session,
+          `dataset[${dataset.id}].buildNextAction`,
+          req.buildUrl(`/publish/${dataset.id}/lookup/${dimension.id}/review`, req.language)
+        );
+        set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
+        req.session.save();
+        res.redirect(req.buildUrl(`/publish/${dataset.id}/build/${buildId}`, req.language));
       } catch (error) {
         const errorObj = error as ApiException;
         logger.error(`Error is: ${JSON.stringify(errorObj, null, 2)}`);
@@ -1475,11 +1510,17 @@ export const periodType = async (req: Request, res: Response, next: NextFunction
       switch (req.body?.periodType) {
         case 'years':
           try {
-            await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
-            logger.debug('Matching complete for year... Redirecting to review.');
-            res.redirect(
+            const view = await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
+            const buildId = (view.extension as { build_id: string }).build_id;
+            logger.debug('Matching complete for year... Redirecting Build log.');
+            set(
+              req.session,
+              `dataset[${dataset.id}].buildNextAction`,
               req.buildUrl(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`, req.language)
             );
+            set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
+            req.session.save();
+            res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/build/${buildId}`, req.language));
             return;
           } catch (err) {
             const error = err as ApiException;
@@ -1605,11 +1646,17 @@ export const quarterChooser = async (req: Request, res: Response, next: NextFunc
         patchRequest.fifth_quarter = true;
       }
       try {
-        await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
+        const view = await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
+        const buildId = (view.extension as { build_id: string }).build_id;
         session.dimensionPatch = undefined;
-        set(req.session, `dataset[${dataset.id}]`, session);
+        set(
+          req.session,
+          `dataset[${dataset.id}].buildNextAction`,
+          req.buildUrl(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`, req.language)
+        );
+        set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
         req.session.save();
-        res.redirect(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`);
+        res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/build/${buildId}`, req.language));
         return;
       } catch (err) {
         const error = err as ApiException;
@@ -1675,12 +1722,19 @@ export const monthChooser = async (req: Request, res: Response, next: NextFuncti
       set(req.session, `dataset[${dataset.id}]`, session);
       req.session.save();
       try {
-        await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
+        const view = await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
+        const buildId = (view.extension as { build_id: string }).build_id;
 
         session.dimensionPatch = undefined;
         set(req.session, `dataset[${dataset.id}]`, session);
+        set(
+          req.session,
+          `dataset[${dataset.id}].buildNextAction`,
+          req.buildUrl(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`, req.language)
+        );
+        set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
         req.session.save();
-        res.redirect(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`);
+        res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/build/${buildId}`, req.language));
         return;
       } catch (_err) {
         logger.debug(`There were rows which didn't match.  Lets ask the user about quarterly totals.`);
@@ -1757,149 +1811,6 @@ export const periodReview = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
-export const measureName = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const dataset = singleLangDataset(res.locals.dataset, req.language);
-    const measure = dataset.measure;
-    if (!measure) {
-      logger.error('Failed to find measure in dataset');
-      next(new NotFoundException());
-      return;
-    }
-    let errors: ViewErrDTO | undefined;
-    const revisit = Boolean(req.path.indexOf('change') > -1);
-    const measureName = revisit ? measure.metadata?.name : '';
-    if (req.method === 'POST') {
-      // TODO Replace validation if statements with an Express Validator
-      //  See https://github.com/Marvell-Consulting/statswales-frontend/pull/138
-      const updatedName = req.body?.name;
-      if (!updatedName) {
-        logger.error('User failed to submit a name');
-        res.status(400);
-        errors = {
-          status: 400,
-          errors: [
-            {
-              field: 'name',
-              message: {
-                key: 'errors.no_name'
-              }
-            }
-          ],
-          dataset_id: req.params.datasetId
-        };
-        res.status(400);
-        res.render('publish/dimension-name', {
-          ...{ updatedName, id: measure.id, dimensionType: DimensionType.Measure },
-          errors,
-          revisit
-        });
-        return;
-      }
-      if (updatedName.length > 256) {
-        logger.error(`Measure name is too long... length: ${req.body?.name.length}`);
-        errors = {
-          status: 400,
-          errors: [
-            {
-              field: 'name',
-              message: {
-                key: 'errors.dimension.name_too_long'
-              }
-            }
-          ],
-          dataset_id: req.params.datasetId
-        };
-        res.status(400);
-        res.render('publish/dimension-name', {
-          ...{ updatedName, id: measure.id, dimensionType: DimensionType.Measure },
-          errors,
-          revisit
-        });
-        return;
-      } else if (updatedName.length < 1) {
-        logger.error(`Measure name is too short.`);
-        errors = {
-          status: 400,
-          errors: [
-            {
-              field: 'name',
-              message: {
-                key: 'errors.dimension.name_too_short'
-              }
-            }
-          ],
-          dataset_id: req.params.datasetId
-        };
-        res.status(400);
-        res.render('publish/dimension-name', {
-          ...{ updatedName, id: measure.id, dimensionType: DimensionType.Measure },
-          errors,
-          revisit
-        });
-        return;
-      } else if (!dimensionColumnNameRegex.test(updatedName)) {
-        logger.error(`Measure name contains characters which aren't allowed.`);
-        errors = {
-          status: 400,
-          errors: [
-            {
-              field: 'name',
-              message: {
-                key: 'errors.dimension.illegal_characters'
-              }
-            }
-          ],
-          dataset_id: req.params.datasetId
-        };
-        res.status(400);
-        res.render('publish/dimension-name', {
-          ...{ updatedName, id: measure.id, dimensionType: DimensionType.Measure },
-          errors,
-          revisit
-        });
-        return;
-      }
-      const metadata: DimensionMetadataDTO = { name: updatedName, language: req.language };
-      try {
-        await req.pubapi.updateMeasureMetadata(dataset.id, metadata);
-        res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/tasklist`, req.language));
-        return;
-      } catch (err) {
-        const error = err as ApiException;
-        logger.error(`Something went wrong trying to name the dimension with the following error: ${err}`);
-        errors = {
-          status: error.status || 500,
-          errors: [
-            {
-              field: '',
-              message: {
-                key: 'errors.dimension.naming_failed'
-              }
-            }
-          ],
-          dataset_id: req.params.datasetId
-        };
-        res.status(500);
-        res.render('publish/dimension-name', {
-          ...{ updatedName, id: measure.id, dimensionType: DimensionType.Measure },
-          errors,
-          revisit
-        });
-        return;
-      }
-    }
-
-    res.render('publish/dimension-name', {
-      ...{ dimensionName: measureName, id: measure.id, dimensionType: DimensionType.Measure },
-      revisit
-    });
-  } catch (err) {
-    logger.error(`Failed to get dimension name with the following error: ${err}`);
-    next(new NotFoundException());
-  }
-};
-
 export const dimensionName = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const dataset = singleLangDataset(res.locals.dataset, req.language);
@@ -1968,8 +1879,15 @@ export const dimensionName = async (req: Request, res: Response, next: NextFunct
       }
       const metadata: DimensionMetadataDTO = { name: updatedName, language: req.language };
       try {
-        await req.pubapi.updateDimensionMetadata(dataset.id, dimension.id, metadata);
-        res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/tasklist`, req.language));
+        const { build_id } = await req.pubapi.updateDimensionMetadata(dataset.id, dimension.id, metadata);
+        set(
+          req.session,
+          `dataset[${dataset.id}].buildNextAction`,
+          req.buildUrl(`/publish/${req.params.datasetId}/tasklist`, req.language)
+        );
+        set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
+        req.session.save();
+        res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/build/${build_id}`, req.language));
         return;
       } catch (err) {
         logger.error(`Something went wrong trying to name the dimension with the following error: ${err}`);
@@ -2018,11 +1936,17 @@ export const pointInTimeChooser = async (req: Request, res: Response, next: Next
       date_type: YearType.PointInTime
     };
     try {
-      await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
+      const view = await req.pubapi.patchDimension(dataset.id, dimension.id, patchRequest);
       logger.debug('Matching complete for specific point in time... Redirecting to review.');
-      res.redirect(
+      const buildId = (view.extension as { build_id: string }).build_id;
+      set(
+        req.session,
+        `dataset[${dataset.id}].buildNextAction`,
         req.buildUrl(`/publish/${req.params.datasetId}/dates/${req.params.dimensionId}/review`, req.language)
       );
+      set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
+      req.session.save();
+      res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/build/${buildId}`, req.language));
       return;
     } catch (err) {
       const error = err as ApiException;
@@ -2977,4 +2901,79 @@ export const datasetAction = async (req: Request, res: Response, next: NextFunct
   }
 
   res.render('publish/task/action', { dataset, action, values, errors });
+};
+
+export const longBuildHandling = async (req: Request, res: Response) => {
+  const datasetId = res.locals.datasetId;
+  logger.debug('Trying to handle build in request...');
+  const buildId = req.params.buildId;
+  const showBuildingPageTimeout = 10000;
+  let totalTime = 0;
+  let buildLogEntry: BuildLogEntry;
+  try {
+    buildLogEntry = await req.pubapi.getBuildLogEntry(buildId);
+  } catch (_) {
+    // Very occasionally, the build log entry is not yet available.
+    await sleep(RefreshPauseMS);
+    buildLogEntry = await req.pubapi.getBuildLogEntry(buildId);
+  }
+
+  const nextAction =
+    get(req.session, `dataset[${datasetId}].buildNextAction`) ||
+    req.buildUrl(`/publish/${datasetId}/tasklist`, req.language);
+  const previousAction = get(req.session, `dataset[${datasetId}].buildPreviousAction`);
+
+  while (totalTime < showBuildingPageTimeout) {
+    if (buildLogEntry.status === CubeBuildStatus.Materializing || buildLogEntry.status === CubeBuildStatus.Completed) {
+      logger.debug(`Build completed successfully redirecting to: ${nextAction}`);
+      if (nextAction) res.redirect(nextAction);
+      else res.redirect(req.buildUrl(`/publish/${res.locals.datasetId}/tasklist`, req.language));
+      return;
+    } else {
+      totalTime += RefreshPauseMS;
+      await sleep(RefreshPauseMS);
+      buildLogEntry = await req.pubapi.getBuildLogEntry(buildId);
+    }
+  }
+
+  const dataset = await req.pubapi.getDataset(res.locals.datasetId, DatasetInclude.Overview);
+  const revision = singleLangRevision(dataset.end_revision, req.language)!;
+  const title = revision?.metadata?.title;
+  const datasetStatus = getDatasetStatus(dataset);
+  const publishingStatus = getPublishingStatus(dataset, revision);
+  res.render('publish/long-build', {
+    buildLogEntry,
+    dataset,
+    title,
+    datasetStatus,
+    publishingStatus,
+    nextAction,
+    previousAction,
+    refresh: false
+  });
+};
+
+export const ajaxRefreshBuildStatus = async (req: Request, res: Response) => {
+  const buildId = req.params.buildId;
+  const datasetId = res.locals.datasetId;
+  const buildLogEntry = await req.pubapi.getBuildLogEntry(buildId);
+  const nextAction =
+    get(req.session, `dataset[${datasetId}].buildNextAction`) ||
+    req.buildUrl(`/publish/${datasetId}/tasklist`, req.language);
+  const previousAction = get(req.session, `dataset[${datasetId}].buildPreviousAction`);
+  res.render('publish/long-build-monitor', {
+    buildLogEntry,
+    nextAction,
+    previousAction,
+    refresh: true
+  });
+};
+
+const RefreshPauseMS = 500;
+
+export const sleep = async (ms: number): Promise<void> => {
+  return new Promise((resolve) => {
+    logger.debug(`Sleeping for ${ms} milliseconds`);
+    setTimeout(resolve, ms);
+  });
 };

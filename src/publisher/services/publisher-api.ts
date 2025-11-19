@@ -48,6 +48,9 @@ import { UnknownException } from '../../shared/exceptions/unknown.exception';
 import { TaskAction } from '../../shared/enums/task-action';
 import { UserGroupStatus } from '../../shared/enums/user-group-status';
 import { DashboardStats } from '../../shared/interfaces/dashboard-stats';
+import { BuildLogEntry } from '../../shared/dtos/build-log-entry';
+import { DatasetWithBuild } from '../../shared/dtos/dataset-with-build';
+import { DimensionWithBuild } from '../../shared/dtos/dimension-with-build';
 
 const logger = parentLogger.child({ service: 'publisher-api' });
 
@@ -428,14 +431,17 @@ export class PublisherApi {
     }).then((response) => response.json() as unknown as FilterTable[]);
   }
 
-  public async assignSources(datasetId: string, sourceTypeAssignment: SourceAssignmentDTO[]): Promise<DatasetDTO> {
+  public async assignSources(
+    datasetId: string,
+    sourceTypeAssignment: SourceAssignmentDTO[]
+  ): Promise<DatasetWithBuild> {
     logger.debug(`Assigning source types for dataset: ${datasetId}`);
 
     return this.fetch({
       url: `dataset/${datasetId}/sources`,
       method: HttpMethod.Patch,
       json: sourceTypeAssignment
-    }).then((response) => response.json() as unknown as DatasetDTO);
+    }).then((response) => response.json() as unknown as DatasetWithBuild);
   }
 
   public async patchDimension(
@@ -456,20 +462,12 @@ export class PublisherApi {
     datasetId: string,
     dimensionId: string,
     metadata: DimensionMetadataDTO
-  ): Promise<DimensionDTO> {
+  ): Promise<DimensionWithBuild> {
     return this.fetch({
       url: `dataset/${datasetId}/dimension/by-id/${dimensionId}/metadata`,
       method: HttpMethod.Patch,
       json: metadata
-    }).then((response) => response.json() as unknown as DimensionDTO);
-  }
-
-  public async updateMeasureMetadata(datasetId: string, metadata: DimensionMetadataDTO): Promise<DimensionMetadataDTO> {
-    return this.fetch({
-      url: `dataset/${datasetId}/measure/metadata`,
-      method: HttpMethod.Patch,
-      json: metadata
-    }).then((response) => response.json() as unknown as DimensionMetadataDTO);
+    }).then((response) => response.json() as unknown as DimensionWithBuild);
   }
 
   public async updateMetadata(datasetId: string, metadata: RevisionMetadataDTO): Promise<DatasetDTO> {
@@ -821,5 +819,10 @@ export class PublisherApi {
   public async getUser(): Promise<UserDTO> {
     logger.debug(`Fetching the current user...`);
     return this.fetch({ url: 'user' }).then((response) => response.json() as unknown as UserDTO);
+  }
+
+  public async getBuildLogEntry(buildId: string): Promise<BuildLogEntry> {
+    logger.debug(`Fetching build log entry with id ${buildId}...`);
+    return this.fetch({ url: `build/${buildId}` }).then((response) => response.json() as unknown as BuildLogEntry);
   }
 }
