@@ -49,6 +49,8 @@ import { TaskAction } from '../../shared/enums/task-action';
 import { UserGroupStatus } from '../../shared/enums/user-group-status';
 import { DashboardStats } from '../../shared/interfaces/dashboard-stats';
 import { BuildLogEntry } from '../../shared/dtos/build-log-entry';
+import { DatasetWithBuild } from '../../shared/dtos/dataset-with-build';
+import { DimensionWithBuild } from '../../shared/dtos/dimension-with-build';
 
 const logger = parentLogger.child({ service: 'publisher-api' });
 
@@ -432,14 +434,14 @@ export class PublisherApi {
   public async assignSources(
     datasetId: string,
     sourceTypeAssignment: SourceAssignmentDTO[]
-  ): Promise<{ dataset: DatasetDTO; build_id: string }> {
+  ): Promise<DatasetWithBuild> {
     logger.debug(`Assigning source types for dataset: ${datasetId}`);
 
     return this.fetch({
       url: `dataset/${datasetId}/sources`,
       method: HttpMethod.Patch,
       json: sourceTypeAssignment
-    }).then((response) => response.json() as unknown as { dataset: DatasetDTO; build_id: string });
+    }).then((response) => response.json() as unknown as DatasetWithBuild);
   }
 
   public async patchDimension(
@@ -460,12 +462,12 @@ export class PublisherApi {
     datasetId: string,
     dimensionId: string,
     metadata: DimensionMetadataDTO
-  ): Promise<{ dimension: DimensionDTO; build_id: string }> {
+  ): Promise<DimensionWithBuild> {
     return this.fetch({
       url: `dataset/${datasetId}/dimension/by-id/${dimensionId}/metadata`,
       method: HttpMethod.Patch,
       json: metadata
-    }).then((response) => response.json() as unknown as { dimension: DimensionDTO; build_id: string });
+    }).then((response) => response.json() as unknown as DimensionWithBuild);
   }
 
   public async updateMetadata(datasetId: string, metadata: RevisionMetadataDTO): Promise<DatasetDTO> {
