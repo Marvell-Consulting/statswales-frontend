@@ -2961,7 +2961,7 @@ export const ajaxRefreshBuildStatus = async (req: Request, res: Response) => {
     get(req.session, `dataset[${datasetId}].buildNextAction`) ||
     req.buildUrl(`/publish/${datasetId}/tasklist`, req.language);
   const previousAction = get(req.session, `dataset[${datasetId}].buildPreviousAction`);
-  res.render('publish/long-build-fragment', {
+  res.render('publish/long-build-monitor', {
     buildLogEntry,
     nextAction,
     previousAction,

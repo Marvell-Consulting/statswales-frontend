@@ -3,7 +3,7 @@ import React from 'react';
 import Layout from '../components/Layout';
 import DatasetStatus from '../../../shared/views/components/dataset/DatasetStatus';
 import T from '../../../shared/views/components/T';
-import LongBuildFragment from './long-build-fragment';
+import LongBuildMonitor from './long-build-monitor';
 
 export default function LongBuild(props) {
   return (
@@ -24,7 +24,7 @@ export default function LongBuild(props) {
             props.language
           )}
         >
-          <LongBuildFragment {...props} />
+          <LongBuildMonitor {...props} />
         </div>
       </div>
       <script src="/assets/js/long-build.js"></script>

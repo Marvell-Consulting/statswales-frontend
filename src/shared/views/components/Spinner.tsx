@@ -1,5 +1,5 @@
-import React, { CSSProperties } from 'react';
+import React from 'react';
 
-export const Spinner = (style?: CSSProperties) => {
-  return <div className="loader" aria-live="polite" role="status" style={style}></div>;
+export const Spinner = () => {
+  return <div className="loader" aria-live="polite" role="status"></div>;
 };
