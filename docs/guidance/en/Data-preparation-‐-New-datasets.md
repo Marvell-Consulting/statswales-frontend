@@ -181,7 +181,7 @@ You **must use consistent year formatting** for all time periods present in the 
 
 There may be circumstances where the periods of time in your dataset overlap. For example, where your data values represent cumulative values up to a specific date, such as the amount for the year ending 30th June, then the amount for year ending 31st July, and so on. In these cases you should use the following formatting:
 
-- a prefix of either YE, QE, ME or WE for year ending, quarter ending, month ending or week ending
+- a prefix indicating the length of the period
 - then any of the specific date formats described in the '[Specific points in time](#guidance-specific-points-in-time)' section
 
 Examples:
