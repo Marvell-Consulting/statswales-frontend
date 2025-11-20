@@ -181,14 +181,19 @@ You **must use consistent year formatting** for all time periods present in the 
 
 There may be circumstances where the periods of time in your dataset overlap. For example, where your data values represent cumulative values up to a specific date, such as the amount for the year ending 30th June, then the amount for year ending 31st July, and so on. In these cases you should use the following formatting:
 
-- a prefix of either YE, QE, ME or WE for year ending, quarter ending, month ending or week ending
+- a prefix indicating the length of the period
 - then any of the specific date formats described in the '[Specific points in time](#guidance-specific-points-in-time)' section
 
 Examples:
 
 | Format in data table | Example      | How it will appear on website |
 | :------------------- | :----------- | :---------------------------- |
+| XYYYYY-MM-DD         | XY2022-03-31 | 10 years ending 31 March 2022 |
+| 5YYYYY-MM-DD         | 5Y2022-03-31 | 5 years ending 31 March 2022  |
+| 3YYYYY-MM-DD         | 3Y2022-03-31 | 3 years ending 31 March 2022  |
+| 2YYYYY-MM-DD         | 2Y2022-03-31 | 2 years ending 31 March 2022  |
 | YEYYYY-MM-DD         | YE2022-03-31 | Year ending 31 March 2022     |
+| HEYYYY-MM-DD         | HE2022-05-31 | Half year ending 31 May 2022  |
 | QEYYYY-MM-DD         | QE2022-05-30 | Quarter ending 30 May 2022    |
 | MEDD-MM-YYYY         | ME15-03-2022 | Month ending 15 March 2022    |
 | WEDD-MM-YYYY         | WE25-03-2022 | Week ending 25 March 2022     |
