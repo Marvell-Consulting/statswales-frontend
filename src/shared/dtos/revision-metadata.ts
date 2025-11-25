@@ -14,4 +14,5 @@ export interface RevisionMetadataDTO {
   update_frequency?: UpdateFrequencyDTO;
   related_links?: RelatedLinkDTO[];
   designation?: Designation;
+  reason?: string;
 }

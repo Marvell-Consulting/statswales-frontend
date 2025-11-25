@@ -85,6 +85,8 @@ export const taskDecisionReasonValidator = () => body('reason').if(body('decisio
 
 export const taskActionReasonValidator = () => body('reason').trim().notEmpty();
 
+export const updateReasonValidator = () => body('update_reason').trim().notEmpty();
+
 export const updateTypeValidator = () => body('update_type').isIn(Object.values(NextUpdateType));
 
 export const updateDayValidator = () =>

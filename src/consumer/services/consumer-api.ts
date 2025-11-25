@@ -16,6 +16,7 @@ import { Filter } from '../../shared/interfaces/filter';
 import { FilterTable } from '../../shared/dtos/filter-table';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
+import { RevisionDTO } from '../../shared/dtos/revision';
 
 const logger = parentLogger.child({ service: 'consumer-api' });
 
@@ -179,6 +180,13 @@ export class ConsumerApi {
 
     return this.fetch({ url: `v1/${datasetId}/download/${format}`, query, lang }).then(
       (response) => response.body as ReadableStream
+    );
+  }
+
+  public async getPublicationHistory(datasetId: string): Promise<RevisionDTO[]> {
+    logger.debug(`Fetching publication history for dataset: ${datasetId}`);
+    return this.fetch({ url: `v1/${datasetId}/history` }).then(
+      (response) => response.json() as unknown as RevisionDTO[]
     );
   }
 }

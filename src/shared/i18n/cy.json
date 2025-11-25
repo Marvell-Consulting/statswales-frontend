@@ -1629,11 +1629,14 @@
     "non-filtered-summary": "{{total}} dewis y mae modd eu dewis"
   },
   "consumer_view": {
-    "about_this_dataset": "Am y set ddata hon",
+    "tabs": {
+      "data": "Data",
+      "history": "Hanes",
+      "about": "Am y set ddata hon",
+      "downloads": "Lawrlwytho"
+    },
     "overview": "Trosolwg",
-    "data": "Data",
     "no_data": "Dim data ar gael ar gyfer yr hidlwyr a ddewiswyd.  Rhowch gynnig ar ddewis gwahanol.",
-    "download": "Lawrlwytho",
     "data_view": "Golwg data",
     "select_view": "Dewis golwg",
     "data_table": "Tabl data",

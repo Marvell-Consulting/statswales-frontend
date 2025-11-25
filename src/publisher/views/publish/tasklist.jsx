@@ -187,6 +187,14 @@ export default function Tasklist(props) {
               status={props.taskList.metadata.frequency}
               describedBy="prepare-application-5-status"
             />
+            {props.taskList.isUpdate && (
+              <TasklistItem
+                id="update_reason"
+                path="reason"
+                status={props.taskList.metadata.reason}
+                describedBy="prepare-application-5-status"
+              />
+            )}
           </ul>
 
           <h2 className="govuk-heading-l govuk-!-margin-top-5">{props.t('publish.tasklist.translation.subheading')}</h2>

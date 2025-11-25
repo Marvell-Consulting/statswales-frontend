@@ -33,6 +33,7 @@ import {
   topicIdValidator,
   updateDayValidator,
   updateMonthValidator,
+  updateReasonValidator,
   updateTypeValidator,
   updateYearValidator,
   uuidValidator,
@@ -103,6 +104,7 @@ import { stringify } from 'csv-stringify/sync';
 import { hasOpenPublishRequest } from '../../shared/utils/task';
 import { CubeBuildStatus } from '../../shared/enums/cube-build-status';
 import { BuildLogEntry } from '../../shared/dtos/build-log-entry';
+import { markdownToSafeHTML } from '../../shared/utils/markdown-to-html';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -575,19 +577,32 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
   let previewMetadata: PreviewMetadata | undefined;
 
   try {
-    const [datasetDTO, revisionDTO, previewDTO, filtersDTO]: [DatasetDTO, RevisionDTO, ViewDTO, FilterTable[]] =
-      await Promise.all([
-        req.pubapi.getDataset(datasetId, DatasetInclude.Preview),
-        req.pubapi.getRevision(datasetId, endRevisionId),
-        req.pubapi.getRevisionPreview(datasetId, endRevisionId, pageNumber, pageSize, sortBy, filter),
-        req.pubapi.getRevisionFilters(datasetId, endRevisionId)
-      ]);
+    const [datasetDTO, revisionDTO, previewDTO, filtersDTO, publishedRevisions]: [
+      DatasetDTO,
+      RevisionDTO,
+      ViewDTO,
+      FilterTable[],
+      RevisionDTO[]
+    ] = await Promise.all([
+      req.pubapi.getDataset(datasetId, DatasetInclude.Preview),
+      req.pubapi.getRevision(datasetId, endRevisionId),
+      req.pubapi.getRevisionPreview(datasetId, endRevisionId, pageNumber, pageSize, sortBy, filter),
+      req.pubapi.getRevisionFilters(datasetId, endRevisionId),
+      req.pubapi.getPublicationHistory(datasetId)
+    ]);
 
     const dataset = singleLangDataset(datasetDTO, req.language)!;
     const revision = singleLangRevision(revisionDTO, req.language)!;
     const datasetStatus = getDatasetStatus(datasetDTO);
     const publishingStatus = getPublishingStatus(datasetDTO, revision);
     const datasetTitle = revision?.metadata?.title;
+    const publicationHistory = publishedRevisions.map((rev) => singleLangRevision(rev, req.language));
+
+    for (const rev of publicationHistory) {
+      if (rev?.metadata?.reason) {
+        rev.metadata.reason = await markdownToSafeHTML(rev.metadata.reason);
+      }
+    }
 
     pagination = paginationSequence(previewDTO.current_page, previewDTO.total_pages);
     previewMetadata = await getDatasetMetadata(dataset, revision);
@@ -608,6 +623,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
         errors,
         datasetStatus,
         publishingStatus,
+        publicationHistory,
         datasetTitle,
         selectedFilterOptions: filter,
         shorthandUrl: req.buildUrl(`/shorthand`, req.language)
@@ -2976,4 +2992,35 @@ export const sleep = async (ms: number): Promise<void> => {
     logger.debug(`Sleeping for ${ms} milliseconds`);
     setTimeout(resolve, ms);
   });
+};
+
+export const provideUpdateReason = async (req: Request, res: Response) => {
+  let errors: ViewError[] | undefined;
+  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const revision = dataset.draft_revision;
+  let update_reason = revision?.metadata?.reason || '';
+
+  if (req.method === 'POST') {
+    try {
+      update_reason = req.body?.update_reason;
+
+      errors = (await getErrors(updateReasonValidator(), req)).map((error: FieldValidationError) => {
+        return { field: error.path, message: { key: `publish.update_reason.form.update_reason.error.missing` } };
+      });
+
+      if (errors.length === 0) {
+        await req.pubapi.updateMetadata(dataset.id, { reason: update_reason, language: req.language });
+        res.redirect(req.buildUrl(`/publish/${dataset.id}/tasklist`, req.language));
+        return;
+      }
+
+      res.status(400);
+    } catch (err) {
+      if (err instanceof ApiException) {
+        errors = [{ field: 'api', message: { key: 'errors.try_later' } }];
+      }
+    }
+  }
+
+  res.render('publish/update-reason', { update_reason, errors });
 };

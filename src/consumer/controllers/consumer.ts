@@ -9,7 +9,7 @@ import { stringify } from 'csv-stringify/sync';
 import { DatasetListItemDTO } from '../../shared/dtos/dataset-list-item';
 import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count';
 import { pageInfo } from '../../shared/utils/pagination';
-import { singleLangDataset } from '../../shared/utils/single-lang-dataset';
+import { singleLangDataset, singleLangRevision } from '../../shared/utils/single-lang-dataset';
 import { getDatasetMetadata, metadataToCSV } from '../../shared/utils/dataset-metadata';
 import { NotFoundException } from '../../shared/exceptions/not-found.exception';
 import { FileFormat } from '../../shared/enums/file-format';
@@ -24,6 +24,8 @@ import { FilterTable } from '../../shared/dtos/filter-table';
 import { ViewDTO } from '../../shared/dtos/view-dto';
 import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
 import { singleLangTopic } from '../../shared/utils/single-lang-topic';
+import { RevisionDTO } from '../../shared/dtos/revision';
+import { markdownToSafeHTML } from '../../shared/utils/markdown-to-html';
 
 export const DEFAULT_PAGE_SIZE = 100;
 
@@ -118,14 +120,27 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
     return;
   }
 
-  const [datasetMetadata, preview, filters]: [PreviewMetadata, ViewDTO, FilterTable[]] = await Promise.all([
+  const [datasetMetadata, preview, filters, publishedRevisions]: [
+    PreviewMetadata,
+    ViewDTO,
+    FilterTable[],
+    RevisionDTO[]
+  ] = await Promise.all([
     getDatasetMetadata(dataset, revision),
     req.conapi.getPublishedDatasetView(dataset.id, pageNumber, pageSize, sortBy, selectedFilterOptions),
-    req.conapi.getPublishedDatasetFilters(dataset.id)
+    req.conapi.getPublishedDatasetFilters(dataset.id),
+    req.conapi.getPublicationHistory(dataset.id)
   ]);
 
   const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
   const pagination = pageInfo(preview.current_page, pageSize, preview.page_info?.total_records || 0);
+  const publicationHistory = publishedRevisions.map((rev) => singleLangRevision(rev, req.language));
+
+  for (const rev of publicationHistory) {
+    if (rev?.metadata?.reason) {
+      rev.metadata.reason = await markdownToSafeHTML(rev.metadata.reason);
+    }
+  }
 
   res.render('view', {
     ...preview,
@@ -133,6 +148,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
     datasetMetadata,
     filters,
     topics,
+    publicationHistory,
     selectedFilterOptions,
     shorthandUrl,
     isUnpublished,
