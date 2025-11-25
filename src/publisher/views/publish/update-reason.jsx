@@ -13,23 +13,31 @@ export default function UpdateReason(props) {
       <div className="govuk-width-container">
         <div className="govuk-grid-row">
           <div className="govuk-grid-column-two-thirds">
-            <h1 className="govuk-heading-xl">{title}</h1>
-
-            <ErrorHandler />
-
-            <p className="govuk-body">{props.t('publish.update_reason.description')}</p>
-
-            <p className="govuk-body">{props.t('publish.update_reason.explain')}</p>
-
-            <ul className="govuk-list govuk-list--bullet">
-              <li>{props.t('publish.update_reason.explain_1')}</li>
-              <li>{props.t('publish.update_reason.explain_2')}</li>
-            </ul>
-
-            <div className="govuk-hint">{props.t('publish.update_reason.language')}</div>
-
             <form encType="multipart/form-data" method="post">
-              <div className="govuk-form-group">
+              <h1 className="govuk-heading-xl">
+                <label htmlFor="update_reason">{title}</label>
+              </h1>
+
+              <ErrorHandler />
+
+              <p className="govuk-body">{props.t('publish.update_reason.description')}</p>
+
+              <p id="update_reason_explain" className="govuk-body">
+                {props.t('publish.update_reason.explain')}
+              </p>
+
+              <ul className="govuk-list govuk-list--bullet">
+                <li>{props.t('publish.update_reason.explain_1')}</li>
+                <li>{props.t('publish.update_reason.explain_2')}</li>
+              </ul>
+
+              <div className="govuk-hint">{props.t('publish.update_reason.language')}</div>
+
+              <div
+                className={clsx('govuk-form-group', {
+                  'govuk-form-group--error': props.errors?.find((e) => e.field === 'update_reason')
+                })}
+              >
                 <textarea
                   className={clsx('govuk-textarea', {
                     'govuk-textarea--error': props.errors?.find((e) => e.field === 'update_reason')
@@ -38,6 +46,7 @@ export default function UpdateReason(props) {
                   name="update_reason"
                   rows="15"
                   defaultValue={props.update_reason}
+                  aria-describedby="update_reason_explain"
                 />
               </div>
               <button type="submit" className="govuk-button" data-module="govuk-button">

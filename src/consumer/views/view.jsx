@@ -144,7 +144,7 @@ const HistoryTab = (props) => {
                       __html:
                         revision.revision_index === 1
                           ? props.t('consumer_view.history.initial_publication')
-                          : revision.metadata.reason
+                          : revision.metadata?.reason
                     }}
                   ></dd>
                 </div>

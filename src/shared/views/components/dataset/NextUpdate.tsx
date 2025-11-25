@@ -23,9 +23,7 @@ type NextUpdateProps = {
   };
 };
 
-const getNextUpdate = (nextUpdateAt?: NextUpdateAt) => {
-  const { i18n } = useLocals();
-
+const getNextUpdate = (nextUpdateAt?: NextUpdateAt, locale?: string) => {
   if (!nextUpdateAt?.update_type) {
     return <T>dataset_view.key_information.next_update_missing</T>;
   }
@@ -36,11 +34,11 @@ const getNextUpdate = (nextUpdateAt?: NextUpdateAt) => {
       const date = parse(`${day || '01'} ${month || '01'} ${year}`, 'dd MM yyyy', new Date());
 
       if (day && month && year) {
-        return dateFormat(date, 'd MMMM yyyy', { locale: i18n.language });
+        return dateFormat(date, 'd MMMM yyyy', { locale });
       } else if (month && year) {
-        return dateFormat(date, 'MMMM yyyy', { locale: i18n.language });
+        return dateFormat(date, 'MMMM yyyy', { locale });
       } else {
-        return dateFormat(date, 'yyyy', { locale: i18n.language });
+        return dateFormat(date, 'yyyy', { locale });
       }
     }
 
@@ -53,7 +51,8 @@ const getNextUpdate = (nextUpdateAt?: NextUpdateAt) => {
 };
 
 export function NextUpdate(props: NextUpdateProps) {
-  const nextUpdate = getNextUpdate(props.datasetMetadata?.keyInfo?.nextUpdateAt);
+  const { i18n } = useLocals();
+  const nextUpdate = getNextUpdate(props.datasetMetadata?.keyInfo?.nextUpdateAt, i18n.locale);
 
   return (
     <p>
