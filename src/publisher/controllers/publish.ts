@@ -105,6 +105,7 @@ import { hasOpenPublishRequest } from '../../shared/utils/task';
 import { CubeBuildStatus } from '../../shared/enums/cube-build-status';
 import { BuildLogEntry } from '../../shared/dtos/build-log-entry';
 import { markdownToSafeHTML } from '../../shared/utils/markdown-to-html';
+import { DatasetStatus } from '../../shared/enums/dataset-status';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -575,28 +576,28 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
   let previewData: ViewDTO | ViewErrDTO | undefined;
   let pagination: (string | number)[] = [];
   let previewMetadata: PreviewMetadata | undefined;
+  let publishedRevisions: RevisionDTO[] | undefined;
 
   try {
-    const [datasetDTO, revisionDTO, previewDTO, filtersDTO, publishedRevisions]: [
-      DatasetDTO,
-      RevisionDTO,
-      ViewDTO,
-      FilterTable[],
-      RevisionDTO[]
-    ] = await Promise.all([
-      req.pubapi.getDataset(datasetId, DatasetInclude.Preview),
-      req.pubapi.getRevision(datasetId, endRevisionId),
-      req.pubapi.getRevisionPreview(datasetId, endRevisionId, pageNumber, pageSize, sortBy, filter),
-      req.pubapi.getRevisionFilters(datasetId, endRevisionId),
-      req.pubapi.getPublicationHistory(datasetId)
-    ]);
+    const [datasetDTO, revisionDTO, previewDTO, filtersDTO]: [DatasetDTO, RevisionDTO, ViewDTO, FilterTable[]] =
+      await Promise.all([
+        req.pubapi.getDataset(datasetId, DatasetInclude.Preview),
+        req.pubapi.getRevision(datasetId, endRevisionId),
+        req.pubapi.getRevisionPreview(datasetId, endRevisionId, pageNumber, pageSize, sortBy, filter),
+        req.pubapi.getRevisionFilters(datasetId, endRevisionId)
+      ]);
 
     const dataset = singleLangDataset(datasetDTO, req.language)!;
     const revision = singleLangRevision(revisionDTO, req.language)!;
     const datasetStatus = getDatasetStatus(datasetDTO);
     const publishingStatus = getPublishingStatus(datasetDTO, revision);
     const datasetTitle = revision?.metadata?.title;
-    const publicationHistory = publishedRevisions.map((rev) => singleLangRevision(rev, req.language));
+
+    if (datasetStatus === DatasetStatus.Live) {
+      publishedRevisions = await req.pubapi.getPublicationHistory(datasetId);
+    }
+
+    const publicationHistory = (publishedRevisions || []).map((rev) => singleLangRevision(rev, req.language));
 
     for (const rev of publicationHistory) {
       if (rev?.metadata?.reason) {
