@@ -27,4 +27,6 @@ export interface SingleLanguageRevision {
   related_links?: RelatedLinkDTO[];
   providers?: RevisionProviderDTO[];
   topics?: TopicDTO[];
+  coverage_start_date?: Date;
+  coverage_end_date?: Date;
 }
