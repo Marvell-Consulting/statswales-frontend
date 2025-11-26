@@ -1031,6 +1031,21 @@
         "api": "Dimensions could not be created. Check you've selected the correct options or check the data table is correct."
       }
     },
+    "update_reason": {
+      "heading": "Add update notes",
+      "description": "These will appear in the dataset's history section on the StatsWales website.",
+      "explain": "In short, simple sentences explain:",
+      "explain_1": "what has changed with this update",
+      "explain_2": "why the changes have been made",
+      "language": "This should be entered in the language in which you're viewing this service.",
+      "form": {
+        "update_reason": {
+          "error": {
+            "missing": "Enter update notes for this dataset"
+          }
+        }
+      }
+    },
     "tasklist": {
       "subheading": "Dataset tasklist",
       "no_title": "No title available",
@@ -1066,7 +1081,8 @@
         "related_reports": "Related reports",
         "update_frequency": "If this dataset will be updated or replaced in the future",
         "designation": "Designation",
-        "relevant_topics": "Relevant topics"
+        "relevant_topics": "Relevant topics",
+        "update_reason": "Update notes"
       },
       "translation": {
         "subheading": "Translation",
@@ -1095,7 +1111,8 @@
       "publish": {
         "requested": {
           "publish_at": "Proposed publication date: <strong>{{publishAt}}</strong>",
-          "requested_by": "Publishing requested by: <strong>{{userName}}</strong>"
+          "requested_by": "Publishing requested by: <strong>{{userName}}</strong>",
+          "update_reason": "Reason for update:"
         },
         "scheduled": {
           "publish_at": "Publishing scheduled: <strong>{{publishAt}}</strong>"
@@ -1661,11 +1678,18 @@
     "non-filtered-summary": "{{total}} selectable options"
   },
   "consumer_view": {
-    "about_this_dataset": "About this dataset",
+    "tabs": {
+      "data": "Data",
+      "history": "Dataset history",
+      "about": "About this dataset",
+      "downloads": "Downloads"
+    },
+    "history": {
+      "updates": "Updates",
+      "initial_publication": "Dataset first published."
+    },
     "overview": "Overview",
-    "data": "Data",
     "no_data": "No data available for the selected filters. Try a different selection.",
-    "download": "Download",
     "data_view": "Data view",
     "select_view": "Select view",
     "data_table": "Data table",

@@ -16,6 +16,7 @@ export interface TaskListState {
     related: TaskListStatus;
     sources: TaskListStatus;
     topics: TaskListStatus;
+    reason?: TaskListStatus;
   };
 
   translation: {

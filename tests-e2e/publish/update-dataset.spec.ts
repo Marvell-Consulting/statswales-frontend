@@ -6,6 +6,7 @@ import { config } from '../../src/shared/config';
 import {
   approvePublication,
   completePublicationDate,
+  completeUpdateReason,
   publishMinimalDataset,
   rejectPublication,
   submitForApproval,
@@ -57,6 +58,8 @@ test.describe('Update dataset', () => {
 
       const tasklistItem = await page.locator('li', { hasText: 'Data table' });
       await expect(tasklistItem.locator('.govuk-tag').first()).toHaveText('Updated');
+
+      await completeUpdateReason(page, datasetId, 'Adding new data for the latest period.');
 
       await completePublicationDate(page, datasetId, 1);
     });

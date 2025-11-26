@@ -262,6 +262,13 @@ export async function completeTopics(page: Page, datasetId: string, topics: stri
   await checkTasklistItemComplete(page, 'Relevant topics');
 }
 
+export async function completeUpdateReason(page: Page, datasetId: string, text: string) {
+  await completeMetadata(page, 'Update notes', text);
+  await page.getByRole('button', { name: 'Continue' }).click();
+  await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
+  await checkTasklistItemComplete(page, 'Update notes');
+}
+
 export async function completeTranslations(page: Page, testInfo: TestInfo, datasetId: string) {
   await page.getByRole('link', { name: 'Export text fields for translation' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/translation/export`);

@@ -132,7 +132,7 @@ test.describe('Publish dataset', () => {
       await expect(previewPage.getByText(metadata.reports[0].title, { exact: true })).toBeTruthy();
 
       // download files
-      await previewPage.click('#tab_download_dataset');
+      await previewPage.click('#tab_downloads');
       await previewPage.getByRole('button', { name: 'Download data' }).waitFor({ state: 'visible' });
       const csvDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
       await checkFile(testInfo, csvDownload);

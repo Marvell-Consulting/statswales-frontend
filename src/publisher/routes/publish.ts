@@ -48,7 +48,8 @@ import {
   datasetAction,
   downloadMetadata,
   longBuildHandling,
-  ajaxRefreshBuildStatus
+  ajaxRefreshBuildStatus,
+  provideUpdateReason
 } from '../controllers/publish';
 import { DatasetInclude as Include } from '../../shared/enums/dataset-include';
 import { flashMessages, flashErrors } from '../../shared/middleware/flash';
@@ -195,6 +196,9 @@ publish.post('/:datasetId/designation', fetchDataset(Include.Meta), upload.none(
 
 publish.get('/:datasetId/topics', fetchDataset(Include.Meta), provideTopics);
 publish.post('/:datasetId/topics', fetchDataset(Include.Meta), upload.none(), provideTopics);
+
+publish.get('/:datasetId/reason', fetchDataset(Include.Meta), provideUpdateReason);
+publish.post('/:datasetId/reason', fetchDataset(Include.Meta), upload.none(), provideUpdateReason);
 
 /* Publishing */
 publish.get('/:datasetId/schedule', fetchDataset(Include.Meta), providePublishDate);

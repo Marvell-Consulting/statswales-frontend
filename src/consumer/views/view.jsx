@@ -10,43 +10,43 @@ import DeveloperView from '../../publisher/views/components/developer/DeveloperV
 import ViewTable from './components/ViewTable';
 import Pagination from '../../shared/views/components/Pagination';
 import KeyInfo from '../../shared/views/components/dataset/KeyInfo';
-import Notes from '../../shared/views/components/dataset/Notes';
 import About from '../../shared/views/components/dataset/About';
 import Publisher from '../../shared/views/components/dataset/Publisher';
 import RadioGroup from '../../shared/views/components/RadioGroup';
 import { Filters } from '../../shared/views/components/Filters';
 import NotificationBanner from './components/NotificationBanner';
+import { NextUpdate } from '../../shared/views/components/dataset/NextUpdate';
+import { dateFormat } from '../../shared/utils/date-format';
 
-export default function ConsumerView(props) {
-  const LayoutComponent = props.isDeveloper ? PublisherLayout : ConsumerLayout;
+const NoteCodesLegend = (props) => {
+  if (!props.note_codes || props.note_codes.length === 0) return null;
+
+  return (
+    <div className="govuk-grid-row">
+      <div className="govuk-grid-column-full">
+        <p className="govuk-body standard-shorthand">
+          <span
+            dangerouslySetInnerHTML={{
+              __html: props.t('dataset_view.notes.shorthand', { shorthand_url: props.shorthandUrl })
+            }}
+          ></span>
+          {props.note_codes.map((code, idx) => (
+            <span key={code} className="govuk-body">
+              {` [${code}] = ${props.t(`dataset_view.notes.${code}`).toLowerCase()}${idx < props.note_codes.length - 1 ? ',' : '.'}`}
+            </span>
+          ))}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+const DataTab = (props) => {
   const [_originalUrl, query] = props.url.split('?');
   const parsedQuery = qs.parse(query);
   const sortBy = parsedQuery.sort_by;
 
-  const NoteCodesLegend = () => {
-    if (!props.note_codes || props.note_codes.length === 0) return null;
-
-    return (
-      <div className="govuk-grid-row">
-        <div className="govuk-grid-column-full">
-          <p className="govuk-body standard-shorthand">
-            <span
-              dangerouslySetInnerHTML={{
-                __html: props.t('dataset_view.notes.shorthand', { shorthand_url: props.shorthandUrl })
-              }}
-            ></span>
-            {props.note_codes.map((code, idx) => (
-              <span key={code} className="govuk-body">
-                {` [${code}] = ${props.t(`dataset_view.notes.${code}`).toLowerCase()}${idx < props.note_codes.length - 1 ? ',' : '.'}`}
-              </span>
-            ))}
-          </p>
-        </div>
-      </div>
-    );
-  };
-
-  const DataPanel = (
+  return (
     <div className="govuk-width-container">
       <div className="govuk-main-wrapper govuk-!-padding-top-0">
         <NoteCodesLegend />
@@ -121,138 +121,176 @@ export default function ConsumerView(props) {
       </div>
     </div>
   );
+};
 
-  const AboutPanel = (
+const HistoryTab = (props) => {
+  return (
+    <div className="govuk-grid-row">
+      <div className="govuk-grid-column-two-thirds">
+        <NextUpdate {...props} />
+
+        {props.publicationHistory?.length > 0 && (
+          <>
+            <h2>{props.t('consumer_view.history.updates')}</h2>
+            <dl className="publication-history govuk-summary-list">
+              {props.publicationHistory.map((revision) => (
+                <div key={revision.id} className="govuk-summary-list__row">
+                  <dt className="govuk-summary-list__key">
+                    {dateFormat(revision.publish_at, 'do MMMM yyyy', { locale: props.i18n.language })}
+                  </dt>
+                  <dd
+                    className="govuk-summary-list__value"
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        revision.revision_index === 1
+                          ? props.t('consumer_view.history.initial_publication')
+                          : revision.metadata?.reason
+                    }}
+                  ></dd>
+                </div>
+              ))}
+            </dl>
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const AboutTab = (props) => {
+  return (
     <div className="govuk-grid-row">
       <div className="govuk-grid-column-full">
         <KeyInfo {...props} keyInfo={props.datasetMetadata.keyInfo} />
-        <Notes {...props} notes={props.datasetMetadata.notes} />
         <About {...props} about={props.datasetMetadata.about} />
         <Publisher {...props} publisher={props.datasetMetadata.publisher} />
       </div>
     </div>
   );
+};
 
-  const DownloadPanel = () => {
-    const downloadMetaUrl = props.preview
-      ? props.buildUrl(`/publish/${props.dataset.id}/download/metadata`, props.i18n.language)
-      : props.buildUrl(`/${props.dataset.id}/download/metadata`, props.i18n.language);
+const DownloadTab = (props) => {
+  const downloadMetaUrl = props.preview
+    ? props.buildUrl(`/publish/${props.dataset.id}/download/metadata`, props.i18n.language)
+    : props.buildUrl(`/${props.dataset.id}/download/metadata`, props.i18n.language);
 
-    return (
-      <div className="govuk-grid-row">
-        <div className="govuk-grid-column-full">
-          <form
-            method="get"
-            action={props.buildUrl(
-              `${props.preview || props.isDeveloper ? '/publish' : ''}/${props.dataset.id}/download`,
-              props.i18n.language
-            )}
-          >
-            <RadioGroup
-              name="view_type"
-              label={props.t('consumer_view.download_heading')}
-              options={[
-                {
-                  value: 'filtered',
-                  label: props.t('consumer_view.filtered_download')
-                },
-                {
-                  value: 'default',
-                  label: props.t('consumer_view.default_download')
-                }
-              ]}
-              value={props.selectedFilterOptions ? 'filtered' : 'default'}
-            />
+  return (
+    <div className="govuk-grid-row">
+      <div className="govuk-grid-column-full">
+        <form
+          method="get"
+          action={props.buildUrl(
+            `${props.preview || props.isDeveloper ? '/publish' : ''}/${props.dataset.id}/download`,
+            props.i18n.language
+          )}
+        >
+          <RadioGroup
+            name="view_type"
+            label={props.t('consumer_view.download_heading')}
+            options={[
+              {
+                value: 'filtered',
+                label: props.t('consumer_view.filtered_download')
+              },
+              {
+                value: 'default',
+                label: props.t('consumer_view.default_download')
+              }
+            ]}
+            value={props.selectedFilterOptions ? 'filtered' : 'default'}
+          />
 
-            <RadioGroup
-              name="format"
-              label={props.t('consumer_view.download_format')}
-              options={[
-                {
-                  value: 'csv',
-                  label: 'CSV',
-                  hint: props.t('consumer_view.data_only_hint')
-                },
-                {
-                  value: 'xlsx',
-                  label: 'Excel',
-                  hint: props.t('consumer_view.data_only_hint')
-                },
-                {
-                  value: 'json',
-                  label: 'JSON',
-                  hint: props.t('consumer_view.data_only_hint')
-                }
-              ]}
-              value="csv"
-            />
+          <RadioGroup
+            name="format"
+            label={props.t('consumer_view.download_format')}
+            options={[
+              {
+                value: 'csv',
+                label: 'CSV',
+                hint: props.t('consumer_view.data_only_hint')
+              },
+              {
+                value: 'xlsx',
+                label: 'Excel',
+                hint: props.t('consumer_view.data_only_hint')
+              },
+              {
+                value: 'json',
+                label: 'JSON',
+                hint: props.t('consumer_view.data_only_hint')
+              }
+            ]}
+            value="csv"
+          />
 
-            <RadioGroup
-              name="view_choice"
-              label={props.t('consumer_view.number_formating')}
-              options={[
-                {
-                  value: 'raw',
-                  label: props.t('consumer_view.unformatted_numbers')
-                },
-                {
-                  value: 'formatted',
-                  label: props.t('consumer_view.formatted_numbers'),
-                  hint: props.t('consumer_view.formatted_numbers_hint')
-                },
-                {
-                  value: 'raw_extended',
-                  label: props.t('consumer_view.unformatted_numbers_extended')
-                },
-                {
-                  value: 'formatted_extended',
-                  label: props.t('consumer_view.formatted_numbers_extended'),
-                  hint: props.t('consumer_view.formatted_numbers_hint')
-                }
-              ]}
-              value="raw"
-            />
+          <RadioGroup
+            name="view_choice"
+            label={props.t('consumer_view.number_formating')}
+            options={[
+              {
+                value: 'raw',
+                label: props.t('consumer_view.unformatted_numbers')
+              },
+              {
+                value: 'formatted',
+                label: props.t('consumer_view.formatted_numbers'),
+                hint: props.t('consumer_view.formatted_numbers_hint')
+              },
+              {
+                value: 'raw_extended',
+                label: props.t('consumer_view.unformatted_numbers_extended')
+              },
+              {
+                value: 'formatted_extended',
+                label: props.t('consumer_view.formatted_numbers_extended'),
+                hint: props.t('consumer_view.formatted_numbers_hint')
+              }
+            ]}
+            value="raw"
+          />
 
-            <RadioGroup
-              name="download_language"
-              label={props.t('consumer_view.select_language')}
-              options={[
-                {
-                  value: 'en-GB',
-                  label: props.t('consumer_view.english')
-                },
-                {
-                  value: 'cy-GB',
-                  label: props.t('consumer_view.welsh')
-                }
-              ]}
-              value={props.i18n.language}
-            />
+          <RadioGroup
+            name="download_language"
+            label={props.t('consumer_view.select_language')}
+            options={[
+              {
+                value: 'en-GB',
+                label: props.t('consumer_view.english')
+              },
+              {
+                value: 'cy-GB',
+                label: props.t('consumer_view.welsh')
+              }
+            ]}
+            value={props.i18n.language}
+          />
 
-            <input
-              type="hidden"
-              id="selected_filter_options"
-              name="selected_filter_options"
-              value={JSON.stringify(props.selectedFilterOptions)}
-            ></input>
+          <input
+            type="hidden"
+            id="selected_filter_options"
+            name="selected_filter_options"
+            value={JSON.stringify(props.selectedFilterOptions)}
+          ></input>
 
-            <button name="action" value="download" type="submit" className="govuk-button" data-module="govuk-button">
-              {props.t('consumer_view.download_button')}
-            </button>
-          </form>
+          <button name="action" value="download" type="submit" className="govuk-button" data-module="govuk-button">
+            {props.t('consumer_view.download_button')}
+          </button>
+        </form>
 
-          <div className="download-metadata govuk-!-margin-top-5">
-            <h2 className="govuk-heading-m">{props.t('consumer_view.metadata_download.heading')}</h2>
-            <p className="govuk-body">{props.t('consumer_view.metadata_download.description')}</p>
-            <a href={downloadMetaUrl} className="govuk-button button-primary">
-              {props.t('consumer_view.metadata_download.button')}
-            </a>
-          </div>
+        <div className="download-metadata govuk-!-margin-top-5">
+          <h2 className="govuk-heading-m">{props.t('consumer_view.metadata_download.heading')}</h2>
+          <p className="govuk-body">{props.t('consumer_view.metadata_download.description')}</p>
+          <a href={downloadMetaUrl} className="govuk-button button-primary">
+            {props.t('consumer_view.metadata_download.button')}
+          </a>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
+export default function ConsumerView(props) {
+  const LayoutComponent = props.isDeveloper ? PublisherLayout : ConsumerLayout;
   const title = props.datasetMetadata.title;
 
   if (props.isUnpublished) {
@@ -285,9 +323,10 @@ export default function ConsumerView(props) {
           ...(props?.isDeveloper && props?.showDeveloperTab
             ? [{ label: props.t('developer.heading'), id: 'developer', children: <DeveloperView {...props} /> }]
             : []),
-          { label: props.t('consumer_view.data'), id: 'data', children: DataPanel },
-          { label: props.t('consumer_view.about_this_dataset'), id: 'about_dataset', children: AboutPanel },
-          { label: props.t('consumer_view.download'), id: 'download_dataset', children: <DownloadPanel /> }
+          { label: props.t('consumer_view.tabs.data'), id: 'data', children: <DataTab {...props} /> },
+          { label: props.t('consumer_view.tabs.history'), id: 'history', children: <HistoryTab {...props} /> },
+          { label: props.t('consumer_view.tabs.about'), id: 'about', children: <AboutTab {...props} /> },
+          { label: props.t('consumer_view.tabs.downloads'), id: 'downloads', children: <DownloadTab {...props} /> }
         ]}
       />
     </LayoutComponent>

@@ -825,4 +825,11 @@ export class PublisherApi {
     logger.debug(`Fetching build log entry with id ${buildId}...`);
     return this.fetch({ url: `build/${buildId}` }).then((response) => response.json() as unknown as BuildLogEntry);
   }
+
+  public async getPublicationHistory(datasetId: string): Promise<RevisionDTO[]> {
+    logger.debug(`Fetching publication history for dataset: ${datasetId}`);
+    return this.fetch({ url: `v1/${datasetId}/history` }).then(
+      (response) => response.json() as unknown as RevisionDTO[]
+    );
+  }
 }
