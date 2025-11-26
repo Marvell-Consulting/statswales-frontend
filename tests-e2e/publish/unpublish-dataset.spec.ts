@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid';
 
 import { users } from '../fixtures/logins';
 import { config } from '../../src/shared/config';
-import { publishMinimalDataset } from './helpers/publishing-steps';
+import { completeUpdateReason, publishMinimalDataset } from './helpers/publishing-steps';
 
 const baseUrl = config.frontend.publisher.url;
 
@@ -80,6 +80,8 @@ test.describe('Unpublish dataset', () => {
 
       await page.getByRole('link', { name: 'Update this dataset' }).click();
       await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
+
+      await completeUpdateReason(page, datasetId, 'Correcting data for the latest period.');
 
       await page.getByRole('link', { name: 'When this update should be published' }).click();
       await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/schedule`);
