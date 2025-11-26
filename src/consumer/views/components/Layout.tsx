@@ -115,6 +115,16 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
           </div>
         )}
 
+        <div className="govuk-phase-banner app-env">
+          <div className="govuk-width-container">
+            <p className="govuk-phase-banner__content">
+              <T className="govuk-phase-banner__text" raw>
+                consumer.global.phase_banner.research
+              </T>
+            </p>
+          </div>
+        </div>
+
         <header id="wg-header" className="wg-header" style={{ backgroundColor: '#323232' }}>
           <div className="layout-container">
             <div className="header" id="header">
