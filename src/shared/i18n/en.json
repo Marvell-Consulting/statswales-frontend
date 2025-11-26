@@ -1409,7 +1409,8 @@
         "summary": "Summary of dataset and variables",
         "collection": "Data collection or calculation",
         "quality": "Statistical quality",
-        "roundingDescription": "Rounding applied"
+        "roundingDescription": "Rounding applied",
+        "reason": "Update notes"
       },
       "dimension": "{{value}} dimension name",
       "measure": "{{value}} measure name",

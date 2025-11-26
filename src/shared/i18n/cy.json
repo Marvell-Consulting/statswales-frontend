@@ -1035,7 +1035,8 @@
         "related_reports": "Adroddiadau cysylltiedig",
         "update_frequency": "Os caiff y set ddata hon ei diweddaru neu ei disodli yn y dyfodol",
         "designation": "Dynodiad",
-        "relevant_topics": "Pynciau perthnasol"
+        "relevant_topics": "Pynciau perthnasol",
+        "update_reason": "Rheswm y diweddariad"
       },
       "translation": {
         "subheading": "Cyfieithu",
@@ -1359,7 +1360,8 @@
         "summary": "Crynodeb o'r set ddata a newidynnau",
         "collection": "Cyfrifo neu gasglu data",
         "quality": "Ansawdd ystadegol",
-        "roundingDescription": "Wedi'i dalgrynnu"
+        "roundingDescription": "Wedi'i dalgrynnu",
+        "reason": "Rheswm y diweddariad"
       },
       "dimension": "{{value}} enw dimensiwn",
       "measure": "{{value}} enw mesur",
