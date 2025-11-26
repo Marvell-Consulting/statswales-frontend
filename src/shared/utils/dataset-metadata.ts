@@ -21,8 +21,8 @@ export const getDatasetMetadata = async (
 
   const { rounding_applied, designation, related_links, providers, metadata } = revision;
   const { summary, quality, collection, rounding_description } = metadata;
-  const startDate = revision.coverage_start_date ? revision.coverage_start_date.toISOString() : dataset.start_date;
-  const endDate = revision.coverage_end_date ? revision.coverage_end_date.toISOString() : dataset.end_date;
+  const startDate = revision.coverage_start_date ? revision.coverage_start_date : dataset.start_date;
+  const endDate = revision.coverage_end_date ? revision.coverage_end_date : dataset.end_date;
 
   const preview: PreviewMetadata = {
     title: revision.metadata.title,
