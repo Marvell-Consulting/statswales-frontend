@@ -1635,6 +1635,10 @@
       "about": "Am y set ddata hon",
       "downloads": "Lawrlwytho"
     },
+    "history": {
+      "updates": "Diweddariadau",
+      "initial_publication": "Set ddata a gyhoeddwyd gyntaf."
+    },
     "overview": "Trosolwg",
     "no_data": "Dim data ar gael ar gyfer yr hidlwyr a ddewiswyd.  Rhowch gynnig ar ddewis gwahanol.",
     "data_view": "Golwg data",
