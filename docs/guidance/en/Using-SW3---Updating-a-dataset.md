@@ -22,14 +22,14 @@ To update any metadata, click on the relevant section from your dataset tasklist
 
 If a dataset has stopped being regularly updated, you will need to set the answer to ‘Will this dataset be regularly updated?’ to ‘No’.
 
-<!-- ### Update notes
+### Update notes
 
 A task for adding update notes will be in the 'Metadata' section of the tasklist. These notes will appear in the dataset's history section on the StatsWales website. They are required for any update.
 
 In short, simple sentences explain:
 
 - what has changed with the update
-- why the changes have been made -->
+- why the changes have been made
 
 ## Publishing
 
