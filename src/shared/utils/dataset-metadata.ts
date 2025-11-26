@@ -21,6 +21,8 @@ export const getDatasetMetadata = async (
 
   const { rounding_applied, designation, related_links, providers, metadata } = revision;
   const { summary, quality, collection, rounding_description } = metadata;
+  const startDate = revision.coverage_start_date ? revision.coverage_start_date : dataset.start_date;
+  const endDate = revision.coverage_end_date ? revision.coverage_end_date : dataset.end_date;
 
   const preview: PreviewMetadata = {
     title: revision.metadata.title,
@@ -29,7 +31,7 @@ export const getDatasetMetadata = async (
       nextUpdateAt: revision.update_frequency,
       designation,
       providers: providers?.map(({ provider_name, source_name }) => ({ provider_name, source_name })),
-      timePeriod: { start: dataset.start_date, end: dataset.end_date }
+      timePeriod: { start: startDate, end: endDate }
     },
     notes: {
       roundingApplied: rounding_applied,
