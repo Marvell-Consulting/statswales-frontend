@@ -27,5 +27,6 @@ export const topicsToBreadcrumbs = (nestedTopics: NestedTopic[], language: Local
   };
 
   traverse(nestedTopics);
+
   return result;
 };
