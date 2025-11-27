@@ -576,7 +576,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
   let previewData: ViewDTO | ViewErrDTO | undefined;
   let pagination: (string | number)[] = [];
   let previewMetadata: PreviewMetadata | undefined;
-  let publishedRevisions: RevisionDTO[] | undefined;
+  let publishedRevisions: RevisionDTO[] = [];
 
   try {
     const [datasetDTO, revisionDTO, previewDTO, filtersDTO]: [DatasetDTO, RevisionDTO, ViewDTO, FilterTable[]] =
@@ -597,7 +597,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
       publishedRevisions = await req.pubapi.getPublicationHistory(datasetId);
     }
 
-    const publicationHistory = (publishedRevisions || []).map((rev) => singleLangRevision(rev, req.language));
+    const publicationHistory = [revisionDTO, ...publishedRevisions].map((rev) => singleLangRevision(rev, req.language));
 
     for (const rev of publicationHistory) {
       if (rev?.metadata?.reason) {

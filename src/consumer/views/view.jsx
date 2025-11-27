@@ -136,7 +136,8 @@ const HistoryTab = (props) => {
               {props.publicationHistory.map((revision) => (
                 <div key={revision.id} className="govuk-summary-list__row">
                   <dt className="govuk-summary-list__key">
-                    {dateFormat(revision.publish_at, 'do MMMM yyyy', { locale: props.i18n.language })}
+                    {revision.publish_at &&
+                      dateFormat(revision.publish_at, 'do MMMM yyyy', { locale: props.i18n.language })}
                   </dt>
                   <dd
                     className="govuk-summary-list__value"
