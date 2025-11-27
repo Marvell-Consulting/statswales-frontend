@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid';
 
 import { users } from '../fixtures/logins';
 import { config } from '../../src/shared/config';
-import { completeUpdateReason, publishMinimalDataset } from './helpers/publishing-steps';
+import { completeTranslations, completeUpdateReason, publishMinimalDataset } from './helpers/publishing-steps';
 
 const baseUrl = config.frontend.publisher.url;
 
@@ -75,7 +75,7 @@ test.describe('Unpublish dataset', () => {
   test.describe('Publisher - request republish', () => {
     test.use({ storageState: users.publisher.path });
 
-    test('Update unpublished dataset and republish', async ({ page }) => {
+    test('Update unpublished dataset and republish', async ({ page }, testInfo) => {
       await page.goto(`/en-GB/publish/${datasetId}/overview`);
 
       await page.getByRole('link', { name: 'Update this dataset' }).click();
@@ -102,6 +102,8 @@ test.describe('Unpublish dataset', () => {
 
       await page.getByRole('button', { name: 'Continue' }).click();
       await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
+
+      await completeTranslations(page, testInfo, datasetId);
 
       await page.getByRole('button', { name: 'Submit for approval' }).click();
       await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);

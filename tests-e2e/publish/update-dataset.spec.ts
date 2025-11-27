@@ -6,6 +6,7 @@ import { config } from '../../src/shared/config';
 import {
   approvePublication,
   completePublicationDate,
+  completeTranslations,
   completeUpdateReason,
   publishMinimalDataset,
   rejectPublication,
@@ -45,7 +46,7 @@ test.describe('Update dataset', () => {
       await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
     });
 
-    test('Update the dataset', async ({ page }) => {
+    test('Update the dataset', async ({ page }, testInfo) => {
       await page.goto(`/en-GB/publish/${datasetId}/tasklist`);
       await page.getByRole('link', { name: 'Data table' }).click();
       await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/update-type`);
@@ -60,7 +61,7 @@ test.describe('Update dataset', () => {
       await expect(tasklistItem.locator('.govuk-tag').first()).toHaveText('Updated');
 
       await completeUpdateReason(page, datasetId, 'Adding new data for the latest period.');
-
+      await completeTranslations(page, testInfo, datasetId);
       await completePublicationDate(page, datasetId, 1);
     });
 
