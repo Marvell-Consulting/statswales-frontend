@@ -5,8 +5,7 @@ import { useLocals } from '../../../shared/views/context/Locals';
 import { TopicDTO } from '../../../shared/dtos/topic';
 import { Breadcrumb } from '../../../shared/interfaces/breadcrumb';
 import { nestTopics } from '../../../shared/utils/nested-topics';
-import { Locale } from '../../../shared/enums/locale';
-import slugify from 'slugify';
+import { topicsToBreadcrumbs } from '../../../shared/utils/topics-to-breadcrumbs';
 
 type TopicBreadcrumbsProps = {
   parentTopics: TopicDTO[];
@@ -72,31 +71,11 @@ type MultiPathBreadcrumbsProps = {
 export function MultiPathBreadcrumbs(props: MultiPathBreadcrumbsProps) {
   if (!props.topics || props.topics.length === 0) return null;
 
-  const { i18n, buildUrl } = useLocals();
+  const { i18n } = useLocals();
   const nestedTopics = nestTopics(props.topics);
-
-  const generateBreadcrumbs = (topics: TopicDTO[], language: Locale): Breadcrumb[] => {
-    return topics.reduce((breadcrumbs: Breadcrumb[], topic) => {
-      if (topic.id && topic.name) {
-        breadcrumbs.push({
-          id: topic.id.toString(),
-          label: topic.name,
-          url: buildUrl(`/topic/${topic.id}/${slugify(topic.name, { lower: true })}`, language)
-        });
-      }
-      return breadcrumbs;
-    }, []);
-  };
-
-  const breadcrumbPaths = nestedTopics.map((rootTopic) => {
-    return [
-      ...generateBreadcrumbs([rootTopic], i18n.language),
-      ...generateBreadcrumbs(rootTopic.children, i18n.language)
-    ];
-  });
+  const breadcrumbPaths = topicsToBreadcrumbs(nestedTopics, i18n.language);
 
   if (breadcrumbPaths.length === 0) return null;
-
   if (breadcrumbPaths.length === 1) return <Breadcrumbs breadcrumbs={breadcrumbPaths[0]} />;
 
   return (
