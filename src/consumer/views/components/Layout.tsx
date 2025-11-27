@@ -115,7 +115,7 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
           </div>
         )}
 
-        <div className="govuk-phase-banner app-env">
+        <div className={clsx('govuk-phase-banner', { 'app-env': appEnv !== AppEnv.Prod })}>
           <div className="govuk-width-container">
             <p className="govuk-phase-banner__content">
               <T className="govuk-phase-banner__text" raw>
