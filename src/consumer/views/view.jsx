@@ -49,7 +49,7 @@ const DataTab = (props) => {
   return (
     <div className="govuk-width-container">
       <div className="govuk-main-wrapper govuk-!-padding-top-0">
-        <NoteCodesLegend />
+        <NoteCodesLegend {...props} />
         <div className="govuk-grid-row border-top-small">
           {/* Sidebar filters */}
           <div className="govuk-grid-column-one-quarter">
