@@ -1801,6 +1801,13 @@
               "interval": "Time before publication",
               "status": "Status"
             }
+          },
+          "similar": {
+            "heading": "Similar datasets (CSV download)",
+            "by_sources": "Datasets sharing the same sources",
+            "by_facts": "Datasets with an identical fact table",
+            "by_title": "Datasets with similar titles",
+            "by_dimensions": "Datasets sharing the same dimensions"
           }
         },
         "users": {
