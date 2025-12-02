@@ -507,8 +507,8 @@ export const similarDatasets = async (req: Request, res: Response, next: NextFun
     const fileName = `similar-${similarBy}-${now}.csv`;
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
-    const similarSourcesFilestream = await req.pubapi.getSimilarDatasets(similarBy);
-    Readable.from(similarSourcesFilestream).pipe(res);
+    const similarDatasetsFilestream = await req.pubapi.getSimilarDatasets(similarBy);
+    Readable.from(similarDatasetsFilestream).pipe(res);
     return;
   } catch (err: any) {
     logger.error(err, 'there was a problem fetching similar dataset stats');
