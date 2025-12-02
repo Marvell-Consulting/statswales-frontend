@@ -17,7 +17,8 @@ import {
   emailCyValidator,
   emailEnValidator,
   emailValidator,
-  userIdValidator
+  userIdValidator,
+  similarByValidator
 } from '../validators/admin';
 import { ApiException } from '../../shared/exceptions/api.exception';
 import { OrganisationDTO } from '../../shared/dtos/organisation';
@@ -495,6 +496,11 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
 
 export const similarDatasets = async (req: Request, res: Response, next: NextFunction) => {
   const similarBy = (req.query.by as DatasetSimilarBy) || DatasetSimilarBy.Sources;
+  const similarByError = await hasError(similarByValidator(), req);
+  if (similarByError) {
+    next(new NotFoundException('errors.similar_by_invalid'));
+    return;
+  }
 
   try {
     const now = format(new Date(), 'yyyy-MM-dd-HH-mm-ss');

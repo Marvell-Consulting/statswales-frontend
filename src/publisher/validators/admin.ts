@@ -1,4 +1,5 @@
-import { body, param } from 'express-validator';
+import { body, query, param, ValidationChain } from 'express-validator';
+import { DatasetSimilarBy } from '../../shared/enums/dataset-similar-by';
 
 export const userGroupIdValidator = () => param('userGroupId').trim().notEmpty().isUUID(4);
 export const userIdValidator = () => param('userId').trim().notEmpty().isUUID(4);
@@ -37,3 +38,6 @@ export const emailCyValidator = () =>
 
 export const emailValidator = () =>
   body('email').trim().notEmpty().withMessage('missing').bail().isEmail().withMessage('invalid');
+
+export const similarByValidator = (): ValidationChain =>
+  query('by').notEmpty().trim().isIn(Object.values(DatasetSimilarBy));
