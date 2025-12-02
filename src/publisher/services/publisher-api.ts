@@ -51,6 +51,7 @@ import { DashboardStats } from '../../shared/interfaces/dashboard-stats';
 import { BuildLogEntry } from '../../shared/dtos/build-log-entry';
 import { DatasetWithBuild } from '../../shared/dtos/dataset-with-build';
 import { DimensionWithBuild } from '../../shared/dtos/dimension-with-build';
+import { DatasetSimilarBy } from '../../shared/enums/dataset-similar-by';
 
 const logger = parentLogger.child({ service: 'publisher-api' });
 
@@ -830,6 +831,13 @@ export class PublisherApi {
     logger.debug(`Fetching publication history for dataset: ${datasetId}`);
     return this.fetch({ url: `v1/${datasetId}/history` }).then(
       (response) => response.json() as unknown as RevisionDTO[]
+    );
+  }
+
+  public async getSimilarDatasets(similarBy: DatasetSimilarBy): Promise<ReadableStream> {
+    logger.debug(`Fetching similar datasets by ${similarBy}...`);
+    return this.fetch({ url: `admin/similar/datasets?by=${similarBy}` }).then(
+      (response) => response.body as ReadableStream
     );
   }
 }

@@ -5,6 +5,7 @@ import { enGB, cy } from 'date-fns/locale';
 
 import Layout from '../components/Layout';
 import Table from '../../../shared/views/components/Table';
+import { DatasetSimilarBy } from '../../../shared/enums/dataset-similar-by';
 import { statusToColour } from '../../../shared/utils/status-to-colour';
 
 const DatasetStats = (props) => {
@@ -125,6 +126,26 @@ const DatasetStats = (props) => {
         <div className="govuk-grid-column-full">
           <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.datasets.longest.heading')}</h2>
           <Table i18nBase="admin.dashboard.stats.datasets.longest.table" columns={longestCols} rows={longestRows} />
+        </div>
+      </div>
+
+      <div className="govuk-grid-row govuk-!-margin-bottom-5">
+        <div className="govuk-grid-column-two-thirds">
+          <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.datasets.similar.heading')}</h2>
+          <ul>
+            {Object.values(DatasetSimilarBy).map((by) => (
+              <li key={by}>
+                <a
+                  href={props.buildUrl(`/admin/similar/datasets?by=${by}`, props.i18n.language)}
+                  className="govuk-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {props.t(`admin.dashboard.stats.datasets.similar.by_${by}`)}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </>

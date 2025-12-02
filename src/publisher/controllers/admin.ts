@@ -1,3 +1,5 @@
+import { Readable } from 'node:stream';
+
 import { Request, Response, NextFunction } from 'express';
 import { sortBy, uniqBy } from 'lodash';
 import { FieldValidationError } from 'express-validator';
@@ -15,7 +17,8 @@ import {
   emailCyValidator,
   emailEnValidator,
   emailValidator,
-  userIdValidator
+  userIdValidator,
+  similarByValidator
 } from '../validators/admin';
 import { ApiException } from '../../shared/exceptions/api.exception';
 import { OrganisationDTO } from '../../shared/dtos/organisation';
@@ -35,13 +38,14 @@ import { GroupRole } from '../../shared/enums/group-role';
 import { RoleSelectionDTO } from '../../shared/dtos/user/role-selection-dto';
 import { getUserRoleFormValues } from '../../shared/utils/user-role-form-values';
 import { UserRoleFormValues } from '../../shared/interfaces/user-role-form-values';
-import { differenceInSeconds } from 'date-fns';
+import { differenceInSeconds, format } from 'date-fns';
 import { UserStatus } from '../../shared/enums/user-status';
 import { pageInfo } from '../../shared/utils/pagination';
 import { UserGroupAction } from '../../shared/enums/user-group-action';
 import { UserGroupStatus } from '../../shared/enums/user-group-status';
 import { i18next } from '../../shared/middleware/translation';
 import { DashboardStats } from '../../shared/interfaces/dashboard-stats';
+import { DatasetSimilarBy } from '../../shared/enums/dataset-similar-by';
 
 export const fetchUserGroup = async (req: Request, res: Response, next: NextFunction) => {
   const userGroupIdError = await hasError(userGroupIdValidator(), req);
@@ -487,5 +491,31 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
       return;
     }
     next(new NotFoundException('errors.dashboard_stats_missing'));
+  }
+};
+
+export const similarDatasets = async (req: Request, res: Response, next: NextFunction) => {
+  const similarBy = (req.query.by as DatasetSimilarBy) || DatasetSimilarBy.Sources;
+  const similarByError = await hasError(similarByValidator(), req);
+  if (similarByError) {
+    next(new NotFoundException('errors.similar_by_invalid'));
+    return;
+  }
+
+  try {
+    const now = format(new Date(), 'yyyy-MM-dd-HH-mm-ss');
+    const fileName = `similar-${similarBy}-${now}.csv`;
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+    const similarDatasetsFilestream = await req.pubapi.getSimilarDatasets(similarBy);
+    Readable.from(similarDatasetsFilestream).pipe(res);
+    return;
+  } catch (err: any) {
+    logger.error(err, 'there was a problem fetching similar dataset stats');
+    if ([401, 403].includes(err.status)) {
+      next(err);
+      return;
+    }
+    next(new NotFoundException('errors.similar_datasets_missing'));
   }
 };
