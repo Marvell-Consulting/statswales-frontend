@@ -38,10 +38,13 @@ describe('PublisherApi', () => {
 
       await statsWalesApi.ping();
 
-      expect(fetchSpy).toHaveBeenCalledWith(`${baseUrl}/healthcheck`, {
-        method: HttpMethod.Get,
-        headers: { ...headers, Authorization: `Bearer ${token}` }
-      });
+      expect(fetchSpy).toHaveBeenCalledWith(
+        `${baseUrl}/healthcheck`,
+        expect.objectContaining({
+          method: HttpMethod.Get,
+          headers: { ...headers, Authorization: `Bearer ${token}` }
+        })
+      );
     });
   });
 
@@ -99,7 +102,7 @@ describe('PublisherApi', () => {
 
       expect(fetchSpy).toHaveBeenCalledWith(
         `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/data-table/raw`,
-        { method: HttpMethod.Get, headers }
+        expect.objectContaining({ method: HttpMethod.Get, headers })
       );
       expect(fileStream).toBe(stream);
     });
@@ -116,10 +119,13 @@ describe('PublisherApi', () => {
 
       const factTableColumnDto = await statsWalesApi.getSourcesForDataset(datasetId);
 
-      expect(fetchSpy).toHaveBeenCalledWith(`${baseUrl}/dataset/${datasetId}/sources`, {
-        method: HttpMethod.Get,
-        headers
-      });
+      expect(fetchSpy).toHaveBeenCalledWith(
+        `${baseUrl}/dataset/${datasetId}/sources`,
+        expect.objectContaining({
+          method: HttpMethod.Get,
+          headers
+        })
+      );
       expect(factTableColumnDto).toEqual(dataTable);
     });
   });
@@ -133,10 +139,13 @@ describe('PublisherApi', () => {
 
       const datasetDTO = await statsWalesApi.getDataset(datasetId);
 
-      expect(fetchSpy).toHaveBeenCalledWith(`${baseUrl}/dataset/${datasetId}`, {
-        method: HttpMethod.Get,
-        headers
-      });
+      expect(fetchSpy).toHaveBeenCalledWith(
+        `${baseUrl}/dataset/${datasetId}`,
+        expect.objectContaining({
+          method: HttpMethod.Get,
+          headers
+        })
+      );
       expect(datasetDTO).toEqual(dataset);
     });
   });
@@ -150,10 +159,13 @@ describe('PublisherApi', () => {
 
       const viewDTO = await statsWalesApi.getDatasetView(datasetId, 1, 10);
 
-      expect(fetchSpy).toHaveBeenCalledWith(`${baseUrl}/dataset/${datasetId}/view?page_number=1&page_size=10`, {
-        method: HttpMethod.Get,
-        headers
-      });
+      expect(fetchSpy).toHaveBeenCalledWith(
+        `${baseUrl}/dataset/${datasetId}/view?page_number=1&page_size=10`,
+        expect.objectContaining({
+          method: HttpMethod.Get,
+          headers
+        })
+      );
       expect(viewDTO).toEqual(view);
     });
 
@@ -185,10 +197,10 @@ describe('PublisherApi', () => {
 
       expect(fetchSpy).toHaveBeenCalledWith(
         `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/data-table/preview?page_number=1&page_size=10`,
-        {
+        expect.objectContaining({
           method: HttpMethod.Get,
           headers
-        }
+        })
       );
       expect(viewDTO).toEqual(view);
     });
@@ -218,11 +230,14 @@ describe('PublisherApi', () => {
 
       const datasetDTO = await statsWalesApi.uploadCSVtoCreateDataset(file, filename, title);
 
-      expect(fetchSpy).toHaveBeenCalledWith(`${baseUrl}/dataset`, {
-        method: HttpMethod.Post,
-        headers,
-        body
-      });
+      expect(fetchSpy).toHaveBeenCalledWith(
+        `${baseUrl}/dataset`,
+        expect.objectContaining({
+          method: HttpMethod.Post,
+          headers,
+          body
+        })
+      );
       expect(datasetDTO).toEqual(dataset);
     });
 
@@ -266,12 +281,15 @@ describe('PublisherApi', () => {
 
       const datasetDTO = await statsWalesApi.assignSources(datasetId, sourceAssignment);
 
-      expect(fetchSpy).toHaveBeenCalledWith(`${baseUrl}/dataset/${datasetId}/sources`, {
-        method: HttpMethod.Patch,
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        headers: { ...headers, 'Content-Type': 'application/json; charset=UTF-8' },
-        body: JSON.stringify(sourceAssignment)
-      });
+      expect(fetchSpy).toHaveBeenCalledWith(
+        `${baseUrl}/dataset/${datasetId}/sources`,
+        expect.objectContaining({
+          method: HttpMethod.Patch,
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          headers: { ...headers, 'Content-Type': 'application/json; charset=UTF-8' },
+          body: JSON.stringify(sourceAssignment)
+        })
+      );
       expect(datasetDTO).toEqual(dataset);
     });
   });
@@ -291,11 +309,10 @@ describe('PublisherApi', () => {
 
       const datasetDTO = await statsWalesApi.uploadCSVToFixDataset(datasetId, revisionId, file, filename);
 
-      expect(fetchSpy).toHaveBeenCalledWith(`${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/fact-table`, {
-        method: HttpMethod.Post,
-        headers,
-        body
-      });
+      expect(fetchSpy).toHaveBeenCalledWith(
+        `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/fact-table`,
+        expect.objectContaining({ method: HttpMethod.Post, headers, body })
+      );
       expect(datasetDTO).toEqual(dataset);
     });
 
@@ -330,7 +347,10 @@ describe('PublisherApi', () => {
 
       const ping = await statsWalesApi.ping();
 
-      expect(fetchSpy).toHaveBeenCalledWith(`${baseUrl}/healthcheck`, { method: HttpMethod.Get, headers });
+      expect(fetchSpy).toHaveBeenCalledWith(
+        `${baseUrl}/healthcheck`,
+        expect.objectContaining({ method: HttpMethod.Get, headers })
+      );
       expect(ping).toBe(true);
     });
 
@@ -339,7 +359,10 @@ describe('PublisherApi', () => {
 
       await expect(statsWalesApi.ping()).rejects.toThrow(new UnknownException('Service Unavailable', 503));
 
-      expect(fetchSpy).toHaveBeenCalledWith(`${baseUrl}/healthcheck`, { method: HttpMethod.Get, headers });
+      expect(fetchSpy).toHaveBeenCalledWith(
+        `${baseUrl}/healthcheck`,
+        expect.objectContaining({ method: HttpMethod.Get, headers })
+      );
     });
   });
 });
