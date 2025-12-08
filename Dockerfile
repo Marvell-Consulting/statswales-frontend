@@ -2,7 +2,7 @@
 
 # This is the initial build image
 # It installs the dependencies and transpiles the TypeScript code to JavaScript.
-FROM node:22-slim AS builder
+FROM node:24-slim AS builder
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ COPY . ./
 RUN npm run build
 
 # This is the deployable image
-FROM node:22-alpine AS runner
+FROM node:24-alpine AS runner
 
 RUN apk update && apk upgrade && apk add --no-cache curl
 
