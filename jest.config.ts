@@ -1,7 +1,13 @@
 import type { Config } from 'jest';
+import { createJsWithTsPreset } from 'ts-jest';
 
 const config: Config = {
-  transformIgnorePatterns: ['/node_modules/(?!(marked|nanoid|until-async)/)'],
+  ...createJsWithTsPreset({ tsconfig: 'tsconfig.test.json' }),
+  extensionsToTreatAsEsm: ['.ts'],
+  transformIgnorePatterns: ['/node_modules/(?!(marked|nanoid|until-async|jsdom|parse5)/)'],
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1'
+  },
   verbose: true,
   reporters: ['default', ['jest-junit', { outputDirectory: 'coverage/test-report', outputName: 'junit-report.xml' }]],
   testEnvironment: 'node',
