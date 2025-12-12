@@ -203,4 +203,26 @@ export class ConsumerApi {
       (response) => response.json() as unknown as RevisionDTO[]
     );
   }
+
+  public async search(
+    searchTerm: string,
+    pageNumber = 1,
+    pageSize = 20,
+    sortBy?: SortByInterface
+  ): Promise<ResultsetWithCount<DatasetListItemDTO>> {
+    logger.debug(`Searching for: ${searchTerm}`);
+    const query = new URLSearchParams({
+      q: searchTerm,
+      page_number: pageNumber.toString(),
+      page_size: pageSize.toString()
+    });
+
+    if (sortBy) {
+      query.append('sort_by', JSON.stringify([sortBy]));
+    }
+
+    return this.fetch({ url: 'v1/search', query }).then(
+      (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
+    );
+  }
 }
