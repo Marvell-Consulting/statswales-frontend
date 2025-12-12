@@ -211,3 +211,20 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
     next(err);
   }
 };
+
+export const search = async (req: Request, res: Response, next: NextFunction) => {
+  const searchTerm = req.query.q as string;
+
+  logger.info(`searching published datasets for term: ${searchTerm}`);
+
+  try {
+    const results: ResultsetWithCount<DatasetListItemDTO> = await req.conapi.search(searchTerm);
+    const { data: searchResults, count } = results;
+
+    console.log(searchResults)
+
+    res.render('search', { searchTerm, searchResults, count });
+  } catch (err) {
+    next(err);
+  }
+};

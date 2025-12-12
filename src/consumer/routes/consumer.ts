@@ -4,6 +4,7 @@ import basicAuth from 'express-basic-auth';
 import {
   listTopics,
   downloadPublishedDataset,
+  search,
   viewPublishedDataset,
   listPublishedDatasets,
   downloadPublishedMetadata
@@ -28,6 +29,8 @@ if (config.auth.basic?.username && config.auth.basic?.password) {
 }
 
 consumer.get('/', listTopics);
+
+consumer.get('/search', search);
 
 consumer.get('/all', listPublishedDatasets);
 
