@@ -1,6 +1,8 @@
 import { ReadableStream } from 'node:stream/web';
 import { performance } from 'node:perf_hooks';
 
+import LZString from 'lz-string';
+
 import { ViewDTO } from '../../shared/dtos/view-dto';
 import { DatasetDTO } from '../../shared/dtos/dataset';
 import { RevisionMetadataDTO } from '../../shared/dtos/revision-metadata';
@@ -406,21 +408,58 @@ export class PublisherApi {
       `Fetching preview for dataset: ${datasetId}, revision: ${revisionId}, page: ${pageNumber}, pageSize: ${pageSize}`
     );
 
-    const query = new URLSearchParams({
+    // const query = new URLSearchParams({
+    //   page_number: String(pageNumber),
+    //   page_size: String(pageSize)
+    // });
+
+    // if (filter && filter.length) {
+    //   query.set('filter', JSON.stringify(filter));
+    // }
+
+    // if (sortBy) {
+    //   query.set('sort_by', JSON.stringify([sortBy]));
+    // }
+
+    const query = {
       page_number: String(pageNumber),
-      page_size: String(pageSize)
-    });
+      page_size: String(pageSize),
+      filter,
+      sort_by: sortBy
+    };
+    const queryString = JSON.stringify(query);
+    const compressedQ = LZString.compressToEncodedURIComponent(queryString);
 
-    if (filter && filter.length) {
-      query.set('filter', JSON.stringify(filter));
-    }
-
-    if (sortBy) {
-      query.set('sort_by', JSON.stringify([sortBy]));
-    }
+    console.log({ query, queryString, compressedQ });
 
     return this.fetch({
-      url: `dataset/${datasetId}/revision/by-id/${revisionId}/preview?${query}`
+      url: `dataset/${datasetId}/revision/by-id/${revisionId}/preview?q=${compressedQ}`
+    }).then((response) => response.json() as unknown as ViewDTO);
+  }
+
+  public async postRevisionPreview(
+    datasetId: string,
+    revisionId: string,
+    pageNumber: number,
+    pageSize: number,
+    sortBy?: SortByInterface,
+    filter?: Filter[]
+  ): Promise<ViewDTO> {
+    logger.debug(
+      `Fetching preview for dataset: ${datasetId}, revision: ${revisionId}, page: ${pageNumber}, pageSize: ${pageSize}`
+    );
+
+    const query = {
+      page_number: pageNumber,
+      page_size: pageSize,
+      sort_by: sortBy,
+      filter: filter
+    };
+
+    return this.fetch({
+      url: `dataset/${datasetId}/revision/by-id/${revisionId}/preview`,
+      method: HttpMethod.Post,
+      json: query
     }).then((response) => response.json() as unknown as ViewDTO);
   }
 

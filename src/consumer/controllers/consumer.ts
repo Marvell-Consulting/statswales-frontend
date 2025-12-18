@@ -101,7 +101,9 @@ export const listPublishedDatasets = async (req: Request, res: Response, next: N
 export const viewPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
   const dataset = singleLangDataset(res.locals.dataset, req.language);
   const revision = dataset.published_revision;
-  const query = qs.parse(req.originalUrl.split('?')[1]);
+
+  // Parse query parameters from URL or request body (for POST requests)
+  const query = req.method === 'POST' ? req.body : qs.parse(req.originalUrl.split('?')[1]);
   const pageNumber = Number.parseInt(query.page_number as string, 10) || 1;
   const pageSize = Number.parseInt(query.page_size as string, 10) || DEFAULT_PAGE_SIZE;
   const sortBy = query.sort_by as unknown as SortByInterface;

@@ -145,7 +145,9 @@ export class ConsumerApi {
       query.append('sort_by', JSON.stringify([sortBy]));
     }
 
-    return this.fetch({ url: `v1/${datasetId}/view`, query }).then((response) => response.json() as unknown as ViewDTO);
+    return this.fetch({ url: `v1/${datasetId}/view`, method: HttpMethod.Post, query }).then(
+      (response) => response.json() as unknown as ViewDTO
+    );
   }
 
   public async getPublishedDatasetFilters(datasetId: string): Promise<FilterTable[]> {
