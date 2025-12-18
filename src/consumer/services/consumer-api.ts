@@ -12,7 +12,7 @@ import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count
 import { ViewDTO } from '../../shared/dtos/view-dto';
 import { FileFormat } from '../../shared/enums/file-format';
 import { PublishedTopicsDTO } from '../../shared/dtos/published-topics-dto';
-import { Filter } from '../../shared/interfaces/filter';
+import { Filter, FilterV2 } from '../../shared/interfaces/filter';
 import { FilterTable } from '../../shared/dtos/filter-table';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
@@ -152,6 +152,36 @@ export class ConsumerApi {
     logger.debug(`Fetching published view of dataset: ${datasetId}`);
     return this.fetch({ url: `v1/${datasetId}/view/filters` }).then(
       (response) => response.json() as unknown as FilterTable[]
+    );
+  }
+
+  public async generateFilterId(datasetId: string, selectedFilters: FilterV2[]): Promise<string> {
+    logger.debug(`Generating filter ID for dataset: ${datasetId}`);
+    return this.fetch({
+      method: HttpMethod.Post,
+      url: `v2/${datasetId}/data`,
+      json: { filters: selectedFilters }
+    }).then((response) => response.json().then((data) => data.filterId as string));
+  }
+
+  public async getFilteredDatasetView(
+    datasetId: string,
+    filterId: string,
+    pageNumber: number,
+    pageSize: number,
+    sortBy?: SortByInterface
+  ): Promise<ViewDTO> {
+    logger.debug(`Fetching filtered view of dataset: ${datasetId} with filter ID: ${filterId}`);
+    const query = new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString() });
+
+    if (sortBy) {
+      query.append('sort_by', JSON.stringify([sortBy]));
+    }
+
+    query.append('format', 'frontend');
+
+    return this.fetch({ url: `v2/${datasetId}/data/${filterId}`, query }).then(
+      (response) => response.json() as unknown as ViewDTO
     );
   }
 
