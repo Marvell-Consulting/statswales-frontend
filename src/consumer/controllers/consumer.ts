@@ -169,6 +169,12 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
   }
 
   const filterId = req.params.filterId;
+
+  if (!filterId) {
+    next(new NotFoundException('filter id is required'));
+    return;
+  }
+
   const { pageNumber, pageSize, sortBy } = parsePageOptions(req);
 
   const [datasetMetadata, view, filters, publishedRevisions]: [

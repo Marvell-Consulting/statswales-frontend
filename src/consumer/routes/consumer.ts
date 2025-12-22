@@ -37,7 +37,7 @@ consumer.get('/topic/:topicId{/:topicSlug}', listTopics);
 
 consumer.get('/:datasetId', fetchPublishedDataset, viewPublishedDataset);
 consumer.post('/:datasetId/filtered', jsonParser, fetchPublishedDataset, viewFilteredDataset);
-consumer.get('/:datasetId/filtered{/:filterId}', jsonParser, fetchPublishedDataset, viewFilteredDataset);
+consumer.get('/:datasetId/filtered{/:filterId}', fetchPublishedDataset, viewFilteredDataset);
 
 consumer.get('/:datasetId/download/metadata', fetchPublishedDataset, downloadPublishedMetadata);
 consumer.get('/:datasetId/download', fetchPublishedDataset, downloadPublishedDataset);
