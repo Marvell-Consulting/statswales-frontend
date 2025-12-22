@@ -53,7 +53,7 @@ const DataTab = (props) => {
         <div className="govuk-grid-row border-top-small">
           {/* Sidebar filters */}
           <div className="govuk-grid-column-one-quarter">
-            <form method="get">
+            <form method="POST" action={props.buildUrl(`/${props.dataset.id}/filtered`, props.i18n.language)}>
               <h2 className="govuk-heading-m">{props.t('consumer_view.options')}</h2>
               <div className="govuk-form-group">
                 <label className="govuk-label region-subhead" htmlFor="page_size">

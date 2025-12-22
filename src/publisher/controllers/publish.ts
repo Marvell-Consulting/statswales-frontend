@@ -566,7 +566,9 @@ export const deleteDraft = async (req: Request, res: Response) => {
 
 export const cubePreview = async (req: Request, res: Response, next: NextFunction) => {
   const { id: datasetId, end_revision_id: endRevisionId } = res.locals.dataset;
-  const query = qs.parse(req.originalUrl.split('?')[1]);
+
+  // Parse query parameters from URL or request body (for POST requests)
+  const query = req.method === 'POST' ? req.body : qs.parse(req.originalUrl.split('?')[1]);
   const pageNumber = Number.parseInt(query.page_number as string, 10) || 1;
   const pageSize = Number.parseInt(query.page_size as string, 10) || DEFAULT_PAGE_SIZE;
   const sortBy = query.sort_by as unknown as SortByInterface;

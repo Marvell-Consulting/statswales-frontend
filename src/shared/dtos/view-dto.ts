@@ -2,6 +2,7 @@ import { ViewError } from './view-error';
 import { DatasetDTO } from './dataset';
 import { DataTableDto } from './data-table';
 import { FactTableColumnType } from './fact-table-column-type';
+import { Filter, FilterV2 } from '../interfaces/filter';
 
 export interface ColumnHeader {
   index: number;
@@ -38,4 +39,21 @@ export interface ViewDTO {
   data: string[][];
   note_codes?: string[];
   extension?: object;
+  filters?: Filter[];
+}
+
+export interface ViewV2DTO {
+  status: number;
+  dataset: DatasetDTO;
+  data_table: DataTableDto;
+  current_page: number;
+  page_info: PageInfo;
+  pages: (string | number)[];
+  page_size: number;
+  total_pages: number;
+  headers: ColumnHeader[];
+  data: string[][];
+  note_codes?: string[];
+  extension?: object;
+  filters?: FilterV2[];
 }
