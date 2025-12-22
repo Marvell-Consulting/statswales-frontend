@@ -9,7 +9,7 @@ import { ApiException } from '../../shared/exceptions/api.exception';
 import { Locale } from '../../shared/enums/locale';
 import { DatasetListItemDTO } from '../../shared/dtos/dataset-list-item';
 import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count';
-import { ViewDTO } from '../../shared/dtos/view-dto';
+import { ViewDTO, ViewV2DTO } from '../../shared/dtos/view-dto';
 import { FileFormat } from '../../shared/enums/file-format';
 import { PublishedTopicsDTO } from '../../shared/dtos/published-topics-dto';
 import { Filter, FilterV2 } from '../../shared/interfaces/filter';
@@ -170,7 +170,7 @@ export class ConsumerApi {
     pageNumber: number,
     pageSize: number,
     sortBy?: SortByInterface
-  ): Promise<ViewDTO> {
+  ): Promise<ViewV2DTO> {
     logger.debug(`Fetching filtered view of dataset: ${datasetId} with filter ID: ${filterId}`);
     const query = new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString() });
 
@@ -181,7 +181,7 @@ export class ConsumerApi {
     query.append('format', 'frontend');
 
     return this.fetch({ url: `v2/${datasetId}/data/${filterId}`, query }).then(
-      (response) => response.json() as unknown as ViewDTO
+      (response) => response.json() as unknown as ViewV2DTO
     );
   }
 

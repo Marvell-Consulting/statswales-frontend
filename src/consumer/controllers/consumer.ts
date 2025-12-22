@@ -19,9 +19,9 @@ import { Locale } from '../../shared/enums/locale';
 import { config } from '../../shared/config';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { TopicDTO } from '../../shared/dtos/topic';
-import { parseFiltersV2 } from '../../shared/utils/parse-filters';
+import { parseFiltersV2, v2FiltersToV1 } from '../../shared/utils/parse-filters';
 import { FilterTable } from '../../shared/dtos/filter-table';
-import { ViewDTO } from '../../shared/dtos/view-dto';
+import { ViewDTO, ViewV2DTO } from '../../shared/dtos/view-dto';
 import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
 import { singleLangTopic } from '../../shared/utils/single-lang-topic';
 import { RevisionDTO } from '../../shared/dtos/revision';
@@ -171,13 +171,17 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
   const filterId = req.params.filterId;
   const { pageNumber, pageSize, sortBy } = parsePageOptions(req);
 
-  const [datasetMetadata, view, filters, publishedRevisions]: [PreviewMetadata, ViewDTO, FilterTable[], RevisionDTO[]] =
-    await Promise.all([
-      getDatasetMetadata(dataset, revision),
-      req.conapi.getFilteredDatasetView(dataset.id, filterId, pageNumber, pageSize, sortBy),
-      req.conapi.getPublishedDatasetFilters(dataset.id),
-      req.conapi.getPublicationHistory(dataset.id)
-    ]);
+  const [datasetMetadata, view, filters, publishedRevisions]: [
+    PreviewMetadata,
+    ViewV2DTO,
+    FilterTable[],
+    RevisionDTO[]
+  ] = await Promise.all([
+    getDatasetMetadata(dataset, revision),
+    req.conapi.getFilteredDatasetView(dataset.id, filterId, pageNumber, pageSize, sortBy),
+    req.conapi.getPublishedDatasetFilters(dataset.id),
+    req.conapi.getPublicationHistory(dataset.id)
+  ]);
 
   const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
   const pagination = pageInfo(view.current_page, pageSize, view.page_info?.total_records || 0);
@@ -196,7 +200,7 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
     filters,
     topics,
     publicationHistory,
-    selectedFilterOptions: view.filters || [],
+    selectedFilterOptions: view.filters ? v2FiltersToV1(view.filters) : [],
     shorthandUrl: req.buildUrl(`/shorthand`, req.language),
     isUnpublished: revision?.unpublished_at || false,
     isArchived: (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false

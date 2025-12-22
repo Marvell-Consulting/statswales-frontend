@@ -46,3 +46,13 @@ export const parseFilters = (filters: ParsedQs | undefined): Filter[] => {
 export const parseFiltersV2 = (filters: ParsedQs | undefined): FilterV2[] => {
   return parseFilters(filters).map((filter) => ({ [filter.columnName]: filter.values }));
 };
+
+export const v2FiltersToV1 = (filtersV2: FilterV2[]): Filter[] => {
+  const filtersV1: Filter[] = [];
+  filtersV2.forEach((filterV2) => {
+    Object.keys(filterV2).forEach((columnName) => {
+      filtersV1.push({ columnName, values: filterV2[columnName] });
+    });
+  });
+  return filtersV1;
+};
