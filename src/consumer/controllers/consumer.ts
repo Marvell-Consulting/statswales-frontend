@@ -4,6 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import { omit } from 'lodash';
 import slugify from 'slugify';
 import { stringify } from 'csv-stringify/sync';
+import qs from 'qs';
 
 import { DatasetListItemDTO } from '../../shared/dtos/dataset-list-item';
 import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count';
@@ -101,7 +102,8 @@ export const listPublishedDatasets = async (req: Request, res: Response, next: N
 const parsePageOptions = (req: Request) => {
   const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
   const pageSize = Number.parseInt(req.query.page_size as string, 10) || DEFAULT_PAGE_SIZE;
-  const sortBy = req.query.sort_by as unknown as SortByInterface;
+  const query = qs.parse(req.originalUrl.split('?')[1]);
+  const sortBy = query.sort_by as unknown as SortByInterface;
   return { pageNumber, pageSize, sortBy };
 };
 
@@ -110,7 +112,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   const revision = dataset.published_revision;
   const isUnpublished = revision?.unpublished_at || false;
   const isArchived = (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false;
-  const selectedFilterOptions: Filter[] = [];
+  const noFilters: Filter[] = [];
   const { pageNumber, pageSize, sortBy } = parsePageOptions(req);
 
   if (!revision) {
@@ -118,20 +120,16 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
     return;
   }
 
-  const [datasetMetadata, preview, filters, publishedRevisions]: [
-    PreviewMetadata,
-    ViewDTO,
-    FilterTable[],
-    RevisionDTO[]
-  ] = await Promise.all([
-    getDatasetMetadata(dataset, revision),
-    req.conapi.getPublishedDatasetView(dataset.id, pageNumber, pageSize, sortBy, selectedFilterOptions),
-    req.conapi.getPublishedDatasetFilters(dataset.id),
-    req.conapi.getPublicationHistory(dataset.id)
-  ]);
+  const [datasetMetadata, view, filters, publishedRevisions]: [PreviewMetadata, ViewDTO, FilterTable[], RevisionDTO[]] =
+    await Promise.all([
+      getDatasetMetadata(dataset, revision),
+      req.conapi.getPublishedDatasetView(dataset.id, pageNumber, pageSize, sortBy, noFilters),
+      req.conapi.getPublishedDatasetFilters(dataset.id),
+      req.conapi.getPublicationHistory(dataset.id)
+    ]);
 
   const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
-  const pagination = pageInfo(preview.current_page, pageSize, preview.page_info?.total_records || 0);
+  const pagination = pageInfo(view.current_page, pageSize, view.page_info?.total_records || 0);
   const publicationHistory = publishedRevisions.map((rev) => singleLangRevision(rev, req.language));
 
   for (const rev of publicationHistory) {
@@ -141,13 +139,13 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   }
 
   res.render('view', {
-    ...preview,
+    ...view,
     ...pagination,
     datasetMetadata,
     filters,
     topics,
     publicationHistory,
-    selectedFilterOptions,
+    selectedFilterOptions: noFilters,
     shorthandUrl: req.buildUrl(`/shorthand`, req.language),
     isUnpublished,
     isArchived
