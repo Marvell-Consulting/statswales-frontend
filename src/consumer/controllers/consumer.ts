@@ -164,7 +164,8 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
   if (req.method === 'POST') {
     const selectedFilters: FilterV2[] = parseFiltersV2(req.body.filter);
     const filterId = await req.conapi.generateFilterId(dataset.id, selectedFilters);
-    res.redirect(req.buildUrl(`/${dataset.id}/filtered/${filterId}`, req.language));
+    const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
+    res.redirect(req.buildUrl(`/${dataset.id}/filtered/${filterId}`, req.language, { page_size: pageSize.toString() }));
     return;
   }
 
