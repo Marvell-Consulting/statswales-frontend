@@ -1,4 +1,4 @@
-import express, { Router } from 'express';
+import { Router } from 'express';
 import basicAuth from 'express-basic-auth';
 
 import {
@@ -14,7 +14,6 @@ import { config } from '../../shared/config';
 import { logger } from '../../shared/utils/logger';
 
 export const consumer = Router();
-const jsonParser = express.json();
 
 if (config.auth.basic?.username && config.auth.basic?.password) {
   logger.warn('Consumer view password configured, basic auth enabled for consumer routes');
@@ -36,7 +35,7 @@ consumer.get('/all', listPublishedDatasets);
 consumer.get('/topic/:topicId{/:topicSlug}', listTopics);
 
 consumer.get('/:datasetId', fetchPublishedDataset, viewPublishedDataset);
-consumer.post('/:datasetId/filtered', jsonParser, fetchPublishedDataset, viewFilteredDataset);
+consumer.post('/:datasetId/filtered', fetchPublishedDataset, viewFilteredDataset);
 consumer.get('/:datasetId/filtered{/:filterId}', fetchPublishedDataset, viewFilteredDataset);
 
 consumer.get('/:datasetId/download/metadata', fetchPublishedDataset, downloadPublishedMetadata);
