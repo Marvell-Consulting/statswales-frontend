@@ -17,6 +17,12 @@ export interface PageInfo {
   end_record: number | undefined;
 }
 
+export interface PageInfoV2 extends PageInfo {
+  current_page: number;
+  page_size: number;
+  total_pages: number;
+}
+
 export interface ViewErrDTO {
   status: number;
   errors: ViewError[];
@@ -42,6 +48,10 @@ export interface ViewDTO {
   filters?: Filter[];
 }
 
-export interface ViewV2DTO extends Omit<ViewDTO, 'filters'> {
+export interface ViewV2DTO {
+  dataset: DatasetDTO;
   filters?: FilterV2[];
+  headers: ColumnHeader[];
+  data: string[][];
+  page_info: PageInfoV2;
 }

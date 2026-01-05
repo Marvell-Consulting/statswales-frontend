@@ -190,7 +190,7 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
   ]);
 
   const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
-  const pagination = pageInfo(view.current_page, pageSize, view.page_info?.total_records || 0);
+  const pagination = pageInfo(view.page_info?.current_page, pageSize, view.page_info?.total_records || 0);
   const publicationHistory = publishedRevisions.map((rev) => singleLangRevision(rev, req.language));
 
   for (const rev of publicationHistory) {
