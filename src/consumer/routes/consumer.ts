@@ -6,7 +6,8 @@ import {
   downloadPublishedDataset,
   viewPublishedDataset,
   listPublishedDatasets,
-  downloadPublishedMetadata
+  downloadPublishedMetadata,
+  viewFilteredDataset
 } from '../controllers/consumer';
 import { fetchPublishedDataset } from '../middleware/fetch-dataset';
 import { config } from '../../shared/config';
@@ -34,6 +35,8 @@ consumer.get('/all', listPublishedDatasets);
 consumer.get('/topic/:topicId{/:topicSlug}', listTopics);
 
 consumer.get('/:datasetId', fetchPublishedDataset, viewPublishedDataset);
+consumer.post('/:datasetId/filtered', fetchPublishedDataset, viewFilteredDataset);
+consumer.get('/:datasetId/filtered{/:filterId}', fetchPublishedDataset, viewFilteredDataset);
 
 consumer.get('/:datasetId/download/metadata', fetchPublishedDataset, downloadPublishedMetadata);
 consumer.get('/:datasetId/download', fetchPublishedDataset, downloadPublishedDataset);

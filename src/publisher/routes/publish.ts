@@ -93,6 +93,7 @@ publish.post('/:datasetId/delete', fetchDataset(Include.Meta), deleteDraft);
 
 /* Cube Preview */
 publish.get('/:datasetId/cube-preview', fetchDataset(), cubePreview);
+publish.post('/:datasetId/cube-preview', fetchDataset(), upload.none(), cubePreview);
 publish.get('/:datasetId/download', fetchDataset(), downloadDataset);
 publish.get('/:datasetId/download/metadata', fetchDataset(), downloadMetadata);
 

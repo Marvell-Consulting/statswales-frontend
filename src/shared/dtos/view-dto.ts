@@ -2,6 +2,7 @@ import { ViewError } from './view-error';
 import { DatasetDTO } from './dataset';
 import { DataTableDto } from './data-table';
 import { FactTableColumnType } from './fact-table-column-type';
+import { Filter, FilterV2 } from '../interfaces/filter';
 
 export interface ColumnHeader {
   index: number;
@@ -14,6 +15,12 @@ export interface PageInfo {
   total_records: number | undefined;
   start_record: number | undefined;
   end_record: number | undefined;
+}
+
+export interface PageInfoV2 extends PageInfo {
+  current_page: number;
+  page_size: number;
+  total_pages: number;
 }
 
 export interface ViewErrDTO {
@@ -38,4 +45,13 @@ export interface ViewDTO {
   data: string[][];
   note_codes?: string[];
   extension?: object;
+  filters?: Filter[];
+}
+
+export interface ViewV2DTO {
+  dataset: DatasetDTO;
+  filters?: FilterV2[];
+  headers: ColumnHeader[];
+  data: string[][];
+  page_info: PageInfoV2;
 }
