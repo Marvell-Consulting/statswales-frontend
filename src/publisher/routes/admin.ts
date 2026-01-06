@@ -42,12 +42,7 @@ admin.get('/group/:userGroupId/name', fetchUserGroup, provideGroupName);
 admin.post('/group/:userGroupId/name', fetchUserGroup, bodyParser, provideGroupName);
 
 admin.get('/group/:userGroupId/organisation', fetchUserGroup, provideOrganisation);
-admin.post(
-  '/group/:userGroupId/organisation',
-  fetchUserGroup,
-  express.urlencoded({ extended: true }),
-  provideOrganisation
-);
+admin.post('/group/:userGroupId/organisation', fetchUserGroup, bodyParser, provideOrganisation);
 
 admin.get('/group/:userGroupId/email', fetchUserGroup, provideGroupEmail);
 admin.post('/group/:userGroupId/email', fetchUserGroup, bodyParser, provideGroupEmail);
