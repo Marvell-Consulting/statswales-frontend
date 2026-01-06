@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import express, { Router } from 'express';
 import basicAuth from 'express-basic-auth';
 
 import {
@@ -35,7 +35,12 @@ consumer.get('/all', listPublishedDatasets);
 consumer.get('/topic/:topicId{/:topicSlug}', listTopics);
 
 consumer.get('/:datasetId', fetchPublishedDataset, viewPublishedDataset);
-consumer.post('/:datasetId/filtered', fetchPublishedDataset, viewFilteredDataset);
+consumer.post(
+  '/:datasetId/filtered',
+  express.urlencoded({ extended: true, limit: '10mb', parameterLimit: 50000 }),
+  fetchPublishedDataset,
+  viewFilteredDataset
+);
 consumer.get('/:datasetId/filtered{/:filterId}', fetchPublishedDataset, viewFilteredDataset);
 
 consumer.get('/:datasetId/download/metadata', fetchPublishedDataset, downloadPublishedMetadata);

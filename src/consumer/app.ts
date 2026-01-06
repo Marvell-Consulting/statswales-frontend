@@ -40,7 +40,6 @@ app.use('/assets', express.static(path.join(__dirname, '../public')));
 app.use(handleAsset404);
 
 // enable middleware
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(httpLogger);
 app.use(cookieParser());

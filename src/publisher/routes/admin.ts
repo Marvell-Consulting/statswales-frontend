@@ -1,5 +1,4 @@
-import { Router, Request, Response, NextFunction } from 'express';
-import multer from 'multer';
+import express, { Router, Request, Response, NextFunction } from 'express';
 
 import {
   listUserGroups,
@@ -23,8 +22,7 @@ import { flashMessages } from '../../shared/middleware/flash';
 import { noCache } from '../../shared/middleware/no-cache';
 
 export const admin = Router();
-
-const upload = multer({ storage: multer.memoryStorage() });
+const bodyParser = express.urlencoded({ extended: true });
 
 admin.use(ensureAdmin, noCache, flashMessages);
 
@@ -36,21 +34,21 @@ admin.use('/group', (req: Request, res: Response, next: NextFunction) => {
 admin.get('/group', listUserGroups);
 
 admin.get('/group/create', provideGroupName);
-admin.post('/group/create', upload.none(), provideGroupName);
+admin.post('/group/create', bodyParser, provideGroupName);
 
 admin.get('/group/:userGroupId', fetchUserGroup, viewGroup);
 
 admin.get('/group/:userGroupId/name', fetchUserGroup, provideGroupName);
-admin.post('/group/:userGroupId/name', fetchUserGroup, upload.none(), provideGroupName);
+admin.post('/group/:userGroupId/name', fetchUserGroup, bodyParser, provideGroupName);
 
 admin.get('/group/:userGroupId/organisation', fetchUserGroup, provideOrganisation);
-admin.post('/group/:userGroupId/organisation', fetchUserGroup, upload.none(), provideOrganisation);
+admin.post('/group/:userGroupId/organisation', fetchUserGroup, bodyParser, provideOrganisation);
 
 admin.get('/group/:userGroupId/email', fetchUserGroup, provideGroupEmail);
-admin.post('/group/:userGroupId/email', fetchUserGroup, upload.none(), provideGroupEmail);
+admin.post('/group/:userGroupId/email', fetchUserGroup, bodyParser, provideGroupEmail);
 
 admin.get('/group/:userGroupId/status', fetchUserGroup, groupStatus);
-admin.post('/group/:userGroupId/status', fetchUserGroup, upload.none(), groupStatus);
+admin.post('/group/:userGroupId/status', fetchUserGroup, bodyParser, groupStatus);
 
 admin.use('/user', (req: Request, res: Response, next: NextFunction) => {
   res.locals.activePage = 'users';
@@ -62,13 +60,13 @@ admin.get('/similar/datasets', similarDatasets);
 admin.get('/user', listUsers);
 
 admin.get('/user/create', createUser);
-admin.post('/user/create', upload.none(), createUser);
+admin.post('/user/create', bodyParser, createUser);
 
 admin.get('/user/:userId', fetchUser, viewUser);
-admin.post('/user/:userId', fetchUser, upload.none(), viewUser);
+admin.post('/user/:userId', fetchUser, bodyParser, viewUser);
 
 admin.get('/user/:userId/roles', fetchUser, editUserRoles);
-admin.post('/user/:userId/roles', fetchUser, upload.none(), editUserRoles);
+admin.post('/user/:userId/roles', fetchUser, bodyParser, editUserRoles);
 
 admin.get('/user/:userId/status', fetchUser, userStatus);
-admin.post('/user/:userId/status', fetchUser, upload.none(), userStatus);
+admin.post('/user/:userId/status', fetchUser, bodyParser, userStatus);

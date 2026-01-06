@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import express, { Router, Request, Response } from 'express';
 import { FieldValidationError } from 'express-validator';
 import { NotifyClient } from 'notifications-node-client';
 
@@ -11,6 +11,7 @@ import { logger } from '../../shared/utils/logger';
 import { AppEnv } from '../../shared/config/env.enum';
 
 export const feedback = Router();
+const bodyParser = express.urlencoded({ extended: true });
 
 feedback.use(flashMessages);
 
@@ -61,4 +62,4 @@ const feedbackForm = async (req: Request, res: Response) => {
 };
 
 feedback.get('/', feedbackForm);
-feedback.post('/', feedbackForm);
+feedback.post('/', bodyParser, feedbackForm);
