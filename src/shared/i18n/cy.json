@@ -1947,6 +1947,19 @@
         "first_published": "Cyhoeddwyd yn gyntaf: {{published}}",
         "last_updated": "Diweddarwyd:  {{updated}}",
         "archived": "Archifwyd:  {{archived}}"
+      },
+      "status": {
+        "archived": "Wedi'i harchifo"
+      },
+      "sort": {
+        "label": "Trefnu yn ôl",
+        "options": {
+          "title_a_to_z": "Enw (A i Z)",
+          "title_z_to_a": "Enw (Z i A)",
+          "first_published": "Cyhoeddwyd gyntaf",
+          "last_updated": "Diweddarwyd ddiwethaf"
+        },
+        "button": "Gweithredu"
       }
     },
     "list": {
