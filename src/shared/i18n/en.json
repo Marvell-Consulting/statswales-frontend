@@ -2129,8 +2129,8 @@
       "heading": "StatsWales",
       "phase_banner": {
         "beta": "Beta",
-        "feedback": "You’re viewing a new version of StatsWales. <a target=\"_blank\" href=\"{{url}}\" class=\"govuk-link\">Give feedback (opens in new tab)</a>.",
-        "research": "You can <a target=\"_blank\" href=\"https://ymateb.gov.wales/s/GN6ZBG/?lang=1093992\" class=\"govuk-link\">take part in user research</a> to help us improve the service (opens in a new tab)."
+        "feedback": "You’re viewing a new version of StatsWales. You can <a target=\"_blank\" href=\"{{url}}\" class=\"govuk-link\">give feedback (opens in new tab)</a>.",
+        "research": "You can also <a target=\"_blank\" href=\"https://ymateb.gov.wales/s/GN6ZBG/?lang=1093992\" class=\"govuk-link\">take part in user research</a> to help us improve the service (opens in a new tab)."
       }
     },
     "topic_list": {
