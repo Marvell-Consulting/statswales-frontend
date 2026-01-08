@@ -24,7 +24,7 @@ export class DataOptionsDTO {
 export const FRONTEND_DATA_OPTIONS: DataOptionsDTO = {
   filters: [],
   options: {
-    use_raw_column_names: false,
+    use_raw_column_names: true,
     use_reference_values: true,
     data_value_type: DataValueType.WithNoteCodes
   }
