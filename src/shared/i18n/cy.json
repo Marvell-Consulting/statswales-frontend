@@ -1933,7 +1933,7 @@
       "heading": "StatsCymru",
       "phase_banner": {
         "beta": "Beta",
-        "feedback": "Rydych chi'n edrych ar fersiwn newydd o StatsCymru.  <a target=\"_blank\" href=\"{{url}}\" class=\"govuk-link\">Gallwch roi adborth (yn agor mewn tab newydd)</a>.",
+        "feedback": "Rydych chi'n edrych ar fersiwn newydd o StatsCymru.  Gallwch <a target=\"_blank\" href=\"{{url}}\" class=\"govuk-link\">roi adborth (yn agor mewn tab newydd)</a>.",
         "research": "Gallwch hefyd <a target=\"_blank\" href=\"https://ymateb.gov.wales/s/GN6ZBG/?lang=1093993\" class=\"govuk-link\">gymryd rhan mewn ymchwil defnyddwyr</a> i'n helpu i wella'r gwasanaeth (yn agor mewn tab newydd)."
       }
     },
