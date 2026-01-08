@@ -12,11 +12,12 @@ import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count
 import { ViewDTO, ViewV2DTO } from '../../shared/dtos/view-dto';
 import { FileFormat } from '../../shared/enums/file-format';
 import { PublishedTopicsDTO } from '../../shared/dtos/published-topics-dto';
-import { Filter, FilterV2 } from '../../shared/interfaces/filter';
+import { FilterV2 } from '../../shared/interfaces/filter';
 import { FilterTable } from '../../shared/dtos/filter-table';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
 import { RevisionDTO } from '../../shared/dtos/revision';
+import { DataOptionsDTO, FRONTEND_DATA_OPTIONS } from '../../shared/interfaces/data-options';
 
 const logger = parentLogger.child({ service: 'consumer-api' });
 
@@ -131,37 +132,37 @@ export class ConsumerApi {
     datasetId: string,
     pageNumber: number,
     pageSize: number,
-    sortBy?: SortByInterface,
-    filter?: Filter[]
+    sortBy?: SortByInterface
   ): Promise<ViewDTO> {
     logger.debug(`Fetching published view of dataset: ${datasetId}`);
     const query = new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString() });
-
-    if (filter && filter.length) {
-      query.set('filter', JSON.stringify(filter));
-    }
+    query.append('format', 'frontend');
 
     if (sortBy) {
       query.append('sort_by', JSON.stringify([sortBy]));
     }
 
-    return this.fetch({ url: `v1/${datasetId}/view`, query }).then((response) => response.json() as unknown as ViewDTO);
+    return this.fetch({ url: `v2/${datasetId}/data`, query }).then((response) => response.json() as unknown as ViewDTO);
   }
 
   public async getPublishedDatasetFilters(datasetId: string): Promise<FilterTable[]> {
     logger.debug(`Fetching published view of dataset: ${datasetId}`);
-    return this.fetch({ url: `v1/${datasetId}/view/filters` }).then(
+    return this.fetch({ url: `v2/${datasetId}/filters` }).then(
       (response) => response.json() as unknown as FilterTable[]
     );
   }
 
   public async generateFilterId(datasetId: string, selectedFilters: FilterV2[]): Promise<string> {
     logger.debug(`Generating filter ID for dataset: ${datasetId}`);
-    return this.fetch({
-      method: HttpMethod.Post,
-      url: `v2/${datasetId}/data`,
-      json: { filters: selectedFilters }
-    }).then((response) => response.json().then((data) => data.filterId as string));
+
+    const json: DataOptionsDTO = {
+      ...FRONTEND_DATA_OPTIONS,
+      filters: selectedFilters
+    };
+
+    return this.fetch({ method: HttpMethod.Post, url: `v2/${datasetId}/data`, json }).then((response) =>
+      response.json().then((data) => data.filterId as string)
+    );
   }
 
   public async getFilteredDatasetView(
@@ -173,12 +174,11 @@ export class ConsumerApi {
   ): Promise<ViewV2DTO> {
     logger.debug(`Fetching filtered view of dataset: ${datasetId} with filter ID: ${filterId}`);
     const query = new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString() });
+    query.append('format', 'frontend');
 
     if (sortBy) {
       query.append('sort_by', JSON.stringify([sortBy]));
     }
-
-    query.append('format', 'frontend');
 
     return this.fetch({ url: `v2/${datasetId}/data/${filterId}`, query }).then(
       (response) => response.json() as unknown as ViewV2DTO

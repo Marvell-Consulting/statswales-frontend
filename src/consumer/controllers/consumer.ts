@@ -26,7 +26,7 @@ import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
 import { singleLangTopic } from '../../shared/utils/single-lang-topic';
 import { RevisionDTO } from '../../shared/dtos/revision';
 import { markdownToSafeHTML } from '../../shared/utils/markdown-to-html';
-import { Filter, FilterV2 } from '../../shared/interfaces/filter';
+import { FilterV2 } from '../../shared/interfaces/filter';
 
 export const DEFAULT_PAGE_SIZE = 100;
 
@@ -112,7 +112,6 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   const revision = dataset.published_revision;
   const isUnpublished = revision?.unpublished_at || false;
   const isArchived = (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false;
-  const noFilters: Filter[] = [];
   const { pageNumber, pageSize, sortBy } = parsePageOptions(req);
 
   if (!revision) {
@@ -123,7 +122,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   const [datasetMetadata, view, filters, publishedRevisions]: [PreviewMetadata, ViewDTO, FilterTable[], RevisionDTO[]] =
     await Promise.all([
       getDatasetMetadata(dataset, revision),
-      req.conapi.getPublishedDatasetView(dataset.id, pageNumber, pageSize, sortBy, noFilters),
+      req.conapi.getPublishedDatasetView(dataset.id, pageNumber, pageSize, sortBy),
       req.conapi.getPublishedDatasetFilters(dataset.id),
       req.conapi.getPublicationHistory(dataset.id)
     ]);
@@ -145,7 +144,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
     filters,
     topics,
     publicationHistory,
-    selectedFilterOptions: noFilters,
+    selectedFilterOptions: [],
     shorthandUrl: req.buildUrl(`/shorthand`, req.language),
     isUnpublished,
     isArchived
