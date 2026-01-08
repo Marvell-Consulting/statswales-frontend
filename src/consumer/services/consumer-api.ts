@@ -174,12 +174,11 @@ export class ConsumerApi {
   ): Promise<ViewV2DTO> {
     logger.debug(`Fetching filtered view of dataset: ${datasetId} with filter ID: ${filterId}`);
     const query = new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString() });
+    query.append('format', 'frontend');
 
     if (sortBy) {
       query.append('sort_by', JSON.stringify([sortBy]));
     }
-
-    query.append('format', 'frontend');
 
     return this.fetch({ url: `v2/${datasetId}/data/${filterId}`, query }).then(
       (response) => response.json() as unknown as ViewV2DTO
