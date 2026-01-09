@@ -18,7 +18,7 @@ export default function NoteCodesLegend(props: NoteCodesLegendProps) {
               __html: props.t('dataset_view.notes.shorthand', { shorthand_url: props.shorthandUrl })
             }}
           ></span>
-          {props.note_codes.map((code: React.Key | null | undefined, idx: number) => (
+          {props.note_codes.map((code: string, idx: number) => (
             <span key={code} className="govuk-body">
               {` [${code}] = ${props.t(`dataset_view.notes.${code}`).toLowerCase()}${idx < props.note_codes.length - 1 ? ',' : '.'}`}
             </span>
