@@ -11,6 +11,7 @@ export type DownloadTabProps = {
 
 export default function DownloadTab(props: DownloadTabProps) {
   const { buildUrl, i18n } = useLocals();
+
   const downloadMetaUrl = props.preview
     ? buildUrl(`/publish/${props.dataset.id}/download/metadata`, i18n.language)
     : buildUrl(`/${props.dataset.id}/download/metadata`, i18n.language);
@@ -18,10 +19,11 @@ export default function DownloadTab(props: DownloadTabProps) {
   const formSubmitUrl = props.preview
     ? buildUrl(`/publish/${props.dataset.id}/download`, i18n.language)
     : buildUrl(`/${props.dataset.id}/download`, i18n.language);
+
   return (
     <div className="govuk-grid-row">
       <div className="govuk-grid-column-full">
-        <form method="get" action={formSubmitUrl}>
+        <form method="POST" action={formSubmitUrl}>
           <RadioGroup
             name="view_type"
             label={i18n.t('consumer_view.download_heading')}

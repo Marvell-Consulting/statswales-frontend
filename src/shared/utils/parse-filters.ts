@@ -44,7 +44,11 @@ export const parseFilters = (filters: ParsedQs | undefined): Filter[] => {
 };
 
 export const parseFiltersV2 = (filters: ParsedQs | undefined): FilterV2[] => {
-  return parseFilters(filters).map((filter) => ({ [filter.columnName]: filter.values }));
+  return v1FiltersToV2(parseFilters(filters));
+};
+
+export const v1FiltersToV2 = (filtersV1: Filter[]): FilterV2[] => {
+  return filtersV1.map((filter) => ({ [filter.columnName]: filter.values }));
 };
 
 export const v2FiltersToV1 = (filtersV2: FilterV2[]): Filter[] => {

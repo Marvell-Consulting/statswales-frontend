@@ -12,12 +12,11 @@ import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count
 import { ViewDTO, ViewV2DTO } from '../../shared/dtos/view-dto';
 import { FileFormat } from '../../shared/enums/file-format';
 import { PublishedTopicsDTO } from '../../shared/dtos/published-topics-dto';
-import { FilterV2 } from '../../shared/interfaces/filter';
 import { FilterTable } from '../../shared/dtos/filter-table';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
 import { RevisionDTO } from '../../shared/dtos/revision';
-import { DataOptionsDTO, FRONTEND_DATA_OPTIONS } from '../../shared/interfaces/data-options';
+import { DataOptionsDTO } from '../../shared/interfaces/data-options';
 
 const logger = parentLogger.child({ service: 'consumer-api' });
 
@@ -125,7 +124,7 @@ export class ConsumerApi {
 
   public async getPublishedDataset(datasetId: string): Promise<DatasetDTO> {
     logger.debug(`Fetching published dataset: ${datasetId}`);
-    return this.fetch({ url: `v1/${datasetId}` }).then((response) => response.json() as unknown as DatasetDTO);
+    return this.fetch({ url: `v2/${datasetId}` }).then((response) => response.json() as unknown as DatasetDTO);
   }
 
   public async getPublishedDatasetView(
@@ -152,15 +151,10 @@ export class ConsumerApi {
     );
   }
 
-  public async generateFilterId(datasetId: string, selectedFilters: FilterV2[]): Promise<string> {
+  public async generateFilterId(datasetId: string, dataOptions: DataOptionsDTO): Promise<string> {
     logger.debug(`Generating filter ID for dataset: ${datasetId}`);
 
-    const json: DataOptionsDTO = {
-      ...FRONTEND_DATA_OPTIONS,
-      filters: selectedFilters
-    };
-
-    return this.fetch({ method: HttpMethod.Post, url: `v2/${datasetId}/data`, json }).then((response) =>
+    return this.fetch({ method: HttpMethod.Post, url: `v2/${datasetId}/data`, json: dataOptions }).then((response) =>
       response.json().then((data) => data.filterId as string)
     );
   }
@@ -173,8 +167,11 @@ export class ConsumerApi {
     sortBy?: SortByInterface
   ): Promise<ViewV2DTO> {
     logger.debug(`Fetching filtered view of dataset: ${datasetId} with filter ID: ${filterId}`);
-    const query = new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString() });
-    query.append('format', 'frontend');
+    const query = new URLSearchParams({
+      page_number: pageNumber.toString(),
+      page_size: pageSize.toString(),
+      format: 'frontend'
+    });
 
     if (sortBy) {
       query.append('sort_by', JSON.stringify([sortBy]));
@@ -187,14 +184,14 @@ export class ConsumerApi {
 
   public async downloadPublishedData(
     datasetId: string,
+    filterId: string,
     format: FileFormat,
-    view: string,
-    filterId?: string
+    language: string
   ): Promise<ReadableStream> {
     logger.debug(`Fetching ${format} stream for dataset: ${datasetId}...`);
-    const query = new URLSearchParams({ format, view });
+    const query = new URLSearchParams({ format, lang: language });
     return this.fetch({ url: `v2/${datasetId}/data/${filterId}`, query }).then(
-      (response) => response.json() as unknown as Promise<ReadableStream>
+      (response) => response.body as ReadableStream
     );
   }
 
