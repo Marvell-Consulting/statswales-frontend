@@ -1,4 +1,4 @@
-import { parseFilters, parseFiltersV2, v2FiltersToV1 } from '../src/shared/utils/parse-filters';
+import { parseFilters, parseFiltersV2, v1FiltersToV2, v2FiltersToV1 } from '../src/shared/utils/parse-filters';
 import { FilterV2 } from '../src/shared/interfaces/filter';
 
 describe('parseFilters', () => {
@@ -225,5 +225,27 @@ describe('v2FiltersToV1', () => {
       { columnName: 'year', values: ['2020'] }
     ];
     expect(v2FiltersToV1(input)).toEqual(expected);
+  });
+});
+
+describe('v1FiltersToV2', () => {
+  test('should return empty array for empty input', () => {
+    expect(v1FiltersToV2([])).toEqual([]);
+  });
+
+  test('should convert single V1 filter to V2 format', () => {
+    const input = [{ columnName: 'area', values: ['Value1', 'Value2'] }];
+    const expected = [{ area: ['Value1', 'Value2'] }];
+    expect(v1FiltersToV2(input)).toEqual(expected);
+  });
+
+  test('should convert multiple V1 filters to V2 format', () => {
+    const input = [
+      { columnName: 'area', values: ['Value1', 'Value2'] },
+      { columnName: 'industry', values: ['Value3'] },
+      { columnName: 'year', values: ['2020', '2021'] }
+    ];
+    const expected = [{ area: ['Value1', 'Value2'] }, { industry: ['Value3'] }, { year: ['2020', '2021'] }];
+    expect(v1FiltersToV2(input)).toEqual(expected);
   });
 });

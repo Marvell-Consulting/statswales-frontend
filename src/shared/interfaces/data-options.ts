@@ -1,6 +1,5 @@
 import { DataValueType } from '../enums/data-value-type';
-
-type Filter = Record<string, string[]>;
+import { FilterV2 } from './filter';
 
 class PivotDTO {
   backend: 'postgres' | 'duckdb'; // Default: 'duckdb'
@@ -17,7 +16,7 @@ class ColumnOptionsDTO {
 
 export class DataOptionsDTO {
   pivot?: PivotDTO;
-  filters?: Filter[];
+  filters?: FilterV2[];
   options?: ColumnOptionsDTO;
 }
 

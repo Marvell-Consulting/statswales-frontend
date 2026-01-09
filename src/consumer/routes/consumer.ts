@@ -44,4 +44,11 @@ consumer.post(
 consumer.get('/:datasetId/filtered{/:filterId}', fetchPublishedDataset, viewFilteredDataset);
 
 consumer.get('/:datasetId/download/metadata', fetchPublishedDataset, downloadPublishedMetadata);
-consumer.get('/:datasetId/download', fetchPublishedDataset, downloadPublishedDataset);
+
+consumer.post(
+  '/:datasetId/download',
+  express.urlencoded({ extended: true, limit: '10mb', parameterLimit: 50000 }),
+  fetchPublishedDataset,
+  downloadPublishedDataset
+);
+consumer.get('/:datasetId/download{/:filterId}', fetchPublishedDataset, downloadPublishedDataset);
