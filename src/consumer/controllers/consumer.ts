@@ -27,7 +27,7 @@ import { singleLangTopic } from '../../shared/utils/single-lang-topic';
 import { RevisionDTO } from '../../shared/dtos/revision';
 import { markdownToSafeHTML } from '../../shared/utils/markdown-to-html';
 import { FilterV2 } from '../../shared/interfaces/filter';
-import { getDowloadFilename } from '../../shared/utils/download-filename';
+import { getDownloadFilename } from '../../shared/utils/download-filename';
 import { DataOptionsDTO, FRONTEND_DATA_OPTIONS } from '../../shared/interfaces/data-options';
 import { DataValueType } from '../../shared/enums/data-value-type';
 
@@ -261,7 +261,7 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
       return;
     }
 
-    const filename = getDowloadFilename(dataset, revision, download_language);
+    const filename = getDownloadFilename(dataset, revision, download_language);
     const headers = getDownloadHeaders(format, filename);
     const fileStream = await req.conapi.downloadPublishedData(dataset.id, filterId, format, download_language);
     res.writeHead(200, headers);
