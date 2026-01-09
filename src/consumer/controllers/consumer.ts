@@ -26,7 +26,7 @@ import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
 import { singleLangTopic } from '../../shared/utils/single-lang-topic';
 import { RevisionDTO } from '../../shared/dtos/revision';
 import { markdownToSafeHTML } from '../../shared/utils/markdown-to-html';
-import { FilterV2 } from '../../shared/interfaces/filter';
+import { Filter, FilterV2 } from '../../shared/interfaces/filter';
 import { getDownloadFilename } from '../../shared/utils/download-filename';
 import { DataOptionsDTO, FRONTEND_DATA_OPTIONS } from '../../shared/interfaces/data-options';
 import { DataValueType } from '../../shared/enums/data-value-type';
@@ -230,7 +230,7 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
       let filters: FilterV2[] = [];
 
       if (req.body.view_type === 'filtered' && req.body.selected_filter_options) {
-        const selectedFilters = req.body.selected_filter_options ? JSON.parse(req.body.selected_filter_options) : [];
+        const selectedFilters = JSON.parse(req.body.selected_filter_options) as Filter[];
         filters = v1FiltersToV2(selectedFilters);
       }
 
