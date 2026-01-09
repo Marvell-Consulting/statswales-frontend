@@ -5,6 +5,7 @@ import { parse } from 'date-fns';
 import { dateFormat } from '../../../utils/date-format';
 import { NextUpdateType } from '../../../enums/next-update-type';
 import { useLocals } from '../../context/Locals';
+import { PreviewMetadata } from '../../../interfaces/preview-metadata';
 
 type NextUpdateAt = {
   update_type: NextUpdateType;
@@ -15,12 +16,8 @@ type NextUpdateAt = {
   };
 };
 
-type NextUpdateProps = {
-  datasetMetadata?: {
-    keyInfo?: {
-      nextUpdateAt?: NextUpdateAt;
-    };
-  };
+export type NextUpdateProps = {
+  datasetMetadata?: PreviewMetadata;
 };
 
 const getNextUpdate = (nextUpdateAt?: NextUpdateAt, locale?: string) => {

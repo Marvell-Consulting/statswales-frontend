@@ -27,6 +27,8 @@ import { singleLangTopic } from '../../shared/utils/single-lang-topic';
 import { RevisionDTO } from '../../shared/dtos/revision';
 import { markdownToSafeHTML } from '../../shared/utils/markdown-to-html';
 import { FilterV2 } from '../../shared/interfaces/filter';
+import { SingleLanguageDataset } from '../../shared/dtos/single-language/dataset';
+import { SingleLanguageRevision } from '../../shared/dtos/single-language/revision';
 
 export const DEFAULT_PAGE_SIZE = 100;
 
@@ -137,7 +139,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
     }
   }
 
-  res.render('view', {
+  res.render('dataset/view', {
     ...view,
     ...pagination,
     datasetMetadata,
@@ -199,7 +201,7 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
     }
   }
 
-  res.render('view', {
+  res.render('dataset/view', {
     ...view,
     ...pagination,
     datasetMetadata,
@@ -234,6 +236,13 @@ export const downloadPublishedMetadata = async (req: Request, res: Response, nex
   }
 };
 
+const getDowloadFilename = (dataset: SingleLanguageDataset, revision: SingleLanguageRevision) => {
+  if (revision.metadata?.title) {
+    return `${revision.metadata?.title}-${revision.revision_index > 0 ? `v${revision.revision_index}` : 'draft'}`;
+  }
+  return `${dataset.id}-${revision.revision_index > 0 ? `v${revision.revision_index}` : 'draft'}`;
+};
+
 export const downloadPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
   logger.debug('downloading published dataset');
   const dataset = singleLangDataset(res.locals.dataset, req.language);
@@ -244,23 +253,12 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
       throw new NotFoundException('no published revision found');
     }
 
-    let attachmentName: string;
-    if (revision.metadata?.title) {
-      attachmentName = `${revision.metadata?.title}-${revision.revision_index > 0 ? `v${revision.revision_index}` : 'draft'}`;
-    } else {
-      attachmentName = `${dataset.id}-${revision.revision_index > 0 ? `v${revision.revision_index}` : 'draft'}`;
-    }
+    const filterId = req.query.view_type === 'filtered' ? (req.query.filter_id as string) : undefined;
     const view = req.query.view_choice as string;
-    let selectedFilterOptions: string | undefined = undefined;
-    if (req.query.view_type === 'filtered') {
-      selectedFilterOptions = req.query.selected_filter_options?.toString();
-    }
-    logger.debug(`selectedFilterOptions = ${selectedFilterOptions}`);
-
-    const format = req.query.format as FileFormat;
-    const lang = req.query.download_language as Locale;
-    const headers = getDownloadHeaders(format, attachmentName);
-    const fileStream = await req.conapi.getCubeFileStream(dataset.id, format, lang, view, selectedFilterOptions);
+    const fileFormat = req.query.format as FileFormat;
+    const attachmentName = getDowloadFilename(dataset, revision);
+    const headers = getDownloadHeaders(fileFormat, attachmentName);
+    const fileStream = await req.conapi.downloadPublishedData(dataset.id, fileFormat, view, filterId);
     res.writeHead(200, headers);
     const readable: Readable = Readable.from(fileStream);
     readable.pipe(res);

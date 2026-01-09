@@ -1,24 +1,21 @@
 import React from 'react';
 import { isValid, parse, parseISO } from 'date-fns';
 
-import Table from '../../../shared/views/components/Table';
-import { ColumnHeader } from '../../../shared/dtos/view-dto';
-import { FactTableColumnType } from '../../../shared/dtos/fact-table-column-type';
-import T from '../../../shared/views/components/T';
-import { dateFormat } from '../../../shared/utils/date-format';
+import { useLocals } from '../../../../shared/views/context/Locals';
+import Table from '../../../../shared/views/components/Table';
+import { ColumnHeader } from '../../../../shared/dtos/view-dto';
+import { FactTableColumnType } from '../../../../shared/dtos/fact-table-column-type';
+import T from '../../../../shared/views/components/T';
+import { dateFormat } from '../../../../shared/utils/date-format';
 
-type ViewTableProps = {
+export type ViewTableProps = {
   headers: ColumnHeader[];
   data: string[][];
-  dateFormat: (date: Date, format: string, options?: { locale: string }) => string;
-  i18n: {
-    language: string;
-    exists: (key: string) => boolean;
-  };
-  t: (key: string) => string;
 };
 
 export default function ViewTable(props: ViewTableProps) {
+  const { i18n } = useLocals();
+
   const columns = props.headers.map((col, index) => ({
     key: index,
     label: col.name,
@@ -29,12 +26,12 @@ export default function ViewTable(props: ViewTableProps) {
 
         case col.source_type === FactTableColumnType.Time && typeof col.extractor?.dateFormat === 'string': {
           const parsedDate = parse(value, col.extractor.dateFormat, new Date());
-          return isValid(parsedDate) ? dateFormat(parsedDate, 'do MMMM yyyy', { locale: props.i18n.language }) : value;
+          return isValid(parsedDate) ? dateFormat(parsedDate, 'do MMMM yyyy', { locale: i18n.language }) : value;
         }
 
-        case col.name === props.t('consumer_view.start_data') || col.name === props.t('consumer_view.end_data'): {
+        case col.name === i18n.t('consumer_view.start_data') || col.name === i18n.t('consumer_view.end_data'): {
           const parsedDate = parseISO(value.split('T')[0]);
-          return dateFormat(parsedDate, 'do MMMM yyyy', { locale: props.i18n.language });
+          return dateFormat(parsedDate, 'do MMMM yyyy', { locale: i18n.language });
         }
 
         default:

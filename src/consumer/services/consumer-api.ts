@@ -185,6 +185,19 @@ export class ConsumerApi {
     );
   }
 
+  public async downloadPublishedData(
+    datasetId: string,
+    format: FileFormat,
+    view: string,
+    filterId?: string
+  ): Promise<ReadableStream> {
+    logger.debug(`Fetching ${format} stream for dataset: ${datasetId}...`);
+    const query = new URLSearchParams({ format, view });
+    return this.fetch({ url: `v2/${datasetId}/data/${filterId}`, query }).then(
+      (response) => response.json() as unknown as Promise<ReadableStream>
+    );
+  }
+
   public async getCubeFileStream(
     datasetId: string,
     format: FileFormat,
