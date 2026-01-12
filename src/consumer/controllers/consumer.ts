@@ -4,7 +4,6 @@ import { Request, Response, NextFunction } from 'express';
 import { omit } from 'lodash';
 import slugify from 'slugify';
 import { stringify } from 'csv-stringify/sync';
-import qs from 'qs';
 
 import { DatasetListItemDTO } from '../../shared/dtos/dataset-list-item';
 import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count';
@@ -30,8 +29,7 @@ import { Filter, FilterV2 } from '../../shared/interfaces/filter';
 import { getDownloadFilename } from '../../shared/utils/download-filename';
 import { DataOptionsDTO, FRONTEND_DATA_OPTIONS } from '../../shared/interfaces/data-options';
 import { DataValueType } from '../../shared/enums/data-value-type';
-
-export const DEFAULT_PAGE_SIZE = 100;
+import { DEFAULT_PAGE_SIZE, parsePageOptions } from '../../shared/utils/parse-page-options';
 
 export const listTopics = async (req: Request, res: Response, next: NextFunction) => {
   const topicId = req.params.topicId ? req.params.topicId.match(/\d+/)?.[0] : undefined;
@@ -100,14 +98,6 @@ export const listPublishedDatasets = async (req: Request, res: Response, next: N
   } catch (err) {
     next(err);
   }
-};
-
-const parsePageOptions = (req: Request) => {
-  const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
-  const pageSize = Number.parseInt(req.query.page_size as string, 10) || DEFAULT_PAGE_SIZE;
-  const query = qs.parse(req.originalUrl.split('?')[1]);
-  const sortBy = query.sort_by as unknown as SortByInterface;
-  return { pageNumber, pageSize, sortBy };
 };
 
 export const viewPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {

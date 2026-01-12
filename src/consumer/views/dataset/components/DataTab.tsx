@@ -18,6 +18,7 @@ type DataTabProps = NoteCodesLegendProps &
     selectedFilterOptions: Filter[];
     page_size: number;
     isDeveloper?: boolean;
+    preview?: boolean;
     previewFailed?: string;
   };
 
@@ -27,6 +28,10 @@ export default function DataTab(props: DataTabProps) {
   const parsedQuery = qs.parse(query);
   const sortBy = parsedQuery.sort_by as { columnName: string; direction: string } | undefined;
 
+  const formUrl = props.preview
+    ? buildUrl(`/publish/${props.dataset.id}/cube-preview`, i18n.language)
+    : buildUrl(`/${props.dataset.id}/filtered`, i18n.language);
+
   return (
     <div className="govuk-width-container">
       <div className="govuk-main-wrapper govuk-!-padding-top-0">
@@ -34,7 +39,7 @@ export default function DataTab(props: DataTabProps) {
         <div className="govuk-grid-row border-top-small">
           {/* Sidebar filters */}
           <div className="govuk-grid-column-one-quarter">
-            <form method="POST" action={buildUrl(`/${props.dataset.id}/filtered`, i18n.language)}>
+            <form method="POST" action={formUrl}>
               <h2 className="govuk-heading-m">{props.t('consumer_view.options')}</h2>
               <div className="govuk-form-group">
                 <label className="govuk-label region-subhead" htmlFor="page_size">

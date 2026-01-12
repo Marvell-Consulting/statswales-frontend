@@ -2,7 +2,6 @@ import { Readable } from 'node:stream';
 import { randomUUID } from 'node:crypto';
 
 import { NextFunction, Request, Response } from 'express';
-import qs, { ParsedQs } from 'qs';
 import { get, set, sortBy } from 'lodash';
 import { FieldValidationError, matchedData } from 'express-validator';
 import { customAlphabet } from 'nanoid';
@@ -41,7 +40,7 @@ import {
 } from '../validators';
 import { ViewError } from '../../shared/dtos/view-error';
 import { logger } from '../../shared/utils/logger';
-import { ViewDTO, ViewErrDTO } from '../../shared/dtos/view-dto';
+import { ViewDTO, ViewErrDTO, ViewV2DTO } from '../../shared/dtos/view-dto';
 import { SourceType } from '../../shared/enums/source-type';
 import { SourceAssignmentDTO } from '../../shared/dtos/source-assignment-dto';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
@@ -52,7 +51,7 @@ import { Designation } from '../../shared/enums/designation';
 import { RelatedLinkDTO } from '../../shared/dtos/related-link';
 import { RevisionProviderDTO } from '../../shared/dtos/revision-provider';
 import { ProviderSourceDTO } from '../../shared/dtos/provider-source';
-import { paginationSequence } from '../../shared/utils/pagination';
+import { pageInfo, paginationSequence } from '../../shared/utils/pagination';
 import { fileMimeTypeHandler } from '../../shared/utils/file-mimetype-handler';
 import { TopicDTO } from '../../shared/dtos/topic';
 import { NestedTopic, nestTopics } from '../../shared/utils/nested-topics';
@@ -94,10 +93,8 @@ import { TaskDecisionDTO } from '../../shared/dtos/task-decision';
 import { SingleLanguageRevision } from '../../shared/dtos/single-language/revision';
 import { config } from '../../shared/config';
 import { FilterTable } from '../../shared/dtos/filter-table';
-import { DEFAULT_PAGE_SIZE } from '../../consumer/controllers/consumer';
-import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { NextUpdateType } from '../../shared/enums/next-update-type';
-import { parseFilters } from '../../shared/utils/parse-filters';
+import { parseFiltersV2, v2FiltersToV1 } from '../../shared/utils/parse-filters';
 import { FactTableColumnType } from '../../shared/dtos/fact-table-column-type';
 import { TaskAction } from '../../shared/enums/task-action';
 import { stringify } from 'csv-stringify/sync';
@@ -106,6 +103,8 @@ import { CubeBuildStatus } from '../../shared/enums/cube-build-status';
 import { BuildLogEntry } from '../../shared/dtos/build-log-entry';
 import { markdownToSafeHTML } from '../../shared/utils/markdown-to-html';
 import { DatasetStatus } from '../../shared/enums/dataset-status';
+import { DataOptionsDTO, FRONTEND_DATA_OPTIONS } from '../../shared/interfaces/data-options';
+import { DEFAULT_PAGE_SIZE, parsePageOptions } from '../../shared/utils/parse-page-options';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -567,25 +566,32 @@ export const deleteDraft = async (req: Request, res: Response) => {
 export const cubePreview = async (req: Request, res: Response, next: NextFunction) => {
   const { id: datasetId, end_revision_id: endRevisionId } = res.locals.dataset;
 
-  // Parse query parameters from URL or request body (for POST requests)
-  const query = req.method === 'POST' ? req.body : qs.parse(req.originalUrl.split('?')[1]);
-  const pageNumber = Number.parseInt(query.page_number as string, 10) || 1;
-  const pageSize = Number.parseInt(query.page_size as string, 10) || DEFAULT_PAGE_SIZE;
-  const sortBy = query.sort_by as unknown as SortByInterface;
-  const filter = parseFilters(query.filter as ParsedQs);
+  if (req.method === 'POST') {
+    const dataOptions: DataOptionsDTO = { ...FRONTEND_DATA_OPTIONS, filters: parseFiltersV2(req.body.filter) };
+    const filterId = await req.pubapi.generateFilterId(datasetId, dataOptions);
+    const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
+    res.redirect(
+      req.buildUrl(`/publish/${datasetId}/cube-preview/${filterId}`, req.language, { page_size: pageSize.toString() })
+    );
+    return;
+  }
 
+  const filterId = req.params.filterId;
+  const { pageNumber, pageSize, sortBy } = parsePageOptions(req);
   let errors: ViewError[] | undefined;
-  let previewData: ViewDTO | ViewErrDTO | undefined;
-  let pagination: (string | number)[] = [];
   let previewMetadata: PreviewMetadata | undefined;
   let publishedRevisions: RevisionDTO[] = [];
 
   try {
-    const [datasetDTO, revisionDTO, previewDTO, filtersDTO]: [DatasetDTO, RevisionDTO, ViewDTO, FilterTable[]] =
+    const fetchPreview = filterId
+      ? req.pubapi.getFilteredDatasetPreview(datasetId, filterId, pageNumber, pageSize, sortBy)
+      : req.pubapi.getDatasetPreview(datasetId, pageNumber, pageSize, sortBy);
+
+    const [datasetDTO, revisionDTO, preview, filtersDTO]: [DatasetDTO, RevisionDTO, ViewV2DTO, FilterTable[]] =
       await Promise.all([
         req.pubapi.getDataset(datasetId, DatasetInclude.Preview),
         req.pubapi.getRevision(datasetId, endRevisionId),
-        req.pubapi.getRevisionPreview(datasetId, endRevisionId, pageNumber, pageSize, sortBy, filter),
+        fetchPreview,
         req.pubapi.getRevisionFilters(datasetId, endRevisionId)
       ]);
 
@@ -607,28 +613,24 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
       }
     }
 
-    pagination = paginationSequence(previewDTO.current_page, previewDTO.total_pages);
+    const pagination = pageInfo(preview.page_info?.current_page, pageSize, preview.page_info?.total_records || 0);
     previewMetadata = await getDatasetMetadata(dataset, revision);
-    previewData = previewDTO;
 
     if (previewMetadata) {
       errors = [{ field: 'preview', message: { key: 'errors.preview.failed_to_get_preview' } }];
-      if (!previewData) {
-        previewData = { status: 500, errors, dataset_id: datasetId };
-      }
       res.render('dataset-view', {
-        ...previewData,
+        ...(preview || { status: 500, errors, dataset_id: datasetId }),
+        ...pagination,
         datasetMetadata: previewMetadata,
         filters: filtersDTO,
         preview: true,
         dataset,
-        pagination,
         errors,
         datasetStatus,
         publishingStatus,
         publicationHistory,
         datasetTitle,
-        selectedFilterOptions: filter,
+        selectedFilterOptions: preview.filters ? v2FiltersToV1(preview.filters) : [],
         shorthandUrl: req.buildUrl(`/shorthand`, req.language)
       });
       return;

@@ -1,7 +1,7 @@
 import { ReadableStream } from 'node:stream/web';
 import { performance } from 'node:perf_hooks';
 
-import { ViewDTO } from '../../shared/dtos/view-dto';
+import { ViewDTO, ViewV2DTO } from '../../shared/dtos/view-dto';
 import { DatasetDTO } from '../../shared/dtos/dataset';
 import { RevisionMetadataDTO } from '../../shared/dtos/revision-metadata';
 import { DataTableDto } from '../../shared/dtos/data-table';
@@ -52,6 +52,7 @@ import { BuildLogEntry } from '../../shared/dtos/build-log-entry';
 import { DatasetWithBuild } from '../../shared/dtos/dataset-with-build';
 import { DimensionWithBuild } from '../../shared/dtos/dimension-with-build';
 import { DatasetSimilarBy } from '../../shared/enums/dataset-similar-by';
+import { DataOptionsDTO } from '../../shared/interfaces/data-options';
 
 const logger = parentLogger.child({ service: 'publisher-api' });
 
@@ -68,8 +69,9 @@ const logRequestTime = (method: string, url: string, start: number) => {
 };
 
 interface fetchParams {
-  url: string;
   method?: HttpMethod;
+  url: string;
+  query?: URLSearchParams | Record<string, any>;
   body?: FormData | string;
   json?: unknown;
   headers?: Record<string, string>;
@@ -87,7 +89,9 @@ export class PublisherApi {
     this.token = token;
   }
 
-  public async fetch({ url, method = HttpMethod.Get, body, json, headers, lang }: fetchParams): Promise<Response> {
+  public async fetch(params: fetchParams): Promise<Response> {
+    const { method = HttpMethod.Get, url, query, body, json, headers, lang = this.lang } = params;
+
     const head = {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       'Accept-Language': lang || this.lang,
@@ -100,8 +104,16 @@ export class PublisherApi {
     // if json is passed, then body will be ignored
     const data = json ? JSON.stringify(json) : body;
     const start = performance.now();
+    const queryParams = new URLSearchParams(query);
 
-    return fetch(`${this.backendUrl}/${url}`, { method, headers: head, body: data })
+    if (lang) {
+      queryParams.set('lang', lang); // azure front door cache does not support passthrough of accept-language header
+    }
+
+    const qs = queryParams.size > 0 ? `?${queryParams.toString()}` : '';
+    const fullUrl = `${this.backendUrl}/${url}${qs}`;
+
+    return fetch(fullUrl, { method, headers: head, body: data })
       .then((response: Response) => {
         logRequestTime(method, url, start);
         return response;
@@ -151,9 +163,10 @@ export class PublisherApi {
   }
 
   public async getDataset(datasetId: string, include?: DatasetInclude): Promise<DatasetDTO> {
-    const qs = include ? `${new URLSearchParams({ hydrate: include }).toString()}` : undefined;
-    const url = `dataset/${datasetId}${qs ? `?${qs}` : ''}`;
-    return this.fetch({ url }).then((response) => response.json() as unknown as DatasetDTO);
+    const query = include ? { hydrate: include } : {};
+    return this.fetch({ url: `dataset/${datasetId}`, query }).then(
+      (response) => response.json() as unknown as DatasetDTO
+    );
   }
 
   public uploadDataToDataset(datasetId: string, file: Blob, filename: string): Promise<DatasetDTO> {
@@ -211,8 +224,9 @@ export class PublisherApi {
 
   public async getDatasetView(datasetId: string, pageNumber: number, pageSize: number): Promise<ViewDTO> {
     logger.debug(`Fetching view for dataset: ${datasetId}, page: ${pageNumber}, pageSize: ${pageSize}`);
+    const query = new URLSearchParams({ page_number: String(pageNumber), page_size: String(pageSize) });
 
-    return this.fetch({ url: `dataset/${datasetId}/view?page_number=${pageNumber}&page_size=${pageSize}` }).then(
+    return this.fetch({ url: `dataset/${datasetId}/view`, query }).then(
       (response) => response.json() as unknown as ViewDTO
     );
   }
@@ -222,17 +236,14 @@ export class PublisherApi {
     limit = 20,
     search?: string
   ): Promise<ResultsetWithCount<DatasetListItemDTO>> {
-    logger.debug(`Fetching user dataset list...`);
-
-    const searchParams = new URLSearchParams({ page: page.toString(), limit: limit.toString() });
+    logger.debug(`Fetching dataset list...`);
+    const query = new URLSearchParams({ page: page.toString(), limit: limit.toString() });
 
     if (search) {
-      searchParams.append('search', search);
+      query.append('search', search);
     }
 
-    const qs = searchParams.toString();
-
-    return this.fetch({ url: `dataset?${qs}` }).then(
+    return this.fetch({ url: `dataset`, query }).then(
       (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
     );
   }
@@ -244,16 +255,13 @@ export class PublisherApi {
     search?: string
   ): Promise<ResultsetWithCount<DatasetListItemDTO>> {
     logger.debug(`Fetching full dataset list...`);
-
-    const searchParams = new URLSearchParams({ page: page.toString(), limit: limit.toString() });
+    const query = new URLSearchParams({ page: page.toString(), limit: limit.toString() });
 
     if (search) {
-      searchParams.append('search', search);
+      query.append('search', search);
     }
 
-    const qs = searchParams.toString();
-
-    return this.fetch({ url: `developer/dataset?${qs}` }).then(
+    return this.fetch({ url: `developer/dataset`, query }).then(
       (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
     );
   }
@@ -406,10 +414,7 @@ export class PublisherApi {
       `Fetching preview for dataset: ${datasetId}, revision: ${revisionId}, page: ${pageNumber}, pageSize: ${pageSize}`
     );
 
-    const query = new URLSearchParams({
-      page_number: String(pageNumber),
-      page_size: String(pageSize)
-    });
+    const query = new URLSearchParams({ page_number: String(pageNumber), page_size: String(pageSize) });
 
     if (filter && filter.length) {
       query.set('filter', JSON.stringify(filter));
@@ -419,9 +424,9 @@ export class PublisherApi {
       query.set('sort_by', JSON.stringify([sortBy]));
     }
 
-    return this.fetch({
-      url: `dataset/${datasetId}/revision/by-id/${revisionId}/preview?${query}`
-    }).then((response) => response.json() as unknown as ViewDTO);
+    return this.fetch({ url: `dataset/${datasetId}/revision/by-id/${revisionId}/preview`, query }).then(
+      (response) => response.json() as unknown as ViewDTO
+    );
   }
 
   public async getRevisionFilters(datasetId: string, revisionId: string): Promise<FilterTable[]> {
@@ -703,24 +708,21 @@ export class PublisherApi {
     search?: string
   ): Promise<ResultsetWithCount<UserGroupListItemDTO>> {
     logger.debug(`Fetching user group list...`);
-    const searchParams = new URLSearchParams({ page: page.toString(), limit: limit.toString() });
+    const query = new URLSearchParams({ page: page.toString(), limit: limit.toString() });
 
     if (search) {
-      searchParams.append('search', search);
+      query.append('search', search);
     }
 
-    const qs = searchParams.toString();
-
-    return this.fetch({ url: `admin/group/list?${qs}` }).then(
+    return this.fetch({ url: `admin/group/list`, query }).then(
       (response) => response.json() as unknown as ResultsetWithCount<UserGroupListItemDTO>
     );
   }
 
   public async getAllUserGroups(status?: UserGroupStatus): Promise<UserGroupDTO[]> {
     logger.debug(`Fetching all user groups with status: ${status || 'any'}...`);
-    const qs = status ? `?${new URLSearchParams({ status }).toString()}` : '';
-
-    return this.fetch({ url: `admin/group${qs}` }).then((response) => response.json() as unknown as UserGroupDTO[]);
+    const query = status ? { status } : {};
+    return this.fetch({ url: `admin/group`, query }).then((response) => response.json() as unknown as UserGroupDTO[]);
   }
 
   public async getUserGroup(groupId: string): Promise<UserGroupDTO> {
@@ -752,16 +754,13 @@ export class PublisherApi {
 
   public async listUsers(page = 1, limit = 20, search?: string): Promise<ResultsetWithCount<UserDTO>> {
     logger.debug(`Fetching user list...`);
-
-    const searchParams = new URLSearchParams({ page: page.toString(), limit: limit.toString() });
+    const query = new URLSearchParams({ page: page.toString(), limit: limit.toString() });
 
     if (search) {
-      searchParams.append('search', search);
+      query.append('search', search);
     }
 
-    const qs = searchParams.toString();
-
-    return this.fetch({ url: `admin/user?${qs}` }).then(
+    return this.fetch({ url: `admin/user`, query }).then(
       (response) => response.json() as unknown as ResultsetWithCount<UserDTO>
     );
   }
@@ -838,6 +837,56 @@ export class PublisherApi {
     logger.debug(`Fetching similar datasets by ${similarBy}...`);
     return this.fetch({ url: `admin/similar/datasets?by=${similarBy}` }).then(
       (response) => response.body as ReadableStream
+    );
+  }
+
+  public async getDatasetPreview(
+    datasetId: string,
+    pageNumber: number,
+    pageSize: number,
+    sortBy?: SortByInterface
+  ): Promise<ViewV2DTO> {
+    logger.debug(`Fetching dataset preview: ${datasetId}`);
+    const query = new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString() });
+    query.append('format', 'frontend');
+
+    if (sortBy) {
+      query.append('sort_by', JSON.stringify([sortBy]));
+    }
+
+    return this.fetch({ url: `dataset/${datasetId}/preview`, query }).then(
+      (response) => response.json() as unknown as ViewV2DTO
+    );
+  }
+
+  public async generateFilterId(datasetId: string, dataOptions: DataOptionsDTO): Promise<string> {
+    logger.debug(`Generating filter ID for dataset preview: ${datasetId}`);
+
+    return this.fetch({ method: HttpMethod.Post, url: `dataset/${datasetId}/preview`, json: dataOptions }).then(
+      (response) => response.json().then((data) => data.filterId as string)
+    );
+  }
+
+  public async getFilteredDatasetPreview(
+    datasetId: string,
+    filterId: string,
+    pageNumber: number,
+    pageSize: number,
+    sortBy?: SortByInterface
+  ): Promise<ViewV2DTO> {
+    logger.debug(`Fetching filtered dataset preview: ${datasetId} with filter ID: ${filterId}`);
+    const query = new URLSearchParams({
+      page_number: pageNumber.toString(),
+      page_size: pageSize.toString(),
+      format: 'frontend'
+    });
+
+    if (sortBy) {
+      query.append('sort_by', JSON.stringify([sortBy]));
+    }
+
+    return this.fetch({ url: `dataset/${datasetId}/preview/${filterId}`, query }).then(
+      (response) => response.json() as unknown as ViewV2DTO
     );
   }
 }
