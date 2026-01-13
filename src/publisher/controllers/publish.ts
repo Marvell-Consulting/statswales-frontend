@@ -685,7 +685,7 @@ export const downloadPreview = async (req: Request, res: Response, next: NextFun
 
     const filterId = req.params.filterId;
     const format = (req.query.format as FileFormat) || FileFormat.Csv;
-    const download_language = (req.query.download_language as Locale) || req.language;
+    const download_language = (req.query.download_language?.toString() || req.language) as Locale;
 
     if (!filterId) {
       next(new NotFoundException('filter id is required'));
