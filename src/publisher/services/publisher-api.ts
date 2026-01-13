@@ -94,7 +94,7 @@ export class PublisherApi {
 
     const head = {
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      'Accept-Language': lang || this.lang,
+      'Accept-Language': lang,
       ...(this.token ? { Authorization: `Bearer ${this.token}` } : {}),
       // eslint-disable-next-line @typescript-eslint/naming-convention
       ...(json ? { 'Content-Type': 'application/json; charset=UTF-8' } : {}),
@@ -381,8 +381,11 @@ export class PublisherApi {
       `Fetching preview for dataset: ${datasetId}, revision: ${revisionId}, page: ${pageNumber}, pageSize: ${pageSize}`
     );
 
+    const query = new URLSearchParams({ page_number: String(pageNumber), page_size: String(pageSize) });
+
     return this.fetch({
-      url: `dataset/${datasetId}/revision/by-id/${revisionId}/data-table/preview?page_number=${pageNumber}&page_size=${pageSize}`
+      url: `dataset/${datasetId}/revision/by-id/${revisionId}/data-table/preview`,
+      query
     }).then((response) => response.json() as unknown as ViewDTO);
   }
 
