@@ -37,7 +37,6 @@ import {
   measurePreview,
   measureReview,
   overview,
-  downloadDataset,
   createNewUpdate,
   updateDatatable,
   setupNumberDimension,
@@ -49,7 +48,8 @@ import {
   downloadMetadata,
   longBuildHandling,
   ajaxRefreshBuildStatus,
-  provideUpdateReason
+  provideUpdateReason,
+  downloadPreview
 } from '../controllers/publish';
 import { DatasetInclude as Include } from '../../shared/enums/dataset-include';
 import { flashMessages, flashErrors } from '../../shared/middleware/flash';
@@ -92,10 +92,11 @@ publish.get('/:datasetId/delete', fetchDataset(Include.Meta), deleteDraft);
 publish.post('/:datasetId/delete', fetchDataset(Include.Meta), upload.none(), deleteDraft);
 
 /* Cube Preview */
-publish.get('/:datasetId/cube-preview', fetchDataset(), cubePreview);
 publish.post('/:datasetId/cube-preview', fetchDataset(), upload.none(), cubePreview);
-publish.get('/:datasetId/download', fetchDataset(), downloadDataset);
+publish.get('/:datasetId/cube-preview{/:filterId}', fetchDataset(), cubePreview);
 publish.get('/:datasetId/download/metadata', fetchDataset(), downloadMetadata);
+publish.post('/:datasetId/download', fetchDataset(), downloadPreview);
+publish.get('/:datasetId/download{/:filterId}', fetchDataset(), downloadPreview);
 
 publish.get('/:datasetId/build/:buildId', fetchDataset(), longBuildHandling);
 publish.get('/:datasetId/build/:buildId/refresh', fetchDataset(), ajaxRefreshBuildStatus);

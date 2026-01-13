@@ -4,7 +4,6 @@ import { Request, Response, NextFunction } from 'express';
 import { omit } from 'lodash';
 import slugify from 'slugify';
 import { stringify } from 'csv-stringify/sync';
-import qs from 'qs';
 
 import { DatasetListItemDTO } from '../../shared/dtos/dataset-list-item';
 import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count';
@@ -19,16 +18,18 @@ import { Locale } from '../../shared/enums/locale';
 import { config } from '../../shared/config';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { TopicDTO } from '../../shared/dtos/topic';
-import { parseFiltersV2, v2FiltersToV1 } from '../../shared/utils/parse-filters';
+import { parseFiltersV2, v1FiltersToV2, v2FiltersToV1 } from '../../shared/utils/parse-filters';
 import { FilterTable } from '../../shared/dtos/filter-table';
 import { ViewDTO, ViewV2DTO } from '../../shared/dtos/view-dto';
 import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
 import { singleLangTopic } from '../../shared/utils/single-lang-topic';
 import { RevisionDTO } from '../../shared/dtos/revision';
 import { markdownToSafeHTML } from '../../shared/utils/markdown-to-html';
-import { FilterV2 } from '../../shared/interfaces/filter';
-
-export const DEFAULT_PAGE_SIZE = 100;
+import { Filter, FilterV2 } from '../../shared/interfaces/filter';
+import { getDownloadFilename } from '../../shared/utils/download-filename';
+import { DataOptionsDTO, FRONTEND_DATA_OPTIONS } from '../../shared/interfaces/data-options';
+import { DataValueType } from '../../shared/enums/data-value-type';
+import { DEFAULT_PAGE_SIZE, parsePageOptions } from '../../shared/utils/parse-page-options';
 
 export const listTopics = async (req: Request, res: Response, next: NextFunction) => {
   const topicId = req.params.topicId ? req.params.topicId.match(/\d+/)?.[0] : undefined;
@@ -99,14 +100,6 @@ export const listPublishedDatasets = async (req: Request, res: Response, next: N
   }
 };
 
-const parsePageOptions = (req: Request) => {
-  const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
-  const pageSize = Number.parseInt(req.query.page_size as string, 10) || DEFAULT_PAGE_SIZE;
-  const query = qs.parse(req.originalUrl.split('?')[1]);
-  const sortBy = query.sort_by as unknown as SortByInterface;
-  return { pageNumber, pageSize, sortBy };
-};
-
 export const viewPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
   const dataset = singleLangDataset(res.locals.dataset, req.language);
   const revision = dataset.published_revision;
@@ -137,7 +130,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
     }
   }
 
-  res.render('view', {
+  res.render('dataset/view', {
     ...view,
     ...pagination,
     datasetMetadata,
@@ -161,8 +154,8 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
   }
 
   if (req.method === 'POST') {
-    const selectedFilters: FilterV2[] = parseFiltersV2(req.body.filter);
-    const filterId = await req.conapi.generateFilterId(dataset.id, selectedFilters);
+    const dataOptions: DataOptionsDTO = { ...FRONTEND_DATA_OPTIONS, filters: parseFiltersV2(req.body.filter) };
+    const filterId = await req.conapi.generateFilterId(dataset.id, dataOptions);
     const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
     res.redirect(req.buildUrl(`/${dataset.id}/filtered/${filterId}`, req.language, { page_size: pageSize.toString() }));
     return;
@@ -199,7 +192,7 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
     }
   }
 
-  res.render('view', {
+  res.render('dataset/view', {
     ...view,
     ...pagination,
     datasetMetadata,
@@ -211,6 +204,61 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
     isUnpublished: revision?.unpublished_at || false,
     isArchived: (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false
   });
+};
+
+export const downloadPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
+  logger.info(`Downloading published dataset ${res.locals.datasetId}`);
+  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const revision = dataset.published_revision;
+
+  try {
+    if (!dataset.first_published_at || !revision) {
+      throw new NotFoundException('no published revision found');
+    }
+
+    if (req.method === 'POST') {
+      let filters: FilterV2[] = [];
+
+      if (req.body.view_type === 'filtered' && req.body.selected_filter_options) {
+        const selectedFilters = JSON.parse(req.body.selected_filter_options) as Filter[];
+        filters = v1FiltersToV2(selectedFilters);
+      }
+
+      const data_value_type = (req.body.view_choice as DataValueType) || DataValueType.Raw;
+      const format = req.body.format as FileFormat;
+      const download_language = req.body.download_language as Locale;
+
+      const dataOptions: DataOptionsDTO = {
+        filters,
+        options: {
+          use_raw_column_names: true,
+          use_reference_values: true,
+          data_value_type
+        }
+      };
+
+      const filterId = await req.conapi.generateFilterId(dataset.id, dataOptions);
+      res.redirect(req.buildUrl(`/${dataset.id}/download/${filterId}`, req.language, { format, download_language }));
+      return;
+    }
+
+    const filterId = req.params.filterId;
+    const format = (req.query.format as FileFormat) || FileFormat.Csv;
+    const download_language = (req.query.download_language?.toString() || req.language) as Locale;
+
+    if (!filterId) {
+      next(new NotFoundException('filter id is required'));
+      return;
+    }
+
+    const filename = getDownloadFilename(dataset.id, revision, download_language);
+    const headers = getDownloadHeaders(format, filename);
+    const fileStream = await req.conapi.downloadPublishedData(dataset.id, filterId, format, download_language);
+    res.writeHead(200, headers);
+    Readable.from(fileStream).pipe(res);
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const downloadPublishedMetadata = async (req: Request, res: Response, next: NextFunction) => {
@@ -229,41 +277,6 @@ export const downloadPublishedMetadata = async (req: Request, res: Response, nex
     const headers = getDownloadHeaders(FileFormat.Csv, `${metadata.title}-meta`);
     res.set(headers);
     res.send(stringify(downloadMeta, { bom: true, header: false, quoted: true }));
-  } catch (err) {
-    next(err);
-  }
-};
-
-export const downloadPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
-  logger.debug('downloading published dataset');
-  const dataset = singleLangDataset(res.locals.dataset, req.language);
-  const revision = dataset.published_revision;
-
-  try {
-    if (!dataset.first_published_at || !revision) {
-      throw new NotFoundException('no published revision found');
-    }
-
-    let attachmentName: string;
-    if (revision.metadata?.title) {
-      attachmentName = `${revision.metadata?.title}-${revision.revision_index > 0 ? `v${revision.revision_index}` : 'draft'}`;
-    } else {
-      attachmentName = `${dataset.id}-${revision.revision_index > 0 ? `v${revision.revision_index}` : 'draft'}`;
-    }
-    const view = req.query.view_choice as string;
-    let selectedFilterOptions: string | undefined = undefined;
-    if (req.query.view_type === 'filtered') {
-      selectedFilterOptions = req.query.selected_filter_options?.toString();
-    }
-    logger.debug(`selectedFilterOptions = ${selectedFilterOptions}`);
-
-    const format = req.query.format as FileFormat;
-    const lang = req.query.download_language as Locale;
-    const headers = getDownloadHeaders(format, attachmentName);
-    const fileStream = await req.conapi.getCubeFileStream(dataset.id, format, lang, view, selectedFilterOptions);
-    res.writeHead(200, headers);
-    const readable: Readable = Readable.from(fileStream);
-    readable.pipe(res);
   } catch (err) {
     next(err);
   }

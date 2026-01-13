@@ -39,7 +39,7 @@ describe('PublisherApi', () => {
       await statsWalesApi.ping();
 
       expect(fetchSpy).toHaveBeenCalledWith(
-        `${baseUrl}/healthcheck`,
+        `${baseUrl}/healthcheck?lang=en`,
         expect.objectContaining({
           method: HttpMethod.Get,
           headers: { ...headers, Authorization: `Bearer ${token}` }
@@ -101,7 +101,7 @@ describe('PublisherApi', () => {
       const fileStream = await statsWalesApi.getOriginalUpload(datasetId, revisionId);
 
       expect(fetchSpy).toHaveBeenCalledWith(
-        `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/data-table/raw`,
+        `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/data-table/raw?lang=en`,
         expect.objectContaining({ method: HttpMethod.Get, headers })
       );
       expect(fileStream).toBe(stream);
@@ -120,7 +120,7 @@ describe('PublisherApi', () => {
       const factTableColumnDto = await statsWalesApi.getSourcesForDataset(datasetId);
 
       expect(fetchSpy).toHaveBeenCalledWith(
-        `${baseUrl}/dataset/${datasetId}/sources`,
+        `${baseUrl}/dataset/${datasetId}/sources?lang=en`,
         expect.objectContaining({
           method: HttpMethod.Get,
           headers
@@ -140,7 +140,7 @@ describe('PublisherApi', () => {
       const datasetDTO = await statsWalesApi.getDataset(datasetId);
 
       expect(fetchSpy).toHaveBeenCalledWith(
-        `${baseUrl}/dataset/${datasetId}`,
+        `${baseUrl}/dataset/${datasetId}?lang=en`,
         expect.objectContaining({
           method: HttpMethod.Get,
           headers
@@ -160,7 +160,7 @@ describe('PublisherApi', () => {
       const viewDTO = await statsWalesApi.getDatasetView(datasetId, 1, 10);
 
       expect(fetchSpy).toHaveBeenCalledWith(
-        `${baseUrl}/dataset/${datasetId}/view?page_number=1&page_size=10`,
+        `${baseUrl}/dataset/${datasetId}/view?page_number=1&page_size=10&lang=en`,
         expect.objectContaining({
           method: HttpMethod.Get,
           headers
@@ -196,7 +196,7 @@ describe('PublisherApi', () => {
       const viewDTO = await statsWalesApi.getImportPreview(datasetId, revisionId, 1, 10);
 
       expect(fetchSpy).toHaveBeenCalledWith(
-        `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/data-table/preview?page_number=1&page_size=10`,
+        `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/data-table/preview?page_number=1&page_size=10&lang=en`,
         expect.objectContaining({
           method: HttpMethod.Get,
           headers
@@ -231,7 +231,7 @@ describe('PublisherApi', () => {
       const datasetDTO = await statsWalesApi.uploadCSVtoCreateDataset(file, filename, title);
 
       expect(fetchSpy).toHaveBeenCalledWith(
-        `${baseUrl}/dataset`,
+        `${baseUrl}/dataset?lang=en`,
         expect.objectContaining({
           method: HttpMethod.Post,
           headers,
@@ -282,7 +282,7 @@ describe('PublisherApi', () => {
       const datasetDTO = await statsWalesApi.assignSources(datasetId, sourceAssignment);
 
       expect(fetchSpy).toHaveBeenCalledWith(
-        `${baseUrl}/dataset/${datasetId}/sources`,
+        `${baseUrl}/dataset/${datasetId}/sources?lang=en`,
         expect.objectContaining({
           method: HttpMethod.Patch,
           // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -310,7 +310,7 @@ describe('PublisherApi', () => {
       const datasetDTO = await statsWalesApi.uploadCSVToFixDataset(datasetId, revisionId, file, filename);
 
       expect(fetchSpy).toHaveBeenCalledWith(
-        `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/fact-table`,
+        `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/fact-table?lang=en`,
         expect.objectContaining({ method: HttpMethod.Post, headers, body })
       );
       expect(datasetDTO).toEqual(dataset);
@@ -348,7 +348,7 @@ describe('PublisherApi', () => {
       const ping = await statsWalesApi.ping();
 
       expect(fetchSpy).toHaveBeenCalledWith(
-        `${baseUrl}/healthcheck`,
+        `${baseUrl}/healthcheck?lang=en`,
         expect.objectContaining({ method: HttpMethod.Get, headers })
       );
       expect(ping).toBe(true);
@@ -360,7 +360,7 @@ describe('PublisherApi', () => {
       await expect(statsWalesApi.ping()).rejects.toThrow(new UnknownException('Service Unavailable', 503));
 
       expect(fetchSpy).toHaveBeenCalledWith(
-        `${baseUrl}/healthcheck`,
+        `${baseUrl}/healthcheck?lang=en`,
         expect.objectContaining({ method: HttpMethod.Get, headers })
       );
     });

@@ -2,7 +2,6 @@ import { Readable } from 'node:stream';
 import { randomUUID } from 'node:crypto';
 
 import { NextFunction, Request, Response } from 'express';
-import qs, { ParsedQs } from 'qs';
 import { get, set, sortBy } from 'lodash';
 import { FieldValidationError, matchedData } from 'express-validator';
 import { customAlphabet } from 'nanoid';
@@ -41,7 +40,7 @@ import {
 } from '../validators';
 import { ViewError } from '../../shared/dtos/view-error';
 import { logger } from '../../shared/utils/logger';
-import { ViewDTO, ViewErrDTO } from '../../shared/dtos/view-dto';
+import { ViewDTO, ViewErrDTO, ViewV2DTO } from '../../shared/dtos/view-dto';
 import { SourceType } from '../../shared/enums/source-type';
 import { SourceAssignmentDTO } from '../../shared/dtos/source-assignment-dto';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
@@ -52,7 +51,7 @@ import { Designation } from '../../shared/enums/designation';
 import { RelatedLinkDTO } from '../../shared/dtos/related-link';
 import { RevisionProviderDTO } from '../../shared/dtos/revision-provider';
 import { ProviderSourceDTO } from '../../shared/dtos/provider-source';
-import { paginationSequence } from '../../shared/utils/pagination';
+import { pageInfo, paginationSequence } from '../../shared/utils/pagination';
 import { fileMimeTypeHandler } from '../../shared/utils/file-mimetype-handler';
 import { TopicDTO } from '../../shared/dtos/topic';
 import { NestedTopic, nestTopics } from '../../shared/utils/nested-topics';
@@ -73,7 +72,6 @@ import { Locale } from '../../shared/enums/locale';
 import { DatasetInclude } from '../../shared/enums/dataset-include';
 import { NumberType } from '../../shared/enums/number-type';
 import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
-import slugify from 'slugify';
 import { DuckDBSupportFileFormats } from '../../shared/enums/support-fileformats';
 import { TZDate } from '@date-fns/tz';
 import { singleLangUserGroup } from '../../shared/utils/single-lang-user-group';
@@ -94,10 +92,8 @@ import { TaskDecisionDTO } from '../../shared/dtos/task-decision';
 import { SingleLanguageRevision } from '../../shared/dtos/single-language/revision';
 import { config } from '../../shared/config';
 import { FilterTable } from '../../shared/dtos/filter-table';
-import { DEFAULT_PAGE_SIZE } from '../../consumer/controllers/consumer';
-import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { NextUpdateType } from '../../shared/enums/next-update-type';
-import { parseFilters } from '../../shared/utils/parse-filters';
+import { parseFiltersV2, v1FiltersToV2, v2FiltersToV1 } from '../../shared/utils/parse-filters';
 import { FactTableColumnType } from '../../shared/dtos/fact-table-column-type';
 import { TaskAction } from '../../shared/enums/task-action';
 import { stringify } from 'csv-stringify/sync';
@@ -106,6 +102,11 @@ import { CubeBuildStatus } from '../../shared/enums/cube-build-status';
 import { BuildLogEntry } from '../../shared/dtos/build-log-entry';
 import { markdownToSafeHTML } from '../../shared/utils/markdown-to-html';
 import { DatasetStatus } from '../../shared/enums/dataset-status';
+import { DataOptionsDTO, FRONTEND_DATA_OPTIONS } from '../../shared/interfaces/data-options';
+import { DEFAULT_PAGE_SIZE, parsePageOptions } from '../../shared/utils/parse-page-options';
+import { DataValueType } from '../../shared/enums/data-value-type';
+import { FilterV2, Filter } from '../../shared/interfaces/filter';
+import { getDownloadFilename } from '../../shared/utils/download-filename';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -567,25 +568,32 @@ export const deleteDraft = async (req: Request, res: Response) => {
 export const cubePreview = async (req: Request, res: Response, next: NextFunction) => {
   const { id: datasetId, end_revision_id: endRevisionId } = res.locals.dataset;
 
-  // Parse query parameters from URL or request body (for POST requests)
-  const query = req.method === 'POST' ? req.body : qs.parse(req.originalUrl.split('?')[1]);
-  const pageNumber = Number.parseInt(query.page_number as string, 10) || 1;
-  const pageSize = Number.parseInt(query.page_size as string, 10) || DEFAULT_PAGE_SIZE;
-  const sortBy = query.sort_by as unknown as SortByInterface;
-  const filter = parseFilters(query.filter as ParsedQs);
+  if (req.method === 'POST') {
+    const dataOptions: DataOptionsDTO = { ...FRONTEND_DATA_OPTIONS, filters: parseFiltersV2(req.body.filter) };
+    const filterId = await req.pubapi.generateFilterId(datasetId, dataOptions);
+    const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
+    res.redirect(
+      req.buildUrl(`/publish/${datasetId}/cube-preview/${filterId}`, req.language, { page_size: pageSize.toString() })
+    );
+    return;
+  }
 
+  const filterId = req.params.filterId;
+  const { pageNumber, pageSize, sortBy } = parsePageOptions(req);
   let errors: ViewError[] | undefined;
-  let previewData: ViewDTO | ViewErrDTO | undefined;
-  let pagination: (string | number)[] = [];
   let previewMetadata: PreviewMetadata | undefined;
   let publishedRevisions: RevisionDTO[] = [];
 
   try {
-    const [datasetDTO, revisionDTO, previewDTO, filtersDTO]: [DatasetDTO, RevisionDTO, ViewDTO, FilterTable[]] =
+    const fetchPreview = filterId
+      ? req.pubapi.getFilteredDatasetPreview(datasetId, filterId, pageNumber, pageSize, sortBy)
+      : req.pubapi.getDatasetPreview(datasetId, pageNumber, pageSize, sortBy);
+
+    const [datasetDTO, revisionDTO, preview, filtersDTO]: [DatasetDTO, RevisionDTO, ViewV2DTO, FilterTable[]] =
       await Promise.all([
         req.pubapi.getDataset(datasetId, DatasetInclude.Preview),
         req.pubapi.getRevision(datasetId, endRevisionId),
-        req.pubapi.getRevisionPreview(datasetId, endRevisionId, pageNumber, pageSize, sortBy, filter),
+        fetchPreview,
         req.pubapi.getRevisionFilters(datasetId, endRevisionId)
       ]);
 
@@ -607,28 +615,29 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
       }
     }
 
-    pagination = paginationSequence(previewDTO.current_page, previewDTO.total_pages);
+    const pagination = pageInfo(preview.page_info?.current_page, pageSize, preview.page_info?.total_records || 0);
     previewMetadata = await getDatasetMetadata(dataset, revision);
-    previewData = previewDTO;
+
+    const previewProps = preview || {
+      status: 500,
+      errors: [{ field: 'preview', message: { key: 'errors.preview.failed_to_get_preview' } }],
+      dataset_id: datasetId
+    };
 
     if (previewMetadata) {
-      errors = [{ field: 'preview', message: { key: 'errors.preview.failed_to_get_preview' } }];
-      if (!previewData) {
-        previewData = { status: 500, errors, dataset_id: datasetId };
-      }
-      res.render('dataset-view', {
-        ...previewData,
+      res.render('dataset-preview', {
+        ...previewProps,
+        ...pagination,
         datasetMetadata: previewMetadata,
         filters: filtersDTO,
         preview: true,
         dataset,
-        pagination,
         errors,
         datasetStatus,
         publishingStatus,
         publicationHistory,
         datasetTitle,
-        selectedFilterOptions: filter,
+        selectedFilterOptions: preview.filters ? v2FiltersToV1(preview.filters) : [],
         shorthandUrl: req.buildUrl(`/shorthand`, req.language)
       });
       return;
@@ -641,42 +650,61 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
   }
 };
 
-export const downloadDataset = async (req: Request, res: Response, next: NextFunction) => {
-  const datasetId = res.locals.datasetId;
-  const draftRevisionId: string = res.locals.dataset?.draft_revision_id;
+export const downloadPreview = async (req: Request, res: Response, next: NextFunction) => {
+  logger.info(`Downloading dataset preview ${res.locals.datasetId}`);
+  const { id: datasetId, end_revision_id: endRevisionId } = res.locals.dataset;
 
   try {
-    const revisionDTO: RevisionDTO = await req.pubapi.getRevision(datasetId, draftRevisionId);
-    const revision = singleLangRevision(revisionDTO, req.language)!;
-    const revIndex = revision.revision_index;
-    const isDraft = revIndex === 0;
-    const datasetTitle = revision.metadata?.title ? slugify(revision.metadata.title, { lower: true }) : datasetId;
-    const attachmentName = `${datasetTitle}-${isDraft ? 'draft' : `v${revIndex}`}`;
-    const view = req.query.view_choice as string;
-    let selectedFilterOptions: string | undefined = undefined;
-    if (req.query.view_type === 'filtered') {
-      selectedFilterOptions = req.query.selected_filter_options?.toString();
+    if (req.method === 'POST') {
+      let filters: FilterV2[] = [];
+
+      if (req.body.view_type === 'filtered' && req.body.selected_filter_options) {
+        const selectedFilters = JSON.parse(req.body.selected_filter_options) as Filter[];
+        filters = v1FiltersToV2(selectedFilters);
+      }
+
+      const data_value_type = (req.body.view_choice as DataValueType) || DataValueType.Raw;
+      const format = req.body.format as FileFormat;
+      const download_language = req.body.download_language as Locale;
+
+      const dataOptions: DataOptionsDTO = {
+        filters,
+        options: {
+          use_raw_column_names: true,
+          use_reference_values: true,
+          data_value_type
+        }
+      };
+
+      const filterId = await req.pubapi.generateFilterId(datasetId, dataOptions);
+      res.redirect(
+        req.buildUrl(`publish/${datasetId}/download/${filterId}`, req.language, { format, download_language })
+      );
+      return;
     }
 
-    const format = req.query.format as FileFormat;
-    const lang = req.query.download_language as Locale;
-    const headers = getDownloadHeaders(format, attachmentName);
+    const filterId = req.params.filterId;
+    const format = (req.query.format as FileFormat) || FileFormat.Csv;
+    const download_language = (req.query.download_language?.toString() || req.language) as Locale;
 
-    if (!headers) {
-      throw new NotFoundException('errors.preview.invalid_download_format');
+    if (!filterId) {
+      next(new NotFoundException('filter id is required'));
+      return;
     }
-    logger.debug(`Getting file from backend...`);
-    const fileStream = await req.pubapi.getCubeFileStream(
-      datasetId,
-      revision.id,
-      format,
-      lang,
-      view,
-      selectedFilterOptions
-    );
+
+    const endRevision: RevisionDTO = await req.pubapi.getRevision(datasetId, endRevisionId);
+    const revision = singleLangRevision(endRevision, download_language);
+
+    if (!revision) {
+      next(new NotFoundException('revision not found'));
+      return;
+    }
+
+    const filename = getDownloadFilename(datasetId, revision, download_language);
+    const headers = getDownloadHeaders(format, filename);
+    const fileStream = await req.pubapi.downloadDatasetPreview(datasetId, filterId, format, download_language);
     res.writeHead(200, headers);
-    const readable: Readable = Readable.from(fileStream);
-    readable.pipe(res);
+    Readable.from(fileStream).pipe(res);
   } catch (err) {
     next(err);
   }

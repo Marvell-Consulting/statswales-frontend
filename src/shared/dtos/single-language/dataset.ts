@@ -14,8 +14,11 @@ export interface SingleLanguageDataset {
   measure?: SingleLanguageMeasure;
   dimensions?: SingleLanguageDimension[];
   revisions?: SingleLanguageRevision[];
+  start_revision_id?: string;
   start_revision?: SingleLanguageRevision;
+  end_revision_id?: string;
   end_revision?: SingleLanguageRevision;
+  draft_revision_id?: string;
   draft_revision?: SingleLanguageRevision;
   published_revision?: SingleLanguageRevision;
   start_date?: string;
