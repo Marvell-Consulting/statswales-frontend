@@ -16,7 +16,7 @@ export type ViewTableProps = {
 export default function ViewTable(props: ViewTableProps) {
   const { i18n } = useLocals();
 
-  const columns = props.headers.map((col, index) => ({
+  const columns = props.headers?.map((col, index) => ({
     key: index,
     label: col.name,
     format: (value: string) => {
