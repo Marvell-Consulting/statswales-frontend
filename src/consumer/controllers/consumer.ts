@@ -251,7 +251,7 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
       return;
     }
 
-    const filename = getDownloadFilename(dataset, revision, download_language);
+    const filename = getDownloadFilename(dataset.id, revision, download_language);
     const headers = getDownloadHeaders(format, filename);
     const fileStream = await req.conapi.downloadPublishedData(dataset.id, filterId, format, download_language);
     res.writeHead(200, headers);

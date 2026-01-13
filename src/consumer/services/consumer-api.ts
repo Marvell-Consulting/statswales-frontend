@@ -195,34 +195,6 @@ export class ConsumerApi {
     );
   }
 
-  public async getCubeFileStream(
-    datasetId: string,
-    format: FileFormat,
-    lang: Locale,
-    view?: string,
-    selectedFilterOptions?: string,
-    sortBy?: string
-  ): Promise<ReadableStream> {
-    logger.debug(`Fetching ${format} stream for dataset: ${datasetId}...`);
-    const query = new URLSearchParams();
-
-    if (view) {
-      query.set('view', view);
-    }
-
-    if (selectedFilterOptions) {
-      query.set('filter', selectedFilterOptions);
-    }
-
-    if (sortBy) {
-      query.append('sort_by', sortBy);
-    }
-
-    return this.fetch({ url: `v1/${datasetId}/download/${format}`, query, lang }).then(
-      (response) => response.body as ReadableStream
-    );
-  }
-
   public async getPublicationHistory(datasetId: string): Promise<RevisionDTO[]> {
     logger.debug(`Fetching publication history for dataset: ${datasetId}`);
     return this.fetch({ url: `v1/${datasetId}/history` }).then(

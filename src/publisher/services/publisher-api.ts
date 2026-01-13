@@ -889,4 +889,17 @@ export class PublisherApi {
       (response) => response.json() as unknown as ViewV2DTO
     );
   }
+
+  public async downloadDatasetPreview(
+    datasetId: string,
+    filterId: string,
+    format: FileFormat,
+    language: string
+  ): Promise<ReadableStream> {
+    logger.debug(`Fetching ${format} stream for dataset: ${datasetId}...`);
+    const query = new URLSearchParams({ format, lang: language });
+    return this.fetch({ url: `dataset/${datasetId}/preview/${filterId}`, query }).then(
+      (response) => response.body as ReadableStream
+    );
+  }
 }

@@ -72,7 +72,6 @@ import { Locale } from '../../shared/enums/locale';
 import { DatasetInclude } from '../../shared/enums/dataset-include';
 import { NumberType } from '../../shared/enums/number-type';
 import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
-import slugify from 'slugify';
 import { DuckDBSupportFileFormats } from '../../shared/enums/support-fileformats';
 import { TZDate } from '@date-fns/tz';
 import { singleLangUserGroup } from '../../shared/utils/single-lang-user-group';
@@ -94,7 +93,7 @@ import { SingleLanguageRevision } from '../../shared/dtos/single-language/revisi
 import { config } from '../../shared/config';
 import { FilterTable } from '../../shared/dtos/filter-table';
 import { NextUpdateType } from '../../shared/enums/next-update-type';
-import { parseFiltersV2, v2FiltersToV1 } from '../../shared/utils/parse-filters';
+import { parseFiltersV2, v1FiltersToV2, v2FiltersToV1 } from '../../shared/utils/parse-filters';
 import { FactTableColumnType } from '../../shared/dtos/fact-table-column-type';
 import { TaskAction } from '../../shared/enums/task-action';
 import { stringify } from 'csv-stringify/sync';
@@ -105,6 +104,9 @@ import { markdownToSafeHTML } from '../../shared/utils/markdown-to-html';
 import { DatasetStatus } from '../../shared/enums/dataset-status';
 import { DataOptionsDTO, FRONTEND_DATA_OPTIONS } from '../../shared/interfaces/data-options';
 import { DEFAULT_PAGE_SIZE, parsePageOptions } from '../../shared/utils/parse-page-options';
+import { DataValueType } from '../../shared/enums/data-value-type';
+import { FilterV2, Filter } from '../../shared/interfaces/filter';
+import { getDownloadFilename } from '../../shared/utils/download-filename';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -648,42 +650,61 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
   }
 };
 
-export const downloadDataset = async (req: Request, res: Response, next: NextFunction) => {
-  const datasetId = res.locals.datasetId;
-  const draftRevisionId: string = res.locals.dataset?.draft_revision_id;
+export const downloadPreview = async (req: Request, res: Response, next: NextFunction) => {
+  logger.info(`Downloading dataset preview ${res.locals.datasetId}`);
+  const { id: datasetId, end_revision_id: endRevisionId } = res.locals.dataset;
 
   try {
-    const revisionDTO: RevisionDTO = await req.pubapi.getRevision(datasetId, draftRevisionId);
-    const revision = singleLangRevision(revisionDTO, req.language)!;
-    const revIndex = revision.revision_index;
-    const isDraft = revIndex === 0;
-    const datasetTitle = revision.metadata?.title ? slugify(revision.metadata.title, { lower: true }) : datasetId;
-    const attachmentName = `${datasetTitle}-${isDraft ? 'draft' : `v${revIndex}`}`;
-    const view = req.query.view_choice as string;
-    let selectedFilterOptions: string | undefined = undefined;
-    if (req.query.view_type === 'filtered') {
-      selectedFilterOptions = req.query.selected_filter_options?.toString();
+    if (req.method === 'POST') {
+      let filters: FilterV2[] = [];
+
+      if (req.body.view_type === 'filtered' && req.body.selected_filter_options) {
+        const selectedFilters = JSON.parse(req.body.selected_filter_options) as Filter[];
+        filters = v1FiltersToV2(selectedFilters);
+      }
+
+      const data_value_type = (req.body.view_choice as DataValueType) || DataValueType.Raw;
+      const format = req.body.format as FileFormat;
+      const download_language = req.body.download_language as Locale;
+
+      const dataOptions: DataOptionsDTO = {
+        filters,
+        options: {
+          use_raw_column_names: true,
+          use_reference_values: true,
+          data_value_type
+        }
+      };
+
+      const filterId = await req.pubapi.generateFilterId(datasetId, dataOptions);
+      res.redirect(
+        req.buildUrl(`publish/${datasetId}/download/${filterId}`, req.language, { format, download_language })
+      );
+      return;
     }
 
-    const format = req.query.format as FileFormat;
-    const lang = req.query.download_language as Locale;
-    const headers = getDownloadHeaders(format, attachmentName);
+    const filterId = req.params.filterId;
+    const format = (req.query.format as FileFormat) || FileFormat.Csv;
+    const download_language = (req.query.download_language as Locale) || req.language;
 
-    if (!headers) {
-      throw new NotFoundException('errors.preview.invalid_download_format');
+    if (!filterId) {
+      next(new NotFoundException('filter id is required'));
+      return;
     }
-    logger.debug(`Getting file from backend...`);
-    const fileStream = await req.pubapi.getCubeFileStream(
-      datasetId,
-      revision.id,
-      format,
-      lang,
-      view,
-      selectedFilterOptions
-    );
+
+    const endRevision: RevisionDTO = await req.pubapi.getRevision(datasetId, endRevisionId);
+    const revision = singleLangRevision(endRevision, download_language);
+
+    if (!revision) {
+      next(new NotFoundException('revision not found'));
+      return;
+    }
+
+    const filename = getDownloadFilename(datasetId, revision, download_language);
+    const headers = getDownloadHeaders(format, filename);
+    const fileStream = await req.pubapi.downloadDatasetPreview(datasetId, filterId, format, download_language);
     res.writeHead(200, headers);
-    const readable: Readable = Readable.from(fileStream);
-    readable.pipe(res);
+    Readable.from(fileStream).pipe(res);
   } catch (err) {
     next(err);
   }
