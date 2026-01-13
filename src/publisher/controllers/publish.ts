@@ -616,10 +616,15 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
     const pagination = pageInfo(preview.page_info?.current_page, pageSize, preview.page_info?.total_records || 0);
     previewMetadata = await getDatasetMetadata(dataset, revision);
 
+    const previewProps = preview || {
+      status: 500,
+      errors: [{ field: 'preview', message: { key: 'errors.preview.failed_to_get_preview' } }],
+      dataset_id: datasetId
+    };
+
     if (previewMetadata) {
-      errors = [{ field: 'preview', message: { key: 'errors.preview.failed_to_get_preview' } }];
-      res.render('dataset-view', {
-        ...(preview || { status: 500, errors, dataset_id: datasetId }),
+      res.render('dataset-preview', {
+        ...previewProps,
         ...pagination,
         datasetMetadata: previewMetadata,
         filters: filtersDTO,
