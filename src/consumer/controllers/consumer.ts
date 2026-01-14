@@ -20,7 +20,7 @@ import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { TopicDTO } from '../../shared/dtos/topic';
 import { parseFiltersV2, v1FiltersToV2, v2FiltersToV1 } from '../../shared/utils/parse-filters';
 import { FilterTable } from '../../shared/dtos/filter-table';
-import { ViewDTO, ViewV2DTO } from '../../shared/dtos/view-dto';
+import { ViewV2DTO } from '../../shared/dtos/view-dto';
 import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
 import { singleLangTopic } from '../../shared/utils/single-lang-topic';
 import { RevisionDTO } from '../../shared/dtos/revision';
@@ -112,16 +112,20 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
     return;
   }
 
-  const [datasetMetadata, view, filters, publishedRevisions]: [PreviewMetadata, ViewDTO, FilterTable[], RevisionDTO[]] =
-    await Promise.all([
-      getDatasetMetadata(dataset, revision),
-      req.conapi.getPublishedDatasetView(dataset.id, pageNumber, pageSize, sortBy),
-      req.conapi.getPublishedDatasetFilters(dataset.id),
-      req.conapi.getPublicationHistory(dataset.id)
-    ]);
+  const [datasetMetadata, view, filters, publishedRevisions]: [
+    PreviewMetadata,
+    ViewV2DTO,
+    FilterTable[],
+    RevisionDTO[]
+  ] = await Promise.all([
+    getDatasetMetadata(dataset, revision),
+    req.conapi.getPublishedDatasetView(dataset.id, pageNumber, pageSize, sortBy),
+    req.conapi.getPublishedDatasetFilters(dataset.id),
+    req.conapi.getPublicationHistory(dataset.id)
+  ]);
 
   const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
-  const pagination = pageInfo(view.current_page, pageSize, view.page_info?.total_records || 0);
+  const pagination = pageInfo(view.page_info?.current_page, pageSize, view.page_info?.total_records || 0);
   const publicationHistory = publishedRevisions.map((rev) => singleLangRevision(rev, req.language));
 
   for (const rev of publicationHistory) {
