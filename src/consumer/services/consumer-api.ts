@@ -9,7 +9,7 @@ import { ApiException } from '../../shared/exceptions/api.exception';
 import { Locale } from '../../shared/enums/locale';
 import { DatasetListItemDTO } from '../../shared/dtos/dataset-list-item';
 import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count';
-import { ViewDTO, ViewV2DTO } from '../../shared/dtos/view-dto';
+import { ViewV2DTO } from '../../shared/dtos/view-dto';
 import { FileFormat } from '../../shared/enums/file-format';
 import { PublishedTopicsDTO } from '../../shared/dtos/published-topics-dto';
 import { FilterTable } from '../../shared/dtos/filter-table';
@@ -132,7 +132,7 @@ export class ConsumerApi {
     pageNumber: number,
     pageSize: number,
     sortBy?: SortByInterface
-  ): Promise<ViewDTO> {
+  ): Promise<ViewV2DTO> {
     logger.debug(`Fetching published view of dataset: ${datasetId}`);
     const query = new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString() });
     query.append('format', 'frontend');
@@ -141,7 +141,9 @@ export class ConsumerApi {
       query.append('sort_by', JSON.stringify([sortBy]));
     }
 
-    return this.fetch({ url: `v2/${datasetId}/data`, query }).then((response) => response.json() as unknown as ViewDTO);
+    return this.fetch({ url: `v2/${datasetId}/data`, query }).then(
+      (response) => response.json() as unknown as ViewV2DTO
+    );
   }
 
   public async getPublishedDatasetFilters(datasetId: string): Promise<FilterTable[]> {
