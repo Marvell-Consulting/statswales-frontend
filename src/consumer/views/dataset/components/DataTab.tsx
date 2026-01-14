@@ -67,6 +67,8 @@ export default function DataTab(props: DataTabProps) {
               )}
 
               <Filters
+                dataset={props.dataset}
+                preview={props.preview}
                 filters={props.filters}
                 url={props.url}
                 title={props.t('consumer_view.filters')}

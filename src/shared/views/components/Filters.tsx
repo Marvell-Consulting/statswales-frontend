@@ -1,18 +1,20 @@
 import React from 'react';
-import qs from 'qs';
 import { clsx } from 'clsx';
-import { omit } from 'lodash';
 
 import { FilterTable, FilterValues } from '../../dtos/filter-table';
 import { Checkbox, CheckboxGroup, CheckboxOptions, Controls } from './CheckboxGroup';
 import T from './T';
 import { Filter } from '../../interfaces/filter';
+import { useLocals } from '../context/Locals';
+import { DatasetDTO } from '../../dtos/dataset';
 
 export type FiltersProps = {
   filters: FilterTable[];
   url: string;
   title: string;
   selected: Filter[];
+  dataset: DatasetDTO;
+  preview?: boolean;
 };
 
 const normalizeFilters = (options: FilterValues[]): CheckboxOptions[] => {
@@ -32,11 +34,15 @@ const filterOptionCount = (options: FilterValues[]): number => {
   }, 0);
 };
 
-export const Filters = ({ filters, url, title, selected }: FiltersProps) => {
-  const [baseUrl, query] = url.split('?');
-  const parsedQuery = qs.parse(query);
+export const Filters = (props: FiltersProps) => {
+  const { filters, title, selected, preview, dataset } = props;
+  const { buildUrl, i18n } = useLocals();
+
   const activeFilters = selected?.length > 0;
-  const clearFiltersLink = `${baseUrl}?${qs.stringify(omit(parsedQuery, 'filter'))}`;
+
+  const clearFiltersLink = preview
+    ? buildUrl(`/publish/${dataset.id}/cube-preview`, i18n.language)
+    : buildUrl(`/${dataset.id}`, i18n.language);
 
   return (
     <div className="filters-container">
