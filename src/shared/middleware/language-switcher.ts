@@ -1,7 +1,6 @@
 import { RequestHandler } from 'express';
 import { isEmpty, omit } from 'lodash';
 
-import { logger } from '../utils/logger';
 import { Locale } from '../enums/locale';
 import qs from 'qs';
 
@@ -41,14 +40,12 @@ export const languageSwitcher: RequestHandler = (req, res, next): void => {
 
   if ([Locale.English, Locale.EnglishGb].includes(lang as Locale) && !/^\/en-GB/.test(req.originalUrl)) {
     const newUrl = localeUrl(req.path, Locale.EnglishGb, queryParams);
-    logger.debug(`Language detected as '${lang}' but not present in path, redirecting to ${newUrl}`);
     res.redirect(newUrl);
     return;
   }
 
   if ([Locale.Welsh, Locale.WelshGb].includes(lang as Locale) && !/^\/cy-GB/.test(req.originalUrl)) {
     const newUrl = localeUrl(req.path, Locale.WelshGb, queryParams);
-    logger.debug(`Language detected as '${lang}' but not present in path, redirecting to ${newUrl}`);
     res.redirect(newUrl);
     return;
   }
