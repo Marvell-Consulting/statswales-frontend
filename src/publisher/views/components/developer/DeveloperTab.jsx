@@ -7,7 +7,7 @@ import Revisions from './Revisions';
 import Files from './Files';
 import Json from './Json';
 
-export default function DeveloperView(props) {
+export default function DeveloperTab(props) {
   return (
     <div className="govuk-grid-row">
       <div className="govuk-grid-column-full">

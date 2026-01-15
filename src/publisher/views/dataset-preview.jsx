@@ -5,7 +5,7 @@ import ConsumerLayout from '../../consumer/views/components/Layout';
 import { MultiPathBreadcrumbs } from '../../consumer/views/components/Breadcrumbs';
 import DatasetStatus from '../../shared/views/components/dataset/DatasetStatus';
 import Tabs from '../../shared/views/components/Tabs';
-import DeveloperView from './components/developer/DeveloperView';
+import DeveloperTab from './components/developer/DeveloperTab';
 import NotificationBanner from '../../consumer/views/components/NotificationBanner';
 import DataTab from '../../consumer/views/dataset/components/DataTab';
 import HistoryTab from '../../consumer/views/dataset/components/HistoryTab';
@@ -33,8 +33,8 @@ export default function Preview(props) {
       <Tabs
         title={props.t('toc')}
         tabs={[
-          ...(props?.isDeveloper && props?.showDeveloperTab
-            ? [{ label: props.t('developer.heading'), id: 'developer', children: <DeveloperView {...props} /> }]
+          ...(props.isDevPreview
+            ? [{ label: props.t('developer.heading'), id: 'developer', children: <DeveloperTab {...props} /> }]
             : []),
           { label: props.t('consumer_view.tabs.data'), id: 'data', children: <DataTab {...props} /> },
           { label: props.t('consumer_view.tabs.history'), id: 'history', children: <HistoryTab {...props} /> },

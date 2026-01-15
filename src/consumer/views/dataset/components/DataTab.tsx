@@ -17,7 +17,7 @@ type DataTabProps = NoteCodesLegendProps &
     filters: FilterTable[];
     selectedFilterOptions: Filter[];
     page_size: number;
-    isDeveloper?: boolean;
+    isDevPreview?: boolean;
     preview?: boolean;
     previewFailed?: string;
   };
@@ -28,9 +28,11 @@ export default function DataTab(props: DataTabProps) {
   const parsedQuery = qs.parse(query);
   const sortBy = parsedQuery.sort_by as { columnName: string; direction: string } | undefined;
 
-  const formUrl = props.preview
-    ? buildUrl(`/publish/${props.dataset.id}/cube-preview`, i18n.language)
-    : buildUrl(`/${props.dataset.id}/filtered`, i18n.language);
+  const formUrl = props.isDevPreview
+    ? buildUrl(`/developer/${props.dataset.id}/filtered`, i18n.language, {}, 'data')
+    : props.preview
+      ? buildUrl(`/publish/${props.dataset.id}/cube-preview`, i18n.language)
+      : buildUrl(`/${props.dataset.id}/filtered`, i18n.language);
 
   return (
     <div className="govuk-width-container">
@@ -88,7 +90,7 @@ export default function DataTab(props: DataTabProps) {
           </div>
 
           {/* In developer view, if the preview has failed just hide the table and still render the rest of the page */}
-          {props?.isDeveloper && props?.previewFailed ? (
+          {props?.isDevPreview && props?.previewFailed ? (
             <div className="govuk-grid-column-three-quarters">
               <div className="govuk-error-summary" data-module="govuk-error-summary">
                 <div role="alert">
