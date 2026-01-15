@@ -25,6 +25,7 @@ developer.use((req: Request, res: Response, next: NextFunction) => {
 developer.get('/', listAllDatasets);
 
 developer.get('/:datasetId', datasetPreview);
+developer.post('/:datasetId/filtered', datasetPreview);
 developer.get('/:datasetId/filtered{/:filterId}', datasetPreview);
 developer.get('/:datasetId/download', downloadAllDatasetFiles);
 developer.get('/:datasetId/revision/:revisionId/datatable', downloadDataTableFromRevision);

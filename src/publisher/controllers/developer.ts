@@ -121,11 +121,11 @@ export const datasetPreview = async (req: Request, res: Response) => {
     }
 
     res.render('dataset-preview', {
+      isDevPreview: true,
       ...preview,
       ...pagination,
       datasetMetadata,
       filters,
-      showDeveloperTab: true,
       dataset,
       errors,
       publishedRevisions,
