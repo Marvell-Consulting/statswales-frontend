@@ -7,11 +7,10 @@ import { SingleLanguageDataset } from '../../shared/dtos/single-language/dataset
 import { localeUrl } from '../../shared/middleware/language-switcher';
 
 export const processFileList = (datasetId: string, files: FileImportDto[], lang: string): FileImportDto[][] => {
-  const processed: FileImportDto[][] = [];
+  const processedFiles: FileImportDto[][] = [];
+  const sortedFiles = files.sort((fileA, fileB) => fileA.filename.localeCompare(fileB.filename));
 
-  files = files.sort((fileA, fileB) => fileA.filename.localeCompare(fileB.filename));
-
-  files.unshift({
+  sortedFiles.unshift({
     filename: t('developer.display.all_files', { lng: lang }),
     mime_type: 'application/zip',
     file_type: 'zip',
@@ -20,7 +19,7 @@ export const processFileList = (datasetId: string, files: FileImportDto[], lang:
     parent_id: datasetId
   });
 
-  files.forEach((file: FileImportDto, index: number) => {
+  sortedFiles.forEach((file: FileImportDto, index: number) => {
     switch (file.type) {
       case 'data_table':
         file.link = localeUrl(`/developer/${datasetId}/revision/${file.parent_id}/datatable`, lang);
@@ -36,13 +35,13 @@ export const processFileList = (datasetId: string, files: FileImportDto[], lang:
         break;
     }
     if (index % 4 === 0) {
-      processed.push([file]);
+      processedFiles.push([file]);
     } else {
-      processed[processed.length - 1].push(file);
+      processedFiles[processedFiles.length - 1].push(file);
     }
   });
 
-  return processed;
+  return processedFiles;
 };
 
 export const getDatasetJson = (dataset: DatasetDTO | SingleLanguageDataset): string => {
