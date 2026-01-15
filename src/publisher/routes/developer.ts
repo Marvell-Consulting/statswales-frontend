@@ -4,7 +4,7 @@ import { ensureDeveloper } from '../middleware/ensure-developer';
 import { flashMessages } from '../../shared/middleware/flash';
 import { noCache } from '../../shared/middleware/no-cache';
 import {
-  displayDatasetPreview,
+  datasetPreview,
   downloadAllDatasetFiles,
   downloadDataTableFromRevision,
   downloadLookupFileFromDimension,
@@ -24,7 +24,8 @@ developer.use((req: Request, res: Response, next: NextFunction) => {
 
 developer.get('/', listAllDatasets);
 
-developer.get('/:datasetId', displayDatasetPreview);
+developer.get('/:datasetId', datasetPreview);
+developer.get('/:datasetId/filtered{/:filterId}', datasetPreview);
 developer.get('/:datasetId/download', downloadAllDatasetFiles);
 developer.get('/:datasetId/revision/:revisionId/datatable', downloadDataTableFromRevision);
 developer.get('/:datasetId/dimension/:dimensionId/lookup', downloadLookupFileFromDimension);
