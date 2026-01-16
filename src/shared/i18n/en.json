@@ -2135,10 +2135,13 @@
     },
     "search": {
       "heading": "Search StatsWales",
-      "label": "Search for statistics and data about Wales",
       "button": "Search",
-      "placeholder": "Search by keyword or phrase",
-      "no_results": "No results found for "
+      "result_count": "results",
+      "no_results": {
+        "try_1": "Try:",
+        "try_2": "double-checking your spelling",
+        "try_3": "searching again using different words"
+      }
     },
     "topic_list": {
       "heading": "Find statistics and data about Wales",

@@ -287,18 +287,20 @@ export const downloadPublishedMetadata = async (req: Request, res: Response, nex
 };
 
 export const search = async (req: Request, res: Response, next: NextFunction) => {
-  const searchTerm = req.query.q as string;
+  const keywords = req.query.keywords as string;
 
-  logger.info(`searching published datasets for term: ${searchTerm}`);
-
-  try {
-    const results: ResultsetWithCount<DatasetListItemDTO> = await req.conapi.search(searchTerm);
-    const { data: searchResults, count } = results;
-
-    console.log(searchResults)
-
-    res.render('search', { searchTerm, searchResults, count });
-  } catch (err) {
-    next(err);
+  if (keywords) {
+    try {
+      logger.info(`searching published datasets for: ${keywords}`);
+      const resultSet: ResultsetWithCount<DatasetListItemDTO> = await req.conapi.search(keywords);
+      const { data: results, count } = resultSet;
+      console.log(results);
+      res.render('search', { searchTerm: keywords, results, count });
+      return;
+    } catch (err: any) {
+      logger.error(err, 'Error occurred during search');
+    }
   }
+
+  res.render('search', { keywords, results: undefined, count: undefined });
 };

@@ -205,23 +205,19 @@ export class ConsumerApi {
   }
 
   public async search(
-    searchTerm: string,
+    keywords: string,
     pageNumber = 1,
     pageSize = 20,
     sortBy?: SortByInterface
   ): Promise<ResultsetWithCount<DatasetListItemDTO>> {
-    logger.debug(`Searching for: ${searchTerm}`);
-    const query = new URLSearchParams({
-      q: searchTerm,
-      page_number: pageNumber.toString(),
-      page_size: pageSize.toString()
-    });
+    logger.debug(`Searching for: ${keywords}`);
+    const query = new URLSearchParams({ keywords, page_number: pageNumber.toString(), page_size: pageSize.toString() });
 
     if (sortBy) {
       query.append('sort_by', JSON.stringify([sortBy]));
     }
 
-    return this.fetch({ url: 'v1/search', query }).then(
+    return this.fetch({ url: 'v2/search', query }).then(
       (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
     );
   }
