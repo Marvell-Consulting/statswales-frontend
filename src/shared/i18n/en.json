@@ -2133,6 +2133,20 @@
         "research": "You can also <a target=\"_blank\" href=\"https://ymateb.gov.wales/s/GN6ZBG/?lang=1093992\" class=\"govuk-link\">take part in user research</a> to help us improve the service (opens in a new tab)."
       }
     },
+    "search": {
+      "heading": "Search StatsWales",
+      "button": "Search",
+      "mode": {
+        "basic": "Basic",
+        "fts": "Full text"
+      },
+      "result_count": "results",
+      "no_results": {
+        "try_1": "Try:",
+        "try_2": "double-checking your spelling",
+        "try_3": "searching again using different words"
+      }
+    },
     "topic_list": {
       "heading": "Find statistics and data about Wales",
       "topics": "Topics",

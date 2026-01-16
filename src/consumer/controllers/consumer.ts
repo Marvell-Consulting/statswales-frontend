@@ -30,6 +30,7 @@ import { getDownloadFilename } from '../../shared/utils/download-filename';
 import { DataOptionsDTO, FRONTEND_DATA_OPTIONS } from '../../shared/interfaces/data-options';
 import { DataValueType } from '../../shared/enums/data-value-type';
 import { DEFAULT_PAGE_SIZE, parsePageOptions } from '../../shared/utils/parse-page-options';
+import { SearchMode } from '../../shared/enums/search-mode';
 
 export const listTopics = async (req: Request, res: Response, next: NextFunction) => {
   const topicId = req.params.topicId ? req.params.topicId.match(/\d+/)?.[0] : undefined;
@@ -284,4 +285,23 @@ export const downloadPublishedMetadata = async (req: Request, res: Response, nex
   } catch (err) {
     next(err);
   }
+};
+
+export const search = async (req: Request, res: Response) => {
+  const keywords = req.query.keywords as string;
+  const mode = (req.query.mode as SearchMode) || SearchMode.Basic;
+
+  if (keywords) {
+    try {
+      logger.info(`searching published datasets for: ${keywords}`);
+      const resultSet: ResultsetWithCount<DatasetListItemDTO> = await req.conapi.search(mode, keywords);
+      const { data: results, count } = resultSet;
+      res.render('search', { mode, keywords, results, count });
+      return;
+    } catch (err: any) {
+      logger.error(err, 'Error occurred during search');
+    }
+  }
+
+  res.render('search', { mode, keywords, results: undefined, count: undefined });
 };
