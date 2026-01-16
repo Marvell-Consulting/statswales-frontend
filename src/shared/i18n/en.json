@@ -2136,6 +2136,10 @@
     "search": {
       "heading": "Search StatsWales",
       "button": "Search",
+      "mode": {
+        "basic": "Basic",
+        "fts": "Full text"
+      },
       "result_count": "results",
       "no_results": {
         "try_1": "Try:",

@@ -17,6 +17,7 @@ import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
 import { RevisionDTO } from '../../shared/dtos/revision';
 import { DataOptionsDTO } from '../../shared/interfaces/data-options';
+import { SearchMode } from '../../shared/enums/search-mode';
 
 const logger = parentLogger.child({ service: 'consumer-api' });
 
@@ -205,13 +206,19 @@ export class ConsumerApi {
   }
 
   public async search(
+    mode: SearchMode,
     keywords: string,
     pageNumber = 1,
     pageSize = 20,
     sortBy?: SortByInterface
   ): Promise<ResultsetWithCount<DatasetListItemDTO>> {
     logger.debug(`Searching for: ${keywords}`);
-    const query = new URLSearchParams({ keywords, page_number: pageNumber.toString(), page_size: pageSize.toString() });
+    const query = new URLSearchParams({
+      mode,
+      keywords,
+      page_number: pageNumber.toString(),
+      page_size: pageSize.toString()
+    });
 
     if (sortBy) {
       query.append('sort_by', JSON.stringify([sortBy]));

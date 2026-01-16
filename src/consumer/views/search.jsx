@@ -34,7 +34,7 @@ function ResultCount(props) {
 
 export default function Search(props) {
   const title = props.t('consumer.search.heading');
-  const searchTerm = props.searchTerm;
+  const { mode, keywords } = props;
 
   return (
     <Layout {...props} noPad={true} title={title}>
@@ -45,7 +45,11 @@ export default function Search(props) {
           </h1>
 
           <form method="get" className="govuk-!-margin-bottom-6 search-form">
-            <input className="govuk-input" id="search-input" name="keywords" type="search" defaultValue={searchTerm} />
+            <select className="govuk-select govuk-!-margin-right-0" id="search-mode" name="mode" defaultValue={mode}>
+              <option value="basic">{props.t('consumer.search.mode.basic')}</option>
+              <option value="fts">{props.t('consumer.search.mode.fts')}</option>
+            </select>
+            <input className="govuk-input" id="search-input" name="keywords" type="search" defaultValue={keywords} />
             <button type="submit" className="govuk-button govuk-button-small" data-module="govuk-button">
               {props.t('consumer.search.button')}
             </button>
