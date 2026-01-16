@@ -26,8 +26,11 @@ function NoResults() {
 
 function ResultCount(props) {
   return (
-    <p className="govuk-body-l govuk-!-margin-bottom-6">
-      <strong>{props.count}</strong> <T>consumer.search.result_count</T>
+    <p className="govuk-heading-m search-result-count">
+      {props.count}{' '}
+      <span>
+        <T>consumer.search.result_count</T>
+      </span>
     </p>
   );
 }
