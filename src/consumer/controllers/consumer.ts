@@ -31,6 +31,7 @@ import { DataOptionsDTO, FRONTEND_DATA_OPTIONS } from '../../shared/interfaces/d
 import { DataValueType } from '../../shared/enums/data-value-type';
 import { DEFAULT_PAGE_SIZE, parsePageOptions } from '../../shared/utils/parse-page-options';
 import { SearchMode } from '../../shared/enums/search-mode';
+import { SearchResultDTO } from '../../shared/dtos/search-result';
 
 export const listTopics = async (req: Request, res: Response, next: NextFunction) => {
   const topicId = req.params.topicId ? req.params.topicId.match(/\d+/)?.[0] : undefined;
@@ -294,7 +295,7 @@ export const search = async (req: Request, res: Response) => {
   if (keywords) {
     try {
       logger.info(`searching published datasets for: ${keywords}`);
-      const resultSet: ResultsetWithCount<DatasetListItemDTO> = await req.conapi.search(mode, keywords);
+      const resultSet: ResultsetWithCount<SearchResultDTO> = await req.conapi.search(mode, keywords);
       const { data: results, count } = resultSet;
       res.render('search', { mode, keywords, results, count });
       return;

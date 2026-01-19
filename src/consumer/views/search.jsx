@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Layout from './components/Layout';
-import DatasetList from './components/DatasetList';
+import SearchResults from './components/SearchResults';
 import T from '../../shared/views/components/T';
 
 function NoResults() {
@@ -59,7 +59,7 @@ export default function Search(props) {
           </form>
 
           {props.results && <ResultCount count={props.count || 0} />}
-          {props.results?.length > 0 && <DatasetList datasets={props.results} />}
+          {props.results?.length > 0 && <SearchResults results={props.results} />}
           {props.results?.length === 0 && <NoResults />}
         </div>
       </div>

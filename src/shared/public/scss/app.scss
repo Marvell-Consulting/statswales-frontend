@@ -70,4 +70,12 @@
   .search-result-count span {
     font-weight: 400;
   }
+
+  .search-result {
+    .summary {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
 }

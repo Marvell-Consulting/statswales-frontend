@@ -18,6 +18,7 @@ import { UnknownException } from '../../shared/exceptions/unknown.exception';
 import { RevisionDTO } from '../../shared/dtos/revision';
 import { DataOptionsDTO } from '../../shared/interfaces/data-options';
 import { SearchMode } from '../../shared/enums/search-mode';
+import { SearchResultDTO } from '../../shared/dtos/search-result';
 
 const logger = parentLogger.child({ service: 'consumer-api' });
 
@@ -209,9 +210,8 @@ export class ConsumerApi {
     mode: SearchMode,
     keywords: string,
     pageNumber = 1,
-    pageSize = 20,
-    sortBy?: SortByInterface
-  ): Promise<ResultsetWithCount<DatasetListItemDTO>> {
+    pageSize = 200
+  ): Promise<ResultsetWithCount<SearchResultDTO>> {
     logger.debug(`Searching for: ${keywords}`);
     const query = new URLSearchParams({
       mode,
@@ -220,12 +220,8 @@ export class ConsumerApi {
       page_size: pageSize.toString()
     });
 
-    if (sortBy) {
-      query.append('sort_by', JSON.stringify([sortBy]));
-    }
-
     return this.fetch({ url: 'v2/search', query }).then(
-      (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
+      (response) => response.json() as unknown as ResultsetWithCount<SearchResultDTO>
     );
   }
 }
