@@ -906,8 +906,9 @@ export class PublisherApi {
     );
   }
 
-  public async downloadSearchLogs(): Promise<ReadableStream> {
+  public async downloadSearchLogs(start: Date, end: Date): Promise<ReadableStream> {
     logger.debug('Fetching search logs...');
-    return this.fetch({ url: 'admin/search-logs' }).then((response) => response.body as ReadableStream);
+    const query = new URLSearchParams({ start: start.toISOString(), end: end.toISOString() });
+    return this.fetch({ url: 'admin/search-logs', query }).then((response) => response.body as ReadableStream);
   }
 }

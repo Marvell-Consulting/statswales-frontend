@@ -1,6 +1,6 @@
 import React from 'react';
 import { clsx } from 'clsx';
-import { formatDistanceToNow, subSeconds } from 'date-fns';
+import { formatDistanceToNow, subDays, subSeconds } from 'date-fns';
 import { enGB, cy } from 'date-fns/locale';
 
 import Layout from '../components/Layout';
@@ -105,6 +105,14 @@ const DatasetStats = (props) => {
   ];
   const longestRows = props.stats.datasets.longest;
 
+  const searchLogs = [
+    {
+      key: 'last_30_days',
+      start: subDays(new Date(), 30).toISOString(),
+      end: new Date().toISOString()
+    }
+  ];
+
   return (
     <>
       <div className="govuk-grid-row govuk-!-margin-bottom-5">
@@ -150,16 +158,18 @@ const DatasetStats = (props) => {
         <div className="govuk-grid-column-one-half">
           <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.datasets.search.heading')}</h2>
           <ul>
-            <li>
-              <a
-                href={props.buildUrl('/admin/search-logs', props.i18n.language)}
-                className="govuk-link"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {props.t('admin.dashboard.stats.datasets.search.download')}
-              </a>
-            </li>
+            {searchLogs.map(({ key, start, end }) => (
+              <li key={key}>
+                <a
+                  href={props.buildUrl('/admin/search-logs', props.i18n.language, { start, end })}
+                  className="govuk-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {props.t(`admin.dashboard.stats.datasets.search.${key}`)}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

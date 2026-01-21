@@ -1811,7 +1811,7 @@
           },
           "search": {
             "heading": "Dataset searches (CSV download)",
-            "download": "Download consumer dataset search logs"
+            "last_30_days": "Consumer search logs (last 30 days)"
           }
         },
         "users": {
