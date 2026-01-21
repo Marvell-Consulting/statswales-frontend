@@ -130,7 +130,7 @@ const DatasetStats = (props) => {
       </div>
 
       <div className="govuk-grid-row govuk-!-margin-bottom-5">
-        <div className="govuk-grid-column-two-thirds">
+        <div className="govuk-grid-column-one-half">
           <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.datasets.similar.heading')}</h2>
           <ul>
             {Object.values(DatasetSimilarBy).map((by) => (
@@ -145,6 +145,21 @@ const DatasetStats = (props) => {
                 </a>
               </li>
             ))}
+          </ul>
+        </div>
+        <div className="govuk-grid-column-one-half">
+          <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.datasets.search.heading')}</h2>
+          <ul>
+            <li>
+              <a
+                href={props.buildUrl('/admin/search-logs', props.i18n.language)}
+                className="govuk-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {props.t('admin.dashboard.stats.datasets.search.download')}
+              </a>
+            </li>
           </ul>
         </div>
       </div>

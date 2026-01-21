@@ -1808,6 +1808,10 @@
             "by_facts": "Datasets with an identical fact table",
             "by_title": "Datasets with similar titles",
             "by_dimensions": "Datasets sharing the same dimensions"
+          },
+          "search": {
+            "heading": "Dataset searches (CSV download)",
+            "download": "Download consumer dataset search logs"
           }
         },
         "users": {

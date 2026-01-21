@@ -905,4 +905,9 @@ export class PublisherApi {
       (response) => response.body as ReadableStream
     );
   }
+
+  public async downloadSearchLogs(): Promise<ReadableStream> {
+    logger.debug('Fetching search logs...');
+    return this.fetch({ url: 'admin/search-logs' }).then((response) => response.body as ReadableStream);
+  }
 }

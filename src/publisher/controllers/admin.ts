@@ -519,3 +519,22 @@ export const similarDatasets = async (req: Request, res: Response, next: NextFun
     next(new NotFoundException('errors.similar_datasets_missing'));
   }
 };
+
+export const downloadSearchLogs = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const now = format(new Date(), 'yyyy-MM-dd-HH-mm-ss');
+    const fileName = `search-logs-${now}.csv`;
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+    const searchLogsFilestream = await req.pubapi.downloadSearchLogs();
+    Readable.from(searchLogsFilestream).pipe(res);
+    return;
+  } catch (err: any) {
+    logger.error(err, 'there was a problem fetching search logs');
+    if ([401, 403].includes(err.status)) {
+      next(err);
+      return;
+    }
+    next(new NotFoundException('errors.search_logs_missing'));
+  }
+};

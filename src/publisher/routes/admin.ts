@@ -15,7 +15,8 @@ import {
   userStatus,
   groupStatus,
   dashboard,
-  similarDatasets
+  similarDatasets,
+  downloadSearchLogs
 } from '../controllers/admin';
 import { ensureAdmin } from '../middleware/ensure-admin';
 import { flashMessages } from '../../shared/middleware/flash';
@@ -70,3 +71,5 @@ admin.post('/user/:userId/roles', fetchUser, bodyParser, editUserRoles);
 
 admin.get('/user/:userId/status', fetchUser, userStatus);
 admin.post('/user/:userId/status', fetchUser, bodyParser, userStatus);
+
+admin.get('/search-logs', downloadSearchLogs);
