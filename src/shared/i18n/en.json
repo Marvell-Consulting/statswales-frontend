@@ -2147,8 +2147,8 @@
         "fts_simple": "Full text (simple)",
         "fuzzy": "Fuzzy"
       },
-      "result_count": "{{total}} <span>results</span>",
-      "result_count_truncated": "<span>showing first</span> {{count}} <span>of</span> {{total}} <span>results</span>",
+      "result_count": "<strong>{{total}}</strong> results",
+      "result_count_truncated": "showing first <strong>{{count}}</strong> of <strong>{{total}}</strong> results",
       "no_results": {
         "try_1": "Try:",
         "try_2": "double-checking your spelling",

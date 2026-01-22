@@ -52,8 +52,10 @@ export default function Search(props) {
     <Layout {...props} noPad={true} title={title}>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
-          <h1 className="govuk-heading-l govuk-!-margin-top-6" htmlFor="search-input">
-            {title}
+          <h1 className="govuk-label-wrapper govuk-!-margin-top-6">
+            <label className="govuk-label govuk-heading-l govuk-!-margin-bottom-3" htmlFor="search-input">
+              {title}
+            </label>
           </h1>
 
           <form method="get" className="govuk-!-margin-bottom-6 search-form">
