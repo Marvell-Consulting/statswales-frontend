@@ -46,7 +46,7 @@ function ResultCount({ count, total }) {
 export default function Search(props) {
   const title = props.t('consumer.search.heading');
   const searchModes = Object.values(SearchMode);
-  const { mode, keywords } = props;
+  const { mode, keywords, i18n } = props;
 
   return (
     <Layout {...props} noPad={true} title={title}>
@@ -59,7 +59,13 @@ export default function Search(props) {
           </h1>
 
           <form method="get" className="govuk-!-margin-bottom-6 search-form">
-            <select className="govuk-select govuk-!-margin-right-0" id="search-mode" name="mode" defaultValue={mode}>
+            <select
+              className="govuk-select govuk-!-margin-right-0"
+              id="search-mode"
+              name="mode"
+              defaultValue={mode}
+              aria-label={i18n.t('consumer.search.mode.label')}
+            >
               {searchModes.map((searchMode) => (
                 <option key={searchMode} value={searchMode}>
                   {props.t(`consumer.search.mode.${searchMode}`)}
