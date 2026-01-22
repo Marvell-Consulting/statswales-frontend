@@ -3,6 +3,7 @@ import React from 'react';
 import Layout from './components/Layout';
 import SearchResults from './components/SearchResults';
 import T from '../../shared/views/components/T';
+import { SearchMode } from '../../shared/enums/search-mode';
 
 function NoResults() {
   return (
@@ -24,19 +25,27 @@ function NoResults() {
   );
 }
 
-function ResultCount(props) {
+function ResultCount({ count, total }) {
+  const truncatedResults = total > count;
+
   return (
     <p className="govuk-heading-m search-result-count">
-      {props.count}{' '}
-      <span>
-        <T>consumer.search.result_count</T>
-      </span>
+      {truncatedResults ? (
+        <T total={total} count={count} raw={true}>
+          consumer.search.result_count_truncated
+        </T>
+      ) : (
+        <T total={total} raw={true}>
+          consumer.search.result_count
+        </T>
+      )}
     </p>
   );
 }
 
 export default function Search(props) {
   const title = props.t('consumer.search.heading');
+  const searchModes = Object.values(SearchMode);
   const { mode, keywords } = props;
 
   return (
@@ -49,8 +58,11 @@ export default function Search(props) {
 
           <form method="get" className="govuk-!-margin-bottom-6 search-form">
             <select className="govuk-select govuk-!-margin-right-0" id="search-mode" name="mode" defaultValue={mode}>
-              <option value="basic">{props.t('consumer.search.mode.basic')}</option>
-              <option value="fts">{props.t('consumer.search.mode.fts')}</option>
+              {searchModes.map((searchMode) => (
+                <option key={searchMode} value={searchMode}>
+                  {props.t(`consumer.search.mode.${searchMode}`)}
+                </option>
+              ))}
             </select>
             <input className="govuk-input" id="search-input" name="keywords" type="search" defaultValue={keywords} />
             <button type="submit" className="govuk-button govuk-button-small" data-module="govuk-button">
@@ -58,7 +70,7 @@ export default function Search(props) {
             </button>
           </form>
 
-          {props.results && <ResultCount count={props.count || 0} />}
+          {props.results && <ResultCount count={props.results.length || 0} total={props.count || 0} />}
           {props.results?.length > 0 && <SearchResults results={props.results} />}
           {props.results?.length === 0 && <NoResults />}
         </div>

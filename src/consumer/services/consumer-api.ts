@@ -210,7 +210,7 @@ export class ConsumerApi {
     mode: SearchMode,
     keywords: string,
     pageNumber = 1,
-    pageSize = 200
+    pageSize = 100
   ): Promise<ResultsetWithCount<SearchResultDTO>> {
     logger.debug(`Searching for: ${keywords}`);
     const query = new URLSearchParams({

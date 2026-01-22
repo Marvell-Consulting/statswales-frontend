@@ -2142,9 +2142,13 @@
       "button": "Search",
       "mode": {
         "basic": "Basic",
-        "fts": "Full text"
+        "basic_split": "Basic (split keywords)",
+        "fts": "Full text (English dictionary)",
+        "fts_simple": "Full text (simple)",
+        "fuzzy": "Fuzzy"
       },
-      "result_count": "results",
+      "result_count": "{{total}} <span>results</span>",
+      "result_count_truncated": "<span>showing first</span> {{count}} <span>of</span> {{total}} <span>results</span>",
       "no_results": {
         "try_1": "Try:",
         "try_2": "double-checking your spelling",
