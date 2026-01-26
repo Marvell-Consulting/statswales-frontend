@@ -299,7 +299,7 @@ export const search = async (req: Request, res: Response, next: NextFunction) =>
 
   if (keywords) {
     try {
-      logger.info(`searching published datasets for: ${keywords}`);
+      logger.info(`searching published datasets for: '${keywords}' using mode: ${mode}`);
       const resultSet: ResultsetWithCount<SearchResultDTO> = await req.conapi.search(mode, keywords);
       const { data: results, count } = resultSet;
       res.render('search', { mode, keywords, results, count });
