@@ -17,6 +17,8 @@ import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
 import { RevisionDTO } from '../../shared/dtos/revision';
 import { DataOptionsDTO } from '../../shared/interfaces/data-options';
+import { SearchMode } from '../../shared/enums/search-mode';
+import { SearchResultDTO } from '../../shared/dtos/search-result';
 
 const logger = parentLogger.child({ service: 'consumer-api' });
 
@@ -201,6 +203,25 @@ export class ConsumerApi {
     logger.debug(`Fetching publication history for dataset: ${datasetId}`);
     return this.fetch({ url: `v1/${datasetId}/history` }).then(
       (response) => response.json() as unknown as RevisionDTO[]
+    );
+  }
+
+  public async search(
+    mode: SearchMode,
+    keywords: string,
+    pageNumber = 1,
+    pageSize = 100
+  ): Promise<ResultsetWithCount<SearchResultDTO>> {
+    logger.debug(`Searching for: ${keywords}`);
+    const query = new URLSearchParams({
+      mode,
+      keywords,
+      page_number: pageNumber.toString(),
+      page_size: pageSize.toString()
+    });
+
+    return this.fetch({ url: 'v2/search', query }).then(
+      (response) => response.json() as unknown as ResultsetWithCount<SearchResultDTO>
     );
   }
 }

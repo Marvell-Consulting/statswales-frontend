@@ -1808,6 +1808,10 @@
             "by_facts": "Datasets with an identical fact table",
             "by_title": "Datasets with similar titles",
             "by_dimensions": "Datasets sharing the same dimensions"
+          },
+          "search": {
+            "heading": "Dataset searches (CSV download)",
+            "last_30_days": "Consumer search logs (last 30 days)"
           }
         },
         "users": {
@@ -2131,6 +2135,25 @@
         "beta": "Beta",
         "feedback": "You’re viewing a new version of StatsWales. You can <a target=\"_blank\" href=\"{{url}}\" class=\"govuk-link\">give feedback (opens in new tab)</a>.",
         "research": "You can also <a target=\"_blank\" href=\"https://ymateb.gov.wales/s/GN6ZBG/?lang=1093992\" class=\"govuk-link\">take part in user research</a> to help us improve the service (opens in a new tab)."
+      }
+    },
+    "search": {
+      "heading": "Search StatsWales",
+      "button": "Search",
+      "mode": {
+        "label": "Search mode",
+        "basic": "Basic",
+        "basic_split": "Basic (split keywords)",
+        "fts": "Full text (English dictionary)",
+        "fts_simple": "Full text (simple)",
+        "fuzzy": "Fuzzy"
+      },
+      "result_count": "<strong>{{total}}</strong> results",
+      "result_count_truncated": "showing first <strong>{{count}}</strong> of <strong>{{total}}</strong> results",
+      "no_results": {
+        "try_1": "Try:",
+        "try_2": "double-checking your spelling",
+        "try_3": "searching again using different words"
       }
     },
     "topic_list": {

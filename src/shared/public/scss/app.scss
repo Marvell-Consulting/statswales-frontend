@@ -66,4 +66,17 @@
     vertical-align: middle;
     margin-left: 50px;
   }
+
+  .search-result-count {
+    font-weight: 400;
+  }
+
+  .search-result {
+    .summary {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
 }

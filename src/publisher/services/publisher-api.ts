@@ -905,4 +905,10 @@ export class PublisherApi {
       (response) => response.body as ReadableStream
     );
   }
+
+  public async downloadSearchLogs(start: Date, end: Date): Promise<ReadableStream> {
+    logger.debug('Fetching search logs...');
+    const query = new URLSearchParams({ start: start.toISOString(), end: end.toISOString() });
+    return this.fetch({ url: 'admin/search-logs', query }).then((response) => response.body as ReadableStream);
+  }
 }

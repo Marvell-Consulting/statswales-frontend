@@ -38,7 +38,7 @@ import { GroupRole } from '../../shared/enums/group-role';
 import { RoleSelectionDTO } from '../../shared/dtos/user/role-selection-dto';
 import { getUserRoleFormValues } from '../../shared/utils/user-role-form-values';
 import { UserRoleFormValues } from '../../shared/interfaces/user-role-form-values';
-import { differenceInSeconds, format } from 'date-fns';
+import { differenceInSeconds, format, subDays } from 'date-fns';
 import { UserStatus } from '../../shared/enums/user-status';
 import { pageInfo } from '../../shared/utils/pagination';
 import { UserGroupAction } from '../../shared/enums/user-group-action';
@@ -517,5 +517,25 @@ export const similarDatasets = async (req: Request, res: Response, next: NextFun
       return;
     }
     next(new NotFoundException('errors.similar_datasets_missing'));
+  }
+};
+
+export const downloadSearchLogs = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const start = req.query.start ? new Date(req.query.start as string) : subDays(new Date(), 30);
+    const end = req.query.end ? new Date(req.query.end as string) : new Date();
+    const fileName = `search-logs-${format(start, 'yyyy-MM-dd')}-${format(end, 'yyyy-MM-dd')}.csv`;
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+    const searchLogsFilestream = await req.pubapi.downloadSearchLogs(start, end);
+    Readable.from(searchLogsFilestream).pipe(res);
+    return;
+  } catch (err: any) {
+    logger.error(err, 'there was a problem fetching search logs');
+    if ([401, 403].includes(err.status)) {
+      next(err);
+      return;
+    }
+    next(new NotFoundException('errors.search_logs_missing'));
   }
 };
