@@ -32,6 +32,7 @@ import { DataValueType } from '../../shared/enums/data-value-type';
 import { DEFAULT_PAGE_SIZE, parsePageOptions } from '../../shared/utils/parse-page-options';
 import { SearchMode } from '../../shared/enums/search-mode';
 import { SearchResultDTO } from '../../shared/dtos/search-result';
+import { AppEnv } from '../../shared/config/env.enum';
 
 export const listTopics = async (req: Request, res: Response, next: NextFunction) => {
   const topicId = req.params.topicId ? req.params.topicId.match(/\d+/)?.[0] : undefined;
@@ -288,7 +289,11 @@ export const downloadPublishedMetadata = async (req: Request, res: Response, nex
   }
 };
 
-export const search = async (req: Request, res: Response) => {
+export const search = async (req: Request, res: Response, next: NextFunction) => {
+  if (config.env === AppEnv.Prod) {
+    return next(new NotFoundException()); // disable search in production env for the time being
+  }
+
   const keywords = req.query.keywords as string;
   const mode = (req.query.mode as SearchMode) || SearchMode.Basic;
 
