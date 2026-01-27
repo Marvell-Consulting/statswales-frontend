@@ -15,7 +15,7 @@ export default function UserRoles(props) {
 
           <ErrorHandler />
 
-          <form encType="multipart/form-data" method="post">
+          <form method="post">
             <div className="govuk-form-group">
               <fieldset className="govuk-fieldset">
                 <h2 className="govuk-heading-l">{props.t('admin.user.roles.service.heading')}</h2>

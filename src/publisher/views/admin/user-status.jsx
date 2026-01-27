@@ -16,7 +16,7 @@ export default function UserStatus(props) {
 
           <p className="govuk-body">{props.t(`admin.user.${props.action}.description`)}</p>
 
-          <form encType="multipart/form-data" method="post">
+          <form method="post">
             <button type="submit" className="govuk-button" data-module="govuk-button">
               {props.t('buttons.continue')}
             </button>{' '}

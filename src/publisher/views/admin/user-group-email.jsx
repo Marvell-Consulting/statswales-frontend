@@ -17,7 +17,7 @@ export default function UserGroupEmail(props) {
 
           <ErrorHandler />
 
-          <form encType="multipart/form-data" method="post">
+          <form method="post">
             <div className="govuk-form-group">
               <label className="govuk-label" htmlFor="email_cy">
                 {props.t('admin.group.email.form.email_cy.label')}
