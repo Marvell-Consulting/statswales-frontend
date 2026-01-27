@@ -15,7 +15,7 @@ export default function UserGroupOrg(props) {
             </h1>
             <ErrorHandler />
 
-            <form encType="multipart/form-data" method="post">
+            <form method="post">
               <RadioGroup
                 name="organisation_id"
                 labelledBy="organisation"

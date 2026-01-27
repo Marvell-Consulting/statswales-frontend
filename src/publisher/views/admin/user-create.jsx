@@ -13,7 +13,7 @@ export default function UserCreate(props) {
 
           <ErrorHandler />
 
-          <form encType="multipart/form-data" method="post">
+          <form method="post">
             <div className="govuk-form-group">
               <input
                 className={clsx('govuk-input', {
