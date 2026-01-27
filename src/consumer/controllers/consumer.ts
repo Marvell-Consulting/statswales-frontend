@@ -33,6 +33,7 @@ import { DEFAULT_PAGE_SIZE, parsePageOptions } from '../../shared/utils/parse-pa
 import { SearchMode } from '../../shared/enums/search-mode';
 import { SearchResultDTO } from '../../shared/dtos/search-result';
 import { AppEnv } from '../../shared/config/env.enum';
+import { sanitizeSearchResults } from '../../shared/utils/sanitize-search-results';
 
 export const listTopics = async (req: Request, res: Response, next: NextFunction) => {
   const topicId = req.params.topicId ? req.params.topicId.match(/\d+/)?.[0] : undefined;
@@ -301,7 +302,9 @@ export const search = async (req: Request, res: Response, next: NextFunction) =>
     try {
       logger.info(`searching published datasets for: '${keywords}' using mode: ${mode}`);
       const resultSet: ResultsetWithCount<SearchResultDTO> = await req.conapi.search(mode, keywords);
-      const { data: results, count } = resultSet;
+      const { data, count } = resultSet;
+      const results = sanitizeSearchResults(data);
+
       res.render('search', { mode, keywords, results, count });
       return;
     } catch (err: any) {
