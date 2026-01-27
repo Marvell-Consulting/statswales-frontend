@@ -32,7 +32,11 @@ export default function SearchResults({ results }: SearchResultsProps) {
   return (
     <ul className="govuk-list">
       {results.map((dataset) => (
-        <li className="index-list__item search-result" key={dataset.id}>
+        <li
+          className="index-list__item search-result"
+          key={dataset.id}
+          data-rank={dataset.rank ? parseFloat(dataset.rank).toFixed(4) : 0}
+        >
           <a
             className="govuk-heading-s govuk-!-margin-bottom-0 govuk-link inline"
             href={buildUrl(`/${dataset.id}`, i18n.language)}
@@ -41,11 +45,6 @@ export default function SearchResults({ results }: SearchResultsProps) {
           </a>
           <div className="index-list__meta">
             <p className="govuk-!-margin-top-0">
-              {dataset.rank && (
-                <span className="govuk-body-s caption" style={{ float: 'right' }}>
-                  Rank: {parseFloat(dataset.rank).toFixed(4)}
-                </span>
-              )}
               {dataset.archived_at && (
                 <strong
                   className={clsx(
