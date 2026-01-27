@@ -15,15 +15,33 @@ interface SearchResultsProps {
 export default function SearchResults({ results }: SearchResultsProps) {
   const { buildUrl, i18n } = useLocals();
 
+  const renderTitle = (dataset: SearchResultDTO) => {
+    if (dataset.match_title && dataset.match_title.includes('<mark>')) {
+      return <span dangerouslySetInnerHTML={{ __html: dataset.match_title }} />;
+    }
+    return dataset.title;
+  };
+
+  const renderSummary = (dataset: SearchResultDTO) => {
+    if (dataset.match_summary && dataset.match_summary.includes('<mark>')) {
+      return <span dangerouslySetInnerHTML={{ __html: dataset.match_summary }} />;
+    }
+    return dataset.summary;
+  };
+
   return (
     <ul className="govuk-list">
       {results.map((dataset) => (
-        <li className="index-list__item search-result" key={dataset.id}>
+        <li
+          className="index-list__item search-result"
+          key={dataset.id}
+          data-rank={dataset.rank ? parseFloat(dataset.rank).toFixed(4) : 0}
+        >
           <a
             className="govuk-heading-s govuk-!-margin-bottom-0 govuk-link inline"
             href={buildUrl(`/${dataset.id}`, i18n.language)}
           >
-            {dataset.title}
+            {renderTitle(dataset)}
           </a>
           <div className="index-list__meta">
             <p className="govuk-!-margin-top-0">
@@ -63,7 +81,7 @@ export default function SearchResults({ results }: SearchResultsProps) {
               )}
             </p>
           </div>
-          {dataset.summary && <p className="govuk-body summary govuk-!-margin-bottom-6">{dataset.summary}</p>}
+          {dataset.summary && <p className="govuk-body summary govuk-!-margin-bottom-6">{renderSummary(dataset)}</p>}
         </li>
       ))}
     </ul>
