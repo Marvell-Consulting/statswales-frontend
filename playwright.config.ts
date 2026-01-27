@@ -45,6 +45,17 @@ export default defineConfig({
       testMatch: /\/tests-e2e\/publish\/.*\.spec\.ts/,
       use: { ...devices['Desktop Chrome'] },
       dependencies: ['setup']
+    },
+
+    {
+      name: 'consumer',
+      testMatch: /\/tests-e2e\/consumer\/.*\.spec\.ts/,
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'http://localhost:3100'
+      },
+      // Depends on publish tests to ensure published datasets exist for testing
+      dependencies: ['publish']
     }
   ],
 
