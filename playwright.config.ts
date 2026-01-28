@@ -21,8 +21,8 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   /* Fail fast on CI */
   maxFailures: process.env.CI ? 1 : 3,
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  /* Use multiple workers for parallel test execution */
+  workers: process.env.CI ? 4 : undefined,
   /* Dir for test artifacts such as screenshots, videos, traces, etc. */
   outputDir: './playwright/results',
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -54,8 +54,8 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         baseURL: 'http://localhost:3100'
       },
-      // Depends on publish tests to ensure published datasets exist for testing
-      dependencies: ['publish']
+      // Depends on publish tests in CI to ensure published datasets exist
+      dependencies: process.env.CI ? ['publish'] : []
     }
   ],
 
