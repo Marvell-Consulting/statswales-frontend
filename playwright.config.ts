@@ -54,8 +54,8 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         baseURL: 'http://localhost:3100'
       },
-      // Depends on publish tests to ensure published datasets exist for testing
-      dependencies: ['publish']
+      // Depends on publish tests in CI to ensure published datasets exist
+      dependencies: process.env.CI ? ['publish'] : []
     }
   ],
 
