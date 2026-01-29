@@ -1672,6 +1672,9 @@
       "bad_node_code_table_summary_500": "Show Table containing the first {{rows}} lines with unrecognised codes",
       "bad_node_code_info": "You should check you have used standard note codes. Correct your data table and upload it again.",
       "unmatched_columns": "The uploaded update data table contains column headings that do not match the originally uploaded data table for this dataset. Check the update data table is correct and upload it again."
+    },
+    "tasks": {
+      "open_tasks": "You have open tasks to complete on this dataset.git"
     }
   },
   "filters": {

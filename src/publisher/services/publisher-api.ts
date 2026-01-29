@@ -800,6 +800,16 @@ export class PublisherApi {
     );
   }
 
+  public async getDatasetTasks(datasetId: string, open?: boolean): Promise<TaskDTO[]> {
+    logger.debug(`Fetching tasks for dataset: ${datasetId}`);
+
+    const query = open !== undefined ? new URLSearchParams({ open: open?.toString() }) : {};
+
+    return this.fetch({ url: `dataset/${datasetId}/tasks`, query }).then(
+      (response) => response.json() as unknown as TaskDTO[]
+    );
+  }
+
   public async getTaskById(taskId: string): Promise<TaskDTO> {
     logger.debug(`Fetching task by id: ${taskId}`);
     return this.fetch({ url: `task/${taskId}` }).then((response) => response.json() as unknown as TaskDTO);
