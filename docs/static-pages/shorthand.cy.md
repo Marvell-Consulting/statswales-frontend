@@ -1,24 +1,23 @@
-# Byrfoddau ar gyfer labelu gwerthoedd data
+# Llaw-fer ar gyfer labelu gwerthoedd data
 
-Mae rhai tablau ar StatsCymru yn defnyddio symbolau, a elwir hefyd yn fyrfoddau, i roi manylion ychwanegol am werthoedd data penodol.
-Dyma'r rhain:
+Mae rhai tablau ar StatsCymru yn defnyddio symbolau, a elwir llaw-fer hefyd, er mwyn cynnig manylion ychwanegol am werthoedd data penodol. Mae'r rhain fel a ganlyn:
 
-| Byrfodd | Ystyr                                         | Defnydd                                                                                                          |
-| :------ | :-------------------------------------------- | :--------------------------------------------------------------------------------------------------------------- |
-| **a**   | Cyfartaledd                                   | Mae'r gwerth data yn gyfartaledd o werthoedd eraill                                                              |
-| **b**   | Toriad yn y gyfres amser                      | Mae toriad yn y gyfres data sy'n golygu na ellir cymharu data cyn y toriad yn uniongyrchol â data ar ôl y toriad |
-| **c**   | Gwybodaeth gyfrinachol                        | Mae'r gwerth data wedi'i atal am resymau cyfrinachedd                                                            |
-| **e**   | Amcangyfrifedig                               | Mae'r gwerth data yn amcangyfrif                                                                                 |
-| **f**   | Rhagolwg                                      | Mae'r gwerth data yn werth a gyfrifwyd ar gyfer y dyfodol yn hytrach na gwerth a arsylwyd                        |
-| **k**   | Ffigur isel                                   | Mae'r gwerth data yn ffigur isel sy'n ymddangos fel sero pan gaiff ei grynhoi                                    |
-| **ns**  | Ddim yn ystadegol arwyddocaol                 | Nid yw'n bosibl pennu a yw'r gwerth data yn ddibynadwy ai peidio                                                 |
-| **p**   | Dros dro                                      | Nid yw'r gwerth data wedi'i derfynu eto, neu disgwylir iddo gael ei ddiwygio                                     |
-| **r**   | Wedi'i ddiwygio                               | Mae'r gwerth data wedi'i ddiwygio ers iddo gael ei gyhoeddi gyntaf                                               |
-| **s**   | Ystadegol arwyddocaol ar lefel 0.05 neu 5%    | Mae llai na 5% siawns bod y gwerth data yn annibynadwy                                                           |
-| **ss**  | Ystadegol arwyddocaol ar lefel 0.01 neu 1%    | Mae llai na 1% siawns bod y gwerth data yn annibynadwy                                                           |
-| **sss** | Ystadegol arwyddocaol ar lefel 0.001 neu 0.1% | Mae llai na 0.1% siawns bod y gwerth data yn annibynadwy                                                         |
-| **t**   | Cyfanswm                                      | Mae'r gwerth data yn gyfanswm o werthoedd eraill                                                                 |
-| **u**   | Dibynadwyedd isel                             | Mae'r gwerth data o ansawdd ystadegol isel                                                                       |
-| **w**   | Dim wedi'i gofnodi yn yr arolwg               | Nid oes gwerth data wedi'i amcangyfrif ar gyfer y cyfuniad hwn o newidynnau                                      |
-| **x**   | Ddim ar gael                                  | Nid yw'r gwerth data ar gael am resymau anhysbys neu eraill                                                      |
-| **z**   | Ddim yn berthnasol                            | Nid oes gwerth data posibl ar gyfer y cyfuniad hwn o newidynnau                                                  |
+| Llaw-fer | Ystyr                                               | Defnydd                                                                                                                 |
+| -------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **a**    | Cyfartaledd                                         | Mae'r gwerth data yn gyfartaledd gwerthoedd eraill                                                                      |
+| **b**    | Cyfres toriad mewn amser                            | Ceir toriad yn y gyfres ddata sy'n golygu na ellir cymharu data cyn y toriad gyda'r data ar ôl y toriad yn uniongyrchol |
+| **c**    | Gwybodaeth gyfrinachol                              | Mae'r gwerth data wedi cael ei atal at ddibenion cyfrinachedd                                                           |
+| **e**    | Amcangyfrifedig                                     | Mae'r gwerth data yn werth amcangyfrifedig                                                                              |
+| **f**    | Rhagolwg                                            | Mae'r gwerth data yn werth yn y dyfodol a gyfrifwyd, yn hytrach na gwerth a arsylwyd                                    |
+| **k**    | Ffigwr isel                                         | Mae'r gwerth data yn ffigwr isel sy'n ymddangos fel sero pan gaiff ei dalgrynnu                                         |
+| **ns**   | Ddim yn arwyddocaol yn ystadegol                    | Nid oes modd pennu a yw'r gwerth data yn ddibynadwy neu beidio                                                          |
+| **p**    | Amodol                                              | Nid yw'r gwerth data wedi cael ei gwblhau eto, neu disgwylir iddo gael ei ddiwygio                                      |
+| **r**    | Diwygiedig                                          | Diwygiwyd y gwerth data ers iddo gael ei gyhoeddi y tro cyntaf                                                          |
+| **s**    | Yn arwyddocaol yn ystadegol ar lefel 0.05 neu 5%    | Mae llai na siawns o 5% bod y gwerth data yn annibynadwy                                                                |
+| **ss**   | Yn arwyddocaol yn ystadegol ar lefel 0.01 neu 1%    | Mae llai na siawns o 1% bod y gwerth data yn annibynadwy                                                                |
+| **sss**  | Yn arwyddocaol yn ystadegol ar lefel 0.001 neu 0.1% | Mae llai na siawns o 0.1% bod y gwerth data yn annibynadwy                                                              |
+| **t**    | Cyfanswm                                            | Mae'r gwerth data yn gyfanswm gwerthoedd eraill                                                                         |
+| **u**    | Dibynadwyedd isel                                   | Mae'r gwerth data o ansawdd ystadegol isel                                                                              |
+| **w**    | Dim wedi'u cofnodi yn yr arolwg                     | Ni amcangyfrifir bod gwerth data yn y cyfuniad hwn o newidion                                                           |
+| **x**    | Ddim ar gael                                        | Nid yw'r gwerth data ar gael am resymau sy'n anhysbys neu am resymau eraill                                             |
+| **z**    | Amherthnasol                                        | Nid oes gwerth data posibl ar gyfer y cyfuniad hwn o newidion                                                           |
