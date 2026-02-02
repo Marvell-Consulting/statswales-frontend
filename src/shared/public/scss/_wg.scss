@@ -1148,7 +1148,8 @@
       flex-wrap: nowrap;
     }
 
-    button, button:hover {
+    button,
+    button:hover {
       margin-bottom: 0;
       // search icon (magnifying glass)
       background-image: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2238%22 height=%2218%22%3E%3Cpath d=%22M2.16 2.16a7.33 7.33 0 0 1 11.16 9.42L18 16.2 16.2 18l-4.62-4.62A7.35 7.35 0 0 1 2.16 2.16zM3.9 10.8a4.92 4.92 0 1 0 0-7 4.92 4.92 0 0 0 0 7z%22 fill=%22%23fff%22/%3E%3C/svg%3E');
