@@ -52,6 +52,10 @@
     "not_prod": {
       "warning": "This version of StatsWales is only used for testing. Use the <a class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\" href=\"https://publisher.stats.gov.wales\">live version of the site</a> to publish datasets."
     },
+    "search": {
+      "label": "Search",
+      "button": "Submit search"
+    },
     "navigation": {
       "wghome": "Welsh Government",
       "wgurl": "https://www.gov.wales",

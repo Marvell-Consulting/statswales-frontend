@@ -5,6 +5,7 @@ import { Locals, LocalsProvider, useLocals } from '../../../shared/views/context
 import CookieBanner from '../../../shared/views/components/CookieBanner';
 import { AppEnv } from '../../../shared/config/env.enum';
 import { config } from '../../../shared/config';
+import SearchBar from './SearchBar';
 
 const configConsumer = config.frontend.consumer;
 
@@ -126,9 +127,9 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
         </div>
 
         <header id="wg-header" className="wg-header" style={{ backgroundColor: '#323232' }}>
-          <div className="layout-container">
-            <div className="header" id="header">
-              <div className="header__components container-fluid">
+          <div className="govuk-width-container">
+            <div className="site-header" id="header">
+              <div className="header__left">
                 <div id="block-govwales-branding">
                   <a
                     href={t('header.navigation.wgurl')}
@@ -139,6 +140,8 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
                     <span className="visually-hidden">{t('consumer.navigation.wghome')}</span>
                   </a>
                 </div>
+              </div>
+              <div className="header__right">
                 <div
                   className="language-switcher-language-url"
                   id="block-govwales-languageswitcher"
@@ -161,6 +164,7 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
                     )}
                   </ul>
                 </div>
+                <SearchBar />
               </div>
             </div>
           </div>
