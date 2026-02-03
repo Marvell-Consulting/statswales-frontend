@@ -296,7 +296,7 @@ export const search = async (req: Request, res: Response, next: NextFunction) =>
   }
 
   const keywords = req.query.keywords as string;
-  const mode = (req.query.mode as SearchMode) || SearchMode.Basic;
+  const mode = SearchMode.FTSSimple;
 
   if (keywords) {
     try {
@@ -305,7 +305,7 @@ export const search = async (req: Request, res: Response, next: NextFunction) =>
       const { data, count } = resultSet;
       const results = sanitizeSearchResults(data);
 
-      res.render('search', { mode, keywords, results, count });
+      res.render('search', { keywords, results, count });
       return;
     } catch (err: any) {
       logger.error(err, 'Error occurred during search');

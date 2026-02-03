@@ -50,6 +50,10 @@
     "not_prod": {
       "warning": "Amgylchedd profi — nid ar gyfer cyhoeddi. Defnyddiwch <a class=\"govuk-link\" rel=\"noreferrer noopener\" target=\"_blank\" href=\"https://publisher.stats.gov.wales\">wefan byw StatsCymru</a> i gyhoeddi setiau data."
     },
+    "search": {
+      "label": "Chwilio",
+      "button": "Cyflwyno chwiliad"
+    },
     "navigation": {
       "wghome": "Llywodraeth Cymru",
       "wgurl": "https://www.llyw.cymru",
@@ -1935,6 +1939,17 @@
         "beta": "Beta",
         "feedback": "Rydych chi'n edrych ar fersiwn newydd o StatsCymru.  Gallwch <a target=\"_blank\" href=\"{{url}}\" class=\"govuk-link\">roi adborth (yn agor mewn tab newydd)</a>.",
         "research": "Gallwch hefyd <a target=\"_blank\" href=\"https://ymateb.gov.wales/s/GN6ZBG/?lang=1093993\" class=\"govuk-link\">gymryd rhan mewn ymchwil defnyddwyr</a> i'n helpu i wella'r gwasanaeth (yn agor mewn tab newydd)."
+      }
+    },
+    "search": {
+      "heading": "Chwilio StatsCymru",
+      "button": "Chwilio",
+      "result_count": "<strong>{{total}}</strong> o ganlyniadau",
+      "result_count_truncated": "Dangos y <strong>{{count}}</strong> cyntaf o <strong>{{total}}</strong> o ganlyniadau",
+      "no_results": {
+        "try_1": "Rhowch gynnig ar:",
+        "try_2": "gwirio'ch sillafu",
+        "try_3": "chwilio eto gan ddefnyddio geiriau gwahanol"
       }
     },
     "topic_list": {

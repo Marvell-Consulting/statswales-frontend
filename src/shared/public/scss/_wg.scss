@@ -469,13 +469,6 @@
     font-size: 18px;
   }
 
-  .search-bar {
-    padding-left: 35px;
-    background: url('https://img.icons8.com/search') no-repeat left;
-    background-position-x: 10px;
-    background-size: 20px;
-  }
-
   .wg-footer {
     background-color: colours.$lightgrey_light;
   }
@@ -913,10 +906,6 @@
     width: 25%;
   }
 
-  .language-switcher-language-url a {
-    color: colours.$white;
-  }
-
   .govuk-breadcrumbs__link:link,
   .govuk-breadcrumbs__link:visited {
     color: colours.$blue;
@@ -1138,6 +1127,36 @@
 
   .govuk-pagination__icon {
     display: none;
+  }
+
+  .site-header {
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+
+    .header__right {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+  }
+
+  .search-bar {
+    margin-left: 15px;
+
+    form {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+
+    button,
+    button:hover {
+      margin-bottom: 0;
+      // search icon (magnifying glass)
+      background-image: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2238%22 height=%2218%22%3E%3Cpath d=%22M2.16 2.16a7.33 7.33 0 0 1 11.16 9.42L18 16.2 16.2 18l-4.62-4.62A7.35 7.35 0 0 1 2.16 2.16zM3.9 10.8a4.92 4.92 0 1 0 0-7 4.92 4.92 0 0 0 0 7z%22 fill=%22%23fff%22/%3E%3C/svg%3E');
+      background-color: colours.$red;
+      background-repeat: no-repeat;
+      background-position: 11px;
+    }
   }
 
   /* Pagination styles for screens below 768px */
@@ -1497,6 +1516,26 @@
   }
 
   @media screen and (max-width: 640px) {
+    .site-header {
+      .header__right {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+
+        .language-switcher-language-url {
+          margin-right: 0;
+        }
+      }
+
+      .search-bar {
+        margin-left: 0;
+
+        button {
+          width: 44px;
+        }
+      }
+    }
+
     .govuk-tabs__title {
       display: none;
     }
@@ -1952,29 +1991,11 @@
       display: none;
     }
 
-    #block-govwales-branding {
-      float: left;
-    }
-
-    .language-switcher-language-url {
-      position: absolute;
-      right: 0;
-      margin-right: 0;
-      display: inline-block;
-    }
-
-    @media all and (min-width: 768px) {
-      .language-switcher-language-url {
-        position: relative;
-        float: right;
-      }
-    }
-
     .language-switcher-language-url a {
       text-decoration: none;
-      color: #fff;
+      color: colours.$white;
       background: colours.$black;
-      padding: 10px 20px;
+      padding: 8px 20px;
       font-size: 16px;
       font-weight: bold;
       display: inline-block;
@@ -1986,14 +2007,8 @@
     }
 
     .language-switcher-language-url ul {
-      margin: 0 20px 0 0;
+      margin: 0;
       padding: 0;
-    }
-
-    @media all and (min-width: 768px) {
-      .language-switcher-language-url ul {
-        margin: 0;
-      }
     }
 
     .language-switcher-language-url li {
@@ -2006,10 +2021,6 @@
       .language-switcher-language-url li {
         float: none;
       }
-    }
-
-    .language-switcher-language-url li a {
-      padding: 5px 20px;
     }
 
     .language-switcher-language-url li.is-active {
@@ -2144,7 +2155,6 @@
 
       #block-govwales-branding {
         width: 100%;
-        float: none;
         display: block;
         overflow: hidden;
       }

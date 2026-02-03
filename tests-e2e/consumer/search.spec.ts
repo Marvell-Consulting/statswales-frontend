@@ -9,18 +9,13 @@ test.describe('Search', () => {
   test('Shows search input and button', async ({ page }) => {
     await page.goto('/en-GB/search');
     await expect(page.locator('#search-input')).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Search' })).toBeVisible();
-  });
-
-  test('Shows search mode selector', async ({ page }) => {
-    await page.goto('/en-GB/search');
-    await expect(page.locator('#search-mode')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Search', exact: true })).toBeVisible();
   });
 
   test('Can perform a search', async ({ page }) => {
     await page.goto('/en-GB/search');
     await page.locator('#search-input').fill('test');
-    await page.getByRole('button', { name: 'Search' }).click();
+    await page.getByRole('button', { name: 'Search', exact: true }).click();
     // URL should contain search query
     await expect(page).toHaveURL(/keywords=test/);
   });

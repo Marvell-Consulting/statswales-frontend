@@ -3,7 +3,6 @@ import React from 'react';
 import Layout from './components/Layout';
 import SearchResults from './components/SearchResults';
 import T from '../../shared/views/components/T';
-import { SearchMode } from '../../shared/enums/search-mode';
 
 function NoResults() {
   return (
@@ -45,8 +44,7 @@ function ResultCount({ count, total }) {
 
 export default function Search(props) {
   const title = props.t('consumer.search.heading');
-  const searchModes = Object.values(SearchMode);
-  const { mode, keywords, i18n } = props;
+  const { keywords } = props;
 
   return (
     <Layout {...props} noPad={true} title={title}>
@@ -59,19 +57,6 @@ export default function Search(props) {
           </h1>
 
           <form method="get" className="govuk-!-margin-bottom-6 search-form">
-            <select
-              className="govuk-select govuk-!-margin-right-0"
-              id="search-mode"
-              name="mode"
-              defaultValue={mode}
-              aria-label={i18n.t('consumer.search.mode.label')}
-            >
-              {searchModes.map((searchMode) => (
-                <option key={searchMode} value={searchMode}>
-                  {props.t(`consumer.search.mode.${searchMode}`)}
-                </option>
-              ))}
-            </select>
             <input className="govuk-input" id="search-input" name="keywords" type="search" defaultValue={keywords} />
             <button type="submit" className="govuk-button govuk-button-small" data-module="govuk-button">
               {props.t('consumer.search.button')}
