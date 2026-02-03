@@ -69,7 +69,7 @@ export default defineConfig({
       dependencies: []
     }
   ].filter((project) => {
-    // Always exclude production project unless explicitly requested via CHECK_PROD_URL env var
+    // Always exclude production project unless CHECK_PROD_URL env var is set
     if (project.name === 'production') {
       return !!process.env.CHECK_PROD_URL;
     }
