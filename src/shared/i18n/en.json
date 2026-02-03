@@ -2144,14 +2144,6 @@
     "search": {
       "heading": "Search StatsWales",
       "button": "Search",
-      "mode": {
-        "label": "Search mode",
-        "basic": "Basic",
-        "basic_split": "Basic (split keywords)",
-        "fts": "Full text (English dictionary)",
-        "fts_simple": "Full text (simple)",
-        "fuzzy": "Fuzzy"
-      },
       "result_count": "<strong>{{total}}</strong> results",
       "result_count_truncated": "Showing first <strong>{{count}}</strong> of <strong>{{total}}</strong> results",
       "no_results": {

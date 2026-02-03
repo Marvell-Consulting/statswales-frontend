@@ -1941,6 +1941,17 @@
         "research": "Gallwch hefyd <a target=\"_blank\" href=\"https://ymateb.gov.wales/s/GN6ZBG/?lang=1093993\" class=\"govuk-link\">gymryd rhan mewn ymchwil defnyddwyr</a> i'n helpu i wella'r gwasanaeth (yn agor mewn tab newydd)."
       }
     },
+    "search": {
+      "heading": "Chwilio StatsCymru",
+      "button": "Chwilio",
+      "result_count": "<strong>{{total}}</strong> o ganlyniadau",
+      "result_count_truncated": "Dangos y <strong>{{count}}</strong> cyntaf o <strong>{{total}}</strong> o ganlyniadau",
+      "no_results": {
+        "try_1": "Rhowch gynnig ar:",
+        "try_2": "gwirio'ch sillafu",
+        "try_3": "chwilio eto gan ddefnyddio geiriau gwahanol"
+      }
+    },
     "topic_list": {
       "heading": "Darganfod ystadegau a data am Gymru",
       "topics": "Pynciau",
