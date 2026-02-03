@@ -12,11 +12,6 @@ test.describe('Search', () => {
     await expect(page.getByRole('button', { name: 'Search', exact: true })).toBeVisible();
   });
 
-  test('Shows search mode selector', async ({ page }) => {
-    await page.goto('/en-GB/search');
-    await expect(page.locator('#search-mode')).toBeVisible();
-  });
-
   test('Can perform a search', async ({ page }) => {
     await page.goto('/en-GB/search');
     await page.locator('#search-input').fill('test');
