@@ -1,5 +1,5 @@
 import React from 'react';
-import { FilterTable } from '../../../../shared/dtos/filter-table';
+import { FilterTable, FilterValues } from '../../../../shared/dtos/filter-table';
 import { Filter } from '../../../../shared/interfaces/filter';
 
 interface SummaryDataProps {
@@ -7,34 +7,52 @@ interface SummaryDataProps {
   selectedFilterOptions: Filter[];
 }
 
+function flattenReferences(nodes: FilterValues[]): FilterValues[] {
+  return nodes.flatMap((node) => [node, ...(node.children ? flattenReferences(node.children) : [])]);
+}
+
 export function SummaryComponent(props: SummaryDataProps) {
   const tableRows = props.filters.map((filter, fidx) => {
+    const flatFilters = flattenReferences(filter.values);
     let selectedValues = [
-      <span key={fidx} className="govuk-tag--grey">
-        All {filter.values.length} selected
+      <span key={`s-${fidx}`} className="govuk-tag govuk-tag--grey">
+        All {flatFilters.length} values
       </span>
     ];
     const selectedFilter = props.selectedFilterOptions.find((opt) => filter.factTableColumn === opt.columnName);
-    if (selectedFilter) {
-      selectedValues = selectedFilter.values.map((val) => {
+    if (selectedFilter && flatFilters.length > 1) {
+      selectedValues = selectedFilter.values.map((val, oidx) => {
         const valName = filter.values.find((ref) => ref.reference === val)?.description || 'Unknown';
         return (
-          <span key={fidx} className="govuk-tag--grey">
-            {valName}
-          </span>
+          <React.Fragment key={`s-${fidx}-${oidx}`}>
+            <span className="govuk-tag govuk-tag--grey">{valName}</span>{' '}
+          </React.Fragment>
         );
       });
+    } else if (flatFilters.length === 1) {
+      selectedValues = [
+        <span key={`s-${fidx}`} className="govuk-tag govuk-tag--grey">
+          {flatFilters[0].description}
+        </span>
+      ];
     }
+    let changeLink = (
+      <a key={`c-${fidx}`} href={`#filter-${filter.factTableColumn}`}>
+        Change values
+      </a>
+    );
+    if (flatFilters.length === 1) {
+      changeLink = <span key={`c-${fidx}`}>Values can&#39;t be changed</span>;
+    }
+
     return (
       <tr key={`row-${fidx}}`} className="govuk-table__row">
-        <td>{filter.columnName}</td>
-        <td>
-          <span className="govuk-tag--grey">Visible</span>
+        <td className="govuk-table__cell">{filter.columnName}</td>
+        <td className="govuk-table__cell">
+          <span className="govuk-tag govuk-tag--grey">Visible</span>
         </td>
-        <td>{selectedValues.map((selectedValue) => selectedValue)}</td>
-        <td>
-          <a href={`#${filter.values.length}`}>Change values</a>
-        </td>
+        <td className="govuk-table__cell">{selectedValues}</td>
+        <td className="govuk-table__cell">{changeLink}</td>
       </tr>
     );
   });
@@ -61,10 +79,8 @@ export function SummaryComponent(props: SummaryDataProps) {
               </th>
             </tr>
           </thead>
-          <tbody className="govuk-table__body">{tableRows.map((row) => row)}</tbody>
+          <tbody className="govuk-table__body">{tableRows}</tbody>
         </table>
-        {/*SelectedFilter Options = <pre>{JSON.stringify(props.selectedFilterOptions, null, 2)}</pre>*/}
-        {/*Filters = <pre>{JSON.stringify(props.filters, null, 2)}</pre>*/}
       </div>
     </details>
   );
