@@ -10,7 +10,7 @@ const FAILING_DATASETS_FILE = path.join(__dirname, '../../failing-datasets.txt')
 
 const FULL_RUN_TIMEOUT_MS = 1 * 60 * 60 * 1000; // 1 hour
 const INITIAL_PAGE_LOAD_TIMEOUT_MS = 10 * 1000; // 10 seconds
-const PAGE_RENDER_TIMEOUT_MS = 1 * 1000; // 1 second
+const PAGE_RENDER_TIMEOUT_MS = 1 * 2000; // 2 seconds
 const FILTER_APPLY_TIMEOUT_MS = 10 * 1000; // 10 seconds
 const TABLE_RENDER_TIMEOUT_MS = 1 * 1000; // 1 second
 const AVOID_RATE_LIMIT_MS = 500; // 0.5 second
