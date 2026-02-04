@@ -1,7 +1,7 @@
-import { topicsToBreadcrumbs } from '../src/shared/utils/topics-to-breadcrumbs';
-import { Breadcrumb } from '../src/shared/interfaces/breadcrumb';
-import { NestedTopic } from '../src/shared/utils/nested-topics';
-import { Locale } from '../src/shared/enums/locale';
+import { topicsToBreadcrumbs } from '../../src/shared/utils/topics-to-breadcrumbs';
+import { Breadcrumb } from '../../src/shared/interfaces/breadcrumb';
+import { NestedTopic } from '../../src/shared/utils/nested-topics';
+import { Locale } from '../../src/shared/enums/locale';
 
 describe('topicsToBreadcrumbs', () => {
   it('should return an empty array when given an empty input', () => {
