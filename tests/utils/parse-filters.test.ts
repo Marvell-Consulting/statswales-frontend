@@ -1,5 +1,5 @@
-import { parseFilters, parseFiltersV2, v1FiltersToV2, v2FiltersToV1 } from '../src/shared/utils/parse-filters';
-import { FilterV2 } from '../src/shared/interfaces/filter';
+import { parseFilters, parseFiltersV2, v1FiltersToV2, v2FiltersToV1 } from '../../src/shared/utils/parse-filters';
+import { FilterV2 } from '../../src/shared/interfaces/filter';
 
 describe('parseFilters', () => {
   test('should return empty array for undefined input', () => {

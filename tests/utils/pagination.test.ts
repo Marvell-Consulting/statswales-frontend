@@ -1,4 +1,4 @@
-import { pageInfo, paginationSequence } from '../src/shared/utils/pagination';
+import { pageInfo, paginationSequence } from '../../src/shared/utils/pagination';
 
 // input params are [currentPage, totalPages]
 // expected output is an array of page numbers as strings, with skipped pages represented by '...'
