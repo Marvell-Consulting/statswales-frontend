@@ -2230,5 +2230,23 @@
       },
       "success": "Thank you for your feedback"
     }
+  },
+  "summary": {
+    "title": "Summary of variables and selected values",
+    "headers": {
+      "variable": "Variable",
+      "visibility": "Visibility",
+      "values": "Selected values",
+      "action": "Action"
+    },
+    "all_values": "All {{count}} values",
+    "visibility": {
+      "shown": "Shown",
+      "hidden": "Hidden"
+    },
+    "actions": {
+      "change": "Change values",
+      "no_action": "Value can't be changed"
+    }
   }
 }

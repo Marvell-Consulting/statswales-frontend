@@ -1,4 +1,5 @@
 import React from 'react';
+import T from '../../../../shared/views/components/T';
 import { FilterTable, FilterValues } from '../../../../shared/dtos/filter-table';
 import { Filter } from '../../../../shared/interfaces/filter';
 
@@ -16,7 +17,7 @@ export function SummaryComponent(props: SummaryDataProps) {
     const flatFilters = flattenReferences(filter.values);
     let selectedValues = [
       <span key={`s-${fidx}`} className="govuk-tag govuk-tag--grey">
-        All {flatFilters.length} values
+        <T count={flatFilters.length}>summary.all_values</T>
       </span>
     ];
     const selectedFilter = props.selectedFilterOptions.find((opt) => filter.factTableColumn === opt.columnName);
@@ -38,18 +39,24 @@ export function SummaryComponent(props: SummaryDataProps) {
     }
     let changeLink = (
       <a key={`c-${fidx}`} href={`#filter-${filter.factTableColumn}`}>
-        Change values
+        <T>summary.actions.change</T>
       </a>
     );
     if (flatFilters.length === 1) {
-      changeLink = <span key={`c-${fidx}`}>Values can&#39;t be changed</span>;
+      changeLink = (
+        <span key={`c-${fidx}`}>
+          <T>summary.actions.no_change</T>
+        </span>
+      );
     }
 
     return (
       <tr key={`row-${fidx}}`} className="govuk-table__row">
         <td className="govuk-table__cell">{filter.columnName}</td>
         <td className="govuk-table__cell">
-          <span className="govuk-tag govuk-tag--grey">Visible</span>
+          <span className="govuk-tag govuk-tag--green">
+            <T>summary.visibility.shown</T>
+          </span>
         </td>
         <td className="govuk-table__cell">{selectedValues}</td>
         <td className="govuk-table__cell">{changeLink}</td>
@@ -59,23 +66,25 @@ export function SummaryComponent(props: SummaryDataProps) {
   return (
     <details className="govuk-details" open={true}>
       <summary className="govuk-details__summary">
-        <span className="govuk-details__summary-text">Summary of variables and selected values</span>
+        <span className="govuk-details__summary-text">
+          <T>summary.title</T>
+        </span>
       </summary>
       <div className="govuk-details__text">
         <table className="govuk-table">
           <thead className="govuk-table__head">
             <tr className="govuk-table__row">
               <th scope="col" className="govuk-table__header">
-                Variable
+                <T>summary.headers.variable</T>
               </th>
               <th scope="col" className="govuk-table__header">
-                Visibility
+                <T>summary.headers.visibility</T>
               </th>
               <th scope="col" className="govuk-table__header">
-                Selected values
+                <T>summary.headers.values</T>
               </th>
               <th scope="col" className="govuk-table__header">
-                Action
+                <T>summary.headers.action</T>
               </th>
             </tr>
           </thead>
