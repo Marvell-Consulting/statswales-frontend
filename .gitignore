@@ -44,6 +44,10 @@ yarn.lock
 /playwright/report/
 /playwright/.cache/
 
+# Production dataset check progress file
+datasets-progress.json
+failing-datasets.txt
+
 # ignore IDE settings
 .vscode/
 .nova/

@@ -56,8 +56,25 @@ export default defineConfig({
       },
       // Depends on publish tests in CI to ensure published datasets exist
       dependencies: process.env.CI ? ['publish'] : []
+    },
+
+    {
+      name: 'production',
+      testMatch: /\/tests-e2e\/production\/check-all-published\.spec\.ts/,
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: process.env.CHECK_PROD_URL
+      },
+      // No dependencies - runs against production
+      dependencies: []
     }
-  ],
+  ].filter((project) => {
+    // Always exclude production project unless CHECK_PROD_URL env var is set
+    if (project.name === 'production') {
+      return !!process.env.CHECK_PROD_URL && !!process.env.CHECK_PROD_API;
+    }
+    return true;
+  }),
 
   /* Run your local dev server before starting the tests */
   webServer: {
