@@ -1944,11 +1944,11 @@
     "search": {
       "heading": "Chwilio StatsCymru",
       "button": "Chwilio",
-      "result_count": "<strong>{{total}}</strong> o ganlyniadau",
+      "result_count": "<strong>{{total}}</strong> canlyniadau",
       "result_count_truncated": "Dangos y <strong>{{count}}</strong> cyntaf o <strong>{{total}}</strong> o ganlyniadau",
       "no_results": {
-        "try_1": "Rhowch gynnig ar:",
-        "try_2": "gwirio'ch sillafu",
+        "try_1": "Ceisiwch:",
+        "try_2": "ail-wirio eich sillafu",
         "try_3": "chwilio eto gan ddefnyddio geiriau gwahanol"
       }
     },

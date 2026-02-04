@@ -78,5 +78,9 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
+
+    mark {
+      background-color: colours.$whiteblue;
+    }
   }
 }
