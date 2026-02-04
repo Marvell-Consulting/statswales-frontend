@@ -4,10 +4,10 @@ import { isFeatureEnabled } from '../../../shared/utils/feature-flags';
 import { FeatureFlag } from '../../../shared/enums/feature-flag';
 
 export default function SearchBar() {
-  const { buildUrl, i18n, t, url } = useLocals();
-  const params = new URLSearchParams(url.split('?')[1] || '');
+  const { buildUrl, i18n, t, protocol, hostname, url } = useLocals();
+  const urlObj = new URL(url, `${protocol}://${hostname}`);
 
-  if (!isFeatureEnabled(params, FeatureFlag.Search)) {
+  if (!isFeatureEnabled(urlObj.searchParams, FeatureFlag.Search)) {
     return null;
   }
 
