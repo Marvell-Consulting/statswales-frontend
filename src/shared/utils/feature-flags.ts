@@ -5,7 +5,7 @@ import { FeatureFlag } from '../enums/feature-flag';
 type QueryParams = URLSearchParams | Record<string, any>;
 
 export function featureFlaggingDisabled(): boolean {
-  // Only enable feature flagging in staging and production environments
+  // Disable feature flagging in non-production environments (only active in staging and production)
   return ![AppEnv.Prod, AppEnv.Staging].includes(config.env);
 }
 
