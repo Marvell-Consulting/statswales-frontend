@@ -1,8 +1,15 @@
 import React from 'react';
 import { useLocals } from '../../../shared/views/context/Locals';
+import { isFeatureEnabled } from '../../../shared/utils/feature-flags';
+import { FeatureFlag } from '../../../shared/enums/feature-flag';
 
 export default function SearchBar() {
-  const { buildUrl, i18n, t } = useLocals();
+  const { buildUrl, i18n, t, url } = useLocals();
+  const params = new URLSearchParams(url.split('?')[1] || '');
+
+  if (!isFeatureEnabled(params, FeatureFlag.Search)) {
+    return null;
+  }
 
   return (
     <div className="search-bar">
@@ -11,6 +18,7 @@ export default function SearchBar() {
           {t('header.search.label')}
         </label>
         <input type="text" id="search-bar-input" name="keywords" autoComplete="off" className="govuk-input" />
+        <input type="hidden" name="feature" value="search" />
         <button type="submit" className="govuk-button" aria-label={t('header.search.button')}></button>
       </form>
     </div>
