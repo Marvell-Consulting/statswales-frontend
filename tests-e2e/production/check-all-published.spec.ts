@@ -4,16 +4,19 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 
 const PRODUCTION_SITE_URL = process.env.CHECK_PROD_URL;
-const PUBLISHED_DATASET_LIST_URL = `${process.env.CHECK_PROD_API}/v1/?lang=en-gb&page_size=1000`;
+const PUBLISHED_DATASET_LIST_URL = `${process.env.CHECK_PROD_API}/v1/?lang=en-gb&page_size=10000`;
 const PROGRESS_FILE = path.join(__dirname, '../../datasets-progress.json');
 const FAILING_DATASETS_FILE = path.join(__dirname, '../../failing-datasets.txt');
 
 const FULL_RUN_TIMEOUT_MS = 1 * 60 * 60 * 1000; // 1 hour
 const INITIAL_PAGE_LOAD_TIMEOUT_MS = 10 * 1000; // 10 seconds
-const PAGE_RENDER_TIMEOUT_MS = 1 * 2000; // 2 seconds
+const PAGE_RENDER_TIMEOUT_MS = 2 * 1000; // 2 seconds
 const FILTER_APPLY_TIMEOUT_MS = 10 * 1000; // 10 seconds
-const TABLE_RENDER_TIMEOUT_MS = 1 * 1000; // 1 second
+const TABLE_RENDER_TIMEOUT_MS = 2 * 1000; // 2 seconds
 const AVOID_RATE_LIMIT_MS = 500; // 0.5 second
+
+// Determine run mode from TEST_MODE env var: 'recheck', 'reset', or default 'check'
+const MODE = process.env.TEST_MODE || 'check';
 
 interface Dataset {
   id: string;
@@ -21,6 +24,7 @@ interface Dataset {
   url: string;
   checked: boolean;
   passed: boolean | null;
+  checkedAt?: string;
   error?: string;
 }
 
@@ -68,10 +72,8 @@ function saveProgress(progress: ProgressData): void {
   fs.writeFileSync(PROGRESS_FILE, JSON.stringify(progress, null, 2));
 }
 
-function appendFailure(url: string, title: string, error: string): void {
-  const timestamp = new Date().toISOString();
-  const entry = `[${timestamp}] ${url}\n  Title: ${title}\n  Error: ${error}\n\n`;
-  fs.appendFileSync(FAILING_DATASETS_FILE, entry);
+function appendFailure(url: string): void {
+  fs.appendFileSync(FAILING_DATASETS_FILE, `${url}\n`);
 }
 
 async function initializeProgress(): Promise<ProgressData> {
@@ -86,7 +88,13 @@ async function initializeProgress(): Promise<ProgressData> {
     const mergedDatasets = freshDatasets.map((fresh) => {
       const existing = existingMap.get(fresh.id);
       if (existing) {
-        return { ...fresh, checked: existing.checked, passed: existing.passed, error: existing.error };
+        return {
+          ...fresh,
+          checked: existing.checked,
+          passed: existing.passed,
+          checkedAt: existing.checkedAt,
+          error: existing.error
+        };
       }
       return fresh;
     });
@@ -112,6 +120,7 @@ async function initializeProgress(): Promise<ProgressData> {
 }
 
 test.describe('Check All Published Datasets', () => {
+  test.skip(MODE !== 'check', 'Skipped: use default mode (no --recheck or --reset flag)');
   test.describe.configure({ mode: 'serial', timeout: FULL_RUN_TIMEOUT_MS });
 
   let progress: ProgressData;
@@ -185,16 +194,18 @@ test.describe('Check All Published Datasets', () => {
         // Success!
         progress.datasets[datasetIndex].checked = true;
         progress.datasets[datasetIndex].passed = true;
+        progress.datasets[datasetIndex].checkedAt = new Date().toISOString();
         console.log(`  ✓ PASSED`);
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
 
         progress.datasets[datasetIndex].checked = true;
         progress.datasets[datasetIndex].passed = false;
+        progress.datasets[datasetIndex].checkedAt = new Date().toISOString();
         progress.datasets[datasetIndex].error = errorMessage;
 
         // Record failure
-        appendFailure(dataset.url, dataset.title, errorMessage);
+        appendFailure(dataset.url);
         console.log(`  ✗ FAILED: ${errorMessage}`);
       }
 
@@ -221,10 +232,10 @@ test.describe('Check All Published Datasets', () => {
 });
 
 test.describe('Recheck Failed Datasets', () => {
+  test.skip(MODE !== 'recheck', 'Skipped: pass --recheck flag to run');
   test.describe.configure({ mode: 'serial', timeout: FULL_RUN_TIMEOUT_MS });
 
-  test.skip('Recheck only previously failed datasets', async ({ page }) => {
-    // This test is skipped by default. Remove .skip to run it manually.
+  test('Recheck only previously failed datasets', async ({ page }) => {
     const existingProgress = loadProgress();
     if (!existingProgress) {
       console.log('No progress file found. Run the main test first.');
@@ -294,15 +305,17 @@ test.describe('Recheck Failed Datasets', () => {
 
         existingProgress.datasets[datasetIndex].checked = true;
         existingProgress.datasets[datasetIndex].passed = true;
+        existingProgress.datasets[datasetIndex].checkedAt = new Date().toISOString();
         console.log(`  ✓ PASSED (was previously failing)`);
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
 
         existingProgress.datasets[datasetIndex].checked = true;
         existingProgress.datasets[datasetIndex].passed = false;
+        existingProgress.datasets[datasetIndex].checkedAt = new Date().toISOString();
         existingProgress.datasets[datasetIndex].error = errorMessage;
 
-        appendFailure(dataset.url, dataset.title, errorMessage);
+        appendFailure(dataset.url);
         console.log(`  ✗ STILL FAILING: ${errorMessage}`);
       }
 
@@ -322,8 +335,9 @@ test.describe('Recheck Failed Datasets', () => {
 });
 
 test.describe('Reset Progress', () => {
-  test.skip('Reset all progress and start fresh', async () => {
-    // This test is skipped by default. Remove .skip to run it manually.
+  test.skip(MODE !== 'reset', 'Skipped: pass --reset flag to run');
+
+  test('Reset all progress and start fresh', async () => {
     if (fs.existsSync(PROGRESS_FILE)) {
       fs.unlinkSync(PROGRESS_FILE);
       console.log('Progress file deleted.');
