@@ -124,7 +124,7 @@ export default function Table<T>({ columns, rows, colgroup, inverted, isSticky, 
 
   return (
     <div className="govuk-table__container">
-      <table className={clsx('govuk-table', { 'sticky-table': isSticky, sortable: isSortable })}>
+      <table id="data_table" className={clsx('govuk-table', { 'sticky-table': isSticky, sortable: isSortable })}>
         {colgroup && <colgroup>{colgroup}</colgroup>}
         {inverted ? (
           <tbody className="govuk-table__body">

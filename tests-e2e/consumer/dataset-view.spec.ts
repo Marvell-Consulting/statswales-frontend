@@ -25,7 +25,7 @@ test.describe('Dataset View', () => {
     const firstDataset = page.locator('.index-list__item a').first();
     await firstDataset.click();
     // Data tab should be active by default and show table
-    await expect(page.locator('table')).toBeVisible();
+    await expect(page.locator('#data_table')).toBeVisible();
     // Should show page size selector
     await expect(page.locator('#page_size')).toBeVisible();
   });

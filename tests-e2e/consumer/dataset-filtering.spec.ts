@@ -91,7 +91,7 @@ test.describe('Dataset Filtering', () => {
       await firstDataset.click();
       await page.getByRole('button', { name: 'Apply' }).click();
       // Table should still be visible in filtered view
-      await expect(page.locator('table')).toBeVisible();
+      await expect(page.locator('#data_table')).toBeVisible();
     });
 
     test('Filter selection is preserved in filtered view', async ({ page }) => {
@@ -139,7 +139,7 @@ test.describe('Dataset Pagination', () => {
     await page.getByRole('button', { name: 'Apply' }).click();
     // Pagination may or may not appear depending on data size
     // Just verify the page loaded successfully with the filtered view
-    await expect(page.locator('table')).toBeVisible();
+    await expect(page.locator('#data_table')).toBeVisible();
   });
 
   test('Can navigate to next page if available', async ({ page }) => {
