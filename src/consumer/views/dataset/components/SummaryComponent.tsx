@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import T from '../../../../shared/views/components/T';
 import { FilterTable, FilterValues } from '../../../../shared/dtos/filter-table';
 import { Filter } from '../../../../shared/interfaces/filter';
@@ -12,57 +12,71 @@ function flattenReferences(nodes: FilterValues[]): FilterValues[] {
   return nodes.flatMap((node) => [node, ...(node.children ? flattenReferences(node.children) : [])]);
 }
 
-export function SummaryComponent(props: SummaryDataProps) {
-  const tableRows = props.filters.map((filter, fidx) => {
-    const flatFilters = flattenReferences(filter.values);
-    let selectedValues = [
-      <span key={`s-${fidx}`} className="govuk-tag govuk-tag--grey">
-        <T count={flatFilters.length}>summary.all_values</T>
+function createSelectedFilterList(
+  filter: FilterTable,
+  flatFilters: FilterValues[],
+  selectedFilterOptions: Filter[],
+  idx: number
+): ReactNode[] {
+  let selectedValues = [
+    <span key={`s-${idx}`} className="govuk-tag govuk-tag--grey">
+      <T count={flatFilters.length}>summary.all_values</T>
+    </span>
+  ];
+  const selectedFilter = selectedFilterOptions.find((opt) => filter.factTableColumn === opt.columnName);
+  if (selectedFilter && flatFilters.length > 1) {
+    selectedValues = selectedFilter.values.map((val, oidx) => {
+      const valName = filter.values.find((ref) => ref.reference === val)?.description || 'Unknown';
+      return (
+        <React.Fragment key={`s-${idx}-${oidx}`}>
+          <span className="govuk-tag govuk-tag--grey">{valName}</span>{' '}
+        </React.Fragment>
+      );
+    });
+  } else if (flatFilters.length === 1) {
+    selectedValues = [
+      <span key={`s-${idx}`} className="govuk-tag govuk-tag--grey">
+        {flatFilters[0].description}
       </span>
     ];
-    const selectedFilter = props.selectedFilterOptions.find((opt) => filter.factTableColumn === opt.columnName);
-    if (selectedFilter && flatFilters.length > 1) {
-      selectedValues = selectedFilter.values.map((val, oidx) => {
-        const valName = filter.values.find((ref) => ref.reference === val)?.description || 'Unknown';
-        return (
-          <React.Fragment key={`s-${fidx}-${oidx}`}>
-            <span className="govuk-tag govuk-tag--grey">{valName}</span>{' '}
-          </React.Fragment>
-        );
-      });
-    } else if (flatFilters.length === 1) {
-      selectedValues = [
-        <span key={`s-${fidx}`} className="govuk-tag govuk-tag--grey">
-          {flatFilters[0].description}
-        </span>
-      ];
-    }
-    let changeLink = (
-      <a key={`c-${fidx}`} href={`#filter-${filter.factTableColumn}`}>
-        <T>summary.actions.change</T>
-      </a>
-    );
-    if (flatFilters.length === 1) {
-      changeLink = (
-        <span key={`c-${fidx}`}>
-          <T>summary.actions.no_change</T>
-        </span>
-      );
-    }
+  }
+  return selectedValues;
+}
 
-    return (
-      <tr key={`row-${fidx}}`} className="govuk-table__row">
-        <td className="govuk-table__cell">{filter.columnName}</td>
-        <td className="govuk-table__cell">
-          <span className="govuk-tag govuk-tag--green">
-            <T>summary.visibility.shown</T>
-          </span>
-        </td>
-        <td className="govuk-table__cell">{selectedValues}</td>
-        <td className="govuk-table__cell">{changeLink}</td>
-      </tr>
+function createTableRow(filter: FilterTable, selectedFilterOptions: Filter[], idx: number): ReactNode {
+  const flatFilters = flattenReferences(filter.values);
+  let changeLink = (
+    <a key={`c-${idx}`} href={`#filter-${filter.factTableColumn}`}>
+      <T>summary.actions.change</T>
+    </a>
+  );
+  if (flatFilters.length === 1) {
+    changeLink = (
+      <span key={`c-${idx}`}>
+        <T>summary.actions.no_change</T>
+      </span>
     );
+  }
+
+  return (
+    <tr key={`row-${idx}}`} className="govuk-table__row">
+      <td className="govuk-table__cell">{filter.columnName}</td>
+      <td className="govuk-table__cell">
+        <span className="govuk-tag govuk-tag--green">
+          <T>summary.visibility.shown</T>
+        </span>
+      </td>
+      <td className="govuk-table__cell">{createSelectedFilterList(filter, flatFilters, selectedFilterOptions, idx)}</td>
+      <td className="govuk-table__cell">{changeLink}</td>
+    </tr>
+  );
+}
+
+export function SummaryComponent(props: SummaryDataProps): ReactNode {
+  const tableRows = props.filters.map((filter, idx) => {
+    return createTableRow(filter, props.selectedFilterOptions, idx);
   });
+
   return (
     <details className="govuk-details" open={true}>
       <summary className="govuk-details__summary">
