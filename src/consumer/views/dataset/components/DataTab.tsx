@@ -8,6 +8,7 @@ import { useLocals } from '../../../../shared/views/context/Locals';
 import { Filter } from '../../../../shared/interfaces/filter';
 import { FilterTable } from '../../../../shared/dtos/filter-table';
 import { DatasetDTO } from '../../../../shared/dtos/dataset';
+import { SummaryTable } from './SummaryTable';
 
 type DataTabProps = NoteCodesLegendProps &
   PaginationProps &
@@ -101,6 +102,7 @@ export default function DataTab(props: DataTabProps) {
             </div>
           ) : (
             <div className="govuk-grid-column-three-quarters">
+              <SummaryTable {...props} />
               <div className="govuk-!-padding-top-5 govuk-!-margin-bottom-2">
                 <ViewTable {...props} />
               </div>

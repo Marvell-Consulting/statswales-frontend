@@ -2026,5 +2026,23 @@
       },
       "success": "Diolch am eich adborth"
     }
+  },
+  "summary": {
+    "title": "Crynodeb o newidynnau a gwerthoedd a ddewiswyd",
+    "headers": {
+      "variable": "Newidyn",
+      "visibility": "Gwelededd",
+      "values": "Gwerthoedd a ddewiswyd",
+      "action": "Gweithred"
+    },
+    "all_values": "Pob un o'r {{count}} gwerth",
+    "visibility": {
+      "shown": "Wedi'i ddangos",
+      "hidden": "Wedi'i guddio"
+    },
+    "actions": {
+      "change": "Newid gwerthoedd",
+      "no_action": "Ni ellir newid y gwerth"
+    }
   }
 }
