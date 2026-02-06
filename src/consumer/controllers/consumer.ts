@@ -299,15 +299,18 @@ export const search = async (req: Request, res: Response, next: NextFunction) =>
 
   const keywords = req.query.keywords as string;
   const mode = SearchMode.FTSSimple;
+  const page = parseInt(req.query.page_number as string, 10) || 1;
+  const limit = 20;
 
   if (keywords) {
     try {
       logger.info(`searching published datasets for: '${keywords}' using mode: ${mode}`);
-      const resultSet: ResultsetWithCount<SearchResultDTO> = await req.conapi.search(mode, keywords);
+      const resultSet: ResultsetWithCount<SearchResultDTO> = await req.conapi.search(mode, keywords, page, limit);
       const { data, count } = resultSet;
       const results = sanitizeSearchResults(data);
+      const pagination = pageInfo(page, limit, count);
 
-      res.render('search', { keywords, results, count });
+      res.render('search', { keywords, results, count, ...pagination });
       return;
     } catch (err: any) {
       logger.error(err, 'Error occurred during search');

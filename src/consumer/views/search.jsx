@@ -2,6 +2,7 @@ import React from 'react';
 
 import Layout from './components/Layout';
 import SearchResults from './components/SearchResults';
+import Pagination from '../../shared/views/components/Pagination';
 import T from '../../shared/views/components/T';
 
 function NoResults() {
@@ -24,20 +25,12 @@ function NoResults() {
   );
 }
 
-function ResultCount({ count, total }) {
-  const truncatedResults = total > count;
-
+function ResultCount({ total }) {
   return (
     <p className="govuk-heading-m search-result-count">
-      {truncatedResults ? (
-        <T total={total} count={count} raw={true}>
-          consumer.search.result_count_truncated
-        </T>
-      ) : (
-        <T total={total} raw={true}>
-          consumer.search.result_count
-        </T>
-      )}
+      <T total={total} raw={true}>
+        consumer.search.result_count
+      </T>
     </p>
   );
 }
@@ -64,11 +57,13 @@ export default function Search(props) {
             </button>
           </form>
 
-          {props.results && <ResultCount count={props.results.length || 0} total={props.count || 0} />}
+          {props.results && <ResultCount total={props.count || 0} />}
           {props.results?.length > 0 && <SearchResults results={props.results} />}
           {props.results?.length === 0 && <NoResults />}
         </div>
       </div>
+
+      {props.total_pages > 1 && <Pagination {...props} />}
     </Layout>
   );
 }
