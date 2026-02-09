@@ -365,4 +365,63 @@ describe('PublisherApi', () => {
       );
     });
   });
+
+  describe('getDatasetTasks', () => {
+    it('should return an array of TaskDTO without open parameter', async () => {
+      const datasetId = randomUUID();
+      const tasks = [
+        { id: randomUUID(), dataset_id: datasetId, type: 'approval' },
+        { id: randomUUID(), dataset_id: datasetId, type: 'review' }
+      ];
+
+      mockResponse = Promise.resolve(new Response(JSON.stringify(tasks)));
+
+      const taskDTOs = await statsWalesApi.getDatasetTasks(datasetId);
+
+      expect(fetchSpy).toHaveBeenCalledWith(
+        `${baseUrl}/dataset/${datasetId}/tasks?lang=en`,
+        expect.objectContaining({
+          method: HttpMethod.Get,
+          headers
+        })
+      );
+      expect(taskDTOs).toEqual(tasks);
+    });
+
+    it('should return an array of TaskDTO with open=true', async () => {
+      const datasetId = randomUUID();
+      const tasks = [{ id: randomUUID(), dataset_id: datasetId, type: 'approval', status: 'open' }];
+
+      mockResponse = Promise.resolve(new Response(JSON.stringify(tasks)));
+
+      const taskDTOs = await statsWalesApi.getDatasetTasks(datasetId, true);
+
+      expect(fetchSpy).toHaveBeenCalledWith(
+        `${baseUrl}/dataset/${datasetId}/tasks?open=true&lang=en`,
+        expect.objectContaining({
+          method: HttpMethod.Get,
+          headers
+        })
+      );
+      expect(taskDTOs).toEqual(tasks);
+    });
+
+    it('should return an array of TaskDTO with open=false', async () => {
+      const datasetId = randomUUID();
+      const tasks = [{ id: randomUUID(), dataset_id: datasetId, type: 'approval', status: 'closed' }];
+
+      mockResponse = Promise.resolve(new Response(JSON.stringify(tasks)));
+
+      const taskDTOs = await statsWalesApi.getDatasetTasks(datasetId, false);
+
+      expect(fetchSpy).toHaveBeenCalledWith(
+        `${baseUrl}/dataset/${datasetId}/tasks?open=false&lang=en`,
+        expect.objectContaining({
+          method: HttpMethod.Get,
+          headers
+        })
+      );
+      expect(taskDTOs).toEqual(tasks);
+    });
+  });
 });
