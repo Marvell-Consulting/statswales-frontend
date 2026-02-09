@@ -496,8 +496,8 @@ publish.post('/:datasetId/overview', fetchDataset(), upload.none(), overview);
 
 /* Start new dataset revision */
 publish.get('/:datasetId/update', fetchDataset(), redirectIfOpenPublishRequest, createNewUpdate);
-publish.get('/:datasetId/update-type', fetchDataset(), updateDatatable);
-publish.post('/:datasetId/update-type', fetchDataset(), upload.none(), updateDatatable);
+publish.get('/:datasetId/update-type', fetchDataset(), redirectIfOpenPublishRequest, updateDatatable);
+publish.post('/:datasetId/update-type', fetchDataset(), redirectIfOpenPublishRequest, upload.none(), updateDatatable);
 
 /* Move a dataset between groups */
 publish.get('/:datasetId/move', fetchDataset(), moveDatasetGroup);
