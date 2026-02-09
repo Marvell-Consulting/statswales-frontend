@@ -1,3 +1,3 @@
 export enum FeatureFlag {
-  Search = 'search'
+  Search = 'search' // feature now rolled out, keeping as an example for future flags
 }

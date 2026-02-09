@@ -33,8 +33,6 @@ import { DEFAULT_PAGE_SIZE, parsePageOptions } from '../../shared/utils/parse-pa
 import { SearchMode } from '../../shared/enums/search-mode';
 import { SearchResultDTO } from '../../shared/dtos/search-result';
 import { sanitizeSearchResults } from '../../shared/utils/sanitize-search-results';
-import { isFeatureEnabled } from '../../shared/utils/feature-flags';
-import { FeatureFlag } from '../../shared/enums/feature-flag';
 
 export const listTopics = async (req: Request, res: Response, next: NextFunction) => {
   const topicId = req.params.topicId ? req.params.topicId.match(/\d+/)?.[0] : undefined;
@@ -291,12 +289,7 @@ export const downloadPublishedMetadata = async (req: Request, res: Response, nex
   }
 };
 
-export const search = async (req: Request, res: Response, next: NextFunction) => {
-  // Check if search feature flag is enabled
-  if (!isFeatureEnabled(req.query, FeatureFlag.Search)) {
-    return next(new NotFoundException());
-  }
-
+export const search = async (req: Request, res: Response) => {
   const keywords = req.query.keywords as string;
   const mode = SearchMode.FTSSimple;
   const page = parseInt(req.query.page_number as string, 10) || 1;
