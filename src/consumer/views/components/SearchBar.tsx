@@ -1,15 +1,8 @@
 import React from 'react';
 import { useLocals } from '../../../shared/views/context/Locals';
-import { isFeatureEnabled } from '../../../shared/utils/feature-flags';
-import { FeatureFlag } from '../../../shared/enums/feature-flag';
 
 export default function SearchBar() {
-  const { buildUrl, i18n, t, protocol, hostname, url } = useLocals();
-  const urlObj = new URL(url, `${protocol}://${hostname}`);
-
-  if (!isFeatureEnabled(urlObj.searchParams, FeatureFlag.Search)) {
-    return null;
-  }
+  const { buildUrl, i18n, t } = useLocals();
 
   return (
     <div className="search-bar">
