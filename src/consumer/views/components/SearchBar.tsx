@@ -11,7 +11,6 @@ export default function SearchBar() {
           {t('header.search.label')}
         </label>
         <input type="text" id="search-bar-input" name="keywords" autoComplete="off" className="govuk-input" />
-        <input type="hidden" name="feature" value="search" />
         <button type="submit" className="govuk-button" aria-label={t('header.search.button')}></button>
       </form>
     </div>

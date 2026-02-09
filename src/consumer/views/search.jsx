@@ -51,7 +51,6 @@ export default function Search(props) {
 
           <form method="get" className="govuk-!-margin-bottom-6 search-form">
             <input className="govuk-input" id="search-input" name="keywords" type="search" defaultValue={keywords} />
-            <input type="hidden" name="feature" value="search" />
             <button type="submit" className="govuk-button govuk-button-small" data-module="govuk-button">
               {props.t('consumer.search.button')}
             </button>
