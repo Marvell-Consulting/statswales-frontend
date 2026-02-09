@@ -1674,7 +1674,7 @@
       "unmatched_columns": "The uploaded update data table contains column headings that do not match the originally uploaded data table for this dataset. Check the update data table is correct and upload it again."
     },
     "tasks": {
-      "open_tasks": "You have open tasks to complete on this dataset.git"
+      "open_tasks": "You have open tasks to complete on this dataset"
     }
   },
   "filters": {
