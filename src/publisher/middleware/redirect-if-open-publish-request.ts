@@ -9,7 +9,7 @@ export const redirectIfOpenPublishRequest = async (req: Request, res: Response, 
   const openTasks: TaskDTO[] = await req.pubapi.getDatasetTasks(req.params.datasetId, true);
 
   if (openTasks.some((task) => task.action === TaskAction.Publish && task.status === TaskStatus.Requested)) {
-    return res.redirect(`/publish/${req.params.datasetId}/overview`);
+    return res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/overview`, req.language));
   }
 
   next();
