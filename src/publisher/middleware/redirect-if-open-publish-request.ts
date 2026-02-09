@@ -6,10 +6,14 @@ import { TaskStatus } from '../../shared/enums/task-status';
 export const redirectIfOpenPublishRequest = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   if (!req.params.datasetId) return next();
 
-  const openTasks: TaskDTO[] = await req.pubapi.getDatasetTasks(req.params.datasetId, true);
+  try {
+    const openTasks: TaskDTO[] = await req.pubapi.getDatasetTasks(req.params.datasetId, true);
 
-  if (openTasks.some((task) => task.action === TaskAction.Publish && task.status === TaskStatus.Requested)) {
-    return res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/overview`, req.language));
+    if (openTasks.some((task) => task.action === TaskAction.Publish && task.status === TaskStatus.Requested)) {
+      return res.redirect(req.buildUrl(`/publish/${req.params.datasetId}/overview`, req.language));
+    }
+  } catch (err) {
+    return next(err);
   }
 
   next();
