@@ -127,9 +127,6 @@
     &.govuk-button--secondary {
       background-color: colours.$darkgrey;
       color: colours.$white;
-      font-size: 20px;
-      font-weight: bold;
-      padding: 15px 20px 15px 20px;
       margin-bottom: 15px;
       box-shadow: none;
       outline: colours.$midgrey;
@@ -1319,10 +1316,55 @@
     color: colours.$white;
   }
 
-  button.govuk-button-small {
+  .govuk-button-small {
     font-size: 16px;
     font-weight: bold;
     padding: 10px 10px 10px 10px;
+  }
+
+  .table-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+
+    .govuk-button--secondary {
+      margin-bottom: 0;
+    }
+
+    .govuk-notification-banner {
+      margin-bottom: 0;
+      font-size: 16px;
+      font-weight: bold;
+
+      &__content {
+        padding: 10px 20px;
+      }
+    }
+  }
+
+  .copy-icon {
+    padding-left: 38px;
+    background-image: url('/assets/images/copy-white.svg');
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-size: 16px 16px;
+
+    &:hover,
+    &:focus {
+      background-image: url('/assets/images/copy-white.svg');
+      background-repeat: no-repeat;
+      background-position: 10px center;
+      background-size: 16px 16px;
+    }
+
+    &:hover:focus,
+    &:focus {
+      background-image: url('/assets/images/copy.svg');
+      background-repeat: no-repeat;
+      background-position: 10px center;
+      background-size: 16px 16px;
+    }
   }
 
   dd,
