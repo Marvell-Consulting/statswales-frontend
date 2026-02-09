@@ -20,7 +20,7 @@ export function SelectedFilterList(props: SelectFilterListProps): ReactNode[] {
   const selectedFilter = selectedFilterOptions.find((opt) => filter.factTableColumn === opt.columnName);
   if (selectedFilter && flatFilters.length > 1) {
     selectedValues = selectedFilter.values.map((val, oidx) => {
-      const valName = filter.values.find((ref) => ref.reference === val)?.description || 'Unknown';
+      const valName = flatFilters.find((ref) => ref.reference === val)?.description || 'Unknown';
       return (
         <React.Fragment key={`s-${idx}-${oidx}`}>
           <span className="govuk-tag govuk-tag--grey">{valName}</span>{' '}

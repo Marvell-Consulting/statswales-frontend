@@ -25,7 +25,7 @@ export function SummaryTableRow(props: SummaryTableRowProps): ReactNode {
   if (flatFilters.length === 1) {
     changeLink = (
       <span key={`c-${idx}`}>
-        <T>summary.actions.no_change</T>
+        <T>summary.actions.no_action</T>
       </span>
     );
   }
