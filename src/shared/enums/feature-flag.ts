@@ -1,3 +1,4 @@
 export enum FeatureFlag {
-  Search = 'search' // feature now rolled out, keeping as an example for future flags
+  Example = 'example', // don't use - enum needs at least one value otherwise we get ts errors in isFeatureEnabled()
+  SummaryTable = 'summary_table'
 }

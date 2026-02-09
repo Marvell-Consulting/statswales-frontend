@@ -54,138 +54,138 @@ describe('isFeatureEnabled', () => {
     it('should always return true', () => {
       config.env = AppEnv.Local;
       const params = new URLSearchParams('feature=other');
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(true);
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(true);
     });
   });
 
   describe('with URLSearchParams', () => {
     it('should return true when feature flag matches', () => {
-      const params = new URLSearchParams('feature=search');
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(true);
+      const params = new URLSearchParams('feature=example');
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(true);
     });
 
     it('should return false when feature flag does not match', () => {
       const params = new URLSearchParams('feature=analytics');
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(false);
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(false);
     });
 
     it('should return false when feature param is missing', () => {
       const params = new URLSearchParams('other=value');
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(false);
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(false);
     });
 
     it('should return false when params are empty', () => {
       const params = new URLSearchParams('');
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(false);
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(false);
     });
 
     it('should return true when feature flag is in comma-separated list', () => {
-      const params = new URLSearchParams('feature=analytics,search,reporting');
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(true);
+      const params = new URLSearchParams('feature=analytics,example,reporting');
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(true);
     });
 
     it('should handle whitespace in comma-separated list', () => {
-      const params = new URLSearchParams('feature=analytics, search , reporting');
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(true);
+      const params = new URLSearchParams('feature=analytics, example , reporting');
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(true);
     });
 
     it('should return false when feature flag is not in comma-separated list', () => {
       const params = new URLSearchParams('feature=analytics,reporting');
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(false);
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(false);
     });
   });
 
   describe('with Record object (Express query)', () => {
     it('should return true when feature flag matches string value', () => {
-      const params = { feature: 'search' };
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(true);
+      const params = { feature: 'example' };
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(true);
     });
 
     it('should return false when feature flag does not match string value', () => {
       const params = { feature: 'analytics' };
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(false);
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(false);
     });
 
     it('should return false when feature param is missing', () => {
       const params = { other: 'value' };
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(false);
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(false);
     });
 
     it('should return false when params are empty', () => {
       const params = {};
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(false);
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(false);
     });
 
     it('should return true when feature flag is in comma-separated string', () => {
-      const params = { feature: 'analytics,search,reporting' };
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(true);
+      const params = { feature: 'analytics,example,reporting' };
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(true);
     });
 
     it('should handle whitespace in comma-separated string', () => {
-      const params = { feature: 'analytics, search , reporting' };
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(true);
+      const params = { feature: 'analytics, example , reporting' };
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(true);
     });
 
     it('should return false when feature flag is not in comma-separated string', () => {
       const params = { feature: 'analytics,reporting' };
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(false);
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(false);
     });
 
     it('should return true when feature flag is in array of strings', () => {
-      const params = { feature: ['analytics', 'search', 'reporting'] };
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(true);
+      const params = { feature: ['analytics', 'example', 'reporting'] };
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(true);
     });
 
     it('should return true when feature flag is in comma-separated string within array', () => {
-      const params = { feature: ['analytics,search', 'reporting'] };
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(true);
+      const params = { feature: ['analytics,example', 'reporting'] };
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(true);
     });
 
     it('should return false when feature flag is not in array', () => {
       const params = { feature: ['analytics', 'reporting'] };
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(false);
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(false);
     });
 
     it('should handle non-string values in feature param', () => {
       const params = { feature: 123 as any };
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(false);
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(false);
     });
 
     it('should handle null value in feature param', () => {
       const params = { feature: null as any };
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(false);
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(false);
     });
 
     it('should handle undefined value in feature param', () => {
       const params = { feature: undefined };
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(false);
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(false);
     });
   });
 
   describe('edge cases', () => {
     it('should handle empty string in feature param', () => {
       const params = { feature: '' };
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(false);
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(false);
     });
 
     it('should handle whitespace-only string in feature param', () => {
       const params = { feature: '   ' };
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(false);
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(false);
     });
 
     it('should handle array with empty strings', () => {
-      const params = { feature: ['', 'search', ''] };
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(true);
+      const params = { feature: ['', 'example', ''] };
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(true);
     });
 
     it('should be case-sensitive', () => {
-      const params = { feature: 'Search' };
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(false);
+      const params = { feature: 'Example' };
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(false);
     });
 
     it('should handle multiple query params from real Express request', () => {
-      const params = { feature: 'search', keywords: 'test', page: '1' };
-      expect(isFeatureEnabled(params, FeatureFlag.Search)).toBe(true);
+      const params = { feature: 'example', keywords: 'test', page: '1' };
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(true);
     });
   });
 });
