@@ -28,7 +28,7 @@ export default function FeedbackForm(props: FeedbackFormProps) {
           <T>feedback.heading</T>
         </h1>
 
-        <form method="POST" action={buildUrl('/feedback', i18n.language)} className="govuk-form-group">
+        <form method="POST" action={buildUrl('/feedback', i18n.language)} className="govuk-form-group" noValidate>
           <RadioGroup
             name="satisfaction"
             label={i18n.t('feedback.form.satisfaction.label')}
@@ -114,7 +114,7 @@ export default function FeedbackForm(props: FeedbackFormProps) {
             </div>
           </fieldset>
           <div className="govuk-button-group">
-            <button type="submit" className="govuk-button">
+            <button type="submit" className="govuk-button" data-module="govuk-button" data-prevent-double-click="true">
               <T>feedback.form.buttons.submit</T>
             </button>
           </div>
