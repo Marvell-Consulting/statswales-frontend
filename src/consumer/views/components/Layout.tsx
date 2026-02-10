@@ -191,7 +191,7 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
         <footer className="wg-footer">
           <div className="footer-top">
             <div className="govuk-width-container">
-              <a href="#top" role="button" className="govuk-button govuk-button--secondary govuk-button--top">
+              <a href="#top" role="button" className="govuk-button govuk-button--tertiary govuk-button-small icon-top">
                 {t('footer.top_of_page')}
               </a>
             </div>

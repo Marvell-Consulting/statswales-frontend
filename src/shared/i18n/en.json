@@ -1696,16 +1696,24 @@
       "updates": "Updates",
       "initial_publication": "Dataset first published."
     },
+    "data_table": {
+      "heading": "Table",
+      "buttons": {
+        "copy_link": "Copy link to this table",
+        "download": "Download this table"
+      },
+      "copy_success": "Link copied to your clipboard"
+    },
     "overview": "Overview",
     "no_data": "No data available for the selected filters. Try a different selection.",
     "data_view": "Data view",
     "select_view": "Select view",
-    "data_table": "Data table",
     "apply_view": "Apply view",
     "options": "View options",
     "filters": "Filters",
     "page_size": "Rows per page",
     "apply_filters": "Apply",
+    "apply_page_size": "Apply rows",
     "start_date": "Start Date",
     "end_date": "End Date",
     "archived_dataset": "This dataset has been archived and will no longer be updated.",

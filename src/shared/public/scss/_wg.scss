@@ -127,9 +127,6 @@
     &.govuk-button--secondary {
       background-color: colours.$darkgrey;
       color: colours.$white;
-      font-size: 20px;
-      font-weight: bold;
-      padding: 15px 20px 15px 20px;
       margin-bottom: 15px;
       box-shadow: none;
       outline: colours.$midgrey;
@@ -137,6 +134,17 @@
 
       &:hover {
         background-color: colours.$charcoal;
+      }
+    }
+
+    &.govuk-button--tertiary {
+      color: colours.$charcoal;
+      background-color: transparent;
+      border: 1px solid colours.$midgrey;
+
+      &:hover {
+        background-color: colours.$lightgrey_dark;
+        color: colours.$charcoal;
       }
     }
   }
@@ -1319,10 +1327,65 @@
     color: colours.$white;
   }
 
-  button.govuk-button-small {
+  .govuk-button-small {
     font-size: 16px;
     font-weight: bold;
     padding: 10px 10px 10px 10px;
+  }
+
+  .table-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+
+    .govuk-button--secondary {
+      margin-bottom: 0;
+    }
+
+    .govuk-notification-banner {
+      margin-bottom: 0;
+      font-size: 16px;
+      font-weight: bold;
+
+      .govuk-notification-banner__content {
+        padding: 10px 20px;
+      }
+    }
+  }
+
+  .icon-top {
+    padding-left: 38px;
+    background-image: url('data:image/svg+xml;charset=utf8,%3Csvg id=%22Layer_1%22 data-name=%22Layer 1%22 xmlns=%22http://www.w3.org/2000/svg%22 width=%22159.5%22 height=%22102.4%22 viewBox=%220 0 159.5 102.4%22%3E%3Ctitle%3Eblack-arrow-up%3C/title%3E%3Cpath d=%22M159.5,79.8,79.8,0,0,79.8l22.6,22.6L79.7,45.3l57.1,57.1Z%22/%3E%3C/svg%3E');
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-size: 18px 13px;
+
+    &:hover,
+    &:focus,
+    &:hover:focus {
+      background-image: url('data:image/svg+xml;charset=utf8,%3Csvg id=%22Layer_1%22 data-name=%22Layer 1%22 xmlns=%22http://www.w3.org/2000/svg%22 width=%22159.5%22 height=%22102.4%22 viewBox=%220 0 159.5 102.4%22%3E%3Ctitle%3Eblack-arrow-up%3C/title%3E%3Cpath d=%22M159.5,79.8,79.8,0,0,79.8l22.6,22.6L79.7,45.3l57.1,57.1Z%22/%3E%3C/svg%3E');
+      background-repeat: no-repeat;
+      background-position: 10px center;
+      background-size: 18px 13px;
+    }
+  }
+
+  .icon-copy {
+    padding-left: 38px;
+    background-image: url('/assets/images/copy.svg');
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-size: 16px 16px;
+
+    &:hover,
+    &:focus,
+    &:hover:focus {
+      background-image: url('/assets/images/copy.svg');
+      background-repeat: no-repeat;
+      background-position: 10px center;
+      background-size: 16px 16px;
+    }
   }
 
   dd,
@@ -2653,24 +2716,6 @@
 
   .govuk-table__head {
     border-bottom: 2px solid colours.$lightgrey;
-  }
-
-  a.govuk-button.govuk-button--top {
-    color: colours.$charcoal;
-    background-color: transparent;
-    border: 1px solid colours.$midgrey;
-    padding: 10px 20px 10px 36px;
-    font-size: 14px;
-    margin-bottom: 0px;
-    background-image: url('data:image/svg+xml;charset=utf8,%3Csvg id=%22Layer_1%22 data-name=%22Layer 1%22 xmlns=%22http://www.w3.org/2000/svg%22 width=%22159.5%22 height=%22102.4%22 viewBox=%220 0 159.5 102.4%22%3E%3Ctitle%3Eblack-arrow-up%3C/title%3E%3Cpath d=%22M159.5,79.8,79.8,0,0,79.8l22.6,22.6L79.7,45.3l57.1,57.1Z%22/%3E%3C/svg%3E');
-    background-size: 18px 13px;
-    background-position: 10px center;
-    background-repeat: no-repeat;
-  }
-
-  a.govuk-button.govuk-button--secondary.govuk-button--top:hover {
-    background-color: colours.$lightgrey_dark;
-    color: colours.$charcoal;
   }
 
   footer .top .govuk-button:before {

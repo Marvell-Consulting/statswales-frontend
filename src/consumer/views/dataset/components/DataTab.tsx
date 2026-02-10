@@ -2,13 +2,15 @@ import qs from 'qs';
 import React from 'react';
 import { Filters } from '../../../../shared/views/components/Filters';
 import Pagination, { PaginationProps } from '../../../../shared/views/components/Pagination';
-import NoteCodesLegend, { NoteCodesLegendProps } from './NoteCodesLegend';
+import { NoteCodesLegendProps } from './NoteCodesLegend';
 import ViewTable, { ViewTableProps } from './ViewTable';
 import { useLocals } from '../../../../shared/views/context/Locals';
 import { Filter } from '../../../../shared/interfaces/filter';
 import { FilterTable } from '../../../../shared/dtos/filter-table';
 import { DatasetDTO } from '../../../../shared/dtos/dataset';
 import { SummaryTable } from './SummaryTable';
+import T from '../../../../shared/views/components/T';
+import { RowsPerPage } from '../../../../shared/views/components/RowsPerPage';
 
 type DataTabProps = NoteCodesLegendProps &
   PaginationProps &
@@ -38,30 +40,11 @@ export default function DataTab(props: DataTabProps) {
   return (
     <div className="govuk-width-container">
       <div className="govuk-main-wrapper govuk-!-padding-top-0">
-        <NoteCodesLegend {...props} />
         <div className="govuk-grid-row border-top-small">
           {/* Sidebar filters */}
           <div className="govuk-grid-column-one-quarter">
             <form method="POST" action={formUrl}>
-              <h2 className="govuk-heading-m">{props.t('consumer_view.options')}</h2>
-              <div className="govuk-form-group">
-                <label className="govuk-label region-subhead" htmlFor="page_size">
-                  {props.t('consumer_view.page_size')}
-                </label>
-                <select
-                  className="govuk-select full-width"
-                  id="page_size"
-                  name="page_size"
-                  defaultValue={props.page_size}
-                  autoComplete="on"
-                >
-                  {[5, 10, 25, 50, 100, 250, 500].map((size) => (
-                    <option key={size} value={size}>
-                      {size}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <input type="hidden" name="page_size" value={props.page_size} />
               {sortBy && (
                 <>
                   <input type="hidden" name="sort_by[columnName]" value={sortBy.columnName} />
@@ -85,7 +68,7 @@ export default function DataTab(props: DataTabProps) {
                 className="govuk-button button-black"
                 data-module="govuk-button"
               >
-                {props.t('consumer_view.apply_filters')}
+                <T>consumer_view.apply_filters</T>
               </button>
             </form>
           </div>
@@ -107,6 +90,7 @@ export default function DataTab(props: DataTabProps) {
                 <ViewTable {...props} />
               </div>
               <Pagination {...props} />
+              <RowsPerPage pageSize={props.page_size} />
             </div>
           )}
         </div>

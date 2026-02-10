@@ -87,8 +87,13 @@ test.describe('Download with Filters', () => {
     const firstDataset = page.locator('.index-list__item a').first();
     await firstDataset.click();
     // Apply filters first
-    await page.locator('#page_size').selectOption('25');
-    await page.getByRole('button', { name: 'Apply' }).click();
+    // Find filter checkboxes that aren't "Not filtered" and aren't nested inside a details element
+    const filterCheckbox = page
+      .locator('.checkboxes__input__filter:not([id$="-all"]):not(details .checkboxes__input__filter)')
+      .first();
+
+    await filterCheckbox.check({ force: true, timeout: 5000 });
+    await page.getByRole('button', { name: 'Apply', exact: true }).click();
     // Go to download tab
     await page.getByRole('tab', { name: 'Download' }).click();
     // Hidden field should contain filter options

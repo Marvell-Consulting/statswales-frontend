@@ -7,8 +7,9 @@ import { ColumnHeader } from '../../../../shared/dtos/view-dto';
 import { FactTableColumnType } from '../../../../shared/dtos/fact-table-column-type';
 import T from '../../../../shared/views/components/T';
 import { dateFormat } from '../../../../shared/utils/date-format';
+import NoteCodesLegend, { NoteCodesLegendProps } from './NoteCodesLegend';
 
-export type ViewTableProps = {
+export type ViewTableProps = NoteCodesLegendProps & {
   headers: ColumnHeader[];
   data: string[][];
 };
@@ -42,13 +43,80 @@ export default function ViewTable(props: ViewTableProps) {
     cellClassName: col.source_type === FactTableColumnType.LineNumber ? 'line-number' : ''
   }));
 
-  if (props.data.length === 0) {
-    return (
-      <p className="govuk-body">
-        <T>consumer_view.no_data</T>
-      </p>
-    );
-  }
+  return (
+    <>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-one-quarter">
+          <h2 className="govuk-heading-m">
+            <T>consumer_view.data_table.heading</T>
+          </h2>
+        </div>
+        <div className="govuk-grid-column-three-quarters table-actions">
+          <div
+            className="govuk-notification-banner govuk-notification-banner--success"
+            id="copy-success"
+            data-module="govuk-notification-banner"
+            hidden
+          >
+            <div className="govuk-notification-banner__content">
+              <T>consumer_view.data_table.copy_success</T>
+            </div>
+          </div>
+          <button
+            type="button"
+            className="govuk-button govuk-button--tertiary govuk-button-small icon-copy"
+            data-module="govuk-button"
+            id="copy-link-button"
+          >
+            <T>consumer_view.data_table.buttons.copy_link</T>
+          </button>
+          <a
+            href="#downloads"
+            className="govuk-button govuk-button--tertiary govuk-button-small"
+            id="download-table-button"
+          >
+            <T>consumer_view.data_table.buttons.download</T>
+          </a>
+        </div>
+      </div>
 
-  return <Table isSticky columns={columns} rows={props.data} isSortable />;
+      <NoteCodesLegend {...props} />
+
+      {props.data?.length === 0 ? (
+        <p className="govuk-body">
+          <T>consumer_view.no_data</T>
+        </p>
+      ) : (
+        <Table isSticky columns={columns} rows={props.data} isSortable />
+      )}
+
+      <script
+        type="module"
+        dangerouslySetInnerHTML={{
+          __html: `
+          (() => {
+            const copyButton = document.getElementById('copy-link-button');
+            const currentUrl = window.location.href;
+
+            copyButton?.addEventListener('click', async () => {
+              try {
+                await navigator.clipboard.writeText(currentUrl);
+
+                const successBanner = document.getElementById('copy-success');
+                if (!successBanner) return;
+
+                successBanner.hidden = false;
+                setTimeout(() => {
+                  successBanner.hidden = true;
+                }, 10000);
+              } catch (err) {
+                // do nothing
+              }
+            });
+          })();
+          `
+        }}
+      />
+    </>
+  );
 }

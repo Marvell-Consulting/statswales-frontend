@@ -155,7 +155,7 @@ test.describe('Check All Published Datasets', () => {
         await page.goto(dataset.url, { timeout: INITIAL_PAGE_LOAD_TIMEOUT_MS });
 
         // Wait for the page to load and check for Apply button
-        const applyButton = page.getByRole('button', { name: 'Apply' });
+        const applyButton = page.getByRole('button', { name: 'Apply', exact: true });
         await expect(applyButton).toBeVisible({ timeout: PAGE_RENDER_TIMEOUT_MS });
         // Find filter checkboxes that aren't "Not filtered" and aren't nested inside a details element
         const filterCheckboxes = page.locator(
@@ -273,7 +273,7 @@ test.describe('Recheck Failed Datasets', () => {
       try {
         await page.goto(dataset.url, { timeout: INITIAL_PAGE_LOAD_TIMEOUT_MS });
 
-        const applyButton = page.getByRole('button', { name: 'Apply' });
+        const applyButton = page.getByRole('button', { name: 'Apply', exact: true });
         await expect(applyButton).toBeVisible({ timeout: PAGE_RENDER_TIMEOUT_MS });
 
         // Find filter checkboxes that aren't "Not filtered" and aren't nested inside a details element
