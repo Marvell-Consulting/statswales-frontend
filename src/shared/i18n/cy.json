@@ -2020,6 +2020,18 @@
         "hint": "Ni ddylech gynnwys gwybodaeth bersonol, fel eich enw neu’ch cyfeiriad e-bost",
         "error": "Nodwch sut y gallem wella StatsCymru"
       },
+      "personal_details": {
+        "label": "Rhowch eich manylion os hoffech gael ymateb (dewisol)",
+        "name": {
+          "label": "Enw",
+          "error": "Nodwch eich enw"
+        },
+        "email": {
+          "label": "Cyfeiriad e-bost",
+          "error": "Nodwch gyfeiriad e-bost dilys",
+          "hint": "Dim ond er mwyn ymateb i'ch neges y byddwn yn defnyddio'r ffurflen hon"
+        }
+      },
       "buttons": {
         "submit": "Anfon adborth"
       },
