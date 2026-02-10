@@ -5,7 +5,13 @@ import { NotifyClient } from 'notifications-node-client';
 import { i18next } from '../../shared/middleware/translation';
 import { flashMessages } from '../../shared/middleware/flash';
 import { ViewError } from '../../shared/dtos/view-error';
-import { getErrors, improveValidator, satisfactionValidator } from '../../shared/validators';
+import {
+  emailValidator,
+  getErrors,
+  improveValidator,
+  nameValidator,
+  satisfactionValidator
+} from '../../shared/validators';
 import { config } from '../../shared/config';
 import { logger } from '../../shared/utils/logger';
 import { AppEnv } from '../../shared/config/env.enum';
@@ -18,12 +24,15 @@ feedback.use(flashMessages);
 const feedbackForm = async (req: Request, res: Response) => {
   const title = i18next.t('feedback.heading', { lng: req.language });
   let errors: ViewError[] = [];
-  let values: { satisfaction: string; improve: string } = { satisfaction: '', improve: '' };
+  let values: { satisfaction: string; improve: string; name?: string; email?: string } = {
+    satisfaction: '',
+    improve: ''
+  };
 
   if (req.method === 'POST') {
-    const validators = [satisfactionValidator(), improveValidator()];
-    const { satisfaction, improve } = req.body;
-    values = { satisfaction, improve };
+    const validators = [satisfactionValidator(), improveValidator(), nameValidator(), emailValidator()];
+    const { satisfaction, improve, name, email } = req.body;
+    values = { satisfaction, improve, name, email };
 
     errors = (await getErrors(validators, req)).map((error: FieldValidationError) => {
       return { field: error.path, message: { key: `feedback.form.${error.path}.error` } };
@@ -41,7 +50,9 @@ const feedbackForm = async (req: Request, res: Response) => {
           .sendEmail(templateId, supportEmail, {
             personalisation: {
               satisfaction: values.satisfaction,
-              improve: values.improve
+              improve: values.improve,
+              user_name: values.name,
+              user_email: values.email
             },
             reference: 'statswales-feedback-form'
           })

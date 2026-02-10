@@ -2229,8 +2229,19 @@
       },
       "improve": {
         "label": "How could we improve StatsWales?",
-        "hint": "Do not include personal information, like your name or email address",
         "error": "Tell us how we could improve StatsWales"
+      },
+      "personal_details": {
+        "label": "Give us your details if you want a reply (optional)",
+        "name": {
+          "label": "Name",
+          "error": "Enter your name"
+        },
+        "email": {
+          "label": "Email address",
+          "error": "Enter a valid email address",
+          "hint": "We'll only use this to reply to your message"
+        }
       },
       "buttons": {
         "submit": "Send feedback"
