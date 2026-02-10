@@ -72,7 +72,7 @@ export default function FeedbackForm(props: FeedbackFormProps) {
                 <T>feedback.form.personal_details.name.label</T>
               </label>
               {props.errors?.find((e: ViewError) => e.field === 'name') && (
-                <span className="govuk-error-message field-validation-valid" id="name-error">
+                <span className="govuk-error-message" id="name-error">
                   <T>feedback.form.personal_details.name.error</T>
                 </span>
               )}
@@ -97,7 +97,7 @@ export default function FeedbackForm(props: FeedbackFormProps) {
                 <T>feedback.form.personal_details.email.hint</T>
               </div>
               {props.errors?.find((e: ViewError) => e.field === 'email') && (
-                <span className="govuk-error-message field-validation-valid" id="email-error">
+                <span className="govuk-error-message" id="email-error">
                   <T>feedback.form.personal_details.email.error</T>
                 </span>
               )}
