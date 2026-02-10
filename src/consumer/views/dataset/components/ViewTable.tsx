@@ -52,12 +52,18 @@ export default function ViewTable(props: ViewTableProps) {
           </h2>
         </div>
         <div className="govuk-grid-column-three-quarters table-actions">
-          <div className="govuk-notification-banner govuk-notification-banner--success" id="copy-success" hidden>
+          <div
+            className="govuk-notification-banner govuk-notification-banner--success"
+            id="copy-success"
+            data-module="govuk-notification-banner"
+            hidden
+          >
             <div className="govuk-notification-banner__content">
               <T>consumer_view.data_table.copy_success</T>
             </div>
           </div>
           <button
+            type="button"
             className="govuk-button govuk-button--secondary govuk-button-small copy-icon"
             data-module="govuk-button"
             id="copy-link-button"
@@ -95,7 +101,10 @@ export default function ViewTable(props: ViewTableProps) {
             copyButton?.addEventListener('click', async () => {
               try {
                 await navigator.clipboard.writeText(currentUrl);
+
                 const successBanner = document.getElementById('copy-success');
+                if (!successBanner) return;
+
                 successBanner.hidden = false;
                 setTimeout(() => {
                   successBanner.hidden = true;
