@@ -125,7 +125,7 @@
     "contact_us_link": "https://www.gov.wales/contacts-statistics",
     "accessibility_link": "https://www.gov.wales/accessibility-statement-govwales",
     "copyright_statement_link": "https://www.gov.wales/copyright-statement",
-    "privacy_link": "https://www.gov.wales/website-privacy-policy",
+    "privacy_link": "https://www.gov.wales/statistics-user-engagement-privacy-notice-html",
     "terms_conditions_link": "https://www.gov.wales/terms-and-conditions",
     "modern_slavery_link": "https://www.gov.wales/welsh-government-modern-slavery-statement",
     "alternative_languages_link": "https://www.gov.wales/alternative-languages"
@@ -2229,8 +2229,19 @@
       },
       "improve": {
         "label": "How could we improve StatsWales?",
-        "hint": "Do not include personal information, like your name or email address",
         "error": "Tell us how we could improve StatsWales"
+      },
+      "personal_details": {
+        "label": "Give us your details if you want a reply (optional)",
+        "name": {
+          "label": "Name",
+          "error": "Enter your name"
+        },
+        "email": {
+          "label": "Email address",
+          "error": "Enter a valid email address",
+          "hint": "We'll only use this to reply to your message"
+        }
       },
       "buttons": {
         "submit": "Send feedback"

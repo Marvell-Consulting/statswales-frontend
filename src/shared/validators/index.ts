@@ -102,3 +102,7 @@ export const updateYearValidator = () =>
 export const satisfactionValidator = () => body('satisfaction').isIn(Object.values(SatisfactionOptions));
 
 export const improveValidator = () => body('improve').trim().notEmpty();
+
+export const nameValidator = () => body('name').trim().optional();
+
+export const emailValidator = () => body('email').trim().optional({ checkFalsy: true }).isEmail();

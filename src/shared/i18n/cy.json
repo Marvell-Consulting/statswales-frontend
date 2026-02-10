@@ -122,7 +122,7 @@
     "contact_us_link": "https://www.gov.wales/contacts-statistics",
     "accessibility_link": "https://www.gov.wales/accessibility-statement-govwales",
     "copyright_statement_link": "https://www.gov.wales/copyright-statement",
-    "privacy_link": "https://www.gov.wales/website-privacy-policy",
+    "privacy_link": "https://www.llyw.cymru/ymgysylltiad-defnyddwyr-ystadegau-hysbysiad-preifatrwydd-html",
     "terms_conditions_link": "https://www.gov.wales/terms-and-conditions",
     "modern_slavery_link": "https://www.gov.wales/welsh-government-modern-slavery-statement",
     "alternative_languages_link": "https://www.gov.wales/alternative-languages"
@@ -2019,6 +2019,18 @@
         "label": "Sut allem wella StatsCymru?",
         "hint": "Ni ddylech gynnwys gwybodaeth bersonol, fel eich enw neu’ch cyfeiriad e-bost",
         "error": "Nodwch sut y gallem wella StatsCymru"
+      },
+      "personal_details": {
+        "label": "Rhowch eich manylion os hoffech gael ymateb (dewisol)",
+        "name": {
+          "label": "Enw",
+          "error": "Nodwch eich enw"
+        },
+        "email": {
+          "label": "Cyfeiriad e-bost",
+          "error": "Nodwch gyfeiriad e-bost dilys",
+          "hint": "Dim ond er mwyn ymateb i'ch neges y byddwn yn defnyddio'r ffurflen hon"
+        }
       },
       "buttons": {
         "submit": "Anfon adborth"
