@@ -46,4 +46,52 @@ test.describe('Feedback Form', () => {
     // Should show success message
     await expect(page.getByText('Thank you for your feedback')).toBeVisible();
   });
+
+  test('Shows optional name and email fields', async ({ page }) => {
+    await page.goto('/en-GB/feedback');
+    await expect(page.locator('#name')).toBeVisible();
+    await expect(page.locator('#email')).toBeVisible();
+  });
+
+  test('Successful submission with name and email', async ({ page }) => {
+    await page.goto('/en-GB/feedback');
+    // Select satisfaction
+    await page.getByLabel('Satisfied', { exact: true }).click({ force: true });
+    // Fill improvement field
+    await page.locator('#improve').fill('This is a test feedback with contact details');
+    // Fill optional fields
+    await page.locator('#name').fill('Test User');
+    await page.locator('#email').fill('test@example.com');
+    // Submit
+    await page.getByRole('button', { name: 'Send feedback' }).click();
+    // Should show success message
+    await expect(page.getByText('Thank you for your feedback')).toBeVisible();
+  });
+
+  test('Name and email fields are optional', async ({ page }) => {
+    await page.goto('/en-GB/feedback');
+    // Select satisfaction
+    await page.getByLabel('Very satisfied').click({ force: true });
+    // Fill improvement field
+    await page.locator('#improve').fill('Test feedback without contact details');
+    // Leave name and email empty
+    // Submit
+    await page.getByRole('button', { name: 'Send feedback' }).click();
+    // Should show success message (fields are optional)
+    await expect(page.getByText('Thank you for your feedback')).toBeVisible();
+  });
+
+  test('Shows validation error for invalid email format', async ({ page }) => {
+    await page.goto('/en-GB/feedback');
+    // Select satisfaction
+    await page.getByLabel('Neutral').click({ force: true });
+    // Fill improvement field
+    await page.locator('#improve').fill('Test feedback with invalid email');
+    // Enter invalid email
+    await page.locator('#email').fill('invalid-email');
+    // Submit
+    await page.getByRole('button', { name: 'Send feedback' }).click();
+    // Should show email validation error
+    await expect(page.locator('#email-error')).toBeVisible();
+  });
 });
