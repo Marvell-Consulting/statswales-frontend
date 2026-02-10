@@ -160,6 +160,15 @@ test.describe('Publish dataset', () => {
     });
   });
 
+  test.describe(`Publisher - can't edit with open publish request`, () => {
+    test.use({ storageState: users.publisher.path });
+
+    test('Redirects to overview when trying to edit', async ({ page }) => {
+      await page.goto(`/en-GB/publish/${datasetId}/summary`);
+      await expect(page).toHaveURL(`/en-GB/publish/${datasetId}/overview`);
+    });
+  });
+
   test.describe('Approver - publication rejection', () => {
     test.use({ storageState: users.approver.path });
 
