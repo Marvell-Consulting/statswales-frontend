@@ -64,7 +64,7 @@ export default function ViewTable(props: ViewTableProps) {
           </div>
           <button
             type="button"
-            className="govuk-button govuk-button--secondary govuk-button-small copy-icon"
+            className="govuk-button govuk-button--tertiary govuk-button-small icon-copy"
             data-module="govuk-button"
             id="copy-link-button"
           >
@@ -72,7 +72,7 @@ export default function ViewTable(props: ViewTableProps) {
           </button>
           <a
             href="#downloads"
-            className="govuk-button govuk-button--secondary govuk-button-small"
+            className="govuk-button govuk-button--tertiary govuk-button-small"
             id="download-table-button"
           >
             <T>consumer_view.data_table.buttons.download</T>
