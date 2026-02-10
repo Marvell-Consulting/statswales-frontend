@@ -67,7 +67,7 @@ export default function FeedbackForm(props: FeedbackFormProps) {
               </h2>
             </legend>
 
-            <div className="govuk-form-group ">
+            <div className="govuk-form-group">
               <label htmlFor="name" className="govuk-label">
                 <T>feedback.form.personal_details.name.label</T>
               </label>
@@ -87,7 +87,7 @@ export default function FeedbackForm(props: FeedbackFormProps) {
               />
             </div>
 
-            <div className="govuk-form-group ">
+            <div className="govuk-form-group">
               <label htmlFor="email" className="govuk-label">
                 <T>feedback.form.personal_details.email.label</T>
               </label>
