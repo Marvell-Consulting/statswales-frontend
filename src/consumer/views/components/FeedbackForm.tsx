@@ -83,6 +83,7 @@ export default function FeedbackForm(props: FeedbackFormProps) {
                 autoComplete="name"
                 className="govuk-input"
                 spellCheck="false"
+                aria-describedby="name-error"
                 defaultValue={props.values.name}
               />
             </div>
@@ -107,7 +108,7 @@ export default function FeedbackForm(props: FeedbackFormProps) {
                 autoComplete="email"
                 className="govuk-input"
                 spellCheck="false"
-                aria-describedby="email-hint"
+                aria-describedby="email-hint email-error"
                 defaultValue={props.values.email}
               />
             </div>
