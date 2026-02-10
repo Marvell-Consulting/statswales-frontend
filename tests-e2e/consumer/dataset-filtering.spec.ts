@@ -197,7 +197,7 @@ test.describe('Dataset Table Sorting', () => {
     const firstDataset = page.locator('.index-list__item a').first();
     await firstDataset.click();
     // Apply filters first to get to filtered view
-    await page.getByRole('button', { name: 'Apply' }).click();
+    await page.getByRole('button', { name: 'Apply', exact: true }).click();
     // Look for sortable column link
     const sortLink = page.locator('th a').first();
     if (await sortLink.isVisible()) {
