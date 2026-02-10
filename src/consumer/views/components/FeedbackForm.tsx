@@ -56,7 +56,7 @@ export default function FeedbackForm(props: FeedbackFormProps) {
               name="improve"
               rows={10}
               defaultValue={props.values.improve}
-              aria-describedby="improve-hint improve-error"
+              aria-describedby="improve-error"
             />
           </fieldset>
 
