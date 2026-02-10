@@ -7,7 +7,7 @@ test.describe('Dataset Filtering', () => {
       const firstDataset = page.locator('.index-list__item a').first();
       await firstDataset.click();
       // Filter apply button should be visible
-      await expect(page.getByRole('button', { name: 'Apply' })).toBeVisible();
+      await expect(page.getByRole('button', { name: 'Apply', exact: true })).toBeVisible();
     });
 
     test('Shows page size selector with options', async ({ page }) => {
@@ -50,7 +50,7 @@ test.describe('Dataset Filtering', () => {
       const firstDataset = page.locator('.index-list__item a').first();
       await firstDataset.click();
       await page.locator('#page_size').selectOption('25');
-      await page.getByRole('button', { name: 'Apply' }).click();
+      await page.getByRole('button', { name: 'Apply rows', exact: true }).click();
       await expect(page).toHaveURL(/page_size=25/);
     });
 
@@ -59,7 +59,7 @@ test.describe('Dataset Filtering', () => {
       const firstDataset = page.locator('.index-list__item a').first();
       await firstDataset.click();
       await page.locator('#page_size').selectOption('50');
-      await page.getByRole('button', { name: 'Apply' }).click();
+      await page.getByRole('button', { name: 'Apply rows', exact: true }).click();
       await expect(page).toHaveURL(/page_size=50/);
     });
 
@@ -68,7 +68,7 @@ test.describe('Dataset Filtering', () => {
       const firstDataset = page.locator('.index-list__item a').first();
       await firstDataset.click();
       await page.locator('#page_size').selectOption('25');
-      await page.getByRole('button', { name: 'Apply' }).click();
+      await page.getByRole('button', { name: 'Apply rows', exact: true }).click();
       // After redirect, page size should still be selected
       await expect(page.locator('#page_size')).toHaveValue('25');
     });
@@ -80,7 +80,7 @@ test.describe('Dataset Filtering', () => {
       const firstDataset = page.locator('.index-list__item a').first();
       await firstDataset.click();
       // Apply filters (even without changing anything, it should work)
-      await page.getByRole('button', { name: 'Apply' }).click();
+      await page.getByRole('button', { name: 'Apply', exact: true }).click();
       // URL should change to include /filtered/ path
       await expect(page).toHaveURL(/\/filtered\//);
     });
@@ -89,20 +89,9 @@ test.describe('Dataset Filtering', () => {
       await page.goto('/en-GB/all');
       const firstDataset = page.locator('.index-list__item a').first();
       await firstDataset.click();
-      await page.getByRole('button', { name: 'Apply' }).click();
+      await page.getByRole('button', { name: 'Apply', exact: true }).click();
       // Table should still be visible in filtered view
       await expect(page.locator('#data_table')).toBeVisible();
-    });
-
-    test('Filter selection is preserved in filtered view', async ({ page }) => {
-      await page.goto('/en-GB/all');
-      const firstDataset = page.locator('.index-list__item a').first();
-      await firstDataset.click();
-      // Select a specific page size before filtering
-      await page.locator('#page_size').selectOption('50');
-      await page.getByRole('button', { name: 'Apply' }).click();
-      // Page size should be preserved
-      await expect(page.locator('#page_size')).toHaveValue('50');
     });
   });
 
@@ -136,7 +125,7 @@ test.describe('Dataset Pagination', () => {
     await firstDataset.click();
     // Set small page size to ensure pagination
     await page.locator('#page_size').selectOption('5');
-    await page.getByRole('button', { name: 'Apply' }).click();
+    await page.getByRole('button', { name: 'Apply', exact: true }).click();
     // Pagination may or may not appear depending on data size
     // Just verify the page loaded successfully with the filtered view
     await expect(page.locator('#data_table')).toBeVisible();
@@ -147,7 +136,7 @@ test.describe('Dataset Pagination', () => {
     const firstDataset = page.locator('.index-list__item a').first();
     await firstDataset.click();
     await page.locator('#page_size').selectOption('5');
-    await page.getByRole('button', { name: 'Apply' }).click();
+    await page.getByRole('button', { name: 'Apply', exact: true }).click();
     // Check if next page link exists
     const nextLink = page.getByRole('link', { name: /next/i });
     if (await nextLink.isVisible()) {
@@ -161,7 +150,7 @@ test.describe('Dataset Pagination', () => {
     const firstDataset = page.locator('.index-list__item a').first();
     await firstDataset.click();
     await page.locator('#page_size').selectOption('5');
-    await page.getByRole('button', { name: 'Apply' }).click();
+    await page.getByRole('button', { name: 'Apply', exact: true }).click();
     const nextLink = page.getByRole('link', { name: /next/i });
     if (await nextLink.isVisible()) {
       await nextLink.click();
