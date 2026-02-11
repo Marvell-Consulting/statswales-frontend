@@ -37,9 +37,9 @@ export default function Preview(props) {
             ? [{ label: props.t('developer.heading'), id: 'developer', children: <DeveloperTab {...props} /> }]
             : []),
           { label: props.t('consumer_view.tabs.data'), id: 'data', children: <DataTab {...props} /> },
+          { label: props.t('consumer_view.tabs.downloads'), id: 'downloads', children: <DownloadTab {...props} /> },
           { label: props.t('consumer_view.tabs.history'), id: 'history', children: <HistoryTab {...props} /> },
-          { label: props.t('consumer_view.tabs.about'), id: 'about', children: <AboutTab {...props} /> },
-          { label: props.t('consumer_view.tabs.downloads'), id: 'downloads', children: <DownloadTab {...props} /> }
+          { label: props.t('consumer_view.tabs.about'), id: 'about', children: <AboutTab {...props} /> }
         ]}
       />
     </LayoutComponent>

@@ -1687,10 +1687,10 @@
   },
   "consumer_view": {
     "tabs": {
-      "data": "Data",
+      "data": "View data",
       "history": "Dataset history",
       "about": "About this dataset",
-      "downloads": "Downloads"
+      "downloads": "Download data"
     },
     "history": {
       "updates": "Updates",
