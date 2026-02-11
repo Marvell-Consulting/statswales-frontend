@@ -109,14 +109,12 @@ export const nameValidator = () => body('name').trim().optional();
 
 export const emailValidator = () => body('email').trim().optional({ checkFalsy: true }).isEmail();
 
-export const viewTypeValidator = () =>
-  body('view_type').trim().notEmpty().isIn(['filtered', 'unfiltered']);
+export const viewTypeValidator = () => body('view_type').trim().notEmpty().isIn(['filtered', 'unfiltered']);
 
 export const formatValidator = () => body('format').trim().notEmpty().isIn(Object.values(FileFormat));
 
 export const downloadLanguageValidator = () => body('download_language').trim().notEmpty().isIn(Object.values(Locale));
 
-export const viewChoiceValidator = () =>
-  body('view_choice').trim().notEmpty().isIn(['raw', 'formatted']);
+export const viewChoiceValidator = () => body('view_choice').trim().notEmpty().isIn(['raw', 'formatted']);
 
 export const extendedValidator = () => body('extended').optional().isIn(['yes', 'no']);
