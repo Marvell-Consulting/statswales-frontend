@@ -116,6 +116,6 @@ export const formatValidator = () => body('format').trim().notEmpty().isIn(Objec
 export const downloadLanguageValidator = () => body('download_language').trim().notEmpty().isIn(Object.values(Locale));
 
 export const viewChoiceValidator = () =>
-  body('view_choice').trim().notEmpty().isIn(['raw', 'formatted', 'with_note_codes']);
+  body('view_choice').trim().notEmpty().isIn(['raw', 'formatted']);
 
 export const extendedValidator = () => body('extended').optional().isIn(['yes', 'no']);
