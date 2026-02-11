@@ -109,7 +109,8 @@ export const nameValidator = () => body('name').trim().optional();
 
 export const emailValidator = () => body('email').trim().optional({ checkFalsy: true }).isEmail();
 
-export const viewTypeValidator = () => body('view_type').optional().isIn(['filtered', 'unfiltered']);
+export const viewTypeValidator = () =>
+  body('view_type').trim().notEmpty().isIn(['filtered', 'unfiltered']);
 
 export const formatValidator = () => body('format').trim().notEmpty().isIn(Object.values(FileFormat));
 
