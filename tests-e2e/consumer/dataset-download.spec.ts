@@ -6,7 +6,7 @@ test.describe('Download Panel', () => {
     const firstDataset = page.locator('.index-list__item a').first();
     await firstDataset.click();
     // Click Download tab
-    await page.getByRole('tab', { name: 'Download' }).click();
+    await page.getByRole('tab', { name: 'Download data' }).click();
     // Should show format options
     await expect(page.getByLabel('CSV')).toBeVisible();
     await expect(page.getByLabel('Excel')).toBeVisible();
@@ -17,7 +17,7 @@ test.describe('Download Panel', () => {
     await page.goto('/en-GB/all');
     const firstDataset = page.locator('.index-list__item a').first();
     await firstDataset.click();
-    await page.getByRole('tab', { name: 'Download' }).click();
+    await page.getByRole('tab', { name: 'Download data' }).click();
     await expect(page.getByRole('button', { name: 'Download data' })).toBeVisible();
   });
 
@@ -25,7 +25,7 @@ test.describe('Download Panel', () => {
     await page.goto('/en-GB/all');
     const firstDataset = page.locator('.index-list__item a').first();
     await firstDataset.click();
-    await page.getByRole('tab', { name: 'Download' }).click();
+    await page.getByRole('tab', { name: 'Download data' }).click();
     // Should show metadata download section
     await expect(page.getByRole('heading', { name: 'Metadata' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Download metadata' })).toBeVisible();
@@ -35,7 +35,7 @@ test.describe('Download Panel', () => {
     await page.goto('/en-GB/all');
     const firstDataset = page.locator('.index-list__item a').first();
     await firstDataset.click();
-    await page.getByRole('tab', { name: 'Download' }).click();
+    await page.getByRole('tab', { name: 'Download data' }).click();
     // Should show language options
     await expect(page.getByLabel('English')).toBeVisible();
     await expect(page.getByLabel('Welsh')).toBeVisible();
@@ -47,7 +47,7 @@ test.describe('Download with Filters', () => {
     await page.goto('/en-GB/all');
     const firstDataset = page.locator('.index-list__item a').first();
     await firstDataset.click();
-    await page.getByRole('tab', { name: 'Download' }).click();
+    await page.getByRole('tab', { name: 'Download data' }).click();
     // Should show download view options (filtered vs all data)
     const viewTypeOptions = page.locator('input[name="view_type"]');
     await expect(viewTypeOptions.first()).toBeVisible();
@@ -57,7 +57,7 @@ test.describe('Download with Filters', () => {
     await page.goto('/en-GB/all');
     const firstDataset = page.locator('.index-list__item a').first();
     await firstDataset.click();
-    await page.getByRole('tab', { name: 'Download' }).click();
+    await page.getByRole('tab', { name: 'Download data' }).click();
     // CSV, Excel, JSON options
     await expect(page.getByLabel('CSV')).toBeVisible();
     await expect(page.getByLabel('Excel')).toBeVisible();
@@ -68,7 +68,7 @@ test.describe('Download with Filters', () => {
     await page.goto('/en-GB/all');
     const firstDataset = page.locator('.index-list__item a').first();
     await firstDataset.click();
-    await page.getByRole('tab', { name: 'Download' }).click();
+    await page.getByRole('tab', { name: 'Download data' }).click();
     // View choice options (raw, formatted, etc.)
     const viewChoiceOptions = page.locator('input[name="view_choice"]');
     await expect(viewChoiceOptions.first()).toBeVisible();
@@ -78,7 +78,7 @@ test.describe('Download with Filters', () => {
     await page.goto('/en-GB/all');
     const firstDataset = page.locator('.index-list__item a').first();
     await firstDataset.click();
-    await page.getByRole('tab', { name: 'Download' }).click();
+    await page.getByRole('tab', { name: 'Download data' }).click();
     await expect(page.getByRole('button', { name: 'Download data' })).toBeVisible();
   });
 
@@ -95,7 +95,7 @@ test.describe('Download with Filters', () => {
     await filterCheckbox.check({ force: true, timeout: 5000 });
     await page.getByRole('button', { name: 'Apply', exact: true }).click();
     // Go to download tab
-    await page.getByRole('tab', { name: 'Download' }).click();
+    await page.getByRole('tab', { name: 'Download data' }).click();
     // Hidden field should contain filter options
     const filterOptionsField = page.locator('#selected_filter_options');
     await expect(filterOptionsField).toBeAttached();

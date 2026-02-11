@@ -1636,10 +1636,10 @@
   },
   "consumer_view": {
     "tabs": {
-      "data": "Data",
+      "data": "Gweld data",
       "history": "Hanes",
       "about": "Am y set ddata hon",
-      "downloads": "Lawrlwytho"
+      "downloads": "Lawrlwytho data"
     },
     "history": {
       "updates": "Diweddariadau",
