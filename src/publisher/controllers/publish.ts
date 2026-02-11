@@ -692,7 +692,7 @@ export const downloadPreview = async (req: Request, res: Response, next: NextFun
       const format = req.body.format as FileFormat;
       const download_language = req.body.download_language as Locale;
       const viewChoice = req.body.view_choice as string;
-      const includeExtended = req.body.extended as string;
+      const includeExtended = (req.body.extended ?? 'no') as string;
       const data_value_type = (`${viewChoice}` + `${includeExtended === 'yes' ? '_extended' : ''}`) as DataValueType;
 
       const dataOptions: DataOptionsDTO = {
