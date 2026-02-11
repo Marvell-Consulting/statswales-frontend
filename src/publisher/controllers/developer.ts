@@ -88,19 +88,11 @@ export const datasetPreview = async (req: Request, res: Response) => {
     let filters: FilterTable[] = [];
     let datasetJson: string | undefined;
 
-    // something here might fail, but we can still render the page without the preview
     try {
-      const fetchPreview = filterId
-        ? req.pubapi.getFilteredDatasetPreview(datasetId, filterId, pageNumber, pageSize, sortBy)
-        : req.pubapi.getDatasetPreview(datasetId, pageNumber, pageSize, sortBy);
-
-      [preview, filters, publishedRevisions] = await Promise.all([
-        fetchPreview,
+      [filters, publishedRevisions] = await Promise.all([
         req.pubapi.getRevisionFilters(datasetId, revision.id),
         req.pubapi.getPublicationHistory(datasetId)
       ]);
-
-      pagination = pageInfo(preview.page_info?.current_page, pageSize, preview.page_info?.total_records || 0);
 
       const publicationHistory = [revisionDto, ...publishedRevisions].map((rev) =>
         singleLangRevision(rev, req.language)
@@ -114,9 +106,16 @@ export const datasetPreview = async (req: Request, res: Response) => {
       const files = await req.pubapi.getDatasetFileList(datasetId);
       fileList = processFileList(datasetId, files, req.language);
       datasetJson = getDatasetJson(dataset);
+
+      // get the dataset preview last so that if it fails we can still show the metadata and file list etc.
+      preview = filterId
+        ? await req.pubapi.getFilteredDatasetPreview(datasetId, filterId, pageNumber, pageSize, sortBy)
+        : await req.pubapi.getDatasetPreview(datasetId, pageNumber, pageSize, sortBy);
+
+      pagination = pageInfo(preview.page_info?.current_page, pageSize, preview.page_info?.total_records || 0);
     } catch (err: any) {
       // might not be able to render some parts of the page, but continue anyway
-      logger.error(err, `Failed to fetch the cube preview for dataset ${datasetId} and revision ${revision.id}`);
+      logger.error(err, `Failed to fetch developer view for dataset ${datasetId} and revision ${revision.id}`);
       previewFailed = err.message;
     }
 
