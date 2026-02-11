@@ -43,7 +43,7 @@ export default function RadioGroup({ name, label, hint, options, value, labelled
           </legend>
         )}
 
-        {hint && <p className="govuk-hint">{hint}</p>}
+        {hint && (typeof hint === 'string' ? <p className="govuk-hint">{hint}</p> : hint)}
 
         {errorMessage && errors?.find((e) => e.field === name) && (
           <p id={`${name}-error`} className="govuk-error-message">

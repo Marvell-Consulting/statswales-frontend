@@ -11,6 +11,7 @@ import { pageInfo } from '../../shared/utils/pagination';
 import { singleLangDataset, singleLangRevision } from '../../shared/utils/single-lang-dataset';
 import { getDatasetMetadata, metadataToCSV } from '../../shared/utils/dataset-metadata';
 import { NotFoundException } from '../../shared/exceptions/not-found.exception';
+import { BadRequestException } from '../../shared/exceptions/bad-request.exception';
 import { FileFormat } from '../../shared/enums/file-format';
 import { getDownloadHeaders } from '../../shared/utils/download-headers';
 import { logger } from '../../shared/utils/logger';
@@ -31,6 +32,15 @@ import { DataOptionsDTO, FRONTEND_DATA_OPTIONS } from '../../shared/interfaces/d
 import { DataValueType } from '../../shared/enums/data-value-type';
 import { DEFAULT_PAGE_SIZE, parsePageOptions } from '../../shared/utils/parse-page-options';
 import { SearchMode } from '../../shared/enums/search-mode';
+import {
+  getErrors,
+  viewTypeValidator,
+  formatValidator,
+  downloadLanguageValidator,
+  viewChoiceValidator,
+  extendedValidator
+} from '../../shared/validators';
+import { FieldValidationError } from 'express-validator';
 import { SearchResultDTO } from '../../shared/dtos/search-result';
 import { sanitizeSearchResults } from '../../shared/utils/sanitize-search-results';
 
@@ -224,6 +234,24 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
     }
 
     if (req.method === 'POST') {
+      const validators = [
+        viewTypeValidator(),
+        formatValidator(),
+        downloadLanguageValidator(),
+        viewChoiceValidator(),
+        extendedValidator()
+      ];
+
+      const errors = (await getErrors(validators, req)).map((error: FieldValidationError) => {
+        return { field: error.path, message: error.msg };
+      });
+
+      if (errors.length > 0) {
+        logger.error(errors, 'Validation errors in download form');
+        const errorMessage = errors.map((e) => `${e.field}: ${e.message}`).join(', ');
+        return next(new BadRequestException(errorMessage));
+      }
+
       let filters: FilterV2[] = [];
 
       if (req.body.view_type === 'filtered' && req.body.selected_filter_options) {
@@ -231,9 +259,11 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
         filters = v1FiltersToV2(selectedFilters);
       }
 
-      const data_value_type = (req.body.view_choice as DataValueType) || DataValueType.Raw;
       const format = req.body.format as FileFormat;
       const download_language = req.body.download_language as Locale;
+      const viewChoice = req.body.view_choice as string;
+      const includeExtended = req.body.extended as string;
+      const data_value_type = (`${viewChoice}` + `${includeExtended === 'yes' ? '_extended' : ''}`) as DataValueType;
 
       const dataOptions: DataOptionsDTO = {
         filters,
