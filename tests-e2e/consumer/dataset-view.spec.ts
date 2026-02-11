@@ -14,10 +14,10 @@ test.describe('Dataset View', () => {
     await page.goto('/en-GB/all');
     const firstDataset = page.locator('.index-list__item a').first();
     await firstDataset.click();
-    // Should have Data, About, and Download tabs
     await expect(page.getByRole('tab', { name: 'View data', exact: true })).toBeVisible();
-    await expect(page.getByRole('tab', { name: 'About this dataset' })).toBeVisible();
     await expect(page.getByRole('tab', { name: 'Download data' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'Dataset history' })).toBeVisible();
+    await expect(page.getByRole('tab', { name: 'About this dataset' })).toBeVisible();
   });
 
   test('Data tab shows table with filters', async ({ page }) => {
