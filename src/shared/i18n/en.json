@@ -1700,7 +1700,7 @@
             "label": "Current table in 'View data' tab"
           },
           "full": {
-            "label": "Full dataset will all variables and data values"
+            "label": "Full dataset with all variables and data values"
           }
         }
       },
