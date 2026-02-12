@@ -1645,41 +1645,99 @@
       "updates": "Diweddariadau",
       "initial_publication": "Set ddata a gyhoeddwyd gyntaf."
     },
-    "overview": "Trosolwg",
-    "no_data": "Dim data ar gael ar gyfer yr hidlwyr a ddewiswyd.  Rhowch gynnig ar ddewis gwahanol.",
-    "data_view": "Golwg data",
-    "select_view": "Dewis golwg",
-    "apply_view": "Gweithredu'r golwg",
-    "options": "Dewisiadau gweld",
+    "no_data": "Dim data ar gael ar gyfer yr hidlwyr a ddewiswyd. Rhowch gynnig ar ddewis gwahanol.",
     "filters": "Hidlwyr",
-    "page_size": "Rhes fesul tudalen",
+    "page_size": "Rhesi fesul tudalen",
     "apply_filters": "Gweithredu",
     "start_date": "Dyddiad Cychwyn",
     "end_date": "Dyddiad Gorffen",
     "archived_dataset": "Mae’r set ddata hon wedi cael ei harchifo ac ni fydd yn cael ei diweddaru mwyach.",
-    "unpublished_dataset": "Mae’r set ddata hon wedi cael ei datgyhoeddi dros dro wrth i ni gymryd camau pwysig i’w thrwsio.  Pan gaiff ei hailgyhoeddi, nodir unrhyw newidiadau yn glir yn hanes y set ddata.",
-    "download_heading": "Dewis y set ddata gyfan neu wedi'i hidlo i'w lawrlwytho",
-    "filtered_download": "Set ddata wedi'i hidlo (gan ddefnyddio hidlwyr sy'n weithredol ar hyn o bryd)",
-    "default_download": "Set ddata Gyfan",
-    "download_format": "Dewis fformat lawrlwytho",
-    "data_only_hint": "Yn cynnwys y set ddata yn unig",
-    "data_metadata_hint": "Yn cynnwys y set ddata a metadata",
-    "everything_hint": "Yn cynnwys y set ddata, metadata a thablau am-edrych cysylltiedig",
-    "number_formating": "Dewis fformat rhifau",
-    "formatted_numbers": "Rhifau wedi'u fformatio",
-    "formatted_numbers_extended": "Rhifau wedi’u fformatio gyda chodau cyfeirio a hierarchiaethau",
-    "formatted_numbers_hint": "Mae hyn yn cynnwys talgrynnu i leoedd degol a chomas er mwyn gwahanu miloedd",
-    "unformatted_numbers": "Rhifau heb eu fformatio",
-    "unformatted_numbers_extended": "Rhifau heb eu fformatio gyda chodau cyfeirio a hierarchiaethau",
-    "select_language": "Dewis iaith",
-    "english": "Saesneg",
-    "welsh": "Cymraeg",
-    "download_button": "Lawrlwytho data",
-    "metadata_download": {
-      "heading": "Metadata",
-      "description": "Ni chaiff y metadata ar gyfer y set ddata hon ei gynnwys pan fyddwch yn lawrlwytho’r data.  Gallwch lawrlwytho hwn ar wahân.  Mae hyn yn cynnwys yr holl wybodaeth o dab ‘Am y set ddata hon’.",
-      "button": "Lawrlwytho metadata"
-    }
+    "unpublished_dataset": "Mae'r set ddata hon wedi cael ei datgyhoeddi dros dro wrth i ni gymryd camau pwysig i'w thrwsio. Pan gaiff ei hailgyhoeddi, nodir unrhyw newidiadau yn glir yn hanes y set ddata.",
+    "downloads": {
+      "type": {
+        "heading": "Dewiswch beth i'w lawrlwytho",
+        "options": {
+          "filtered": {
+            "label": "Tabl presennol yn y tab 'Gweld data'"
+          },
+          "full": {
+            "label": "Set ddata lawn gyda phob newidyn a gwerthoedd data"
+          }
+        }
+      },
+      "file_type": {
+        "heading": "Dewiswch fformat lawrlwytho",
+        "options": {
+          "csv": {
+            "label": "CSV",
+            "hint": "Yn cynnwys y set ddata yn unig"
+          },
+          "excel": {
+            "label": "Excel",
+            "hint": "Yn cynnwys y set ddata yn unig"
+          },
+          "json": {
+            "label": "JSON",
+            "hint": "Yn cynnwys y set ddata yn unig"
+          }
+        }
+      },
+      "number_formatting": {
+        "heading": "Dewiswch fformat rhifau",
+        "options": {
+          "formatted": {
+            "label": "Rhifau wedi'u fformatio",
+            "hint": "Mae hyn yn cynnwys talgrynnu i leoedd degol a chomas er mwyn gwahanu miloedd"
+          },
+          "unformatted": {
+            "label": "Rhifau heb eu fformatio"
+          }
+        }
+      },
+      "extended": {
+        "heading": "Dewiswch a ddylid cynnwys codau cyfeirio a hierarchiaethau",
+        "description": {
+          "reference_codes": "Mae codau cyfeirio yn ddynodwyr unigryw ar gyfer gwerthoedd newidyn penodol, fel ardaloedd daearyddol",
+          "hierarchies": "Mae hierarchiaethau'n dangos sut mae gwerthoedd newidyn yn cael eu grwpio gyda'i gilydd, fel pa ardaloedd daearyddol sydd ym mha ardaloedd daearyddol mwy",
+          "hidden": "Os oes gan y tabl presennol newidynnau cudd, ni allwch ei lawrlwytho gyda chodau cyfeirio a hierarchiaethau"
+        },
+        "options": {
+          "yes": {
+            "label": "Iawn",
+            "hint": "Bydd y rhain yn cael eu cynnwys fel colofnau ychwanegol yn y tabl a lawrlwythwyd"
+          },
+          "no": {
+            "label": "Na"
+          }
+        }
+      },
+      "language": {
+        "heading": "Dewiswch iaith",
+        "options": {
+          "english": {
+            "label": "Saesneg"
+          },
+          "welsh": {
+            "label": "Cymraeg"
+          }
+        }
+      },
+      "metadata": {
+        "heading": "Metadata",
+        "description": "Ni chaiff y metadata ar gyfer y set ddata hon ei gynnwys pan fyddwch yn lawrlwytho'r data. Gallwch lawrlwytho hwn ar wahân. Mae hyn yn cynnwys yr holl wybodaeth o dab 'Am y set ddata hon'.",
+        "button": "Lawrlwytho metadata"
+      },
+      "button": "Lawrlwytho data"
+    },
+    "data_table": {
+      "heading": "Tabl",
+      "buttons": {
+        "copy_link": "Copïo dolen i'r tabl hwn",
+        "download": "Lawrlwytho'r tabl hwn"
+      },
+      "copy_success": "Dolen wedi'i chopïo i'ch clipfwrdd"
+    },
+    "apply_page_size": "Gweithredu rhesi"
   },
   "routes": {
     "healthcheck": "gwiriad iechyd",

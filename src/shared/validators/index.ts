@@ -3,6 +3,8 @@ import { body, FieldValidationError, param, ValidationChain } from 'express-vali
 import { ResultWithContext } from 'express-validator/lib/chain/context-runner';
 
 import { Designation } from '../enums/designation';
+import { FileFormat } from '../enums/file-format';
+import { Locale } from '../enums/locale';
 import { NextUpdateType } from '../enums/next-update-type';
 import { SatisfactionOptions } from '../enums/satisfaction-options';
 
@@ -106,3 +108,13 @@ export const improveValidator = () => body('improve').trim().notEmpty();
 export const nameValidator = () => body('name').trim().optional();
 
 export const emailValidator = () => body('email').trim().optional({ checkFalsy: true }).isEmail();
+
+export const viewTypeValidator = () => body('view_type').trim().notEmpty().isIn(['filtered', 'unfiltered']);
+
+export const formatValidator = () => body('format').trim().notEmpty().isIn(Object.values(FileFormat));
+
+export const downloadLanguageValidator = () => body('download_language').trim().notEmpty().isIn(Object.values(Locale));
+
+export const viewChoiceValidator = () => body('view_choice').trim().notEmpty().isIn(['raw', 'formatted']);
+
+export const extendedValidator = () => body('extended').optional().isIn(['yes', 'no']);

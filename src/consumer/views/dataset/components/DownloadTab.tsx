@@ -9,6 +9,17 @@ export type DownloadTabProps = {
   preview?: boolean;
 };
 
+function ExtendedHint() {
+  const { i18n } = useLocals();
+  return (
+    <ul className="govuk-list govuk-list--bullet">
+      <li>{i18n.t('consumer_view.downloads.extended.description.reference_codes')}</li>
+      <li>{i18n.t('consumer_view.downloads.extended.description.hierarchies')}</li>
+      <li>{i18n.t('consumer_view.downloads.extended.description.hidden')}</li>
+    </ul>
+  );
+}
+
 export default function DownloadTab(props: DownloadTabProps) {
   const { buildUrl, i18n } = useLocals();
 
@@ -22,42 +33,39 @@ export default function DownloadTab(props: DownloadTabProps) {
 
   return (
     <div className="govuk-grid-row">
-      <div className="govuk-grid-column-full">
+      <div className="govuk-grid-column-two-thirds">
         <form method="POST" action={formSubmitUrl}>
           <RadioGroup
             name="view_type"
-            label={i18n.t('consumer_view.download_heading')}
+            label={i18n.t('consumer_view.downloads.type.heading')}
             options={[
               {
                 value: 'filtered',
-                label: i18n.t('consumer_view.filtered_download')
+                label: i18n.t('consumer_view.downloads.type.options.filtered.label')
               },
               {
-                value: 'default',
-                label: i18n.t('consumer_view.default_download')
+                value: 'unfiltered',
+                label: i18n.t('consumer_view.downloads.type.options.full.label')
               }
             ]}
-            value={props.selectedFilterOptions ? 'filtered' : 'default'}
+            value={props.selectedFilterOptions ? 'filtered' : 'unfiltered'}
           />
 
           <RadioGroup
             name="format"
-            label={i18n.t('consumer_view.download_format')}
+            label={i18n.t('consumer_view.downloads.file_type.heading')}
             options={[
               {
                 value: 'csv',
-                label: 'CSV',
-                hint: i18n.t('consumer_view.data_only_hint')
+                label: i18n.t('consumer_view.downloads.file_type.options.csv.label')
               },
               {
                 value: 'xlsx',
-                label: 'Excel',
-                hint: i18n.t('consumer_view.data_only_hint')
+                label: i18n.t('consumer_view.downloads.file_type.options.excel.label')
               },
               {
                 value: 'json',
-                label: 'JSON',
-                hint: i18n.t('consumer_view.data_only_hint')
+                label: i18n.t('consumer_view.downloads.file_type.options.json.label')
               }
             ]}
             value="csv"
@@ -65,41 +73,50 @@ export default function DownloadTab(props: DownloadTabProps) {
 
           <RadioGroup
             name="view_choice"
-            label={i18n.t('consumer_view.number_formating')}
+            label={i18n.t('consumer_view.downloads.number_formatting.heading')}
             options={[
               {
-                value: 'raw',
-                label: i18n.t('consumer_view.unformatted_numbers')
-              },
-              {
                 value: 'formatted',
-                label: i18n.t('consumer_view.formatted_numbers'),
-                hint: i18n.t('consumer_view.formatted_numbers_hint')
+                label: i18n.t('consumer_view.downloads.number_formatting.options.formatted.label'),
+                hint: i18n.t('consumer_view.downloads.number_formatting.options.formatted.hint')
               },
               {
-                value: 'raw_extended',
-                label: i18n.t('consumer_view.unformatted_numbers_extended')
-              },
-              {
-                value: 'formatted_extended',
-                label: i18n.t('consumer_view.formatted_numbers_extended'),
-                hint: i18n.t('consumer_view.formatted_numbers_hint')
+                value: 'raw',
+                label: i18n.t('consumer_view.downloads.number_formatting.options.unformatted.label')
               }
             ]}
-            value="raw"
+            value="formatted"
+          />
+
+          <RadioGroup
+            name="extended"
+            label={i18n.t('consumer_view.downloads.extended.heading')}
+            hint={<ExtendedHint />}
+            options={[
+              {
+                value: 'yes',
+                label: i18n.t('consumer_view.downloads.extended.options.yes.label'),
+                hint: i18n.t('consumer_view.downloads.extended.options.yes.hint')
+              },
+              {
+                value: 'no',
+                label: i18n.t('consumer_view.downloads.extended.options.no.label')
+              }
+            ]}
+            value="yes"
           />
 
           <RadioGroup
             name="download_language"
-            label={i18n.t('consumer_view.select_language')}
+            label={i18n.t('consumer_view.downloads.language.heading')}
             options={[
               {
                 value: 'en-GB',
-                label: i18n.t('consumer_view.english')
+                label: i18n.t('consumer_view.downloads.language.options.english.label')
               },
               {
                 value: 'cy-GB',
-                label: i18n.t('consumer_view.welsh')
+                label: i18n.t('consumer_view.downloads.language.options.welsh.label')
               }
             ]}
             value={i18n.language}
@@ -113,15 +130,15 @@ export default function DownloadTab(props: DownloadTabProps) {
           ></input>
 
           <button name="action" value="download" type="submit" className="govuk-button" data-module="govuk-button">
-            {i18n.t('consumer_view.download_button')}
+            {i18n.t('consumer_view.downloads.button')}
           </button>
         </form>
 
         <div className="download-metadata govuk-!-margin-top-5">
-          <h2 className="govuk-heading-m">{i18n.t('consumer_view.metadata_download.heading')}</h2>
-          <p className="govuk-body">{i18n.t('consumer_view.metadata_download.description')}</p>
+          <h2 className="govuk-heading-m">{i18n.t('consumer_view.downloads.metadata.heading')}</h2>
+          <p className="govuk-body">{i18n.t('consumer_view.downloads.metadata.description')}</p>
           <a href={downloadMetaUrl} className="govuk-button button-primary">
-            {i18n.t('consumer_view.metadata_download.button')}
+            {i18n.t('consumer_view.downloads.metadata.button')}
           </a>
         </div>
       </div>
