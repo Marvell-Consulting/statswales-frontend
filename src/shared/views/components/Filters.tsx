@@ -74,6 +74,14 @@ export const Filters = (props: FiltersProps) => {
             </h3>
             <div className="filter-container option-select">
               <div className="padding-box">
+                <div className="filter-search js-hidden">
+                  <input
+                    type="text"
+                    className="govuk-input filter-search-input"
+                    placeholder="Search..."
+                    aria-label={`Search ${filter.columnName}`}
+                  />
+                </div>
                 <div className="filter-head non-js-hidden">
                   <Controls
                     className="parent-controls"
@@ -176,6 +184,75 @@ export const Filters = (props: FiltersProps) => {
               const head = filter.querySelector(".filter-container > .filter-head");
 
               addListeners(filter);
+
+              // Show search input if more than 8 checkboxes
+              const allCheckboxes = filter.querySelectorAll('.filter-body [type="checkbox"]');
+              const filterSearch = filter.querySelector('.filter-search');
+              if (allCheckboxes.length > 8 && filterSearch) {
+                filterSearch.classList.remove('js-hidden');
+
+                // Add search functionality
+                const searchInput = filterSearch.querySelector('.filter-search-input');
+                const filterBody = filter.querySelector('.filter-body');
+
+                // Cache DOM queries outside the debounce
+                const checkboxItems = filterBody.querySelectorAll('.govuk-checkboxes__item');
+                const detailsElements = filterBody.querySelectorAll('details');
+                let debounceTimer;
+
+                searchInput.addEventListener('input', (e) => {
+                  clearTimeout(debounceTimer);
+
+                  debounceTimer = setTimeout(() => {
+                    const searchTerm = e.target.value.toLowerCase().trim();
+
+                    if (searchTerm === '') {
+                      // Reset: show all and collapse
+                      checkboxItems.forEach(item => item.style.display = '');
+                      detailsElements.forEach(details => {
+                        details.style.display = '';
+                        details.removeAttribute('open');
+                      });
+                      return;
+                    }
+
+                    // Mark matching items and their parent details elements
+                    const matchingItems = new Set();
+                    const matchingDetails = new Set();
+
+                    checkboxItems.forEach(item => {
+                      const label = item.querySelector('label');
+                      if (label && label.textContent.toLowerCase().includes(searchTerm)) {
+                        matchingItems.add(item);
+
+                        // Walk up the details tree and mark parents
+                        let parent = item.closest('details');
+                        while (parent && filterBody.contains(parent)) {
+                          matchingDetails.add(parent);
+                          const parentItem = parent.querySelector(':scope > summary > .govuk-checkboxes__item');
+                          if (parentItem) matchingItems.add(parentItem);
+                          parent = parent.parentElement.closest('details');
+                        }
+                      }
+                    });
+
+                    // Apply visibility changes
+                    checkboxItems.forEach(item => {
+                      item.style.display = matchingItems.has(item) ? '' : 'none';
+                    });
+
+                    detailsElements.forEach(details => {
+                      if (matchingDetails.has(details)) {
+                        details.style.display = '';
+                        details.setAttribute('open', true);
+                      } else {
+                        details.style.display = 'none';
+                        details.removeAttribute('open');
+                      }
+                    });
+                  }, 250);
+                });
+              }
 
               const filterBody = filter.querySelector(".filter-body");
               const parentControls = filter.querySelector(".parent-controls");
