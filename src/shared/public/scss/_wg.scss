@@ -1619,6 +1619,12 @@
         color: colours.$white !important;
       }
     }
+
+    .table-actions {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 15px;
+    }
   }
 
   .checkboxes__filter {

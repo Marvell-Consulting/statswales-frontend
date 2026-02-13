@@ -10,7 +10,7 @@ export function RowsPerPage({ pageSize }: { pageSize: number }) {
     <form method="GET" action={buildUrl(url, i18n.language)}>
       <div className="govuk-form-group">
         <h4 className="govuk-label-wrapper govuk-!-margin-bottom-1">
-          <label className="govuk-label region-subhead" htmlFor="page_size">
+          <label className="region-subhead" htmlFor="page_size">
             <T>consumer_view.page_size</T>
           </label>
         </h4>
@@ -23,7 +23,7 @@ export function RowsPerPage({ pageSize }: { pageSize: number }) {
         </select>
         <button
           type="submit"
-          className="govuk-button govuk-button--secondary govuk-button-small govuk-!-margin-left-2"
+          className="govuk-button button-black govuk-button-small govuk-!-margin-left-2"
           data-module="govuk-button"
         >
           <T>consumer_view.apply_page_size</T>
