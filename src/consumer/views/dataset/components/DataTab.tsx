@@ -40,7 +40,7 @@ export default function DataTab(props: DataTabProps) {
   return (
     <div className="govuk-width-container">
       <div className="govuk-main-wrapper govuk-!-padding-top-0">
-        <div className="govuk-grid-row border-top-small">
+        <div className="govuk-grid-row">
           {/* Sidebar filters */}
           <div className="govuk-grid-column-one-quarter">
             <form method="POST" action={formUrl}>
