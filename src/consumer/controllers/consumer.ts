@@ -113,6 +113,59 @@ export const listPublishedDatasets = async (req: Request, res: Response, next: N
   }
 };
 
+export const viewPublishedLanding = async (req: Request, res: Response, next: NextFunction) => {
+  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const revision = dataset.published_revision;
+  const isUnpublished = revision?.unpublished_at || false;
+  const isArchived = (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false;
+
+  if (!revision) {
+    next(new NotFoundException('no published revision found'));
+    return;
+  }
+
+  if (req.method === 'POST') {
+    logger.debug(`Form action ${JSON.stringify(req.body)}`);
+    switch (req.body.chooser) {
+      case 'pivot':
+        res.redirect(req.buildUrl(`/${dataset.id}/pivot`, req.language));
+        return;
+      case 'data':
+        res.redirect(req.buildUrl(`/${dataset.id}/data`, req.language));
+        return;
+      default:
+        throw new BadRequestException('Unsupported chooser type');
+    }
+  }
+
+  const [datasetMetadata, filters, publishedRevisions]: [PreviewMetadata, FilterTable[], RevisionDTO[]] =
+    await Promise.all([
+      getDatasetMetadata(dataset, revision),
+      req.conapi.getPublishedDatasetFilters(dataset.id),
+      req.conapi.getPublicationHistory(dataset.id)
+    ]);
+
+  const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
+  const publicationHistory = publishedRevisions.map((rev) => singleLangRevision(rev, req.language));
+
+  for (const rev of publicationHistory) {
+    if (rev?.metadata?.reason) {
+      rev.metadata.reason = await markdownToSafeHTML(rev.metadata.reason);
+    }
+  }
+
+  res.render('dataset/landing', {
+    ...{ datasetMetadata },
+    filters,
+    topics,
+    publicationHistory,
+    selectedFilterOptions: [],
+    shorthandUrl: req.buildUrl(`/shorthand`, req.language),
+    isUnpublished,
+    isArchived
+  });
+};
+
 export const viewPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
   const dataset = singleLangDataset(res.locals.dataset, req.language);
   const revision = dataset.published_revision;

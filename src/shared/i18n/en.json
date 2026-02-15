@@ -2323,5 +2323,16 @@
       "change": "Change values",
       "no_action": "Value can't be changed"
     }
+  },
+  "table_chooser": {
+    "heading": "Create your own table",
+    "pivot": {
+      "label": "Create your own table",
+      "hint": "You'll be asked to select one variable for the columns of a table, and another for the rows"
+    },
+    "data": {
+      "label": "All variables",
+      "hint": "The data will be shown with columns for each of the variables in the dataset, with a data value for all combinations of variables"
+    }
   }
 }

@@ -10,6 +10,10 @@ import { useLocals } from '../../../../shared/views/context/Locals';
 interface SummaryDataProps {
   filters: FilterTable[];
   selectedFilterOptions: Filter[];
+  landing?: boolean;
+  pivot?: boolean;
+  columns?: string[];
+  rows?: string[];
 }
 
 export function SummaryTable(props: SummaryDataProps): ReactNode {
@@ -21,7 +25,7 @@ export function SummaryTable(props: SummaryDataProps): ReactNode {
   }
 
   return (
-    <details className="govuk-details" open={true}>
+    <details className="govuk-details" open={!props.landing}>
       <summary className="govuk-details__summary">
         <span className="govuk-details__summary-text">
           <T>summary.title</T>
@@ -49,7 +53,12 @@ export function SummaryTable(props: SummaryDataProps): ReactNode {
             {props.filters.map((filter, idx) => (
               <SummaryTableRow
                 key={`row-${idx}`}
-                {...{ filter: filter, selectedFilterOptions: props.selectedFilterOptions, idx: idx }}
+                {...{
+                  filter: filter,
+                  selectedFilterOptions: props.selectedFilterOptions,
+                  idx: idx,
+                  landing: props.landing
+                }}
               />
             ))}
           </tbody>

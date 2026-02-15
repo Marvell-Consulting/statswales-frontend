@@ -8,7 +8,8 @@ import {
   viewPublishedDataset,
   listPublishedDatasets,
   downloadPublishedMetadata,
-  viewFilteredDataset
+  viewFilteredDataset,
+  viewPublishedLanding
 } from '../controllers/consumer';
 import { fetchPublishedDataset } from '../middleware/fetch-dataset';
 import { config } from '../../shared/config';
@@ -37,7 +38,16 @@ consumer.get('/all', listPublishedDatasets);
 
 consumer.get('/topic/:topicId{/:topicSlug}', listTopics);
 
-consumer.get('/:datasetId', fetchPublishedDataset, viewPublishedDataset);
+consumer.get('/:datasetId', fetchPublishedDataset, viewPublishedLanding);
+consumer.post(
+  '/:datasetId',
+  express.urlencoded({ extended: true, limit: '10mb', parameterLimit: 50000 }),
+  fetchPublishedDataset,
+  viewPublishedLanding
+);
+consumer.get('/:datasetId/data', fetchPublishedDataset, viewPublishedDataset);
+consumer.get('/:datasetId/pivot', fetchPublishedDataset, viewPublishedDataset);
+
 consumer.post(
   '/:datasetId/filtered',
   express.urlencoded({ extended: true, limit: '10mb', parameterLimit: 50000 }),

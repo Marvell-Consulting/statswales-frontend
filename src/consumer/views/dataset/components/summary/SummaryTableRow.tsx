@@ -8,6 +8,7 @@ interface SummaryTableRowProps {
   filter: FilterTable;
   selectedFilterOptions: Filter[];
   idx: number;
+  landing?: boolean;
 }
 
 function flattenReferences(nodes: FilterValues[]): FilterValues[] {
@@ -15,7 +16,7 @@ function flattenReferences(nodes: FilterValues[]): FilterValues[] {
 }
 
 export function SummaryTableRow(props: SummaryTableRowProps): ReactNode {
-  const { filter, selectedFilterOptions, idx } = props;
+  const { filter, selectedFilterOptions, idx, landing } = props;
   const flatFilters = flattenReferences(filter.values);
   let changeLink = (
     <a key={`c-${idx}`} href={`#filter-${filter.factTableColumn}`}>
@@ -30,14 +31,23 @@ export function SummaryTableRow(props: SummaryTableRowProps): ReactNode {
     );
   }
 
+  let visibility = (
+    <span className="govuk-tag govuk-tag--green">
+      <T>summary.visibility.shown</T>
+    </span>
+  );
+  if (landing) {
+    visibility = (
+      <span className="govuk-tag govuk-tag--yellow">
+        <T>summary.visibility.hidden</T>
+      </span>
+    );
+  }
+
   return (
     <tr key={`row-${idx}}`} className="govuk-table__row">
       <td className="govuk-table__cell">{filter.columnName}</td>
-      <td className="govuk-table__cell">
-        <span className="govuk-tag govuk-tag--green">
-          <T>summary.visibility.shown</T>
-        </span>
-      </td>
+      <td className="govuk-table__cell">{visibility}</td>
       <td className="govuk-table__cell">
         <SelectedFilterList {...{ filter, flatFilters, selectedFilterOptions, idx }} />
       </td>
