@@ -66,11 +66,16 @@ test.describe('Filter Search', () => {
       const searchInput = areaFilter.locator('.filter-search-input');
       const filterBody = areaFilter.locator('.filter-body');
 
-      // Type to filter
+      // Use the top-level "Wales" checkbox (not nested inside a <details>)
+      const walesCheckbox = filterBody.locator(':scope > .govuk-checkboxes > .govuk-checkboxes__item', {
+        hasText: 'Wales'
+      });
+
+      // Type to filter for something that doesn't match Wales
       await searchInput.fill('Cardiff');
       await page.waitForTimeout(350);
 
-      // Verify filtering is active (Gwynedd hidden)
+      // Wales stays visible (as a parent of matching Cardiff), but confirm filtering is active
       const gwyneddCheckbox = filterBody.locator('.govuk-checkboxes__item', { hasText: 'Gwynedd' });
       await expect(gwyneddCheckbox).toBeHidden();
 
@@ -78,8 +83,13 @@ test.describe('Filter Search', () => {
       await searchInput.fill('');
       await page.waitForTimeout(350);
 
-      // All checkboxes should be visible again
-      await expect(gwyneddCheckbox).toBeVisible();
+      // Top-level checkbox should be visible again
+      await expect(walesCheckbox).toBeVisible();
+      // Nested items are restored (inline display style cleared) but inside collapsed
+      // <details>, so they aren't "visible" in the Playwright sense. Verify the inline
+      // display:none has been removed.
+      const hiddenByStyle = await gwyneddCheckbox.evaluate((el) => el.style.display === 'none');
+      expect(hiddenByStyle).toBe(false);
     });
 
     test('No matches hides all checkboxes and details', async ({ page }) => {
