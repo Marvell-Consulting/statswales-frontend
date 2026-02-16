@@ -1,10 +1,9 @@
 import path from 'node:path';
 import { nanoid } from 'nanoid';
 
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../../fixtures/test';
 
 import { config } from '../../../src/shared/config';
-import { users } from '../../fixtures/logins';
 import { provideDatasetTitle, selectUserGroup, startNewDataset } from '../helpers/publishing-steps';
 
 const baseUrl = config.frontend.publisher.url;
@@ -14,10 +13,11 @@ test.describe('Upload page', () => {
   let datasetId: string;
 
   test.describe('Authed as a publisher', () => {
-    test.use({ storageState: users.publisher.path });
+    test.use({ role: 'publisher' });
 
-    test.beforeAll(async ({ browser }) => {
-      const page = await browser.newPage();
+    test.beforeAll(async ({ browser, workerUsers }) => {
+      const context = await browser.newContext({ storageState: workerUsers.publisher.path });
+      const page = await context.newPage();
       await startNewDataset(page);
       await selectUserGroup(page, 'E2E tests');
       datasetId = await provideDatasetTitle(page, title);
@@ -58,7 +58,7 @@ test.describe('Upload page', () => {
   });
 
   test.describe('Not authed', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
+    // role defaults to null → unauthenticated (no cookies)
     test('Redirects to login page when not authenticated', async ({ page }) => {
       await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/upload`);
       expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);

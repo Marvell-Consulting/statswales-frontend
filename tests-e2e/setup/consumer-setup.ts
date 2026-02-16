@@ -1,10 +1,11 @@
 import { test as setup } from '@playwright/test';
 
-import { users } from '../fixtures/logins';
+import { solos } from '../fixtures/logins';
 import { CONSUMER_DATASET_TITLE } from '../fixtures/dataset-title';
 import { publishRealisticDataset } from '../publish/helpers/publishing-steps';
 
-setup.use({ storageState: users.solo.path });
+// Consumer setup always uses the first solo user (not parallelised)
+setup.use({ storageState: solos[0].path });
 
 setup('publish realistic dataset for consumer tests', async ({ page }, testInfo) => {
   setup.setTimeout(120_000);

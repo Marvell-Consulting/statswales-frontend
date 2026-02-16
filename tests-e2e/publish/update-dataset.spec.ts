@@ -1,7 +1,6 @@
-import { expect, test } from '@playwright/test';
+import { test, expect } from '../fixtures/test';
 import { nanoid } from 'nanoid';
 
-import { users } from '../fixtures/logins';
 import { config } from '../../src/shared/config';
 import {
   approvePublication,
@@ -22,11 +21,12 @@ test.describe('Update dataset', () => {
 
   test.describe('Init test dataset', () => {
     // user with both publisher and approver roles for publishMinimalDataset
-    test.use({ storageState: users.solo.path });
+    test.use({ role: 'solo' });
 
-    test.beforeAll(async ({ browser }, testInfo) => {
+    test.beforeAll(async ({ browser, workerUsers }, testInfo) => {
       test.setTimeout(90000); // extend timeout to 90s for dataset publishing
-      const page = await browser.newPage();
+      const context = await browser.newContext({ storageState: workerUsers.solo.path });
+      const page = await context.newPage();
       await page.goto(`/en-GB`);
       datasetId = await publishMinimalDataset(page, testInfo, title);
     });
@@ -38,7 +38,7 @@ test.describe('Update dataset', () => {
   });
 
   test.describe('Publisher - dataset update', () => {
-    test.use({ storageState: users.publisher.path });
+    test.use({ role: 'publisher' });
 
     test('Start the update', async ({ page }) => {
       await page.goto(`/en-GB/publish/${datasetId}/overview`);
@@ -71,7 +71,7 @@ test.describe('Update dataset', () => {
   });
 
   test.describe('Approver - publication rejection', () => {
-    test.use({ storageState: users.approver.path });
+    test.use({ role: 'approver' });
 
     test('Reject dataset update', async ({ page }) => {
       await rejectPublication(page, datasetId, 'Testing dataset update rejection');
@@ -79,7 +79,7 @@ test.describe('Update dataset', () => {
   });
 
   test.describe('Publisher - resubmit', () => {
-    test.use({ storageState: users.publisher.path });
+    test.use({ role: 'publisher' });
 
     test('Update and resubmit dataset for approval', async ({ page }) => {
       await page.goto(`/en-GB/publish/${datasetId}/overview`);
@@ -89,7 +89,7 @@ test.describe('Update dataset', () => {
   });
 
   test.describe('Approver - publication approval', () => {
-    test.use({ storageState: users.approver.path });
+    test.use({ role: 'approver' });
 
     test('Approve dataset update', async ({ page }) => {
       await approvePublication(page, datasetId);

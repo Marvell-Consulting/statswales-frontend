@@ -1,8 +1,7 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures/test';
 import { nanoid } from 'nanoid';
 
 import { config } from '../../src/shared/config';
-import { users } from '../fixtures/logins';
 import { startNewDataset, selectUserGroup, provideDatasetTitle } from './helpers/publishing-steps';
 
 const baseUrl = config.frontend.publisher.url;
@@ -12,10 +11,11 @@ test.describe('Move dataset between groups', () => {
   let datasetId: string;
 
   test.describe('As editor', () => {
-    test.use({ storageState: users.publisher.path });
+    test.use({ role: 'publisher' });
 
-    test.beforeAll(async ({ browser }) => {
-      const page = await browser.newPage();
+    test.beforeAll(async ({ browser, workerUsers }) => {
+      const context = await browser.newContext({ storageState: workerUsers.publisher.path });
+      const page = await context.newPage();
       await startNewDataset(page);
       await selectUserGroup(page, 'E2E tests');
       datasetId = await provideDatasetTitle(page, title);
@@ -31,7 +31,7 @@ test.describe('Move dataset between groups', () => {
   });
 
   test.describe('As approver', () => {
-    test.use({ storageState: users.approver.path });
+    test.use({ role: 'approver' });
 
     test('Is allowed to move a dataset between groups', async ({ page }) => {
       await page.goto(`/en-GB/publish/${datasetId}/overview`);

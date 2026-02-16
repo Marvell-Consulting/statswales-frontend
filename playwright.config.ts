@@ -22,7 +22,7 @@ export default defineConfig({
   /* Fail fast on CI */
   maxFailures: process.env.CI ? 1 : 3,
   /* Use multiple workers for parallel test execution */
-  workers: process.env.CI ? 1 : 1,
+  workers: 4,
   /* Dir for test artifacts such as screenshots, videos, traces, etc. */
   outputDir: './playwright/results',
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
