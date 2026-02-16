@@ -59,9 +59,10 @@ export const Filters = (props: FiltersProps) => {
         const values = selected?.find((f) => f.columnName === filter.factTableColumn)?.values;
         const filtered = values?.length;
         const total = filterOptionCount(filter.values);
+        const filterId = `filter-${filter.factTableColumn.replaceAll(/[^a-zA-Z0-9]/g, '_')}`;
 
         return (
-          <div className="filters" id={`filter-${filter.factTableColumn.replaceAll(/\s+/g, '_')}`} key={index}>
+          <div className="filters" id={filterId} key={index}>
             <h3 className="region-subhead">
               {filter.columnName} (
               <T filtered={filtered} total={total} className={clsx('filtered-label', { 'js-hidden': !filtered })} raw>
@@ -77,6 +78,7 @@ export const Filters = (props: FiltersProps) => {
                 <div className="filter-search js-hidden">
                   <input
                     type="text"
+                    id={`${filterId}-search`}
                     className="govuk-input filter-search-input"
                     placeholder={t('filters.search_placeholder')}
                     aria-label={t('filters.search_aria', { columnName: filter.columnName })}
