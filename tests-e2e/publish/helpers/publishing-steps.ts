@@ -428,3 +428,84 @@ export async function publishMinimalDataset(
 
   return datasetId;
 }
+
+// needs to be called using a login with both publisher and approver roles (e.g. test_solo_1)
+export async function publishRealisticDataset(
+  page: Page,
+  testInfo: TestInfo,
+  title: string,
+  meta?: Record<string, any>
+): Promise<string> {
+  await startNewDataset(page);
+  await selectUserGroup(page, 'E2E tests');
+  const datasetId = await provideDatasetTitle(page, title);
+
+  await uploadDataTable(page, datasetId, 'realistic/data-orig.csv');
+  await confirmDataTable(page, datasetId);
+
+  await assignColumnTypes(page, datasetId, [
+    { column: 'YearCode', type: 'Dimension' },
+    { column: 'AreaCode', type: 'Dimension' },
+    { column: 'RowRef', type: 'Dimension' },
+    { column: 'Data', type: 'Data values' },
+    { column: 'Measure', type: 'Measure or data types' },
+    { column: 'NoteCodes', type: 'Note codes' }
+  ]);
+
+  await configureMeasure(page, datasetId, 'realistic/measure.csv');
+
+  await configureDimension(page, datasetId, {
+    originalColName: 'YearCode',
+    dimensionName: 'Financial year',
+    optionSelections: ['Dates', 'Periods', 'Financial', 'YYYYYY', 'Years']
+  });
+
+  await configureLookupDimension(page, datasetId, {
+    originalColName: 'AreaCode',
+    dimensionName: 'Area',
+    optionSelections: [],
+    filename: 'realistic/area-lookup.csv'
+  });
+
+  await configureLookupDimension(page, datasetId, {
+    originalColName: 'RowRef',
+    dimensionName: 'Staff type',
+    optionSelections: [],
+    filename: 'realistic/staff-lookup.csv'
+  });
+
+  const metadata = meta || {
+    summary: 'Realistic dataset for consumer e2e tests',
+    collection: 'Collection',
+    quality: 'Quality',
+    providerName: 'Welsh Government',
+    sourceName: 'National Survey for Wales',
+    reports: [{ title: 'Related report 1', url: 'https://example.com/report1' }],
+    topics: ['Welsh language']
+  };
+
+  await completeSummary(page, datasetId, metadata.summary);
+  await completeCollection(page, datasetId, metadata.collection);
+  await completeQuality(page, datasetId, metadata.quality);
+  await completeProviders(page, datasetId, metadata.providerName, metadata.sourceName);
+  await completeRelatedReports(page, datasetId, metadata.reports);
+  await completeDesignation(page, datasetId, Designation.Accredited);
+  await completeTopics(page, datasetId, metadata.topics);
+
+  const nextUpdate = add(new Date(), { years: 1 });
+
+  await completeUpdateFrequency(page, datasetId, {
+    year: nextUpdate.getFullYear(),
+    month: nextUpdate.getMonth() + 1,
+    day: nextUpdate.getDate()
+  });
+
+  await completeTranslations(page, testInfo, datasetId);
+  await completePublicationDate(page, datasetId, 1);
+
+  await submitForApproval(page, datasetId);
+  await approvePublication(page, datasetId);
+  await waitForPublication(page, datasetId);
+
+  return datasetId;
+}
