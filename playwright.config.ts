@@ -38,13 +38,15 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    { name: 'setup', testMatch: /.*\.setup\.ts/ },
+    { name: 'publisher-setup', testMatch: /auth\.setup\.ts/ },
+
+    { name: 'consumer-setup', testMatch: /consumer-setup\.ts/, dependencies: ['publisher-setup'] },
 
     {
       name: 'publish',
       testMatch: /\/tests-e2e\/publish\/.*\.spec\.ts/,
       use: { ...devices['Desktop Chrome'] },
-      dependencies: ['setup']
+      dependencies: ['publisher-setup']
     },
 
     {
@@ -54,8 +56,7 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         baseURL: 'http://localhost:3100'
       },
-      // Depends on publish tests in CI to ensure published datasets exist
-      dependencies: process.env.CI ? ['publish'] : []
+      dependencies: ['consumer-setup']
     },
 
     {

@@ -1,10 +1,16 @@
 import { test, expect, Page } from '@playwright/test';
 
-// Helper to navigate to the download tab for the first dataset
+import { resolveDatasetUrl } from './helpers/find-dataset';
+
+let datasetUrl: string;
+
+test.beforeAll(async ({ browser }) => {
+  datasetUrl = await resolveDatasetUrl(browser);
+});
+
+// Helper to navigate to the download tab for the consumer test dataset
 async function goToDownloadTab(page: Page) {
-  await page.goto('/en-GB/all');
-  const firstDataset = page.locator('.index-list__item a').first();
-  await firstDataset.click();
+  await page.goto(datasetUrl);
   await page.getByRole('tab', { name: 'Download data' }).click();
 }
 
@@ -78,9 +84,7 @@ test.describe('Download Panel', () => {
 
 test.describe('Download preserves filter state', () => {
   test('Hidden field contains filter options after applying filters', async ({ page }) => {
-    await page.goto('/en-GB/all');
-    const firstDataset = page.locator('.index-list__item a').first();
-    await firstDataset.click();
+    await page.goto(datasetUrl);
 
     const filterCheckbox = page
       .locator('.checkboxes__input__filter:not([id$="-all"]):not(details .checkboxes__input__filter)')
