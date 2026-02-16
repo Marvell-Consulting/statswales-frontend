@@ -66,8 +66,8 @@ test.describe('Filter Search', () => {
       const searchInput = areaFilter.locator('.filter-search-input');
       const filterBody = areaFilter.locator('.filter-body');
 
-      // Use the top-level "Wales" checkbox (not nested inside a <details>)
-      const walesCheckbox = filterBody.locator(':scope > .govuk-checkboxes > .govuk-checkboxes__item', {
+      // Use the top-level "Wales" checkbox (inside <summary>, not nested in child <details>)
+      const walesCheckbox = filterBody.locator('summary > .govuk-checkboxes__item', {
         hasText: 'Wales'
       });
 
