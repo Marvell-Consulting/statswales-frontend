@@ -20,6 +20,8 @@ test.describe('Sources page', () => {
       await selectUserGroup(page, 'E2E tests');
       datasetId = await provideDatasetTitle(page, title);
       await uploadDataTable(page, datasetId, 'minimal/data.csv');
+      await page.close();
+      await context.close();
     });
 
     test('Has a heading', async ({ page }) => {

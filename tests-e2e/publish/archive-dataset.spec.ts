@@ -20,6 +20,8 @@ test.describe('Archive dataset', () => {
       const page = await context.newPage();
       await page.goto(`/en-GB`);
       datasetId = await publishMinimalDataset(page, testInfo, title);
+      await page.close();
+      await context.close();
     });
 
     test('Dataset published', async ({ page }) => {

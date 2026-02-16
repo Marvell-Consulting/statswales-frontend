@@ -19,6 +19,8 @@ test.describe('Metadata Quality', () => {
       await startNewDataset(page);
       await selectUserGroup(page, 'E2E tests');
       datasetId = await provideDatasetTitle(page, title);
+      await page.close();
+      await context.close();
     });
 
     test('Has a heading', async ({ page }) => {

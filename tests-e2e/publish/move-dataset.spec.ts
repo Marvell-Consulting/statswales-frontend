@@ -19,6 +19,8 @@ test.describe('Move dataset between groups', () => {
       await startNewDataset(page);
       await selectUserGroup(page, 'E2E tests');
       datasetId = await provideDatasetTitle(page, title);
+      await page.close();
+      await context.close();
     });
 
     test('Is not allowed to move a dataset between groups', async ({ page }) => {
