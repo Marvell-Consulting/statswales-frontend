@@ -1,8 +1,7 @@
-import { expect, test } from '@playwright/test';
+import { test, expect } from '../fixtures/test';
 import { add } from 'date-fns';
 import { nanoid } from 'nanoid';
 
-import { users } from '../fixtures/logins';
 import {
   assignColumnTypes,
   configureDimension,
@@ -61,7 +60,7 @@ test.describe('Publish dataset', () => {
   };
 
   test.describe('Publisher - new dataset', () => {
-    test.use({ storageState: users.publisher.path });
+    test.use({ role: 'publisher' });
 
     test('Create new dataset', async ({ page }, testInfo) => {
       await startNewDataset(page);
@@ -161,7 +160,7 @@ test.describe('Publish dataset', () => {
   });
 
   test.describe(`Publisher - can't edit with open publish request`, () => {
-    test.use({ storageState: users.publisher.path });
+    test.use({ role: 'publisher' });
 
     test('Redirects to overview when trying to edit', async ({ page }) => {
       await page.goto(`/en-GB/publish/${datasetId}/summary`);
@@ -170,7 +169,7 @@ test.describe('Publish dataset', () => {
   });
 
   test.describe('Approver - publication rejection', () => {
-    test.use({ storageState: users.approver.path });
+    test.use({ role: 'approver' });
 
     test('Reject dataset publication', async ({ page }) => {
       await rejectPublication(page, datasetId, 'Testing dataset publication rejection');
@@ -178,7 +177,7 @@ test.describe('Publish dataset', () => {
   });
 
   test.describe('Publisher - resubmit', () => {
-    test.use({ storageState: users.publisher.path });
+    test.use({ role: 'publisher' });
 
     test('Update and resubmit dataset for approval', async ({ page }) => {
       await page.goto(`/en-GB/publish/${datasetId}/overview`);
@@ -188,7 +187,7 @@ test.describe('Publish dataset', () => {
   });
 
   test.describe('Approver - publication approval', () => {
-    test.use({ storageState: users.approver.path });
+    test.use({ role: 'approver' });
 
     test('Approve dataset publication', async ({ page }) => {
       await approvePublication(page, datasetId);

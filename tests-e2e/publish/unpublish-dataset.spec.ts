@@ -1,9 +1,8 @@
-import { expect, test } from '@playwright/test';
+import { test, expect } from '../fixtures/test';
 import { add } from 'date-fns';
 import { TZDate } from '@date-fns/tz';
 import { nanoid } from 'nanoid';
 
-import { users } from '../fixtures/logins';
 import { config } from '../../src/shared/config';
 import { completeTranslations, completeUpdateReason, publishMinimalDataset } from './helpers/publishing-steps';
 
@@ -15,13 +14,16 @@ test.describe('Unpublish dataset', () => {
 
   test.describe('Init test dataset', () => {
     // user with both publisher and approver roles for publishMinimalDataset
-    test.use({ storageState: users.solo.path });
+    test.use({ role: 'solo' });
 
-    test.beforeAll(async ({ browser }, testInfo) => {
+    test.beforeAll(async ({ browser, workerUsers }, testInfo) => {
       test.setTimeout(90000); // extend timeout to 90s for dataset publishing
-      const page = await browser.newPage();
+      const context = await browser.newContext({ storageState: workerUsers.solo.path });
+      const page = await context.newPage();
       await page.goto(`/en-GB`);
       datasetId = await publishMinimalDataset(page, testInfo, title);
+      await page.close();
+      await context.close();
     });
 
     test('Dataset published', async ({ page }) => {
@@ -31,7 +33,7 @@ test.describe('Unpublish dataset', () => {
   });
 
   test.describe('Publisher - request unpublish', () => {
-    test.use({ storageState: users.publisher.path });
+    test.use({ role: 'publisher' });
 
     test('Request dataset be temporarily unpublished', async ({ page }) => {
       await page.goto(`/en-GB/publish/${datasetId}/overview`);
@@ -52,7 +54,7 @@ test.describe('Unpublish dataset', () => {
   });
 
   test.describe('Approver - unpublish approval', () => {
-    test.use({ storageState: users.approver.path });
+    test.use({ role: 'approver' });
 
     test('Approve dataset unpublishing', async ({ page }) => {
       await page.goto(`/en-GB/publish/${datasetId}/overview`);
@@ -73,7 +75,7 @@ test.describe('Unpublish dataset', () => {
   });
 
   test.describe('Publisher - request republish', () => {
-    test.use({ storageState: users.publisher.path });
+    test.use({ role: 'publisher' });
 
     test('Update unpublished dataset and republish', async ({ page }, testInfo) => {
       await page.goto(`/en-GB/publish/${datasetId}/overview`);
@@ -116,7 +118,7 @@ test.describe('Unpublish dataset', () => {
   });
 
   test.describe('Approver - republication approval', () => {
-    test.use({ storageState: users.approver.path });
+    test.use({ role: 'approver' });
 
     test('Approve dataset update publication', async ({ page }) => {
       await page.goto(`/en-GB/publish/${datasetId}/overview`);

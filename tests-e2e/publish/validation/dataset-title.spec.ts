@@ -1,13 +1,12 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../../fixtures/test';
 
 import { config } from '../../../src/shared/config';
-import { users } from '../../fixtures/logins';
 
 const baseUrl = config.frontend.publisher.url;
 
 test.describe('Title page', () => {
   test.describe('Authed as a publisher', () => {
-    test.use({ storageState: users.publisher.path });
+    test.use({ role: 'publisher' });
 
     test.beforeEach(async ({ page }) => {
       await page.goto(`${baseUrl}/en-GB/publish`);
@@ -42,7 +41,7 @@ test.describe('Title page', () => {
   });
 
   test.describe('Not authed', () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
+    // role defaults to null → unauthenticated (no cookies)
     test('Redirects to login page when not authenticated', async ({ page }) => {
       await page.goto(`${baseUrl}/en-GB/publish/title`);
       expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);

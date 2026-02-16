@@ -1,7 +1,6 @@
-import { expect, test } from '@playwright/test';
+import { test, expect } from '../fixtures/test';
 import { nanoid } from 'nanoid';
 
-import { users } from '../fixtures/logins';
 import { config } from '../../src/shared/config';
 import { publishMinimalDataset } from './helpers/publishing-steps';
 
@@ -13,13 +12,16 @@ test.describe('Archive dataset', () => {
 
   test.describe('Init test dataset', () => {
     // user with both publisher and approver roles for publishMinimalDataset
-    test.use({ storageState: users.solo.path });
+    test.use({ role: 'solo' });
 
-    test.beforeAll(async ({ browser }, testInfo) => {
+    test.beforeAll(async ({ browser, workerUsers }, testInfo) => {
       test.setTimeout(90000); // extend timeout to 90s for dataset publishing
-      const page = await browser.newPage();
+      const context = await browser.newContext({ storageState: workerUsers.solo.path });
+      const page = await context.newPage();
       await page.goto(`/en-GB`);
       datasetId = await publishMinimalDataset(page, testInfo, title);
+      await page.close();
+      await context.close();
     });
 
     test('Dataset published', async ({ page }) => {
@@ -29,7 +31,7 @@ test.describe('Archive dataset', () => {
   });
 
   test.describe('Publisher - request archive', () => {
-    test.use({ storageState: users.publisher.path });
+    test.use({ role: 'publisher' });
 
     test('Request dataset archiving', async ({ page }) => {
       await page.goto(`/en-GB/publish/${datasetId}/overview`);
@@ -48,7 +50,7 @@ test.describe('Archive dataset', () => {
   });
 
   test.describe('Approver - archive approval', () => {
-    test.use({ storageState: users.approver.path });
+    test.use({ role: 'approver' });
 
     test('Approve dataset archiving', async ({ page }) => {
       await page.goto(`/en-GB/publish/${datasetId}/overview`);
@@ -68,7 +70,7 @@ test.describe('Archive dataset', () => {
   });
 
   test.describe('Publisher - request unarchive', () => {
-    test.use({ storageState: users.publisher.path });
+    test.use({ role: 'publisher' });
 
     test('Request dataset unarchiving', async ({ page }) => {
       await page.goto(`/en-GB/publish/${datasetId}/overview`);
@@ -86,7 +88,7 @@ test.describe('Archive dataset', () => {
   });
 
   test.describe('Approver - unarchive approval', () => {
-    test.use({ storageState: users.approver.path });
+    test.use({ role: 'approver' });
 
     test('Approve dataset unarchiving', async ({ page }) => {
       await page.goto(`/en-GB/publish/${datasetId}/overview`);
