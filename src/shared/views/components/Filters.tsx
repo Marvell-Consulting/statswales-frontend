@@ -36,7 +36,7 @@ const filterOptionCount = (options: FilterValues[]): number => {
 
 export const Filters = (props: FiltersProps) => {
   const { filters, title, selected, preview, dataset } = props;
-  const { buildUrl, i18n } = useLocals();
+  const { buildUrl, i18n, t } = useLocals();
 
   const activeFilters = selected?.length > 0;
 
@@ -78,8 +78,8 @@ export const Filters = (props: FiltersProps) => {
                   <input
                     type="text"
                     className="govuk-input filter-search-input"
-                    placeholder="Search..."
-                    aria-label={`Search ${filter.columnName}`}
+                    placeholder={t('filters.search_placeholder')}
+                    aria-label={t('filters.search_aria', { columnName: filter.columnName })}
                   />
                 </div>
                 <div className="filter-head non-js-hidden">
