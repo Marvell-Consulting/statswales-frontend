@@ -105,6 +105,60 @@
       }
     }
 
+    // overrides for radios inside filters to match checkbox styling
+    .govuk-radios {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .govuk-radios__item {
+      background-color: transparent;
+      padding: 0;
+      margin-bottom: 0;
+      display: inline-flex;
+      flex-wrap: nowrap;
+
+      > * {
+        flex-shrink: 0;
+      }
+
+      padding-right: 1em;
+
+      label {
+        white-space: nowrap;
+      }
+    }
+
+    .govuk-radios__label {
+      margin-top: 0 !important;
+      height: 34px;
+      padding-left: 0.5em !important;
+      font-size: 14px;
+      max-width: unset;
+
+      display: flex;
+      align-items: center;
+
+      &:before {
+        top: 50%;
+        margin-top: -10px;
+        margin-left: 0;
+      }
+      &:after {
+        top: 50%;
+        margin-top: -7px;
+        left: 3px;
+        margin-left: 0;
+      }
+    }
+
+    .govuk-radios__input {
+      width: 24px;
+      height: 24px;
+      margin-left: 0;
+      margin-top: 5px;
+    }
+
     .indent {
       margin-left: 30px;
       position: relative;
@@ -157,7 +211,8 @@
 
   @media all and (max-width: 640px) {
     .filter-container {
-      .govuk-checkboxes__label {
+      .govuk-checkboxes__label,
+      .govuk-radios__label {
         height: 40px;
       }
 
