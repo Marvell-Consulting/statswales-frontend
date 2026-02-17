@@ -34,13 +34,13 @@ export const getDatasetMetadata = async (
       timePeriod: { start: startDate, end: endDate }
     },
     notes: {
-      roundingApplied: rounding_applied,
-      roundingDescription: renderHtml ? await markdownToSafeHTML(rounding_description) : rounding_description || '',
       publishedRevisions: dataset.revisions?.filter((rev) => isPublished(rev))
     },
     about: {
       summary: renderHtml ? await markdownToSafeHTML(summary) : summary || '',
       quality: renderHtml ? await markdownToSafeHTML(quality) : quality || '',
+      roundingApplied: rounding_applied,
+      roundingDescription: renderHtml ? await markdownToSafeHTML(rounding_description) : rounding_description || '',
       collection: renderHtml ? await markdownToSafeHTML(collection) : collection || '',
       relatedLinks: related_links
     },
@@ -122,8 +122,8 @@ export const metadataToCSV = (metadata: PreviewMetadata, locale: Locale): string
   lines.push([t('dataset_view.about.data_collection'), metadata.about.collection ?? '']);
   lines.push([t('dataset_view.about.statistical_quality'), metadata.about.quality ?? '']);
 
-  if (metadata.notes.roundingApplied) {
-    lines.push([t('dataset_view.notes.rounding'), metadata.notes.roundingDescription ?? '']);
+  if (metadata.about.roundingApplied) {
+    lines.push([t('dataset_view.about.rounding'), metadata.about.roundingDescription ?? '']);
   }
 
   metadata.about.relatedLinks?.forEach((link) => {

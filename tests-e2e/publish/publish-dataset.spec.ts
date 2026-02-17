@@ -53,6 +53,7 @@ test.describe('Publish dataset', () => {
     summary: 'Dataset summary',
     collection: 'About data collection',
     quality: 'About statistical quality',
+    rounding: { applied: true, description: 'Values are rounded to the nearest whole number' },
     providerName: 'Welsh Government',
     sourceName: 'National Survey for Wales',
     reports: [{ title: 'Related report 1', url: 'https://example.com/report1' }],
@@ -95,7 +96,7 @@ test.describe('Publish dataset', () => {
 
       await completeSummary(page, datasetId, metadata.summary);
       await completeCollection(page, datasetId, metadata.collection);
-      await completeQuality(page, datasetId, metadata.quality);
+      await completeQuality(page, datasetId, metadata.quality, metadata.rounding);
 
       await completeProviders(page, datasetId, metadata.providerName, metadata.sourceName);
       await completeRelatedReports(page, datasetId, metadata.reports);
@@ -129,6 +130,12 @@ test.describe('Publish dataset', () => {
       await expect(previewPage.getByText(metadata.collection, { exact: true })).toBeTruthy();
       await expect(previewPage.getByText(metadata.quality, { exact: true })).toBeTruthy();
       await expect(previewPage.getByText(metadata.reports[0].title, { exact: true })).toBeTruthy();
+
+      // check about tab for rounding
+      await previewPage.click('#tab_about');
+      await expect(previewPage.locator('#data-rounding')).toBeVisible();
+      await expect(previewPage.locator('#data-rounding').getByText('Rounding applied')).toBeVisible();
+      await expect(previewPage.locator('#data-rounding').getByText(metadata.rounding.description)).toBeVisible();
 
       // download files
       await previewPage.click('#tab_downloads');

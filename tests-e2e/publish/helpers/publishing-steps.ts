@@ -165,9 +165,21 @@ export async function completeCollection(page: Page, datasetId: string, text: st
   await checkTasklistItemComplete(page, 'Data collection');
 }
 
-export async function completeQuality(page: Page, datasetId: string, text: string) {
+export async function completeQuality(
+  page: Page,
+  datasetId: string,
+  text: string,
+  rounding?: { applied: boolean; description?: string }
+) {
   await completeMetadata(page, 'Statistical quality', text);
-  await page.getByLabel('No').click({ force: true });
+  if (rounding?.applied) {
+    await page.getByLabel('Yes').click({ force: true });
+    if (rounding.description) {
+      await page.locator('#roundingDescription').fill(rounding.description);
+    }
+  } else {
+    await page.getByLabel('No').click({ force: true });
+  }
   await page.getByRole('button', { name: 'Continue' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
   await checkTasklistItemComplete(page, 'Statistical quality');

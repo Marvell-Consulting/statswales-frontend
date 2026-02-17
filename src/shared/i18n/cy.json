@@ -237,6 +237,7 @@
       "summary": "Crynodeb o’r set ddata a newidynnau",
       "data_collection": "Cyfrifo neu gasglu data",
       "statistical_quality": "Ansawdd ystadegol",
+      "rounding": "Talgrynnu wedi'i wneud",
       "designation": "Dynodiad",
       "designations": {
         "official": "Ystadegau swyddogol",

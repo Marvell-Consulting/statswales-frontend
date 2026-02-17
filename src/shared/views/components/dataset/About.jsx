@@ -30,6 +30,16 @@ export default function About(props) {
           />
         </div>
 
+        {props.about.roundingApplied && props.about.roundingDescription && (
+          <div id="data-rounding" className="govuk-summary-list__row">
+            <dt className="govuk-summary-list__key">{props.t('dataset_view.about.rounding')}</dt>
+            <dd
+              className="govuk-summary-list__value"
+              dangerouslySetInnerHTML={{ __html: props.about.roundingDescription }}
+            />
+          </div>
+        )}
+
         <div className="govuk-summary-list__row">
           <dt className="govuk-summary-list__key">{props.t('dataset_view.about.related_reports')}</dt>
           <dd className="govuk-summary-list__value">
