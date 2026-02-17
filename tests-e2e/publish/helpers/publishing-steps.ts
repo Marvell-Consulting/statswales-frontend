@@ -13,6 +13,7 @@ import { TZDate } from '@date-fns/tz';
 import { add } from 'date-fns';
 
 const baseUrl = config.frontend.publisher.url;
+const consumerUrl = config.frontend.consumer.url;
 
 export async function uploadFile(page: Page, filePath: string) {
   const fileChooserPromise = page.waitForEvent('filechooser');
@@ -34,10 +35,10 @@ export async function checkFile(testInfo: TestInfo, download: Download) {
   await expect(file).toBeTruthy();
 }
 
-export async function checkTasklistItemComplete(page: Page, name: string | RegExp) {
+export async function checkTasklistItemComplete(page: Page, name: string | RegExp, isUpdate: boolean = false) {
   const link = await page.getByRole('link', { name });
   const taskItem = await page.getByRole('listitem').filter({ has: link });
-  await expect(taskItem).toContainText('Completed');
+  await expect(taskItem).toContainText(isUpdate ? 'Updated' : 'Completed');
 }
 
 export async function startNewDataset(page: Page) {
@@ -151,25 +152,26 @@ export async function completeMetadata(page: Page, section: string, text: string
   await page.getByRole('textbox').fill(text);
 }
 
-export async function completeSummary(page: Page, datasetId: string, text: string) {
+export async function completeSummary(page: Page, datasetId: string, text: string, isUpdate = false) {
   await completeMetadata(page, 'Summary of dataset', text);
   await page.getByRole('button', { name: 'Continue' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
-  await checkTasklistItemComplete(page, 'Summary');
+  await checkTasklistItemComplete(page, 'Summary', isUpdate);
 }
 
-export async function completeCollection(page: Page, datasetId: string, text: string) {
+export async function completeCollection(page: Page, datasetId: string, text: string, isUpdate = false) {
   await completeMetadata(page, 'Data collection', text);
   await page.getByRole('button', { name: 'Continue' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
-  await checkTasklistItemComplete(page, 'Data collection');
+  await checkTasklistItemComplete(page, 'Data collection', isUpdate);
 }
 
 export async function completeQuality(
   page: Page,
   datasetId: string,
   text: string,
-  rounding?: { applied: boolean; description?: string }
+  rounding?: { applied: boolean; description?: string },
+  isUpdate = false
 ) {
   await completeMetadata(page, 'Statistical quality', text);
   if (rounding?.applied) {
@@ -182,10 +184,16 @@ export async function completeQuality(
   }
   await page.getByRole('button', { name: 'Continue' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
-  await checkTasklistItemComplete(page, 'Statistical quality');
+  await checkTasklistItemComplete(page, 'Statistical quality', isUpdate);
 }
 
-export async function completeProviders(page: Page, datasetId: string, providerName: string, sourceName?: string) {
+export async function completeProviders(
+  page: Page,
+  datasetId: string,
+  providerName: string,
+  sourceName?: string,
+  isUpdate = false
+) {
   await page.getByRole('link', { name: 'Data sources' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/providers`);
   await page.locator('.autocomplete__wrapper').click();
@@ -206,7 +214,7 @@ export async function completeProviders(page: Page, datasetId: string, providerN
   await page.getByLabel('No').click({ force: true });
   await page.getByRole('button', { name: 'Continue' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
-  await checkTasklistItemComplete(page, 'Data sources');
+  await checkTasklistItemComplete(page, 'Data sources', isUpdate);
 }
 
 export type RelatedReport = {
@@ -214,7 +222,12 @@ export type RelatedReport = {
   url: string;
 };
 
-export async function completeRelatedReports(page: Page, datasetId: string, reports: RelatedReport[]) {
+export async function completeRelatedReports(
+  page: Page,
+  datasetId: string,
+  reports: RelatedReport[],
+  isUpdate = false
+) {
   await page.getByRole('link', { name: 'Related reports' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/related`);
 
@@ -232,10 +245,15 @@ export async function completeRelatedReports(page: Page, datasetId: string, repo
   await page.getByLabel('No').click({ force: true });
   await page.getByRole('button', { name: 'Continue' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
-  await checkTasklistItemComplete(page, 'Related reports');
+  await checkTasklistItemComplete(page, 'Related reports', isUpdate);
 }
 
-export async function completeUpdateFrequency(page: Page, datasetId: string, frequency?: Record<string, number>) {
+export async function completeUpdateFrequency(
+  page: Page,
+  datasetId: string,
+  frequency?: Record<string, number>,
+  isUpdate = false
+) {
   await page.getByRole('link', { name: 'If this dataset will be updated or replaced in the future' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/update-frequency`);
 
@@ -249,19 +267,19 @@ export async function completeUpdateFrequency(page: Page, datasetId: string, fre
   }
   await page.getByRole('button', { name: 'Continue' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
-  await checkTasklistItemComplete(page, 'If this dataset will be updated');
+  await checkTasklistItemComplete(page, 'If this dataset will be updated', isUpdate);
 }
 
-export async function completeDesignation(page: Page, datasetId: string, designation: Designation) {
+export async function completeDesignation(page: Page, datasetId: string, designation: Designation, isUpdate = false) {
   await page.getByRole('link', { name: 'Designation' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/designation`);
   await page.locator(`input[value="${designation}"]`).click({ force: true });
   await page.getByRole('button', { name: 'Continue' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
-  await checkTasklistItemComplete(page, 'Designation');
+  await checkTasklistItemComplete(page, 'Designation', isUpdate);
 }
 
-export async function completeTopics(page: Page, datasetId: string, topics: string[]) {
+export async function completeTopics(page: Page, datasetId: string, topics: string[], isUpdate = false) {
   await page.getByRole('link', { name: 'Relevant topics' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/topics`);
 
@@ -271,7 +289,7 @@ export async function completeTopics(page: Page, datasetId: string, topics: stri
 
   await page.getByRole('button', { name: 'Continue' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
-  await checkTasklistItemComplete(page, 'Relevant topics');
+  await checkTasklistItemComplete(page, 'Relevant topics', isUpdate);
 }
 
 export async function completeUpdateReason(page: Page, datasetId: string, text: string) {
@@ -439,6 +457,30 @@ export async function publishMinimalDataset(
   await waitForPublication(page, datasetId);
 
   return datasetId;
+}
+
+export async function expectConsumerDatasetNotFound(page: Page, datasetId: string) {
+  const response = await page.goto(`${consumerUrl}/en-GB/${datasetId}`);
+  expect(response?.status()).toBe(404);
+  await expect(page.locator('h1.govuk-heading-xl')).toHaveText('Page not found');
+}
+
+export async function expectConsumerDatasetVisible(page: Page, datasetId: string) {
+  const response = await page.goto(`${consumerUrl}/en-GB/${datasetId}`);
+  expect(response?.status()).toBe(200);
+  await expect(page.locator('h1.govuk-heading-xl')).toBeVisible();
+}
+
+export async function getConsumerDatasetSummary(page: Page, datasetId: string): Promise<string> {
+  await page.goto(`${consumerUrl}/en-GB/${datasetId}`);
+  await page.getByRole('tab', { name: 'About this dataset' }).click();
+  return await page.locator('#summary .govuk-summary-list__value').innerText();
+}
+
+export async function getConsumerDataTableText(page: Page, datasetId: string): Promise<string> {
+  await page.goto(`${consumerUrl}/en-GB/${datasetId}`);
+  await expect(page.locator('#data_table')).toBeVisible();
+  return await page.locator('#data_table').innerText();
 }
 
 // needs to be called using a login with both publisher and approver roles (e.g. test_solo_1)
