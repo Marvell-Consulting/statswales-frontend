@@ -240,6 +240,7 @@
       "summary": "Summary of dataset and variables",
       "data_collection": "Data collection or calculation",
       "statistical_quality": "Statistical quality",
+      "rounding": "Rounding applied",
       "designation": "Designation",
       "designations": {
         "official": "Official statistics",

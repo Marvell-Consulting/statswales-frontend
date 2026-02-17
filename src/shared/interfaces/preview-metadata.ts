@@ -20,13 +20,13 @@ export interface PreviewMetadata {
     };
   };
   notes: {
-    roundingApplied?: boolean;
-    roundingDescription: string;
     publishedRevisions?: SingleLanguageRevision[];
   };
   about: {
     summary: string;
     quality: string;
+    roundingApplied?: boolean;
+    roundingDescription?: string;
     collection: string;
     relatedLinks?: RelatedLinkDTO[];
   };
