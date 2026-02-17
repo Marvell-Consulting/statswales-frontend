@@ -94,7 +94,7 @@ test.describe('Unpublished datasets are not visible to consumers', () => {
     });
 
     test('Approved but scheduled dataset is not visible on consumer site', async ({ page }) => {
-      // Approve (publishAt was set ~3 minutes in the future)
+      // Approve (publishAt was set ~1 minute in the future)
       await approvePublication(page, datasetId);
 
       // Dataset is approved but publish date hasn't passed - consumer should get 404
