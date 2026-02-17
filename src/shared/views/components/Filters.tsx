@@ -59,7 +59,7 @@ export const Filters = (props: FiltersProps) => {
         const values = selected?.find((f) => f.columnName === filter.factTableColumn)?.values;
         const filtered = values?.length;
         const total = filterOptionCount(filter.values);
-        const filterId = `filter-${filter.factTableColumn.replaceAll(/[^a-zA-Z0-9]/g, '_')}`;
+        const filterId = `filter-${filter.factTableColumn.replaceAll(/\s+/g, '_')}`;
 
         return (
           <div className="filters" id={filterId} key={index}>
@@ -106,7 +106,7 @@ export const Filters = (props: FiltersProps) => {
                           filters.no_filter
                         </T>
                       }
-                      name={`filter-${filter.factTableColumn}-all`}
+                      name={`${filterId}-all`}
                       value="all"
                       omitName
                       values={Array.isArray(values) ? values : []}

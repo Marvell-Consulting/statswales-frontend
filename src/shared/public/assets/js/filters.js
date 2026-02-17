@@ -1,8 +1,8 @@
 (() => {
   function addListeners(filter) {
     const name = filter.getAttribute('id');
-    const checkboxId = name.trim() + '-all';
-    const allCheckbox = filter.querySelector('.filter-head input#' + checkboxId);
+    const selectAllCheckboxId = name.trim() + '-all';
+    const allCheckbox = filter.querySelector('.filter-head input#' + selectAllCheckboxId);
     const selectedLabel = filter.querySelector('span.number-selected');
     const filteredLabel = filter.querySelector('span.filtered-label');
     const nonFilteredLabel = filter.querySelector('span.non-filtered-label');
