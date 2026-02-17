@@ -1,9 +1,8 @@
-import qs from 'qs';
 import React from 'react';
 import { Filters } from '../../../../shared/views/components/Filters';
-import Pagination, { PaginationProps } from '../../../../shared/views/components/Pagination';
+import { PaginationProps } from '../../../../shared/views/components/Pagination';
 import { NoteCodesLegendProps } from './NoteCodesLegend';
-import ViewTable, { ViewTableProps } from './ViewTable';
+import { ViewTableProps } from './ViewTable';
 import { useLocals } from '../../../../shared/views/context/Locals';
 import { Filter } from '../../../../shared/interfaces/filter';
 import { FilterTable } from '../../../../shared/dtos/filter-table';
@@ -11,6 +10,9 @@ import { DatasetDTO } from '../../../../shared/dtos/dataset';
 import { SummaryTable } from './SummaryTable';
 import T from '../../../../shared/views/components/T';
 import TableChooser from './TableChooser';
+import { PivotStage } from '../../../controllers/pivot-stage';
+import PivotSummary from './PivotSummary';
+import ColumnRowChooser from './ColumnRowChooser';
 
 type DataTabProps = NoteCodesLegendProps &
   PaginationProps &
@@ -22,7 +24,10 @@ type DataTabProps = NoteCodesLegendProps &
     isDevPreview?: boolean;
     preview?: boolean;
     previewFailed?: string;
-    landing: boolean;
+    isLanding: boolean;
+    pivotStage: PivotStage;
+    columns?: string;
+    rows?: string;
   };
 
 export default function LandingTab(props: DataTabProps) {
@@ -36,8 +41,22 @@ export default function LandingTab(props: DataTabProps) {
       : buildUrl(`/${props.dataset.id}/filtered`, i18n.language);
   const summaryProps = {
     ...props,
-    landing: true
+    isLanding: true
   };
+
+  let component = <TableChooser />;
+  if (props.pivotStage) {
+    switch (props.pivotStage) {
+      case PivotStage.Columns:
+      case PivotStage.Rows:
+        component = <ColumnRowChooser {...props} />;
+        break;
+      case PivotStage.Summary:
+        component = <PivotSummary {...props} />;
+        break;
+    }
+  }
+
   return (
     <div className="govuk-width-container">
       <div className="govuk-main-wrapper govuk-!-padding-top-0">
@@ -63,6 +82,8 @@ export default function LandingTab(props: DataTabProps) {
               >
                 <T>consumer_view.apply_filters</T>
               </button>
+              {props.columns ? <input type="hidden" name="columns" value={props.columns} /> : null}
+              {props.rows ? <input type="hidden" name="rows" value={props.rows} /> : null}
             </form>
           </div>
 
@@ -78,8 +99,8 @@ export default function LandingTab(props: DataTabProps) {
             </div>
           ) : (
             <div className="govuk-grid-column-three-quarters">
-              <SummaryTable {...summaryProps} />
-              <TableChooser />
+              {props.pivotStage === PivotStage.Summary ? null : <SummaryTable {...summaryProps} />}
+              {component}
             </div>
           )}
         </div>

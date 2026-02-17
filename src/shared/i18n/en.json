@@ -14,7 +14,8 @@
     "cancel": "Cancel",
     "upload_csv": "Continue",
     "preview": "Preview (opens in new tab)",
-    "refresh": "Refresh Page"
+    "refresh": "Refresh Page",
+    "create_table": "Create Table"
   },
   "badge": {
     "dataset_status": {
@@ -2317,7 +2318,9 @@
     "all_values": "All {{count}} values",
     "visibility": {
       "shown": "Shown",
-      "hidden": "Hidden"
+      "hidden": "Hidden",
+      "columns": "Columns",
+      "rows": "Rows"
     },
     "actions": {
       "change": "Change values",
@@ -2334,5 +2337,21 @@
       "label": "All variables",
       "hint": "The data will be shown with columns for each of the variables in the dataset, with a data value for all combinations of variables"
     }
+  },
+  "columns_chooser": {
+    "heading": "Select a variable for the columns of the table",
+    "intro": "The values for this variable will go across the top of your table. You can select a variable in the 'Variable filters' menu to see what values it contains."
+  },
+  "rows_chooser": {
+    "heading": "Select a variable for the rows of the table",
+    "intro": "The values for this variable will go down the side of your table. You can select a variable in the 'Variable filters' menu to see what values it contains."
+  },
+  "pivot_summary": {
+    "heading": "Review selected values for all variables",
+    "intro-1": "You can select any values for the variables being used as columns and rows",
+    "intro-2": "The other variables in the dataset will be hidden in your table, but need to be represented by a single value"
+  },
+  "pivot": {
+    "filter_warning": "Hidden variables in your table can only be represented by a single value."
   }
 }

@@ -12,8 +12,8 @@ interface SummaryDataProps {
   selectedFilterOptions: Filter[];
   landing?: boolean;
   pivot?: boolean;
-  columns?: string[];
-  rows?: string[];
+  columns?: string;
+  rows?: string;
 }
 
 export function SummaryTable(props: SummaryDataProps): ReactNode {
@@ -57,7 +57,9 @@ export function SummaryTable(props: SummaryDataProps): ReactNode {
                   filter: filter,
                   selectedFilterOptions: props.selectedFilterOptions,
                   idx: idx,
-                  landing: props.landing
+                  landing: props.landing,
+                  columns: props.columns,
+                  rows: props.rows
                 }}
               />
             ))}

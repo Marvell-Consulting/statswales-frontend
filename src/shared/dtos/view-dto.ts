@@ -48,9 +48,15 @@ export interface ViewDTO {
   filters?: Filter[];
 }
 
+interface Pivot {
+  x: string;
+  y: string;
+}
+
 export interface ViewV2DTO {
   dataset: DatasetDTO;
   filters?: FilterV2[];
+  pivot?: Pivot;
   headers: ColumnHeader[];
   data: string[][];
   page_info: PageInfoV2;

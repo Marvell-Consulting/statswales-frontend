@@ -1,6 +1,6 @@
 import { Readable } from 'node:stream';
 
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { omit } from 'lodash';
 import slugify from 'slugify';
 import { stringify } from 'csv-stringify/sync';
@@ -20,7 +20,7 @@ import { config } from '../../shared/config';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { TopicDTO } from '../../shared/dtos/topic';
 import { parseFiltersV2, v1FiltersToV2, v2FiltersToV1 } from '../../shared/utils/parse-filters';
-import { FilterTable } from '../../shared/dtos/filter-table';
+import { FilterTable, FilterValues } from '../../shared/dtos/filter-table';
 import { ViewV2DTO } from '../../shared/dtos/view-dto';
 import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
 import { singleLangTopic } from '../../shared/utils/single-lang-topic';
@@ -33,16 +33,17 @@ import { DataValueType } from '../../shared/enums/data-value-type';
 import { DEFAULT_PAGE_SIZE, parsePageOptions } from '../../shared/utils/parse-page-options';
 import { SearchMode } from '../../shared/enums/search-mode';
 import {
-  getErrors,
-  viewTypeValidator,
-  formatValidator,
   downloadLanguageValidator,
+  extendedValidator,
+  formatValidator,
+  getErrors,
   viewChoiceValidator,
-  extendedValidator
+  viewTypeValidator
 } from '../../shared/validators';
 import { FieldValidationError } from 'express-validator';
 import { SearchResultDTO } from '../../shared/dtos/search-result';
 import { sanitizeSearchResults } from '../../shared/utils/sanitize-search-results';
+import { PivotStage } from './pivot-stage';
 
 export const listTopics = async (req: Request, res: Response, next: NextFunction) => {
   const topicId = req.params.topicId ? req.params.topicId.match(/\d+/)?.[0] : undefined;
@@ -113,6 +114,81 @@ export const listPublishedDatasets = async (req: Request, res: Response, next: N
   }
 };
 
+export const createPublishedDatasetPivot = async (req: Request, res: Response, next: NextFunction) => {
+  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const revision = dataset.published_revision;
+  const isUnpublished = revision?.unpublished_at || false;
+  const isArchived = (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false;
+
+  if (!revision) {
+    next(new NotFoundException('no published revision found'));
+    return;
+  }
+
+  let pivotStage = PivotStage.Landing;
+  if (req.method === 'POST') {
+    const dataOptions: DataOptionsDTO = {
+      ...FRONTEND_DATA_OPTIONS,
+      filters: parseFiltersV2(req.body.filter),
+      pivot: { x: req.body.columns, y: req.body.rows, include_performance: false, backend: 'duckdb' }
+    };
+    const filterId = await req.conapi.generatePivotFilterId(dataset.id, dataOptions);
+    const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
+    res.redirect(req.buildUrl(`/${dataset.id}/pivot/${filterId}`, req.language, { page_size: pageSize.toString() }));
+    return;
+  } else {
+    if (req.query?.columns && req.query?.rows) {
+      pivotStage = PivotStage.Summary;
+    } else if (req.query?.columns) {
+      pivotStage = PivotStage.Rows;
+    } else {
+      pivotStage = PivotStage.Columns;
+    }
+  }
+
+  const [datasetMetadata, filters, publishedRevisions]: [PreviewMetadata, FilterTable[], RevisionDTO[]] =
+    await Promise.all([
+      getDatasetMetadata(dataset, revision),
+      req.conapi.getPublishedDatasetFilters(dataset.id),
+      req.conapi.getPublicationHistory(dataset.id)
+    ]);
+
+  const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
+  const publicationHistory = publishedRevisions.map((rev) => singleLangRevision(rev, req.language));
+
+  for (const rev of publicationHistory) {
+    if (rev?.metadata?.reason) {
+      rev.metadata.reason = await markdownToSafeHTML(rev.metadata.reason);
+    }
+  }
+
+  let selectedFilterOptions: Filter[] = [];
+  if (req.query.rows && req.query.columns) {
+    selectedFilterOptions = filters
+      .filter((f) => f.factTableColumn !== req.query.rows || f.factTableColumn !== req.query.columns)
+      .map((f) => {
+        return {
+          columnName: f.factTableColumn,
+          values: [f.values[0].reference]
+        };
+      });
+  }
+
+  res.render('dataset/landing', {
+    ...{ datasetMetadata },
+    filters,
+    topics,
+    publicationHistory,
+    selectedFilterOptions,
+    shorthandUrl: req.buildUrl(`/shorthand`, req.language),
+    isUnpublished,
+    isArchived,
+    pivotStage,
+    columns: req.query.columns,
+    rows: req.query.rows
+  });
+};
+
 export const viewPublishedLanding = async (req: Request, res: Response, next: NextFunction) => {
   const dataset = singleLangDataset(res.locals.dataset, req.language);
   const revision = dataset.published_revision;
@@ -124,8 +200,8 @@ export const viewPublishedLanding = async (req: Request, res: Response, next: Ne
     return;
   }
 
+  const pivotStage = PivotStage.Landing;
   if (req.method === 'POST') {
-    logger.debug(`Form action ${JSON.stringify(req.body)}`);
     switch (req.body.chooser) {
       case 'pivot':
         res.redirect(req.buildUrl(`/${dataset.id}/pivot`, req.language));
@@ -154,6 +230,8 @@ export const viewPublishedLanding = async (req: Request, res: Response, next: Ne
     }
   }
 
+  const isLanding = true;
+
   res.render('dataset/landing', {
     ...{ datasetMetadata },
     filters,
@@ -162,7 +240,8 @@ export const viewPublishedLanding = async (req: Request, res: Response, next: Ne
     selectedFilterOptions: [],
     shorthandUrl: req.buildUrl(`/shorthand`, req.language),
     isUnpublished,
-    isArchived
+    isArchived,
+    isLanding
   });
 };
 
@@ -273,6 +352,72 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
     shorthandUrl: req.buildUrl(`/shorthand`, req.language),
     isUnpublished: revision?.unpublished_at || false,
     isArchived: (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false
+  });
+};
+
+export const viewPivotedDataset = async (req: Request, res: Response, next: NextFunction) => {
+  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const revision = dataset.published_revision;
+
+  if (!revision) {
+    next(new NotFoundException('no published revision found'));
+    return;
+  }
+
+  if (req.method === 'POST') {
+    const dataOptions: DataOptionsDTO = { ...FRONTEND_DATA_OPTIONS, filters: parseFiltersV2(req.body.filter) };
+    const filterId = await req.conapi.generateFilterId(dataset.id, dataOptions);
+    const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
+    res.redirect(req.buildUrl(`/${dataset.id}/pivot/${filterId}`, req.language, { page_size: pageSize.toString() }));
+    return;
+  }
+
+  const filterId = req.params.filterId;
+
+  if (!filterId) {
+    next(new NotFoundException('filter id is required'));
+    return;
+  }
+
+  const { pageNumber, pageSize, sortBy } = parsePageOptions(req);
+
+  const [datasetMetadata, view, filters, publishedRevisions]: [
+    PreviewMetadata,
+    ViewV2DTO,
+    FilterTable[],
+    RevisionDTO[]
+  ] = await Promise.all([
+    getDatasetMetadata(dataset, revision),
+    req.conapi.getPivotedDatasetView(dataset.id, filterId, pageNumber, pageSize, sortBy),
+    req.conapi.getPublishedDatasetFilters(dataset.id),
+    req.conapi.getPublicationHistory(dataset.id)
+  ]);
+
+  console.log(JSON.stringify(view, null, 2));
+
+  const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
+  const pagination = pageInfo(view.page_info?.current_page, pageSize, view.page_info?.total_records || 0);
+  const publicationHistory = publishedRevisions.map((rev) => singleLangRevision(rev, req.language));
+
+  for (const rev of publicationHistory) {
+    if (rev?.metadata?.reason) {
+      rev.metadata.reason = await markdownToSafeHTML(rev.metadata.reason);
+    }
+  }
+
+  res.render('dataset/view', {
+    ...view,
+    ...pagination,
+    datasetMetadata,
+    filters,
+    topics,
+    publicationHistory,
+    selectedFilterOptions: view.filters ? v2FiltersToV1(view.filters) : [],
+    shorthandUrl: req.buildUrl(`/shorthand`, req.language),
+    isUnpublished: revision?.unpublished_at || false,
+    isArchived: (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false,
+    columns: view.pivot?.x,
+    rows: view.pivot?.y
   });
 };
 

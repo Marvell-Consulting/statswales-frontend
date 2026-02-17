@@ -9,7 +9,9 @@ import {
   listPublishedDatasets,
   downloadPublishedMetadata,
   viewFilteredDataset,
-  viewPublishedLanding
+  viewPublishedLanding,
+  createPublishedDatasetPivot,
+  viewPivotedDataset
 } from '../controllers/consumer';
 import { fetchPublishedDataset } from '../middleware/fetch-dataset';
 import { config } from '../../shared/config';
@@ -46,7 +48,14 @@ consumer.post(
   viewPublishedLanding
 );
 consumer.get('/:datasetId/data', fetchPublishedDataset, viewPublishedDataset);
-consumer.get('/:datasetId/pivot', fetchPublishedDataset, viewPublishedDataset);
+
+consumer.get('/:datasetId/pivot', fetchPublishedDataset, createPublishedDatasetPivot);
+consumer.post(
+  '/:datasetId/pivot',
+  express.urlencoded({ extended: true, limit: '10mb', parameterLimit: 50000 }),
+  fetchPublishedDataset,
+  createPublishedDatasetPivot
+);
 
 consumer.post(
   '/:datasetId/filtered',
@@ -55,6 +64,7 @@ consumer.post(
   viewFilteredDataset
 );
 consumer.get('/:datasetId/filtered{/:filterId}', fetchPublishedDataset, viewFilteredDataset);
+consumer.get('/:datasetId/pivot{/:filterId}', fetchPublishedDataset, viewPivotedDataset);
 
 consumer.get('/:datasetId/download/metadata', fetchPublishedDataset, downloadPublishedMetadata);
 
