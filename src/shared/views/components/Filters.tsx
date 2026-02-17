@@ -80,8 +80,8 @@ export const Filters = (props: FiltersProps) => {
                     type="text"
                     id={`${filterId}-search`}
                     className="govuk-input filter-search-input"
-                    placeholder={t('filters.search_placeholder')}
-                    aria-label={t('filters.search_aria', { columnName: filter.columnName })}
+                    placeholder={t('filters.search.placeholder')}
+                    aria-label={t('filters.search.aria', { columnName: filter.columnName })}
                   />
                 </div>
                 <div className="filter-head non-js-hidden">
@@ -121,6 +121,9 @@ export const Filters = (props: FiltersProps) => {
                   values={values ?? []}
                   independentExpand
                 />
+                <span className="filter-search-no-match govuk-body js-hidden">
+                  <T>filters.search.no_match</T>
+                </span>
               </div>
             </div>
           </div>

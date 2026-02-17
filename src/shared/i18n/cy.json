@@ -1632,7 +1632,12 @@
     "clear": "Clirio popeth",
     "no_filter": "Heb ei hidlo <span class=\"govuk-visually-hidden\"> am {{columnName}}</span>",
     "summary": "<span class=\"number-selected\">{{filtered}}</span> o {{total}} wedi'u dewis",
-    "non-filtered-summary": "{{total}} dewis y mae modd eu dewis"
+    "non-filtered-summary": "{{total}} dewis y mae modd eu dewis",
+    "search": {
+      "placeholder": "Teipiwch i ddod o hyd i werthoedd",
+      "aria": "Chwilio gwerthoedd {{columnName}}",
+      "no_match": "Nid oes gwerthoedd yn cyfateb â'ch chwiliad"
+    }
   },
   "consumer_view": {
     "tabs": {
