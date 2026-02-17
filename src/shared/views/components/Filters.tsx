@@ -59,9 +59,10 @@ export const Filters = (props: FiltersProps) => {
         const values = selected?.find((f) => f.columnName === filter.factTableColumn)?.values;
         const filtered = values?.length;
         const total = filterOptionCount(filter.values);
+        const filterId = `filter-${filter.factTableColumn.replaceAll(/\s+/g, '_')}`;
 
         return (
-          <div className="filters" id={`filter-${filter.factTableColumn.replaceAll(/\s+/g, '_')}`} key={index}>
+          <div className="filters" id={filterId} key={index}>
             <h3 className="region-subhead">
               {filter.columnName} (
               <T filtered={filtered} total={total} className={clsx('filtered-label', { 'js-hidden': !filtered })} raw>
@@ -77,9 +78,10 @@ export const Filters = (props: FiltersProps) => {
                 <div className="filter-search js-hidden">
                   <input
                     type="text"
+                    id={`${filterId}-search`}
                     className="govuk-input filter-search-input"
-                    placeholder={t('filters.search_placeholder')}
-                    aria-label={t('filters.search_aria', { columnName: filter.columnName })}
+                    placeholder={t('filters.search.placeholder')}
+                    aria-label={t('filters.search.aria', { columnName: filter.columnName })}
                   />
                 </div>
                 <div className="filter-head non-js-hidden">
@@ -104,7 +106,7 @@ export const Filters = (props: FiltersProps) => {
                           filters.no_filter
                         </T>
                       }
-                      name={`filter-${filter.factTableColumn}-all`}
+                      name={`${filterId}-all`}
                       value="all"
                       omitName
                       values={Array.isArray(values) ? values : []}
@@ -119,6 +121,9 @@ export const Filters = (props: FiltersProps) => {
                   values={values ?? []}
                   independentExpand
                 />
+                <span className="filter-search-no-match govuk-body js-hidden">
+                  <T>filters.search.no_match</T>
+                </span>
               </div>
             </div>
           </div>

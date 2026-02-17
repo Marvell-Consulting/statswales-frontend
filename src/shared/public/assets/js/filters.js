@@ -1,8 +1,8 @@
 (() => {
   function addListeners(filter) {
     const name = filter.getAttribute('id');
-    const checkboxId = name.trim() + '-all';
-    const allCheckbox = filter.querySelector('.filter-head input#' + checkboxId);
+    const selectAllCheckboxId = name.trim() + '-all';
+    const allCheckbox = filter.querySelector('.filter-head input#' + selectAllCheckboxId);
     const selectedLabel = filter.querySelector('span.number-selected');
     const filteredLabel = filter.querySelector('span.filtered-label');
     const nonFilteredLabel = filter.querySelector('span.non-filtered-label');
@@ -68,6 +68,7 @@
       // Cache DOM queries outside the debounce
       const checkboxItems = filterBody.querySelectorAll('.govuk-checkboxes__item');
       const detailsElements = filterBody.querySelectorAll('details');
+      const noMatchMessage = filterBody.querySelector('.filter-search-no-match');
       let debounceTimer;
 
       searchInput.addEventListener('input', (e) => {
@@ -83,6 +84,7 @@
               details.style.display = '';
               details.removeAttribute('open');
             });
+            if (noMatchMessage) noMatchMessage.classList.add('js-hidden');
             return;
           }
 
@@ -120,6 +122,15 @@
               details.removeAttribute('open');
             }
           });
+
+          // Show "no match" message when nothing matches
+          if (noMatchMessage) {
+            if (matchingItems.size === 0) {
+              noMatchMessage.classList.remove('js-hidden');
+            } else {
+              noMatchMessage.classList.add('js-hidden');
+            }
+          }
         }, 250);
       });
     }

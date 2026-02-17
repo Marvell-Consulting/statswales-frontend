@@ -1684,8 +1684,11 @@
     "no_filter": "Not filtered<span class=\"govuk-visually-hidden\"> for {{columnName}}</span>",
     "summary": "<span class=\"number-selected\">{{filtered}}</span> of {{total}} selected",
     "non-filtered-summary": "{{total}} selectable options",
-    "search_placeholder": "Type to find values",
-    "search_aria": "Search {{columnName}} values"
+    "search": {
+      "placeholder": "Type to find values",
+      "aria": "Search {{columnName}} values",
+      "no_match": "No values match your search"
+    }
   },
   "consumer_view": {
     "tabs": {
