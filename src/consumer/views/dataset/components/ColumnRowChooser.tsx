@@ -17,7 +17,7 @@ interface ColumnProps {
 }
 
 export default function ColumnRowChooser(props: ColumnProps) {
-  let type = 'column';
+  let type = 'columns';
   switch (props.pivotStage) {
     case PivotStage.Columns:
       type = 'columns';
