@@ -127,10 +127,17 @@ export const createPublishedDatasetPivot = async (req: Request, res: Response, n
 
   let pivotStage = PivotStage.Landing;
   if (req.method === 'POST') {
+    const { columns, rows } = req.body;
+
+    if (typeof columns !== 'string' || typeof rows !== 'string' || !columns.trim() || !rows.trim()) {
+      next(new BadRequestException('Both "columns" and "rows" must be non-empty strings.'));
+      return;
+    }
+
     const dataOptions: DataOptionsDTO = {
       ...FRONTEND_DATA_OPTIONS,
       filters: parseFiltersV2(req.body.filter),
-      pivot: { x: req.body.columns, y: req.body.rows, include_performance: false, backend: 'duckdb' }
+      pivot: { x: columns, y: rows, include_performance: false, backend: 'duckdb' }
     };
     const filterId = await req.conapi.generatePivotFilterId(dataset.id, dataOptions);
     const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
