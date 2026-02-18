@@ -6,7 +6,8 @@ import {
   FEATURE_FLAG_COOKIE,
   parseFlagCookie,
   mergeFlags,
-  extractFlagsFromParams
+  extractFlagsFromParams,
+  validFlags
 } from '../utils/feature-flags';
 
 // Middleware that reads ?feature=... from the query string, merges with the existing
@@ -19,8 +20,8 @@ export const featureFlags = (req: Request, res: Response, next: NextFunction) =>
     return;
   }
 
-  const fromQuery = extractFlagsFromParams(req.query);
-  const fromCookie = parseFlagCookie(req.cookies[FEATURE_FLAG_COOKIE]);
+  const fromQuery = validFlags(extractFlagsFromParams(req.query));
+  const fromCookie = validFlags(parseFlagCookie(req.cookies[FEATURE_FLAG_COOKIE]));
 
   const merged = mergeFlags(fromCookie, fromQuery);
 

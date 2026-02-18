@@ -59,6 +59,12 @@ export function extractFlagsFromParams(params: QueryParams): string[] {
   return [];
 }
 
+// Filter an array of flag strings to only those present in the FeatureFlag enum
+export function validFlags(flags: string[]): FeatureFlag[] {
+  const valid = Object.values(FeatureFlag) as string[];
+  return flags.filter((f) => valid.includes(f)) as FeatureFlag[];
+}
+
 // check if a feature is enabled via query parameters or cookie, e.g.
 // ?feature=search
 // ?feature=search,analytics

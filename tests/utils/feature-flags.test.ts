@@ -10,7 +10,8 @@ import {
   isFeatureEnabled,
   parseFlagCookie,
   mergeFlags,
-  extractFlagsFromParams
+  extractFlagsFromParams,
+  validFlags
 } from '../../src/shared/utils/feature-flags';
 import { FeatureFlag } from '../../src/shared/enums/feature-flag';
 import { config } from '../../src/shared/config';
@@ -306,5 +307,23 @@ describe('extractFlagsFromParams', () => {
 
   it('should return empty array for empty record', () => {
     expect(extractFlagsFromParams({})).toEqual([]);
+  });
+});
+
+describe('validFlags', () => {
+  it('should keep flags that are in the FeatureFlag enum', () => {
+    expect(validFlags(['example', 'summary_table'])).toEqual([FeatureFlag.Example, FeatureFlag.SummaryTable]);
+  });
+
+  it('should discard flags that are not in the FeatureFlag enum', () => {
+    expect(validFlags(['unknown', 'notarealflag'])).toEqual([]);
+  });
+
+  it('should filter out invalid flags and keep valid ones', () => {
+    expect(validFlags(['example', 'hacked', 'summary_table'])).toEqual([FeatureFlag.Example, FeatureFlag.SummaryTable]);
+  });
+
+  it('should return empty array for empty input', () => {
+    expect(validFlags([])).toEqual([]);
   });
 });
