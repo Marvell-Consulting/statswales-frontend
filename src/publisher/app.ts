@@ -25,6 +25,7 @@ import { guidance } from './routes/guidance';
 import { cookies } from '../shared/routes/cookies';
 import { admin } from './routes/admin';
 import { cookieBanner } from '../shared/middleware/cookie-banner';
+import { featureFlags } from '../shared/middleware/feature-flags';
 import { history } from '../shared/middleware/history';
 import { staticPages } from '../shared/routes/static-pages';
 
@@ -45,6 +46,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(httpLogger);
 app.use(cookieParser());
+app.use(featureFlags);
 app.use(session);
 app.use(cookieBanner);
 app.use(i18nextMiddleware.handle(i18next));
