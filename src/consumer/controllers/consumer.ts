@@ -20,7 +20,7 @@ import { config } from '../../shared/config';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { TopicDTO } from '../../shared/dtos/topic';
 import { parseFiltersV2, v1FiltersToV2, v2FiltersToV1 } from '../../shared/utils/parse-filters';
-import { FilterTable, FilterValues } from '../../shared/dtos/filter-table';
+import { FilterTable } from '../../shared/dtos/filter-table';
 import { ViewV2DTO } from '../../shared/dtos/view-dto';
 import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
 import { singleLangTopic } from '../../shared/utils/single-lang-topic';
@@ -200,7 +200,6 @@ export const viewPublishedLanding = async (req: Request, res: Response, next: Ne
     return;
   }
 
-  const pivotStage = PivotStage.Landing;
   if (req.method === 'POST') {
     switch (req.body.chooser) {
       case 'pivot':
@@ -392,8 +391,6 @@ export const viewPivotedDataset = async (req: Request, res: Response, next: Next
     req.conapi.getPublishedDatasetFilters(dataset.id),
     req.conapi.getPublicationHistory(dataset.id)
   ]);
-
-  console.log(JSON.stringify(view, null, 2));
 
   const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
   const pagination = pageInfo(view.page_info?.current_page, pageSize, view.page_info?.total_records || 0);

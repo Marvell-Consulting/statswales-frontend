@@ -1,5 +1,5 @@
 import React from 'react';
-import { Filters } from '../../../../shared/views/components/Filters';
+import { Filters } from '../../../../shared/views/components/filters';
 import { PaginationProps } from '../../../../shared/views/components/Pagination';
 import { NoteCodesLegendProps } from './NoteCodesLegend';
 import { ViewTableProps } from './ViewTable';
@@ -34,11 +34,11 @@ export default function LandingTab(props: DataTabProps) {
   const { buildUrl, i18n } = useLocals();
   const [_originalUrl] = props.url.split('?');
 
-  const formUrl = props.isDevPreview
-    ? buildUrl(`/developer/${props.dataset.id}/filtered`, i18n.language, {}, 'data')
-    : props.preview
-      ? buildUrl(`/publish/${props.dataset.id}/cube-preview`, i18n.language)
-      : buildUrl(`/${props.dataset.id}/filtered`, i18n.language);
+  let formUrl = buildUrl(`/${props.dataset.id}/filtered`, i18n.language);
+  if (props.isDevPreview) formUrl = buildUrl(`/developer/${props.dataset.id}/filtered`, i18n.language, {}, 'data');
+  else if (props.preview) buildUrl(`/publish/${props.dataset.id}/cube-preview`, i18n.language);
+  else if (props.columns && props.rows) buildUrl(`/${props.dataset.id}/pivot`, i18n.language);
+
   const summaryProps = {
     ...props,
     isLanding: true
@@ -71,6 +71,8 @@ export default function LandingTab(props: DataTabProps) {
                 url={props.url}
                 title={props.t('consumer_view.filters')}
                 selected={props.selectedFilterOptions}
+                columns={props.columns}
+                rows={props.rows}
               />
               <br />
               <button

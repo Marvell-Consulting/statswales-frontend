@@ -33,7 +33,7 @@ export function SummaryTableRow(props: SummaryTableRowProps): ReactNode {
     );
   }
 
-  let selectedFilterList = <SelectedFilterList {...{ filter, flatFilters, selectedFilterOptions, idx }} />;
+  const selectedFilterList = <SelectedFilterList {...{ filter, flatFilters, selectedFilterOptions, idx }} />;
   let visibility = (
     <span className="govuk-tag govuk-tag--green">
       <T>summary.visibility.shown</T>

@@ -10,7 +10,6 @@ interface FilterProps {
 
 export default function RowColumnPicker(props: FilterProps) {
   const cleanedFilters = props.filters.filter((f) => {
-    console.log(`${f.factTableColumn}, ${props.columns}, ${props.rows}`);
     if (f.factTableColumn === props.columns) return false;
     return f.factTableColumn !== props.rows;
   });

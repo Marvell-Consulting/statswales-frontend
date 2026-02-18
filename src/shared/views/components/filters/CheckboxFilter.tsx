@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { clsx } from 'clsx';
 
 import { FilterTable, FilterValues } from '../../../dtos/filter-table';
@@ -11,6 +11,7 @@ import { useLocals } from '../../context/Locals';
 export type CheckboxFilterProps = {
   filter: FilterTable;
   values?: string[];
+  tag?: ReactNode;
 };
 
 const normalizeFilters = (options: FilterValues[]): CheckboxOptions[] => {
@@ -37,7 +38,7 @@ const collectAllValues = (options: FilterValues[]): string[] => {
   ]);
 };
 
-export const CheckboxFilter = ({ filter, values }: CheckboxFilterProps) => {
+export const CheckboxFilter = ({ filter, values, tag }: CheckboxFilterProps) => {
   const { t } = useLocals();
 
   const filtered = values?.length;
@@ -55,7 +56,7 @@ export const CheckboxFilter = ({ filter, values }: CheckboxFilterProps) => {
         <T total={total} className={clsx('non-filtered-label', { 'js-hidden': filtered })} raw>
           filters.non-filtered-summary
         </T>
-        )
+        ) {tag}
       </h3>
       <div className="filter-container option-select">
         <div className="padding-box">

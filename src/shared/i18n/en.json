@@ -2352,6 +2352,8 @@
     "intro-2": "The other variables in the dataset will be hidden in your table, but need to be represented by a single value"
   },
   "pivot": {
-    "filter_warning": "Hidden variables in your table can only be represented by a single value."
+    "filter_warning": "Hidden variables in your table can only be represented by a single value.",
+    "start_over": "Create new Table",
+    "show_data": "Show all variables in table"
   }
 }
