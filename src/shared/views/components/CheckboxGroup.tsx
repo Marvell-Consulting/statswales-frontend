@@ -72,21 +72,9 @@ export const Checkbox = ({
     </div>
   );
 
-  function hasValue(item: CheckboxOptions, values: string[]): boolean {
-    if (values.includes(item.value)) {
-      return true;
-    }
-    if (item.children) {
-      return item.children.some((child) => hasValue(child, values));
-    }
-
-    return false;
-  }
-
   if (independentExpand && !!children?.length) {
-    const isOpen = children.some((child) => hasValue(child, values));
     return (
-      <details open={isOpen}>
+      <details open>
         <summary>{CheckboxField}</summary>
         <div className="indent">
           <Controls

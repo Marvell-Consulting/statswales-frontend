@@ -62,7 +62,6 @@ const RadioItem = ({
           name={name}
           type="radio"
           value={value}
-          data-aria-controls={children ? `conditional-${formattedId}` : undefined}
           defaultChecked={checked}
         />
         <label className="govuk-label govuk-radios__label" htmlFor={formattedId}>
@@ -70,7 +69,7 @@ const RadioItem = ({
         </label>
       </div>
       {children && (
-        <div className="govuk-radios__conditional govuk-radios__conditional--hidden" id={`conditional-${formattedId}`}>
+        <div className="govuk-radios__conditional" id={`conditional-${formattedId}`}>
           <FilterRadioGroup options={children} name={`${name}.${value}`} selectedValue={selectedValue} />
         </div>
       )}
@@ -88,7 +87,7 @@ const FilterRadioGroup = ({
   selectedValue?: string;
 }) => {
   return (
-    <div className="govuk-radios govuk-radios--small" data-module="govuk-radios">
+    <div className="govuk-radios govuk-radios--small">
       {options.map((option, index) => (
         <RadioItem
           key={index}
