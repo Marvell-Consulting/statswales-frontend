@@ -16,6 +16,7 @@ import {
 // needing to pass the query param on every subsequent request.
 export const featureFlags = (req: Request, res: Response, next: NextFunction) => {
   if (featureFlaggingDisabled()) {
+    res.locals.featureFlags = '';
     next();
     return;
   }

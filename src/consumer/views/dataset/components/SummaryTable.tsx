@@ -16,7 +16,7 @@ export function SummaryTable(props: SummaryDataProps): ReactNode {
   const { protocol, hostname, url, featureFlags } = useLocals();
   const urlObj = new URL(url, `${protocol}://${hostname}`);
 
-  if (!isFeatureEnabled(urlObj.searchParams, FeatureFlag.SummaryTable, featureFlags as string | undefined)) {
+  if (!isFeatureEnabled(urlObj.searchParams, FeatureFlag.SummaryTable, featureFlags)) {
     return null;
   }
 
