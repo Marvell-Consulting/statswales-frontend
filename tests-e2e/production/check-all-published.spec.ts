@@ -159,7 +159,7 @@ test.describe('Check All Published Datasets', () => {
         await expect(applyButton).toBeVisible({ timeout: PAGE_RENDER_TIMEOUT_MS });
         // Find filter checkboxes that aren't "Not filtered" and aren't nested inside a details element
         const filterCheckboxes = page.locator(
-          '.checkboxes__input__filter:not([id$="-all"]):not(details .checkboxes__input__filter)'
+          '.filters .govuk-checkboxes__input:not([id$="-all"]):not(details .govuk-checkboxes__input)'
         );
         const checkboxCount = await filterCheckboxes.count();
 
@@ -278,7 +278,7 @@ test.describe('Recheck Failed Datasets', () => {
 
         // Find filter checkboxes that aren't "Not filtered" and aren't nested inside a details element
         const filterCheckboxes = page.locator(
-          '.checkboxes__input__filter:not([id$="-all"]):not(details .checkboxes__input__filter)'
+          '.filters .govuk-checkboxes__input:not([id$="-all"]):not(details .govuk-checkboxes__input)'
         );
         const checkboxCount = await filterCheckboxes.count();
 

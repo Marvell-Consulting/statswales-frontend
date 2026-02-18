@@ -420,12 +420,8 @@
     display: none;
   }
 
-  // used to hide JS only components for non-js users.
-  .non-js-hidden {
-    display: none !important;
-  }
-
-  // used by JS to show/hide elements dynamically
+  // hidden by default; JS removes this class to reveal elements that require JS,
+  // and also adds/removes it dynamically to show/hide elements at runtime.
   .js-hidden {
     display: none !important;
   }
@@ -1632,40 +1628,26 @@
     font-size: 14px;
   }
 
-  .checkboxes__filter {
-    background-color: white;
-    padding: 0px;
-    margin-bottom: 0;
-  }
-
-  .checkboxes__label__filter {
+  .filters .govuk-checkboxes__label {
     font-size: 14px;
     margin-top: 8px;
     padding-left: 1em;
   }
 
-  .checkboxes__input__filter {
+  .filters .govuk-checkboxes__input {
     height: 34px;
     width: 34px;
   }
 
-  .checkboxes__label__filter::before {
+  .filters .govuk-checkboxes__label::before {
     top: 10px;
     left: 0px;
   }
 
-  .checkboxes__label__filter::before {
-    top: 10px;
-  }
-
-  .checkboxes__label__filter::after {
+  .filters .govuk-checkboxes__label::after {
     top: 17px;
     color: colours.$blue;
     left: 6px;
-  }
-
-  .checkboxes__conditional__filter {
-    margin-left: 10px;
   }
 
   .tabs,

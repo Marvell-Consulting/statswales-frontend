@@ -35,7 +35,7 @@ test.describe('Dataset Filtering', () => {
     test('Filter checkboxes are interactive', async ({ page }) => {
       await page.goto(datasetUrl);
       // Find a filter checkbox
-      const filterCheckbox = page.locator('.checkboxes__input__filter').first();
+      const filterCheckbox = page.locator('.filters .govuk-checkboxes__input').first();
       if (await filterCheckbox.isVisible()) {
         // Checkbox should be checkable
         await filterCheckbox.check({ force: true });

@@ -139,10 +139,12 @@
     const parentControls = filter.querySelector('.parent-controls');
 
     filterBody.insertBefore(parentControls, filterBody.firstChild);
+    parentControls.classList.remove('js-hidden');
 
     const controls = filter.querySelectorAll('.controls');
 
     controls.forEach((control) => {
+      control.classList.remove('js-hidden');
       const selectAll = control.querySelector("[data-action='select-all']");
       const clear = control.querySelector("[data-action='clear']");
 
