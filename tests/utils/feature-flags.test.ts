@@ -5,7 +5,14 @@ jest.mock('../../src/shared/config', () => ({
   }
 }));
 
-import { featureFlaggingDisabled, isFeatureEnabled } from '../../src/shared/utils/feature-flags';
+import {
+  featureFlaggingDisabled,
+  isFeatureEnabled,
+  parseFlagCookie,
+  mergeFlags,
+  extractFlagsFromParams,
+  validFlags
+} from '../../src/shared/utils/feature-flags';
 import { FeatureFlag } from '../../src/shared/enums/feature-flag';
 import { config } from '../../src/shared/config';
 import { AppEnv } from '../../src/shared/config/env.enum';
@@ -187,5 +194,136 @@ describe('isFeatureEnabled', () => {
       const params = { feature: 'example', keywords: 'test', page: '1' };
       expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(true);
     });
+  });
+
+  describe('with cookie fallback', () => {
+    it('should return true when flag is present in cookie and not in query params', () => {
+      const params = {};
+      expect(isFeatureEnabled(params, FeatureFlag.Example, 'example')).toBe(true);
+    });
+
+    it('should return true when flag is in a comma-separated cookie value', () => {
+      const params = {};
+      expect(isFeatureEnabled(params, FeatureFlag.Example, 'analytics,example,reporting')).toBe(true);
+    });
+
+    it('should return false when flag is not in cookie', () => {
+      const params = {};
+      expect(isFeatureEnabled(params, FeatureFlag.Example, 'analytics,reporting')).toBe(false);
+    });
+
+    it('should return true when flag is in query params even if not in cookie', () => {
+      const params = { feature: 'example' };
+      expect(isFeatureEnabled(params, FeatureFlag.Example, 'analytics')).toBe(true);
+    });
+
+    it('should return false when neither query params nor cookie contain the flag', () => {
+      const params = { feature: 'other' };
+      expect(isFeatureEnabled(params, FeatureFlag.Example, 'analytics')).toBe(false);
+    });
+
+    it('should return false when cookie is undefined', () => {
+      const params = {};
+      expect(isFeatureEnabled(params, FeatureFlag.Example, undefined)).toBe(false);
+    });
+
+    it('should return false when cookie is empty string', () => {
+      const params = {};
+      expect(isFeatureEnabled(params, FeatureFlag.Example, '')).toBe(false);
+    });
+  });
+});
+
+describe('parseFlagCookie', () => {
+  it('should return empty array for undefined', () => {
+    expect(parseFlagCookie(undefined)).toEqual([]);
+  });
+
+  it('should return empty array for empty string', () => {
+    expect(parseFlagCookie('')).toEqual([]);
+  });
+
+  it('should parse a single flag', () => {
+    expect(parseFlagCookie('example')).toEqual(['example']);
+  });
+
+  it('should parse comma-separated flags', () => {
+    expect(parseFlagCookie('analytics,example,reporting')).toEqual(['analytics', 'example', 'reporting']);
+  });
+
+  it('should trim whitespace', () => {
+    expect(parseFlagCookie(' analytics , example ')).toEqual(['analytics', 'example']);
+  });
+
+  it('should filter empty segments', () => {
+    expect(parseFlagCookie('analytics,,example')).toEqual(['analytics', 'example']);
+  });
+});
+
+describe('mergeFlags', () => {
+  it('should combine two arrays without duplicates', () => {
+    expect(mergeFlags(['analytics'], ['example'])).toEqual(['analytics', 'example']);
+  });
+
+  it('should deduplicate overlapping flags', () => {
+    expect(mergeFlags(['analytics', 'example'], ['example', 'reporting'])).toEqual([
+      'analytics',
+      'example',
+      'reporting'
+    ]);
+  });
+
+  it('should return sorted result', () => {
+    expect(mergeFlags(['reporting'], ['analytics', 'example'])).toEqual(['analytics', 'example', 'reporting']);
+  });
+
+  it('should handle empty arrays', () => {
+    expect(mergeFlags([], [])).toEqual([]);
+    expect(mergeFlags(['example'], [])).toEqual(['example']);
+    expect(mergeFlags([], ['example'])).toEqual(['example']);
+  });
+});
+
+describe('extractFlagsFromParams', () => {
+  it('should extract flags from URLSearchParams', () => {
+    expect(extractFlagsFromParams(new URLSearchParams('feature=example'))).toEqual(['example']);
+  });
+
+  it('should extract multiple flags from comma-separated URLSearchParams', () => {
+    expect(extractFlagsFromParams(new URLSearchParams('feature=analytics,example'))).toEqual(['analytics', 'example']);
+  });
+
+  it('should return empty array when no feature param in URLSearchParams', () => {
+    expect(extractFlagsFromParams(new URLSearchParams('other=value'))).toEqual([]);
+  });
+
+  it('should extract flags from string record', () => {
+    expect(extractFlagsFromParams({ feature: 'analytics,example' })).toEqual(['analytics', 'example']);
+  });
+
+  it('should extract flags from array record', () => {
+    expect(extractFlagsFromParams({ feature: ['analytics', 'example'] })).toEqual(['analytics', 'example']);
+  });
+
+  it('should return empty array for empty record', () => {
+    expect(extractFlagsFromParams({})).toEqual([]);
+  });
+});
+
+describe('validFlags', () => {
+  it('should keep flags that are in the FeatureFlag enum', () => {
+    expect(validFlags(['example', 'summary_table'])).toEqual([FeatureFlag.Example, FeatureFlag.SummaryTable]);
+  });
+
+  it('should discard flags that are not in the FeatureFlag enum', () => {
+    expect(validFlags(['unknown', 'notarealflag'])).toEqual([]);
+  });
+
+  it('should filter out invalid flags and keep valid ones', () => {
+    expect(validFlags(['example', 'hacked', 'summary_table'])).toEqual([FeatureFlag.Example, FeatureFlag.SummaryTable]);
+  });
+
+  it('should return empty array for empty input', () => {
+    expect(validFlags([])).toEqual([]);
   });
 });
