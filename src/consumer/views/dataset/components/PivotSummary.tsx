@@ -25,6 +25,7 @@ export default function PivotSummary(props: PivotProps) {
       }
       return f.factTableColumn !== props.rows;
     })
+    .filter((f) => f.values.length > 0)
     .map((f) => {
       const value = flattenReferences(f.values)[0];
       return (
