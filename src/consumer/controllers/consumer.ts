@@ -172,7 +172,7 @@ export const createPublishedDatasetPivot = async (req: Request, res: Response, n
   let selectedFilterOptions: Filter[] = [];
   if (req.query.rows && req.query.columns) {
     selectedFilterOptions = filters
-      .filter((f) => f.factTableColumn !== req.query.rows || f.factTableColumn !== req.query.columns)
+      .filter((f) => f.factTableColumn !== req.query.rows && f.factTableColumn !== req.query.columns)
       .map((f) => {
         return {
           columnName: f.factTableColumn,
