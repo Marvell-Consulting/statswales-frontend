@@ -183,7 +183,7 @@ export const createPublishedDatasetPivot = async (req: Request, res: Response, n
   }
 
   res.render('dataset/landing', {
-    ...{ datasetMetadata },
+    datasetMetadata,
     filters,
     topics,
     publicationHistory,
@@ -239,7 +239,7 @@ export const viewPublishedLanding = async (req: Request, res: Response, next: Ne
     }
 
     res.render('dataset/landing', {
-      ...{ datasetMetadata },
+      datasetMetadata,
       filters,
       topics,
       publicationHistory,
