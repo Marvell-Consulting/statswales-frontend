@@ -1,0 +1,28 @@
+import React from 'react';
+import { useLocals } from '../../../../../shared/views/context/Locals';
+import T from '../../../../../shared/views/components/T';
+
+type PivotControlsProps = {
+  dataset: {
+    id: string;
+  };
+  url: string;
+};
+
+export function PivotControls(props: PivotControlsProps) {
+  const { buildUrl, i18n } = useLocals();
+  const startOverURL = buildUrl(`/${props.dataset.id}`, i18n.language);
+  const dataURL = props.url.replace('pivot', 'filtered');
+
+  return (
+    <div className="pivot-controls">
+      <a href={startOverURL} className="govuk-button govuk-button--tertiary govuk-button-small">
+        <T>pivot.start_over</T>
+      </a>
+      <span>&nbsp;</span>
+      <a href={dataURL} className="govuk-button govuk-button--tertiary govuk-button-small">
+        <T>pivot.show_data</T>
+      </a>
+    </div>
+  );
+}

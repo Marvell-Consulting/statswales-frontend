@@ -1,5 +1,5 @@
 import qs from 'qs';
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { Filters } from '../../../../shared/views/components/filters';
 import Pagination, { PaginationProps } from '../../../../shared/views/components/Pagination';
 import { NoteCodesLegendProps } from './NoteCodesLegend';
@@ -11,6 +11,7 @@ import { DatasetDTO } from '../../../../shared/dtos/dataset';
 import { SummaryTable } from './SummaryTable';
 import T from '../../../../shared/views/components/T';
 import { RowsPerPage } from '../../../../shared/views/components/RowsPerPage';
+import { PivotControls } from './pivot/PivotControls';
 
 type DataTabProps = NoteCodesLegendProps &
   PaginationProps &
@@ -32,28 +33,12 @@ export default function DataTab(props: DataTabProps) {
   const [, query] = props.url.split('?');
   const parsedQuery = qs.parse(query);
   const sortBy = parsedQuery.sort_by as { columnName: string; direction: string } | undefined;
+  const pivotSelected = !!props.columns && !!props.rows;
 
   let formUrl = buildUrl(`/${props.dataset.id}/filtered`, i18n.language);
   if (props.isDevPreview) formUrl = buildUrl(`/developer/${props.dataset.id}/filtered`, i18n.language, {}, 'data');
   else if (props.preview) formUrl = buildUrl(`/publish/${props.dataset.id}/cube-preview`, i18n.language);
   else if (props.columns && props.rows) formUrl = buildUrl(`/${props.dataset.id}/pivot`, i18n.language);
-
-  const startOverURL = buildUrl(`/${props.dataset.id}`, i18n.language);
-  const dataURL = props.url.replace('pivot', 'filtered');
-  let pivotButtons: ReactNode | null = null;
-  if (props.columns && props.rows) {
-    pivotButtons = (
-      <div className="govuk-grid-row filters-container">
-        <a href={startOverURL} className="clear-filters">
-          <T>pivot.start_over</T>
-        </a>
-        <span>&nbsp;</span>
-        <a href={dataURL} className="clear-filters">
-          <T>pivot.show_data</T>
-        </a>
-      </div>
-    );
-  }
 
   return (
     <div className="govuk-width-container">
@@ -108,7 +93,7 @@ export default function DataTab(props: DataTabProps) {
           ) : (
             <div className="govuk-grid-column-three-quarters">
               <SummaryTable {...props} />
-              {pivotButtons}
+              {pivotSelected && <PivotControls {...props} />}
               <div className="govuk-!-padding-top-5 govuk-!-margin-bottom-2">
                 <ViewTable {...props} />
               </div>
