@@ -10,7 +10,7 @@ import { DatasetDTO } from '../../../../shared/dtos/dataset';
 import { SummaryTable } from './SummaryTable';
 import T from '../../../../shared/views/components/T';
 import TableChooser from './TableChooser';
-import { PivotStage } from '../../../controllers/pivot-stage';
+import { PivotStage } from '../../../../shared/enums/pivot-stage';
 import PivotSummary from './PivotSummary';
 import ColumnRowChooser from './ColumnRowChooser';
 

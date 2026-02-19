@@ -43,7 +43,7 @@ import {
 import { FieldValidationError } from 'express-validator';
 import { SearchResultDTO } from '../../shared/dtos/search-result';
 import { sanitizeSearchResults } from '../../shared/utils/sanitize-search-results';
-import { PivotStage } from './pivot-stage';
+import { PivotStage } from '../../shared/enums/pivot-stage';
 
 export const listTopics = async (req: Request, res: Response, next: NextFunction) => {
   const topicId = req.params.topicId ? req.params.topicId.match(/\d+/)?.[0] : undefined;
@@ -119,13 +119,13 @@ export const createPublishedDatasetPivot = async (req: Request, res: Response, n
   const revision = dataset.published_revision;
   const isUnpublished = revision?.unpublished_at || false;
   const isArchived = (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false;
+  let pivotStage: PivotStage;
 
   if (!revision) {
     next(new NotFoundException('no published revision found'));
     return;
   }
 
-  let pivotStage = PivotStage.Landing;
   if (req.method === 'POST') {
     const { columns, rows } = req.body;
 

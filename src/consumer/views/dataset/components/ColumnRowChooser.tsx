@@ -3,7 +3,7 @@ import T from '../../../../shared/views/components/T';
 import { DatasetDTO } from '../../../../shared/dtos/dataset';
 import { FilterTable } from '../../../../shared/dtos/filter-table';
 import { Filter } from '../../../../shared/interfaces/filter';
-import { PivotStage } from '../../../controllers/pivot-stage';
+import { PivotStage } from '../../../../shared/enums/pivot-stage';
 import RowColumnPicker from './pivot/RowColumnPicker';
 
 interface ColumnProps {
