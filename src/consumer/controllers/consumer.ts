@@ -238,8 +238,6 @@ export const viewPublishedLanding = async (req: Request, res: Response, next: Ne
       }
     }
 
-    const isLanding = true;
-
     res.render('dataset/landing', {
       ...{ datasetMetadata },
       filters,
@@ -249,7 +247,7 @@ export const viewPublishedLanding = async (req: Request, res: Response, next: Ne
       shorthandUrl: req.buildUrl(`/shorthand`, req.language),
       isUnpublished,
       isArchived,
-      isLanding,
+      isLanding: true,
       pivotStage: PivotStage.Landing
     });
   } catch (err) {
