@@ -7,16 +7,10 @@ export type CheckboxGroupProps = {
   name: string;
   values?: string[];
   independentExpand?: boolean;
-  renderControls?: () => ReactNode;
+  controls?: ReactNode;
 };
 
-export const CheckboxGroup = ({
-  options,
-  name,
-  values = [],
-  independentExpand,
-  renderControls
-}: CheckboxGroupProps) => {
+export const CheckboxGroup = ({ options, name, values = [], independentExpand, controls }: CheckboxGroupProps) => {
   return (
     <div
       className="govuk-checkboxes govuk-checkboxes--small"
@@ -31,7 +25,7 @@ export const CheckboxGroup = ({
             {...option}
             values={values}
             independentExpand={independentExpand}
-            renderControls={renderControls}
+            controls={controls}
           />
         );
       })}

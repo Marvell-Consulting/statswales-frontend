@@ -45,10 +45,6 @@ export const CheckboxFilter = ({ filter, values }: CheckboxFilterProps) => {
   const filterId = `filter-${filter.factTableColumn.replaceAll(/\s+/g, '_')}`;
   const effectiveValues = values ?? collectAllValues(filter.values);
 
-  const renderControls = () => (
-    <FilterControls deselectLabel={<T>filters.deselect_all_level</T>} selectLabel={<T>filters.select_all_level</T>} />
-  );
-
   return (
     <div className="filters" id={filterId} data-total={total}>
       <h3 className="region-subhead">
@@ -73,18 +69,25 @@ export const CheckboxFilter = ({ filter, values }: CheckboxFilterProps) => {
             />
           </div>
         </div>
-        <div className="filter-body">
+        <div className="filter-head js-hidden">
           <FilterControls
             className="root-controls"
             deselectLabel={<T>filters.deselect_all</T>}
             selectLabel={<T>filters.select_all</T>}
           />
+        </div>
+        <div className="filter-body">
           <CheckboxGroup
             name={`filter[${filter.factTableColumn}]`}
             options={normalizeFilters(filter.values)}
             values={effectiveValues}
             independentExpand
-            renderControls={renderControls}
+            controls={
+              <FilterControls
+                deselectLabel={<T>filters.deselect_all_level</T>}
+                selectLabel={<T>filters.select_all_level</T>}
+              />
+            }
           />
           <span className="filter-search-no-match govuk-body js-hidden">
             <T>filters.search.no_match</T>

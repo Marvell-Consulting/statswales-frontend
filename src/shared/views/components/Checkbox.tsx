@@ -14,7 +14,7 @@ export type CheckboxProps = CheckboxOptions & {
   checked?: boolean;
   values: string[];
   omitName?: boolean;
-  renderControls?: () => ReactNode;
+  controls?: ReactNode;
 };
 
 export const Checkbox = ({
@@ -26,7 +26,7 @@ export const Checkbox = ({
   values,
   independentExpand,
   omitName,
-  renderControls
+  controls
 }: CheckboxProps) => {
   const formattedId = name.replaceAll(/\s+/g, '_');
   const CheckboxField = (
@@ -52,13 +52,13 @@ export const Checkbox = ({
       <details open>
         <summary>{CheckboxField}</summary>
         <div className="indent">
-          {renderControls?.()}
+          {children.length > 1 && controls}
           <CheckboxGroup
             options={children}
             name={name}
             values={values}
             independentExpand={independentExpand}
-            renderControls={renderControls}
+            controls={controls}
           />
         </div>
       </details>
@@ -75,7 +75,7 @@ export const Checkbox = ({
             name={name}
             values={values}
             independentExpand={independentExpand}
-            renderControls={renderControls}
+            controls={controls}
           />
         </div>
       )}

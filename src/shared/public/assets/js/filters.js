@@ -127,6 +127,10 @@
       });
     }
 
+    // Show filter-head (contains root controls, hidden without JS)
+    const filterHead = filter.querySelector('.filter-head');
+    if (filterHead) filterHead.classList.remove('js-hidden');
+
     const controls = filter.querySelectorAll('.filter-controls');
 
     controls.forEach((control) => {
@@ -136,15 +140,16 @@
       const selectSpan = control.querySelector('.toggle-select');
 
       const isRoot = control.classList.contains('root-controls');
-      const parent = control.parentNode.parentNode;
 
       let checkboxes;
 
       if (isRoot) {
         // Root control: toggle ALL checkboxes in the filter (including nested children)
-        checkboxes = parent.querySelectorAll(".filter-body input[type='checkbox']");
+        const filterEl = control.closest('.filters');
+        checkboxes = filterEl.querySelectorAll(".filter-body input[type='checkbox']");
       } else {
         // Nested "at this level" control: only immediate children, not deeper descendants
+        const parent = control.parentNode.parentNode;
         const selectors = [
           // immediate children that have their own children (inside details > summary)
           ":scope > .indent > .govuk-checkboxes > details > summary > .govuk-checkboxes__item > input[type='checkbox']",
