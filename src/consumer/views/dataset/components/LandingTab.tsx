@@ -32,7 +32,6 @@ type DataTabProps = NoteCodesLegendProps &
 
 export default function LandingTab(props: DataTabProps) {
   const { buildUrl, i18n } = useLocals();
-  const [_originalUrl] = props.url.split('?');
 
   let formUrl = buildUrl(`/${props.dataset.id}/filtered`, i18n.language);
   if (props.isDevPreview) formUrl = buildUrl(`/developer/${props.dataset.id}/filtered`, i18n.language, {}, 'data');
