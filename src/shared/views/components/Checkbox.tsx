@@ -14,7 +14,7 @@ export type CheckboxProps = CheckboxOptions & {
   checked?: boolean;
   values: string[];
   omitName?: boolean;
-  renderControls?: (label: ReactNode) => ReactNode;
+  renderControls?: () => ReactNode;
 };
 
 export const Checkbox = ({
@@ -52,7 +52,7 @@ export const Checkbox = ({
       <details open>
         <summary>{CheckboxField}</summary>
         <div className="indent">
-          {renderControls?.(label)}
+          {renderControls?.()}
           <CheckboxGroup
             options={children}
             name={name}

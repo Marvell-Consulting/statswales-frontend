@@ -13,7 +13,6 @@ export type RadioItemProps = RadioOption & {
 };
 
 // Forward declaration — FilterRadioGroup is imported lazily to avoid circular deps
-// eslint-disable-next-line @typescript-eslint/no-use-before-define
 export const RadioItem = ({ name, label, value, children, checked, selectedValue }: RadioItemProps) => {
   const formattedId = `${name}.${value}`.replaceAll(/\s+/g, '_');
 

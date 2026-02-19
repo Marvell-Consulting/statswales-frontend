@@ -7,7 +7,7 @@ export type CheckboxGroupProps = {
   name: string;
   values?: string[];
   independentExpand?: boolean;
-  renderControls?: (label: ReactNode) => ReactNode;
+  renderControls?: () => ReactNode;
 };
 
 export const CheckboxGroup = ({

@@ -1,18 +1,13 @@
 (() => {
   function addListeners(filter) {
     const name = filter.getAttribute('id');
-    const selectAllCheckboxId = name.trim() + '-all';
-    const allCheckbox = filter.querySelector('.filter-head input#' + selectAllCheckboxId);
     const selectedLabel = filter.querySelector('span.number-selected');
     const filteredLabel = filter.querySelector('span.filtered-label');
     const nonFilteredLabel = filter.querySelector('span.non-filtered-label');
-    const childDetails = filter.querySelectorAll('details') || [];
 
     const childCheckboxes = [...filter.querySelectorAll('.filter-body [type="checkbox"]')];
 
     function checkState() {
-      const anyChecked = childCheckboxes.some((c) => c.checked);
-      allCheckbox.checked = !anyChecked;
       updateTotals();
     }
 
@@ -29,28 +24,25 @@
         nonFilteredLabel.classList.remove('js-hidden');
       }
     }
-
-    allCheckbox.addEventListener('change', (e) => {
-      if (e.target.checked) {
-        childCheckboxes
-          .filter((c) => c.checked)
-          .forEach((c) => {
-            const event = new MouseEvent('click', {
-              view: window,
-              bubbles: true,
-              cancelable: true
-            });
-            c.dispatchEvent(event);
-          });
-        // collapse children
-        childDetails.forEach((el) => el.removeAttribute('open'));
-      }
-      e.target.checked = true;
-      updateTotals();
-    });
   }
 
   const filters = document.querySelectorAll('.filters');
+
+  // On submit, disable all checkboxes for filters where every option is checked
+  // so the server receives an empty selection (= no filter applied).
+  const form = document.querySelector('.filters-container')?.closest('form');
+  if (form) {
+    form.addEventListener('submit', () => {
+      filters.forEach((filter) => {
+        const boxes = [...filter.querySelectorAll('.filter-body [type="checkbox"]')];
+        const total = Number(filter.dataset.total);
+        const numChecked = boxes.reduce((sum, cb) => sum + (cb.checked ? 1 : 0), 0);
+        if (numChecked === total) {
+          boxes.forEach((cb) => (cb.disabled = true));
+        }
+      });
+    });
+  }
 
   filters.forEach((filter) => {
     addListeners(filter);
@@ -135,59 +127,58 @@
       });
     }
 
-    const filterBody = filter.querySelector('.filter-body');
-    const parentControls = filter.querySelector('.parent-controls');
-
-    filterBody.insertBefore(parentControls, filterBody.firstChild);
-    parentControls.classList.remove('js-hidden');
-
-    const controls = filter.querySelectorAll('.controls');
+    const controls = filter.querySelectorAll('.filter-controls');
 
     controls.forEach((control) => {
       control.classList.remove('js-hidden');
-      const selectAll = control.querySelector("[data-action='select-all']");
-      const clear = control.querySelector("[data-action='clear']");
+      const toggle = control.querySelector("[data-action='toggle']");
+      const deselectSpan = control.querySelector('.toggle-deselect');
+      const selectSpan = control.querySelector('.toggle-select');
 
+      const isRoot = control.classList.contains('root-controls');
       const parent = control.parentNode.parentNode;
 
-      const selectors = [
-        // nested items with children
-        ":scope > .indent > .govuk-checkboxes > details > summary > .govuk-checkboxes__item > input[type='checkbox']",
-        // nested items without children
-        ":scope > .indent > .govuk-checkboxes .govuk-checkboxes__item > input[type='checkbox']",
-        // top-level items with children
-        ":scope > .filter-body > .govuk-checkboxes > details > summary > .govuk-checkboxes__item > input[type='checkbox']:not(.all-filter)",
-        // top-level items without children
-        ":scope > .filter-body > .govuk-checkboxes .govuk-checkboxes__item > input[type='checkbox']:not(.all-filter)"
-      ];
-      const checkboxes = parent.querySelectorAll(selectors.join(', '));
-      const details = parent.querySelectorAll('details') || [];
+      let checkboxes;
 
-      selectAll.addEventListener('click', (e) => {
+      if (isRoot) {
+        // Root control: toggle ALL checkboxes in the filter (including nested children)
+        checkboxes = parent.querySelectorAll(".filter-body input[type='checkbox']");
+      } else {
+        // Nested "at this level" control: only immediate children, not deeper descendants
+        const selectors = [
+          // immediate children that have their own children (inside details > summary)
+          ":scope > .indent > .govuk-checkboxes > details > summary > .govuk-checkboxes__item > input[type='checkbox']",
+          // immediate children without children (direct items)
+          ":scope > .indent > .govuk-checkboxes > .govuk-checkboxes__item > input[type='checkbox']"
+        ];
+        checkboxes = parent.querySelectorAll(selectors.join(', '));
+      }
+
+      function updateToggleLabel() {
+        const allChecked = [...checkboxes].every((cb) => cb.checked);
+        if (allChecked) {
+          deselectSpan.classList.remove('js-hidden');
+          selectSpan.classList.add('js-hidden');
+        } else {
+          deselectSpan.classList.add('js-hidden');
+          selectSpan.classList.remove('js-hidden');
+        }
+      }
+
+      // Set initial label state
+      updateToggleLabel();
+
+      // Update label when any checkbox changes
+      checkboxes.forEach((cb) => cb.addEventListener('change', updateToggleLabel));
+
+      toggle.addEventListener('click', (e) => {
         e.preventDefault();
+        const allChecked = [...checkboxes].every((cb) => cb.checked);
+
         checkboxes.forEach((checkbox) => {
-          checkbox.checked = true;
+          checkbox.checked = !allChecked;
           const evt = new Event('change');
           checkbox.dispatchEvent(evt);
-        });
-        // expand all children
-        details.forEach((el) => {
-          el.setAttribute('open', true);
-        });
-        return false;
-      });
-
-      clear.addEventListener('click', (e) => {
-        e.preventDefault();
-
-        checkboxes.forEach((checkbox) => {
-          checkbox.checked = false;
-          const evt = new Event('change');
-          checkbox.dispatchEvent(evt);
-        });
-        // collapse all children
-        details.forEach((el) => {
-          el.removeAttribute('open');
         });
 
         return false;

@@ -34,6 +34,7 @@ npm run css          # sass compilation only
 ## Key Patterns
 
 **Two-app middleware stack** (`src/consumer/app.ts`, `src/publisher/app.ts`):
+
 1. Static assets / transport security
 2. `cookieParser` → `featureFlags` → `cookieBanner`
 3. i18n → `languageSwitcher`
@@ -43,6 +44,7 @@ npm run css          # sass compilation only
 7. `notFound` → `errorHandler`
 
 **`initServices` pattern:** both apps instantiate their API client and attach it to `req` in `src/[app]/middleware/services.ts`. Never import API classes directly in controllers.
+
 - Consumer: `req.conapi = new ConsumerApi(req.language as Locale)` (`src/consumer/services/consumer-api.ts`)
 - Publisher: `req.pubapi = new PublisherApi(req.language as Locale, req.cookies.jwt)` (`src/publisher/services/publisher-api.ts`)
 
@@ -53,6 +55,7 @@ Both also set shared `res.locals` values (`appEnv`, `buildUrl`, `protocol`, `hos
 **History:** last 10 URLs tracked in `req.session.history` by `src/shared/middleware/history.ts`.
 
 **Publisher route middleware order** (`src/publisher/routes/publish.ts`):
+
 ```ts
 publish.use(noCache, flashMessages, flashErrors);
 // per-route: fetchDataset(Include.Xxx), redirectIfOpenPublishRequest
@@ -61,6 +64,7 @@ publish.use(noCache, flashMessages, flashErrors);
 **i18n:** `i18next` + path-based detection (`/:lang` param = `en-GB` or `cy-GB`). Translation files: `src/shared/i18n/en.json`, `src/shared/i18n/cy.json`. Test assertions use `i18next.t('key', { lng: Locale.English })` rather than hardcoded strings.
 
 **Feature flags** (`src/shared/utils/feature-flags.ts`, `src/shared/middleware/feature-flags.ts`):
+
 - Only active in `staging` and `production` (`AppEnv.Staging`, `AppEnv.Prod`); always returns `true` elsewhere
 - Enabled via `?feature=flag1,flag2`; persisted in `featureFlags` cookie (24 h) so subsequent requests don't need the query param
 - Only values present in the `FeatureFlag` enum are stored in the cookie — unknown strings are discarded by `validFlags()`
@@ -69,6 +73,7 @@ publish.use(noCache, flashMessages, flashErrors);
 ## Testing
 
 **Unit/integration tests** (`tests/`):
+
 - Integration tests import the real Express app (`src/publisher/app`) and drive it with `supertest` — no Express mocking
 - Backend HTTP calls are intercepted by an **MSW** mock server (`tests/mocks/backend.ts`) using `setupServer`; lifecycle hooks in `beforeAll`/`afterEach`/`afterAll`
 - `PublisherApi` unit tests spy on `global.fetch` directly with `jest.spyOn`

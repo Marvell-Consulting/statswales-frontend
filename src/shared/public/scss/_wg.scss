@@ -763,6 +763,7 @@
     .govuk-checkboxes__input:not(:disabled)
     + .govuk-checkboxes__label:before {
     box-shadow: none;
+    border: 2px solid currentcolor;
   }
 
   .govuk-checkboxes--bg {
@@ -789,7 +790,8 @@
     }
 
     .govuk-checkboxes__item:hover .govuk-checkboxes__input:not(:disabled) + .govuk-checkboxes__label::before {
-      box-shadow: 0 0 0 0px #b1b4b6;
+      box-shadow: none;
+      border: 2px solid currentcolor;
     }
 
     .govuk-checkboxes__item {
@@ -1630,6 +1632,7 @@
 
   .filters .govuk-checkboxes__label {
     font-size: 14px;
+    font-weight: normal;
     margin-top: 8px;
     padding-left: 1em;
   }
@@ -1648,6 +1651,10 @@
     top: 17px;
     color: colours.$blue;
     left: 6px;
+  }
+
+  .filters .filter-controls {
+    margin-top: 6px;
   }
 
   .tabs,
@@ -1926,7 +1933,7 @@
 
     input[type='checkbox']:focus ~ label::before,
     input[type='radio']:focus ~ label::before {
-      border: none !important;
+      border: 2px solid currentcolor !important;
       color: colours.$black !important;
       box-shadow: 0 0 0 2px colours.$yellow;
       outline: 2px solid colours.$black;

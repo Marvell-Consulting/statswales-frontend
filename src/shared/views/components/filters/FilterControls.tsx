@@ -3,19 +3,16 @@ import React, { ReactNode } from 'react';
 
 export type FilterControlsProps = {
   className?: string;
-  selectAllLabel: ReactNode;
-  noneLabel: ReactNode;
+  deselectLabel: ReactNode;
+  selectLabel: ReactNode;
 };
 
-export const FilterControls = ({ className, selectAllLabel, noneLabel }: FilterControlsProps) => {
+export const FilterControls = ({ className, deselectLabel, selectLabel }: FilterControlsProps) => {
   return (
-    <div className={clsx('controls js-hidden', className)}>
-      <a href="#" className="govuk-link nowrap" data-action="select-all">
-        {selectAllLabel}
-      </a>
-      <span>|</span>
-      <a href="#" className="govuk-link nowrap" data-action="clear">
-        {noneLabel}
+    <div className={clsx('filter-controls js-hidden', className)}>
+      <a href="#" className="govuk-link nowrap" data-action="toggle">
+        <span className="toggle-deselect">{deselectLabel}</span>
+        <span className="toggle-select js-hidden">{selectLabel}</span>
       </a>
     </div>
   );
