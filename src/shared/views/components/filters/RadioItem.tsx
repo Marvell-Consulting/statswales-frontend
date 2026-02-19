@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 export type RadioOption = {
   label: string;
@@ -6,19 +6,16 @@ export type RadioOption = {
   children?: RadioOption[];
 };
 
-export type RadioItemProps = RadioOption & {
+export type RadioItemProps = {
   name: string;
+  label: string;
+  value: string;
   checked?: boolean;
-  selectedValue?: string;
+  children?: ReactNode;
 };
 
-// Forward declaration — FilterRadioGroup is imported lazily to avoid circular deps
-export const RadioItem = ({ name, label, value, children, checked, selectedValue }: RadioItemProps) => {
+export const RadioItem = ({ name, label, value, checked, children }: RadioItemProps) => {
   const formattedId = `${name}.${value}`.replaceAll(/\s+/g, '_');
-
-  // Inline require to break circular dependency between RadioItem ↔ FilterRadioGroup
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { FilterRadioGroup } = require('./FilterRadioGroup');
 
   return (
     <>
@@ -37,7 +34,7 @@ export const RadioItem = ({ name, label, value, children, checked, selectedValue
       </div>
       {children && (
         <div className="govuk-radios__conditional" id={`conditional-${formattedId}`}>
-          <FilterRadioGroup options={children} name={`${name}.${value}`} selectedValue={selectedValue} />
+          {children}
         </div>
       )}
     </>
