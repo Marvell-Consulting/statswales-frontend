@@ -207,48 +207,53 @@ export const viewPublishedLanding = async (req: Request, res: Response, next: Ne
     return;
   }
 
-  if (req.method === 'POST') {
-    switch (req.body.chooser) {
-      case 'pivot':
-        res.redirect(req.buildUrl(`/${dataset.id}/pivot`, req.language));
-        return;
-      case 'data':
-        res.redirect(req.buildUrl(`/${dataset.id}/data`, req.language));
-        return;
-      default:
-        throw new BadRequestException('Unsupported chooser type');
+  try {
+    if (req.method === 'POST') {
+      switch (req.body.chooser) {
+        case 'pivot':
+          res.redirect(req.buildUrl(`/${dataset.id}/pivot`, req.language));
+          return;
+        case 'data':
+          res.redirect(req.buildUrl(`/${dataset.id}/data`, req.language));
+          return;
+        default:
+          throw new BadRequestException('Unsupported chooser type');
+      }
     }
-  }
 
-  const [datasetMetadata, filters, publishedRevisions]: [PreviewMetadata, FilterTable[], RevisionDTO[]] =
-    await Promise.all([
-      getDatasetMetadata(dataset, revision),
-      req.conapi.getPublishedDatasetFilters(dataset.id),
-      req.conapi.getPublicationHistory(dataset.id)
-    ]);
+    const [datasetMetadata, filters, publishedRevisions]: [PreviewMetadata, FilterTable[], RevisionDTO[]] =
+      await Promise.all([
+        getDatasetMetadata(dataset, revision),
+        req.conapi.getPublishedDatasetFilters(dataset.id),
+        req.conapi.getPublicationHistory(dataset.id)
+      ]);
 
-  const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
-  const publicationHistory = publishedRevisions.map((rev) => singleLangRevision(rev, req.language));
+    const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
+    const publicationHistory = publishedRevisions.map((rev) => singleLangRevision(rev, req.language));
 
-  for (const rev of publicationHistory) {
-    if (rev?.metadata?.reason) {
-      rev.metadata.reason = await markdownToSafeHTML(rev.metadata.reason);
+    for (const rev of publicationHistory) {
+      if (rev?.metadata?.reason) {
+        rev.metadata.reason = await markdownToSafeHTML(rev.metadata.reason);
+      }
     }
+
+    const isLanding = true;
+
+    res.render('dataset/landing', {
+      ...{ datasetMetadata },
+      filters,
+      topics,
+      publicationHistory,
+      selectedFilterOptions: [],
+      shorthandUrl: req.buildUrl(`/shorthand`, req.language),
+      isUnpublished,
+      isArchived,
+      isLanding,
+      pivotStage: PivotStage.Landing
+    });
+  } catch (err) {
+    next(err);
   }
-
-  const isLanding = true;
-
-  res.render('dataset/landing', {
-    ...{ datasetMetadata },
-    filters,
-    topics,
-    publicationHistory,
-    selectedFilterOptions: [],
-    shorthandUrl: req.buildUrl(`/shorthand`, req.language),
-    isUnpublished,
-    isArchived,
-    isLanding
-  });
 };
 
 export const viewPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
@@ -263,40 +268,44 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
     return;
   }
 
-  const [datasetMetadata, view, filters, publishedRevisions]: [
-    PreviewMetadata,
-    ViewV2DTO,
-    FilterTable[],
-    RevisionDTO[]
-  ] = await Promise.all([
-    getDatasetMetadata(dataset, revision),
-    req.conapi.getPublishedDatasetView(dataset.id, pageNumber, pageSize, sortBy),
-    req.conapi.getPublishedDatasetFilters(dataset.id),
-    req.conapi.getPublicationHistory(dataset.id)
-  ]);
+  try {
+    const [datasetMetadata, view, filters, publishedRevisions]: [
+      PreviewMetadata,
+      ViewV2DTO,
+      FilterTable[],
+      RevisionDTO[]
+    ] = await Promise.all([
+      getDatasetMetadata(dataset, revision),
+      req.conapi.getPublishedDatasetView(dataset.id, pageNumber, pageSize, sortBy),
+      req.conapi.getPublishedDatasetFilters(dataset.id),
+      req.conapi.getPublicationHistory(dataset.id)
+    ]);
 
-  const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
-  const pagination = pageInfo(view.page_info?.current_page, pageSize, view.page_info?.total_records || 0);
-  const publicationHistory = publishedRevisions.map((rev) => singleLangRevision(rev, req.language));
+    const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
+    const pagination = pageInfo(view.page_info?.current_page, pageSize, view.page_info?.total_records || 0);
+    const publicationHistory = publishedRevisions.map((rev) => singleLangRevision(rev, req.language));
 
-  for (const rev of publicationHistory) {
-    if (rev?.metadata?.reason) {
-      rev.metadata.reason = await markdownToSafeHTML(rev.metadata.reason);
+    for (const rev of publicationHistory) {
+      if (rev?.metadata?.reason) {
+        rev.metadata.reason = await markdownToSafeHTML(rev.metadata.reason);
+      }
     }
-  }
 
-  res.render('dataset/view', {
-    ...view,
-    ...pagination,
-    datasetMetadata,
-    filters,
-    topics,
-    publicationHistory,
-    selectedFilterOptions: [],
-    shorthandUrl: req.buildUrl(`/shorthand`, req.language),
-    isUnpublished,
-    isArchived
-  });
+    res.render('dataset/view', {
+      ...view,
+      ...pagination,
+      datasetMetadata,
+      filters,
+      topics,
+      publicationHistory,
+      selectedFilterOptions: [],
+      shorthandUrl: req.buildUrl(`/shorthand`, req.language),
+      isUnpublished,
+      isArchived
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const viewFilteredDataset = async (req: Request, res: Response, next: NextFunction) => {
@@ -370,59 +379,63 @@ export const viewPivotedDataset = async (req: Request, res: Response, next: Next
     return;
   }
 
-  if (req.method === 'POST') {
-    const dataOptions: DataOptionsDTO = { ...FRONTEND_DATA_OPTIONS, filters: parseFiltersV2(req.body.filter) };
-    const filterId = await req.conapi.generateFilterId(dataset.id, dataOptions);
-    const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
-    res.redirect(req.buildUrl(`/${dataset.id}/pivot/${filterId}`, req.language, { page_size: pageSize.toString() }));
-    return;
-  }
-
-  const filterId = req.params.filterId;
-
-  if (!filterId) {
-    next(new NotFoundException('filter id is required'));
-    return;
-  }
-
-  const { pageNumber, pageSize, sortBy } = parsePageOptions(req);
-
-  const [datasetMetadata, view, filters, publishedRevisions]: [
-    PreviewMetadata,
-    ViewV2DTO,
-    FilterTable[],
-    RevisionDTO[]
-  ] = await Promise.all([
-    getDatasetMetadata(dataset, revision),
-    req.conapi.getPivotedDatasetView(dataset.id, filterId, pageNumber, pageSize, sortBy),
-    req.conapi.getPublishedDatasetFilters(dataset.id),
-    req.conapi.getPublicationHistory(dataset.id)
-  ]);
-
-  const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
-  const pagination = pageInfo(view.page_info?.current_page, pageSize, view.page_info?.total_records || 0);
-  const publicationHistory = publishedRevisions.map((rev) => singleLangRevision(rev, req.language));
-
-  for (const rev of publicationHistory) {
-    if (rev?.metadata?.reason) {
-      rev.metadata.reason = await markdownToSafeHTML(rev.metadata.reason);
+  try {
+    if (req.method === 'POST') {
+      const dataOptions: DataOptionsDTO = { ...FRONTEND_DATA_OPTIONS, filters: parseFiltersV2(req.body.filter) };
+      const filterId = await req.conapi.generateFilterId(dataset.id, dataOptions);
+      const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
+      res.redirect(req.buildUrl(`/${dataset.id}/pivot/${filterId}`, req.language, { page_size: pageSize.toString() }));
+      return;
     }
-  }
 
-  res.render('dataset/view', {
-    ...view,
-    ...pagination,
-    datasetMetadata,
-    filters,
-    topics,
-    publicationHistory,
-    selectedFilterOptions: view.filters ? v2FiltersToV1(view.filters) : [],
-    shorthandUrl: req.buildUrl(`/shorthand`, req.language),
-    isUnpublished: revision?.unpublished_at || false,
-    isArchived: (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false,
-    columns: view.pivot?.x,
-    rows: view.pivot?.y
-  });
+    const filterId = req.params.filterId;
+
+    if (!filterId) {
+      next(new NotFoundException('filter id is required'));
+      return;
+    }
+
+    const { pageNumber, pageSize, sortBy } = parsePageOptions(req);
+
+    const [datasetMetadata, view, filters, publishedRevisions]: [
+      PreviewMetadata,
+      ViewV2DTO,
+      FilterTable[],
+      RevisionDTO[]
+    ] = await Promise.all([
+      getDatasetMetadata(dataset, revision),
+      req.conapi.getPivotedDatasetView(dataset.id, filterId, pageNumber, pageSize, sortBy),
+      req.conapi.getPublishedDatasetFilters(dataset.id),
+      req.conapi.getPublicationHistory(dataset.id)
+    ]);
+
+    const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
+    const pagination = pageInfo(view.page_info?.current_page, pageSize, view.page_info?.total_records || 0);
+    const publicationHistory = publishedRevisions.map((rev) => singleLangRevision(rev, req.language));
+
+    for (const rev of publicationHistory) {
+      if (rev?.metadata?.reason) {
+        rev.metadata.reason = await markdownToSafeHTML(rev.metadata.reason);
+      }
+    }
+
+    res.render('dataset/view', {
+      ...view,
+      ...pagination,
+      datasetMetadata,
+      filters,
+      topics,
+      publicationHistory,
+      selectedFilterOptions: view.filters ? v2FiltersToV1(view.filters) : [],
+      shorthandUrl: req.buildUrl(`/shorthand`, req.language),
+      isUnpublished: revision?.unpublished_at || false,
+      isArchived: (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false,
+      columns: view.pivot?.x,
+      rows: view.pivot?.y
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const downloadPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
