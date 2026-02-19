@@ -16,7 +16,7 @@
     function updateTotals() {
       const numChecked = childCheckboxes.reduce((sum, check) => sum + (check.checked ? 1 : 0), 0);
       selectedLabel.innerText = numChecked;
-      
+
       // "Not filtered" only when all options are checked
       if (numChecked === total) {
         filteredLabel.classList.add('js-hidden');
