@@ -13,7 +13,9 @@
     "back": "Yn ôl",
     "cancel": "Canslo",
     "upload_csv": "Parhau",
-    "preview": "Rhagolwg (yn agor mewn tab newydd)"
+    "preview": "Rhagolwg (yn agor mewn tab newydd)",
+    "refresh": "Adnewyddu'r Dudalen",
+    "create_table": "Creu Tabl"
   },
   "badge": {
     "dataset_status": {
@@ -2115,11 +2117,42 @@
     "all_values": "Pob un o'r {{count}} gwerth",
     "visibility": {
       "shown": "Wedi'i ddangos",
-      "hidden": "Wedi'i guddio"
+      "hidden": "Wedi'i guddio",
+      "columns": "Colofnau",
+      "rows": "Rhesi"
     },
     "actions": {
       "change": "Newid gwerthoedd",
       "no_action": "Ni ellir newid y gwerth"
     }
+  },
+  "table_chooser": {
+    "heading": "Creu eich tabl eich hun",
+    "pivot": {
+      "label": "Creu eich tabl eich hun",
+      "hint": "Bydd gofyn i chi ddewis un newidyn ar gyfer colofnau'r tabl, ac un arall ar gyfer y rhesi"
+    },
+    "data": {
+      "label": "Pob newidyn",
+      "hint": "Bydd y data yn cael ei ddangos gyda cholofnau ar gyfer pob un o'r newidynnau yn y set ddata, gyda gwerth data ar gyfer pob cyfuniad o newidynnau"
+    }
+  },
+  "columns_chooser": {
+    "heading": "Dewiswch newidyn ar gyfer colofnau'r tabl",
+    "intro": "Bydd gwerthoedd y newidyn hwn yn mynd ar draws brig eich tabl. Gallwch ddewis newidyn yn y ddewislen 'Hidlyddion newidynnau' i weld pa werthoedd sydd ynddo."
+  },
+  "rows_chooser": {
+    "heading": "Dewiswch newidyn ar gyfer rhesi'r tabl",
+    "intro": "Bydd gwerthoedd y newidyn hwn yn mynd i lawr ochr eich tabl. Gallwch ddewis newidyn yn y ddewislen 'Hidlyddion newidynnau' i weld pa werthoedd sydd ynddo."
+  },
+  "pivot_summary": {
+    "heading": "Adolygu gwerthoedd a ddewiswyd ar gyfer pob newidyn",
+    "intro-1": "Gallwch ddewis unrhyw werthoedd ar gyfer y newidynnau sy'n cael eu defnyddio fel colofnau a rhesi",
+    "intro-2": "Bydd y newidynnau eraill yn y set ddata wedi'u cuddio yn eich tabl, ond mae angen iddynt gael eu cynrychioli gan un gwerth"
+  },
+  "pivot": {
+    "filter_warning": "Dim ond un gwerth y gall newidynnau cudd yn eich tabl ei gynrychioli.",
+    "start_over": "Creu Tabl newydd",
+    "show_data": "Dangos pob newidyn yn y tabl"
   }
 }
