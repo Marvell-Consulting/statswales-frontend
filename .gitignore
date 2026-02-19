@@ -40,9 +40,7 @@ dist/**/*
 yarn.lock
 
 # Ignore playwright generated files
-/playwright/results/
-/playwright/report/
-/playwright/.cache/
+playwright/*
 
 # Production dataset check progress file
 datasets-progress.json
@@ -51,4 +49,4 @@ failing-datasets.txt
 # ignore IDE settings
 .vscode/
 .nova/
-playwright/.auth
+.claude/

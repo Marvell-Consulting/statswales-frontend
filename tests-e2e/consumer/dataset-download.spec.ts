@@ -87,7 +87,7 @@ test.describe('Download preserves filter state', () => {
     await page.goto(datasetUrl);
 
     const filterCheckbox = page
-      .locator('.checkboxes__input__filter:not([id$="-all"]):not(details .checkboxes__input__filter)')
+      .locator('.filters .govuk-checkboxes__input:not([id$="-all"]):not(details .govuk-checkboxes__input)')
       .first();
 
     await filterCheckbox.check({ force: true, timeout: 5000 });

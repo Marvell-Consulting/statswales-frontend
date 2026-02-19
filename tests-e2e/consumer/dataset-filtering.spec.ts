@@ -35,7 +35,7 @@ test.describe('Dataset Filtering', () => {
     test('Filter checkboxes are interactive', async ({ page }) => {
       await page.goto(datasetUrl);
       // Find a filter checkbox
-      const filterCheckbox = page.locator('.checkboxes__input__filter').first();
+      const filterCheckbox = page.locator('.filters .govuk-checkboxes__input').first();
       if (await filterCheckbox.isVisible()) {
         // Checkbox should be checkable
         await filterCheckbox.check({ force: true });
@@ -86,20 +86,25 @@ test.describe('Dataset Filtering', () => {
   });
 
   test.describe('Filter Controls', () => {
-    test('Select all and None links are available in filter groups', async ({ page }) => {
+    test('Toggle controls are available in filter groups', async ({ page }) => {
       await page.goto(datasetUrl);
-      // Filter groups have "Select all" and "None" controls
-      const selectAllLink = page.locator('[data-action="select-all"]').first();
-      const clearLink = page.locator('[data-action="clear"]').first();
-      await expect(selectAllLink).toBeVisible();
-      await expect(clearLink).toBeVisible();
+      // Filter groups have toggle controls for select/deselect all
+      const toggleLink = page.locator('[data-action="toggle"]').first();
+      await expect(toggleLink).toBeVisible();
+      // Should show "Deselect all" by default (since all are checked)
+      const deselectSpan = page.locator('.toggle-deselect').first();
+      await expect(deselectSpan).toBeVisible();
     });
 
-    test('Not filtered checkbox is checked by default', async ({ page }) => {
+    test('All filter checkboxes are checked by default', async ({ page }) => {
       await page.goto(datasetUrl);
-      // The "Not filtered" checkbox (input with id ending in "-all") should be checked by default
-      const notFilteredCheckbox = page.locator('input[type="checkbox"][id$="-all"]').first();
-      await expect(notFilteredCheckbox).toBeChecked();
+      // All filter checkboxes should be checked by default
+      const checkboxes = page.locator('.filters .govuk-checkboxes__input');
+      const count = await checkboxes.count();
+      expect(count).toBeGreaterThan(0);
+      for (let i = 0; i < count; i++) {
+        await expect(checkboxes.nth(i)).toBeChecked();
+      }
     });
   });
 });

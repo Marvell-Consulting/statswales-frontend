@@ -1,6 +1,6 @@
 import qs from 'qs';
 import React from 'react';
-import { Filters } from '../../../../shared/views/components/Filters';
+import { Filters } from '../../../../shared/views/components/filters';
 import Pagination, { PaginationProps } from '../../../../shared/views/components/Pagination';
 import { NoteCodesLegendProps } from './NoteCodesLegend';
 import ViewTable, { ViewTableProps } from './ViewTable';

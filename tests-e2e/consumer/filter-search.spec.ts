@@ -177,7 +177,7 @@ test.describe('Filter Search', () => {
   });
 
   test.describe('Interaction with filter controls', () => {
-    test('Select all works while search is active', async ({ page }) => {
+    test('Toggle control works while search is active', async ({ page }) => {
       await page.goto(datasetUrl);
       const areaFilter = page.locator('[id^="filter-"]').filter({ hasText: 'Area' });
       const searchInput = areaFilter.locator('.filter-search-input');
@@ -186,34 +186,17 @@ test.describe('Filter Search', () => {
       await searchInput.fill('Cardiff');
       await page.waitForTimeout(350);
 
-      // Click "Select all" in the filter body controls
-      const selectAll = areaFilter.locator('.filter-body [data-action="select-all"]').first();
-      await selectAll.click();
+      // All checkboxes start checked by default — use toggle to deselect all
+      const toggle = areaFilter.locator('.filter-head [data-action="toggle"]').first();
+      await toggle.click();
 
-      // The visible Cardiff checkbox should be checked
-      const cardiffInput = areaFilter.locator('.filter-body input[type="checkbox"]:visible').first();
-      await expect(cardiffInput).toBeChecked();
-    });
-
-    test('None/clear works while search is active', async ({ page }) => {
-      await page.goto(datasetUrl);
-      const areaFilter = page.locator('[id^="filter-"]').filter({ hasText: 'Area' });
-      const searchInput = areaFilter.locator('.filter-search-input');
-
-      // Search and select all first
-      await searchInput.fill('Cardiff');
-      await page.waitForTimeout(350);
-
-      const selectAll = areaFilter.locator('.filter-body [data-action="select-all"]').first();
-      await selectAll.click();
-
-      // Click "None" to clear
-      const clearLink = areaFilter.locator('.filter-body [data-action="clear"]').first();
-      await clearLink.click();
-
-      // Visible checkboxes should be unchecked
+      // The visible Cardiff checkbox should now be unchecked
       const cardiffInput = areaFilter.locator('.filter-body input[type="checkbox"]:visible').first();
       await expect(cardiffInput).not.toBeChecked();
+
+      // Click toggle again to re-select all
+      await toggle.click();
+      await expect(cardiffInput).toBeChecked();
     });
   });
 

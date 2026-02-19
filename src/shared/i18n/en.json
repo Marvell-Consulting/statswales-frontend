@@ -1679,8 +1679,10 @@
     }
   },
   "filters": {
-    "select_all": "Select all<span class=\"govuk-visually-hidden\"> {{columnName}}</span>",
-    "none": "<span class=\"govuk-visually-hidden\">Select </span>None<span class=\"govuk-visually-hidden\"> of {{columnName}}</span>",
+    "select_all": "Select all values<span class=\"govuk-visually-hidden\"> for {{columnName}}</span>",
+    "deselect_all": "Deselect all values<span class=\"govuk-visually-hidden\"> for {{columnName}}</span>",
+    "select_all_level": "Select all values at this level<span class=\"govuk-visually-hidden\"> for {{columnName}}</span>",
+    "deselect_all_level": "Deselect all values at this level<span class=\"govuk-visually-hidden\"> for {{columnName}}</span>",
     "clear": "Clear all",
     "no_filter": "Not filtered<span class=\"govuk-visually-hidden\"> for {{columnName}}</span>",
     "summary": "<span class=\"number-selected\">{{filtered}}</span> of {{total}} selected",

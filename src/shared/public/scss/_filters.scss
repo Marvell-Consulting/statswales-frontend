@@ -33,7 +33,7 @@
 
     .filter-head {
       border-bottom: 1px solid colours.$lightgrey_light;
-      padding-bottom: 0.5em;
+      padding: 5px 10px;
     }
 
     .filter-body {
@@ -55,7 +55,7 @@
       margin-top: 5px;
     }
 
-    .controls {
+    .filter-controls {
       height: 100%;
       display: flex;
       align-items: center;

@@ -1628,9 +1628,11 @@
     }
   },
   "filters": {
-    "select_all": "Dewiswch bob <span class=\"govuk-visually-hidden\"> {{columnName}}</span>",
-    "none": "<span class=\"govuk-visually-hidden\">Dewiswch </span>Ddim<span class=\"govuk-visually-hidden\"> o {{columnName}}</span>",
-    "clear": "Clirio popeth",
+    "select_all": "Dewiswch yr holl werthoedd <span class=\"govuk-visually-hidden\">ar gyfer {{columnName}}</span>",
+    "deselect_all": "Dad-ddewiswch yr holl werthoedd <span class=\"govuk-visually-hidden\">ar gyfer {{columnName}}</span>",
+    "select_all_level": "Dewiswch yr holl werthoedd ar y lefel hon <span class=\"govuk-visually-hidden\">ar gyfer {{columnName}}</span>",
+    "deselect_all_level": "Dad-ddewiswch yr holl werthoedd ar y lefel hon <span class=\"govuk-visually-hidden\">ar gyfer {{columnName}}</span>",
+    "clear": "Clirio popeth <span class=\"govuk-visually-hidden\">ar gyfer {{columnName}}</span>",
     "no_filter": "Heb ei hidlo <span class=\"govuk-visually-hidden\"> am {{columnName}}</span>",
     "summary": "<span class=\"number-selected\">{{filtered}}</span> o {{total}} wedi'u dewis",
     "non-filtered-summary": "{{total}} dewis y mae modd eu dewis",
