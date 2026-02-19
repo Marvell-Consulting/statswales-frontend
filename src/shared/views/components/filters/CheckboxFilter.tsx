@@ -72,8 +72,16 @@ export const CheckboxFilter = ({ filter, values }: CheckboxFilterProps) => {
         <div className="filter-head js-hidden">
           <FilterControls
             className="root-controls"
-            deselectLabel={<T>filters.deselect_all</T>}
-            selectLabel={<T>filters.select_all</T>}
+            deselectLabel={
+              <T columnName={filter.columnName} raw>
+                filters.deselect_all
+              </T>
+            }
+            selectLabel={
+              <T columnName={filter.columnName} raw>
+                filters.select_all
+              </T>
+            }
           />
         </div>
         <div className="filter-body">
@@ -84,8 +92,16 @@ export const CheckboxFilter = ({ filter, values }: CheckboxFilterProps) => {
             independentExpand
             controls={
               <FilterControls
-                deselectLabel={<T>filters.deselect_all_level</T>}
-                selectLabel={<T>filters.select_all_level</T>}
+                deselectLabel={
+                  <T columnName={filter.columnName} raw>
+                    filters.deselect_all_level
+                  </T>
+                }
+                selectLabel={
+                  <T columnName={filter.columnName} raw>
+                    filters.select_all_level
+                  </T>
+                }
               />
             }
           />

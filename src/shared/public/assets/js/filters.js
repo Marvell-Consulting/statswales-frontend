@@ -1,11 +1,11 @@
 (() => {
   function addListeners(filter) {
-    const name = filter.getAttribute('id');
     const selectedLabel = filter.querySelector('span.number-selected');
     const filteredLabel = filter.querySelector('span.filtered-label');
     const nonFilteredLabel = filter.querySelector('span.non-filtered-label');
 
     const childCheckboxes = [...filter.querySelectorAll('.filter-body [type="checkbox"]')];
+    const total = Number(filter.dataset.total);
 
     function checkState() {
       updateTotals();
@@ -16,12 +16,14 @@
     function updateTotals() {
       const numChecked = childCheckboxes.reduce((sum, check) => sum + (check.checked ? 1 : 0), 0);
       selectedLabel.innerText = numChecked;
-      if (numChecked) {
-        filteredLabel.classList.remove('js-hidden');
-        nonFilteredLabel.classList.add('js-hidden');
-      } else {
+      
+      // "Not filtered" only when all options are checked
+      if (numChecked === total) {
         filteredLabel.classList.add('js-hidden');
         nonFilteredLabel.classList.remove('js-hidden');
+      } else {
+        filteredLabel.classList.remove('js-hidden');
+        nonFilteredLabel.classList.add('js-hidden');
       }
     }
   }
