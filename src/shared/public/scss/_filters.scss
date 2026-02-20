@@ -24,22 +24,17 @@
     }
   }
 
-  .padding-box {
-    padding: 5px 10px;
-  }
-
   .filter-container {
     border: 1px solid colours.$darkgrey;
 
     .filter-head {
+      padding: 10px;
       border-bottom: 1px solid colours.$lightgrey_light;
-      padding: 5px 10px;
     }
 
     .filter-body {
-      padding: 5px 10px;
+      padding: 10px;
       overflow: auto;
-      min-height: 90px;
       max-height: 350px;
     }
 

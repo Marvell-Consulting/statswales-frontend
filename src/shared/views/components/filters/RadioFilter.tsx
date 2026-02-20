@@ -54,7 +54,7 @@ export const RadioFilter = ({ filter, values }: RadioFilterProps) => {
         )
       </h3>
       <div className="filter-container option-select">
-        <div className="padding-box">
+        <div className="filter-head">
           <div className="filter-search js-hidden">
             <input
               type="text"
@@ -64,23 +64,21 @@ export const RadioFilter = ({ filter, values }: RadioFilterProps) => {
               aria-label={t('filters.search.aria', { columnName: filter.columnName })}
             />
           </div>
-          <div className="filter-head">
-            <div className="govuk-radios--small">
-              <div className="govuk-radios__item">
-                <input
-                  className="govuk-radios__input"
-                  id={`${filterId}-all`}
-                  name={`filter[${filter.factTableColumn}]`}
-                  type="radio"
-                  value="all"
-                  defaultChecked={!selectedValue}
-                />
-                <label className="govuk-label govuk-radios__label" htmlFor={`${filterId}-all`}>
-                  <T columnName={filter.columnName} raw>
-                    filters.no_filter
-                  </T>
-                </label>
-              </div>
+          <div className="govuk-radios--small">
+            <div className="govuk-radios__item">
+              <input
+                className="govuk-radios__input"
+                id={`${filterId}-all`}
+                name={`filter[${filter.factTableColumn}]`}
+                type="radio"
+                value="all"
+                defaultChecked={!selectedValue}
+              />
+              <label className="govuk-label govuk-radios__label" htmlFor={`${filterId}-all`}>
+                <T columnName={filter.columnName} raw>
+                  filters.no_filter
+                </T>
+              </label>
             </div>
           </div>
         </div>
