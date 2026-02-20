@@ -58,7 +58,7 @@ export const CheckboxFilter = ({ filter, values }: CheckboxFilterProps) => {
         )
       </h3>
       <div className="filter-container option-select">
-        <div className="padding-box">
+        <div className="filter-head js-hidden">
           <div className="filter-search js-hidden">
             <input
               type="text"
@@ -68,8 +68,6 @@ export const CheckboxFilter = ({ filter, values }: CheckboxFilterProps) => {
               aria-label={t('filters.search.aria', { columnName: filter.columnName })}
             />
           </div>
-        </div>
-        <div className="filter-head js-hidden">
           <FilterControls
             className="root-controls"
             deselectLabel={
