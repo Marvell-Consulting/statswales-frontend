@@ -8,14 +8,17 @@ interface SummaryTableRowProps {
   filter: FilterTable;
   selectedFilterOptions: Filter[];
   idx: number;
+  landing?: boolean;
+  columns?: string;
+  rows?: string;
 }
 
-function flattenReferences(nodes: FilterValues[]): FilterValues[] {
+export function flattenReferences(nodes: FilterValues[]): FilterValues[] {
   return nodes.flatMap((node) => [node, ...(node.children ? flattenReferences(node.children) : [])]);
 }
 
 export function SummaryTableRow(props: SummaryTableRowProps): ReactNode {
-  const { filter, selectedFilterOptions, idx } = props;
+  const { filter, selectedFilterOptions, idx, landing } = props;
   const flatFilters = flattenReferences(filter.values);
   let changeLink = (
     <a key={`c-${idx}`} href={`#filter-${filter.factTableColumn}`}>
@@ -30,17 +33,43 @@ export function SummaryTableRow(props: SummaryTableRowProps): ReactNode {
     );
   }
 
+  const selectedFilterList = <SelectedFilterList {...{ filter, flatFilters, selectedFilterOptions, idx }} />;
+  let visibility = (
+    <span className="govuk-tag govuk-tag--green">
+      <T>summary.visibility.shown</T>
+    </span>
+  );
+  if (landing) {
+    visibility = (
+      <span className="govuk-tag govuk-tag--yellow">
+        <T>summary.visibility.hidden</T>
+      </span>
+    );
+  } else if (props.rows && props.rows === filter.factTableColumn) {
+    visibility = (
+      <span className="govuk-tag govuk-tag--blue">
+        <T>summary.visibility.rows</T>
+      </span>
+    );
+  } else if (props.columns && props.columns === filter.factTableColumn) {
+    visibility = (
+      <span className="govuk-tag govuk-tag--blue">
+        <T>summary.visibility.columns</T>
+      </span>
+    );
+  } else if (props.rows && props.columns) {
+    visibility = (
+      <span className="govuk-tag govuk-tag--yellow">
+        <T>summary.visibility.hidden</T>
+      </span>
+    );
+  }
+
   return (
     <tr key={`row-${idx}}`} className="govuk-table__row">
       <td className="govuk-table__cell">{filter.columnName}</td>
-      <td className="govuk-table__cell">
-        <span className="govuk-tag govuk-tag--green">
-          <T>summary.visibility.shown</T>
-        </span>
-      </td>
-      <td className="govuk-table__cell">
-        <SelectedFilterList {...{ filter, flatFilters, selectedFilterOptions, idx }} />
-      </td>
+      <td className="govuk-table__cell">{visibility}</td>
+      <td className="govuk-table__cell">{selectedFilterList}</td>
       <td className="govuk-table__cell">{changeLink}</td>
     </tr>
   );
