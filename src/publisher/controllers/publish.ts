@@ -238,6 +238,15 @@ export const uploadDataTable = async (req: Request, res: Response) => {
     updateType = req.body?.updateType;
   }
 
+  if (isUpdate && !updateType) {
+    const target = req.buildUrl(`/publish/${dataset.id}/update-type`, req.language);
+    if (req.header('X-Requested-With') === 'XMLHttpRequest') {
+      return res.json({ redirectTo: target });
+    }
+    res.redirect(target);
+    return;
+  }
+
   if (req.method === 'POST') {
     logger.debug('Data table upload started...');
     try {
@@ -254,11 +263,10 @@ export const uploadDataTable = async (req: Request, res: Response) => {
       const fileName = req.file.originalname;
       req.file.mimetype = fileMimeTypeHandler(req.file.mimetype, req.file.originalname);
       const fileData = new Blob([req.file.buffer as BlobPart], { type: req.file.mimetype });
-      logger.debug('Sending file to backend');
       logger.debug('Sending data table file to the backend...');
-      if (req.body?.updateType) {
+      if (isUpdate) {
         logger.info('Performing an update to the dataset');
-        await req.pubapi.uploadCSVToUpdateDataset(dataset.id, revision.id, fileData, fileName, req.body?.updateType);
+        await req.pubapi.uploadCSVToUpdateDataset(dataset.id, revision.id, fileData, fileName, updateType!);
       } else {
         await req.pubapi.uploadDataToDataset(dataset.id, fileData, fileName);
       }
@@ -282,6 +290,20 @@ export const uploadDataTable = async (req: Request, res: Response) => {
           errors = [{ field: 'csv', message: { key: `publish.upload.errors.infected` } }];
         } else {
           errors = body?.errors || [{ field: 'csv', message: { key: 'errors.fact_table_validation.unknown_error' } }];
+        }
+        if (
+          errors[0]?.message.key === 'errors.fact_table_validation.incomplete_fact' ||
+          errors[0]?.message.key === 'errors.fact_table_validation.duplicate_fact' ||
+          errors[0]?.message.key === 'errors.fact_table_validation.bad_note_codes'
+        ) {
+          set(req.session, `dataset[${dataset.id}].validationError`, body);
+          req.session.save();
+          const target = req.buildUrl(`/publish/${dataset.id}/upload/validation-errors`, req.language);
+          if (req.header('X-Requested-With') === 'XMLHttpRequest') {
+            return res.json({ redirectTo: target });
+          }
+          res.redirect(target);
+          return;
         }
       } else {
         res.status(500);
@@ -468,15 +490,15 @@ export const sources = async (req: Request, res: Response, next: NextFunction) =
     logger.warn(err, `There was a problem assigning source types`);
     res.status(error.status || 500);
     if (errors[0].message.key === 'errors.fact_table_validation.incomplete_fact') {
-      res.render('publish/empty-fact', { ...viewErr, dimension: { factTableColumn: '' } });
+      res.render('publish/empty-fact', { ...viewErr, dimension: { factTableColumn: '' }, isUpdate: false });
       return;
     }
     if (errors[0].message.key === 'errors.fact_table_validation.duplicate_fact') {
-      res.render('publish/duplicate-fact', { ...viewErr, dimension: { factTableColumn: '' } });
+      res.render('publish/duplicate-fact', { ...viewErr, dimension: { factTableColumn: '' }, isUpdate: false });
       return;
     }
     if (errors[0].message.key === 'errors.fact_table_validation.bad_note_codes') {
-      res.render('publish/bad-note-codes', { ...viewErr, dimension: { factTableColumn: '' } });
+      res.render('publish/bad-note-codes', { ...viewErr, dimension: { factTableColumn: '' }, isUpdate: false });
       return;
     }
   }
@@ -3082,4 +3104,38 @@ export const provideUpdateReason = async (req: Request, res: Response) => {
   }
 
   res.render('publish/update-reason', { update_reason, errors });
+};
+
+export const uploadValidationErrors = async (req: Request, res: Response) => {
+  const dataset = res.locals.dataset;
+  const revision = dataset.draft_revision;
+  const isUpdate = Boolean(revision.previous_revision_id);
+  const viewErr = get(req.session, `dataset[${dataset.id}].validationError`) as ViewErrDTO | undefined;
+
+  if (!viewErr) {
+    res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
+    return;
+  }
+
+  set(req.session, `dataset[${dataset.id}].validationError`, undefined);
+  req.session.save();
+
+  const errorKey = viewErr.errors?.[0]?.message?.key;
+
+  if (errorKey === 'errors.fact_table_validation.incomplete_fact') {
+    res.render('publish/empty-fact', { ...viewErr, dimension: { factTableColumn: '' }, isUpdate });
+    return;
+  }
+
+  if (errorKey === 'errors.fact_table_validation.duplicate_fact') {
+    res.render('publish/duplicate-fact', { ...viewErr, dimension: { factTableColumn: '' }, isUpdate });
+    return;
+  }
+
+  if (errorKey === 'errors.fact_table_validation.bad_note_codes') {
+    res.render('publish/bad-note-codes', { ...viewErr, dimension: { factTableColumn: '' }, isUpdate });
+    return;
+  }
+
+  res.redirect(req.buildUrl(`/publish/${dataset.id}/upload`, req.language));
 };
