@@ -33,7 +33,7 @@ export default function BadNoteCodes(props) {
               {count > 10 ? (
                 <details className="govuk-details" data-module="govuk-details">
                   <summary className="govuk-details__summary">
-                    {count
+                    {count > 499
                       ? props.t('errors.fact_table_validation.bad_node_code_table_summary_500', {
                           rows: count
                         })

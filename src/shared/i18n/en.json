@@ -1653,6 +1653,7 @@
       "incomplete_fact_500": "Data table has {{count}} or more incomplete facts",
       "incomplete_fact_missing": "Data table has an unknown number of incomplete facts",
       "incomplete_fact_info": "You should correct your data table and upload it again.",
+      "incomplete_fact_summary": "Incomplete facts",
       "incomplete_table_summary": "Table containing {{rows}} lines of incomplete facts.",
       "incomplete_table_summary_500": "Table containing the first {{rows}} lines of incomplete facts.",
       "change_data_table": "Replace the data table",

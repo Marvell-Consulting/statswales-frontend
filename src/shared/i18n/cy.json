@@ -1605,6 +1605,7 @@
       "incomplete_fact_500": "Mae'r tabl data yn cynnwys {{count}} achos neu fwy o ffeithiau anghyflawn",
       "incomplete_fact_missing": "Mae'r tabl data yn cynnwys nifer anhysbys o ffeithiau anghyflawn",
       "incomplete_fact_info": "Dylech gywiro eich tabl data a'i lanlwytho eto.",
+      "incomplete_fact_summary": "Ffeithiau anghyflawn",
       "incomplete_table_summary": "Tabl yn cynnwys {{rows}} llinell o ffeithiau anghyflawn.",
       "incomplete_table_summary_500": "Tabl yn cynnwys {{rows}} llinell gyntaf o ffeithiau anghyflawn.",
       "change_data_table": "Disodli'r tabl data",
