@@ -29,7 +29,7 @@ export default function DuplicateFact(props) {
           <h2 className="govuk-heading-m">{props.t('errors.fact_table_validation.duplicate_fact_summary')}</h2>
           {props.data && (
             <>
-              {props.data.length > 10 ? (
+              {duplicateCount > 10 ? (
                 <details className="govuk-details" data-module="govuk-details">
                   <summary className="govuk-details__summary">
                     {duplicateCount > 499
