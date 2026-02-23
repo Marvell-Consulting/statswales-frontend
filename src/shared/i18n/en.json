@@ -1790,7 +1790,7 @@
       "copy_success": "Link copied to your clipboard"
     },
     "no_data": "No data available for the selected filters. Try a different selection.",
-    "filters": "Filters",
+    "filters": "Variable filters",
     "page_size": "Rows per page",
     "apply_filters": "Apply",
     "apply_page_size": "Apply rows",
