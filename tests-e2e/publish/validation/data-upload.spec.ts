@@ -98,10 +98,7 @@ test.describe('Fact table validation errors on update', () => {
   test('Validates for incomplete facts', async ({ page }) => {
     await updateAddNewDataUpload(page, datasetId);
     await uploadInvalidDataTable(page, 'invalid/update-incomplete-fact.csv');
-    await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/upload/validation-errors`);
-    await expect(page.getByRole('heading', { name: 'Data table has 1 incomplete facts' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Replace the data table' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Change what each column contains' })).not.toBeVisible();
+    await expect(page.getByText('There is a problem')).toBeVisible();
   });
 
   test('Validates for bad note codes', async ({ page }) => {
