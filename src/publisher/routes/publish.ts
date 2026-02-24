@@ -49,7 +49,8 @@ import {
   longBuildHandling,
   ajaxRefreshBuildStatus,
   provideUpdateReason,
-  downloadPreview
+  downloadPreview,
+  uploadValidationErrors
 } from '../controllers/publish';
 import { DatasetInclude as Include } from '../../shared/enums/dataset-include';
 import { flashMessages, flashErrors } from '../../shared/middleware/flash';
@@ -89,6 +90,12 @@ publish.post(
   redirectIfOpenPublishRequest,
   upload.single('csv'),
   uploadDataTable
+);
+publish.get(
+  '/:datasetId/upload/validation-errors',
+  fetchDataset(Include.DraftDataTable),
+  redirectIfOpenPublishRequest,
+  uploadValidationErrors
 );
 
 publish.get(

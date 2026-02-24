@@ -116,9 +116,9 @@ export default function Title(props) {
                 });
 
                 const resJson = await res.json();
-                if (res.ok) {
+                if (resJson.redirectTo) {
                   return window.location.href = resJson.redirectTo;
-                } else {
+                } else if (resJson.errors) {
                   loading.classList.add("hidden");
                   const errors = resJson.errors;
 

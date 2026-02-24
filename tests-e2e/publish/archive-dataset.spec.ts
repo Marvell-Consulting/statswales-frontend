@@ -7,6 +7,8 @@ import { publishMinimalDataset } from './helpers/publishing-steps';
 const baseUrl = config.frontend.publisher.url;
 
 test.describe('Archive dataset', () => {
+  test.describe.configure({ mode: 'serial' });
+
   const title = `archive-dataset.spec - ${nanoid(5)}`;
   let datasetId: string;
 

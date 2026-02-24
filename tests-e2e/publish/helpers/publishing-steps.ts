@@ -73,6 +73,13 @@ export async function uploadDataTable(page: Page, datasetId: string, filename: s
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/preview`);
 }
 
+export async function uploadInvalidDataTable(page: Page, filename: string) {
+  const filePath = path.join(__dirname, '..', '..', 'sample-csvs', filename);
+  await uploadFile(page, filePath);
+  await page.getByRole('button', { name: 'Continue' }).click();
+  await page.waitForLoadState('networkidle');
+}
+
 export async function confirmDataTable(page: Page, datasetId: string) {
   await page.getByRole('button', { name: 'Continue' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/sources`);
@@ -92,6 +99,14 @@ export async function assignColumnTypes(page: Page, datasetId: string, assignmen
   await page.getByRole('button', { name: 'Continue' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
   await checkTasklistItemComplete(page, 'Data table');
+}
+
+export async function submitColumnTypes(page: Page, assignments: ColumnAssignment[]) {
+  for (const assignment of assignments) {
+    await page.getByLabel(assignment.column).selectOption(assignment.type);
+  }
+  await page.getByRole('button', { name: /Continue|Parhau/ }).click();
+  await page.waitForLoadState('networkidle');
 }
 
 export async function configureMeasure(page: Page, datasetId: string, filename: string) {
@@ -562,4 +577,13 @@ export async function publishRealisticDataset(
   await waitForPublication(page, datasetId);
 
   return datasetId;
+}
+
+export async function updateAddNewDataUpload(page: Page, datasetId: string) {
+  await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
+  await page.getByRole('link', { name: 'Data table' }).click();
+  await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/update-type`);
+  await page.getByText('Add new data only', { exact: true }).click({ force: true });
+  await page.getByRole('button', { name: 'Continue' }).click();
+  await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/upload`);
 }

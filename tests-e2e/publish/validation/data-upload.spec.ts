@@ -1,10 +1,16 @@
-import path from 'node:path';
 import { nanoid } from 'nanoid';
 
 import { test, expect } from '../../fixtures/test';
 
 import { config } from '../../../src/shared/config';
-import { provideDatasetTitle, selectUserGroup, startNewDataset } from '../helpers/publishing-steps';
+import {
+  updateAddNewDataUpload,
+  provideDatasetTitle,
+  publishMinimalDataset,
+  selectUserGroup,
+  startNewDataset,
+  uploadInvalidDataTable
+} from '../helpers/publishing-steps';
 
 const baseUrl = config.frontend.publisher.url;
 
@@ -46,13 +52,7 @@ test.describe('Upload page', () => {
       });
 
       test('Displays a validation error when an invalid file is provided', async ({ page }) => {
-        const filePath = path.join(__dirname, '../../sample-csvs/invalid/only-1-col.csv');
-        const fileChooserPromise = page.waitForEvent('filechooser');
-        await page.locator('input[name="csv"]').click();
-        const fileChooser = await fileChooserPromise;
-        await fileChooser.setFiles(filePath);
-        await page.getByRole('button', { name: 'Continue' }).click();
-        await page.waitForLoadState('networkidle');
+        await uploadInvalidDataTable(page, 'invalid/only-1-col.csv');
         expect(page.url()).toBe(`${baseUrl}/en-GB/publish/${datasetId}/upload`);
         await expect(page.getByText('errors.unknown_error')).toBeVisible(); // TODO: fix this error message
       });
@@ -65,5 +65,51 @@ test.describe('Upload page', () => {
       await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/upload`);
       expect(page.url()).toBe(`${baseUrl}/en-GB/auth/login`);
     });
+  });
+});
+
+test.describe('Fact table validation errors on update', () => {
+  test.describe.configure({ mode: 'serial' });
+  test.use({ role: 'solo' });
+
+  const title = `update-fact-validation - ${nanoid(5)}`;
+  let datasetId: string;
+
+  test.beforeAll(async ({ browser, workerUsers }, testInfo) => {
+    test.setTimeout(120000);
+    const context = await browser.newContext({ storageState: workerUsers.solo.path });
+    const page = await context.newPage();
+    datasetId = await publishMinimalDataset(page, testInfo, title);
+    await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
+    await page.getByRole('link', { name: 'Update this dataset' }).click();
+    await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
+    await page.close();
+    await context.close();
+  });
+
+  test('Validates for duplicate facts', async ({ page }) => {
+    await updateAddNewDataUpload(page, datasetId);
+    await uploadInvalidDataTable(page, 'invalid/update-dupe-fact.csv');
+    await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/upload/validation-errors`);
+    await expect(page.getByRole('heading', { name: 'Data table has 2 duplicate facts' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Replace the data table' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change what each column contains' })).not.toBeVisible();
+  });
+
+  test('Validates for incomplete facts', async ({ page }) => {
+    await updateAddNewDataUpload(page, datasetId);
+    await uploadInvalidDataTable(page, 'invalid/update-incomplete-fact.csv');
+    await expect(page.getByText('There is a problem')).toBeVisible();
+  });
+
+  test('Validates for bad note codes', async ({ page }) => {
+    await updateAddNewDataUpload(page, datasetId);
+    await uploadInvalidDataTable(page, 'invalid/update-bad-note-codes.csv');
+    await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/upload/validation-errors`);
+    await expect(
+      page.getByRole('heading', { name: 'Date table has 1 instances of unrecognised note codes' })
+    ).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Replace the data table' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Change what each column contains' })).not.toBeVisible();
   });
 });
