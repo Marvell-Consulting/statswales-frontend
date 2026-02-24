@@ -69,6 +69,7 @@ test.describe('Upload page', () => {
 });
 
 test.describe('Fact table validation errors on update', () => {
+  test.describe.configure({ mode: 'serial' });
   test.use({ role: 'solo' });
 
   const title = `update-fact-validation - ${nanoid(5)}`;

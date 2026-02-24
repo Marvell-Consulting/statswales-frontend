@@ -16,6 +16,8 @@ import {
 const baseUrl = config.frontend.publisher.url;
 
 test.describe('Update dataset', () => {
+  test.describe.configure({ mode: 'serial' });
+
   const title = `update-dataset.spec - ${nanoid(5)}`;
   let datasetId: string;
 

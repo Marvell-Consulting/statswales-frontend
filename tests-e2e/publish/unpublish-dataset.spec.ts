@@ -9,6 +9,8 @@ import { completeTranslations, completeUpdateReason, publishMinimalDataset } fro
 const baseUrl = config.frontend.publisher.url;
 
 test.describe('Unpublish dataset', () => {
+  test.describe.configure({ mode: 'serial' });
+
   const title = `unpublish-dataset.spec - ${nanoid(5)}`;
   let datasetId: string;
 
