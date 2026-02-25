@@ -1692,7 +1692,9 @@
       "placeholder": "Type to find values",
       "aria": "Search {{columnName}} values",
       "no_match": "No values match your search"
-    }
+    },
+    "apply_all_selections": "Apply all selections",
+    "select_all_variables": "Select all values for all variables"
   },
   "consumer_view": {
     "tabs": {

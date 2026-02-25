@@ -1,5 +1,4 @@
 import React from 'react';
-import { clsx } from 'clsx';
 
 import { FilterTable, FilterValues } from '../../../dtos/filter-table';
 import { FilterControls } from './FilterControls';
@@ -46,68 +45,79 @@ export const CheckboxFilter = ({ filter, values }: CheckboxFilterProps) => {
   const effectiveValues = values ?? collectAllValues(filter.values);
 
   return (
-    <div className="filters" id={filterId} data-total={total}>
-      <h3 className="region-subhead">
-        {filter.columnName} (
-        <T filtered={filtered} total={total} className={clsx('filtered-label', { 'js-hidden': !filtered })} raw>
-          filters.summary
-        </T>
-        <T total={total} className={clsx('non-filtered-label', { 'js-hidden': filtered })} raw>
-          filters.non-filtered-summary
-        </T>
-        )
-      </h3>
-      <div className="filter-container option-select">
-        <div className="filter-head js-hidden">
-          <div className="filter-search js-hidden">
-            <input
-              type="text"
-              id={`${filterId}-search`}
-              className="govuk-input filter-search-input"
-              placeholder={t('filters.search.placeholder')}
-              aria-label={t('filters.search.aria', { columnName: filter.columnName })}
+    <div className="filter" id={filterId} data-total={total}>
+      <details className="dimension-accordion">
+        <summary className="dimension-accordion__summary">
+          <span className="dimension-accordion__title">{filter.columnName}</span>
+        </summary>
+        <div className="dimension-accordion__count">
+          <T filtered={filtered ?? total} total={total} raw>
+            filters.summary
+          </T>
+        </div>
+        <div className="filter-container option-select">
+          <div className="filter-head js-hidden">
+            <div className="filter-search js-hidden">
+              <input
+                type="text"
+                id={`${filterId}-search`}
+                className="govuk-input filter-search-input"
+                placeholder={t('filters.search.placeholder')}
+                aria-label={t('filters.search.aria', { columnName: filter.columnName })}
+              />
+            </div>
+            <FilterControls
+              className="root-controls"
+              deselectLabel={
+                <T columnName={filter.columnName} raw>
+                  filters.deselect_all
+                </T>
+              }
+              selectLabel={
+                <T columnName={filter.columnName} raw>
+                  filters.select_all
+                </T>
+              }
             />
           </div>
-          <FilterControls
-            className="root-controls"
-            deselectLabel={
-              <T columnName={filter.columnName} raw>
-                filters.deselect_all
-              </T>
-            }
-            selectLabel={
-              <T columnName={filter.columnName} raw>
-                filters.select_all
-              </T>
-            }
-          />
+          <div className="filter-body">
+            <CheckboxGroup
+              name={`filter[${filter.factTableColumn}]`}
+              options={normalizeFilters(filter.values)}
+              values={effectiveValues}
+              independentExpand
+              controls={
+                <FilterControls
+                  deselectLabel={
+                    <T columnName={filter.columnName} raw>
+                      filters.deselect_all_level
+                    </T>
+                  }
+                  selectLabel={
+                    <T columnName={filter.columnName} raw>
+                      filters.select_all_level
+                    </T>
+                  }
+                />
+              }
+            />
+            <span className="filter-search-no-match govuk-body js-hidden">
+              <T>filters.search.no_match</T>
+            </span>
+          </div>
         </div>
-        <div className="filter-body">
-          <CheckboxGroup
-            name={`filter[${filter.factTableColumn}]`}
-            options={normalizeFilters(filter.values)}
-            values={effectiveValues}
-            independentExpand
-            controls={
-              <FilterControls
-                deselectLabel={
-                  <T columnName={filter.columnName} raw>
-                    filters.deselect_all_level
-                  </T>
-                }
-                selectLabel={
-                  <T columnName={filter.columnName} raw>
-                    filters.select_all_level
-                  </T>
-                }
-              />
-            }
-          />
-          <span className="filter-search-no-match govuk-body js-hidden">
-            <T>filters.search.no_match</T>
-          </span>
+        <div className="filter-apply">
+          <button
+            name="dataViewsChoice"
+            value="filter"
+            type="submit"
+            className="govuk-button govuk-button-small button-black"
+            data-module="govuk-button"
+          >
+            <T>filters.apply_all_selections</T>
+          </button>
         </div>
-      </div>
+      </details>
     </div>
   );
 };

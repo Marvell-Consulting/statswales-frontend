@@ -1,11 +1,8 @@
 (() => {
   function addListeners(filter) {
     const selectedLabel = filter.querySelector('span.number-selected');
-    const filteredLabel = filter.querySelector('span.filtered-label');
-    const nonFilteredLabel = filter.querySelector('span.non-filtered-label');
 
     const childCheckboxes = [...filter.querySelectorAll('.filter-body [type="checkbox"]')];
-    const total = Number(filter.dataset.total);
 
     function checkState() {
       updateTotals();
@@ -16,19 +13,10 @@
     function updateTotals() {
       const numChecked = childCheckboxes.reduce((sum, check) => sum + (check.checked ? 1 : 0), 0);
       selectedLabel.innerText = numChecked;
-
-      // "Not filtered" only when all options are checked
-      if (numChecked === total) {
-        filteredLabel.classList.add('js-hidden');
-        nonFilteredLabel.classList.remove('js-hidden');
-      } else {
-        filteredLabel.classList.remove('js-hidden');
-        nonFilteredLabel.classList.add('js-hidden');
-      }
     }
   }
 
-  const filters = document.querySelectorAll('.filters');
+  const filters = document.querySelectorAll('.filter');
 
   // On submit, disable all checkboxes for filters where every option is checked
   // so the server receives an empty selection (= no filter applied).
@@ -147,7 +135,7 @@
 
       if (isRoot) {
         // Root control: toggle ALL checkboxes in the filter (including nested children)
-        const filterEl = control.closest('.filters');
+        const filterEl = control.closest('.filter');
         checkboxes = filterEl.querySelectorAll(".filter-body input[type='checkbox']");
       } else {
         // Nested "at this level" control: only immediate children, not deeper descendants
