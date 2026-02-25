@@ -14,6 +14,8 @@ test.describe('Filter Search', () => {
       await page.goto(datasetUrl);
       // The Area filter has 24 options (23 LAs + Wales) — search should be visible
       const areaFilter = page.locator('[id^="filter-"]').filter({ hasText: 'Area' });
+      // Open the accordion to reveal the search input
+      await areaFilter.locator('.dimension-accordion__summary').click();
       const searchInput = areaFilter.locator('.filter-search-input');
       await expect(searchInput).toBeVisible();
     });
@@ -31,6 +33,8 @@ test.describe('Filter Search', () => {
     test('Typing filters checkboxes by label match', async ({ page }) => {
       await page.goto(datasetUrl);
       const areaFilter = page.locator('[id^="filter-"]').filter({ hasText: 'Area' });
+      // Open the accordion before interacting with its content
+      await areaFilter.locator('.dimension-accordion__summary').click();
       const searchInput = areaFilter.locator('.filter-search-input');
       const filterBody = areaFilter.locator('.filter-body');
 
@@ -50,6 +54,8 @@ test.describe('Filter Search', () => {
     test('Search is case-insensitive', async ({ page }) => {
       await page.goto(datasetUrl);
       const areaFilter = page.locator('[id^="filter-"]').filter({ hasText: 'Area' });
+      // Open the accordion before interacting with its content
+      await areaFilter.locator('.dimension-accordion__summary').click();
       const searchInput = areaFilter.locator('.filter-search-input');
       const filterBody = areaFilter.locator('.filter-body');
 
@@ -63,6 +69,8 @@ test.describe('Filter Search', () => {
     test('Clearing search restores all checkboxes', async ({ page }) => {
       await page.goto(datasetUrl);
       const areaFilter = page.locator('[id^="filter-"]').filter({ hasText: 'Area' });
+      // Open the accordion before interacting with its content
+      await areaFilter.locator('.dimension-accordion__summary').click();
       const searchInput = areaFilter.locator('.filter-search-input');
       const filterBody = areaFilter.locator('.filter-body');
 
@@ -95,6 +103,8 @@ test.describe('Filter Search', () => {
     test('No matches hides all checkboxes and details', async ({ page }) => {
       await page.goto(datasetUrl);
       const areaFilter = page.locator('[id^="filter-"]').filter({ hasText: 'Area' });
+      // Open the accordion before interacting with its content
+      await areaFilter.locator('.dimension-accordion__summary').click();
       const searchInput = areaFilter.locator('.filter-search-input');
       const filterBody = areaFilter.locator('.filter-body');
 
@@ -111,6 +121,8 @@ test.describe('Filter Search', () => {
     test('Parent stays visible when nested child matches', async ({ page }) => {
       await page.goto(datasetUrl);
       const areaFilter = page.locator('[id^="filter-"]').filter({ hasText: 'Area' });
+      // Open the accordion before interacting with its content
+      await areaFilter.locator('.dimension-accordion__summary').click();
       const searchInput = areaFilter.locator('.filter-search-input');
       const filterBody = areaFilter.locator('.filter-body');
 
@@ -130,6 +142,8 @@ test.describe('Filter Search', () => {
     test('Parent details element is expanded when child matches', async ({ page }) => {
       await page.goto(datasetUrl);
       const areaFilter = page.locator('[id^="filter-"]').filter({ hasText: 'Area' });
+      // Open the accordion before interacting with its content
+      await areaFilter.locator('.dimension-accordion__summary').click();
       const searchInput = areaFilter.locator('.filter-search-input');
       const filterBody = areaFilter.locator('.filter-body');
 
@@ -144,6 +158,8 @@ test.describe('Filter Search', () => {
     test('Details elements are hidden when no descendants match', async ({ page }) => {
       await page.goto(datasetUrl);
       const areaFilter = page.locator('[id^="filter-"]').filter({ hasText: 'Area' });
+      // Open the accordion before interacting with its content
+      await areaFilter.locator('.dimension-accordion__summary').click();
       const searchInput = areaFilter.locator('.filter-search-input');
       const filterBody = areaFilter.locator('.filter-body');
 
@@ -158,6 +174,8 @@ test.describe('Filter Search', () => {
     test('Clearing search collapses expanded details', async ({ page }) => {
       await page.goto(datasetUrl);
       const areaFilter = page.locator('[id^="filter-"]').filter({ hasText: 'Area' });
+      // Open the accordion before interacting with its content
+      await areaFilter.locator('.dimension-accordion__summary').click();
       const searchInput = areaFilter.locator('.filter-search-input');
       const filterBody = areaFilter.locator('.filter-body');
 
@@ -180,6 +198,8 @@ test.describe('Filter Search', () => {
     test('Toggle control works while search is active', async ({ page }) => {
       await page.goto(datasetUrl);
       const areaFilter = page.locator('[id^="filter-"]').filter({ hasText: 'Area' });
+      // Open the accordion before interacting with its content
+      await areaFilter.locator('.dimension-accordion__summary').click();
       const searchInput = areaFilter.locator('.filter-search-input');
 
       // Search first to narrow visible items
@@ -204,6 +224,8 @@ test.describe('Filter Search', () => {
     test('Search does not filter immediately on keypress', async ({ page }) => {
       await page.goto(datasetUrl);
       const areaFilter = page.locator('[id^="filter-"]').filter({ hasText: 'Area' });
+      // Open the accordion before interacting with its content
+      await areaFilter.locator('.dimension-accordion__summary').click();
       const searchInput = areaFilter.locator('.filter-search-input');
       const filterBody = areaFilter.locator('.filter-body');
 
