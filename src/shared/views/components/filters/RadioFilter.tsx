@@ -37,7 +37,7 @@ export const RadioFilter = ({ filter, values }: RadioFilterProps) => {
   const filterId = `filter-${filter.factTableColumn.replaceAll(/\s+/g, '_')}`;
 
   return (
-    <div className="filters" id={filterId}>
+    <div className="filter" id={filterId}>
       <h3 className="region-subhead">
         {filter.columnName} (
         <T
