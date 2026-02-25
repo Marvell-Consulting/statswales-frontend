@@ -89,9 +89,7 @@ test.describe('Download preserves filter state', () => {
     // Open the first accordion to access its filter checkboxes
     await page.locator('.dimension-accordion__summary').first().click();
 
-    const filterCheckbox = page
-      .locator('.filter .govuk-checkboxes__input:not([id$="-all"]):not(details .govuk-checkboxes__input)')
-      .first();
+    const filterCheckbox = page.locator('.filter .govuk-checkboxes__input').first();
 
     await filterCheckbox.check({ force: true, timeout: 5000 });
     await page.getByRole('button', { name: 'Apply all selections' }).first().click();

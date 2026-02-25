@@ -159,10 +159,7 @@ test.describe('Check All Published Datasets', () => {
         await expect(firstAccordion).toBeVisible({ timeout: PAGE_RENDER_TIMEOUT_MS });
         // Open the first accordion to access its filter checkboxes
         await firstAccordion.click();
-        // Find filter checkboxes that aren't "Not filtered" and aren't nested inside a details element
-        const filterCheckboxes = page.locator(
-          '.filter .govuk-checkboxes__input:not([id$="-all"]):not(details .govuk-checkboxes__input)'
-        );
+        const filterCheckboxes = page.locator('.filter .govuk-checkboxes__input');
         const checkboxCount = await filterCheckboxes.count();
 
         if (checkboxCount > 0) {
@@ -281,10 +278,7 @@ test.describe('Recheck Failed Datasets', () => {
         // Open the first accordion to access its filter checkboxes
         await firstAccordion.click();
 
-        // Find filter checkboxes that aren't "Not filtered" and aren't nested inside a details element
-        const filterCheckboxes = page.locator(
-          '.filter .govuk-checkboxes__input:not([id$="-all"]):not(details .govuk-checkboxes__input)'
-        );
+        const filterCheckboxes = page.locator('.filter .govuk-checkboxes__input');
         const checkboxCount = await filterCheckboxes.count();
 
         if (checkboxCount > 0) {
