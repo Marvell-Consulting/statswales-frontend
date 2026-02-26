@@ -587,3 +587,55 @@ export async function updateAddNewDataUpload(page: Page, datasetId: string) {
   await page.getByRole('button', { name: 'Continue' }).click();
   await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/upload`);
 }
+
+// Publishes a minimal dataset whose Year dimension uses slash-format values (e.g. "2016/17")
+// via a custom lookup table. Used to test that filter checkboxes with encoded slash values
+// (stored as "%2F" in the HTML attribute) correctly reflect their checked state after filtering.
+export async function publishCustomYearDataset(page: Page, testInfo: TestInfo, title: string): Promise<string> {
+  await startNewDataset(page);
+  await selectUserGroup(page, 'E2E tests');
+  const datasetId = await provideDatasetTitle(page, title);
+
+  await uploadDataTable(page, datasetId, 'custom-year/data.csv');
+  await confirmDataTable(page, datasetId);
+
+  await assignColumnTypes(page, datasetId, [
+    { column: 'Year', type: 'Dimension' },
+    { column: 'Value', type: 'Data values' },
+    { column: 'Measure', type: 'Measure or data types' },
+    { column: 'NotesCode', type: 'Note codes' }
+  ]);
+
+  await configureMeasure(page, datasetId, 'custom-year/measure.csv');
+
+  await configureLookupDimension(page, datasetId, {
+    originalColName: 'Year',
+    dimensionName: 'Period',
+    optionSelections: [],
+    filename: 'custom-year/year-lookup.csv'
+  });
+
+  await completeSummary(page, datasetId, 'Slash year dataset for filter regression testing');
+  await completeCollection(page, datasetId, 'Test data collection');
+  await completeQuality(page, datasetId, 'Test statistical quality');
+  await completeProviders(page, datasetId, 'Welsh Government');
+  await completeRelatedReports(page, datasetId, [{ title: 'Related report 1', url: 'https://example.com/report1' }]);
+  await completeDesignation(page, datasetId, Designation.Accredited);
+  await completeTopics(page, datasetId, ['Welsh language']);
+
+  const nextUpdate = add(new Date(), { years: 1 });
+  await completeUpdateFrequency(page, datasetId, {
+    year: nextUpdate.getFullYear(),
+    month: nextUpdate.getMonth() + 1,
+    day: nextUpdate.getDate()
+  });
+
+  await completeTranslations(page, testInfo, datasetId);
+  await completePublicationDate(page, datasetId, 1);
+
+  await submitForApproval(page, datasetId);
+  await approvePublication(page, datasetId);
+  await waitForPublication(page, datasetId);
+
+  return datasetId;
+}

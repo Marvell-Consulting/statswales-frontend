@@ -1,13 +1,24 @@
 import { test as setup } from '@playwright/test';
 
 import { solos } from '../fixtures/logins';
-import { CONSUMER_DATASET_TITLE } from '../fixtures/dataset-title';
-import { publishRealisticDataset } from '../publish/helpers/publishing-steps';
+import { CONSUMER_DATASET_TITLE, CUSTOM_YEAR_DATASET_TITLE } from '../fixtures/dataset-title';
+import { publishRealisticDataset, publishCustomYearDataset } from '../publish/helpers/publishing-steps';
 
-// Consumer setup always uses the first solo user (not parallelised)
-setup.use({ storageState: solos[0].path });
+setup('publish datasets for consumer tests', async ({ browser }, testInfo) => {
+  setup.setTimeout(240_000);
 
-setup('publish realistic dataset for consumer tests', async ({ page }, testInfo) => {
-  setup.setTimeout(120_000);
-  await publishRealisticDataset(page, testInfo, CONSUMER_DATASET_TITLE);
+  // Each dataset needs its own browser context with a dedicated user to avoid session interference
+  const [context1, context2] = await Promise.all([
+    browser.newContext({ storageState: solos[0].path }),
+    browser.newContext({ storageState: solos[1].path })
+  ]);
+
+  const [page1, page2] = await Promise.all([context1.newPage(), context2.newPage()]);
+
+  await Promise.all([
+    publishRealisticDataset(page1, testInfo, CONSUMER_DATASET_TITLE),
+    publishCustomYearDataset(page2, testInfo, CUSTOM_YEAR_DATASET_TITLE)
+  ]);
+
+  await Promise.all([context1.close(), context2.close()]);
 });

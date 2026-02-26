@@ -102,6 +102,18 @@ test.describe('Sources page', () => {
         page.getByText('There should be one column in the data table for measure or data types')
       ).toBeVisible();
     });
+
+    test('Displays an error if no notes code column is selected', async ({ page }) => {
+      await page.goto(`${baseUrl}/en-GB/publish/${datasetId}/sources`);
+      await submitColumnTypes(page, [
+        { column: 'date', type: 'Dimension' },
+        { column: 'data', type: 'Data values' },
+        { column: 'measure', type: 'Measure or data types' },
+        { column: 'notes', type: 'Dimension' }
+      ]);
+      await expect(page.getByText('There is a problem')).toBeVisible();
+      await expect(page.getByText('There should be one column in the data table for note codes')).toBeVisible();
+    });
   });
 
   test.describe('Not authed', () => {
