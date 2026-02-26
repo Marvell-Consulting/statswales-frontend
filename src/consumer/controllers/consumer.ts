@@ -514,14 +514,6 @@ export const viewPivotedDataset = async (req: Request, res: Response, next: Next
   }
 
   try {
-    if (req.method === 'POST') {
-      const dataOptions: DataOptionsDTO = { ...FRONTEND_DATA_OPTIONS, filters: parseFiltersV2(req.body.filter) };
-      const filterId = await req.conapi.generateFilterId(dataset.id, dataOptions);
-      const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
-      res.redirect(req.buildUrl(`/${dataset.id}/pivot/${filterId}`, req.language, { page_size: pageSize.toString() }));
-      return;
-    }
-
     const filterId = req.params.filterId;
 
     if (!filterId) {
