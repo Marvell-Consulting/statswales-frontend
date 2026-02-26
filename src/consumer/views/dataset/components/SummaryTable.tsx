@@ -8,7 +8,6 @@ interface SummaryDataProps {
   filters: FilterTable[];
   selectedFilterOptions: Filter[];
   landing?: boolean;
-  pivot?: boolean;
   columns?: string;
   rows?: string;
 }
