@@ -8,17 +8,34 @@ setup('publish datasets for consumer tests', async ({ browser }, testInfo) => {
   setup.setTimeout(240_000);
 
   // Each dataset needs its own browser context with a dedicated user to avoid session interference
-  const [context1, context2] = await Promise.all([
-    browser.newContext({ storageState: solos[0].path }),
-    browser.newContext({ storageState: solos[1].path })
-  ]);
+  let context1;
+  let context2;
 
-  const [page1, page2] = await Promise.all([context1.newPage(), context2.newPage()]);
+  try {
+    [context1, context2] = await Promise.all([
+      browser.newContext({ storageState: solos[0].path }),
+      browser.newContext({ storageState: solos[1].path })
+    ]);
 
-  await Promise.all([
-    publishRealisticDataset(page1, testInfo, CONSUMER_DATASET_TITLE),
-    publishCustomYearDataset(page2, testInfo, CUSTOM_YEAR_DATASET_TITLE)
-  ]);
+    const [page1, page2] = await Promise.all([context1.newPage(), context2.newPage()]);
 
-  await Promise.all([context1.close(), context2.close()]);
+    await Promise.all([
+      publishRealisticDataset(page1, testInfo, CONSUMER_DATASET_TITLE),
+      publishCustomYearDataset(page2, testInfo, CUSTOM_YEAR_DATASET_TITLE)
+    ]);
+  } finally {
+    const closePromises: Promise<void>[] = [];
+
+    if (context1) {
+      closePromises.push(context1.close());
+    }
+
+    if (context2) {
+      closePromises.push(context2.close());
+    }
+
+    if (closePromises.length > 0) {
+      await Promise.all(closePromises);
+    }
+  }
 });
