@@ -7,13 +7,18 @@ import { dateFormat } from '../../../shared/utils/date-format';
 import { DatasetStatus } from '../../../shared/enums/dataset-status';
 import T from '../../../shared/views/components/T';
 import { SearchResultDTO } from '../../../shared/dtos/search-result';
+import { isFeatureEnabled } from '../../../shared/utils/feature-flags';
+import { FeatureFlag } from '../../../shared/enums/feature-flag';
+import { logger } from '../../../shared/utils/logger';
 
 interface SearchResultsProps {
   results: SearchResultDTO[];
 }
 
 export default function SearchResults({ results }: SearchResultsProps) {
-  const { buildUrl, i18n } = useLocals();
+  const { buildUrl, i18n, protocol, hostname, url, featureFlags } = useLocals();
+  const urlObj = new URL(url, `${protocol}://${hostname}`);
+  const showPivot = isFeatureEnabled(urlObj.searchParams, FeatureFlag.PivotFlow, featureFlags);
 
   const renderTitle = (dataset: SearchResultDTO) => {
     if (dataset.match_title && dataset.match_title.includes('<mark>')) {
@@ -39,7 +44,7 @@ export default function SearchResults({ results }: SearchResultsProps) {
         >
           <a
             className="govuk-heading-s govuk-!-margin-bottom-0 govuk-link inline"
-            href={buildUrl(`/${dataset.id}`, i18n.language)}
+            href={buildUrl(`/${dataset.id}${showPivot ? '/start' : ''}`, i18n.language)}
           >
             {renderTitle(dataset)}
           </a>
