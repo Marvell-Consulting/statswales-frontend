@@ -32,7 +32,10 @@ const filterOptionCount = (options: FilterValues[]): number => {
 export const RadioFilter = ({ filter, values }: RadioFilterProps) => {
   const { t } = useLocals();
 
-  const selectedValue = values?.[0];
+  // `values[0]` is the active selection echoed back by the API (decoded, e.g. "2018/19").
+  // Option values produced by normalizeFilters are encoded (e.g. "2018%2F19"), so we
+  // must encode here before FilterRadioGroup compares with selectedValue === option.value.
+  const selectedValue = values?.[0] ? encodeURIComponent(values[0]) : undefined;
   const total = filterOptionCount(filter.values);
   const filterId = `filter-${filter.factTableColumn.replaceAll(/\s+/g, '_')}`;
 
