@@ -48,14 +48,32 @@ export interface ViewDTO {
   filters?: Filter[];
 }
 
+/**
+ * Configuration for a pivoted view of the dataset.
+ *
+ * When a pivoted result is requested, {@link ViewV2DTO.pivot} is populated
+ * to describe which dataset columns have been used for the pivot axes.
+ */
 interface Pivot {
+  /**
+   * The column name or identifier used for the horizontal axis
+   * (i.e. the column dimension of the pivot table).
+   */
   x: string;
+  /**
+   * The column name or identifier used for the vertical axis
+   * (i.e. the row dimension of the pivot table).
+   */
   y: string;
 }
 
 export interface ViewV2DTO {
   dataset: DatasetDTO;
   filters?: FilterV2[];
+  /**
+   * Details of the pivot configuration applied to this view, when the
+   * dataset has been requested in a pivoted form. Absent for non-pivot views.
+   */
   pivot?: Pivot;
   headers: ColumnHeader[];
   data: string[][];
