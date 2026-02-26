@@ -2356,7 +2356,7 @@
   },
   "pivot": {
     "filter_warning": "Hidden variables in your table can only be represented by a single value.",
-    "start_over": "Create new Table",
+    "start_over": "Create new table",
     "show_data": "Show all variables in table"
   }
 }

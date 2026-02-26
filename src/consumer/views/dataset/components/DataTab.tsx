@@ -24,6 +24,7 @@ type DataTabProps = NoteCodesLegendProps &
     isDevPreview?: boolean;
     preview?: boolean;
     previewFailed?: string;
+    filterId: string;
     columns?: string;
     rows?: string;
   };

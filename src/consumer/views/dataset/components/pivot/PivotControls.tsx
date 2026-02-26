@@ -6,13 +6,13 @@ type PivotControlsProps = {
   dataset: {
     id: string;
   };
-  url: string;
+  filterId: string;
 };
 
 export function PivotControls(props: PivotControlsProps) {
   const { buildUrl, i18n } = useLocals();
   const startOverURL = buildUrl(`/${props.dataset.id}/start`, i18n.language);
-  const dataURL = buildUrl(`/${props.dataset.id}/filtered`, i18n.language);
+  const dataURL = buildUrl(`/${props.dataset.id}/filtered/${props.filterId}`, i18n.language);
 
   return (
     <div className="pivot-controls">

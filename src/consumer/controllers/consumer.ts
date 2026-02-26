@@ -448,6 +448,7 @@ export const viewPivotedDataset = async (req: Request, res: Response, next: Next
       shorthandUrl: req.buildUrl(`/shorthand`, req.language),
       isUnpublished: revision?.unpublished_at || false,
       isArchived: (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false,
+      filterId,
       columns: view.pivot?.x,
       rows: view.pivot?.y
     });
