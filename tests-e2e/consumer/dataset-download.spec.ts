@@ -1,11 +1,12 @@
 import { test, expect, Page } from '@playwright/test';
 
-import { resolveDatasetUrl } from './helpers/find-dataset';
+import { resolveDatasetUrlByTitle } from './helpers/find-dataset';
+import { CONSUMER_DATASET_TITLE } from '../fixtures/dataset-title';
 
 let datasetUrl: string;
 
 test.beforeAll(async ({ browser }) => {
-  datasetUrl = await resolveDatasetUrl(browser);
+  datasetUrl = await resolveDatasetUrlByTitle(browser, CONSUMER_DATASET_TITLE);
 });
 
 // Helper to navigate to the download tab for the consumer test dataset
@@ -86,12 +87,13 @@ test.describe('Download preserves filter state', () => {
   test('Hidden field contains filter options after applying filters', async ({ page }) => {
     await page.goto(datasetUrl);
 
-    const filterCheckbox = page
-      .locator('.filters .govuk-checkboxes__input:not([id$="-all"]):not(details .govuk-checkboxes__input)')
-      .first();
+    // Open the first accordion to access its filter checkboxes
+    await page.locator('.dimension-accordion__summary').first().click();
+
+    const filterCheckbox = page.locator('.filter .govuk-checkboxes__input').first();
 
     await filterCheckbox.check({ force: true, timeout: 5000 });
-    await page.getByRole('button', { name: 'Apply', exact: true }).click();
+    await page.getByRole('button', { name: 'Apply all selections' }).first().click();
     await page.getByRole('tab', { name: 'Download data' }).click();
 
     const filterOptionsField = page.locator('#selected_filter_options');

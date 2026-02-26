@@ -3,12 +3,14 @@ import Layout from '../components/Layout';
 import DimensionPreviewTable from '../components/DimensionPreviewTable';
 
 export default function BadNoteCodes(props) {
-  const title =
-    props.data.length > 499
-      ? props.t('errors.fact_table_validation.bad_note_codes_500', { count: props.data.length })
-      : props.data
-        ? props.t('errors.fact_table_validation.bad_note_codes', { count: props.data.length })
-        : props.t('errors.fact_table_validation.bad_note_codes_missing');
+  const count = props.data?.length || 0;
+  let title = props.t('errors.fact_table_validation.bad_note_codes_missing');
+
+  if (count > 499) {
+    title = props.t('errors.fact_table_validation.bad_note_codes_500', { count });
+  } else if (count) {
+    title = props.t('errors.fact_table_validation.bad_note_codes', { count });
+  }
 
   return (
     <Layout {...props} title={title}>
@@ -17,7 +19,6 @@ export default function BadNoteCodes(props) {
           <div className="warning-background">
             <div className="govuk-error-message alert-warning">
               <h1 className="govuk-heading-xl">{title}</h1>
-
               <p className="govuk-body">{props.t('errors.fact_table_validation.bad_node_code_info')}</p>
             </div>
           </div>
@@ -29,18 +30,17 @@ export default function BadNoteCodes(props) {
 
           {props.data && (
             <>
-              {props.data.length > 10 ? (
+              {count > 10 ? (
                 <details className="govuk-details" data-module="govuk-details">
                   <summary className="govuk-details__summary">
-                    {props.data.length
+                    {count > 499
                       ? props.t('errors.fact_table_validation.bad_node_code_table_summary_500', {
-                          rows: props.data.length
+                          rows: count
                         })
                       : props.t('errors.fact_table_validation.bad_node_code_table_summary', {
-                          rows: props.data.length
+                          rows: count
                         })}
                   </summary>
-                  {/* <summary className="govuk-details__summary"></summary> is this needed? */}
                   <DimensionPreviewTable {...props} />
                 </details>
               ) : (
@@ -51,11 +51,13 @@ export default function BadNoteCodes(props) {
 
           <p className="govuk-heading-s">{props.t('publish.time_dimension_review.actions')}</p>
           <ul className="govuk-list">
-            <li>
-              <a href={props.buildUrl(`/publish/${props.dataset.id}/sources`, props.i18n.language)}>
-                {props.t('errors.fact_table_validation.change_sources_action')}
-              </a>
-            </li>
+            {!props.isUpdate && (
+              <li>
+                <a href={props.buildUrl(`/publish/${props.dataset.id}/sources`, props.i18n.language)}>
+                  {props.t('errors.fact_table_validation.change_sources_action')}
+                </a>
+              </li>
+            )}
             <li>
               <a href={props.buildUrl(`/publish/${props.dataset.id}/upload`, props.i18n.language)}>
                 {props.t('errors.fact_table_validation.change_data_table')}

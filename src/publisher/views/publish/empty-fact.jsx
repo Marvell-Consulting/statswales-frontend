@@ -3,12 +3,15 @@ import Layout from '../components/Layout';
 import DimensionPreviewTable from '../components/DimensionPreviewTable';
 
 export default function EmptyFact(props) {
-  const title =
-    props.data?.length > 499
-      ? props.t('errors.fact_table_validation.incomplete_fact_500', { count: props.data.length })
-      : props.data
-        ? props.t('errors.fact_table_validation.incomplete_fact', { count: props.data.length })
-        : props.t('errors.fact_table_validation.incomplete_fact_missing');
+  const count = props.data?.length;
+  let title = props.t('errors.fact_table_validation.incomplete_fact_missing');
+
+  if (count > 499) {
+    title = props.t('errors.fact_table_validation.incomplete_fact_500', { count });
+  } else if (count) {
+    title = props.t('errors.fact_table_validation.incomplete_fact', { count });
+  }
+
   return (
     <Layout {...props} title={title}>
       <div className="govuk-grid-row  govuk-!-margin-bottom-4">
@@ -16,7 +19,6 @@ export default function EmptyFact(props) {
           <div className="warning-background">
             <div className="govuk-error-message alert-warning">
               <h1 className="govuk-heading-xl">{title}</h1>
-
               <p className="govuk-heading-s">{props.t('errors.fact_table_validation.incomplete_fact_info')}</p>
             </div>
           </div>
@@ -24,17 +26,17 @@ export default function EmptyFact(props) {
       </div>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
-          <h2 className="govuk-heading-m">{props.t('errors.fact_table_validation.duplicate_fact_summary')}</h2>
+          <h2 className="govuk-heading-m">{props.t('errors.fact_table_validation.incomplete_fact_summary')}</h2>
           {props.data && (
             <>
-              {props.data.length > 10 ? (
+              {count > 10 ? (
                 <details className="govuk-details" data-module="govuk-details">
                   <summary className="govuk-details__summary">
-                    {props.data.length > 499
+                    {count > 499
                       ? props.t('errors.fact_table_validation.incomplete_table_summary_500', {
-                          rows: props.data.length
+                          rows: count
                         })
-                      : props.t('errors.fact_table_validation.incomplete_table_summary', { rows: props.data.length })}
+                      : props.t('errors.fact_table_validation.incomplete_table_summary', { rows: count })}
                   </summary>
                   <DimensionPreviewTable {...props} />
                 </details>

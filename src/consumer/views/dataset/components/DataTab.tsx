@@ -9,9 +9,9 @@ import { Filter } from '../../../../shared/interfaces/filter';
 import { FilterTable } from '../../../../shared/dtos/filter-table';
 import { DatasetDTO } from '../../../../shared/dtos/dataset';
 import { SummaryTable } from './SummaryTable';
-import T from '../../../../shared/views/components/T';
 import { RowsPerPage } from '../../../../shared/views/components/RowsPerPage';
 import { PivotControls } from './pivot/PivotControls';
+import T from '../../../../shared/views/components/T';
 
 type DataTabProps = NoteCodesLegendProps &
   PaginationProps &

@@ -1650,15 +1650,16 @@
     },
     "dimension_reset": "Something went wrong trying to reset the dimension",
     "fact_table_validation": {
-      "incomplete_fact": "Data table has {{count}} instances incomplete facts",
-      "incomplete_fact_500": "Data table has {{count}} or more instances incomplete facts",
+      "incomplete_fact": "Data table has {{count}} incomplete facts",
+      "incomplete_fact_500": "Data table has {{count}} or more incomplete facts",
       "incomplete_fact_missing": "Data table has an unknown number of incomplete facts",
       "incomplete_fact_info": "You should correct your data table and upload it again.",
+      "incomplete_fact_summary": "Incomplete facts",
       "incomplete_table_summary": "Table containing {{rows}} lines of incomplete facts.",
       "incomplete_table_summary_500": "Table containing the first {{rows}} lines of incomplete facts.",
       "change_data_table": "Replace the data table",
-      "duplicate_fact": "Data table has {{count}} or more instances duplicate facts",
-      "duplicate_fact_500": "Data table has {{count}} instances duplicate facts",
+      "duplicate_fact": "Data table has {{count}} duplicate facts",
+      "duplicate_fact_500": "Data table has {{count}} or more duplicate facts",
       "duplicate_fact_missing": "Data table has an unknown number of duplicate facts",
       "unknown_duplicate_fact": "The data table has one or more duplicate facts already in the cube.",
       "duplicate_fact_info": "You should correct your data table and upload it again.",
@@ -1692,7 +1693,9 @@
       "placeholder": "Type to find values",
       "aria": "Search {{columnName}} values",
       "no_match": "No values match your search"
-    }
+    },
+    "apply_all_selections": "Apply all selections",
+    "select_all_variables": "Select all values for all variables"
   },
   "consumer_view": {
     "tabs": {
@@ -1790,7 +1793,7 @@
       "copy_success": "Link copied to your clipboard"
     },
     "no_data": "No data available for the selected filters. Try a different selection.",
-    "filters": "Filters",
+    "filters": "Variable filters",
     "page_size": "Rows per page",
     "apply_filters": "Apply",
     "apply_page_size": "Apply rows",

@@ -1607,6 +1607,7 @@
       "incomplete_fact_500": "Mae'r tabl data yn cynnwys {{count}} achos neu fwy o ffeithiau anghyflawn",
       "incomplete_fact_missing": "Mae'r tabl data yn cynnwys nifer anhysbys o ffeithiau anghyflawn",
       "incomplete_fact_info": "Dylech gywiro eich tabl data a'i lanlwytho eto.",
+      "incomplete_fact_summary": "Ffeithiau anghyflawn",
       "incomplete_table_summary": "Tabl yn cynnwys {{rows}} llinell o ffeithiau anghyflawn.",
       "incomplete_table_summary_500": "Tabl yn cynnwys {{rows}} llinell gyntaf o ffeithiau anghyflawn.",
       "change_data_table": "Disodli'r tabl data",
@@ -1634,7 +1635,7 @@
     "deselect_all": "Dad-ddewiswch yr holl werthoedd <span class=\"govuk-visually-hidden\">ar gyfer {{columnName}}</span>",
     "select_all_level": "Dewiswch yr holl werthoedd ar y lefel hon <span class=\"govuk-visually-hidden\">ar gyfer {{columnName}}</span>",
     "deselect_all_level": "Dad-ddewiswch yr holl werthoedd ar y lefel hon <span class=\"govuk-visually-hidden\">ar gyfer {{columnName}}</span>",
-    "clear": "Clirio popeth <span class=\"govuk-visually-hidden\">ar gyfer {{columnName}}</span>",
+    "clear": "Clirio popeth",
     "no_filter": "Heb ei hidlo <span class=\"govuk-visually-hidden\"> am {{columnName}}</span>",
     "summary": "<span class=\"number-selected\">{{filtered}}</span> o {{total}} wedi'u dewis",
     "non-filtered-summary": "{{total}} dewis y mae modd eu dewis",
@@ -1642,7 +1643,9 @@
       "placeholder": "Teipiwch i ddod o hyd i werthoedd",
       "aria": "Chwilio gwerthoedd {{columnName}}",
       "no_match": "Nid oes gwerthoedd yn cyfateb â'ch chwiliad"
-    }
+    },
+    "apply_all_selections": "Cymhwyso’r holl ddewisiadau",
+    "select_all_variables": "Dewiswch yr holl werthoedd ar gyfer pob newidyn"
   },
   "consumer_view": {
     "tabs": {

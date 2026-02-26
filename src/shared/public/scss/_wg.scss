@@ -312,6 +312,12 @@
     margin-bottom: 15px;
   }
 
+  .button-reset:visited {
+    border: 1px solid colours.$red;
+    background: colours.$white;
+    color: colours.$red;
+  }
+
   .button-reset:hover {
     border: 1px solid colours.$red;
     background: colours.$red;
@@ -1630,30 +1636,30 @@
     font-size: 14px;
   }
 
-  .filters .govuk-checkboxes__label {
+  .filter .govuk-checkboxes__label {
     font-size: 14px;
     font-weight: normal;
     margin-top: 8px;
     padding-left: 1em;
   }
 
-  .filters .govuk-checkboxes__input {
+  .filter .govuk-checkboxes__input {
     height: 34px;
     width: 34px;
   }
 
-  .filters .govuk-checkboxes__label::before {
+  .filter .govuk-checkboxes__label::before {
     top: 10px;
     left: 0px;
   }
 
-  .filters .govuk-checkboxes__label::after {
+  .filter .govuk-checkboxes__label::after {
     top: 17px;
     color: colours.$blue;
     left: 6px;
   }
 
-  .filters .filter-controls {
+  .filter .filter-controls {
     margin-top: 6px;
   }
 
@@ -2761,7 +2767,6 @@
 
   .alert-warning {
     border-left: 10px solid colours.$red;
-    padding-left: 120px;
     background-image: URL('/images/warning-sign.svg');
     background-repeat: no-repeat;
     background-position: 30px 20px;

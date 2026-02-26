@@ -23,23 +23,14 @@ export const Filters = (props: FiltersProps) => {
   const { filters, title, selected, preview, dataset } = props;
   const { buildUrl, i18n } = useLocals();
 
-  const activeFilters = selected?.length > 0;
   const isPivot = !!(props.rows && props.columns);
-
-  const clearFiltersLink = preview
+  const selectAllLink = preview
     ? buildUrl(`/publish/${dataset.id}/cube-preview`, i18n.language)
     : buildUrl(`/${dataset.id}`, i18n.language);
 
   return (
     <div className="filters-container">
-      <div className="filters-head">
-        <h2 className="govuk-heading-m">{title}</h2>
-        {!!activeFilters && (
-          <a href={clearFiltersLink} className={'clear-filters'}>
-            <T>filters.clear</T>
-          </a>
-        )}
-      </div>
+      <h2 className="govuk-heading-m">{title}</h2>
 
       {filters?.map((filter, index) => {
         const values = selected?.find((f) => f.columnName === filter.factTableColumn)?.values;
@@ -67,6 +58,15 @@ export const Filters = (props: FiltersProps) => {
 
         return <CheckboxFilter key={index} filter={filter} values={values} tag={tag} />;
       })}
+
+      <a
+        href={selectAllLink}
+        className="govuk-button govuk-button-small button-reset select-all-variables"
+        role="button"
+      >
+        <T>filters.select_all_variables</T>
+      </a>
+
       <script type="module" src="/assets/js/filters.js" />
     </div>
   );
