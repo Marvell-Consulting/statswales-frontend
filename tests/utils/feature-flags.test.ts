@@ -312,7 +312,7 @@ describe('extractFlagsFromParams', () => {
 
 describe('validFlags', () => {
   it('should keep flags that are in the FeatureFlag enum', () => {
-    expect(validFlags(['example', 'summary_table'])).toEqual([FeatureFlag.Example, FeatureFlag.SummaryTable]);
+    expect(validFlags(['example'])).toEqual([FeatureFlag.Example]);
   });
 
   it('should discard flags that are not in the FeatureFlag enum', () => {
@@ -320,7 +320,7 @@ describe('validFlags', () => {
   });
 
   it('should filter out invalid flags and keep valid ones', () => {
-    expect(validFlags(['example', 'hacked', 'summary_table'])).toEqual([FeatureFlag.Example, FeatureFlag.SummaryTable]);
+    expect(validFlags(['example', 'hacked', 'summary_table'])).toEqual([FeatureFlag.Example]);
   });
 
   it('should return empty array for empty input', () => {
