@@ -1,5 +1,6 @@
 import React from 'react';
 import { clsx } from 'clsx';
+import { URL } from 'node:url';
 
 import Layout from './components/Layout';
 import Hero from './components/Hero';
@@ -9,6 +10,8 @@ import { useLocals } from '../../shared/views/context/Locals';
 import Pagination from '../../shared/views/components/Pagination';
 import { statusToColour } from '../../shared/utils/status-to-colour';
 import { dateFormat } from '../../shared/utils/date-format';
+import { isFeatureEnabled } from '../../shared/utils/feature-flags';
+import { FeatureFlag } from '../../shared/enums/feature-flag';
 
 function ChildTopics({ childTopics }) {
   const { buildUrl, i18n } = useLocals();
@@ -30,7 +33,9 @@ function ChildTopics({ childTopics }) {
 }
 
 function Datasets({ datasets }) {
-  const { buildUrl, i18n } = useLocals();
+  const { buildUrl, i18n, protocol, hostname, url, featureFlags } = useLocals();
+  const urlObj = new URL(url, `${protocol}://${hostname}`);
+  const showPivot = isFeatureEnabled(urlObj.searchParams, FeatureFlag.PivotFlow, featureFlags);
 
   return (
     <ul className="govuk-list">
@@ -38,7 +43,7 @@ function Datasets({ datasets }) {
         <li className="index-list__item" key={dataset.id}>
           <a
             className="govuk-heading-s govuk-!-margin-bottom-0 govuk-link inline"
-            href={buildUrl(`/${dataset.id}`, i18n.language)}
+            href={buildUrl(`/${dataset.id}${showPivot ? '/start' : ''}`, i18n.language)}
           >
             {dataset.title}
           </a>

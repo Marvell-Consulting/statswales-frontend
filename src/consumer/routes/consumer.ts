@@ -8,7 +8,10 @@ import {
   viewPublishedDataset,
   listPublishedDatasets,
   downloadPublishedMetadata,
-  viewFilteredDataset
+  viewFilteredDataset,
+  viewPublishedLanding,
+  createPublishedDatasetPivot,
+  viewPivotedDataset
 } from '../controllers/consumer';
 import { fetchPublishedDataset } from '../middleware/fetch-dataset';
 import { config } from '../../shared/config';
@@ -37,7 +40,23 @@ consumer.get('/all', listPublishedDatasets);
 
 consumer.get('/topic/:topicId{/:topicSlug}', listTopics);
 
-consumer.get('/:datasetId', fetchPublishedDataset, viewPublishedDataset);
+consumer.get('/:datasetId/start', fetchPublishedDataset, viewPublishedLanding);
+consumer.post(
+  '/:datasetId/start',
+  express.urlencoded({ extended: true, limit: '10mb', parameterLimit: 50000 }),
+  fetchPublishedDataset,
+  viewPublishedLanding
+);
+consumer.get('/:datasetId/data', fetchPublishedDataset, viewPublishedDataset);
+
+consumer.get('/:datasetId/pivot', fetchPublishedDataset, createPublishedDatasetPivot);
+consumer.post(
+  '/:datasetId/pivot',
+  express.urlencoded({ extended: true, limit: '10mb', parameterLimit: 50000 }),
+  fetchPublishedDataset,
+  createPublishedDatasetPivot
+);
+
 consumer.post(
   '/:datasetId/filtered',
   express.urlencoded({ extended: true, limit: '10mb', parameterLimit: 50000 }),
@@ -45,6 +64,7 @@ consumer.post(
   viewFilteredDataset
 );
 consumer.get('/:datasetId/filtered{/:filterId}', fetchPublishedDataset, viewFilteredDataset);
+consumer.get('/:datasetId/pivot{/:filterId}', fetchPublishedDataset, viewPivotedDataset);
 
 consumer.get('/:datasetId/download/metadata', fetchPublishedDataset, downloadPublishedMetadata);
 
@@ -55,3 +75,5 @@ consumer.post(
   downloadPublishedDataset
 );
 consumer.get('/:datasetId/download{/:filterId}', fetchPublishedDataset, downloadPublishedDataset);
+
+consumer.get('/:datasetId', fetchPublishedDataset, viewPublishedDataset);
