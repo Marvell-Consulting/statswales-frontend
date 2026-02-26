@@ -9,7 +9,6 @@ import { Filter } from '../../../../shared/interfaces/filter';
 import { FilterTable } from '../../../../shared/dtos/filter-table';
 import { DatasetDTO } from '../../../../shared/dtos/dataset';
 import { SummaryTable } from './SummaryTable';
-import T from '../../../../shared/views/components/T';
 import { RowsPerPage } from '../../../../shared/views/components/RowsPerPage';
 
 type DataTabProps = NoteCodesLegendProps &
@@ -60,16 +59,6 @@ export default function DataTab(props: DataTabProps) {
                 title={props.t('consumer_view.filters')}
                 selected={props.selectedFilterOptions}
               />
-              <br />
-              <button
-                name="dataViewsChoice"
-                value="filter"
-                type="submit"
-                className="govuk-button button-black"
-                data-module="govuk-button"
-              >
-                <T>consumer_view.apply_filters</T>
-              </button>
             </form>
           </div>
 

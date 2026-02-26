@@ -1,41 +1,85 @@
 @use 'colours';
 
 .filters-container {
-  .filters-head {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+  .dimension-accordion {
+    border-top: 1px solid colours.$lightgrey_semi;
+
+    &[open] > .dimension-accordion__summary::before {
+      transform: rotate(90deg);
+    }
+
+    .dimension-accordion__summary {
+      display: flex;
+      align-items: flex-start;
+      padding: 15px 0;
+      cursor: pointer;
+      list-style: none;
+      gap: 6px;
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+
+      &:focus {
+        outline: none !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        color: inherit !important;
+      }
+
+      &::before {
+        content: '';
+        background-image: url('../images/chevron.svg');
+        background-repeat: no-repeat;
+        background-size: 15px 15px;
+        background-position: center;
+        width: 24px;
+        min-width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+      }
+    }
+
+    .dimension-accordion__title {
+      font-weight: bold;
+      font-size: 18px;
+      color: colours.$blue;
+    }
+
+    .dimension-accordion__count {
+      font-size: 14px;
+      color: colours.$red;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding-bottom: 5px;
+    }
   }
 
-  a.clear-filters {
-    font-weight: bold;
-    font-size: 14px;
-    font-size: 0.875rem;
-    float: right;
-    color: colours.$red;
-    background-color: colours.$white;
-    padding: 8px 10px;
-    border: 1px solid colours.$red;
-    cursor: pointer;
+  .filter:first-of-type .dimension-accordion {
+    border-top: none;
+  }
 
-    &:hover {
-      color: colours.$white;
-      background: colours.$red;
-    }
+  .select-all-variables {
+    margin-top: 20px;
+  }
+
+  .filter-apply {
+    padding: 10px 0;
   }
 
   .filter-container {
     border: 1px solid colours.$darkgrey;
+    padding: 10px;
 
     .filter-head {
-      padding: 10px;
+      padding-bottom: 10px;
       border-bottom: 1px solid colours.$lightgrey_light;
     }
 
     .filter-body {
-      padding: 10px;
+      padding-top: 10px;
       overflow: auto;
-      max-height: 350px;
+      max-height: 600px;
     }
 
     .govuk-checkboxes {

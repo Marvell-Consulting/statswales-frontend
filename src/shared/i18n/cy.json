@@ -1641,7 +1641,9 @@
       "placeholder": "Teipiwch i ddod o hyd i werthoedd",
       "aria": "Chwilio gwerthoedd {{columnName}}",
       "no_match": "Nid oes gwerthoedd yn cyfateb â'ch chwiliad"
-    }
+    },
+    "apply_all_selections": "Cymhwyso’r holl ddewisiadau",
+    "select_all_variables": "Dewiswch yr holl werthoedd ar gyfer pob newidyn"
   },
   "consumer_view": {
     "tabs": {

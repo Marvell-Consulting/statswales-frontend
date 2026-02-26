@@ -154,13 +154,12 @@ test.describe('Check All Published Datasets', () => {
         // Navigate to the dataset page
         await page.goto(dataset.url, { timeout: INITIAL_PAGE_LOAD_TIMEOUT_MS });
 
-        // Wait for the page to load and check for Apply button
-        const applyButton = page.getByRole('button', { name: 'Apply', exact: true });
-        await expect(applyButton).toBeVisible({ timeout: PAGE_RENDER_TIMEOUT_MS });
-        // Find filter checkboxes that aren't "Not filtered" and aren't nested inside a details element
-        const filterCheckboxes = page.locator(
-          '.filters .govuk-checkboxes__input:not([id$="-all"]):not(details .govuk-checkboxes__input)'
-        );
+        // Wait for the page to load — filters are in collapsed accordions
+        const firstAccordion = page.locator('.dimension-accordion__summary').first();
+        await expect(firstAccordion).toBeVisible({ timeout: PAGE_RENDER_TIMEOUT_MS });
+        // Open the first accordion to access its filter checkboxes
+        await firstAccordion.click();
+        const filterCheckboxes = page.locator('.filter .govuk-checkboxes__input');
         const checkboxCount = await filterCheckboxes.count();
 
         if (checkboxCount > 0) {
@@ -173,8 +172,8 @@ test.describe('Check All Published Datasets', () => {
           await selectedCheckbox.check({ force: true, timeout: 5000 });
         }
 
-        // Click the Apply button
-        await applyButton.click();
+        // Click the per-section Apply button
+        await page.getByRole('button', { name: 'Apply all selections' }).first().click();
 
         // Wait for navigation to filtered view
         await page.waitForURL(/\/filtered\//, { timeout: FILTER_APPLY_TIMEOUT_MS });
@@ -273,13 +272,13 @@ test.describe('Recheck Failed Datasets', () => {
       try {
         await page.goto(dataset.url, { timeout: INITIAL_PAGE_LOAD_TIMEOUT_MS });
 
-        const applyButton = page.getByRole('button', { name: 'Apply', exact: true });
-        await expect(applyButton).toBeVisible({ timeout: PAGE_RENDER_TIMEOUT_MS });
+        // Wait for the page to load — filters are in collapsed accordions
+        const firstAccordion = page.locator('.dimension-accordion__summary').first();
+        await expect(firstAccordion).toBeVisible({ timeout: PAGE_RENDER_TIMEOUT_MS });
+        // Open the first accordion to access its filter checkboxes
+        await firstAccordion.click();
 
-        // Find filter checkboxes that aren't "Not filtered" and aren't nested inside a details element
-        const filterCheckboxes = page.locator(
-          '.filters .govuk-checkboxes__input:not([id$="-all"]):not(details .govuk-checkboxes__input)'
-        );
+        const filterCheckboxes = page.locator('.filter .govuk-checkboxes__input');
         const checkboxCount = await filterCheckboxes.count();
 
         if (checkboxCount > 0) {
@@ -290,7 +289,7 @@ test.describe('Recheck Failed Datasets', () => {
           await selectedCheckbox.check({ force: true, timeout: 5000 });
         }
 
-        await applyButton.click();
+        await page.getByRole('button', { name: 'Apply all selections' }).first().click();
         await page.waitForURL(/\/filtered\//, { timeout: FILTER_APPLY_TIMEOUT_MS });
 
         const table = page.locator('table');
