@@ -66,7 +66,7 @@ export function SummaryTableRow(props: SummaryTableRowProps): ReactNode {
   }
 
   return (
-    <tr key={`row-${idx}}`} className="govuk-table__row">
+    <tr key={`row-${idx}`} className="govuk-table__row">
       <td className="govuk-table__cell">{filter.columnName}</td>
       <td className="govuk-table__cell">{visibility}</td>
       <td className="govuk-table__cell">{selectedFilterList}</td>
