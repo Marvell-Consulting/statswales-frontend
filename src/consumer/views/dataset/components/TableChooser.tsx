@@ -20,6 +20,7 @@ export default function TableChooser() {
                   name="chooser"
                   type="radio"
                   value="pivot"
+                  required={true}
                 />
                 <label className="govuk-label govuk-radios__label" htmlFor="tableChoicePivot">
                   <T>table_chooser.pivot.label</T>
@@ -29,7 +30,14 @@ export default function TableChooser() {
                 </div>
               </div>
               <div className="govuk-radios__item">
-                <input className="govuk-radios__input" id="tableChoiceData" name="chooser" type="radio" value="data" />
+                <input
+                  className="govuk-radios__input"
+                  id="tableChoiceData"
+                  name="chooser"
+                  type="radio"
+                  value="data"
+                  required={true}
+                />
                 <label className="govuk-label govuk-radios__label" htmlFor="tableChoiceData">
                   <T>table_chooser.data.label</T>
                 </label>
