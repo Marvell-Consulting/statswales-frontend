@@ -312,6 +312,12 @@
     margin-bottom: 15px;
   }
 
+  .button-reset:visited {
+    border: 1px solid colours.$red;
+    background: colours.$white;
+    color: colours.$red;
+  }
+
   .button-reset:hover {
     border: 1px solid colours.$red;
     background: colours.$red;
