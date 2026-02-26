@@ -11,8 +11,8 @@ type PivotControlsProps = {
 
 export function PivotControls(props: PivotControlsProps) {
   const { buildUrl, i18n } = useLocals();
-  const startOverURL = buildUrl(`/${props.dataset.id}`, i18n.language);
-  const dataURL = props.url.replace('pivot', 'filtered');
+  const startOverURL = buildUrl(`/${props.dataset.id}/start`, i18n.language);
+  const dataURL = buildUrl(`/${props.dataset.id}/filtered`, i18n.language);
 
   return (
     <div className="pivot-controls">
