@@ -40,9 +40,11 @@ consumer.get('/all', listPublishedDatasets);
 
 consumer.get('/topic/:topicId{/:topicSlug}', listTopics);
 
-consumer.get('/:datasetId', fetchPublishedDataset, viewPublishedLanding);
+consumer.get('/:datasetId', fetchPublishedDataset, viewPublishedDataset);
+
+consumer.get('/:datasetId/start', fetchPublishedDataset, viewPublishedLanding);
 consumer.post(
-  '/:datasetId',
+  '/:datasetId/start',
   express.urlencoded({ extended: true, limit: '10mb', parameterLimit: 50000 }),
   fetchPublishedDataset,
   viewPublishedLanding
