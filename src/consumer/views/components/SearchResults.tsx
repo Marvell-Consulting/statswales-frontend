@@ -9,7 +9,6 @@ import T from '../../../shared/views/components/T';
 import { SearchResultDTO } from '../../../shared/dtos/search-result';
 import { isFeatureEnabled } from '../../../shared/utils/feature-flags';
 import { FeatureFlag } from '../../../shared/enums/feature-flag';
-import { logger } from '../../../shared/utils/logger';
 
 interface SearchResultsProps {
   results: SearchResultDTO[];
