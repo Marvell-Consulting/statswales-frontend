@@ -40,8 +40,6 @@ consumer.get('/all', listPublishedDatasets);
 
 consumer.get('/topic/:topicId{/:topicSlug}', listTopics);
 
-consumer.get('/:datasetId', fetchPublishedDataset, viewPublishedDataset);
-
 consumer.get('/:datasetId/start', fetchPublishedDataset, viewPublishedLanding);
 consumer.post(
   '/:datasetId/start',
@@ -77,3 +75,5 @@ consumer.post(
   downloadPublishedDataset
 );
 consumer.get('/:datasetId/download{/:filterId}', fetchPublishedDataset, downloadPublishedDataset);
+
+consumer.get('/:datasetId', fetchPublishedDataset, viewPublishedDataset);
