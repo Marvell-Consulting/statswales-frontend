@@ -168,48 +168,52 @@ export const createPublishedDatasetPivot = async (req: Request, res: Response, n
     }
   }
 
-  const [datasetMetadata, filters, publishedRevisions]: [PreviewMetadata, FilterTable[], RevisionDTO[]] =
-    await Promise.all([
-      getDatasetMetadata(dataset, revision),
-      req.conapi.getPublishedDatasetFilters(dataset.id),
-      req.conapi.getPublicationHistory(dataset.id)
-    ]);
+  try {
+    const [datasetMetadata, filters, publishedRevisions]: [PreviewMetadata, FilterTable[], RevisionDTO[]] =
+      await Promise.all([
+        getDatasetMetadata(dataset, revision),
+        req.conapi.getPublishedDatasetFilters(dataset.id),
+        req.conapi.getPublicationHistory(dataset.id)
+      ]);
 
-  const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
-  const publicationHistory = publishedRevisions.map((rev) => singleLangRevision(rev, req.language));
+    const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
+    const publicationHistory = publishedRevisions.map((rev) => singleLangRevision(rev, req.language));
 
-  for (const rev of publicationHistory) {
-    if (rev?.metadata?.reason) {
-      rev.metadata.reason = await markdownToSafeHTML(rev.metadata.reason);
+    for (const rev of publicationHistory) {
+      if (rev?.metadata?.reason) {
+        rev.metadata.reason = await markdownToSafeHTML(rev.metadata.reason);
+      }
     }
-  }
 
-  let selectedFilterOptions: Filter[] = [];
-  if (req.query.rows && req.query.columns) {
-    selectedFilterOptions = filters
-      .filter((f) => f.factTableColumn !== req.query.rows && f.factTableColumn !== req.query.columns)
-      .filter((f) => f.values.length > 0)
-      .map((f) => {
-        return {
-          columnName: f.factTableColumn,
-          values: [f.values[0].reference]
-        };
-      });
-  }
+    let selectedFilterOptions: Filter[] = [];
+    if (req.query.rows && req.query.columns) {
+      selectedFilterOptions = filters
+        .filter((f) => f.factTableColumn !== req.query.rows && f.factTableColumn !== req.query.columns)
+        .filter((f) => f.values.length > 0)
+        .map((f) => {
+          return {
+            columnName: f.factTableColumn,
+            values: [f.values[0].reference]
+          };
+        });
+    }
 
-  res.render('dataset/landing', {
-    datasetMetadata,
-    filters,
-    topics,
-    publicationHistory,
-    selectedFilterOptions,
-    shorthandUrl: req.buildUrl(`/shorthand`, req.language),
-    isUnpublished,
-    isArchived,
-    pivotStage,
-    columns: req.query.columns,
-    rows: req.query.rows
-  });
+    res.render('dataset/landing', {
+      datasetMetadata,
+      filters,
+      topics,
+      publicationHistory,
+      selectedFilterOptions,
+      shorthandUrl: req.buildUrl(`/shorthand`, req.language),
+      isUnpublished,
+      isArchived,
+      pivotStage,
+      columns: req.query.columns,
+      rows: req.query.rows
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const viewPublishedLanding = async (req: Request, res: Response, next: NextFunction) => {
