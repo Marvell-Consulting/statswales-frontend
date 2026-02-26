@@ -1,11 +1,12 @@
 import { test, expect, Page } from '@playwright/test';
 
-import { resolveDatasetUrl } from './helpers/find-dataset';
+import { resolveDatasetUrlByTitle } from './helpers/find-dataset';
+import { CONSUMER_DATASET_TITLE } from '../fixtures/dataset-title';
 
 let datasetUrl: string;
 
 test.beforeAll(async ({ browser }) => {
-  datasetUrl = await resolveDatasetUrl(browser);
+  datasetUrl = await resolveDatasetUrlByTitle(browser, CONSUMER_DATASET_TITLE);
 });
 
 // Helper to navigate to the download tab for the consumer test dataset

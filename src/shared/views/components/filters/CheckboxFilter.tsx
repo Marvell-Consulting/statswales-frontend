@@ -29,10 +29,12 @@ const filterOptionCount = (options: FilterValues[]): number => {
   }, 0);
 };
 
-const collectAllValues = (options: FilterValues[]): string[] => {
+// Returns every option value in the tree, encoded to match normalizeFilters.
+// Used as the default when no selection has been made (i.e. everything is checked).
+const allOptionValues = (options: FilterValues[]): string[] => {
   return options.flatMap((opt) => [
     encodeURIComponent(opt.reference),
-    ...(opt.children ? collectAllValues(opt.children) : [])
+    ...(opt.children ? allOptionValues(opt.children) : [])
   ]);
 };
 
@@ -42,7 +44,14 @@ export const CheckboxFilter = ({ filter, values }: CheckboxFilterProps) => {
   const filtered = values?.length;
   const total = filterOptionCount(filter.values);
   const filterId = `filter-${filter.factTableColumn.replaceAll(/\s+/g, '_')}`;
-  const effectiveValues = values ?? collectAllValues(filter.values);
+
+  // `values` is the active selection echoed back by the API (decoded, e.g. "2018/19").
+  // Option values produced by normalizeFilters are encoded (e.g. "2018%2F19"), so we
+  // must encode here before CheckboxGroup compares them with values.includes().
+  // When no selection exists yet, default to every option checked.
+  const checkedValues = values
+    ? values.map(encodeURIComponent) // active selection — encode to match option values
+    : allOptionValues(filter.values); // no selection yet — default to all options checked
 
   return (
     <div className="filter" id={filterId} data-total={total}>
@@ -84,7 +93,7 @@ export const CheckboxFilter = ({ filter, values }: CheckboxFilterProps) => {
             <CheckboxGroup
               name={`filter[${filter.factTableColumn}]`}
               options={normalizeFilters(filter.values)}
-              values={effectiveValues}
+              values={checkedValues}
               independentExpand
               controls={
                 <FilterControls
