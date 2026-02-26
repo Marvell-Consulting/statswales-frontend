@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { FilterTable, FilterValues } from '../../../dtos/filter-table';
 import { FilterControls } from './FilterControls';
 import { CheckboxOptions } from '../Checkbox';
@@ -9,7 +9,6 @@ import { useLocals } from '../../context/Locals';
 export type CheckboxFilterProps = {
   filter: FilterTable;
   values?: string[];
-  tag?: ReactNode;
 };
 
 const normalizeFilters = (options: FilterValues[]): CheckboxOptions[] => {

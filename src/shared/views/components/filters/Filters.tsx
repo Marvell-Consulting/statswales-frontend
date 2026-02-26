@@ -56,7 +56,7 @@ export const Filters = (props: FiltersProps) => {
           return <RadioFilter key={index} filter={filter} values={values} />;
         }
 
-        return <CheckboxFilter key={index} filter={filter} values={values} tag={tag} />;
+        return <CheckboxFilter key={index} filter={filter} values={values} />;
       })}
 
       <a
