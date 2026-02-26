@@ -18,13 +18,16 @@ export default function RowColumnPicker(props: FilterProps) {
       <div key={`RowColumnPicker-${idx}`} className="govuk-radios__item">
         <input
           className="govuk-radios__input"
-          id={`pivot_${f.factTableColumn}`}
+          id={`pivot_${f.factTableColumn.replaceAll(/\s+/g, '_')}`}
           name={props.type}
           type="radio"
           value={f.factTableColumn}
           required={true}
         />
-        <label className="govuk-label govuk-radios__label" htmlFor={`pivot_${f.factTableColumn}`}>
+        <label
+          className="govuk-label govuk-radios__label"
+          htmlFor={`pivot_${f.factTableColumn.replaceAll(/\s+/g, '_')}`}
+        >
           {f.columnName}
         </label>
       </div>
