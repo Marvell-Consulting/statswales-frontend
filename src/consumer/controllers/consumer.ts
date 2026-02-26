@@ -134,6 +134,10 @@ export const createPublishedDatasetPivot = async (req: Request, res: Response, n
       return;
     }
 
+    if (columns.trim() === rows.trim()) {
+      next(new BadRequestException('"columns" and "rows" must be different values.'));
+      return;
+    }
     const dataOptions: DataOptionsDTO = {
       ...FRONTEND_DATA_OPTIONS,
       filters: parseFiltersV2(req.body.filter),
