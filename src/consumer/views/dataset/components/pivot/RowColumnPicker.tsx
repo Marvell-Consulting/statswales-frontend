@@ -22,6 +22,7 @@ export default function RowColumnPicker(props: FilterProps) {
           name={props.type}
           type="radio"
           value={f.factTableColumn}
+          required={true}
         />
         <label className="govuk-label govuk-radios__label" htmlFor={`pivot_${f.factTableColumn}`}>
           {f.columnName}
