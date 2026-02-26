@@ -39,16 +39,14 @@ export default function LandingTab(props: DataTabProps) {
   else if (props.columns && props.rows) formUrl = buildUrl(`/${props.dataset.id}/pivot`, i18n.language);
 
   let component = <TableChooser />;
-  if (props.pivotStage) {
-    switch (props.pivotStage) {
-      case PivotStage.Columns:
-      case PivotStage.Rows:
-        component = <ColumnRowChooser {...props} />;
-        break;
-      case PivotStage.Summary:
-        component = <PivotSummary {...props} />;
-        break;
-    }
+  switch (props.pivotStage) {
+    case PivotStage.Columns:
+    case PivotStage.Rows:
+      component = <ColumnRowChooser {...props} />;
+      break;
+    case PivotStage.Summary:
+      component = <PivotSummary {...props} />;
+      break;
   }
 
   return (
