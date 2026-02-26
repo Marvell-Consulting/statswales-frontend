@@ -138,10 +138,21 @@ export const createPublishedDatasetPivot = async (req: Request, res: Response, n
       next(new BadRequestException('"columns" and "rows" must be different values.'));
       return;
     }
+    const trimmedColumns = columns.trim();
+    const trimmedRows = rows.trim();
+
+    const availableFilters: FilterTable[] = await req.conapi.getPublishedDatasetFilters(dataset.id);
+    const validColumnNames = new Set(availableFilters.map((f) => f.factTableColumn));
+
+    if (!validColumnNames.has(trimmedColumns) || !validColumnNames.has(trimmedRows)) {
+      next(new BadRequestException('Both "columns" and "rows" must match valid filter column names.'));
+      return;
+    }
+
     const dataOptions: DataOptionsDTO = {
       ...FRONTEND_DATA_OPTIONS,
       filters: parseFiltersV2(req.body.filter),
-      pivot: { x: columns, y: rows, include_performance: false, backend: 'duckdb' }
+      pivot: { x: trimmedColumns, y: trimmedRows, include_performance: false, backend: 'duckdb' }
     };
     const filterId = await req.conapi.generatePivotFilterId(dataset.id, dataOptions);
     const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
