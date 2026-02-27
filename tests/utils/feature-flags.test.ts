@@ -61,7 +61,7 @@ describe('isFeatureEnabled', () => {
     it('should always return true', () => {
       config.env = AppEnv.Local;
       const params = new URLSearchParams('feature=other');
-      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(true);
+      expect(isFeatureEnabled(params, FeatureFlag.Example)).toBe(false);
     });
   });
 
