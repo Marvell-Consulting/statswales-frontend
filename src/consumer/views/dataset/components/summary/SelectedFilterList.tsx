@@ -10,26 +10,39 @@ interface SelectFilterListProps {
   idx: number;
 }
 
+const MAX_DISPLAYED_VALUES = 20;
+
 export function SelectedFilterList(props: SelectFilterListProps): ReactNode[] {
   const { filter, flatFilters, selectedFilterOptions, idx } = props;
   let selectedValues = [
-    <span key={`s-${idx}`} className="govuk-tag govuk-tag--grey">
+    <span key={`s-${idx}`} className="govuk-tag govuk-tag--grey govuk-tag--value">
       <T count={flatFilters.length}>summary.all_values</T>
     </span>
   ];
   const selectedFilter = selectedFilterOptions.find((opt) => filter.factTableColumn === opt.columnName);
   if (selectedFilter && flatFilters.length > 1) {
-    selectedValues = selectedFilter.values.map((val, oidx) => {
-      const valName = flatFilters.find((ref) => ref.reference === val)?.description || 'Unknown';
-      return (
-        <React.Fragment key={`s-${idx}-${oidx}`}>
-          <span className="govuk-tag govuk-tag--grey">{valName}</span>{' '}
-        </React.Fragment>
-      );
-    });
+    const displayedValues = selectedFilter.values.slice(0, MAX_DISPLAYED_VALUES);
+    const remainingCount = selectedFilter.values.length - MAX_DISPLAYED_VALUES;
+    selectedValues = [
+      ...displayedValues.map((val, oidx) => {
+        const valName = flatFilters.find((ref) => ref.reference === val)?.description || 'Unknown';
+        return (
+          <React.Fragment key={`s-${idx}-${oidx}`}>
+            <span className="govuk-tag govuk-tag--blue govuk-tag--value">{valName}</span>{' '}
+          </React.Fragment>
+        );
+      }),
+      ...(remainingCount > 0
+        ? [
+            <span key={`s-${idx}-more`}>
+              <T count={remainingCount}>summary.more_values</T>
+            </span>
+          ]
+        : [])
+    ];
   } else if (flatFilters.length === 1) {
     selectedValues = [
-      <span key={`s-${idx}`} className="govuk-tag govuk-tag--grey">
+      <span key={`s-${idx}`} className="govuk-tag govuk-tag--grey govuk-tag--value">
         {flatFilters[0].description}
       </span>
     ];

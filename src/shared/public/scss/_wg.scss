@@ -819,6 +819,12 @@
     max-width: none;
   }
 
+  .govuk-tag--value {
+    text-transform: none;
+    font-weight: normal;
+    margin-bottom: 4px;
+  }
+
   .sort-label {
     width: max-content;
     float: left;

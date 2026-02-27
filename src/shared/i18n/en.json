@@ -2325,9 +2325,10 @@
       "columns": "Columns",
       "rows": "Rows"
     },
+    "more_values": "+ {{count}} more (see variable filters)",
     "actions": {
       "change": "Change values",
-      "no_action": "Value can't be changed"
+      "no_action": "Value cannot be changed"
     }
   },
   "table_chooser": {

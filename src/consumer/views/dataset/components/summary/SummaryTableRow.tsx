@@ -18,7 +18,7 @@ export function SummaryTableRow(props: SummaryTableRowProps): ReactNode {
   const { filter, selectedFilterOptions, idx, landing } = props;
   const flatFilters = flattenReferences(filter.values);
   let changeLink = (
-    <a key={`c-${idx}`} href={`#filter-${filter.factTableColumn}`}>
+    <a key={`c-${idx}`} href={`#filter-${filter.factTableColumn.replaceAll(/\s+/g, '_')}`}>
       <T>summary.actions.change</T>
     </a>
   );
