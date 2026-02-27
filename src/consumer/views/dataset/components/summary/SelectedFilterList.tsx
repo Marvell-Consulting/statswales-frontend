@@ -25,10 +25,12 @@ export function SelectedFilterList(props: SelectFilterListProps): ReactNode[] {
     const remainingCount = selectedFilter.values.length - MAX_DISPLAYED_VALUES;
     selectedValues = [
       ...displayedValues.map((val, oidx) => {
-        const valName = flatFilters.find((ref) => ref.reference === val)?.description || 'Unknown';
+        const filterValue = flatFilters.find((ref) => ref.reference === val);
         return (
           <React.Fragment key={`s-${idx}-${oidx}`}>
-            <span className="govuk-tag govuk-tag--blue govuk-tag--value">{valName}</span>{' '}
+            <span className="govuk-tag govuk-tag--blue govuk-tag--value">
+              {filterValue?.description || <T>summary.unknown_value</T>}
+            </span>{' '}
           </React.Fragment>
         );
       }),

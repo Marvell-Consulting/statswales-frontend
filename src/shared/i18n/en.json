@@ -2325,6 +2325,7 @@
       "columns": "Columns",
       "rows": "Rows"
     },
+    "unknown_value": "Unknown",
     "more_values": "+ {{count}} more (see variable filters)",
     "actions": {
       "change": "Change values",
