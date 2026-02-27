@@ -1030,6 +1030,48 @@
     padding-left: 0;
   }
 
+  .summary-table {
+    border-left: none;
+    padding-left: 0;
+
+    > .govuk-details__summary {
+      padding-left: 30px;
+
+      &::after {
+        content: none;
+      }
+
+      &::before {
+        display: block;
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+        background-image: url('../images/chevron.svg');
+        background-repeat: no-repeat;
+        background-size: 15px 15px;
+        background-position: center;
+        width: 24px;
+        height: 24px;
+        clip-path: none;
+        border: none;
+      }
+    }
+
+    &[open] > .govuk-details__summary {
+      &::after {
+        content: none;
+      }
+
+      &::before {
+        display: block;
+        transform: rotate(90deg);
+      }
+    }
+  }
+
   .govuk-phase-banner {
     background-color: colours.$yellow;
     border-bottom: none;
