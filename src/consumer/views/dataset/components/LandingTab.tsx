@@ -38,14 +38,14 @@ export default function LandingTab(props: DataTabProps) {
   else if (props.preview) formUrl = buildUrl(`/publish/${props.dataset.id}/cube-preview`, i18n.language);
   else if (props.columns && props.rows) formUrl = buildUrl(`/${props.dataset.id}/pivot`, i18n.language);
 
-  let component = <TableChooser />;
+  let pivotActionChooser = <TableChooser />;
   switch (props.pivotStage) {
     case PivotStage.Columns:
     case PivotStage.Rows:
-      component = <ColumnRowChooser {...props} />;
+      pivotActionChooser = <ColumnRowChooser {...props} />;
       break;
     case PivotStage.Summary:
-      component = <PivotSummary {...props} />;
+      pivotActionChooser = <PivotSummary {...props} />;
       break;
   }
 
@@ -94,7 +94,7 @@ export default function LandingTab(props: DataTabProps) {
           ) : (
             <div className="govuk-grid-column-three-quarters">
               {props.pivotStage === PivotStage.Summary ? null : <SummaryTable {...props} landing={true} />}
-              {component}
+              {pivotActionChooser}
             </div>
           )}
         </div>

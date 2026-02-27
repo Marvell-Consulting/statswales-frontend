@@ -1,8 +1,9 @@
 import React, { ReactNode } from 'react';
 import T from '../../../../../shared/views/components/T';
-import { FilterTable, FilterValues } from '../../../../../shared/dtos/filter-table';
+import { FilterTable } from '../../../../../shared/dtos/filter-table';
 import { Filter } from '../../../../../shared/interfaces/filter';
 import { SelectedFilterList } from './SelectedFilterList';
+import { flattenReferences } from '../../../../../shared/utils/flatten-references';
 
 interface SummaryTableRowProps {
   filter: FilterTable;
@@ -11,10 +12,6 @@ interface SummaryTableRowProps {
   landing?: boolean;
   columns?: string;
   rows?: string;
-}
-
-export function flattenReferences(nodes: FilterValues[]): FilterValues[] {
-  return nodes.flatMap((node) => [node, ...(node.children ? flattenReferences(node.children) : [])]);
 }
 
 export function SummaryTableRow(props: SummaryTableRowProps): ReactNode {

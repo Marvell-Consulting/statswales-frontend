@@ -5,7 +5,7 @@ import { FilterTable } from '../../../../shared/dtos/filter-table';
 import { Filter } from '../../../../shared/interfaces/filter';
 import { PivotStage } from '../../../../shared/enums/pivot-stage';
 import { SummaryTable } from './SummaryTable';
-import { flattenReferences } from './summary/SummaryTableRow';
+import { flattenReferences } from '../../../../shared/utils/flatten-references';
 
 interface PivotProps {
   url: string;
