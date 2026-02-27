@@ -71,6 +71,11 @@
     border: 1px solid colours.$darkgrey;
     padding: 10px;
 
+    &:focus {
+      outline: 2px solid colours.$black;
+      box-shadow: 0 0 0 4px colours.$yellow;
+    }
+
     .filter-head {
       padding-bottom: 10px;
       border-bottom: 1px solid colours.$lightgrey_light;

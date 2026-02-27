@@ -14,7 +14,7 @@ interface SummaryDataProps {
 
 export function SummaryTable(props: SummaryDataProps): ReactNode {
   return (
-    <details className="govuk-details" open={!props.landing}>
+    <details className="govuk-details summary-table" open={!props.landing}>
       <summary className="govuk-details__summary">
         <span className="govuk-details__summary-text">
           <T>summary.title</T>

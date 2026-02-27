@@ -180,4 +180,24 @@
       });
     });
   });
+  // Handle "Change values" links from the summary table
+  document.querySelectorAll('a[href^="#filter-"]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      const targetId = link.getAttribute('href').slice(1);
+      const filterEl = document.getElementById(targetId);
+      if (!filterEl) return;
+
+      e.preventDefault();
+
+      const accordion = filterEl.querySelector('.dimension-accordion');
+      if (accordion) accordion.setAttribute('open', '');
+
+      const container = filterEl.querySelector('.filter-container');
+      if (container) {
+        filterEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (!container.hasAttribute('tabindex')) container.setAttribute('tabindex', '-1');
+        container.focus({ preventScroll: true });
+      }
+    });
+  });
 })();

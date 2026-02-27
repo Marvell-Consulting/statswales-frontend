@@ -2124,6 +2124,8 @@
       "columns": "Colofnau",
       "rows": "Rhesi"
     },
+    "unknown_value": "Anhysbys",
+    "more_values": "+ {{count}} yn rhagor (gweler hidlyddion newidyn)",
     "actions": {
       "change": "Newid gwerthoedd",
       "no_action": "Ni ellir newid y gwerth"
