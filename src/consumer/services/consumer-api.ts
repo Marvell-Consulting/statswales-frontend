@@ -155,6 +155,14 @@ export class ConsumerApi {
     );
   }
 
+  public async generatePivotFilterId(datasetId: string, dataOptions: DataOptionsDTO): Promise<string> {
+    logger.debug(`Generating filter ID for dataset: ${datasetId}`);
+
+    return this.fetch({ method: HttpMethod.Post, url: `v2/${datasetId}/pivot`, json: dataOptions }).then((response) =>
+      response.json().then((data) => data.filterId as string)
+    );
+  }
+
   public async generateFilterId(datasetId: string, dataOptions: DataOptionsDTO): Promise<string> {
     logger.debug(`Generating filter ID for dataset: ${datasetId}`);
 
@@ -182,6 +190,29 @@ export class ConsumerApi {
     }
 
     return this.fetch({ url: `v2/${datasetId}/data/${filterId}`, query }).then(
+      (response) => response.json() as unknown as ViewV2DTO
+    );
+  }
+
+  public async getPivotedDatasetView(
+    datasetId: string,
+    filterId: string,
+    pageNumber: number,
+    pageSize: number,
+    sortBy?: SortByInterface
+  ): Promise<ViewV2DTO> {
+    logger.debug(`Fetching pivoted view of dataset: ${datasetId} with filter ID: ${filterId}`);
+    const query = new URLSearchParams({
+      page_number: pageNumber.toString(),
+      page_size: pageSize.toString(),
+      format: 'frontend'
+    });
+
+    if (sortBy) {
+      query.append('sort_by', JSON.stringify([sortBy]));
+    }
+
+    return this.fetch({ url: `v2/${datasetId}/pivot/${filterId}`, query }).then(
       (response) => response.json() as unknown as ViewV2DTO
     );
   }

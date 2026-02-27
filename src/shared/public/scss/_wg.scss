@@ -1698,6 +1698,22 @@
     font-weight: bold;
   }
 
+  .pivot-controls {
+    .govuk-button-small {
+      margin-bottom: 0;
+    }
+
+    .govuk-button--tertiary {
+      border-color: colours.$red;
+      color: colours.$red;
+
+      &:hover {
+        background-color: colours.$red;
+        color: colours.$white;
+      }
+    }
+  }
+
   .govuk-section-break {
     border-bottom: 1px solid colours.$lightgrey;
   }

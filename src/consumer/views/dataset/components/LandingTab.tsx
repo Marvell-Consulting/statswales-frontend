@@ -1,17 +1,18 @@
-import qs from 'qs';
 import React from 'react';
 import { Filters } from '../../../../shared/views/components/filters';
-import Pagination, { PaginationProps } from '../../../../shared/views/components/Pagination';
+import { PaginationProps } from '../../../../shared/views/components/Pagination';
 import { NoteCodesLegendProps } from './NoteCodesLegend';
-import ViewTable, { ViewTableProps } from './ViewTable';
+import { ViewTableProps } from './ViewTable';
 import { useLocals } from '../../../../shared/views/context/Locals';
 import { Filter } from '../../../../shared/interfaces/filter';
 import { FilterTable } from '../../../../shared/dtos/filter-table';
 import { DatasetDTO } from '../../../../shared/dtos/dataset';
 import { SummaryTable } from './SummaryTable';
-import { RowsPerPage } from '../../../../shared/views/components/RowsPerPage';
 import T from '../../../../shared/views/components/T';
-import { PivotControls } from './pivot/PivotControls';
+import TableChooser from './TableChooser';
+import { PivotStage } from '../../../../shared/enums/pivot-stage';
+import ColumnRowChooser from './ColumnRowChooser';
+import PivotSummary from '../PivotSummary';
 
 type DataTabProps = NoteCodesLegendProps &
   PaginationProps &
@@ -20,26 +21,33 @@ type DataTabProps = NoteCodesLegendProps &
     dataset: DatasetDTO;
     filters: FilterTable[];
     selectedFilterOptions: Filter[];
-    page_size: number;
     isDevPreview?: boolean;
     preview?: boolean;
     previewFailed?: string;
-    filterId: string;
+    isLanding: boolean;
+    pivotStage: PivotStage;
     columns?: string;
     rows?: string;
   };
 
-export default function DataTab(props: DataTabProps) {
+export default function LandingTab(props: DataTabProps) {
   const { buildUrl, i18n } = useLocals();
-  const [, query] = props.url.split('?');
-  const parsedQuery = qs.parse(query);
-  const sortBy = parsedQuery.sort_by as { columnName: string; direction: string } | undefined;
-  const pivotSelected = !!props.columns && !!props.rows;
 
   let formUrl = buildUrl(`/${props.dataset.id}/filtered`, i18n.language);
   if (props.isDevPreview) formUrl = buildUrl(`/developer/${props.dataset.id}/filtered`, i18n.language, {}, 'data');
   else if (props.preview) formUrl = buildUrl(`/publish/${props.dataset.id}/cube-preview`, i18n.language);
   else if (props.columns && props.rows) formUrl = buildUrl(`/${props.dataset.id}/pivot`, i18n.language);
+
+  let pivotActionChooser = <TableChooser />;
+  switch (props.pivotStage) {
+    case PivotStage.Columns:
+    case PivotStage.Rows:
+      pivotActionChooser = <ColumnRowChooser {...props} />;
+      break;
+    case PivotStage.Summary:
+      pivotActionChooser = <PivotSummary {...props} />;
+      break;
+  }
 
   return (
     <div className="govuk-width-container">
@@ -48,14 +56,6 @@ export default function DataTab(props: DataTabProps) {
           {/* Sidebar filters */}
           <div className="govuk-grid-column-one-quarter">
             <form method="POST" action={formUrl}>
-              <input type="hidden" name="page_size" value={props.page_size} />
-              {sortBy && (
-                <>
-                  <input type="hidden" name="sort_by[columnName]" value={sortBy.columnName} />
-                  <input type="hidden" name="sort_by[direction]" value={sortBy.direction} />
-                </>
-              )}
-
               <Filters
                 dataset={props.dataset}
                 preview={props.preview}
@@ -67,8 +67,6 @@ export default function DataTab(props: DataTabProps) {
                 rows={props.rows}
               />
               <br />
-              {props.columns ? <input type="hidden" name="columns" value={props.columns} /> : null}
-              {props.rows ? <input type="hidden" name="rows" value={props.rows} /> : null}
               <button
                 name="dataViewsChoice"
                 value="filter"
@@ -78,6 +76,8 @@ export default function DataTab(props: DataTabProps) {
               >
                 <T>consumer_view.apply_filters</T>
               </button>
+              {props.columns ? <input type="hidden" name="columns" value={props.columns} /> : null}
+              {props.rows ? <input type="hidden" name="rows" value={props.rows} /> : null}
             </form>
           </div>
 
@@ -93,13 +93,8 @@ export default function DataTab(props: DataTabProps) {
             </div>
           ) : (
             <div className="govuk-grid-column-three-quarters">
-              <SummaryTable {...props} />
-              {pivotSelected && <PivotControls {...props} />}
-              <div className="govuk-!-padding-top-5 govuk-!-margin-bottom-2">
-                <ViewTable {...props} />
-              </div>
-              <Pagination {...props} />
-              <RowsPerPage pageSize={props.page_size} />
+              {props.pivotStage === PivotStage.Summary ? null : <SummaryTable {...props} landing={true} />}
+              {pivotActionChooser}
             </div>
           )}
         </div>
