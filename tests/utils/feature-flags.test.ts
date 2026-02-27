@@ -58,7 +58,7 @@ describe('isFeatureEnabled', () => {
   });
 
   describe('when feature flagging is disabled', () => {
-    it.skip('should always return true', () => {
+    it('should always return true', () => {
       config.env = AppEnv.Local;
       const params = new URLSearchParams('feature=other');
       // Disabled while new pivot route tests are written

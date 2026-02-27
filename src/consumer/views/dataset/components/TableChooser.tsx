@@ -48,7 +48,7 @@ export default function TableChooser() {
             </div>
           </fieldset>
           <div className="govuk-!-padding-top-5 govuk-!-margin-bottom-2">
-            <button type="submit" className="govuk-button" data-module="govuk-button">
+            <button id="tableChooserBtn" type="submit" className="govuk-button" data-module="govuk-button">
               <T>buttons.continue</T>
             </button>
           </div>

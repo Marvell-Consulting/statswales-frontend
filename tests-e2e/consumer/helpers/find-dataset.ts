@@ -11,6 +11,10 @@ export async function findDataset(page: Page, title: string) {
   await datasetLink.click();
   // Verify we landed on a dataset page with the expected title
   await expect(page.locator('h1.govuk-heading-xl')).toContainText(title);
+  // Navigate to the data table page
+  await page.click('label[for="tableChoiceData"]');
+  await page.click('#tableChooserBtn');
+  await expect(page.locator('h1.govuk-heading-xl')).toContainText(title);
   return page.url();
 }
 

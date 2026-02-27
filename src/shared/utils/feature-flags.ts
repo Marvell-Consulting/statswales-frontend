@@ -72,7 +72,7 @@ export function validFlags(flags: string[]): FeatureFlag[] {
 // cookieValue is the raw value of the FEATURE_FLAG_COOKIE cookie
 export function isFeatureEnabled(params: QueryParams, flag: FeatureFlag, cookieValue?: string): boolean {
   // Disabled to allow playwright to pass while new tests are written
-  // if (featureFlaggingDisabled()) return true;
+  if (featureFlaggingDisabled()) return true;
 
   const fromParams = extractFlagsFromParams(params);
   if (fromParams.includes(flag)) return true;
