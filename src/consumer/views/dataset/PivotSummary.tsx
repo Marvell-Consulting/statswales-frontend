@@ -4,8 +4,8 @@ import { DatasetDTO } from '../../../shared/dtos/dataset';
 import { FilterTable } from '../../../shared/dtos/filter-table';
 import { Filter } from '../../../shared/interfaces/filter';
 import { PivotStage } from '../../../shared/enums/pivot-stage';
-import { flattenReferences } from './components/summary/SummaryTableRow';
 import { SummaryTable } from './components/SummaryTable';
+import { flattenReferences } from '../../../shared/utils/flatten-references';
 
 interface PivotProps {
   url: string;
