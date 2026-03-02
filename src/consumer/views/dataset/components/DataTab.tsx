@@ -66,18 +66,8 @@ export default function DataTab(props: DataTabProps) {
                 columns={props.columns}
                 rows={props.rows}
               />
-              <br />
               {props.columns ? <input type="hidden" name="columns" value={props.columns} /> : null}
               {props.rows ? <input type="hidden" name="rows" value={props.rows} /> : null}
-              <button
-                name="dataViewsChoice"
-                value="filter"
-                type="submit"
-                className="govuk-button button-black"
-                data-module="govuk-button"
-              >
-                <T>consumer_view.apply_filters</T>
-              </button>
             </form>
           </div>
 
