@@ -8,7 +8,6 @@ import { Filter } from '../../../../shared/interfaces/filter';
 import { FilterTable } from '../../../../shared/dtos/filter-table';
 import { DatasetDTO } from '../../../../shared/dtos/dataset';
 import { SummaryTable } from './SummaryTable';
-import T from '../../../../shared/views/components/T';
 import TableChooser from './TableChooser';
 import { PivotStage } from '../../../../shared/enums/pivot-stage';
 import ColumnRowChooser from './ColumnRowChooser';

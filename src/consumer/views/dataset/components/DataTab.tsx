@@ -10,7 +10,6 @@ import { FilterTable } from '../../../../shared/dtos/filter-table';
 import { DatasetDTO } from '../../../../shared/dtos/dataset';
 import { SummaryTable } from './SummaryTable';
 import { RowsPerPage } from '../../../../shared/views/components/RowsPerPage';
-import T from '../../../../shared/views/components/T';
 import { PivotControls } from './pivot/PivotControls';
 
 type DataTabProps = NoteCodesLegendProps &
