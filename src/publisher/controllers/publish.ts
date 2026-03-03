@@ -603,7 +603,10 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
     const parsedFilters = parseFilters(req.body.filter);
     const filtersDTO: FilterTable[] = await req.pubapi.getRevisionFilters(datasetId, endRevisionId);
 
-    const emptyFilterColumns = filtersDTO.filter((f) => !parsedFilters.some((p) => p.columnName === f.factTableColumn));
+    const allSelectedCols = new Set(Object.keys((req.body.filter_all as Record<string, string>) ?? {}));
+    const emptyFilterColumns = filtersDTO.filter(
+      (f) => !allSelectedCols.has(f.factTableColumn) && !parsedFilters.some((p) => p.columnName === f.factTableColumn)
+    );
 
     if (emptyFilterColumns.length > 0) {
       req.session.errors = emptyFilterColumns.map((f) => ({
@@ -626,7 +629,6 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
 
   const filterId = req.params.filterId;
   const { pageNumber, pageSize, sortBy } = parsePageOptions(req);
-  let errors: ViewError[] | undefined;
   let previewMetadata: PreviewMetadata | undefined;
   let publishedRevisions: RevisionDTO[] = [];
 
@@ -678,7 +680,6 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
         filters: filtersDTO,
         preview: true,
         dataset,
-        errors,
         datasetStatus,
         publishingStatus,
         publicationHistory,
