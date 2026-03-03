@@ -179,7 +179,7 @@ Gall eich set ddata gynnwys data ar gyfer cyfnodau amser lluosog. Er enghraifft,
 
 #### Cyfnodau treigl neu sy’n gorgyffwrdd
 
-Efallai y bydd amgylchiadau pan fydd y cyfnodau yn eich set ddata yn gorgyffwrdd.  Er enghraifft, pan fo eich gwerthoedd data yn cynrychioli gwerthoedd cronnol i ddyddiad penodol, megis y swm ar gyfer y flwyddyn yn gorffen ar 30 Mehefin, yna y swm ar gyfer y flwyddyn yn gorffen ar 31 Gorffennaf, ac ati.  Yn yr achosion hyn, dylech ddilyn y drefn fformatio ganlynol:
+Efallai y bydd amgylchiadau pan fydd y cyfnodau yn eich set ddata yn gorgyffwrdd. Er enghraifft, pan fo eich gwerthoedd data yn cynrychioli gwerthoedd cronnol i ddyddiad penodol, megis y swm ar gyfer y flwyddyn yn gorffen ar 30 Mehefin, yna y swm ar gyfer y flwyddyn yn gorffen ar 31 Gorffennaf, ac ati. Yn yr achosion hyn, dylech ddilyn y drefn fformatio ganlynol:
 
 - rhagddodiad yn dynodi hyd y cyfnod
 - yna unrhyw rai o’r fformatiau dyddiad penodol a ddisgrifir yn yr adran ‘[Pwyntiau penodol mewn amser](#guidance-pwyntiau-penodol-mewn-amser)
@@ -199,7 +199,8 @@ Enghreifftiau:
 | WEDD-MM-YYYY           | WE25-03-2022 | Wythnos yn gorffen ar 25 Mawrth 2022      |
 
 #### Cyfnodau ansafonol
-Efallai y bydd amgylchiadau prin pan na fydd y fformatiau safonol hyn yn briodol ar gyfer y data yn eich set ddata.  Yn yr achosion hyn, dylech [baratoi eich tablau am-edrych eich hun](#guidance-tablau-am-edrych).
+
+Efallai y bydd amgylchiadau prin pan na fydd y fformatiau safonol hyn yn briodol ar gyfer y data yn eich set ddata. Yn yr achosion hyn, dylech [baratoi eich tablau am-edrych eich hun](#guidance-tablau-am-edrych).
 
 <!-- Yn yr achosion hyn, dylech [baratoi eich tablau am-edrych data eich hun](#guidance-tablau-am-edrych-dyddiad).
 
