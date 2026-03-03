@@ -27,8 +27,16 @@
         const boxes = [...filter.querySelectorAll('.filter-body [type="checkbox"]')];
         const total = Number(filter.dataset.total);
         const numChecked = boxes.reduce((sum, cb) => sum + (cb.checked ? 1 : 0), 0);
+
         if (numChecked === total) {
+          // All selected — disable so server treats this as "no filter applied",
+          // and add a sentinel so the server can distinguish this from "none selected".
           boxes.forEach((cb) => (cb.disabled = true));
+          const sentinel = document.createElement('input');
+          sentinel.type = 'hidden';
+          sentinel.name = `filter_all[${filter.dataset.column}]`;
+          sentinel.value = '1';
+          form.appendChild(sentinel);
         }
       });
     });

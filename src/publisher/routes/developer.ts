@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 
 import { ensureDeveloper } from '../middleware/ensure-developer';
-import { flashMessages } from '../../shared/middleware/flash';
+import { flashErrors, flashMessages } from '../../shared/middleware/flash';
 import { noCache } from '../../shared/middleware/no-cache';
 import {
   datasetPreview,
@@ -15,7 +15,7 @@ import {
 
 export const developer = Router();
 
-developer.use(ensureDeveloper, noCache, flashMessages);
+developer.use(ensureDeveloper, noCache, flashMessages, flashErrors);
 
 developer.use((req: Request, res: Response, next: NextFunction) => {
   res.locals.activePage = 'developer';

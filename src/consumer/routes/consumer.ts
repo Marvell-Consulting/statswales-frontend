@@ -14,6 +14,7 @@ import {
   viewPivotedDataset
 } from '../controllers/consumer';
 import { fetchPublishedDataset } from '../middleware/fetch-dataset';
+import { flashErrors } from '../../shared/middleware/flash';
 import { config } from '../../shared/config';
 import { logger } from '../../shared/utils/logger';
 
@@ -47,7 +48,7 @@ consumer.post(
   fetchPublishedDataset,
   viewPublishedLanding
 );
-consumer.get('/:datasetId/data', fetchPublishedDataset, viewPublishedDataset);
+consumer.get('/:datasetId/data', fetchPublishedDataset, flashErrors, viewPublishedDataset);
 
 consumer.get('/:datasetId/pivot', fetchPublishedDataset, createPublishedDatasetPivot);
 consumer.post(
@@ -63,8 +64,8 @@ consumer.post(
   fetchPublishedDataset,
   viewFilteredDataset
 );
-consumer.get('/:datasetId/filtered{/:filterId}', fetchPublishedDataset, viewFilteredDataset);
-consumer.get('/:datasetId/pivot{/:filterId}', fetchPublishedDataset, viewPivotedDataset);
+consumer.get('/:datasetId/filtered{/:filterId}', fetchPublishedDataset, flashErrors, viewFilteredDataset);
+consumer.get('/:datasetId/pivot{/:filterId}', fetchPublishedDataset, flashErrors, viewPivotedDataset);
 
 consumer.get('/:datasetId/download/metadata', fetchPublishedDataset, downloadPublishedMetadata);
 
@@ -76,4 +77,4 @@ consumer.post(
 );
 consumer.get('/:datasetId/download{/:filterId}', fetchPublishedDataset, downloadPublishedDataset);
 
-consumer.get('/:datasetId', fetchPublishedDataset, viewPublishedDataset);
+consumer.get('/:datasetId', fetchPublishedDataset, flashErrors, viewPublishedDataset);

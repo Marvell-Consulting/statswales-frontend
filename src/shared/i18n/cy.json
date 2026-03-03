@@ -1645,7 +1645,8 @@
       "no_match": "Nid oes gwerthoedd yn cyfateb â'ch chwiliad"
     },
     "apply_all_selections": "Cymhwyso’r holl ddewisiadau",
-    "select_all_variables": "Dewiswch yr holl werthoedd ar gyfer pob newidyn"
+    "select_all_variables": "Dewiswch yr holl werthoedd ar gyfer pob newidyn",
+    "no_values_selected": "Dewiswch o leiaf 1 gwerth ar gyfer y newidyn hwn<span class=\"govuk-visually-hidden\"> {{columnName}}</span>"
   },
   "consumer_view": {
     "tabs": {

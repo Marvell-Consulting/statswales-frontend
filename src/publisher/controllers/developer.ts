@@ -16,7 +16,6 @@ import { getDownloadHeaders } from '../../shared/utils/download-headers';
 import { LookupTableDTO } from '../../shared/dtos/lookup-table';
 import { getDatasetMetadata } from '../../shared/utils/dataset-metadata';
 import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
-import { ViewError } from '../../shared/dtos/view-error';
 import { DatasetInclude } from '../../shared/enums/dataset-include';
 import { SingleLanguageRevision } from '../../shared/dtos/single-language/revision';
 import { FilterTable } from '../../shared/dtos/filter-table';
@@ -24,7 +23,7 @@ import { RevisionDTO } from '../../shared/dtos/revision';
 import { DatasetStatus } from '../../shared/enums/dataset-status';
 import { DataOptionsDTO, FRONTEND_DATA_OPTIONS } from '../../shared/interfaces/data-options';
 import { markdownToSafeHTML } from '../../shared/utils/markdown-to-html';
-import { parseFiltersV2, v2FiltersToV1 } from '../../shared/utils/parse-filters';
+import { parseFilters, parseFiltersV2, v2FiltersToV1 } from '../../shared/utils/parse-filters';
 import { DEFAULT_PAGE_SIZE, parsePageOptions } from '../../shared/utils/parse-page-options';
 import { SingleLanguageDataset } from '../../shared/dtos/single-language/dataset';
 import { PublishingStatus } from '../../shared/enums/publishing-status';
@@ -50,6 +49,28 @@ export const datasetPreview = async (req: Request, res: Response) => {
   const datasetId = req.params.datasetId;
 
   if (req.method === 'POST') {
+    const parsedFilters = parseFilters(req.body.filter);
+    const filtersDTO: FilterTable[] = await req.pubapi.getRevisionFilters(
+      datasetId,
+      (await req.pubapi.getDataset(datasetId, DatasetInclude.Developer)).end_revision_id!
+    );
+
+    const allSelectedCols = new Set(Object.keys((req.body.filter_all as Record<string, string>) ?? {}));
+    const emptyFilterColumns = filtersDTO.filter(
+      (f) => !allSelectedCols.has(f.factTableColumn) && !parsedFilters.some((p) => p.columnName === f.factTableColumn)
+    );
+
+    if (emptyFilterColumns.length > 0) {
+      req.session.errors = emptyFilterColumns.map((f) => ({
+        field: `filter[${f.factTableColumn}]`,
+        message: { key: 'filters.no_values_selected', params: { columnName: f.columnName } }
+      }));
+      req.session.save();
+      const fallback = req.buildUrl(`/developer/${datasetId}`, req.language);
+      res.redirect(req.headers.referer ?? fallback);
+      return;
+    }
+
     const dataOptions: DataOptionsDTO = { ...FRONTEND_DATA_OPTIONS, filters: parseFiltersV2(req.body.filter) };
     const filterId = await req.pubapi.generateFilterId(datasetId, dataOptions);
     const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
@@ -80,7 +101,6 @@ export const datasetPreview = async (req: Request, res: Response) => {
     const filterId = req.params.filterId;
     const datasetTitle = revision?.metadata?.title || datasetId;
     let pagination;
-    let errors: ViewError[] | undefined;
     let previewFailed: string | undefined;
     let publishedRevisions: RevisionDTO[] = [];
     let fileList: FileImportDto[][] = [];
@@ -126,7 +146,6 @@ export const datasetPreview = async (req: Request, res: Response) => {
       datasetMetadata,
       filters,
       dataset,
-      errors,
       publishedRevisions,
       datasetJson,
       fileList,

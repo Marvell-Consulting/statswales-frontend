@@ -101,7 +101,7 @@ import { SingleLanguageRevision } from '../../shared/dtos/single-language/revisi
 import { config } from '../../shared/config';
 import { FilterTable } from '../../shared/dtos/filter-table';
 import { NextUpdateType } from '../../shared/enums/next-update-type';
-import { parseFiltersV2, v1FiltersToV2, v2FiltersToV1 } from '../../shared/utils/parse-filters';
+import { parseFilters, parseFiltersV2, v1FiltersToV2, v2FiltersToV1 } from '../../shared/utils/parse-filters';
 import { FactTableColumnType } from '../../shared/dtos/fact-table-column-type';
 import { TaskAction } from '../../shared/enums/task-action';
 import { stringify } from 'csv-stringify/sync';
@@ -599,9 +599,28 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
   const { id: datasetId, end_revision_id: endRevisionId } = res.locals.dataset;
 
   if (req.method === 'POST') {
+    const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
+    const parsedFilters = parseFilters(req.body.filter);
+    const filtersDTO: FilterTable[] = await req.pubapi.getRevisionFilters(datasetId, endRevisionId);
+
+    const allSelectedCols = new Set(Object.keys((req.body.filter_all as Record<string, string>) ?? {}));
+    const emptyFilterColumns = filtersDTO.filter(
+      (f) => !allSelectedCols.has(f.factTableColumn) && !parsedFilters.some((p) => p.columnName === f.factTableColumn)
+    );
+
+    if (emptyFilterColumns.length > 0) {
+      req.session.errors = emptyFilterColumns.map((f) => ({
+        field: `filter[${f.factTableColumn}]`,
+        message: { key: 'filters.no_values_selected', params: { columnName: f.columnName } }
+      }));
+      req.session.save();
+      const fallback = req.buildUrl(`/publish/${datasetId}/cube-preview`, req.language);
+      res.redirect(req.headers.referer ?? fallback);
+      return;
+    }
+
     const dataOptions: DataOptionsDTO = { ...FRONTEND_DATA_OPTIONS, filters: parseFiltersV2(req.body.filter) };
     const filterId = await req.pubapi.generateFilterId(datasetId, dataOptions);
-    const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
     res.redirect(
       req.buildUrl(`/publish/${datasetId}/cube-preview/${filterId}`, req.language, { page_size: pageSize.toString() })
     );
@@ -610,7 +629,6 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
 
   const filterId = req.params.filterId;
   const { pageNumber, pageSize, sortBy } = parsePageOptions(req);
-  let errors: ViewError[] | undefined;
   let previewMetadata: PreviewMetadata | undefined;
   let publishedRevisions: RevisionDTO[] = [];
 
@@ -662,7 +680,6 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
         filters: filtersDTO,
         preview: true,
         dataset,
-        errors,
         datasetStatus,
         publishingStatus,
         publicationHistory,
