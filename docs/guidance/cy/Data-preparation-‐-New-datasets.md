@@ -177,29 +177,28 @@ Gall eich set ddata gynnwys data ar gyfer cyfnodau amser lluosog. Er enghraifft,
 
 **Rhaid i chi ddefnyddio fformatio blwyddyn cyson** ar gyfer yr holl gyfnodau amser sy’n bresennol yn y set ddata. Er enghraifft, os ydych chi’n defnyddio ‘YYYY’ ar gyfer blynyddoedd, gallech ddefnyddio ‘YYYYQx’ ar gyfer chwarteri a ‘YYYYMM’ ar gyfer misoedd.
 
-#### Cyfnodau amser treigl neu orgyffwrdd
+#### Cyfnodau treigl neu sy’n gorgyffwrdd
 
-Efallai y bydd amgylchiadau pan fydd cyfnodau amser yn eich set ddata yn gorgyffwrdd. Er enghraifft, pan fo gwerthoedd data yn cynrychioli gwerthoedd cronnus hyd at ddyddiad penodol, megis y swm ar gyfer y flwyddyn sy’n dod i ben ar 30 Mehefin, yna’r swm ar gyfer y flwyddyn sy’n dod i ben ar 31 Gorffennaf, ac yn y blaen. Yn yr achosion hyn dylech ddefnyddio’r fformatio canlynol:
+Efallai y bydd amgylchiadau pan fydd y cyfnodau yn eich set ddata yn gorgyffwrdd.  Er enghraifft, pan fo eich gwerthoedd data yn cynrychioli gwerthoedd cronnol i ddyddiad penodol, megis y swm ar gyfer y flwyddyn yn gorffen ar 30 Mehefin, yna y swm ar gyfer y flwyddyn yn gorffen ar 31 Gorffennaf, ac ati.  Yn yr achosion hyn, dylech ddilyn y drefn fformatio ganlynol:
 
-- rhagddodiad yn nodi hyd y cyfnod
-- yna unrhyw rai o’r fformatau dyddiad penodol a ddisgrifir yn yr adran ‘[Pwyntiau penodol mewn amser](#guidance-pwyntiau-penodol-mewn-amser)’
+- rhagddodiad yn dynodi hyd y cyfnod
+- yna unrhyw rai o’r fformatiau dyddiad penodol a ddisgrifir yn yr adran ‘[Pwyntiau penodol mewn amser](#guidance-pwyntiau-penodol-mewn-amser)
 
 Enghreifftiau:
 
-| Fformat yn y tabl data | Enghraifft   | Sut y bydd yn ymddangos ar y wefan       |
+| Fformat yn y tabl data | Enghraifft   | Sut y bydd yn ymddangos ar y wefan        |
 | :--------------------- | :----------- | :---------------------------------------- |
-| XYYYYY-MM-DD           | XY2022-03-31 | 10 mlynedd yn dod i ben 31 Mawrth 2022   |
-| 5YYYYY-MM-DD           | 5Y2022-03-31 | 5 mlynedd yn dod i ben 31 Mawrth 2022    |
-| 3YYYYY-MM-DD           | 3Y2022-03-31 | 3 blynedd yn dod i ben 31 Mawrth 2022    |
-| 2YYYYY-MM-DD           | 2Y2022-03-31 | 2 flynedd yn dod i ben 31 Mawrth 2022    |
-| YEYYYY-MM-DD           | YE2022-03-31 | Blwyddyn yn dod i ben 31 Mawrth 2022     |
-| HEYYYY-MM-DD           | HE2022-05-31 | Hanner blwyddyn yn dod i ben 31 Mai 2022 |
-| QEYYYY-MM-DD           | QE2022-05-30 | Chwarter yn dod i ben 30 Mai 2022        |
-| MEDD-MM-YYYY           | ME15-03-2022 | Mis yn dod i ben 15 Mawrth 2022          |
-| WEDD-MM-YYYY           | WE25-03-2022 | Wythnos yn dod i ben 25 Mawrth 2022      |
+| XYYYYY-MM-DD           | XY2022-03-31 | 10 mlynedd yn gorffen ar 31 Mawrth 2022   |
+| 5YYYYY-MM-DD           | 5Y2022-03-31 | 5 mlynedd yn gorffen ar 31 Mawrth 2022    |
+| 3YYYYY-MM-DD           | 3Y2022-03-31 | 3 blynedd yn gorffen ar 31 Mawrth 2022    |
+| 2YYYYY-MM-DD           | 2Y2022-03-31 | 2 flynedd yn gorffen ar 31 Mawrth 2022    |
+| YEYYYY-MM-DD           | YE2022-03-31 | Blwyddyn yn gorffen ar 31 Mawrth 2022     |
+| HEYYYY-MM-DD           | HE2022-05-31 | Hanner blwyddyn yn gorffen ar 31 Mai 2022 |
+| QEYYYY-MM-DD           | QE2022-05-30 | Chwarter yn gorffen ar 30 Mai 2022        |
+| MEDD-MM-YYYY           | ME15-03-2022 | Mis yn gorffen ar 15 Mawrth 2022          |
+| WEDD-MM-YYYY           | WE25-03-2022 | Wythnos yn gorffen ar 25 Mawrth 2022      |
 
 #### Cyfnodau ansafonol
-
 Efallai y bydd amgylchiadau prin pan na fydd y ffurfiau safonol hyn yn briodol ar gyfer y data yn eich set ddata. Er enghraifft, os na fydd cyfnodau yn barhaus ac os byddant yn cynnwys rhannau o flynyddoedd penodol yn unig. Yn yr achosion hyn, dylech [baratoi eich tablau am-edrych eich hun](#guidance-tablau-am-edrych).
 
 <!-- Yn yr achosion hyn, dylech [baratoi eich tablau am-edrych data eich hun](#guidance-tablau-am-edrych-dyddiad).
@@ -644,7 +643,7 @@ Bydd y detholiad hwn yn caniatáu i ddefnyddwyr leoli a nodi setiau data sydd o 
 **Pobl, hunaniaeth a chydraddoldeb**
 
 - Oedran
-- Anabledd  
+- Anabledd
   Ethnigrwydd
 - Hunaniaeth rhywedd
 - Iaith
