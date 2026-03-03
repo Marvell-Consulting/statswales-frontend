@@ -119,7 +119,7 @@ Er enghraifft, dyddiadau penodol pan gasglwyd gwerthoedd data.
 | YYYY-MM-DD             | 2022-01-01 | 1 Ionawr 2022                      |
 | YYYYMMDD               | 20220101   | 1 Ionawr 2022                      |
 
-#### Cyfnodau amser
+#### Cyfnodau amser safonol
 
 Er enghraifft, misoedd, chwarteri neu flynyddoedd y mae gwerthoedd data yn berthnasol iddynt.
 
@@ -199,7 +199,7 @@ Enghreifftiau:
 | WEDD-MM-YYYY           | WE25-03-2022 | Wythnos yn gorffen ar 25 Mawrth 2022      |
 
 #### Cyfnodau ansafonol
-Efallai y bydd amgylchiadau prin pan na fydd y ffurfiau safonol hyn yn briodol ar gyfer y data yn eich set ddata. Er enghraifft, os na fydd cyfnodau yn barhaus ac os byddant yn cynnwys rhannau o flynyddoedd penodol yn unig. Yn yr achosion hyn, dylech [baratoi eich tablau am-edrych eich hun](#guidance-tablau-am-edrych).
+Efallai y bydd amgylchiadau prin pan na fydd y fformatiau safonol hyn yn briodol ar gyfer y data yn eich set ddata.  Yn yr achosion hyn, dylech [baratoi eich tablau am-edrych eich hun](#guidance-tablau-am-edrych).
 
 <!-- Yn yr achosion hyn, dylech [baratoi eich tablau am-edrych data eich hun](#guidance-tablau-am-edrych-dyddiad).
 
