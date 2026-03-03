@@ -55,6 +55,19 @@
     }
   }
 
+  .govuk-inset-text {
+    font-size: 16px;
+    border-left-width: 8px;
+    padding: 15px;
+  }
+
+  .filter-error {
+    font-size: 16px;
+    font-weight: bold;
+    border-left: 8px solid colours.$red;
+    padding: 15px;
+  }
+
   .filter:first-of-type .dimension-accordion {
     border-top: none;
   }
