@@ -33,6 +33,12 @@ export const Filters = (props: FiltersProps) => {
     <div className="filters-container">
       <h2 className="govuk-heading-m">{title}</h2>
 
+      {isPivot && (
+        <div className="govuk-inset-text">
+          <T>filters.pivot_hidden_notice</T>
+        </div>
+      )}
+
       {filters?.map((filter, index) => {
         const values = selected?.find((f) => f.columnName === filter.factTableColumn)?.values;
 
@@ -59,13 +65,15 @@ export const Filters = (props: FiltersProps) => {
         return <CheckboxFilter key={index} filter={filter} values={values} />;
       })}
 
-      <a
-        href={selectAllLink}
-        className="govuk-button govuk-button-small button-reset select-all-variables"
-        role="button"
-      >
-        <T>filters.select_all_variables</T>
-      </a>
+      {!isPivot && (
+        <a
+          href={selectAllLink}
+          className="govuk-button govuk-button-small button-reset select-all-variables"
+          role="button"
+        >
+          <T>filters.select_all_variables</T>
+        </a>
+      )}
 
       <script type="module" src="/assets/js/filters.js" />
     </div>
