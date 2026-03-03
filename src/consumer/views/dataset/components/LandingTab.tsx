@@ -8,7 +8,6 @@ import { Filter } from '../../../../shared/interfaces/filter';
 import { FilterTable } from '../../../../shared/dtos/filter-table';
 import { DatasetDTO } from '../../../../shared/dtos/dataset';
 import { SummaryTable } from './SummaryTable';
-import T from '../../../../shared/views/components/T';
 import TableChooser from './TableChooser';
 import { PivotStage } from '../../../../shared/enums/pivot-stage';
 import ColumnRowChooser from './ColumnRowChooser';
@@ -66,16 +65,6 @@ export default function LandingTab(props: DataTabProps) {
                 columns={props.columns}
                 rows={props.rows}
               />
-              <br />
-              <button
-                name="dataViewsChoice"
-                value="filter"
-                type="submit"
-                className="govuk-button button-black"
-                data-module="govuk-button"
-              >
-                <T>consumer_view.apply_filters</T>
-              </button>
               {props.columns ? <input type="hidden" name="columns" value={props.columns} /> : null}
               {props.rows ? <input type="hidden" name="rows" value={props.rows} /> : null}
             </form>

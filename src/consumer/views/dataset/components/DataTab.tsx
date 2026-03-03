@@ -10,7 +10,6 @@ import { FilterTable } from '../../../../shared/dtos/filter-table';
 import { DatasetDTO } from '../../../../shared/dtos/dataset';
 import { SummaryTable } from './SummaryTable';
 import { RowsPerPage } from '../../../../shared/views/components/RowsPerPage';
-import T from '../../../../shared/views/components/T';
 import { PivotControls } from './pivot/PivotControls';
 
 type DataTabProps = NoteCodesLegendProps &
@@ -66,18 +65,8 @@ export default function DataTab(props: DataTabProps) {
                 columns={props.columns}
                 rows={props.rows}
               />
-              <br />
               {props.columns ? <input type="hidden" name="columns" value={props.columns} /> : null}
               {props.rows ? <input type="hidden" name="rows" value={props.rows} /> : null}
-              <button
-                name="dataViewsChoice"
-                value="filter"
-                type="submit"
-                className="govuk-button button-black"
-                data-module="govuk-button"
-              >
-                <T>consumer_view.apply_filters</T>
-              </button>
             </form>
           </div>
 
