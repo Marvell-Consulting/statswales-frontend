@@ -1646,6 +1646,7 @@
     },
     "apply_all_selections": "Cymhwyso’r holl ddewisiadau",
     "select_all_variables": "Dewiswch yr holl werthoedd ar gyfer pob newidyn",
+    "pivot_hidden_notice": "Dim ond gan un gwerth y gall newidynnau cudd yn eich tabl gael eu cynrychioli.",
     "no_values_selected": "Dewiswch o leiaf 1 gwerth ar gyfer y newidyn hwn<span class=\"govuk-visually-hidden\"> {{columnName}}</span>"
   },
   "consumer_view": {

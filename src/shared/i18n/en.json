@@ -1696,6 +1696,7 @@
     },
     "apply_all_selections": "Apply all selections",
     "select_all_variables": "Select all values for all variables",
+    "pivot_hidden_notice": "Hidden variables in your table can only be represented by a single value.",
     "no_values_selected": "Select at least 1 value for this variable<span class=\"govuk-visually-hidden\"> {{columnName}}</span>"
   },
   "consumer_view": {

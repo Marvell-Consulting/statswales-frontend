@@ -33,6 +33,12 @@ export const Filters = (props: FiltersProps) => {
     <div className="filters-container">
       <h2 className="govuk-heading-m">{title}</h2>
 
+      {isPivot && (
+        <div className="govuk-inset-text">
+          <T>filters.pivot_hidden_notice</T>
+        </div>
+      )}
+
       {filters?.map((filter, index) => {
         const values = selected?.find((f) => f.columnName === filter.factTableColumn)?.values;
 
