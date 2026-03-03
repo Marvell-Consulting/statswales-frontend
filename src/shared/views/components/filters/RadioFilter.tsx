@@ -45,7 +45,7 @@ export const RadioFilter = ({ filter, values }: RadioFilterProps) => {
           <span className="dimension-accordion__title">{filter.columnName}</span>
         </summary>
         <div className="dimension-accordion__count">
-          <T filtered={selectedValue ? 1 : total} total={total} raw>
+          <T filtered={selectedValue ? 1 : 0} total={total} raw>
             filters.summary
           </T>
         </div>
