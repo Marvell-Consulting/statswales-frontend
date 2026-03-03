@@ -45,10 +45,11 @@
   filters.forEach((filter) => {
     addListeners(filter);
 
-    // Show search input if more than 8 checkboxes
+    // Show search input if more than 8 checkboxes or radio buttons
     const allCheckboxes = filter.querySelectorAll('.filter-body [type="checkbox"]');
+    const allRadios = filter.querySelectorAll('.filter-body [type="radio"]');
     const filterSearch = filter.querySelector('.filter-search');
-    if (allCheckboxes.length > 8 && filterSearch) {
+    if ((allCheckboxes.length > 8 || allRadios.length > 8) && filterSearch) {
       filterSearch.classList.remove('js-hidden');
 
       // Add search functionality
@@ -56,7 +57,7 @@
       const filterBody = filter.querySelector('.filter-body');
 
       // Cache DOM queries outside the debounce
-      const checkboxItems = filterBody.querySelectorAll('.govuk-checkboxes__item');
+      const filterItems = filterBody.querySelectorAll('.govuk-checkboxes__item, .govuk-radios__item');
       const detailsElements = filterBody.querySelectorAll('details');
       const noMatchMessage = filterBody.querySelector('.filter-search-no-match');
       let debounceTimer;
@@ -69,7 +70,7 @@
 
           if (searchTerm === '') {
             // Reset: show all and collapse
-            checkboxItems.forEach((item) => (item.style.display = ''));
+            filterItems.forEach((item) => (item.style.display = ''));
             detailsElements.forEach((details) => {
               details.style.display = '';
               details.removeAttribute('open');
@@ -82,7 +83,7 @@
           const matchingItems = new Set();
           const matchingDetails = new Set();
 
-          checkboxItems.forEach((item) => {
+          filterItems.forEach((item) => {
             const label = item.querySelector('label');
             if (label && label.textContent.toLowerCase().includes(searchTerm)) {
               matchingItems.add(item);
@@ -91,7 +92,9 @@
               let parent = item.closest('details');
               while (parent && filterBody.contains(parent)) {
                 matchingDetails.add(parent);
-                const parentItem = parent.querySelector(':scope > summary > .govuk-checkboxes__item');
+                const parentItem = parent.querySelector(
+                  ':scope > summary > .govuk-checkboxes__item, :scope > summary > .govuk-radios__item'
+                );
                 if (parentItem) matchingItems.add(parentItem);
                 parent = parent.parentElement.closest('details');
               }
@@ -99,7 +102,7 @@
           });
 
           // Apply visibility changes
-          checkboxItems.forEach((item) => {
+          filterItems.forEach((item) => {
             item.style.display = matchingItems.has(item) ? '' : 'none';
           });
 

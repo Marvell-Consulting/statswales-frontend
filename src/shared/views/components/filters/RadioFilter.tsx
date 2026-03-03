@@ -1,5 +1,4 @@
 import React from 'react';
-import { clsx } from 'clsx';
 
 import { FilterTable, FilterValues } from '../../../dtos/filter-table';
 import { FilterRadioGroup } from './FilterRadioGroup';
@@ -40,62 +39,68 @@ export const RadioFilter = ({ filter, values }: RadioFilterProps) => {
   const filterId = `filter-${filter.factTableColumn.replaceAll(/\s+/g, '_')}`;
 
   return (
-    <div className="filter" id={filterId}>
-      <h3 className="region-subhead">
-        {filter.columnName} (
-        <T
-          filtered={selectedValue ? 1 : undefined}
-          total={total}
-          className={clsx('filtered-label', { 'js-hidden': !selectedValue })}
-          raw
-        >
-          filters.summary
-        </T>
-        <T total={total} className={clsx('non-filtered-label', { 'js-hidden': !!selectedValue })} raw>
-          filters.non-filtered-summary
-        </T>
-        )
-      </h3>
-      <div className="filter-container option-select">
-        <div className="filter-head">
-          <div className="filter-search js-hidden">
-            <input
-              type="text"
-              id={`${filterId}-search`}
-              className="govuk-input filter-search-input"
-              placeholder={t('filters.search.placeholder')}
-              aria-label={t('filters.search.aria', { columnName: filter.columnName })}
-            />
-          </div>
-          <div className="govuk-radios--small">
-            <div className="govuk-radios__item">
+    <div className="filter" id={filterId} data-total={total} data-column={filter.factTableColumn}>
+      <details className="dimension-accordion">
+        <summary className="dimension-accordion__summary">
+          <span className="dimension-accordion__title">{filter.columnName}</span>
+        </summary>
+        <div className="dimension-accordion__count">
+          <T filtered={selectedValue ? 1 : total} total={total} raw>
+            filters.summary
+          </T>
+        </div>
+        <div className="filter-container option-select">
+          <div className="filter-head">
+            <div className="filter-search js-hidden">
               <input
-                className="govuk-radios__input"
-                id={`${filterId}-all`}
-                name={`filter[${filter.factTableColumn}]`}
-                type="radio"
-                value="all"
-                defaultChecked={!selectedValue}
+                type="text"
+                id={`${filterId}-search`}
+                className="govuk-input filter-search-input"
+                placeholder={t('filters.search.placeholder')}
+                aria-label={t('filters.search.aria', { columnName: filter.columnName })}
               />
-              <label className="govuk-label govuk-radios__label" htmlFor={`${filterId}-all`}>
-                <T columnName={filter.columnName} raw>
-                  filters.no_filter
-                </T>
-              </label>
+            </div>
+            <div className="govuk-radios--small">
+              <div className="govuk-radios__item">
+                <input
+                  className="govuk-radios__input"
+                  id={`${filterId}-all`}
+                  name={`filter[${filter.factTableColumn}]`}
+                  type="radio"
+                  value="all"
+                  defaultChecked={!selectedValue}
+                />
+                <label className="govuk-label govuk-radios__label" htmlFor={`${filterId}-all`}>
+                  <T columnName={filter.columnName} raw>
+                    filters.no_filter
+                  </T>
+                </label>
+              </div>
             </div>
           </div>
+          <div className="filter-body">
+            <FilterRadioGroup
+              name={`filter[${filter.factTableColumn}]`}
+              options={normalizeFilters(filter.values)}
+              selectedValue={selectedValue}
+            />
+            <span className="filter-search-no-match govuk-body js-hidden">
+              <T>filters.search.no_match</T>
+            </span>
+          </div>
         </div>
-        <div className="filter-body">
-          <FilterRadioGroup
-            name={`filter[${filter.factTableColumn}]`}
-            options={normalizeFilters(filter.values)}
-            selectedValue={selectedValue}
-          />
-          <span className="filter-search-no-match govuk-body js-hidden">
-            <T>filters.search.no_match</T>
-          </span>
+        <div className="filter-apply">
+          <button
+            name="dataViewsChoice"
+            value="filter"
+            type="submit"
+            className="govuk-button govuk-button-small button-black"
+            data-module="govuk-button"
+          >
+            <T>filters.apply_all_selections</T>
+          </button>
         </div>
-      </div>
+      </details>
     </div>
   );
 };
