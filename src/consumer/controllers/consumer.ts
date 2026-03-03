@@ -19,7 +19,7 @@ import { Locale } from '../../shared/enums/locale';
 import { config } from '../../shared/config';
 import { SortByInterface } from '../../shared/interfaces/sort-by';
 import { TopicDTO } from '../../shared/dtos/topic';
-import { parseFiltersV2, v1FiltersToV2, v2FiltersToV1 } from '../../shared/utils/parse-filters';
+import { parseFilters, parseFiltersV2, v1FiltersToV2, v2FiltersToV1 } from '../../shared/utils/parse-filters';
 import { FilterTable } from '../../shared/dtos/filter-table';
 import { ViewV2DTO } from '../../shared/dtos/view-dto';
 import { PreviewMetadata } from '../../shared/interfaces/preview-metadata';
@@ -172,9 +172,28 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
   }
 
   if (req.method === 'POST') {
+    const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
+    const parsedFilters = parseFilters(req.body.filter);
+    const filters = await req.conapi.getPublishedDatasetFilters(dataset.id);
+
+    const allSelectedCols = new Set(Object.keys((req.body.filter_all as Record<string, string>) ?? {}));
+    const emptyFilterColumns = filters.filter(
+      (f) => !allSelectedCols.has(f.factTableColumn) && !parsedFilters.some((p) => p.columnName === f.factTableColumn)
+    );
+
+    if (emptyFilterColumns.length > 0) {
+      req.session.errors = emptyFilterColumns.map((f) => ({
+        field: `filter[${f.factTableColumn}]`,
+        message: { key: 'filters.no_values_selected', params: { columnName: f.columnName } }
+      }));
+      req.session.save();
+      const fallback = req.buildUrl(`/${dataset.id}`, req.language);
+      res.redirect(req.headers.referer ?? fallback);
+      return;
+    }
+
     const dataOptions: DataOptionsDTO = { ...FRONTEND_DATA_OPTIONS, filters: parseFiltersV2(req.body.filter) };
     const filterId = await req.conapi.generateFilterId(dataset.id, dataOptions);
-    const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
     res.redirect(req.buildUrl(`/${dataset.id}/filtered/${filterId}`, req.language, { page_size: pageSize.toString() }));
     return;
   }
@@ -336,6 +355,7 @@ export const search = async (req: Request, res: Response) => {
 
       res.render('search', { keywords, results, count, ...pagination });
       return;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       logger.error(err, 'Error occurred during search');
     }

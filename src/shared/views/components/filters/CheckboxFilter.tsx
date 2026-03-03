@@ -39,7 +39,9 @@ const allOptionValues = (options: FilterValues[]): string[] => {
 };
 
 export const CheckboxFilter = ({ filter, values }: CheckboxFilterProps) => {
-  const { t } = useLocals();
+  const { t, errors } = useLocals();
+  const fieldName = `filter[${filter.factTableColumn}]`;
+  const hasError = errors?.some((e) => e.field === fieldName);
 
   const filtered = values?.length;
   const total = filterOptionCount(filter.values);
@@ -49,16 +51,26 @@ export const CheckboxFilter = ({ filter, values }: CheckboxFilterProps) => {
   // Option values produced by normalizeFilters are encoded (e.g. "2018%2F19"), so we
   // must encode here before CheckboxGroup compares them with values.includes().
   // When no selection exists yet, default to every option checked.
-  const checkedValues = values
-    ? values.map(encodeURIComponent) // active selection — encode to match option values
-    : allOptionValues(filter.values); // no selection yet — default to all options checked
+  const checkedValues = hasError
+    ? [] // error: user submitted 0 values — show none checked so they can see why
+    : values
+      ? values.map(encodeURIComponent) // active selection — encode to match option values
+      : allOptionValues(filter.values); // no selection yet — default to all options checked
 
   return (
-    <div className="filter" id={filterId} data-total={total}>
-      <details className="dimension-accordion">
+    <div className="filter" id={filterId} data-total={total} data-column={filter.factTableColumn}>
+      <details className="dimension-accordion" open={hasError || undefined}>
         <summary className="dimension-accordion__summary">
           <span className="dimension-accordion__title">{filter.columnName}</span>
         </summary>
+        {hasError && (
+          <p className="filter-error govuk-error-message">
+            <span className="govuk-visually-hidden">Error: </span>
+            <T columnName={filter.columnName} raw>
+              filters.no_values_selected
+            </T>
+          </p>
+        )}
         <div className="dimension-accordion__count">
           <T filtered={filtered ?? total} total={total} raw>
             filters.summary
