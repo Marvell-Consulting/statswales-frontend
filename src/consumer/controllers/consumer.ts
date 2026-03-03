@@ -457,6 +457,23 @@ export const createPublishedDatasetPivot = async (req: Request, res: Response, n
       return;
     }
 
+    const parsedFilters = parseFilters(req.body.filter);
+    const allSelectedCols = new Set(Object.keys((req.body.filter_all as Record<string, string>) ?? {}));
+    const emptyFilterColumns = availableFilters.filter(
+      (f) => !allSelectedCols.has(f.factTableColumn) && !parsedFilters.some((p) => p.columnName === f.factTableColumn)
+    );
+
+    if (emptyFilterColumns.length > 0) {
+      req.session.errors = emptyFilterColumns.map((f) => ({
+        field: `filter[${f.factTableColumn}]`,
+        message: { key: 'filters.no_values_selected', params: { columnName: f.columnName } }
+      }));
+      req.session.save();
+      const fallback = req.buildUrl(`/${dataset.id}/pivot`, req.language);
+      res.redirect(req.headers.referer ?? fallback);
+      return;
+    }
+
     const dataOptions: DataOptionsDTO = {
       ...FRONTEND_DATA_OPTIONS,
       filters: parseFiltersV2(req.body.filter),
