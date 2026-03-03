@@ -128,9 +128,14 @@
       });
     }
 
-    // Show filter-head (contains root controls, hidden without JS)
+    // Show filter-head if it has controls (e.g. select/deselect) or if the search was shown.
+    // Radio filters only contain search, so filter-head stays hidden when there aren't enough options.
     const filterHead = filter.querySelector('.filter-head');
-    if (filterHead) filterHead.classList.remove('js-hidden');
+    if (filterHead) {
+      const hasControls = filterHead.querySelector('.filter-controls');
+      const searchShown = filterSearch && !filterSearch.classList.contains('js-hidden');
+      if (hasControls || searchShown) filterHead.classList.remove('js-hidden');
+    }
 
     const controls = filter.querySelectorAll('.filter-controls');
 
