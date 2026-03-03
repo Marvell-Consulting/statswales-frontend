@@ -59,13 +59,15 @@ export const Filters = (props: FiltersProps) => {
         return <CheckboxFilter key={index} filter={filter} values={values} />;
       })}
 
-      <a
-        href={selectAllLink}
-        className="govuk-button govuk-button-small button-reset select-all-variables"
-        role="button"
-      >
-        <T>filters.select_all_variables</T>
-      </a>
+      {!isPivot && (
+        <a
+          href={selectAllLink}
+          className="govuk-button govuk-button-small button-reset select-all-variables"
+          role="button"
+        >
+          <T>filters.select_all_variables</T>
+        </a>
+      )}
 
       <script type="module" src="/assets/js/filters.js" />
     </div>
