@@ -11,6 +11,7 @@ import { DatasetDTO } from '../../../../shared/dtos/dataset';
 import { SummaryTable } from './SummaryTable';
 import { RowsPerPage } from '../../../../shared/views/components/RowsPerPage';
 import { PivotControls } from './pivot/PivotControls';
+import { DataControls } from './pivot/DataControls';
 
 type DataTabProps = NoteCodesLegendProps &
   PaginationProps &
@@ -83,7 +84,7 @@ export default function DataTab(props: DataTabProps) {
           ) : (
             <div className="govuk-grid-column-three-quarters">
               <SummaryTable {...props} />
-              {pivotSelected && <PivotControls {...props} />}
+              {pivotSelected ? <PivotControls {...props} /> : <DataControls {...props} />}
               <div className="govuk-!-padding-top-5 govuk-!-margin-bottom-2">
                 <ViewTable {...props} />
               </div>
