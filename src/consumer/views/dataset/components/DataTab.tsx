@@ -40,9 +40,10 @@ export default function DataTab(props: DataTabProps) {
   if (props.isDevPreview) formUrl = buildUrl(`/developer/${props.dataset.id}/filtered`, i18n.language, {}, 'data');
   else if (props.preview) formUrl = buildUrl(`/publish/${props.dataset.id}/cube-preview`, i18n.language);
   else if (props.columns && props.rows) formUrl = buildUrl(`/${props.dataset.id}/pivot`, i18n.language);
+  const dataOrPivotRoutePattern = /(\/data|\/pivot)(\?|$)/;
   let controls: ReactNode | null = pivotSelected ? <PivotControls {...props} /> : <DataControls {...props} />;
   // This logic is temporary.  When the pivot feature goes live we can remove this if statement.
-  if (!props.url.includes('data') || !props.url.includes('pivot')) {
+  if (!dataOrPivotRoutePattern.test(props.url)) {
     controls = null;
   }
 
