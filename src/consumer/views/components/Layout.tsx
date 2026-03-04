@@ -109,7 +109,7 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
               <p className="govuk-phase-banner__content">
                 <strong className="govuk-tag govuk-phase-banner__content__tag">{envBadge.toUpperCase()}</strong>
                 <T className="govuk-phase-banner__text" raw>
-                  header.not_prod.warning
+                  consumer.global.not_prod.warning
                 </T>
               </p>
             </div>

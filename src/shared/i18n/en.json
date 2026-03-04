@@ -2209,6 +2209,9 @@
   "consumer": {
     "global": {
       "heading": "StatsWales",
+      "not_prod": {
+        "warning": "This version of StatsWales is only used for testing."
+      },
       "phase_banner": {
         "beta": "Beta",
         "feedback": "You’re viewing a new version of StatsWales. You can <a target=\"_blank\" href=\"{{url}}\" class=\"govuk-link\">give feedback (opens in new tab)</a>.",

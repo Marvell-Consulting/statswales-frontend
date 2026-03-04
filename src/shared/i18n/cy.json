@@ -2007,6 +2007,9 @@
   "consumer": {
     "global": {
       "heading": "StatsCymru",
+      "not_prod": {
+        "warning": "Amgylchedd profi — nid ar gyfer cyhoeddi."
+      },
       "phase_banner": {
         "beta": "Beta",
         "feedback": "Rydych chi'n edrych ar fersiwn newydd o StatsCymru.  Gallwch <a target=\"_blank\" href=\"{{url}}\" class=\"govuk-link\">roi adborth (yn agor mewn tab newydd)</a>.",
