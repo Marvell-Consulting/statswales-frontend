@@ -975,7 +975,7 @@
       "buttons": {
         "choose_different": "Dewiswch dabl data gwahanol"
       },
-      "no_data_table": "Ni allwch ragweld y set ddata hon nes eich bod wedi uwchlwytho tabl data."
+      "no_data_table": "Ni allwch ragweld y set ddata hon nes eich bod wedi lanlwytho tabl data"
     },
     "sources": {
       "heading": "Beth mae pob colofn yn y tabl data yn ei gynnwys?",

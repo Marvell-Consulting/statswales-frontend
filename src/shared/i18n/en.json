@@ -1005,7 +1005,7 @@
       "buttons": {
         "choose_different": "Choose a different data table"
       },
-      "no_data_table": "You cannot preview this dataset until you have uploaded a data table."
+      "no_data_table": "You cannot preview this dataset until you have uploaded a data table"
     },
     "sources": {
       "heading": "What does each column in the data table contain?",
