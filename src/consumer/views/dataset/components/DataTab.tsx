@@ -1,5 +1,5 @@
 import qs from 'qs';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Filters } from '../../../../shared/views/components/filters';
 import Pagination, { PaginationProps } from '../../../../shared/views/components/Pagination';
 import { NoteCodesLegendProps } from './NoteCodesLegend';
@@ -40,6 +40,11 @@ export default function DataTab(props: DataTabProps) {
   if (props.isDevPreview) formUrl = buildUrl(`/developer/${props.dataset.id}/filtered`, i18n.language, {}, 'data');
   else if (props.preview) formUrl = buildUrl(`/publish/${props.dataset.id}/cube-preview`, i18n.language);
   else if (props.columns && props.rows) formUrl = buildUrl(`/${props.dataset.id}/pivot`, i18n.language);
+  let controls: ReactNode | null = pivotSelected ? <PivotControls {...props} /> : <DataControls {...props} />;
+  // This logic is temporary.  When the pivot feature goes live we can remove this if statement.
+  if (!props.url.includes('data') || !props.url.includes('pivot')) {
+    controls = null;
+  }
 
   return (
     <div className="govuk-width-container">
@@ -84,7 +89,7 @@ export default function DataTab(props: DataTabProps) {
           ) : (
             <div className="govuk-grid-column-three-quarters">
               <SummaryTable {...props} />
-              {pivotSelected ? <PivotControls {...props} /> : <DataControls {...props} />}
+              {controls}
               <div className="govuk-!-padding-top-5 govuk-!-margin-bottom-2">
                 <ViewTable {...props} />
               </div>
