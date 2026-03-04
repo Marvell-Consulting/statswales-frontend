@@ -692,6 +692,10 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
 
     res.render('publish/preview-failure', { datasetStatus, publishingStatus, datasetTitle });
   } catch (error) {
+    if (error instanceof ApiException && error.status === 404) {
+      res.locals.errors = [{ field: 'preview', message: { key: 'publish.preview.no_data_table' } }];
+      return next(new NotFoundException());
+    }
     logger.error(error, `Failed to get preview data for revision ${endRevisionId}`);
     next(new UnknownException());
   }
