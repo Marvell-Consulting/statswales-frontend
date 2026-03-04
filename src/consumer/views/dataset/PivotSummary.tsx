@@ -61,8 +61,8 @@ export default function PivotSummary(props: PivotProps) {
           <div className="govuk-!-padding-top-5 govuk-!-margin-bottom-2">
             <input type="hidden" name="columns" value={props.columns} />
             <input type="hidden" name="rows" value={props.rows} />
-            <input type="hidden" name={`filter_all[${props.columns}]`} value="1" />
-            <input type="hidden" name={`filter_all[${props.rows}]`} value="1" />
+            {props.columns && <input type="hidden" name={`filter_all[${props.columns}]`} value="1" />}
+            {props.rows && <input type="hidden" name={`filter_all[${props.rows}]`} value="1" />}
             {filterInputValues}
             <button type="submit" className="govuk-button" data-module="govuk-button">
               <T>buttons.create_table</T>
