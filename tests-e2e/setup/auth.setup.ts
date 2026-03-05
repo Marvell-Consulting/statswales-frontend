@@ -1,5 +1,9 @@
 import { test as setup, expect, Page } from '@playwright/test';
 import { allUsers } from '../fixtures/logins';
+import { clearAllLocks } from '../fixtures/user-pool';
+
+// Clear any stale lock files from previous runs
+clearAllLocks();
 
 export async function login(page: Page, user: { username: string; path: string }) {
   await page.goto('/en-GB/auth/login');
