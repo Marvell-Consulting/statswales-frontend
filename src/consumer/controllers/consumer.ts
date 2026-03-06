@@ -1,4 +1,5 @@
 import { Readable } from 'node:stream';
+import { ReadableStream } from 'node:stream/web';
 
 import { Request, Response, NextFunction } from 'express';
 import { omit } from 'lodash';
@@ -285,17 +286,52 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
       const includeExtended = (req.body.extended ?? 'no') as string;
       const data_value_type = (`${viewChoice}` + `${includeExtended === 'yes' ? '_extended' : ''}`) as DataValueType;
 
-      const dataOptions: DataOptionsDTO = {
-        filters,
-        options: {
-          use_raw_column_names: true,
-          use_reference_values: true,
-          data_value_type
-        }
+      const sanitizePivotAxis = (value: unknown): string[] => {
+        const raw = Array.isArray(value) ? value : [value];
+        const trimmed = raw
+          .map((v) => (typeof v === 'string' ? v.trim() : ''))
+          .filter((v): v is string => v.length > 0);
+        return Array.from(new Set(trimmed));
       };
 
-      const filterId = await req.conapi.generateFilterId(dataset.id, dataOptions);
-      res.redirect(req.buildUrl(`/${dataset.id}/download/${filterId}`, req.language, { format, download_language }));
+      let pivot = 'false';
+      let filterId: string;
+
+      const pivotRows = sanitizePivotAxis(req.body.rows);
+      const pivotColumns = sanitizePivotAxis(req.body.columns);
+      const hasValidPivotAxes =
+        req.body.view_type === 'filtered' &&
+        pivotRows.length > 0 &&
+        pivotColumns.length > 0 &&
+        !pivotRows.some((row) => pivotColumns.includes(row));
+
+      if (hasValidPivotAxes) {
+        pivot = 'true';
+        const dataOptions: DataOptionsDTO = {
+          filters,
+          pivot: { x: pivotColumns[0], y: pivotRows[0], include_performance: false, backend: 'duckdb' },
+          options: {
+            use_raw_column_names: true,
+            use_reference_values: true,
+            data_value_type
+          }
+        };
+        filterId = await req.conapi.generatePivotFilterId(dataset.id, dataOptions);
+      } else {
+        const dataOptions: DataOptionsDTO = {
+          filters,
+          options: {
+            use_raw_column_names: true,
+            use_reference_values: true,
+            data_value_type
+          }
+        };
+        filterId = await req.conapi.generateFilterId(dataset.id, dataOptions);
+      }
+
+      res.redirect(
+        req.buildUrl(`/${dataset.id}/download/${filterId}`, req.language, { format, download_language, pivot })
+      );
       return;
     }
 
@@ -310,7 +346,14 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
 
     const filename = getDownloadFilename(dataset.id, revision, download_language);
     const headers = getDownloadHeaders(format, filename);
-    const fileStream = await req.conapi.downloadPublishedData(dataset.id, filterId, format, download_language);
+    let fileStream: ReadableStream<any>;
+    if (req.query.pivot === 'true') {
+      logger.debug('Getting pivot download');
+      fileStream = await req.conapi.downloadPublishedPivotData(dataset.id, filterId, format, download_language);
+    } else {
+      logger.debug('Getting data download');
+      fileStream = await req.conapi.downloadPublishedData(dataset.id, filterId, format, download_language);
+    }
     res.writeHead(200, headers);
     Readable.from(fileStream).pipe(res);
   } catch (err) {

@@ -7,6 +7,8 @@ export type DownloadTabProps = {
   dataset: { id: string };
   selectedFilterOptions: Filter[];
   preview?: boolean;
+  columns?: string;
+  rows?: string;
 };
 
 function ExtendedHint() {
@@ -88,24 +90,27 @@ export default function DownloadTab(props: DownloadTabProps) {
             value="formatted"
           />
 
-          <RadioGroup
-            name="extended"
-            label={i18n.t('consumer_view.downloads.extended.heading')}
-            hint={<ExtendedHint />}
-            options={[
-              {
-                value: 'yes',
-                label: i18n.t('consumer_view.downloads.extended.options.yes.label'),
-                hint: i18n.t('consumer_view.downloads.extended.options.yes.hint')
-              },
-              {
-                value: 'no',
-                label: i18n.t('consumer_view.downloads.extended.options.no.label')
-              }
-            ]}
-            value="yes"
-          />
-
+          {props.columns && props.rows ? (
+            <input type="hidden" value="no" name="extended"></input>
+          ) : (
+            <RadioGroup
+              name="extended"
+              label={i18n.t('consumer_view.downloads.extended.heading')}
+              hint={<ExtendedHint />}
+              options={[
+                {
+                  value: 'yes',
+                  label: i18n.t('consumer_view.downloads.extended.options.yes.label'),
+                  hint: i18n.t('consumer_view.downloads.extended.options.yes.hint')
+                },
+                {
+                  value: 'no',
+                  label: i18n.t('consumer_view.downloads.extended.options.no.label')
+                }
+              ]}
+              value="yes"
+            />
+          )}
           <RadioGroup
             name="download_language"
             label={i18n.t('consumer_view.downloads.language.heading')}
@@ -128,6 +133,11 @@ export default function DownloadTab(props: DownloadTabProps) {
             name="selected_filter_options"
             value={JSON.stringify(props.selectedFilterOptions)}
           ></input>
+
+          {props.columns ? (
+            <input type="hidden" id="download-columns" name="columns" value={props.columns}></input>
+          ) : null}
+          {props.rows ? <input type="hidden" id="download-rows" name="rows" value={props.rows}></input> : null}
 
           <button name="action" value="download" type="submit" className="govuk-button" data-module="govuk-button">
             {i18n.t('consumer_view.downloads.button')}
