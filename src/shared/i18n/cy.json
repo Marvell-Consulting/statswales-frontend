@@ -2164,6 +2164,7 @@
   "pivot": {
     "filter_warning": "Dim ond un gwerth y gall newidynnau cudd yn eich tabl ei gynrychioli.",
     "start_over": "Creu Tabl newydd",
-    "show_data": "Dangos pob newidyn yn y tabl"
+    "show_data": "Dangos pob newidyn yn y tabl",
+    "create_own": "Creu eich tabl eich hun"
   }
 }
