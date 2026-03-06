@@ -95,5 +95,4 @@ export const pools: Record<TestRole, TestUser[]> = {
 
 // ── Flat list of every user (for auth setup to iterate) ─────────────────
 
-// Users that can authenticate via the standard login flow (devs have a different flow)
-export const allUsers: TestUser[] = [...admins, ...publishers, ...approvers, ...solos];
+export const allUsers: TestUser[] = [...admins, ...devs, ...publishers, ...approvers, ...solos];
