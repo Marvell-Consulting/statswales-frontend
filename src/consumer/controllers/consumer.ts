@@ -291,11 +291,7 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
         const trimmed = raw
           .map((v) => (typeof v === 'string' ? v.trim() : ''))
           .filter((v): v is string => v.length > 0);
-        const unique = Array.from(new Set(trimmed));
-        if (FRONTEND_DATA_OPTIONS?.factTableColumns && Array.isArray(FRONTEND_DATA_OPTIONS.factTableColumns)) {
-          return unique.filter((v) => FRONTEND_DATA_OPTIONS.factTableColumns.includes(v));
-        }
-        return unique;
+        return Array.from(new Set(trimmed));
       };
 
       let pivot = 'false';
@@ -313,7 +309,7 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
         pivot = 'true';
         const dataOptions: DataOptionsDTO = {
           filters,
-          pivot: { x: pivotColumns, y: pivotRows, include_performance: false, backend: 'duckdb' },
+          pivot: { x: pivotColumns[0], y: pivotRows[0], include_performance: false, backend: 'duckdb' },
           options: {
             use_raw_column_names: true,
             use_reference_values: true,
