@@ -1,20 +1,21 @@
 import { test as base, expect, BrowserContext, Page } from '@playwright/test';
 
-import { getUsersForWorker, WorkerUsers, TestRole } from './logins';
+import { pools, publishers, approvers, solos, WorkerUsers, TestRole, TestUser } from './logins';
+import { acquireUser, releaseUser } from './user-pool';
 
 // ── Custom options & fixtures ───────────────────────────────────────────
 
-type RoleOption = TestRole | 'admin' | null;
+type RoleOption = TestRole | null;
 
 type TestFixtures = {
   /** Set the role for this describe / test block. Resolves storageState automatically. */
   role: RoleOption;
   /** Returns an authenticated { context, page } for the given role, using this worker's assigned user. */
-  loginAs: (role: TestRole | 'admin') => Promise<{ context: BrowserContext; page: Page }>;
+  loginAs: (role: TestRole) => Promise<{ context: BrowserContext; page: Page }>;
 };
 
 type WorkerFixtures = {
-  /** The users assigned to this worker (based on parallelIndex). Available in beforeAll and tests. */
+  /** The users assigned to this worker. Available in beforeAll and tests. */
   workerUsers: WorkerUsers;
 };
 
@@ -23,9 +24,17 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
 
   workerUsers: [
     // eslint-disable-next-line no-empty-pattern
-    async ({}, use, workerInfo) => {
-      const users = getUsersForWorker(workerInfo.parallelIndex);
+    async ({}, use) => {
+      const publisher = acquireUser(publishers);
+      const approver = acquireUser(approvers);
+      const solo = acquireUser(solos);
+      const users: WorkerUsers = { publisher, approver, solo };
+
       await use(users);
+
+      releaseUser(publisher);
+      releaseUser(approver);
+      releaseUser(solo);
     },
     { scope: 'worker' }
   ],
@@ -38,10 +47,13 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
 
   storageState: async ({ role, workerUsers }, use) => {
     if (role === null) {
-      // Unauthenticated
       await use({ cookies: [], origins: [] });
     } else {
-      await use(workerUsers[role].path);
+      const user = workerUsers[role];
+      if (!user) {
+        throw new Error(`No ${role} user assigned to this worker. Use loginAs('${role}') instead.`);
+      }
+      await use(user.path);
     }
   },
 
@@ -49,9 +61,18 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
 
   loginAs: async ({ browser, workerUsers }, use) => {
     const contexts: BrowserContext[] = [];
+    const onDemandUsers: TestUser[] = [];
 
-    const fn = async (role: TestRole | 'admin') => {
-      const user = workerUsers[role];
+    const fn = async (role: TestRole) => {
+      let user = workerUsers[role];
+
+      // Roles not eagerly acquired (admin, dev) are acquired on demand
+      if (!user) {
+        user = acquireUser(pools[role]);
+        workerUsers[role] = user;
+        onDemandUsers.push(user);
+      }
+
       const context = await browser.newContext({ storageState: user.path });
       contexts.push(context);
       const page = await context.newPage();
@@ -60,9 +81,12 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
 
     await use(fn);
 
-    // Cleanup all contexts created during the test
     for (const ctx of contexts) {
       await ctx.close();
+    }
+
+    for (const user of onDemandUsers) {
+      releaseUser(user);
     }
   }
 });

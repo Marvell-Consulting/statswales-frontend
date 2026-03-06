@@ -1,20 +1,26 @@
-import { test as setup } from '@playwright/test';
+import { test as setup, BrowserContext } from '@playwright/test';
 
 import { solos } from '../fixtures/logins';
+import { acquireUser, releaseUser } from '../fixtures/user-pool';
 import { CONSUMER_DATASET_TITLE, CUSTOM_YEAR_DATASET_TITLE } from '../fixtures/dataset-title';
 import { publishRealisticDataset, publishCustomYearDataset } from '../publish/helpers/publishing-steps';
 
 setup('publish datasets for consumer tests', async ({ browser }, testInfo) => {
   setup.setTimeout(240_000);
 
-  // Each dataset needs its own browser context with a dedicated user to avoid session interference
-  let context1;
-  let context2;
+  const acquired: ReturnType<typeof acquireUser>[] = [];
+  let context1: BrowserContext | undefined;
+  let context2: BrowserContext | undefined;
 
   try {
+    acquired.push(acquireUser(solos));
+    acquired.push(acquireUser(solos));
+
+    const [solo1, solo2] = acquired;
+
     [context1, context2] = await Promise.all([
-      browser.newContext({ storageState: solos[0].path }),
-      browser.newContext({ storageState: solos[1].path })
+      browser.newContext({ storageState: solo1.path }),
+      browser.newContext({ storageState: solo2.path })
     ]);
 
     const [page1, page2] = await Promise.all([context1.newPage(), context2.newPage()]);
@@ -36,6 +42,10 @@ setup('publish datasets for consumer tests', async ({ browser }, testInfo) => {
 
     if (closePromises.length > 0) {
       await Promise.all(closePromises);
+    }
+
+    for (const user of acquired) {
+      releaseUser(user);
     }
   }
 });

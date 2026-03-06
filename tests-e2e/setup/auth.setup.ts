@@ -1,5 +1,9 @@
 import { test as setup, expect, Page } from '@playwright/test';
 import { allUsers } from '../fixtures/logins';
+import { clearAllLocks } from '../fixtures/user-pool';
+
+// Clear any stale lock files from previous runs
+clearAllLocks();
 
 export async function login(page: Page, user: { username: string; path: string }) {
   await page.goto('/en-GB/auth/login');
@@ -7,7 +11,7 @@ export async function login(page: Page, user: { username: string; path: string }
   await page.getByLabel('Username').fill(user.username);
   await page.getByRole('button', { name: 'Continue' }).click();
 
-  await expect(page.getByRole('heading', { name: 'Datasets' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Accept all cookies' })).toBeVisible();
   await page.getByRole('button', { name: 'Accept all cookies' }).click();
   await page.context().storageState({ path: user.path });
 }
