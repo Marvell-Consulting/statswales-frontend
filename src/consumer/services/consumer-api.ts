@@ -226,7 +226,20 @@ export class ConsumerApi {
     logger.debug(`Fetching ${format} stream for dataset: ${datasetId}...`);
     const query = new URLSearchParams({ format, lang: language });
     return this.fetch({ url: `v2/${datasetId}/data/${filterId}`, query }).then(
-      (response) => response.body as ReadableStream
+      (response) => response.body as ReadableStream<any>
+    );
+  }
+
+  public async downloadPublishedPivotData(
+    datasetId: string,
+    filterId: string,
+    format: FileFormat,
+    language: string
+  ): Promise<ReadableStream> {
+    logger.debug(`Fetching ${format} stream for dataset: ${datasetId}...`);
+    const query = new URLSearchParams({ format, lang: language });
+    return this.fetch({ url: `v2/${datasetId}/pivot/${filterId}`, query }).then(
+      (response) => response.body as ReadableStream<any>
     );
   }
 

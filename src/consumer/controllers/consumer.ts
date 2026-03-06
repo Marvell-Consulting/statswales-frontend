@@ -1,4 +1,5 @@
 import { Readable } from 'node:stream';
+import { ReadableStream } from 'node:stream/web';
 
 import { Request, Response, NextFunction } from 'express';
 import { omit } from 'lodash';
@@ -285,17 +286,35 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
       const includeExtended = (req.body.extended ?? 'no') as string;
       const data_value_type = (`${viewChoice}` + `${includeExtended === 'yes' ? '_extended' : ''}`) as DataValueType;
 
-      const dataOptions: DataOptionsDTO = {
-        filters,
-        options: {
-          use_raw_column_names: true,
-          use_reference_values: true,
-          data_value_type
-        }
-      };
+      let pivot = 'false';
+      let filterId: string;
+      if (req.body.rows && req.body.columns && req.body.view_type === 'filtered') {
+        pivot = 'true';
+        const dataOptions: DataOptionsDTO = {
+          filters,
+          pivot: { x: req.body.columns, y: req.body.rows, include_performance: false, backend: 'duckdb' },
+          options: {
+            use_raw_column_names: true,
+            use_reference_values: true,
+            data_value_type
+          }
+        };
+        filterId = await req.conapi.generatePivotFilterId(dataset.id, dataOptions);
+      } else {
+        const dataOptions: DataOptionsDTO = {
+          filters,
+          options: {
+            use_raw_column_names: true,
+            use_reference_values: true,
+            data_value_type
+          }
+        };
+        filterId = await req.conapi.generateFilterId(dataset.id, dataOptions);
+      }
 
-      const filterId = await req.conapi.generateFilterId(dataset.id, dataOptions);
-      res.redirect(req.buildUrl(`/${dataset.id}/download/${filterId}`, req.language, { format, download_language }));
+      res.redirect(
+        req.buildUrl(`/${dataset.id}/download/${filterId}`, req.language, { format, download_language, pivot })
+      );
       return;
     }
 
@@ -310,7 +329,14 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
 
     const filename = getDownloadFilename(dataset.id, revision, download_language);
     const headers = getDownloadHeaders(format, filename);
-    const fileStream = await req.conapi.downloadPublishedData(dataset.id, filterId, format, download_language);
+    let fileStream: ReadableStream<any>;
+    if (req.query.pivot === 'true') {
+      logger.debug('Getting pivot download');
+      fileStream = await req.conapi.downloadPublishedPivotData(dataset.id, filterId, format, download_language);
+    } else {
+      logger.debug('Getting data download');
+      fileStream = await req.conapi.downloadPublishedData(dataset.id, filterId, format, download_language);
+    }
     res.writeHead(200, headers);
     Readable.from(fileStream).pipe(res);
   } catch (err) {
