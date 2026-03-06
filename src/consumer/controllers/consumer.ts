@@ -286,13 +286,34 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
       const includeExtended = (req.body.extended ?? 'no') as string;
       const data_value_type = (`${viewChoice}` + `${includeExtended === 'yes' ? '_extended' : ''}`) as DataValueType;
 
+      const sanitizePivotAxis = (value: unknown): string[] => {
+        const raw = Array.isArray(value) ? value : [value];
+        const trimmed = raw
+          .map((v) => (typeof v === 'string' ? v.trim() : ''))
+          .filter((v): v is string => v.length > 0);
+        const unique = Array.from(new Set(trimmed));
+        if (FRONTEND_DATA_OPTIONS?.factTableColumns && Array.isArray(FRONTEND_DATA_OPTIONS.factTableColumns)) {
+          return unique.filter((v) => FRONTEND_DATA_OPTIONS.factTableColumns.includes(v));
+        }
+        return unique;
+      };
+
       let pivot = 'false';
       let filterId: string;
-      if (req.body.rows && req.body.columns && req.body.view_type === 'filtered') {
+
+      const pivotRows = sanitizePivotAxis(req.body.rows);
+      const pivotColumns = sanitizePivotAxis(req.body.columns);
+      const hasValidPivotAxes =
+        req.body.view_type === 'filtered' &&
+        pivotRows.length > 0 &&
+        pivotColumns.length > 0 &&
+        !pivotRows.some((row) => pivotColumns.includes(row));
+
+      if (hasValidPivotAxes) {
         pivot = 'true';
         const dataOptions: DataOptionsDTO = {
           filters,
-          pivot: { x: req.body.columns, y: req.body.rows, include_performance: false, backend: 'duckdb' },
+          pivot: { x: pivotColumns, y: pivotRows, include_performance: false, backend: 'duckdb' },
           options: {
             use_raw_column_names: true,
             use_reference_values: true,
