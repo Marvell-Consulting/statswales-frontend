@@ -8,13 +8,16 @@ import { publishRealisticDataset, publishCustomYearDataset } from '../publish/he
 setup('publish datasets for consumer tests', async ({ browser }, testInfo) => {
   setup.setTimeout(240_000);
 
-  const solo1 = acquireUser(solos);
-  const solo2 = acquireUser(solos);
-
+  const acquired: ReturnType<typeof acquireUser>[] = [];
   let context1: BrowserContext | undefined;
   let context2: BrowserContext | undefined;
 
   try {
+    acquired.push(acquireUser(solos));
+    acquired.push(acquireUser(solos));
+
+    const [solo1, solo2] = acquired;
+
     [context1, context2] = await Promise.all([
       browser.newContext({ storageState: solo1.path }),
       browser.newContext({ storageState: solo2.path })
@@ -41,7 +44,8 @@ setup('publish datasets for consumer tests', async ({ browser }, testInfo) => {
       await Promise.all(closePromises);
     }
 
-    releaseUser(solo1);
-    releaseUser(solo2);
+    for (const user of acquired) {
+      releaseUser(user);
+    }
   }
 });

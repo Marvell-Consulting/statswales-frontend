@@ -28,7 +28,7 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
       const publisher = acquireUser(publishers);
       const approver = acquireUser(approvers);
       const solo = acquireUser(solos);
-      const users: WorkerUsers = { publisher, approver, solo, admin: undefined!, dev: undefined! };
+      const users: WorkerUsers = { publisher, approver, solo };
 
       await use(users);
 
@@ -49,7 +49,11 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
     if (role === null) {
       await use({ cookies: [], origins: [] });
     } else {
-      await use(workerUsers[role].path);
+      const user = workerUsers[role];
+      if (!user) {
+        throw new Error(`No ${role} user assigned to this worker. Use loginAs('${role}') instead.`);
+      }
+      await use(user.path);
     }
   },
 

@@ -12,8 +12,8 @@ export interface WorkerUsers {
   publisher: TestUser;
   approver: TestUser;
   solo: TestUser;
-  admin: TestUser;
-  dev: TestUser;
+  admin?: TestUser;
+  dev?: TestUser;
 }
 
 const authDir = path.join(__dirname, '../../playwright/.auth');
