@@ -12,7 +12,7 @@ export const FilterRadioGroup = ({ options, name, selectedValue }: FilterRadioGr
   return (
     <div className="govuk-radios govuk-radios--small">
       {options.map((option, index) => {
-        const childName = `${name}.${option.value}`;
+        // const childName = `${name}.${option.value}`;
         return (
           <RadioItem
             key={index}
@@ -22,7 +22,7 @@ export const FilterRadioGroup = ({ options, name, selectedValue }: FilterRadioGr
             checked={selectedValue === option.value}
           >
             {option.children?.length ? (
-              <FilterRadioGroup options={option.children} name={childName} selectedValue={selectedValue} />
+              <FilterRadioGroup options={option.children} name={name} selectedValue={selectedValue} />
             ) : undefined}
           </RadioItem>
         );
