@@ -65,6 +65,7 @@ consumer.post(
   viewFilteredDataset
 );
 consumer.get('/:datasetId/filtered{/:filterId}', fetchPublishedDataset, flashErrors, viewFilteredDataset);
+consumer.get('/:datasetId/data{/:filterId}', fetchPublishedDataset, flashErrors, viewFilteredDataset);
 consumer.get('/:datasetId/pivot{/:filterId}', fetchPublishedDataset, flashErrors, viewPivotedDataset);
 
 consumer.get('/:datasetId/download/metadata', fetchPublishedDataset, downloadPublishedMetadata);
