@@ -83,6 +83,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
+          load: ${{ github.event_name == 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
@@ -91,7 +92,7 @@ jobs:
       - name: Fail on Trivy vulnerability scanner CRITICAL
         uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
         with:
-          image-ref: ghcr.io/marvell-consulting/statswales-frontend:latest
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}
           exit-code: '1'
           ignore-unfixed: true
           vuln-type: 'os,library'
@@ -101,7 +102,7 @@ jobs:
       - name: Run Trivy vulnerability CRITICAL,HIGH
         uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
         with:
-          image-ref: ghcr.io/marvell-consulting/statswales-frontend:latest
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}
           exit-code: '0'
           format: 'template'
           template: '@/contrib/sarif.tpl'
