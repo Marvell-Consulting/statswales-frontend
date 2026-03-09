@@ -1646,7 +1646,7 @@
       "no_match": "Nid oes gwerthoedd yn cyfateb â'ch chwiliad"
     },
     "apply_all_selections": "Cymhwyso’r holl ddewisiadau",
-    "select_all_variables": "Dewiswch yr holl werthoedd ar gyfer pob newidyn",
+    "select_all_variables": "Gweld y set ddata lawn",
     "pivot_hidden_notice": "Dim ond gan un gwerth y gall newidynnau cudd yn eich tabl gael eu cynrychioli.",
     "no_values_selected": "Dewiswch o leiaf 1 gwerth ar gyfer y newidyn hwn<span class=\"govuk-visually-hidden\"> {{columnName}}</span>"
   },
@@ -2144,7 +2144,7 @@
       "hint": "Bydd gofyn i chi ddewis un newidyn ar gyfer colofnau'r tabl, ac un arall ar gyfer y rhesi"
     },
     "data": {
-      "label": "Pob newidyn",
+      "label": "Gweld y set ddata lawn",
       "hint": "Bydd y data yn cael ei ddangos gyda cholofnau ar gyfer pob un o'r newidynnau yn y set ddata, gyda gwerth data ar gyfer pob cyfuniad o newidynnau"
     }
   },
