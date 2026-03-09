@@ -12,7 +12,6 @@ export const FilterRadioGroup = ({ options, name, selectedValue }: FilterRadioGr
   return (
     <div className="govuk-radios govuk-radios--small">
       {options.map((option, index) => {
-        // const childName = `${name}.${option.value}`;
         return (
           <RadioItem
             key={index}
