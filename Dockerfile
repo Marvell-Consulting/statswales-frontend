@@ -15,7 +15,7 @@ RUN npm run build
 # This is the deployable image
 FROM node:24-alpine AS runner
 
-RUN apk update && apk upgrade && apk add --no-cache curl
+RUN apk upgrade --no-cache && apk add --no-cache curl
 
 WORKDIR /app
 
