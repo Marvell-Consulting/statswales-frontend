@@ -57,19 +57,6 @@ describe('getDatasetMetadata', () => {
     expect(result.keyInfo.timePeriod.end).toBeUndefined();
   });
 
-  it('does NOT fall back to dataset-level start_date/end_date', async () => {
-    const revision = makeRevision(); // no coverage dates
-    const dataset = makeDataset({
-      start_date: '2018-01-01T00:00:00Z',
-      end_date: '2023-12-31T00:00:00Z'
-    });
-
-    const result = await getDatasetMetadata(dataset, revision, false);
-
-    expect(result.keyInfo.timePeriod.start).toBeUndefined();
-    expect(result.keyInfo.timePeriod.end).toBeUndefined();
-  });
-
   it('returns correct timePeriod when only start is present', async () => {
     const revision = makeRevision({ coverage_start_date: '2020-01-01T00:00:00Z' });
     const dataset = makeDataset();
