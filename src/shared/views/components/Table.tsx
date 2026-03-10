@@ -2,7 +2,7 @@ import React, { CSSProperties, ReactNode } from 'react';
 import { clsx } from 'clsx';
 import T from './T';
 import { useLocals } from '../context/Locals';
-import { SortByInterface } from '../../interfaces/sort-by';
+import { SortByInterface, parseSortBy } from '../../interfaces/sort-by';
 import qs from 'qs';
 import { omit, size } from 'lodash';
 
@@ -73,17 +73,17 @@ function TableHeader<T>({
 
   const sortKey = isObject ? col.label : col;
 
-  function getSortParams() {
+  function getSortParam(): string | null {
     if (!isSortable) {
       return null;
     }
 
     if (!sortBy || sortBy.columnName !== sortKey) {
-      return { columnName: sortKey, direction: 'ASC' };
+      return `${sortKey}:asc`;
     }
 
     if (sortBy.direction === 'ASC') {
-      return { columnName: sortKey, direction: 'DESC' };
+      return `${sortKey}:desc`;
     }
 
     return null;
@@ -94,8 +94,8 @@ function TableHeader<T>({
       return null;
     }
 
-    const params = getSortParams();
-    const newQuery = params ? qs.stringify({ ...query, sort_by: params }) : qs.stringify(omit(query, 'sort_by'));
+    const param = getSortParam();
+    const newQuery = param ? qs.stringify({ ...query, sort_by: param }) : qs.stringify(omit(query, 'sort_by'));
 
     return size(newQuery) ? `${originalUrl}?${newQuery}` : originalUrl;
   }
@@ -136,7 +136,7 @@ export default function Table<T>({ columns, rows, colgroup, inverted, isSticky, 
                       i18nBase={i18nBase}
                       scope="row"
                       col={col}
-                      sortBy={isSortable ? (parsed.sort_by as unknown as SortByInterface) : undefined}
+                      sortBy={isSortable ? parseSortBy(parsed.sort_by) : undefined}
                       query={parsed}
                       originalUrl={originalUrl}
                       isSortable={isSortable}
@@ -164,7 +164,7 @@ export default function Table<T>({ columns, rows, colgroup, inverted, isSticky, 
                       i18nBase={i18nBase}
                       scope="col"
                       col={col}
-                      sortBy={isSortable ? (parsed.sort_by as unknown as SortByInterface) : undefined}
+                      sortBy={isSortable ? parseSortBy(parsed.sort_by) : undefined}
                       query={parsed}
                       originalUrl={originalUrl}
                       isSortable={isSortable}

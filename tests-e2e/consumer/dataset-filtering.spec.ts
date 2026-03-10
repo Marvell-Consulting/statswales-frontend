@@ -188,8 +188,77 @@ test.describe('Dataset Table Sorting', () => {
     const sortLink = page.locator('th a').first();
     if (await sortLink.isVisible()) {
       await sortLink.click();
-      // URL should contain sort parameters
+      // URL should contain sort_by in colon format
+      await expect(page).toHaveURL(/sort_by=[^&]*%3A/);
+    }
+  });
+
+  test('Old bracket-notation sort_by URL format still works', async ({ page }) => {
+    // Navigate to a filtered view first to get a valid filterId
+    await page.goto(datasetUrl);
+    await page.locator('.dimension-accordion__summary').first().click();
+    await page.getByRole('button', { name: 'Apply all selections' }).first().click();
+    await page.waitForURL(/\/filtered\//);
+    const filteredUrl = page.url();
+
+    // Append old bracket-notation sort_by to the filtered URL
+    const separator = filteredUrl.includes('?') ? '&' : '?';
+    const oldFormatUrl = `${filteredUrl}${separator}sort_by%5BcolumnName%5D=Row&sort_by%5Bdirection%5D=ASC`;
+    await page.goto(oldFormatUrl);
+    // Page should load successfully with table visible
+    await expect(page.locator('#data_table')).toBeVisible();
+    // The sorted column header should have aria-sort
+    const sortedHeader = page.locator('th[aria-sort]');
+    if (await sortedHeader.count()) {
+      await expect(sortedHeader.first()).toHaveAttribute('aria-sort', /ascending|descending/);
+    }
+  });
+
+  test('New colon format sort_by URL works', async ({ page }) => {
+    // Navigate to a filtered view first to get a valid filterId
+    await page.goto(datasetUrl);
+    await page.locator('.dimension-accordion__summary').first().click();
+    await page.getByRole('button', { name: 'Apply all selections' }).first().click();
+    await page.waitForURL(/\/filtered\//);
+    const filteredUrl = page.url();
+
+    // Append new colon-format sort_by to the filtered URL
+    const separator = filteredUrl.includes('?') ? '&' : '?';
+    const newFormatUrl = `${filteredUrl}${separator}sort_by=Row%3Aasc`;
+    await page.goto(newFormatUrl);
+    // Page should load successfully with table visible
+    await expect(page.locator('#data_table')).toBeVisible();
+    // The sorted column header should have aria-sort
+    const sortedHeader = page.locator('th[aria-sort]');
+    if (await sortedHeader.count()) {
+      await expect(sortedHeader.first()).toHaveAttribute('aria-sort', /ascending|descending/);
+    }
+  });
+
+  test('Sort direction toggles: ASC -> DESC -> unsorted', async ({ page }) => {
+    await page.goto(datasetUrl);
+    // Get to filtered view
+    await page.locator('.dimension-accordion__summary').first().click();
+    await page.getByRole('button', { name: 'Apply all selections' }).first().click();
+    const sortLink = page.locator('th a').first();
+    if (await sortLink.isVisible()) {
+      // First click — should sort ASC
+      await sortLink.click();
       await expect(page).toHaveURL(/sort_by/);
+      const urlAfterAsc = page.url();
+      expect(urlAfterAsc).toMatch(/sort_by=[^&]*%3Aasc/i);
+
+      // Second click on same header — should sort DESC
+      const sameSortLink = page.locator('th[aria-sort] a').first();
+      await sameSortLink.click();
+      const urlAfterDesc = page.url();
+      expect(urlAfterDesc).toMatch(/sort_by=[^&]*%3Adesc/i);
+
+      // Third click — should remove sort_by
+      const sameSortLink2 = page.locator('th[aria-sort] a').first();
+      await sameSortLink2.click();
+      const urlAfterUnsorted = page.url();
+      expect(urlAfterUnsorted).not.toMatch(/sort_by/);
     }
   });
 });

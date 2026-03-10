@@ -13,7 +13,7 @@ import { ViewV2DTO } from '../../shared/dtos/view-dto';
 import { FileFormat } from '../../shared/enums/file-format';
 import { PublishedTopicsDTO } from '../../shared/dtos/published-topics-dto';
 import { FilterTable } from '../../shared/dtos/filter-table';
-import { SortByInterface } from '../../shared/interfaces/sort-by';
+import { SortByInterface, serializeSortBy } from '../../shared/interfaces/sort-by';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
 import { RevisionDTO } from '../../shared/dtos/revision';
 import { DataOptionsDTO } from '../../shared/interfaces/data-options';
@@ -109,7 +109,7 @@ export class ConsumerApi {
     const query = new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString() });
 
     if (sortBy) {
-      query.append('sort_by', JSON.stringify([sortBy]));
+      query.append('sort_by', serializeSortBy(sortBy));
     }
 
     return this.fetch({ url, query }).then((response) => response.json() as unknown as PublishedTopicsDTO);
@@ -140,7 +140,7 @@ export class ConsumerApi {
     query.append('format', 'frontend');
 
     if (sortBy) {
-      query.append('sort_by', JSON.stringify([sortBy]));
+      query.append('sort_by', serializeSortBy(sortBy));
     }
 
     return this.fetch({ url: `v2/${datasetId}/data`, query }).then(
@@ -186,7 +186,7 @@ export class ConsumerApi {
     });
 
     if (sortBy) {
-      query.append('sort_by', JSON.stringify([sortBy]));
+      query.append('sort_by', serializeSortBy(sortBy));
     }
 
     return this.fetch({ url: `v2/${datasetId}/data/${filterId}`, query }).then(
@@ -209,7 +209,7 @@ export class ConsumerApi {
     });
 
     if (sortBy) {
-      query.append('sort_by', JSON.stringify([sortBy]));
+      query.append('sort_by', serializeSortBy(sortBy));
     }
 
     return this.fetch({ url: `v2/${datasetId}/pivot/${filterId}`, query }).then(

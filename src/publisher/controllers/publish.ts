@@ -685,7 +685,8 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
         publicationHistory,
         datasetTitle,
         selectedFilterOptions: preview.filters ? v2FiltersToV1(preview.filters) : [],
-        shorthandUrl: req.buildUrl(`/shorthand`, req.language)
+        shorthandUrl: req.buildUrl(`/shorthand`, req.language),
+        sortBy
       });
       return;
     }
