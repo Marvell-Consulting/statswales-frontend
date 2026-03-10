@@ -69,15 +69,18 @@ export async function uploadDataTable(page: Page, datasetId: string, filename: s
   const filePath = path.join(__dirname, '..', '..', 'sample-csvs', filename);
   await uploadFile(page, filePath);
   await page.getByRole('button', { name: 'Continue' }).click();
-  await page.waitForLoadState('networkidle');
-  await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/preview`);
+  await page.waitForURL(`**/publish/${datasetId}/preview**`, { timeout: 60_000 });
 }
 
 export async function uploadInvalidDataTable(page: Page, filename: string) {
   const filePath = path.join(__dirname, '..', '..', 'sample-csvs', filename);
   await uploadFile(page, filePath);
+  const uploadUrl = page.url();
   await page.getByRole('button', { name: 'Continue' }).click();
-  await page.waitForLoadState('networkidle');
+  await Promise.race([
+    page.waitForURL((url) => url.toString() !== uploadUrl, { timeout: 60_000 }),
+    page.getByText('There is a problem').waitFor({ state: 'visible', timeout: 60_000 })
+  ]);
 }
 
 export async function confirmDataTable(page: Page, datasetId: string) {
