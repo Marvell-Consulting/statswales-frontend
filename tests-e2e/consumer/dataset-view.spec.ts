@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 import { resolveDatasetUrlByTitle } from './helpers/find-dataset';
-import { CONSUMER_DATASET_TITLE } from '../fixtures/dataset-title';
+import { CONSUMER_DATASET_TITLE, CUSTOM_YEAR_DATASET_TITLE } from '../fixtures/dataset-title';
 
 let datasetUrl: string;
 
@@ -38,6 +38,19 @@ test.describe('Dataset View', () => {
     await page.getByRole('tab', { name: 'About this dataset' }).click();
     // Should show main information section
     await expect(page.getByRole('heading', { name: 'Main information' })).toBeVisible();
+    // Realistic dataset has a Financial year date dimension — time period should be visible
+    await expect(page.locator('#time-period')).toBeVisible();
+  });
+
+  test('Custom year dataset About tab does not show time period', async ({ browser }) => {
+    const customYearUrl = await resolveDatasetUrlByTitle(browser, CUSTOM_YEAR_DATASET_TITLE);
+    const page = await browser.newPage();
+    await page.goto(customYearUrl);
+    await page.getByRole('tab', { name: 'About this dataset' }).click();
+    await expect(page.getByRole('heading', { name: 'Main information' })).toBeVisible();
+    // Custom year dataset uses LookupTable type — no coverage dates, so time period should not appear
+    await expect(page.locator('#time-period')).not.toBeVisible();
+    await page.close();
   });
 
   test('Can switch to Welsh on dataset view', async ({ page }) => {
