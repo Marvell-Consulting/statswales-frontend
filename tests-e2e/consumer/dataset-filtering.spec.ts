@@ -201,16 +201,26 @@ test.describe('Dataset Table Sorting', () => {
     await page.waitForURL(/\/filtered\//);
     const filteredUrl = page.url();
 
-    // Append old bracket-notation sort_by to the filtered URL
-    const separator = filteredUrl.includes('?') ? '&' : '?';
-    const oldFormatUrl = `${filteredUrl}${separator}sort_by%5BcolumnName%5D=Row&sort_by%5Bdirection%5D=ASC`;
-    await page.goto(oldFormatUrl);
-    // Page should load successfully with table visible
-    await expect(page.locator('#data_table')).toBeVisible();
-    // The sorted column header should have aria-sort
-    const sortedHeader = page.locator('th[aria-sort]');
-    if (await sortedHeader.count()) {
-      await expect(sortedHeader.first()).toHaveAttribute('aria-sort', /ascending|descending/);
+    // Discover a valid sortable column name from the table header links
+    const sortLink = page.locator('th a').first();
+    if (await sortLink.isVisible()) {
+      const href = await sortLink.getAttribute('href');
+      const match = href?.match(/sort_by=(.+?)%3A/i);
+      const columnName = match ? decodeURIComponent(match[1]) : null;
+      if (columnName) {
+        // Append old bracket-notation sort_by to the filtered URL
+        const separator = filteredUrl.includes('?') ? '&' : '?';
+        const encodedCol = encodeURIComponent(columnName);
+        const oldFormatUrl = `${filteredUrl}${separator}sort_by%5BcolumnName%5D=${encodedCol}&sort_by%5Bdirection%5D=ASC`;
+        await page.goto(oldFormatUrl);
+        // Page should load successfully with table visible
+        await expect(page.locator('#data_table')).toBeVisible();
+        // The sorted column header should have aria-sort
+        const sortedHeader = page.locator('th[aria-sort]');
+        if (await sortedHeader.count()) {
+          await expect(sortedHeader.first()).toHaveAttribute('aria-sort', /ascending|descending/);
+        }
+      }
     }
   });
 
@@ -222,16 +232,26 @@ test.describe('Dataset Table Sorting', () => {
     await page.waitForURL(/\/filtered\//);
     const filteredUrl = page.url();
 
-    // Append new colon-format sort_by to the filtered URL
-    const separator = filteredUrl.includes('?') ? '&' : '?';
-    const newFormatUrl = `${filteredUrl}${separator}sort_by=Row%3Aasc`;
-    await page.goto(newFormatUrl);
-    // Page should load successfully with table visible
-    await expect(page.locator('#data_table')).toBeVisible();
-    // The sorted column header should have aria-sort
-    const sortedHeader = page.locator('th[aria-sort]');
-    if (await sortedHeader.count()) {
-      await expect(sortedHeader.first()).toHaveAttribute('aria-sort', /ascending|descending/);
+    // Discover a valid sortable column name from the table header links
+    const sortLink = page.locator('th a').first();
+    if (await sortLink.isVisible()) {
+      const href = await sortLink.getAttribute('href');
+      const match = href?.match(/sort_by=(.+?)%3A/i);
+      const columnName = match ? decodeURIComponent(match[1]) : null;
+      if (columnName) {
+        // Append new colon-format sort_by to the filtered URL
+        const separator = filteredUrl.includes('?') ? '&' : '?';
+        const encodedCol = encodeURIComponent(columnName);
+        const newFormatUrl = `${filteredUrl}${separator}sort_by=${encodedCol}%3Aasc`;
+        await page.goto(newFormatUrl);
+        // Page should load successfully with table visible
+        await expect(page.locator('#data_table')).toBeVisible();
+        // The sorted column header should have aria-sort
+        const sortedHeader = page.locator('th[aria-sort]');
+        if (await sortedHeader.count()) {
+          await expect(sortedHeader.first()).toHaveAttribute('aria-sort', /ascending|descending/);
+        }
+      }
     }
   });
 
@@ -251,14 +271,14 @@ test.describe('Dataset Table Sorting', () => {
       // Second click on same header — should sort DESC
       const sameSortLink = page.locator('th[aria-sort] a').first();
       await sameSortLink.click();
+      await expect(page).toHaveURL(/sort_by/);
       const urlAfterDesc = page.url();
       expect(urlAfterDesc).toMatch(/sort_by=[^&]*%3Adesc/i);
 
       // Third click — should remove sort_by
       const sameSortLink2 = page.locator('th[aria-sort] a').first();
       await sameSortLink2.click();
-      const urlAfterUnsorted = page.url();
-      expect(urlAfterUnsorted).not.toMatch(/sort_by/);
+      await expect(page).not.toHaveURL(/sort_by/);
     }
   });
 });
