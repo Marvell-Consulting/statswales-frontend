@@ -16,11 +16,11 @@ export function PivotControls(props: PivotControlsProps) {
 
   return (
     <div className="pivot-controls">
-      <a href={startOverURL} className="govuk-button govuk-button--tertiary govuk-button-small">
+      <a href={startOverURL} id="start-over" className="govuk-button govuk-button--tertiary govuk-button-small">
         <T>pivot.start_over</T>
       </a>
       <span>&nbsp;</span>
-      <a href={dataURL} className="govuk-button govuk-button--tertiary govuk-button-small">
+      <a href={dataURL} id="show-data" className="govuk-button govuk-button--tertiary govuk-button-small">
         <T>pivot.show_data</T>
       </a>
     </div>
