@@ -43,7 +43,7 @@ import { TaskDecisionDTO } from '../../shared/dtos/task-decision';
 import { EventLogDTO } from '../../shared/dtos/event-log';
 import { FilterTable } from '../../shared/dtos/filter-table';
 import { Filter } from '../../shared/interfaces/filter';
-import { SortByInterface } from '../../shared/interfaces/sort-by';
+import { SortByInterface, serializeSortBy } from '../../shared/interfaces/sort-by';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
 import { TaskAction } from '../../shared/enums/task-action';
 import { UserGroupStatus } from '../../shared/enums/user-group-status';
@@ -424,7 +424,7 @@ export class PublisherApi {
     }
 
     if (sortBy) {
-      query.set('sort_by', JSON.stringify([sortBy]));
+      query.set('sort_by', serializeSortBy(sortBy));
     }
 
     return this.fetch({ url: `dataset/${datasetId}/revision/by-id/${revisionId}/preview`, query }).then(
@@ -864,7 +864,7 @@ export class PublisherApi {
     query.append('format', 'frontend');
 
     if (sortBy) {
-      query.append('sort_by', JSON.stringify([sortBy]));
+      query.append('sort_by', serializeSortBy(sortBy));
     }
 
     return this.fetch({ url: `dataset/${datasetId}/preview`, query }).then(
@@ -895,7 +895,7 @@ export class PublisherApi {
     });
 
     if (sortBy) {
-      query.append('sort_by', JSON.stringify([sortBy]));
+      query.append('sort_by', serializeSortBy(sortBy));
     }
 
     return this.fetch({ url: `dataset/${datasetId}/preview/${filterId}`, query }).then(

@@ -154,7 +154,8 @@ export const datasetPreview = async (req: Request, res: Response) => {
       datasetTitle,
       previewFailed,
       selectedFilterOptions: preview?.filters ? v2FiltersToV1(preview.filters) : [],
-      shorthandUrl: req.buildUrl(`/shorthand`, req.language)
+      shorthandUrl: req.buildUrl(`/shorthand`, req.language),
+      sortBy
     });
   } catch (err) {
     // can't really recover from here as there's no dataset or revision

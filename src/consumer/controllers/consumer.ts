@@ -159,7 +159,8 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
     selectedFilterOptions: [],
     shorthandUrl: req.buildUrl(`/shorthand`, req.language),
     isUnpublished,
-    isArchived
+    isArchived,
+    sortBy
   });
 };
 
@@ -240,7 +241,8 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
     selectedFilterOptions: view.filters ? v2FiltersToV1(view.filters) : [],
     shorthandUrl: req.buildUrl(`/shorthand`, req.language),
     isUnpublished: revision?.unpublished_at || false,
-    isArchived: (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false
+    isArchived: (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false,
+    sortBy
   });
 };
 
@@ -638,7 +640,8 @@ export const viewPivotedDataset = async (req: Request, res: Response, next: Next
       isArchived: (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false,
       filterId,
       columns: view.pivot?.x,
-      rows: view.pivot?.y
+      rows: view.pivot?.y,
+      sortBy
     });
   } catch (err) {
     next(err);
