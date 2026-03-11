@@ -49,7 +49,7 @@ const getNextUpdate = (nextUpdateAt?: NextUpdateAt, locale?: string) => {
 
 export function NextUpdate(props: NextUpdateProps) {
   const { i18n } = useLocals();
-  const nextUpdate = getNextUpdate(props.datasetMetadata?.keyInfo?.nextUpdateAt, i18n.locale);
+  const nextUpdate = getNextUpdate(props.datasetMetadata?.keyInfo?.nextUpdateAt, i18n.language);
 
   return (
     <p>
