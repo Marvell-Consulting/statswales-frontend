@@ -15,7 +15,7 @@ export function DataControls(props: DataControlsProps) {
 
   return (
     <div className="pivot-controls">
-      <a href={startOverURL} className="govuk-button govuk-button--tertiary govuk-button-small">
+      <a href={startOverURL} id="start-over-btn" className="govuk-button govuk-button--tertiary govuk-button-small">
         <T>pivot.create_own</T>
       </a>
     </div>
