@@ -63,7 +63,7 @@ test.describe('Pivot Flow', () => {
       await expect(page.locator('#row-column-chooser').locator('input[type="radio"]')).toHaveCount(4);
       await page.locator('#row-column-chooser').locator('label').first().click();
       await page.locator('#column-row-form').locator('button[type="submit"]').click();
-      expect(page).toHaveURL(/columns/);
+      await expect(page).toHaveURL(/columns/);
     });
 
     test('Selecting first item in rows and clicking continue advances', async ({ page }) => {
