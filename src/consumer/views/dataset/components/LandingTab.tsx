@@ -36,6 +36,7 @@ export default function LandingTab(props: DataTabProps) {
   if (props.isDevPreview) formUrl = buildUrl(`/developer/${props.dataset.id}/filtered`, i18n.language, {}, 'data');
   else if (props.preview) formUrl = buildUrl(`/publish/${props.dataset.id}/cube-preview`, i18n.language);
   else if (props.columns && props.rows) formUrl = buildUrl(`/${props.dataset.id}/pivot`, i18n.language);
+  else if (PivotStage.Summary) formUrl = buildUrl(`/${props.dataset.id}/pivot/summary`, i18n.language);
 
   let pivotActionChooser = <TableChooser />;
   let disabled = true;
@@ -70,6 +71,9 @@ export default function LandingTab(props: DataTabProps) {
               />
               {props.columns ? <input type="hidden" name="columns" value={props.columns} /> : null}
               {props.rows ? <input type="hidden" name="rows" value={props.rows} /> : null}
+              {props.pivotStage === PivotStage.Summary ? (
+                <input type="hidden" name="stage" value={props.pivotStage} />
+              ) : null}
             </form>
           </div>
 
