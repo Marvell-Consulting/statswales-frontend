@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 
 import { resolvePivotDatasetUrlByTitle } from './helpers/find-dataset';
 import { CONSUMER_DATASET_TITLE } from '../fixtures/dataset-title';
@@ -9,7 +9,7 @@ test.beforeAll(async ({ browser }) => {
   datasetUrl = await resolvePivotDatasetUrlByTitle(browser, CONSUMER_DATASET_TITLE);
 });
 
-async function completePivotFlow(page) {
+async function completePivotFlow(page: Page) {
   await page.goto(datasetUrl);
   await page.click('label[for="tableChoicePivot"]');
   await page.click('#tableChooserBtn');
@@ -35,7 +35,7 @@ test.describe('Pivot Flow', () => {
       await page.click('label[for="tableChoiceData"]');
       await page.click('#tableChooserBtn');
       await expect(page.locator('h1.govuk-heading-xl')).toContainText(CONSUMER_DATASET_TITLE);
-      expect(page.url()).toContain('data');
+      await expect(page).toHaveURL(/data/);
     });
 
     test('expect clicking on start-over-btn goes to the start', async ({ page }) => {
@@ -44,7 +44,7 @@ test.describe('Pivot Flow', () => {
       await page.click('#tableChooserBtn');
       await expect(page.locator('#start-over-btn')).toBeVisible();
       await page.locator('#start-over-btn').click();
-      expect(page.url()).toContain('start');
+      await expect(page).toHaveURL(/start/);
     });
   });
 
@@ -63,7 +63,7 @@ test.describe('Pivot Flow', () => {
       await expect(page.locator('#row-column-chooser').locator('input[type="radio"]')).toHaveCount(4);
       await page.locator('#row-column-chooser').locator('label').first().click();
       await page.locator('#column-row-form').locator('button[type="submit"]').click();
-      expect(page.url()).toContain('columns');
+      expect(page).toHaveURL(/columns/);
     });
 
     test('Selecting first item in rows and clicking continue advances', async ({ page }) => {
@@ -75,8 +75,8 @@ test.describe('Pivot Flow', () => {
       await expect(page.locator('#row-column-chooser').locator('input[type="radio"]')).toHaveCount(3);
       await page.locator('#row-column-chooser').locator('label').first().click();
       await page.locator('#column-row-form').locator('button[type="submit"]').click();
-      expect(page.url()).toContain('columns');
-      expect(page.url()).toContain('rows');
+      await expect(page).toHaveURL(/columns/);
+      await expect(page).toHaveURL(/rows/);
     });
 
     test('Summary table shows and click continue shows the table', async ({ page }) => {
