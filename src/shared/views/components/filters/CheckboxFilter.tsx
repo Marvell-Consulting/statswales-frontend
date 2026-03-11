@@ -129,7 +129,7 @@ export const CheckboxFilter = ({ filter, values, disabled = false }: CheckboxFil
             </span>
           </div>
         </div>
-        {disabled && (
+        {disabled ? null : (
           <div className="filter-apply">
             <button
               name="dataViewsChoice"
