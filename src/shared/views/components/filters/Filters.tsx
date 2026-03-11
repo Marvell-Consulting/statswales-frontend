@@ -17,10 +17,11 @@ export type FiltersProps = {
   preview?: boolean;
   columns?: string;
   rows?: string;
+  disabled?: boolean;
 };
 
 export const Filters = (props: FiltersProps) => {
-  const { filters, title, selected, preview, dataset } = props;
+  const { filters, title, selected, preview, dataset, disabled = false } = props;
   const { buildUrl, i18n } = useLocals();
 
   const isPivot = !!(props.rows && props.columns);
@@ -62,7 +63,7 @@ export const Filters = (props: FiltersProps) => {
         if (isHiddenDimension) {
           return <RadioFilter key={index} filter={filter} values={values} />;
         }
-        return <CheckboxFilter key={index} filter={filter} values={values} />;
+        return <CheckboxFilter key={index} filter={filter} values={values} disabled={disabled} />;
       })}
 
       {!isPivot && (

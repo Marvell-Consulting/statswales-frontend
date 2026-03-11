@@ -15,6 +15,7 @@ export type CheckboxProps = CheckboxOptions & {
   values: string[];
   omitName?: boolean;
   controls?: ReactNode;
+  disabled?: boolean;
 };
 
 export const Checkbox = ({
@@ -26,7 +27,8 @@ export const Checkbox = ({
   values,
   independentExpand,
   omitName,
-  controls
+  controls,
+  disabled = false
 }: CheckboxProps) => {
   const formattedId = name.replaceAll(/\s+/g, '_');
   const CheckboxField = (
@@ -39,6 +41,7 @@ export const Checkbox = ({
         value={value}
         data-aria-controls={children ? `conditional-${name}` : undefined}
         defaultChecked={checked}
+        disabled={disabled}
       />
       <label className="govuk-label govuk-checkboxes__label" htmlFor={formattedId}>
         {label}
@@ -59,6 +62,7 @@ export const Checkbox = ({
             values={values}
             independentExpand={independentExpand}
             controls={controls}
+            disabled={disabled}
           />
         </div>
       </details>
@@ -76,6 +80,7 @@ export const Checkbox = ({
             values={values}
             independentExpand={independentExpand}
             controls={controls}
+            disabled={disabled}
           />
         </div>
       )}

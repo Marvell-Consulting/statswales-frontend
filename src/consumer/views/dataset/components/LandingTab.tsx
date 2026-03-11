@@ -38,6 +38,7 @@ export default function LandingTab(props: DataTabProps) {
   else if (props.columns && props.rows) formUrl = buildUrl(`/${props.dataset.id}/pivot`, i18n.language);
 
   let pivotActionChooser = <TableChooser />;
+  let disabled = true;
   switch (props.pivotStage) {
     case PivotStage.Columns:
     case PivotStage.Rows:
@@ -45,6 +46,7 @@ export default function LandingTab(props: DataTabProps) {
       break;
     case PivotStage.Summary:
       pivotActionChooser = <PivotSummary {...props} />;
+      disabled = false;
       break;
   }
 
@@ -64,6 +66,7 @@ export default function LandingTab(props: DataTabProps) {
                 selected={props.selectedFilterOptions}
                 columns={props.columns}
                 rows={props.rows}
+                disabled={disabled}
               />
               {props.columns ? <input type="hidden" name="columns" value={props.columns} /> : null}
               {props.rows ? <input type="hidden" name="rows" value={props.rows} /> : null}

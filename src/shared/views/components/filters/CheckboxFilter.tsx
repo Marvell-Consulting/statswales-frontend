@@ -10,6 +10,7 @@ import { useLocals } from '../../context/Locals';
 export type CheckboxFilterProps = {
   filter: FilterTable;
   values?: string[];
+  disabled?: boolean;
 };
 
 const normalizeFilters = (options: FilterValues[]): CheckboxOptions[] => {
@@ -38,7 +39,7 @@ const allOptionValues = (options: FilterValues[]): string[] => {
   ]);
 };
 
-export const CheckboxFilter = ({ filter, values }: CheckboxFilterProps) => {
+export const CheckboxFilter = ({ filter, values, disabled = false }: CheckboxFilterProps) => {
   const { t, errors } = useLocals();
   const fieldName = `filter[${filter.factTableColumn}]`;
   const hasError = errors?.some((e) => e.field === fieldName);
@@ -121,23 +122,26 @@ export const CheckboxFilter = ({ filter, values }: CheckboxFilterProps) => {
                   }
                 />
               }
+              disabled={disabled}
             />
             <span className="filter-search-no-match govuk-body js-hidden">
               <T>filters.search.no_match</T>
             </span>
           </div>
         </div>
-        <div className="filter-apply">
-          <button
-            name="dataViewsChoice"
-            value="filter"
-            type="submit"
-            className="govuk-button govuk-button-small button-black"
-            data-module="govuk-button"
-          >
-            <T>filters.apply_all_selections</T>
-          </button>
-        </div>
+        {disabled ? null : (
+          <div className="filter-apply">
+            <button
+              name="dataViewsChoice"
+              value="filter"
+              type="submit"
+              className="govuk-button govuk-button-small button-black"
+              data-module="govuk-button"
+            >
+              <T>filters.apply_all_selections</T>
+            </button>
+          </div>
+        )}
       </details>
     </div>
   );
