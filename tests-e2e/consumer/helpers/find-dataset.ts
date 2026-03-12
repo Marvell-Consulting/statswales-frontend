@@ -3,19 +3,25 @@ import { expect, Browser, Page } from '@playwright/test';
 /**
  * Searches for a dataset by title and navigates to it.
  * Uses the search page at /en-GB/search to find the dataset.
+ * Retries a few times to handle search index lag after publishing.
  */
-export async function findDataset(page: Page, title: string) {
-  await page.goto(`/en-GB/search?keywords=${encodeURIComponent(title)}`);
-  const datasetLink = page.locator('.index-list__item a').first();
-  await expect(datasetLink).toBeVisible();
-  await datasetLink.click();
-  // Verify we landed on a dataset page with the expected title
-  await expect(page.locator('h1.govuk-heading-xl')).toContainText(title);
-  // Navigate to the data table page
-  await page.click('label[for="tableChoiceData"]');
-  await page.click('#tableChooserBtn');
-  await expect(page.locator('h1.govuk-heading-xl')).toContainText(title);
-  return page.url();
+export async function findDataset(page: Page, title: string, maxRetries = 5) {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    await page.goto(`/en-GB/search?keywords=${encodeURIComponent(title)}`);
+    const datasetLink = page.locator('.index-list__item a').first();
+    if (await datasetLink.isVisible({ timeout: 5_000 }).catch(() => false)) {
+      await datasetLink.click();
+      await expect(page.locator('h1.govuk-heading-xl')).toContainText(title);
+      await page.click('label[for="tableChoiceData"]');
+      await page.click('#tableChooserBtn');
+      await expect(page.locator('h1.govuk-heading-xl')).toContainText(title);
+      return page.url();
+    }
+    // Search index may not have caught up yet — wait before retrying
+    await page.waitForTimeout(3_000);
+  }
+
+  throw new Error(`Dataset "${title}" not found in search after ${maxRetries} attempts`);
 }
 
 /**
@@ -32,15 +38,21 @@ export async function resolveDatasetUrlByTitle(browser: Browser, title: string):
 /**
  * Searches for a dataset by title and navigates to it.
  * Uses the search page at /en-GB/search to find the dataset.
+ * Retries a few times to handle search index lag after publishing.
  */
-export async function findPivotDataset(page: Page, title: string) {
-  await page.goto(`/en-GB/search?keywords=${encodeURIComponent(title)}`);
-  const datasetLink = page.locator('.index-list__item a').first();
-  await expect(datasetLink).toBeVisible();
-  await datasetLink.click();
-  // Verify we landed on a dataset page with the expected title
-  await expect(page.locator('h1.govuk-heading-xl')).toContainText(title);
-  return page.url();
+export async function findPivotDataset(page: Page, title: string, maxRetries = 5) {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    await page.goto(`/en-GB/search?keywords=${encodeURIComponent(title)}`);
+    const datasetLink = page.locator('.index-list__item a').first();
+    if (await datasetLink.isVisible({ timeout: 5_000 }).catch(() => false)) {
+      await datasetLink.click();
+      await expect(page.locator('h1.govuk-heading-xl')).toContainText(title);
+      return page.url();
+    }
+    await page.waitForTimeout(3_000);
+  }
+
+  throw new Error(`Dataset "${title}" not found in search after ${maxRetries} attempts`);
 }
 
 /**

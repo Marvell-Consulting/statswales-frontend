@@ -40,13 +40,13 @@ test.describe('Unpublish dataset', () => {
     test('Request dataset be temporarily unpublished', async ({ page }) => {
       await page.goto(`/en-GB/publish/${datasetId}/overview`);
       await page.getByRole('link', { name: 'Temporarily unpublish dataset' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/unpublish`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/unpublish`);
       await expect(page.getByText('Why should this dataset be temporarily unpublished?')).toBeVisible();
 
       const unpublishReason = 'Need to fix a mistake';
       await page.getByRole('textbox').fill(unpublishReason);
       await page.getByRole('button', { name: 'Continue' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
       await expect(page.getByText('Dataset unpublishing requested').first()).toBeVisible();
 
       const statusBadges = page.locator('.status-badges');
@@ -63,11 +63,11 @@ test.describe('Unpublish dataset', () => {
       await expect(page.getByText('Need to fix a mistake').first()).toBeVisible();
 
       await page.getByRole('link', { name: 'Respond to unpublishing request' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/task-decision`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/task-decision`);
 
       await page.getByLabel('Yes').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
       await expect(page.getByText('Dataset approved for unpublishing').first()).toBeVisible();
 
       const statusBadges = page.locator('.status-badges');
@@ -83,12 +83,12 @@ test.describe('Unpublish dataset', () => {
       await page.goto(`/en-GB/publish/${datasetId}/overview`);
 
       await page.getByRole('link', { name: 'Update this dataset' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
 
       await completeUpdateReason(page, datasetId, 'Correcting data for the latest period.');
 
       await page.getByRole('link', { name: 'When this update should be published' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/schedule`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/schedule`);
 
       const now = new TZDate(new Date().toISOString(), 'Europe/London');
       const theFuture = add(now, { minutes: 1 });
@@ -105,13 +105,13 @@ test.describe('Unpublish dataset', () => {
       await page.getByRole('textbox', { name: 'Minute' }).fill(String(mins));
 
       await page.getByRole('button', { name: 'Continue' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
 
       await completeTranslations(page, testInfo, datasetId);
 
       await page.getByRole('button', { name: 'Submit for approval' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
-      await expect(page.getByText('Dataset submitted for approval')).toBeTruthy();
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
+      await expect(page.getByRole('region').getByText('Dataset submitted for approval')).toBeVisible();
 
       const statusBadges = page.locator('.status-badges');
       await expect(statusBadges.getByText('Offline dataset', { exact: true })).toBeVisible();
@@ -126,11 +126,11 @@ test.describe('Unpublish dataset', () => {
       await page.goto(`/en-GB/publish/${datasetId}/overview`);
 
       await page.getByRole('link', { name: 'Respond to publishing request' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/task-decision`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/task-decision`);
 
       await page.getByLabel('Yes').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
       await expect(page.getByText('Dataset approved for publishing').first()).toBeVisible();
 
       const statusBadges = page.locator('.status-badges');
