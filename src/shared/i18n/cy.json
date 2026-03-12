@@ -2138,7 +2138,7 @@
     }
   },
   "table_chooser": {
-    "heading": "Creu eich tabl eich hun",
+    "heading": "Dewis sut i weld y data",
     "pivot": {
       "label": "Creu eich tabl eich hun",
       "hint": "Bydd gofyn i chi ddewis un newidyn ar gyfer colofnau'r tabl, ac un arall ar gyfer y rhesi"
