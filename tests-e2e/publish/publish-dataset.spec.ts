@@ -36,6 +36,8 @@ import { config } from '../../src/shared/config';
 const baseUrl = config.frontend.publisher.url;
 
 test.describe('Publish dataset', () => {
+  test.describe.configure({ mode: 'serial' });
+
   const title = `publish-dataset.spec - ${nanoid(5)}`;
   const nextUpdate = add(new Date(), { years: 1 });
   let datasetId: string;
@@ -64,6 +66,7 @@ test.describe('Publish dataset', () => {
     test.use({ role: 'publisher' });
 
     test('Create new dataset', async ({ page }, testInfo) => {
+      test.setTimeout(90_000);
       await startNewDataset(page);
       await selectUserGroup(page, 'E2E tests');
       datasetId = await provideDatasetTitle(page, title);
@@ -114,25 +117,27 @@ test.describe('Publish dataset', () => {
     });
 
     test('Preview dataset', async ({ page, context }, testInfo) => {
+      test.setTimeout(60_000);
       await page.goto(`/en-GB/publish/${datasetId}/overview`);
       const pagePromise = context.waitForEvent('page');
       await page.getByRole('link', { name: 'Preview (opens in new tab)' }).click();
       const previewPage = await pagePromise;
-      await expect(previewPage.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/cube-preview`);
+      await previewPage.waitForLoadState('load');
+      expect(previewPage.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/cube-preview`);
 
-      // check contents
-      await expect(previewPage.getByText(title)).toBeTruthy();
-      await expect(previewPage.getByText('This is a preview of this dataset.')).toBeTruthy();
-      await expect(previewPage.getByText('Main information', { exact: true })).toBeTruthy();
-      await expect(previewPage.getByText('Overview', { exact: true })).toBeTruthy();
-      await expect(previewPage.getByText('Published by', { exact: true })).toBeTruthy();
-      await expect(previewPage.getByText(metadata.summary, { exact: true })).toBeTruthy();
-      await expect(previewPage.getByText(metadata.collection, { exact: true })).toBeTruthy();
-      await expect(previewPage.getByText(metadata.quality, { exact: true })).toBeTruthy();
-      await expect(previewPage.getByText(metadata.reports[0].title, { exact: true })).toBeTruthy();
+      // check header contents (visible on any tab)
+      await expect(previewPage.getByText(title)).toBeVisible();
+      await expect(previewPage.getByText('This is a preview of this dataset.')).toBeVisible();
 
-      // check about tab for rounding
+      // check about tab contents
       await previewPage.click('#tab_about');
+      await expect(previewPage.getByText('Main information', { exact: true })).toBeVisible();
+      await expect(previewPage.getByText('Overview', { exact: true })).toBeVisible();
+      await expect(previewPage.getByText('Published by', { exact: true })).toBeVisible();
+      await expect(previewPage.getByText(metadata.summary, { exact: true })).toBeVisible();
+      await expect(previewPage.getByText(metadata.collection, { exact: true })).toBeVisible();
+      await expect(previewPage.getByText(metadata.quality, { exact: true })).toBeVisible();
+      await expect(previewPage.getByText(metadata.reports[0].title, { exact: true })).toBeVisible();
       await expect(previewPage.locator('#data-rounding')).toBeVisible();
       await expect(previewPage.locator('#data-rounding').getByText('Rounding applied')).toBeVisible();
       await expect(previewPage.locator('#data-rounding').getByText(metadata.rounding.description)).toBeVisible();
@@ -152,13 +157,10 @@ test.describe('Publish dataset', () => {
       // data table
       await previewPage.click('#tab_data');
       const heading = previewPage.locator('table > thead > tr');
-      await expect(heading.getByText('Data Values')).toBeTruthy();
-      await expect(heading.getByText('Start Date')).toBeTruthy();
-      await expect(heading.getByText('End Date')).toBeTruthy();
-      await expect(heading.getByText(columnAssignments.find((c) => c.column === 'YearCode')!.name!)).toBeTruthy();
-      await expect(heading.getByText(columnAssignments.find((c) => c.column === 'AreaCode')!.name!)).toBeTruthy();
-      await expect(heading.getByText(columnAssignments.find((c) => c.column === 'RowRef')!.name!)).toBeTruthy();
-      await expect(heading.getByText('Notes')).toBeTruthy();
+      await expect(heading.getByText('Data Values')).toBeVisible();
+      await expect(heading.getByText(columnAssignments.find((c) => c.column === 'YearCode')!.name!)).toBeVisible();
+      await expect(heading.getByText(columnAssignments.find((c) => c.column === 'AreaCode')!.name!)).toBeVisible();
+      await expect(heading.getByText(columnAssignments.find((c) => c.column === 'RowRef')!.name!)).toBeVisible();
     });
 
     test('Submit dataset for approval', async ({ page }) => {

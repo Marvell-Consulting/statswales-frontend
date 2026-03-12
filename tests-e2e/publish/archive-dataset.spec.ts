@@ -37,16 +37,16 @@ test.describe('Archive dataset', () => {
 
     test('Request dataset archiving', async ({ page }) => {
       await page.goto(`/en-GB/publish/${datasetId}/overview`);
-      await expect(page.getByText(title)).toBeTruthy();
+      await expect(page.getByText(title)).toBeVisible();
 
       await page.getByRole('link', { name: 'Label dataset as archived' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/archive`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/archive`);
       await expect(page.getByText('Why should this dataset be labelled as archived?')).toBeVisible();
 
       const archiveReason = 'No longer updated';
       await page.getByRole('textbox').fill(archiveReason);
       await page.getByRole('button', { name: 'Continue' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
       await expect(page.getByText('Dataset archiving requested').first()).toBeVisible();
     });
   });
@@ -58,11 +58,11 @@ test.describe('Archive dataset', () => {
       await page.goto(`/en-GB/publish/${datasetId}/overview`);
 
       await page.getByRole('link', { name: 'Respond to archive request' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/task-decision`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/task-decision`);
 
       await page.getByLabel('Yes').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
       await expect(page.getByText('Dataset approved for archiving').first()).toBeVisible();
 
       const statusBadges = page.locator('.status-badges');
@@ -78,13 +78,13 @@ test.describe('Archive dataset', () => {
       await page.goto(`/en-GB/publish/${datasetId}/overview`);
 
       await page.getByRole('link', { name: 'Unarchive dataset' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/unarchive`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/unarchive`);
       await expect(page.getByText('Why should this dataset be unarchived?')).toBeVisible();
 
       const unarchiveReason = 'Mistakenly archived';
       await page.getByRole('textbox').fill(unarchiveReason);
       await page.getByRole('button', { name: 'Continue' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
       await expect(page.getByText('Dataset unarchiving requested').first()).toBeVisible();
     });
   });
@@ -97,11 +97,11 @@ test.describe('Archive dataset', () => {
       await expect(page.getByText('Mistakenly archived').first()).toBeVisible();
 
       await page.getByRole('link', { name: 'Respond to unarchive request' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/task-decision`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/task-decision`);
 
       await page.getByLabel('Yes').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
       await expect(page.getByText('Dataset approved for unarchiving').first()).toBeVisible();
 
       const statusBadges = page.locator('.status-badges');
