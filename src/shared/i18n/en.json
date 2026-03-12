@@ -2339,7 +2339,7 @@
     }
   },
   "table_chooser": {
-    "heading": "Create your own table",
+    "heading": "Choose how to view the data",
     "pivot": {
       "label": "Create your own table",
       "hint": "You'll be asked to select one variable for the columns of a table, and another for the rows"
