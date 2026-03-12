@@ -73,7 +73,7 @@ test.describe('Archive dataset', () => {
       await page.getByLabel('Automatically redirect visitors').click({ force: true });
 
       await page.getByRole('button', { name: 'Continue' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
       await expect(page.getByText('Dataset archiving requested').first()).toBeVisible();
     });
   });
@@ -88,14 +88,14 @@ test.describe('Archive dataset', () => {
       await expect(page.getByText(replacementTitle)).toBeVisible();
 
       await page.getByRole('link', { name: 'Respond to archive request' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/task-decision`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/task-decision`);
 
       // verify replacement info is shown on the decision page
       await expect(page.getByText(replacementTitle)).toBeVisible();
 
       await page.getByLabel('Yes').click({ force: true });
       await page.getByRole('button', { name: 'Continue' }).click();
-      await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
+      expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/overview`);
       await expect(page.getByText('Dataset approved for archiving').first()).toBeVisible();
 
       const statusBadges = page.locator('.status-badges');
