@@ -9,6 +9,30 @@ test.beforeAll(async ({ browser }) => {
   datasetUrl = await resolvePivotDatasetUrlByTitle(browser, CONSUMER_DATASET_TITLE);
 });
 
+async function navigateToPivotSummary(page: Page): Promise<void> {
+  const startUrl = datasetUrl.replace(/\/data(\?.*)?$/, '/start');
+  await page.goto(startUrl);
+
+  // Select the "pivot" view type and continue
+  await page.click('label[for="tableChoicePivot"]');
+  await page.click('#tableChooserBtn');
+
+  // Columns chooser — pick the first available column
+  await page.locator('.govuk-radios__input[name="columns"]').first().check();
+  await page.getByRole('button', { name: 'Continue' }).click();
+
+  // Rows chooser — pick the first available row (a different dimension)
+  await page.locator('.govuk-radios__input[name="rows"]').first().check();
+  await page.getByRole('button', { name: 'Continue' }).click();
+
+  // Now on the pivot filter setup page — open the first filter accordion
+  // and apply via the sidebar form (which includes stage=summary, so it redirects to the summary page)
+  await page.locator('.dimension-accordion__summary').first().click();
+  await page.getByRole('button', { name: 'Apply all selections' }).first().click();
+
+  await page.waitForURL(/\/pivot\/.+\/summary/);
+}
+
 async function completePivotFlow(page: Page) {
   await page.goto(datasetUrl);
   await page.click('label[for="tableChoicePivot"]');
@@ -104,6 +128,49 @@ test.describe('Pivot Flow', () => {
       await completePivotFlow(page);
       await page.locator('#show-data').click();
       await expect(page.locator('#data_table')).toBeVisible();
+    });
+  });
+
+  test.describe('Pivot Summary Page', () => {
+    test('Navigating through pivot setup reaches the summary page', async ({ page }) => {
+      await navigateToPivotSummary(page);
+      await expect(page).toHaveURL(/\/pivot\/.+\/summary/);
+    });
+
+    test('Pivot summary page shows data table', async ({ page }) => {
+      await navigateToPivotSummary(page);
+      await expect(page.locator('#data_table')).toBeVisible();
+    });
+
+    test('Applying filters on pivot summary page stays on summary page', async ({ page }) => {
+      await navigateToPivotSummary(page);
+
+      // Open the first filter accordion in the sidebar and apply
+      await page.locator('.dimension-accordion__summary').first().click();
+      await page.getByRole('button', { name: 'Apply all selections' }).first().click();
+
+      // URL should still match the pivot summary pattern — user has not left the page
+      await expect(page).toHaveURL(/\/pivot\/.+\/summary/);
+      await expect(page.locator('#data_table')).toBeVisible();
+    });
+
+    test('Applying filters on pivot summary page updates the filter ID in the URL', async ({ page }) => {
+      await navigateToPivotSummary(page);
+      const urlBefore = page.url();
+
+      await page.locator('.dimension-accordion__summary').first().click();
+
+      // Deselect the first checkbox to change the filter selection
+      const firstCheckbox = page.locator('.filter .govuk-checkboxes__input').first();
+      if (await firstCheckbox.isVisible()) {
+        await firstCheckbox.uncheck({ force: true });
+      }
+
+      await page.getByRole('button', { name: 'Apply all selections' }).first().click();
+
+      await expect(page).toHaveURL(/\/pivot\/.+\/summary/);
+      // The filter ID in the URL should have changed since the selection changed
+      expect(page.url()).not.toEqual(urlBefore);
     });
   });
 });

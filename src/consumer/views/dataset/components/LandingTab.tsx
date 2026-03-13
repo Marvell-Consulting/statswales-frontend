@@ -70,6 +70,9 @@ export default function LandingTab(props: DataTabProps) {
               />
               {props.columns ? <input type="hidden" name="columns" value={props.columns} /> : null}
               {props.rows ? <input type="hidden" name="rows" value={props.rows} /> : null}
+              {props.pivotStage === PivotStage.Summary ? (
+                <input type="hidden" name="stage" value={props.pivotStage} />
+              ) : null}
             </form>
           </div>
 
