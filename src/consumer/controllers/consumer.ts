@@ -601,6 +601,9 @@ export const viewPivotedDatasetSummary = async (req: Request, res: Response, nex
     return;
   }
 
+  const isUnpublished = !!revision.unpublished_at;
+  const isArchived = !!dataset.archived_at;
+
   try {
     const filterId = req.params.filterId;
 
@@ -638,8 +641,8 @@ export const viewPivotedDatasetSummary = async (req: Request, res: Response, nex
       publicationHistory,
       selectedFilterOptions: view.filters ? v2FiltersToV1(view.filters) : [],
       shorthandUrl: req.buildUrl(`/shorthand`, req.language),
-      isUnpublished: false,
-      isArchived: false,
+      isUnpublished,
+      isArchived,
       pivotStage: PivotStage.Summary,
       columns: view.pivot?.x,
       rows: view.pivot?.y
