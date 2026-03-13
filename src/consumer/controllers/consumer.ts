@@ -616,7 +616,7 @@ export const viewPivotedDatasetSummary = async (req: Request, res: Response, nex
       RevisionDTO[]
     ] = await Promise.all([
       getDatasetMetadata(dataset, revision),
-      req.conapi.getPivotedDatasetView(dataset.id, filterId, 1, 10),
+      req.conapi.getPivotedDatasetView(dataset.id, filterId, 1, 1),
       req.conapi.getPublishedDatasetFilters(dataset.id),
       req.conapi.getPublicationHistory(dataset.id)
     ]);
