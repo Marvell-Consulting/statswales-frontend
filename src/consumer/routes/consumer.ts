@@ -53,7 +53,7 @@ consumer.get('/:datasetId/data', fetchPublishedDataset, flashErrors, viewPublish
 
 consumer.get('/:datasetId/pivot', fetchPublishedDataset, flashErrors, createPublishedDatasetPivot);
 consumer.post(
-  '/:datasetId/pivot/{:filterId}/summary',
+  '/:datasetId/pivot{/:filterId}/summary',
   express.urlencoded({ extended: true, limit: '10mb', parameterLimit: 50000 }),
   fetchPublishedDataset,
   createPublishedDatasetPivot
