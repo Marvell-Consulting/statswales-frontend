@@ -526,6 +526,12 @@ export const createPublishedDatasetPivot = async (req: Request, res: Response, n
     };
     const filterId = await req.conapi.generatePivotFilterId(dataset.id, dataOptions);
     const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
+    if (req.body.stage === PivotStage.Summary) {
+      res.redirect(
+        req.buildUrl(`/${dataset.id}/pivot/${filterId}/summary`, req.language, { page_size: pageSize.toString() })
+      );
+      return;
+    }
     res.redirect(req.buildUrl(`/${dataset.id}/pivot/${filterId}`, req.language, { page_size: pageSize.toString() }));
     return;
   } else {
@@ -580,6 +586,63 @@ export const createPublishedDatasetPivot = async (req: Request, res: Response, n
       pivotStage,
       columns: req.query.columns,
       rows: req.query.rows
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const viewPivotedDatasetSummary = async (req: Request, res: Response, next: NextFunction) => {
+  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const revision = dataset.published_revision;
+
+  if (!revision) {
+    next(new NotFoundException('no published revision found'));
+    return;
+  }
+
+  try {
+    const filterId = req.params.filterId;
+
+    if (!filterId) {
+      next(new NotFoundException('filter id is required'));
+      return;
+    }
+
+    const [datasetMetadata, view, filters, publishedRevisions]: [
+      PreviewMetadata,
+      ViewV2DTO,
+      FilterTable[],
+      RevisionDTO[]
+    ] = await Promise.all([
+      getDatasetMetadata(dataset, revision),
+      req.conapi.getPivotedDatasetView(dataset.id, filterId, 1, 10),
+      req.conapi.getPublishedDatasetFilters(dataset.id),
+      req.conapi.getPublicationHistory(dataset.id)
+    ]);
+
+    const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
+    const publicationHistory = publishedRevisions.map((rev) => singleLangRevision(rev, req.language));
+
+    for (const rev of publicationHistory) {
+      if (rev?.metadata?.reason) {
+        rev.metadata.reason = await markdownToSafeHTML(rev.metadata.reason);
+      }
+    }
+
+    res.render('dataset/landing', {
+      ...view,
+      datasetMetadata,
+      filters,
+      topics,
+      publicationHistory,
+      selectedFilterOptions: view.filters ? v2FiltersToV1(view.filters) : [],
+      shorthandUrl: req.buildUrl(`/shorthand`, req.language),
+      isUnpublished: false,
+      isArchived: false,
+      pivotStage: PivotStage.Summary,
+      columns: view.pivot?.x,
+      rows: view.pivot?.y
     });
   } catch (err) {
     next(err);
