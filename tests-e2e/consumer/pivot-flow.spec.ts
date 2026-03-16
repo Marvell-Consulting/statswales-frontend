@@ -9,7 +9,7 @@ test.beforeAll(async ({ browser }) => {
   datasetUrl = await resolvePivotDatasetUrlByTitle(browser, CONSUMER_DATASET_TITLE);
 });
 
-async function completePivotFlow(page: Page) {
+async function pivotFlowToSummary(page: Page) {
   await page.goto(datasetUrl);
   await page.click('label[for="tableChoicePivot"]');
   await page.click('#tableChooserBtn');
@@ -17,6 +17,10 @@ async function completePivotFlow(page: Page) {
   await page.locator('#column-row-form').locator('button[type="submit"]').click();
   await page.locator('#row-column-chooser').locator('label').first().click();
   await page.locator('#column-row-form').locator('button[type="submit"]').click();
+}
+
+async function completePivotFlow(page: Page) {
+  await pivotFlowToSummary(page);
   await page.locator('#pivot-summary-form').locator('button[type="submit"]').click();
 }
 
@@ -104,6 +108,39 @@ test.describe('Pivot Flow', () => {
       await completePivotFlow(page);
       await page.locator('#show-data').click();
       await expect(page.locator('#data_table')).toBeVisible();
+    });
+  });
+
+  test.describe('Pivot Summary Page', () => {
+    test('Applying filters on pivot summary page stays on summary page', async ({ page }) => {
+      await pivotFlowToSummary(page);
+
+      // Open the first filter accordion in the sidebar and apply
+      await page.locator('.dimension-accordion__summary').first().click();
+      await page.getByRole('button', { name: 'Apply all selections' }).first().click();
+
+      // URL should still match the pivot summary pattern — user has not left the page
+      await expect(page).toHaveURL(/\/pivot\/.+\/summary/);
+      await expect(page.locator('#pivot-summary-form')).toBeVisible();
+    });
+
+    test('Applying filters on pivot summary page updates the filter ID in the URL', async ({ page }) => {
+      await pivotFlowToSummary(page);
+      const urlBefore = page.url();
+
+      await page.locator('.dimension-accordion__summary').first().click();
+
+      // Deselect the first checkbox to change the filter selection
+      const firstCheckbox = page.locator('.filter .govuk-checkboxes__input').first();
+      if (await firstCheckbox.isVisible()) {
+        await firstCheckbox.uncheck({ force: true });
+      }
+
+      await page.getByRole('button', { name: 'Apply all selections' }).first().click();
+
+      await expect(page).toHaveURL(/\/pivot\/.+\/summary/);
+      // The filter ID in the URL should have changed since the selection changed
+      expect(page.url()).not.toEqual(urlBefore);
     });
   });
 });
