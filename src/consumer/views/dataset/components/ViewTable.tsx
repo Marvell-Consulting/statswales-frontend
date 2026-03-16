@@ -83,9 +83,9 @@ export default function ViewTable(props: ViewTableProps) {
       <NoteCodesLegend {...props} />
 
       {props.data?.length === 0 ? (
-        <p className="govuk-body">
+        <div className="govuk-inset-text">
           <T>consumer_view.no_data</T>
-        </p>
+        </div>
       ) : (
         <Table isSticky columns={columns} rows={props.data} isSortable />
       )}

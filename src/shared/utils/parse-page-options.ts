@@ -3,7 +3,7 @@ import qs from 'qs';
 
 import { parseSortBy } from '../interfaces/sort-by';
 
-export const DEFAULT_PAGE_SIZE = 100;
+export const DEFAULT_PAGE_SIZE = 25;
 
 export const parsePageOptions = (req: Request) => {
   const pageNumber = Number.parseInt(req.query.page_number as string, 10) || 1;
