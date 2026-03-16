@@ -36,14 +36,12 @@ export const singleLangRevision = (revision?: RevisionDTO, lang?: string): Singl
   };
 };
 
-export const singleLangDataset = (dataset: DatasetDTO | ConsumerDatasetDTO, lang: string): SingleLanguageDataset => {
-  const pub = 'start_revision' in dataset ? (dataset as DatasetDTO) : undefined;
-
+export const singleLangDataset = (dataset: DatasetDTO, lang: string): SingleLanguageDataset => {
   return {
     ...dataset,
-    start_revision: singleLangRevision(pub?.start_revision, lang),
-    end_revision: singleLangRevision(pub?.end_revision, lang),
-    draft_revision: singleLangRevision(pub?.draft_revision, lang),
+    start_revision: singleLangRevision(dataset.start_revision, lang),
+    end_revision: singleLangRevision(dataset.end_revision, lang),
+    draft_revision: singleLangRevision(dataset.draft_revision, lang),
     published_revision: singleLangRevision(dataset.published_revision, lang),
     revisions: dataset.revisions?.map((rev) => singleLangRevision(rev, lang)).filter((rev) => rev !== undefined),
     dimensions: dataset.dimensions?.map((dimension) => {
@@ -52,12 +50,26 @@ export const singleLangDataset = (dataset: DatasetDTO | ConsumerDatasetDTO, lang
         metadata: dimension.metadata?.find((meta) => meta.language === lang)
       };
     }),
-    measure: pub?.measure
+    measure: dataset.measure
       ? {
-          ...pub.measure,
-          metadata: pub.measure.metadata?.find((meta) => meta.language === lang),
-          measure_table: pub.measure.measure_table?.filter((row) => row.language === lang.toLowerCase())
+          ...dataset.measure,
+          metadata: dataset.measure.metadata?.find((meta) => meta.language === lang),
+          measure_table: dataset.measure.measure_table?.filter((row) => row.language === lang.toLowerCase())
         }
       : undefined
+  };
+};
+
+export const singleLangPublishedDataset = (dataset: ConsumerDatasetDTO, lang: string): SingleLanguageDataset => {
+  return {
+    ...dataset,
+    published_revision: singleLangRevision(dataset.published_revision, lang),
+    revisions: dataset.revisions?.map((rev) => singleLangRevision(rev, lang)).filter((rev) => rev !== undefined),
+    dimensions: dataset.dimensions?.map((dimension) => {
+      return {
+        ...dimension,
+        metadata: dimension.metadata?.find((meta) => meta.language === lang)
+      };
+    })
   };
 };

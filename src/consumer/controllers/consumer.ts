@@ -9,7 +9,7 @@ import { stringify } from 'csv-stringify/sync';
 import { DatasetListItemDTO } from '../../shared/dtos/dataset-list-item';
 import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count';
 import { pageInfo } from '../../shared/utils/pagination';
-import { singleLangDataset, singleLangRevision } from '../../shared/utils/single-lang-dataset';
+import { singleLangPublishedDataset, singleLangRevision } from '../../shared/utils/single-lang-dataset';
 import { getDatasetMetadata, metadataToCSV } from '../../shared/utils/dataset-metadata';
 import { NotFoundException } from '../../shared/exceptions/not-found.exception';
 import { BadRequestException } from '../../shared/exceptions/bad-request.exception';
@@ -116,7 +116,7 @@ export const listPublishedDatasets = async (req: Request, res: Response, next: N
 };
 
 export const viewPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
-  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const dataset = singleLangPublishedDataset(res.locals.dataset, req.language);
   const revision = dataset.published_revision;
   const isUnpublished = revision?.unpublished_at || false;
   const isArchived = (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false;
@@ -166,7 +166,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
 };
 
 export const viewFilteredDataset = async (req: Request, res: Response, next: NextFunction) => {
-  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const dataset = singleLangPublishedDataset(res.locals.dataset, req.language);
   const revision = dataset.published_revision;
 
   if (!revision) {
@@ -250,7 +250,7 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
 
 export const downloadPublishedDataset = async (req: Request, res: Response, next: NextFunction) => {
   logger.info(`Downloading published dataset ${res.locals.datasetId}`);
-  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const dataset = singleLangPublishedDataset(res.locals.dataset, req.language);
   const revision = dataset.published_revision;
 
   try {
@@ -367,7 +367,7 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
 
 export const downloadPublishedMetadata = async (req: Request, res: Response, next: NextFunction) => {
   logger.debug('downloading published dataset metadata');
-  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const dataset = singleLangPublishedDataset(res.locals.dataset, req.language);
   const revision = dataset.published_revision;
 
   if (!dataset.first_published_at || !revision) {
@@ -412,7 +412,7 @@ export const search = async (req: Request, res: Response) => {
 };
 
 export const viewPublishedLanding = async (req: Request, res: Response, next: NextFunction) => {
-  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const dataset = singleLangPublishedDataset(res.locals.dataset, req.language);
   const revision = dataset.published_revision;
   const isUnpublished = revision?.unpublished_at || false;
   const isArchived = (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false;
@@ -471,7 +471,7 @@ export const viewPublishedLanding = async (req: Request, res: Response, next: Ne
 };
 
 export const createPublishedDatasetPivot = async (req: Request, res: Response, next: NextFunction) => {
-  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const dataset = singleLangPublishedDataset(res.locals.dataset, req.language);
   const revision = dataset.published_revision;
   const isUnpublished = revision?.unpublished_at || false;
   const isArchived = (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false;
@@ -657,7 +657,7 @@ export const viewPivotedDatasetSummary = async (req: Request, res: Response, nex
 };
 
 export const viewPivotedDataset = async (req: Request, res: Response, next: NextFunction) => {
-  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const dataset = singleLangPublishedDataset(res.locals.dataset, req.language);
   const revision = dataset.published_revision;
 
   if (!revision) {
