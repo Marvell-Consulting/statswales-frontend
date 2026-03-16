@@ -9,7 +9,7 @@ $govuk-input-border-colour: #d81f1f;
   .autocomplete__hint,
   .autocomplete__input {
     appearance: none;
-    border: 2px solid #0b0c0c;
+    border: 1px solid #666666;
     border-radius: 0; /* Safari 10 on iOS adds implicit border rounding. */
     box-sizing: border-box;
     margin-bottom: 0; /* BUG: Safari 10 on macOS seems to add an implicit margin. */

@@ -1137,7 +1137,9 @@
       "archive": {
         "requested": {
           "summary": "Dataset archiving requested for the following reason:",
-          "requested_by": "Archiving requested by: <strong>{{userName}}</strong>"
+          "requested_by": "Archiving requested by: <strong>{{userName}}</strong>",
+          "replacement_dataset": "Replacement dataset: <a class=\"govuk-link\" href=\"{{url}}\">{{title}}</a>",
+          "auto_redirect": "Visitors will be automatically redirected to the replacement dataset"
         }
       },
       "unarchive": {
@@ -1260,6 +1262,16 @@
               "error": {
                 "missing": "Enter why this dataset should be labelled as archived"
               }
+            },
+            "replacement_dataset": {
+              "label": "Replacement dataset (optional)",
+              "hint": "If this dataset is being replaced, select the follow-on dataset from the list below",
+              "error": {
+                "missing_for_redirect": "Select a replacement dataset to enable automatic redirect"
+              }
+            },
+            "auto_redirect": {
+              "label": "Automatically redirect visitors to the replacement dataset"
             }
           },
           "success": "Dataset archiving requested",
@@ -1803,6 +1815,8 @@
     "start_date": "Start Date",
     "end_date": "End Date",
     "archived_dataset": "This dataset has been archived and will no longer be updated.",
+    "archived_dataset_with_replacement": "This dataset has been archived.",
+    "archived_dataset_replacement_link": "View the replacement dataset",
     "unpublished_dataset": "This dataset has been temporarily unpublished while we make important fixes to it. When it is republished, any changes will be clearly communicated in the dataset history."
   },
   "routes": {

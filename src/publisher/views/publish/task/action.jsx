@@ -3,12 +3,16 @@ import ErrorHandler from '../../components/ErrorHandler';
 import Layout from '../../components/Layout';
 import { clsx } from 'clsx';
 import T from '../../../../shared/views/components/T';
+import ReplacementDatasetPicker from './ReplacementDatasetPicker';
 
 export default function TaskAction(props) {
   const title = props.t(`publish.task.action.${props.action}.form.reason.label`);
+  const isArchive = props.action === 'archive';
 
   return (
     <Layout {...props} formPage title={title}>
+      {isArchive && <script src="/assets/js/accessible-autocomplete.min.js"></script>}
+
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <form encType="multipart/form-data" method="post">
@@ -35,6 +39,14 @@ export default function TaskAction(props) {
                 />
               </fieldset>
             </div>
+
+            {isArchive && props.availableDatasets?.length > 0 && (
+              <ReplacementDatasetPicker
+                errors={props.errors}
+                values={props.values}
+                availableDatasets={props.availableDatasets}
+              />
+            )}
 
             <button type="submit" className="govuk-button" data-module="govuk-button">
               <T>buttons.continue</T>

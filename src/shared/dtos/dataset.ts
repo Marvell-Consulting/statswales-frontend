@@ -12,6 +12,7 @@ export interface DatasetDTO {
   first_published_at?: string;
   unpublished_at?: string;
   archived_at?: string;
+  replaced_by?: { dataset_id: string; dataset_title?: string; auto_redirect: boolean };
   fact_table?: FactTableColumnDto[];
   measure?: MeasureDTO;
   dimensions?: DimensionDTO[];

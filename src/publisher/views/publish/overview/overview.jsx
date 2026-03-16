@@ -37,6 +37,18 @@ export default function Overview(props) {
             }}
           />
 
+          {props.datasetStatus === 'archived' && props.dataset.replaced_by && (
+            <p
+              className="govuk-body govuk-!-margin-0"
+              dangerouslySetInnerHTML={{
+                __html: props.t('publish.overview.archive.requested.replacement_dataset', {
+                  title: props.dataset.replaced_by.dataset_title,
+                  url: props.buildUrl(`/publish/${props.dataset.replaced_by.dataset_id}/overview`, props.i18n.language)
+                })
+              }}
+            />
+          )}
+
           {props.datasetStatus === 'new' && (
             <p
               className="govuk-body govuk-!-margin-0"

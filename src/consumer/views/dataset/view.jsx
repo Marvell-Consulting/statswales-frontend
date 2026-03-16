@@ -26,7 +26,25 @@ export default function ConsumerView(props) {
       <MultiPathBreadcrumbs {...props} />
       <h1 className="govuk-heading-xl">{title}</h1>
 
-      {props.isArchived && <NotificationBanner {...props} notification="consumer_view.archived_dataset" />}
+      {props.isArchived && (
+        <NotificationBanner
+          notification={
+            props.replacedBy ? (
+              <>
+                {props.t('consumer_view.archived_dataset_with_replacement')}{' '}
+                <a
+                  className="govuk-notification-banner__link govuk-!-font-size-27"
+                  href={props.buildUrl(`/${props.replacedBy.dataset_id}`, props.i18n.language)}
+                >
+                  {props.t('consumer_view.archived_dataset_replacement_link')}
+                </a>
+              </>
+            ) : (
+              props.t('consumer_view.archived_dataset')
+            )
+          }
+        />
+      )}
 
       <Tabs
         title={props.t('toc')}

@@ -160,6 +160,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
     shorthandUrl: req.buildUrl(`/shorthand`, req.language),
     isUnpublished,
     isArchived,
+    replacedBy: dataset.replaced_by,
     sortBy
   });
 };
@@ -242,6 +243,7 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
     shorthandUrl: req.buildUrl(`/shorthand`, req.language),
     isUnpublished: revision?.unpublished_at || false,
     isArchived: (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false,
+    replacedBy: dataset.replaced_by,
     sortBy
   });
 };
@@ -459,6 +461,7 @@ export const viewPublishedLanding = async (req: Request, res: Response, next: Ne
       shorthandUrl: req.buildUrl(`/shorthand`, req.language),
       isUnpublished,
       isArchived,
+      replacedBy: dataset.replaced_by,
       isLanding: true,
       pivotStage: PivotStage.Landing
     });
@@ -583,6 +586,7 @@ export const createPublishedDatasetPivot = async (req: Request, res: Response, n
       shorthandUrl: req.buildUrl(`/shorthand`, req.language),
       isUnpublished,
       isArchived,
+      replacedBy: dataset.replaced_by,
       pivotStage,
       columns: req.query.columns,
       rows: req.query.rows
@@ -704,6 +708,7 @@ export const viewPivotedDataset = async (req: Request, res: Response, next: Next
       shorthandUrl: req.buildUrl(`/shorthand`, req.language),
       isUnpublished: revision?.unpublished_at || false,
       isArchived: (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false,
+      replacedBy: dataset.replaced_by,
       filterId,
       columns: view.pivot?.x,
       rows: view.pivot?.y,

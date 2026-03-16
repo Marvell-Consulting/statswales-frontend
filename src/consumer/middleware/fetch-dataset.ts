@@ -14,6 +14,11 @@ export const fetchPublishedDataset = async (req: Request, res: Response, next: N
     const dataset = await req.conapi.getPublishedDataset(req.params.datasetId);
     res.locals.datasetId = dataset.id;
     res.locals.dataset = dataset;
+
+    if (dataset.replaced_by?.auto_redirect) {
+      res.redirect(301, req.buildUrl(`/${dataset.replaced_by.dataset_id}`, req.language));
+      return;
+    }
   } catch (_err) {
     next(new NotFoundException('errors.dataset_missing'));
     return;

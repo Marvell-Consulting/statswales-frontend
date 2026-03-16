@@ -93,6 +93,7 @@ import {
 import { PublishingStatus } from '../../shared/enums/publishing-status';
 import { NotAllowedException } from '../../shared/exceptions/not-allowed.exception';
 import { DatasetDTO } from '../../shared/dtos/dataset';
+import { DatasetListItemDTO } from '../../shared/dtos/dataset-list-item';
 import { RevisionDTO } from '../../shared/dtos/revision';
 import { UserDTO } from '../../shared/dtos/user/user';
 import { TaskDTO } from '../../shared/dtos/task';
@@ -2983,12 +2984,18 @@ export const datasetAction = async (req: Request, res: Response, next: NextFunct
   const canEdit = isEditorForDataset(user, dataset);
   const canApprove = isApproverForDataset(user, dataset);
 
-  let values = { reason: undefined };
+  let values: Record<string, any> = { reason: undefined };
   let errors: ViewError[] = [];
+  let availableDatasets: DatasetListItemDTO[] = [];
 
   try {
     if (!canEdit && !canApprove) {
       throw new NotAllowedException(`You do not have the required permissions to ${action} this dataset`);
+    }
+
+    if (action === TaskAction.Archive) {
+      const result = await req.pubapi.getPublishedDatasetList(1, 9999);
+      availableDatasets = result.data.filter((d) => d.id !== dataset.id && !d.archived_at && !d.unpublished_at);
     }
 
     if (req.method === 'POST') {
@@ -3002,8 +3009,22 @@ export const datasetAction = async (req: Request, res: Response, next: NextFunct
         };
       });
 
+      if (action === TaskAction.Archive && values.auto_redirect && !values.replacement_dataset_id) {
+        errors.push({
+          field: 'replacement_dataset_id',
+          message: { key: 'publish.task.action.archive.form.replacement_dataset.error.missing_for_redirect' }
+        });
+      }
+
       if (errors.length === 0) {
-        await req.pubapi.requestAction(dataset.id, action, values.reason);
+        const replacementId = values.replacement_dataset_id || undefined;
+        await req.pubapi.requestAction(
+          dataset.id,
+          action,
+          values.reason,
+          replacementId,
+          values.auto_redirect === 'true' || values.auto_redirect === true
+        );
         req.session.flash = [`publish.task.action.${action}.success`];
         req.session.save();
         res.redirect(req.buildUrl(`/publish/${dataset.id}/overview`, req.language));
@@ -3019,7 +3040,7 @@ export const datasetAction = async (req: Request, res: Response, next: NextFunct
     }
   }
 
-  res.render('publish/task/action', { dataset, action, values, errors });
+  res.render('publish/task/action', { dataset, action, values, errors, availableDatasets });
 };
 
 export const longBuildHandling = async (req: Request, res: Response) => {
