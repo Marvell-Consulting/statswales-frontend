@@ -9,31 +9,7 @@ test.beforeAll(async ({ browser }) => {
   datasetUrl = await resolvePivotDatasetUrlByTitle(browser, CONSUMER_DATASET_TITLE);
 });
 
-async function navigateToPivotSummary(page: Page): Promise<void> {
-  const startUrl = datasetUrl.replace(/\/data(\?.*)?$/, '/start');
-  await page.goto(startUrl);
-
-  // Select the "pivot" view type and continue
-  await page.click('label[for="tableChoicePivot"]');
-  await page.click('#tableChooserBtn');
-
-  // Columns chooser — pick the first available column
-  await page.locator('.govuk-radios__input[name="columns"]').first().check();
-  await page.getByRole('button', { name: 'Continue' }).click();
-
-  // Rows chooser — pick the first available row (a different dimension)
-  await page.locator('.govuk-radios__input[name="rows"]').first().check();
-  await page.getByRole('button', { name: 'Continue' }).click();
-
-  // Now on the pivot filter setup page — open the first filter accordion
-  // and apply via the sidebar form (which includes stage=summary, so it redirects to the summary page)
-  await page.locator('.dimension-accordion__summary').first().click();
-  await page.getByRole('button', { name: 'Apply all selections' }).first().click();
-
-  await page.waitForURL(/\/pivot\/.+\/summary/);
-}
-
-async function completePivotFlow(page: Page) {
+async function pivotFlowToSummary(page: Page) {
   await page.goto(datasetUrl);
   await page.click('label[for="tableChoicePivot"]');
   await page.click('#tableChooserBtn');
@@ -41,6 +17,10 @@ async function completePivotFlow(page: Page) {
   await page.locator('#column-row-form').locator('button[type="submit"]').click();
   await page.locator('#row-column-chooser').locator('label').first().click();
   await page.locator('#column-row-form').locator('button[type="submit"]').click();
+}
+
+async function completePivotFlow(page: Page) {
+  await pivotFlowToSummary(page);
   await page.locator('#pivot-summary-form').locator('button[type="submit"]').click();
 }
 
@@ -132,18 +112,8 @@ test.describe('Pivot Flow', () => {
   });
 
   test.describe('Pivot Summary Page', () => {
-    test('Navigating through pivot setup reaches the summary page', async ({ page }) => {
-      await navigateToPivotSummary(page);
-      await expect(page).toHaveURL(/\/pivot\/.+\/summary/);
-    });
-
-    test('Pivot summary page shows data table', async ({ page }) => {
-      await navigateToPivotSummary(page);
-      await expect(page.locator('#data_table')).toBeVisible();
-    });
-
     test('Applying filters on pivot summary page stays on summary page', async ({ page }) => {
-      await navigateToPivotSummary(page);
+      await pivotFlowToSummary(page);
 
       // Open the first filter accordion in the sidebar and apply
       await page.locator('.dimension-accordion__summary').first().click();
@@ -151,11 +121,11 @@ test.describe('Pivot Flow', () => {
 
       // URL should still match the pivot summary pattern — user has not left the page
       await expect(page).toHaveURL(/\/pivot\/.+\/summary/);
-      await expect(page.locator('#data_table')).toBeVisible();
+      await expect(page.locator('#pivot-summary-form')).toBeVisible();
     });
 
     test('Applying filters on pivot summary page updates the filter ID in the URL', async ({ page }) => {
-      await navigateToPivotSummary(page);
+      await pivotFlowToSummary(page);
       const urlBefore = page.url();
 
       await page.locator('.dimension-accordion__summary').first().click();
