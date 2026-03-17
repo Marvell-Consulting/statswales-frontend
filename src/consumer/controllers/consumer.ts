@@ -597,7 +597,7 @@ export const createPublishedDatasetPivot = async (req: Request, res: Response, n
 };
 
 export const viewPivotedDatasetSummary = async (req: Request, res: Response, next: NextFunction) => {
-  const dataset = singleLangDataset(res.locals.dataset, req.language);
+  const dataset = singleLangPublishedDataset(res.locals.dataset, req.language);
   const revision = dataset.published_revision;
 
   if (!revision) {
@@ -628,7 +628,8 @@ export const viewPivotedDatasetSummary = async (req: Request, res: Response, nex
       req.conapi.getPublicationHistory(dataset.id)
     ]);
 
-    const topics = dataset.published_revision?.topics?.map((topic) => singleLangTopic(topic, req.language)) || [];
+    const topics =
+      dataset.published_revision?.topics?.map((topic: TopicDTO) => singleLangTopic(topic, req.language)) || [];
     const publicationHistory = publishedRevisions.map((rev) => singleLangRevision(rev, req.language));
 
     for (const rev of publicationHistory) {
