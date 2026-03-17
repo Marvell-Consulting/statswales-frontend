@@ -1697,7 +1697,7 @@
     },
     "apply_all_selections": "Apply all selections",
     "select_all_variables": "View the full dataset",
-    "pivot_hidden_notice": "Hidden variables in your table can only be represented by a single value.",
+    "pivot_hidden_notice": "Your current table can only show the data for 2 sets of variables at a time. All other variables have to be represented by a single value. You can change which variables are shown in your table.",
     "no_values_selected": "Select at least 1 value for this variable<span class=\"govuk-visually-hidden\"> {{columnName}}</span>"
   },
   "consumer_view": {
