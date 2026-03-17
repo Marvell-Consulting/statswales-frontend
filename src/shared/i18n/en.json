@@ -1816,7 +1816,7 @@
     "end_date": "End Date",
     "archived_dataset": "This dataset has been archived and will no longer be updated.",
     "archived_dataset_with_replacement": "This dataset has been archived.",
-    "archived_dataset_replacement_link": "View the replacement dataset",
+    "archived_dataset_replacement_link": "View the replacement dataset.",
     "unpublished_dataset": "This dataset has been temporarily unpublished while we make important fixes to it. When it is republished, any changes will be clearly communicated in the dataset history."
   },
   "routes": {
