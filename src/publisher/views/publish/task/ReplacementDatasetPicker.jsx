@@ -21,6 +21,9 @@ export default function ReplacementDatasetPicker(props) {
           name="replacement_dataset_id"
           label={<T>publish.task.action.archive.form.replacement_dataset.label</T>}
           hint={<T>publish.task.action.archive.form.replacement_dataset.hint</T>}
+          errorId={
+            props.errors?.find((e) => e.field === 'replacement_dataset_id') ? 'replacement-dataset-error' : undefined
+          }
           value={props.values?.replacement_dataset_id}
           options={[
             { value: '', label: '' },

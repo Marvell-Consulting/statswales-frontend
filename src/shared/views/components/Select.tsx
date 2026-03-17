@@ -17,6 +17,7 @@ export type SelectProps = {
   hint?: ReactNode;
   inline?: boolean;
   value?: string;
+  errorId?: string;
 };
 
 export default function Select({
@@ -28,7 +29,8 @@ export default function Select({
   options,
   inline,
   value,
-  labelClassName
+  labelClassName,
+  errorId
 }: SelectProps) {
   return (
     <div className={clsx('govuk-form-group', { 'govuk-form-group--inline': inline }, className)}>
@@ -51,10 +53,10 @@ export default function Select({
 
       {inline ? ' ' : null}
       <select
-        className="govuk-select"
+        className={clsx('govuk-select', { 'govuk-select--error': errorId })}
         id={name}
         name={name}
-        aria-describedby={hint ? `${name}-hint` : undefined}
+        aria-describedby={[hint ? `${name}-hint` : null, errorId].filter(Boolean).join(' ') || undefined}
         autoComplete="on"
       >
         {options.map((opt, index) => (

@@ -42,7 +42,7 @@ export default function Overview(props) {
               className="govuk-body govuk-!-margin-0"
               dangerouslySetInnerHTML={{
                 __html: props.t('publish.overview.archive.requested.replacement_dataset', {
-                  title: props.dataset.replaced_by.dataset_title,
+                  title: props.dataset.replaced_by.dataset_title || props.dataset.replaced_by.dataset_id,
                   url: props.buildUrl(`/publish/${props.dataset.replaced_by.dataset_id}/overview`, props.i18n.language)
                 })
               }}
