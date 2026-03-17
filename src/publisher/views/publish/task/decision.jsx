@@ -38,57 +38,80 @@ export default function TaskDecision(props) {
               </p>
             )}
 
-            <p className="govuk-body govuk-!-margin-top-0">
+            <p className="govuk-body govuk-!-margin-0">
               <T userName={props.task.created_by_name} raw>
                 {`publish.overview.${props.task.action}.requested.requested_by`}
               </T>
             </p>
 
-            <ErrorHandler />
+            {props.task?.metadata?.replacementDatasetTitle && (
+              <p className="govuk-body govuk-!-margin-0">
+                <T
+                  title={props.task.metadata.replacementDatasetTitle}
+                  url={props.buildUrl(
+                    `/publish/${props.task.metadata.replacementDatasetId}/overview`,
+                    props.i18n.language
+                  )}
+                  raw
+                >
+                  publish.overview.archive.requested.replacement_dataset
+                </T>
+              </p>
+            )}
 
-            <RadioGroup
-              name="decision"
-              labelledBy="task-decision"
-              errorMessage={<T>publish.task.decision.{props.taskType}.form.decision.error.missing</T>}
-              options={[
-                {
-                  value: 'approve',
-                  label: <T>publish.task.decision.{props.taskType}.form.decision.options.yes.label</T>
-                },
-                {
-                  value: 'reject',
-                  label: <T>publish.task.decision.{props.taskType}.form.decision.options.no.label</T>,
-                  children: (
-                    <div
-                      className={clsx('govuk-form-group', {
-                        'govuk-form-group--error': props.errors?.find((e) => e.field === 'reason')
-                      })}
-                    >
-                      <fieldset className="govuk-fieldset" role="group" aria-labelledby="decisionNo">
-                        <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
-                          <T>publish.task.decision.{props.taskType}.form.reason.label</T>
-                        </legend>
-                        {reasonError && (
-                          <p id="reason-error" className="govuk-error-message">
-                            <T>publish.task.decision.{props.taskType}.form.reason.error.missing</T>
-                          </p>
-                        )}
+            {props.task?.metadata?.autoRedirect && (
+              <p className="govuk-body govuk-!-margin-top-0">
+                <T>publish.overview.archive.requested.auto_redirect</T>
+              </p>
+            )}
 
-                        <textarea
-                          className="govuk-textarea"
-                          id="roundingDescription"
-                          name="reason"
-                          rows="4"
-                          aria-describedby="roundingDescription-hint"
-                          defaultValue={props.values?.reason}
-                        />
-                      </fieldset>
-                    </div>
-                  )
-                }
-              ]}
-              value={props.values?.decision}
-            />
+            <div className="govuk-!-margin-top-4">
+              <ErrorHandler />
+
+              <RadioGroup
+                name="decision"
+                labelledBy="task-decision"
+                errorMessage={<T>publish.task.decision.{props.taskType}.form.decision.error.missing</T>}
+                options={[
+                  {
+                    value: 'approve',
+                    label: <T>publish.task.decision.{props.taskType}.form.decision.options.yes.label</T>
+                  },
+                  {
+                    value: 'reject',
+                    label: <T>publish.task.decision.{props.taskType}.form.decision.options.no.label</T>,
+                    children: (
+                      <div
+                        className={clsx('govuk-form-group', {
+                          'govuk-form-group--error': props.errors?.find((e) => e.field === 'reason')
+                        })}
+                      >
+                        <fieldset className="govuk-fieldset" role="group" aria-labelledby="decisionNo">
+                          <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">
+                            <T>publish.task.decision.{props.taskType}.form.reason.label</T>
+                          </legend>
+                          {reasonError && (
+                            <p id="reason-error" className="govuk-error-message">
+                              <T>publish.task.decision.{props.taskType}.form.reason.error.missing</T>
+                            </p>
+                          )}
+
+                          <textarea
+                            className="govuk-textarea"
+                            id="roundingDescription"
+                            name="reason"
+                            rows="4"
+                            aria-describedby="roundingDescription-hint"
+                            defaultValue={props.values?.reason}
+                          />
+                        </fieldset>
+                      </div>
+                    )
+                  }
+                ]}
+                value={props.values?.decision}
+              />
+            </div>
 
             <button type="submit" className="govuk-button" data-module="govuk-button">
               <T>buttons.continue</T>

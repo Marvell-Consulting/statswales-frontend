@@ -1089,7 +1089,9 @@
       "archive": {
         "requested": {
           "summary": "Gwnaethpwyd cais i archifo’r set ddata am y rheswm canlynol:",
-          "requested_by": "Gwnaethpwyd y cais archifo gan:  <strong>{{userName}}</strong>"
+          "requested_by": "Gwnaethpwyd y cais archifo gan:  <strong>{{userName}}</strong>",
+          "replacement_dataset": "Set ddata newydd yn ei lle: <a class=\"govuk-link\" href=\"{{url}}\">{{title}}</a>",
+          "auto_redirect": "Bydd ymwelwyr yn cael eu hailgyfeirio’n awtomatig i’r set ddata newydd yn ei lle"
         }
       },
       "unarchive": {
@@ -1212,6 +1214,16 @@
               "error": {
                 "missing": "Nodwch pam y dylid rhoi label wedi’i harchifo i’r set ddata hon"
               }
+            },
+            "replacement_dataset": {
+              "label": "Set ddata newydd yn ei lle (dewisol)",
+              "hint": "Os yw’r set ddata hon yn cael ei disodli, dewiswch y set ddata dilynol o’r rhestr isod",
+              "error": {
+                "missing_for_redirect": "Dewiswch set ddata newydd yn ei lle i alluogi ailgyfeirio awtomatig"
+              }
+            },
+            "auto_redirect": {
+              "label": "Ailgyfeirio ymwelwyr yn awtomatig i’r set ddata newydd yn ei lle"
             }
           },
           "success": "Gwnaethpwyd cais i archifo’r set ddata",
@@ -1668,6 +1680,8 @@
     "start_date": "Dyddiad Cychwyn",
     "end_date": "Dyddiad Gorffen",
     "archived_dataset": "Mae’r set ddata hon wedi cael ei harchifo ac ni fydd yn cael ei diweddaru mwyach.",
+    "archived_dataset_with_replacement": "Mae’r set ddata hon wedi cael ei harchifo.",
+    "archived_dataset_replacement_link": "Gweld y set ddata newydd yn ei lle",
     "unpublished_dataset": "Mae'r set ddata hon wedi cael ei datgyhoeddi dros dro wrth i ni gymryd camau pwysig i'w thrwsio. Pan gaiff ei hailgyhoeddi, nodir unrhyw newidiadau yn glir yn hanes y set ddata.",
     "downloads": {
       "type": {

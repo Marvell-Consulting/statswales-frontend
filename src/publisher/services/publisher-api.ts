@@ -266,6 +266,15 @@ export class PublisherApi {
     );
   }
 
+  public async getPublishedDatasetList(page = 1, pageSize = 100): Promise<ResultsetWithCount<DatasetListItemDTO>> {
+    logger.debug(`Fetching published dataset list...`);
+    const query = { page_number: page.toString(), page_size: pageSize.toString() };
+
+    return this.fetch({ url: `v2`, query }).then(
+      (response) => response.json() as unknown as ResultsetWithCount<DatasetListItemDTO>
+    );
+  }
+
   public async getDatasetFileList(datasetId: string): Promise<FileImportDto[]> {
     logger.debug(`Fetching file list for dataset: ${datasetId}`);
 
@@ -685,11 +694,20 @@ export class PublisherApi {
     );
   }
 
-  public async requestAction(datasetId: string, action: TaskAction, reason?: string): Promise<boolean> {
+  public async requestAction(
+    datasetId: string,
+    action: TaskAction,
+    reason?: string,
+    replacementDatasetId?: string,
+    autoRedirect?: boolean
+  ): Promise<boolean> {
     logger.debug(`Submitting ${action} request for dataset: ${datasetId}`);
-    return this.fetch({ url: `dataset/${datasetId}/${action}`, method: HttpMethod.Post, json: { reason } }).then(
-      () => true
-    );
+    const json: Record<string, unknown> = { reason };
+    if (replacementDatasetId) {
+      json.replacement_dataset_id = replacementDatasetId;
+      json.auto_redirect = autoRedirect ?? false;
+    }
+    return this.fetch({ url: `dataset/${datasetId}/${action}`, method: HttpMethod.Post, json }).then(() => true);
   }
 
   public async createRevision(datasetId: string): Promise<RevisionDTO> {

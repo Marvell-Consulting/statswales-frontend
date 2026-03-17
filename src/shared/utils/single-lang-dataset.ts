@@ -1,4 +1,5 @@
 import { t } from 'i18next';
+import { ConsumerDatasetDTO } from '../dtos/consumer-dataset';
 import { DatasetDTO } from '../dtos/dataset';
 import { RevisionDTO } from '../dtos/revision';
 import { RevisionMetadataDTO } from '../dtos/revision-metadata';
@@ -56,5 +57,19 @@ export const singleLangDataset = (dataset: DatasetDTO, lang: string): SingleLang
           measure_table: dataset.measure.measure_table?.filter((row) => row.language === lang.toLowerCase())
         }
       : undefined
+  };
+};
+
+export const singleLangPublishedDataset = (dataset: ConsumerDatasetDTO, lang: string): SingleLanguageDataset => {
+  return {
+    ...dataset,
+    published_revision: singleLangRevision(dataset.published_revision, lang),
+    revisions: dataset.revisions?.map((rev) => singleLangRevision(rev, lang)).filter((rev) => rev !== undefined),
+    dimensions: dataset.dimensions?.map((dimension) => {
+      return {
+        ...dimension,
+        metadata: dimension.metadata?.find((meta) => meta.language === lang)
+      };
+    })
   };
 };

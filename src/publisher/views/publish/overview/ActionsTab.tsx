@@ -108,6 +108,22 @@ export function ActionsTab({
               <T>publish.overview.archive.requested.summary</T>
             </p>
             <p className="govuk-body">{openArchiveTask?.comment}</p>
+            {openArchiveTask?.metadata?.replacementDatasetTitle && (
+              <p
+                className="govuk-body"
+                dangerouslySetInnerHTML={{
+                  __html: i18n.t('publish.overview.archive.requested.replacement_dataset', {
+                    title: openArchiveTask.metadata.replacementDatasetTitle,
+                    url: buildUrl(`/publish/${openArchiveTask.metadata.replacementDatasetId}/overview`, i18n.language)
+                  })
+                }}
+              />
+            )}
+            {openArchiveTask?.metadata?.autoRedirect && (
+              <p className="govuk-body">
+                <T>publish.overview.archive.requested.auto_redirect</T>
+              </p>
+            )}
             <a
               className="govuk-button govuk-!-margin-top-4"
               href={buildUrl(`/publish/${datasetId}/task-decision/${openArchiveTask?.id}`, i18n.language)}

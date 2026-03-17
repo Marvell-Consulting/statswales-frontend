@@ -2,7 +2,7 @@ import { ReadableStream } from 'node:stream/web';
 import { performance } from 'node:perf_hooks';
 
 import { logger as parentLogger } from '../../shared/utils/logger';
-import { DatasetDTO } from '../../shared/dtos/dataset';
+import { ConsumerDatasetDTO } from '../../shared/dtos/consumer-dataset';
 import { config } from '../../shared/config';
 import { HttpMethod } from '../../shared/enums/http-method';
 import { ApiException } from '../../shared/exceptions/api.exception';
@@ -124,9 +124,9 @@ export class ConsumerApi {
     );
   }
 
-  public async getPublishedDataset(datasetId: string): Promise<DatasetDTO> {
+  public async getPublishedDataset(datasetId: string): Promise<ConsumerDatasetDTO> {
     logger.debug(`Fetching published dataset: ${datasetId}`);
-    return this.fetch({ url: `v2/${datasetId}` }).then((response) => response.json() as unknown as DatasetDTO);
+    return this.fetch({ url: `v2/${datasetId}` }).then((response) => response.json() as unknown as ConsumerDatasetDTO);
   }
 
   public async getPublishedDatasetView(

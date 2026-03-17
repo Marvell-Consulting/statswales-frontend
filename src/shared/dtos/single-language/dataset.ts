@@ -6,11 +6,12 @@ import { TaskDTO } from '../task';
 
 export interface SingleLanguageDataset {
   id: string;
-  created_at: string;
-  created_by: string;
+  created_at?: string;
+  created_by?: string;
   first_published_at?: string;
   unpublished_at?: string;
   archived_at?: string;
+  replaced_by?: { dataset_id: string; dataset_title?: string; auto_redirect: boolean };
   measure?: SingleLanguageMeasure;
   dimensions?: SingleLanguageDimension[];
   revisions?: SingleLanguageRevision[];
