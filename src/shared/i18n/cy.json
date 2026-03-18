@@ -2141,7 +2141,7 @@
     },
     "all_values": "Pob un o'r {{count}} gwerth",
     "visibility": {
-      "shown": "Wedi'i ddangos",
+      "shown": "Wedi'i ddangos yn y tabl",
       "hidden": "Wedi'i guddio",
       "columns": "Colofnau",
       "rows": "Rhesi"

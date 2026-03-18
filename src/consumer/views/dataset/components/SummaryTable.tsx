@@ -10,6 +10,7 @@ interface SummaryDataProps {
   pivotSummary?: boolean;
   columns?: string;
   rows?: string;
+  landing?: boolean;
 }
 
 export function SummaryTable(props: SummaryDataProps): ReactNode {
@@ -47,11 +48,12 @@ export function SummaryTable(props: SummaryDataProps): ReactNode {
                   selectedFilterOptions: props.selectedFilterOptions,
                   idx: idx,
                   columns: props.columns,
-                  rows: props.rows
+                  rows: props.rows,
+                  landing: props.landing
                 }}
               />
             ))}
-          </tbody>
+          </tbody
         </table>
       </div>
     </details>

@@ -88,7 +88,7 @@ export default function LandingTab(props: DataTabProps) {
             </div>
           ) : (
             <div className="govuk-grid-column-three-quarters">
-              {props.pivotStage === PivotStage.Summary ? null : <SummaryTable {...props} />}
+              {props.pivotStage === PivotStage.Summary ? null : <SummaryTable {...props} landing={true} />}
               {pivotActionChooser}
             </div>
           )}
