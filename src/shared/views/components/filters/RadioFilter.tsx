@@ -31,6 +31,7 @@ const filterOptionCount = (options: FilterValues[]): number => {
 export const RadioFilter = ({ filter, values }: RadioFilterProps) => {
   const { t } = useLocals();
 
+  const isMeasure = filter.columnName === t('filters.measure');
   // `values[0]` is the active selection echoed back by the API (decoded, e.g. "2018/19").
   // Option values produced by normalizeFilters are encoded (e.g. "2018%2F19"), so we
   // must encode here before FilterRadioGroup compares with selectedValue === option.value.
@@ -44,6 +45,11 @@ export const RadioFilter = ({ filter, values }: RadioFilterProps) => {
         <summary className="dimension-accordion__summary">
           <span className="dimension-accordion__title">{filter.columnName}</span>
         </summary>
+        {isMeasure && (
+          <p className="govuk-body">
+            <T>filters.description_info</T>
+          </p>
+        )}
         <div className="dimension-accordion__count">
           <T filtered={selectedValue ? 1 : 0} total={total} raw>
             filters.summary

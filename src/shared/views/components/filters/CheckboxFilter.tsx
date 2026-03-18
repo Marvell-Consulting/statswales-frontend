@@ -47,7 +47,7 @@ export const CheckboxFilter = ({ filter, values, disabled = false }: CheckboxFil
   const filtered = values?.length;
   const total = filterOptionCount(filter.values);
   const filterId = `filter-${filter.factTableColumn.replaceAll(/\s+/g, '_')}`;
-
+  const isMeasure = filter.columnName === t('filters.measure');
   // `values` is the active selection echoed back by the API (decoded, e.g. "2018/19").
   // Option values produced by normalizeFilters are encoded (e.g. "2018%2F19"), so we
   // must encode here before CheckboxGroup compares them with values.includes().
@@ -70,6 +70,11 @@ export const CheckboxFilter = ({ filter, values, disabled = false }: CheckboxFil
             <T columnName={filter.columnName} raw>
               filters.no_values_selected
             </T>
+          </p>
+        )}
+        {isMeasure && (
+          <p className="govuk-body">
+            <T>filters.description_info</T>
           </p>
         )}
         <div className="dimension-accordion__count">
