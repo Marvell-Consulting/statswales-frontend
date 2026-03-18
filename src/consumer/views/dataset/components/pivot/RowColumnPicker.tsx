@@ -1,5 +1,6 @@
 import React from 'react';
 import { FilterTable } from '../../../../../shared/dtos/filter-table';
+import T from '../../../../../shared/views/components/T';
 
 interface FilterProps {
   filters: FilterTable[];
@@ -30,6 +31,11 @@ export default function RowColumnPicker(props: FilterProps) {
         >
           {f.columnName}
         </label>
+        <div className="govuk-hint govuk-radios__hint">
+          <a href={`#filter-${f.factTableColumn.replaceAll(/\s+/g, '_')}`}>
+            <T>columns_chooser.see_values</T>
+          </a>
+        </div>
       </div>
     );
   });

@@ -1660,7 +1660,9 @@
     "apply_all_selections": "Cymhwyso’r holl ddewisiadau",
     "select_all_variables": "Gweld y set ddata lawn",
     "pivot_hidden_notice": "Dim ond gan un gwerth y gall newidynnau cudd yn eich tabl gael eu cynrychioli.",
-    "no_values_selected": "Dewiswch o leiaf 1 gwerth ar gyfer y newidyn hwn<span class=\"govuk-visually-hidden\"> {{columnName}}</span>"
+    "no_values_selected": "Dewiswch o leiaf 1 gwerth ar gyfer y newidyn hwn<span class=\"govuk-visually-hidden\"> {{columnName}}</span>",
+    "measure": "Disgrifiad o’r data",
+    "description_info": "Mae hyn yn nodi beth mae gwerth data yn ei gynrychioli"
   },
   "consumer_view": {
     "tabs": {
@@ -2139,7 +2141,7 @@
     },
     "all_values": "Pob un o'r {{count}} gwerth",
     "visibility": {
-      "shown": "Wedi'i ddangos",
+      "shown": "Wedi'i ddangos yn y tabl",
       "hidden": "Wedi'i guddio",
       "columns": "Colofnau",
       "rows": "Rhesi"
@@ -2164,7 +2166,8 @@
   },
   "columns_chooser": {
     "heading": "Dewiswch newidyn ar gyfer colofnau'r tabl",
-    "intro": "Bydd gwerthoedd y newidyn hwn yn mynd ar draws brig eich tabl. Gallwch ddewis newidyn yn y ddewislen 'Hidlyddion newidynnau' i weld pa werthoedd sydd ynddo."
+    "intro": "Bydd gwerthoedd y newidyn hwn yn mynd ar draws brig eich tabl. Gallwch ddewis newidyn yn y ddewislen 'Hidlyddion newidynnau' i weld pa werthoedd sydd ynddo.",
+    "see_values": "Gweld gwerthoedd"
   },
   "rows_chooser": {
     "heading": "Dewiswch newidyn ar gyfer rhesi'r tabl",

@@ -1710,7 +1710,9 @@
     "apply_all_selections": "Apply all selections",
     "select_all_variables": "View the full dataset",
     "pivot_hidden_notice": "Your current table can only show the data for 2 sets of variables at a time. All other variables have to be represented by a single value. You can change which variables are shown in your table.",
-    "no_values_selected": "Select at least 1 value for this variable<span class=\"govuk-visually-hidden\"> {{columnName}}</span>"
+    "no_values_selected": "Select at least 1 value for this variable<span class=\"govuk-visually-hidden\"> {{columnName}}</span>",
+    "measure": "Data description",
+    "description_info": "This indicates what a data value represents"
   },
   "consumer_view": {
     "tabs": {
@@ -2331,7 +2333,7 @@
     }
   },
   "summary": {
-    "title": "Summary of variables and selected values",
+    "title": "See what variables and values are shown in your table",
     "headers": {
       "variable": "Variable",
       "visibility": "Visibility",
@@ -2340,7 +2342,7 @@
     },
     "all_values": "All {{count}} values",
     "visibility": {
-      "shown": "Shown",
+      "shown": "Shown in table",
       "hidden": "Not shown in table",
       "columns": "Columns",
       "rows": "Rows"
@@ -2365,7 +2367,8 @@
   },
   "columns_chooser": {
     "heading": "Select a variable for the columns of the table",
-    "intro": "The values for this variable will go across the top of your table. For example, for a variable containing years, each year would have its own column. You can select a variable in the 'Variable filters' menu to see what values it contains. You will be able to change the filter selections once you've created your table."
+    "intro": "The values for this variable will go across the top of your table. For example, for a variable containing years, each year would have its own column. You can select a variable in the 'Variable filters' menu to see what values it contains. You will be able to change the filter selections once you've created your table.",
+    "see_values": "See values"
   },
   "rows_chooser": {
     "heading": "Select a variable for the rows of the table",

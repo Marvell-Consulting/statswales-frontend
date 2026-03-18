@@ -7,14 +7,15 @@ import { SummaryTableRow } from './summary/SummaryTableRow';
 interface SummaryDataProps {
   filters: FilterTable[];
   selectedFilterOptions: Filter[];
-  landing?: boolean;
+  pivotSummary?: boolean;
   columns?: string;
   rows?: string;
+  landing?: boolean;
 }
 
 export function SummaryTable(props: SummaryDataProps): ReactNode {
   return (
-    <details className="govuk-details summary-table" open={!props.landing}>
+    <details className="govuk-details summary-table" open={props.pivotSummary}>
       <summary className="govuk-details__summary">
         <span className="govuk-details__summary-text">
           <T>summary.title</T>
@@ -46,9 +47,9 @@ export function SummaryTable(props: SummaryDataProps): ReactNode {
                   filter: filter,
                   selectedFilterOptions: props.selectedFilterOptions,
                   idx: idx,
-                  landing: props.landing,
                   columns: props.columns,
-                  rows: props.rows
+                  rows: props.rows,
+                  landing: props.landing
                 }}
               />
             ))}
