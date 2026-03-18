@@ -53,7 +53,7 @@ export function SummaryTable(props: SummaryDataProps): ReactNode {
                 }}
               />
             ))}
-          </tbody
+          </tbody>
         </table>
       </div>
     </details>
