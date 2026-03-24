@@ -21,8 +21,7 @@
     "dataset_status": {
       "new": "Set ddata newydd",
       "live": "Set ddata fyw",
-      "archived": "Set ddata wedi'i harchifo",
-      "offline": "Set ddata all-lein"
+      "archived": "Set ddata wedi'i harchifo"
     },
     "publishing_status": {
       "incomplete": "Anghyflawn",
@@ -71,8 +70,7 @@
       "login": "Mewngofnodi",
       "developer": "Datblygwr",
       "groups": "Grwpiau",
-      "users": "Defnyddwyr",
-      "dashboard": "Ystadegau"
+      "users": "Defnyddwyr"
     }
   },
   "breadcrumbs": {
@@ -248,8 +246,7 @@
         "accredited": "Ystadegau swyddogol achrededig",
         "in_development": "Ystadegau swyddogol yn cael eu datblygu",
         "management": "Gwybodaeth reoli",
-        "none": "Dim dynodiad",
-        "null": ""
+        "none": "Dim dynodiad"
       },
       "related_reports": "Adroddiadau cysylltiedig"
     },
@@ -489,10 +486,7 @@
         "meteorological_year": "Blwyddyn feteorolegol",
         "meteorological_quarter": "Chwarter meteorolegol",
         "meteorological_month": "Mis meteorolegol",
-        "specific_day": "Pwynt penodol mewn amser",
-        "higher_academic_year": "Blwyddyn Academaidd Addysg Uwch",
-        "higher_academic_quarter": "Chwarter Academaidd Addysg Uwch",
-        "higher_academic_month": "Mis Academaidd Addysg Uwch"
+        "specific_day": "Pwynt penodol mewn amser"
       }
     },
     "measure_preview": {
@@ -525,9 +519,7 @@
         "rolling-start-date": "Nodwch y dyddiad pan fo’r flwyddyn yn cychwyn",
         "rolling-start-date-hint": "Er enghraifft, 01 06",
         "day": "Diwrnod",
-        "month": "Mis",
-        "higher_academic": "Academaidd Addysg Uwch",
-        "higher_academic-hint": "1 Awst i 31 Gorffennaf"
+        "month": "Mis"
       }
     },
     "year_format": {
@@ -821,8 +813,7 @@
               "missing": "Dewis ffynhonnell o’r rhestr ffynonellau ar gyfer y darparwr data a ddewiswyd"
             }
           }
-        },
-        "no_available_sources": "Nid oes ffynonellau penodol ar gael ar gyfer y darparwr data hwn"
+        }
       },
       "list": {
         "heading": "Ychwanegwyd ffynonellau",
@@ -1080,8 +1071,7 @@
       "publish": {
         "requested": {
           "publish_at": "Dyddiad cyhoeddi arfaethedig: <strong>{{publishAt}}</strong>",
-          "requested_by": "Cais i'w chyhoeddi gan: <strong>{{userName}}</strong>",
-          "update_reason": "Rheswm dros y diweddariad:"
+          "requested_by": "Cais i'w chyhoeddi gan: <strong>{{userName}}</strong>"
         },
         "scheduled": {
           "publish_at": "Cyhoeddi wedi'i drefnu: <strong>{{publishAt}}</strong>"
@@ -1185,9 +1175,7 @@
       },
       "error": {
         "withdraw": "Nid oedd modd tynnu'r cais yn ôl i gyhoeddi'r set ddata.  Rhowch gynnig arall yn nes ymlaen neu cysylltwch â'r tîm cymorth."
-      },
-      "group": "Grŵp: <strong>{{groupName}}</strong>",
-      "live_url": "Unwaith y caiff ei gyhoeddi, bydd y set ddata ar gael yn: <strong>{{url}}</strong>"
+      }
     },
     "update_type": {
       "heading": "Pa ddiweddariad i'r tabl data y mae angen i chi ei wneud?",
@@ -1377,47 +1365,6 @@
           }
         }
       }
-    },
-    "build": {
-      "title": {
-        "completed": "Mae'r ciwb data wedi'i adeiladu'n llwyddiannus",
-        "failed": "Methodd y ciwb data â chael ei adeiladu",
-        "building": "Mae adeiladu'r ciwb data ar y gweill",
-        "queued": "Mae adeiladu'r ciwb data ar y gweill",
-        "schema_rename": "Mae adeiladu'r ciwb data ar y gweill",
-        "materializing": "Mae adeiladu'r ciwb data ar y gweill"
-      },
-      "paragraph": {
-        "completed": "Pwyswch barhau i fynd i'r cam nesaf.",
-        "failed": "Pwyswch 'Yn ôl' a cheisiwch y cam blaenorol eto. Os bydd adeiladu'r ciwb yn parhau i fethu, cysylltwch â chymorth",
-        "building": "Gall hyn gymryd ychydig funudau. Gallwch bwyso'r botwm 'Adnewyddu tudalen' i wirio a yw'r adeilad wedi'i gwblhau.",
-        "queued": "Gall hyn gymryd ychydig funudau. Gallwch bwyso'r botwm 'Adnewyddu tudalen' i wirio a yw'r adeilad wedi'i gwblhau.",
-        "schema_rename": "Gall hyn gymryd ychydig funudau. Gallwch bwyso'r botwm 'Adnewyddu tudalen' i wirio a yw'r adeilad wedi'i gwblhau.",
-        "materializing": "Gall hyn gymryd ychydig funudau. Gallwch bwyso'r botwm 'Adnewyddu tudalen' i wirio a yw'r adeilad wedi'i gwblhau."
-      },
-      "message": {
-        "completed": "Pwyswch barhau i fynd i'r cam nesaf.",
-        "failed": "Pwyswch 'Yn ôl' a cheisiwch y cam blaenorol eto. Os bydd adeiladu'r ciwb yn parhau i fethu, cysylltwch â chymorth",
-        "queued": "Gall hyn gymryd ychydig funudau. <span role=\"timer\" aria-live=\"polite\" aria-atomic=\"true\">Gwiriad statws yr adeilad eto ymhen <span id=\"timer\">%time%</span> eiliad</span>",
-        "building": "Gall hyn gymryd ychydig funudau. <span role=\"timer\" aria-live=\"polite\" aria-atomic=\"true\">Gwiriad statws yr adeilad eto ymhen <span id=\"timer\">%time%</span> eiliad</span>",
-        "schema_rename": "Gall hyn gymryd ychydig funudau. <span role=\"timer\" aria-live=\"polite\" aria-atomic=\"true\">Gwiriad statws yr adeilad eto ymhen <span id=\"timer\">%time%</span> eiliad</span>",
-        "materializing": "Gall hyn gymryd ychydig funudau. <span role=\"timer\" aria-live=\"polite\" aria-atomic=\"true\">Gwiriad statws yr adeilad eto ymhen <span id=\"timer\">%time%</span> eiliad</span>"
-      }
-    },
-    "update_reason": {
-      "heading": "Ychwanegu nodiadau diweddaru",
-      "description": "Bydd y rhain yn ymddangos yn adran hanes y set ddata ar wefan StatsCymru.",
-      "explain": "Mewn brawddegau byr, syml, eglurwch:",
-      "explain_1": "beth sydd wedi newid gyda'r diweddariad hwn",
-      "explain_2": "pam y gwnaed y newidiadau",
-      "language": "Dylid nodi hyn yn yr iaith rydych chi'n edrych ar y gwasanaeth hwn ynddi.",
-      "form": {
-        "update_reason": {
-          "error": {
-            "missing": "Nodwch nodiadau diweddaru ar gyfer y set ddata hon"
-          }
-        }
-      }
     }
   },
   "translations": {
@@ -1492,8 +1439,7 @@
         "publish_status": "Statws cyhoeddi",
         "not_translated": "Heb ei gyfieithu eto",
         "actions": "Gweithredoedd"
-      },
-      "rebuild_cube": "Ailadeiladu ciwb"
+      }
     },
     "display": {
       "heading": "Dangos Set Ddata",
@@ -1610,8 +1556,7 @@
       "to_many_categories_present": "Ceir gwerthoedd cyfeirio yn y dimensiwn nad ydynt yn y categori data a ddewisoch chi. Gwiriwch eich bod wedi dewis y math data cywir.",
       "unknown_error": "Aeth rhywbeth o'i le wrth ychwanegu'r data cyfeirio i'r ciwb. Rhowch gynnig arall yn nes ymlaen neu cysylltwch â'r tîm cymorth.",
       "unknown_reference_data_items": "Ni ellir cyfateb data cyfeirio i'r tabl data. Gwiriwch eich bod wedi dewis math cywir y data cyfeirio a bod eich tabl data yn gywir.",
-      "unknown_type": "Ni chefnogir y math o ddata dimensiwn a ddewisoch chi. Dylech ddewis 'Rhywbeth arall' a lanlwytho tabl am-edrych.",
-      "reference_data_validation_failed.": "Ni ellid ychwanegu data cyfeirio at y ciwb. Gwiriwch eich bod wedi dewis y math cywir o ddata cyfeirio a bod eich tabl data yn gywir."
+      "unknown_type": "Ni chefnogir y math o ddata dimensiwn a ddewisoch chi. Dylech ddewis 'Rhywbeth arall' a lanlwytho tabl am-edrych."
     },
     "measure_validation": {
       "duplicate_descriptions_or_notes": "Mae'r colofnau disgrifiadau yn y tabl am-edrych mesur yr un peth ym mhob iaith. Rhaid darparu disgrifiadau ym mhob iaith ofynnol.",
@@ -1696,9 +1641,6 @@
       "bad_node_code_table_summary_500": "Dangos Tabl sy'n cynnwys {{rows}} llinell gyntaf gyda chodau heb eu hadnabod",
       "bad_node_code_info": "Dylech wirio eich bod wedi defnyddio codau nodiadau safonol. Cywirwch eich tabl data a'i lanlwytho eto.",
       "unmatched_columns": "Mae’r tabl data a lanlwythwyd yn cynnwys penawdau colofnau nad ydynt yn cyfateb â’r tabl data a lanlwythwyd ar gyfer y set ddata hon yn wreiddiol.  Gwiriwch bod y tabl data a ddiweddarwyd yn gywir, a’i lanlwytho eto."
-    },
-    "tasks": {
-      "open_tasks": "Mae gennych dasgau agored i'w cwblhau ar y set ddata hon"
     }
   },
   "filters": {
@@ -1851,16 +1793,10 @@
           "name": "Enw",
           "email": "Cyswllt",
           "user_count": "Defnyddwyr",
-          "dataset_count": "Setiau data",
-          "organisation": "Sefydliad",
-          "status": "Statws"
+          "dataset_count": "Setiau data"
         },
         "buttons": {
           "add": "Ychwanegu grŵp"
-        },
-        "search": {
-          "placeholder": "Chwilio am grwpiau yn ôl enw neu e-bost",
-          "button": "Chwilio"
         }
       },
       "view": {
@@ -1873,8 +1809,7 @@
           "email": {
             "heading": "E-bost cysylltu",
             "not_set": "Heb ei osod"
-          },
-          "status": "Statws"
+          }
         },
         "users": {
           "heading": "Defnyddwyr",
@@ -1894,18 +1829,6 @@
         },
         "buttons": {
           "edit": "Newid manylion y grŵp"
-        },
-        "actions": {
-          "heading": "Camau gweithredu",
-          "edit": {
-            "label": "Newid manylion grŵp"
-          },
-          "deactivate": {
-            "label": "Dadactifadu grŵp"
-          },
-          "reactivate": {
-            "label": "Ailgychwyn grŵp"
-          }
         }
       },
       "name": {
@@ -1966,28 +1889,6 @@
         "success": {
           "create": "Grŵp wedi'i greu yn llwyddiannus",
           "update": "Grŵp wedi'i ddiweddaru yn llwyddiannus"
-        }
-      },
-      "deactivate": {
-        "heading": "Ydych chi'n sicr eich bod am ddadactifadu {{groupName}}?",
-        "description": "Bydd unrhyw ddefnyddwyr cysylltiedig yn cael eu tynnu o'r grŵp hwn ac ni fydd yn bosibl ei neilltuo i ddefnyddwyr neu setiau data mwyach.",
-        "success": "{{groupName}} wedi'i ddadactifadu",
-        "error": {
-          "saving": "Ni ellid dadactifadu'r grŵp. Rhowch gynnig arall arni yn nes ymlaen."
-        }
-      },
-      "reactivate": {
-        "heading": "Ydych chi'n sicr eich bod am ailgychwyn {{groupName}}?",
-        "description": "Bydd modd neilltuo'r grŵp hwn i setiau data a defnyddwyr.",
-        "success": "{{groupName}} wedi'i ailgychwyn",
-        "error": {
-          "saving": "Ni ellid ailgychwyn y grŵp. Rhowch gynnig arall arni yn nes ymlaen."
-        }
-      },
-      "badge": {
-        "status": {
-          "active": "Actif",
-          "inactive": "Wedi'i ddadactifadu"
         }
       }
     },
@@ -2116,117 +2017,6 @@
         "status": {
           "active": "Gweithredol",
           "inactive": "Wedi'u hanalluogi"
-        }
-      }
-    },
-    "dashboard": {
-      "heading": "Ystadegau gwasanaeth",
-      "stats": {
-        "datasets": {
-          "summary": {
-            "heading": "Crynodeb o setiau data",
-            "note": "*Gall setiau data fod wedi'u cyhoeddi a hefyd fod â diweddariad anghyflawn neu ar y gweill. Felly, efallai y bydd cyfanswm y setiau data ym mhob statws yn fwy na chyfanswm y setiau data.",
-            "table": {
-              "status": "Statws",
-              "description": "Disgrifiad",
-              "count": "Nifer y setiau data"
-            },
-            "total": {
-              "label": "Cyfanswm y setiau data",
-              "description": "Pob set ddata ar lwyfan StatsCymru*"
-            },
-            "incomplete": {
-              "label": "Anghyflawn",
-              "description": "Setiau data newydd neu ddiweddariadau ar y gweill, heb eu cyflwyno ar gyfer adolygiad eto"
-            },
-            "pending_approval": {
-              "label": "Yn aros am gymeradwyaeth",
-              "description": "Setiau data newydd neu ddiweddariadau yn aros am adolygiad gan gymeradwywr"
-            },
-            "scheduled": {
-              "label": "Wedi'i amserlennu",
-              "description": "Setiau data newydd neu ddiweddariadau wedi'u cymeradwyo ac wedi'u hamserlennu ar gyfer cyhoeddi"
-            },
-            "published": {
-              "label": "Wedi'i gyhoeddi",
-              "description": "Setiau data byw ar safle'r defnyddiwr"
-            },
-            "action_requested": {
-              "label": "Camau gweithredu wedi'u gofyn",
-              "description": "Ceisiadau archifo, dad-archifo neu ddad-gyhoeddi"
-            },
-            "archived": {
-              "label": "Wedi'i archifo",
-              "description": "Setiau data nad ydynt yn cael eu cynnal mwyach, ond sydd wedi'u cyhoeddi o hyd ar safle'r defnyddiwr"
-            },
-            "offline": {
-              "label": "Heb ei gyhoeddi",
-              "description": "Setiau data wedi'u tynnu dros dro o safle'r defnyddiwr"
-            }
-          },
-          "largest": {
-            "heading": "Y setiau data mwyaf",
-            "table": {
-              "title": "Teitl y set ddata",
-              "row_count": "Nifer y rhesi",
-              "size_bytes": "Maint lawrlwytho bras (MB)"
-            }
-          },
-          "longest": {
-            "heading": "Yr amser hiraf cyn cyhoeddi",
-            "table": {
-              "title": "Teitl y set ddata",
-              "interval": "Amser cyn cyhoeddi",
-              "status": "Statws"
-            }
-          },
-          "similar": {
-            "heading": "Setiau data tebyg (lawrlwytho CSV)",
-            "by_sources": "Setiau data sy'n rhannu'r un ffynonellau",
-            "by_facts": "Setiau data â thabl ffeithiau unfath",
-            "by_title": "Setiau data â theitlau tebyg",
-            "by_dimensions": "Setiau data sy'n rhannu'r un dimensiynau"
-          },
-          "search": {
-            "heading": "Chwiliadau set ddata (lawrlwytho CSV)",
-            "last_30_days": "Logiau chwilio defnyddwyr (30 diwrnod diwethaf)"
-          }
-        },
-        "users": {
-          "summary": {
-            "heading": "Crynodeb o ddefnyddwyr",
-            "table": {
-              "status": "Statws",
-              "description": "Disgrifiad",
-              "count": "Nifer y defnyddwyr"
-            },
-            "total": {
-              "label": "Cyfanswm",
-              "description": "Pob defnyddiwr ar lwyfan StatsCymru (gan gynnwys y rhai wedi'u dadactifadu)"
-            },
-            "active": {
-              "label": "Defnyddwyr actif",
-              "description": "Defnyddwyr sydd wedi mewngofnodi o leiaf unwaith"
-            },
-            "published": {
-              "label": "Defnyddwyr sydd wedi cyhoeddi",
-              "description": "Defnyddwyr ag o leiaf un set ddata wedi'i chyhoeddi"
-            }
-          },
-          "most_published": {
-            "heading": "Y defnyddwyr sydd wedi cyhoeddi fwyaf",
-            "table": {
-              "name": "Enw",
-              "count": "Nifer y setiau data"
-            }
-          }
-        },
-        "groups": {
-          "heading": "Y grwpiau sydd wedi cyhoeddi fwyaf",
-          "table": {
-            "name": "Enw grŵp",
-            "count": "Nifer y setiau data"
-          }
         }
       }
     }
