@@ -80,7 +80,7 @@ test.describe('Unpublished datasets are not visible to consumers', () => {
       });
 
       await completeTranslations(page, testInfo, datasetId);
-      await completePublicationDate(page, datasetId, 1);
+      await completePublicationDate(page, datasetId, 2);
 
       // Dataset is in draft - consumer should get 404
       await expectConsumerDatasetNotFound(page, datasetId);
@@ -161,7 +161,7 @@ test.describe('Unpublished datasets are not visible to consumers', () => {
       await completeSummary(page, datasetId, updatedSummary, true);
       await completeUpdateReason(page, datasetId, 'Updating data and metadata.');
       await completeTranslations(page, testInfo, datasetId);
-      await completePublicationDate(page, datasetId, 1);
+      await completePublicationDate(page, datasetId, 2);
 
       // Consumer should still show original data and metadata
       const summary = await getConsumerDatasetSummary(page, datasetId);
