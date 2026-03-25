@@ -56,6 +56,11 @@ export default function YearType(props) {
                   hint: <T>publish.year_type.chooser.academic-hint</T>
                 },
                 {
+                  value: 'higher_academic',
+                  label: <T>publish.year_type.chooser.higher_academic</T>,
+                  hint: <T>publish.year_type.chooser.higher_academic-hint</T>
+                },
+                {
                   value: 'rolling',
                   label: <T>publish.year_type.chooser.rolling</T>,
                   hint: <T>publish.year_type.chooser.rolling-hint</T>,
