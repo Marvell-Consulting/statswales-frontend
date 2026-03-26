@@ -17,26 +17,30 @@ export type RadioItemProps = {
 export const RadioItem = ({ name, label, value, checked, children }: RadioItemProps) => {
   const formattedId = `${name}.${value}`.replaceAll(/\s+/g, '_');
 
-  return (
-    <>
-      <div className="govuk-radios__item">
-        <input
-          className="govuk-radios__input"
-          id={formattedId}
-          name={name}
-          type="radio"
-          value={value}
-          defaultChecked={checked}
-        />
-        <label className="govuk-label govuk-radios__label" htmlFor={formattedId}>
-          {label}
-        </label>
-      </div>
-      {children && (
-        <div className="govuk-radios__conditional" id={`conditional-${formattedId}`}>
-          {children}
-        </div>
-      )}
-    </>
+  const RadioField = (
+    <div className="govuk-radios__item">
+      <input
+        className="govuk-radios__input"
+        id={formattedId}
+        name={name}
+        type="radio"
+        value={value}
+        defaultChecked={checked}
+      />
+      <label className="govuk-label govuk-radios__label" htmlFor={formattedId}>
+        {label}
+      </label>
+    </div>
   );
+
+  if (children) {
+    return (
+      <details open>
+        <summary>{RadioField}</summary>
+        <div className="indent">{children}</div>
+      </details>
+    );
+  }
+
+  return RadioField;
 };

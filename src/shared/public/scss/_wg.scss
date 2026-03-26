@@ -1121,6 +1121,10 @@
     background-color: colours.$lightgrey_light;
   }
 
+  .summary-table .govuk-table__cell a {
+    font-size: 16px;
+  }
+
   .govuk-back-link::before {
     border-width: max(3px, 0.0625em) max(3px, 0.0625em) 0 0;
     width: 0.32em;
@@ -1466,6 +1470,17 @@
     font-weight: bold;
     letter-spacing: -0.0375rem;
     line-height: 40px;
+
+    // Prevent condensed letter-spacing from cascading to body text
+    // inside fieldset legends (e.g. intro paragraphs on pivot screens).
+    > ul,
+    > ol,
+    > p {
+      letter-spacing: normal;
+      font-weight: normal;
+      font-size: 18px;
+      line-height: 24px;
+    }
   }
 
   .govuk-heading-m {
