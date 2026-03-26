@@ -134,7 +134,13 @@ export default function Title(props) {
                   });
                 }
               } catch (err) {
-                console.log(err);
+                console.error(err);
+                loading.classList.add("hidden");
+                errorWrapper.innerHTML = '${errorHtml.split('\n').join('')}';
+                const innerWrapper = errorWrapper.querySelector(".govuk-error-summary__list");
+                const li = document.createElement("li");
+                li.innerHTML = "<a href='#csv'>${props.t('publish.upload.errors.api')}</a>";
+                innerWrapper.appendChild(li);
               }
             });
           `
