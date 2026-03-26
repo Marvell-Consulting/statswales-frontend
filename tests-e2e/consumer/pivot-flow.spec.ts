@@ -13,9 +13,9 @@ async function pivotFlowToSummary(page: Page) {
   await page.goto(datasetUrl);
   await page.click('label[for="tableChoicePivot"]');
   await page.click('#tableChooserBtn');
-  await page.locator('#row-column-chooser').locator('label').first().click();
+  await page.locator('#column-row-chooser').locator('label').first().click();
   await page.locator('#column-row-form').locator('button[type="submit"]').click();
-  await page.locator('#row-column-chooser').locator('label').first().click();
+  await page.locator('#column-row-chooser').locator('label').first().click();
   await page.locator('#column-row-form').locator('button[type="submit"]').click();
 }
 
@@ -64,8 +64,8 @@ test.describe('Pivot Flow', () => {
       await page.goto(datasetUrl);
       await page.click('label[for="tableChoicePivot"]');
       await page.click('#tableChooserBtn');
-      await expect(page.locator('#row-column-chooser').locator('input[type="radio"]')).toHaveCount(4);
-      await page.locator('#row-column-chooser').locator('label').first().click();
+      await expect(page.locator('#column-row-chooser').locator('input[type="radio"]')).toHaveCount(4);
+      await page.locator('#column-row-chooser').locator('label').first().click();
       await page.locator('#column-row-form').locator('button[type="submit"]').click();
       await expect(page).toHaveURL(/columns/);
     });
@@ -74,10 +74,10 @@ test.describe('Pivot Flow', () => {
       await page.goto(datasetUrl);
       await page.click('label[for="tableChoicePivot"]');
       await page.click('#tableChooserBtn');
-      await page.locator('#row-column-chooser').locator('label').first().click();
+      await page.locator('#column-row-chooser').locator('label').first().click();
       await page.locator('#column-row-form').locator('button[type="submit"]').click();
-      await expect(page.locator('#row-column-chooser').locator('input[type="radio"]')).toHaveCount(3);
-      await page.locator('#row-column-chooser').locator('label').first().click();
+      await expect(page.locator('#column-row-chooser').locator('input[type="radio"]')).toHaveCount(3);
+      await page.locator('#column-row-chooser').locator('label').first().click();
       await page.locator('#column-row-form').locator('button[type="submit"]').click();
       await expect(page).toHaveURL(/columns/);
       await expect(page).toHaveURL(/rows/);
@@ -87,9 +87,9 @@ test.describe('Pivot Flow', () => {
       await page.goto(datasetUrl);
       await page.click('label[for="tableChoicePivot"]');
       await page.click('#tableChooserBtn');
-      await page.locator('#row-column-chooser').locator('label').first().click();
+      await page.locator('#column-row-chooser').locator('label').first().click();
       await page.locator('#column-row-form').locator('button[type="submit"]').click();
-      await page.locator('#row-column-chooser').locator('label').first().click();
+      await page.locator('#column-row-chooser').locator('label').first().click();
       await page.locator('#column-row-form').locator('button[type="submit"]').click();
       await expect(page.locator('#pivot-summary-form')).toBeVisible();
       await page.locator('#pivot-summary-form').locator('button[type="submit"]').click();
@@ -100,8 +100,7 @@ test.describe('Pivot Flow', () => {
     test('Clicking on Create new table returns to start', async ({ page }) => {
       await completePivotFlow(page);
       await page.locator('#start-over').click();
-      await expect(page.locator('label[for="tableChoicePivot"]')).toBeVisible();
-      await expect(page.locator('label[for="tableChoiceData"]')).toBeVisible();
+      await expect(page.locator('#column-row-chooser')).toBeVisible();
     });
 
     test('Clicking on show all variables shows data table', async ({ page }) => {

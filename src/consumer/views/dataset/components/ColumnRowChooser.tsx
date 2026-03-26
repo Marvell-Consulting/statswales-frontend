@@ -35,7 +35,7 @@ export default function ColumnRowChooser(props: ColumnProps) {
   return (
     <form method="GET" id="column-row-form">
       <div className="govuk-!-padding-top-5 govuk-!-margin-bottom-2">
-        <div className="govuk-form-group">
+        <div id="column-row-chooser" className="govuk-form-group">
           <fieldset className="govuk-fieldset">
             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h2 className="govuk-heading-m">
