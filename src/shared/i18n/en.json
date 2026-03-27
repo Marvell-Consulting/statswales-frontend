@@ -15,7 +15,7 @@
     "upload_csv": "Continue",
     "preview": "Preview (opens in new tab)",
     "refresh": "Refresh Page",
-    "create_table": "Create Table"
+    "create_table": "Create table"
   },
   "badge": {
     "dataset_status": {
@@ -2388,6 +2388,6 @@
     "filter_warning": "Your current table can only show the data for 2 sets of variables at a time. All other variables have to be represented by a single value. You can change which variables are shown in your table.",
     "start_over": "Change the variables shown in the table",
     "show_data": "Show all variables in table",
-    "create_own": "Create your own table"
+    "create_own": "Change the variables shown in the table"
   }
 }

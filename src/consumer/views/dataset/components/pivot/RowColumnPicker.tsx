@@ -16,7 +16,7 @@ export default function RowColumnPicker(props: FilterProps) {
   });
   const radios = cleanedFilters.map((f: FilterTable, idx: number) => {
     return (
-      <div key={`RowColumnPicker-${idx}`} id="row-column-chooser" className="govuk-radios__item">
+      <div key={`RowColumnPicker-${idx}`} className="govuk-radios__item">
         <input
           className="govuk-radios__input"
           id={`pivot_${f.factTableColumn.replaceAll(/\s+/g, '_')}`}
