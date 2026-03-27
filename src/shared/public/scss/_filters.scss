@@ -191,6 +191,7 @@
       height: 34px;
       padding-left: 0.5em !important;
       font-size: 14px;
+      font-weight: normal;
       max-width: unset;
 
       display: flex;
@@ -216,6 +217,10 @@
       margin-top: 5px;
     }
 
+    .govuk-radios__item:hover .govuk-radios__input:not(:disabled) + .govuk-radios__label::before {
+      box-shadow: none;
+    }
+
     .indent {
       margin-left: 30px;
       position: relative;
@@ -238,7 +243,8 @@
         }
       }
 
-      .govuk-checkboxes__item:not(summary > .govuk-checkboxes__item) {
+      .govuk-checkboxes__item:not(summary > .govuk-checkboxes__item),
+      .govuk-radios__item:not(summary > .govuk-radios__item) {
         margin-left: 30px;
       }
 
@@ -264,6 +270,14 @@
         }
       }
     }
+
+    // When a checkbox group has a mix of expandable (with chevron) and
+    // non-expandable items, indent the plain items so they align with
+    // the ones pushed right by the chevron (24px icon + 6px gap).
+    .has-groups > .govuk-checkboxes__item,
+    .has-groups > .govuk-radios__item {
+      margin-left: 30px;
+    }
   }
 
   @media all and (max-width: 640px) {
@@ -285,6 +299,11 @@
       }
 
       .indent {
+        margin-left: 36px;
+      }
+
+      .has-groups > .govuk-checkboxes__item,
+      .has-groups > .govuk-radios__item {
         margin-left: 36px;
       }
     }

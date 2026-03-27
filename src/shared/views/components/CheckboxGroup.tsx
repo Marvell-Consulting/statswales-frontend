@@ -19,9 +19,10 @@ export const CheckboxGroup = ({
   controls,
   disabled = false
 }: CheckboxGroupProps) => {
+  const hasGroups = independentExpand && options.some((opt) => opt.children?.length);
   return (
     <div
-      className="govuk-checkboxes govuk-checkboxes--small"
+      className={`govuk-checkboxes govuk-checkboxes--small${hasGroups ? ' has-groups' : ''}`}
       data-module={independentExpand ? undefined : 'govuk-checkboxes'}
     >
       {options.map((option, index) => {

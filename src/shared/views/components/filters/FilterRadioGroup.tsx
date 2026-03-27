@@ -9,8 +9,9 @@ export type FilterRadioGroupProps = {
 };
 
 export const FilterRadioGroup = ({ options, name, selectedValue }: FilterRadioGroupProps) => {
+  const hasGroups = options.some((opt) => opt.children?.length);
   return (
-    <div className="govuk-radios govuk-radios--small">
+    <div className={`govuk-radios govuk-radios--small${hasGroups ? ' has-groups' : ''}`}>
       {options.map((option, index) => {
         return (
           <RadioItem
