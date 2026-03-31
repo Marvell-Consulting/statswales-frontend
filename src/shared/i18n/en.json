@@ -1716,6 +1716,7 @@
     "select_all_variables": "Reset all filters",
     "pivot_hidden_notice": "Your current table can only show the data for 2 sets of variables at a time. All other variables have to be represented by a single value. You can change which variables are shown in your table.",
     "active_filters_notice": "Variables in this table have been filtered. You can change which values are shown in the table in the 'Variable filters' menu.",
+    "disabled_filters_notice": "You will be able to change the filter selections once you've chosen how to view the data.",
     "no_values_selected": "Select at least 1 value for this variable<span class=\"govuk-visually-hidden\"> {{columnName}}</span>",
     "measure": "Data description",
     "description_info": "This indicates what a data value represents"
@@ -2357,6 +2358,7 @@
     "more_values": "+ {{count}} more (see variable filters)",
     "actions": {
       "change": "Change values",
+      "change_single": "Change value",
       "no_action": "Value cannot be changed"
     }
   },
@@ -2373,12 +2375,12 @@
   },
   "columns_chooser": {
     "heading": "Select a variable for the columns of the table",
-    "intro": "The values for this variable will go across the top of your table. For example, for a variable containing years, each year would have its own column. You can select a variable in the 'Variable filters' menu to see what values it contains. You will be able to change the filter selections once you've created your table.",
+    "intro": "The values for this variable will go across the top of your table. For example, for a variable containing years, each year would have its own column. You can select a variable in the 'Variable filters' menu to see what values it contains.",
     "see_values": "See values"
   },
   "rows_chooser": {
     "heading": "Select a variable for the rows of the table",
-    "intro": "The values for this variable will go down the side of your table. For example, for a variable containing years, each year would have its own row. You can select a variable in the 'Variable filters' menu to see what values it contains. You will be able to change the filter selections once you've created your table."
+    "intro": "The values for this variable will go down the side of your table. For example, for a variable containing years, each year would have its own row. You can select a variable in the 'Variable filters' menu to see what values it contains."
   },
   "pivot_summary": {
     "heading": "Review selected values for all variables",

@@ -4,7 +4,7 @@ import T from '../../../../shared/views/components/T';
 export default function TableChooser() {
   return (
     <form method="POST">
-      <div className="govuk-!-padding-top-5 govuk-!-margin-bottom-2">
+      <div className="govuk-!-margin-bottom-2">
         <div className="govuk-form-group">
           <fieldset className="govuk-fieldset">
             <legend className="govuk-fieldset__legend govuk-fieldset__legend--l">

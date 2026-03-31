@@ -46,6 +46,12 @@ export const Filters = (props: FiltersProps) => {
         </div>
       )}
 
+      {disabled && (
+        <div className="govuk-inset-text">
+          <T>filters.disabled_filters_notice</T>
+        </div>
+      )}
+
       {filters?.map((filter, index) => {
         const values = selected?.find((f) => f.columnName === filter.factTableColumn)?.values;
 

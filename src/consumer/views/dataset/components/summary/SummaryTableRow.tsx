@@ -17,9 +17,13 @@ interface SummaryTableRowProps {
 export function SummaryTableRow(props: SummaryTableRowProps): ReactNode {
   const { filter, selectedFilterOptions, idx, landing } = props;
   const flatFilters = flattenReferences(filter.values);
+  const isPivot = !!(props.rows && props.columns);
+  const isHiddenDimension =
+    isPivot && filter.factTableColumn !== props.rows && filter.factTableColumn !== props.columns;
+
   let changeLink = (
     <a key={`c-${idx}`} href={`#filter-${filter.factTableColumn.replaceAll(/\s+/g, '_')}`}>
-      <T>summary.actions.change</T>
+      <T>{`summary.actions.${isHiddenDimension ? 'change_single' : 'change'}`}</T>
     </a>
   );
   if (flatFilters.length === 1) {

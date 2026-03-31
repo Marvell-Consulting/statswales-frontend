@@ -93,19 +93,21 @@ export const CheckboxFilter = ({ filter, values, disabled = false }: CheckboxFil
                 aria-label={t('filters.search.aria', { columnName: filter.columnName })}
               />
             </div>
-            <FilterControls
-              className="root-controls"
-              deselectLabel={
-                <T columnName={filter.columnName} raw>
-                  filters.deselect_all
-                </T>
-              }
-              selectLabel={
-                <T columnName={filter.columnName} raw>
-                  filters.select_all
-                </T>
-              }
-            />
+            {!disabled && (
+              <FilterControls
+                className="root-controls"
+                deselectLabel={
+                  <T columnName={filter.columnName} raw>
+                    filters.deselect_all
+                  </T>
+                }
+                selectLabel={
+                  <T columnName={filter.columnName} raw>
+                    filters.select_all
+                  </T>
+                }
+              />
+            )}
           </div>
           <div className="filter-body">
             <CheckboxGroup
@@ -114,18 +116,20 @@ export const CheckboxFilter = ({ filter, values, disabled = false }: CheckboxFil
               values={checkedValues}
               independentExpand
               controls={
-                <FilterControls
-                  deselectLabel={
-                    <T columnName={filter.columnName} raw>
-                      filters.deselect_all_level
-                    </T>
-                  }
-                  selectLabel={
-                    <T columnName={filter.columnName} raw>
-                      filters.select_all_level
-                    </T>
-                  }
-                />
+                disabled ? undefined : (
+                  <FilterControls
+                    deselectLabel={
+                      <T columnName={filter.columnName} raw>
+                        filters.deselect_all_level
+                      </T>
+                    }
+                    selectLabel={
+                      <T columnName={filter.columnName} raw>
+                        filters.select_all_level
+                      </T>
+                    }
+                  />
+                )
               }
               disabled={disabled}
             />
