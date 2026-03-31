@@ -280,6 +280,19 @@
     }
   }
 
+  // Override govuk-frontend's opacity: .5 on disabled checkbox labels
+  // so the label text remains readable during the pivot flow, while
+  // keeping the checkbox box (drawn via ::before/::after) greyed out.
+  .filter .govuk-checkboxes__input:disabled + .govuk-checkboxes__label,
+  .filter .govuk-checkboxes__input:disabled ~ .govuk-hint {
+    opacity: 1;
+  }
+
+  .filter .govuk-checkboxes__input:disabled + .govuk-checkboxes__label::before,
+  .filter .govuk-checkboxes__input:disabled + .govuk-checkboxes__label::after {
+    opacity: 0.5;
+  }
+
   @media all and (max-width: 640px) {
     .filter-container {
       .govuk-checkboxes__label,
