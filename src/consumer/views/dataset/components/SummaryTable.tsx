@@ -7,7 +7,6 @@ import { SummaryTableRow } from './summary/SummaryTableRow';
 interface SummaryDataProps {
   filters: FilterTable[];
   selectedFilterOptions: Filter[];
-  pivotSummary?: boolean;
   columns?: string;
   rows?: string;
   landing?: boolean;
