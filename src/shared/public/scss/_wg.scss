@@ -1846,6 +1846,10 @@
     color: colours.$blue;
   }
 
+  #column-row-chooser .govuk-hint a {
+    font-size: 16px;
+  }
+
   /*! CSS Used from: https://www.gov.wales/sites/default/files/css/css_lTn9Sj73KcbXUKHef4_YMuiuhY8GIlMQA2hwhzm00os.css?delta=0&language=en&theme=govwales&include=eJxtjUsOwyAMRC9E4R7d9gCRCS7QOjGyIVFu3whF6UfdjD3PM3LkZQVCHTSBYBhG5mfGfcxVmNy3NfFM59rpPUcnsOBsuh67blpxch4Uz4qLxB5oVP1Fjw9SwRNeb_8fVWbyIBet234yBQSiQEnqgrQCZN_Etrk0T1kTBrNkXNV1tROHRvgCRbBhfA ; media=all */
   @media all {
     .visually-hidden {
