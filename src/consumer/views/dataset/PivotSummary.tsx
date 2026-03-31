@@ -56,7 +56,7 @@ export default function PivotSummary(props: PivotProps) {
                 </li>
               </ul>
             </legend>
-            <SummaryTable {...props} pivotSummary={true} />
+            <SummaryTable {...props} />
           </fieldset>
           <div className="govuk-!-padding-top-5 govuk-!-margin-bottom-2">
             <input type="hidden" name="columns" value={props.columns} />

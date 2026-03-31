@@ -166,8 +166,8 @@
       }
 
       function updateToggleLabel() {
-        const allChecked = [...checkboxes].every((cb) => cb.checked);
-        if (allChecked) {
+        const anyChecked = [...checkboxes].some((cb) => cb.checked);
+        if (anyChecked) {
           deselectSpan.classList.remove('js-hidden');
           selectSpan.classList.add('js-hidden');
         } else {
@@ -184,10 +184,10 @@
 
       toggle.addEventListener('click', (e) => {
         e.preventDefault();
-        const allChecked = [...checkboxes].every((cb) => cb.checked);
+        const anyChecked = [...checkboxes].some((cb) => cb.checked);
 
         checkboxes.forEach((checkbox) => {
-          checkbox.checked = !allChecked;
+          checkbox.checked = !anyChecked;
           const evt = new Event('change');
           checkbox.dispatchEvent(evt);
         });
