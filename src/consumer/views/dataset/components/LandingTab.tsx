@@ -7,7 +7,6 @@ import { useLocals } from '../../../../shared/views/context/Locals';
 import { Filter } from '../../../../shared/interfaces/filter';
 import { FilterTable } from '../../../../shared/dtos/filter-table';
 import { DatasetDTO } from '../../../../shared/dtos/dataset';
-import { SummaryTable } from './SummaryTable';
 import TableChooser from './TableChooser';
 import { PivotStage } from '../../../../shared/enums/pivot-stage';
 import ColumnRowChooser from './ColumnRowChooser';
@@ -87,10 +86,7 @@ export default function LandingTab(props: DataTabProps) {
               </div>
             </div>
           ) : (
-            <div className="govuk-grid-column-three-quarters">
-              {props.pivotStage === PivotStage.Summary ? null : <SummaryTable {...props} landing={true} />}
-              {pivotActionChooser}
-            </div>
+            <div className="govuk-grid-column-three-quarters">{pivotActionChooser}</div>
           )}
         </div>
       </div>

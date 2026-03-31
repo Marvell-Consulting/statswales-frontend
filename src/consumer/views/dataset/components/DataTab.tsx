@@ -80,7 +80,7 @@ export default function DataTab(props: DataTabProps) {
             </div>
           ) : (
             <div className="govuk-grid-column-three-quarters">
-              <SummaryTable {...props} />
+              <SummaryTable {...props} showAccordion={true} />
               {controls}
               <div className="govuk-!-padding-top-5 govuk-!-margin-bottom-2">
                 <ViewTable {...props} />
