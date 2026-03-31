@@ -2358,6 +2358,7 @@
     "more_values": "+ {{count}} more (see variable filters)",
     "actions": {
       "change": "Change values",
+      "change_single": "Change value",
       "no_action": "Value cannot be changed"
     }
   },

@@ -2157,6 +2157,7 @@
     "more_values": "+ {{count}} yn rhagor (gweler hidlyddion newidyn)",
     "actions": {
       "change": "Newid gwerthoedd",
+      "change_single": "Newid gwerth",
       "no_action": "Ni ellir newid y gwerth"
     }
   },
