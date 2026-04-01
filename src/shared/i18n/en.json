@@ -1714,7 +1714,7 @@
     },
     "apply_all_selections": "Apply all selections",
     "select_all_variables": "Reset all filters",
-    "pivot_hidden_notice": "Your current table can only show the data for 2 sets of variables at a time. All other variables have to be represented by a single value. You can change which variables are shown in your table.",
+    "pivot_hidden_notice": "Your current table can only show the data for 2 sets of variables at a time. All other variables have to be represented by a single value. You can change which variables and values are shown in your table.",
     "active_filters_notice": "Variables in this table have been filtered. You can change which values are shown in the table in the 'Variable filters' menu.",
     "disabled_filters_notice": "You will be able to change the filter selections once you've chosen how to view the data.",
     "no_values_selected": "Select at least 1 value for this variable<span class=\"govuk-visually-hidden\"> {{columnName}}</span>",

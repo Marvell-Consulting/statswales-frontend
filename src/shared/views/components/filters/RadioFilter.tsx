@@ -46,7 +46,7 @@ export const RadioFilter = ({ filter, values }: RadioFilterProps) => {
           <span className="dimension-accordion__title">{filter.columnName}</span>
         </summary>
         {isMeasure && (
-          <p className="govuk-body">
+          <p className="govuk-body govuk-!-font-size-16">
             <T>filters.description_info</T>
           </p>
         )}
