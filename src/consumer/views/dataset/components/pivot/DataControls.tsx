@@ -11,7 +11,7 @@ type DataControlsProps = {
 
 export function DataControls(props: DataControlsProps) {
   const { buildUrl, i18n } = useLocals();
-  const startOverURL = buildUrl(`/${props.dataset.id}/pivot#dataset-nav`, i18n.language);
+  const startOverURL = buildUrl(`/${props.dataset.id}/pivot`, i18n.language, undefined, 'dataset-nav');
 
   return (
     <div className="pivot-controls">

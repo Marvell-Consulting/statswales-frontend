@@ -433,10 +433,10 @@ export const viewPublishedLanding = async (req: Request, res: Response, next: Ne
     if (req.method === 'POST') {
       switch (req.body.chooser) {
         case 'pivot':
-          res.redirect(req.buildUrl(`/${dataset.id}/pivot#dataset-nav`, req.language));
+          res.redirect(req.buildUrl(`/${dataset.id}/pivot`, req.language, undefined, 'dataset-nav'));
           return;
         case 'data':
-          res.redirect(req.buildUrl(`/${dataset.id}/data#dataset-nav`, req.language));
+          res.redirect(req.buildUrl(`/${dataset.id}/data`, req.language, undefined, 'dataset-nav'));
           return;
         default:
           throw new BadRequestException('Unsupported chooser type');
