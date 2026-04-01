@@ -190,14 +190,21 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
         message: { key: 'filters.no_values_selected', params: { columnName: f.columnName } }
       }));
       req.session.save();
-      const fallback = req.buildUrl(`/${dataset.id}`, req.language);
+      const fallback = req.buildUrl(`/${dataset.id}`, req.language, {}, 'dataset-nav');
       res.redirect(req.headers.referer ?? fallback);
       return;
     }
 
     const dataOptions: DataOptionsDTO = { ...FRONTEND_DATA_OPTIONS, filters: parseFiltersV2(req.body.filter) };
     const filterId = await req.conapi.generateFilterId(dataset.id, dataOptions);
-    res.redirect(req.buildUrl(`/${dataset.id}/filtered/${filterId}`, req.language, { page_size: pageSize.toString() }));
+    res.redirect(
+      req.buildUrl(
+        `/${dataset.id}/filtered/${filterId}`,
+        req.language,
+        { page_size: pageSize.toString() },
+        'dataset-nav'
+      )
+    );
     return;
   }
 
@@ -426,10 +433,10 @@ export const viewPublishedLanding = async (req: Request, res: Response, next: Ne
     if (req.method === 'POST') {
       switch (req.body.chooser) {
         case 'pivot':
-          res.redirect(req.buildUrl(`/${dataset.id}/pivot`, req.language));
+          res.redirect(req.buildUrl(`/${dataset.id}/pivot`, req.language, undefined, 'dataset-nav'));
           return;
         case 'data':
-          res.redirect(req.buildUrl(`/${dataset.id}/data`, req.language));
+          res.redirect(req.buildUrl(`/${dataset.id}/data`, req.language, undefined, 'dataset-nav'));
           return;
         default:
           throw new BadRequestException('Unsupported chooser type');
@@ -517,7 +524,7 @@ export const createPublishedDatasetPivot = async (req: Request, res: Response, n
         message: { key: 'filters.no_values_selected', params: { columnName: f.columnName } }
       }));
       req.session.save();
-      const fallback = req.buildUrl(`/${dataset.id}/pivot`, req.language);
+      const fallback = req.buildUrl(`/${dataset.id}/pivot`, req.language, {}, 'dataset-nav');
       res.redirect(req.headers.referer ?? fallback);
       return;
     }
@@ -531,11 +538,18 @@ export const createPublishedDatasetPivot = async (req: Request, res: Response, n
     const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
     if (req.body.stage === PivotStage.Summary) {
       res.redirect(
-        req.buildUrl(`/${dataset.id}/pivot/${filterId}/summary`, req.language, { page_size: pageSize.toString() })
+        req.buildUrl(
+          `/${dataset.id}/pivot/${filterId}/summary`,
+          req.language,
+          { page_size: pageSize.toString() },
+          'dataset-nav'
+        )
       );
       return;
     }
-    res.redirect(req.buildUrl(`/${dataset.id}/pivot/${filterId}`, req.language, { page_size: pageSize.toString() }));
+    res.redirect(
+      req.buildUrl(`/${dataset.id}/pivot/${filterId}`, req.language, { page_size: pageSize.toString() }, 'dataset-nav')
+    );
     return;
   } else {
     if (req.query?.columns && req.query?.rows) {

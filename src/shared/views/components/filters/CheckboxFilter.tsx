@@ -73,7 +73,7 @@ export const CheckboxFilter = ({ filter, values, disabled = false }: CheckboxFil
           </p>
         )}
         {isMeasure && (
-          <p className="govuk-body">
+          <p className="govuk-body govuk-!-font-size-16">
             <T>filters.description_info</T>
           </p>
         )}

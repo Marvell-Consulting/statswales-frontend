@@ -48,7 +48,7 @@ test.describe('Pivot Flow', () => {
       await page.click('#tableChooserBtn');
       await expect(page.locator('#start-over-btn')).toBeVisible();
       await page.locator('#start-over-btn').click();
-      await expect(page).toHaveURL(/start/);
+      await expect(page).toHaveURL(/pivot/);
     });
   });
 

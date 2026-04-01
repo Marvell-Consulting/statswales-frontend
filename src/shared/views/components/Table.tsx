@@ -30,6 +30,7 @@ type TablePropsBase<T> = {
   isSticky?: boolean;
   i18nBase?: string;
   isSortable?: boolean;
+  anchor?: string;
 };
 
 export type TableProps<T> =
@@ -48,7 +49,8 @@ function TableHeader<T>({
   sortBy,
   query,
   originalUrl,
-  isSortable
+  isSortable,
+  anchor
 }: {
   i18nBase?: string;
   scope: 'col' | 'row';
@@ -57,6 +59,7 @@ function TableHeader<T>({
   query: ReturnType<(typeof qs)['parse']>;
   originalUrl: string;
   isSortable?: boolean;
+  anchor?: string;
 }) {
   const isObject = typeof col === 'object';
   const hasLabel = isObject && 'label' in col;
@@ -97,7 +100,8 @@ function TableHeader<T>({
     const param = getSortParam();
     const newQuery = param ? qs.stringify({ ...query, sort_by: param }) : qs.stringify(omit(query, 'sort_by'));
 
-    return size(newQuery) ? `${originalUrl}?${newQuery}` : originalUrl;
+    const url = size(newQuery) ? `${originalUrl}?${newQuery}` : originalUrl;
+    return anchor ? `${url}#${anchor}` : url;
   }
 
   const sortUrl = getSortUrl();
@@ -116,7 +120,16 @@ function TableHeader<T>({
   );
 }
 
-export default function Table<T>({ columns, rows, colgroup, inverted, isSticky, i18nBase, isSortable }: TableProps<T>) {
+export default function Table<T>({
+  columns,
+  rows,
+  colgroup,
+  inverted,
+  isSticky,
+  i18nBase,
+  isSortable,
+  anchor
+}: TableProps<T>) {
   const { url } = useLocals();
   const [originalUrl, query] = url.split('?');
 
@@ -140,6 +153,7 @@ export default function Table<T>({ columns, rows, colgroup, inverted, isSticky, 
                       query={parsed}
                       originalUrl={originalUrl}
                       isSortable={isSortable}
+                      anchor={anchor}
                     />
                     <td className="govuk-table__cell">
                       {typeof col === 'object'
@@ -168,6 +182,7 @@ export default function Table<T>({ columns, rows, colgroup, inverted, isSticky, 
                       query={parsed}
                       originalUrl={originalUrl}
                       isSortable={isSortable}
+                      anchor={anchor}
                     />
                   );
                 })}

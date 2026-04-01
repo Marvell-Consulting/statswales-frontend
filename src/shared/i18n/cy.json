@@ -1665,7 +1665,7 @@
     "apply_all_selections": "Cymhwyso’r holl ddewisiadau",
     "select_all_variables": "Ailosod yr holl hidlwyr",
     "active_filters_notice": "Mae newidynnau yn y tabl hwn wedi'u hidlo. Gallwch newid pa werthoedd sy'n cael eu dangos yn y tabl yn y ddewislen 'Hidlwyr newidynnau'.",
-    "pivot_hidden_notice": "Dim ond gan un gwerth y gall newidynnau cudd yn eich tabl gael eu cynrychioli.",
+    "pivot_hidden_notice": "Dim ond data ar gyfer 2 set o newidynnau ar y tro y gall eich tabl presennol ei ddangos. Rhaid i bob newidyn arall gael ei gynrychioli gan un gwerth. Gallwch newid pa newidynnau a gwerthoedd sy'n cael eu dangos yn eich tabl.",
     "disabled_filters_notice": "Byddwch yn gallu newid y dewisiadau hidlo ar ôl i chi ddewis sut i weld y data.",
     "no_values_selected": "Dewiswch o leiaf 1 gwerth ar gyfer y newidyn hwn<span class=\"govuk-visually-hidden\"> {{columnName}}</span>",
     "measure": "Disgrifiad o’r data",

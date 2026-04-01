@@ -8,14 +8,15 @@ type Tab = {
 };
 
 export type TabsProps = {
+  id?: string;
   tabs: Tab[];
   title?: string;
 };
 
-export default function Tabs({ tabs, title }: TabsProps) {
+export default function Tabs({ id, tabs, title }: TabsProps) {
   return (
     <div className="govuk-tabs" data-module="govuk-tabs">
-      <div className="tabs">
+      <div className="tabs" id={id}>
         <div className="govuk-width-container">
           <div className="govuk-main-wrapper govuk-!-padding-bottom-0">
             {title && <h2 className="govuk-tabs__title">{title}</h2>}
