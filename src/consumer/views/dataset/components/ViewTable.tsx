@@ -87,7 +87,7 @@ export default function ViewTable(props: ViewTableProps) {
           <T>consumer_view.no_data</T>
         </div>
       ) : (
-        <Table isSticky columns={columns} rows={props.data} isSortable />
+        <Table isSticky columns={columns} rows={props.data} isSortable anchor="dataset-nav" />
       )}
 
       <script

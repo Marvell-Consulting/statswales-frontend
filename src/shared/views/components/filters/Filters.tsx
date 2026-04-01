@@ -28,7 +28,7 @@ export const Filters = (props: FiltersProps) => {
 
   const selectAllLink = preview
     ? buildUrl(`/publish/${dataset.id}/cube-preview`, i18n.language)
-    : buildUrl(`/${dataset.id}`, i18n.language);
+    : buildUrl(`/${dataset.id}`, i18n.language, {}, 'dataset-nav');
 
   return (
     <div className="filters-container">

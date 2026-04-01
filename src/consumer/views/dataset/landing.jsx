@@ -46,6 +46,7 @@ export default function ConsumerView(props) {
       )}
 
       <Tabs
+        id="dataset-nav"
         title={props.t('toc')}
         tabs={[
           { label: props.t('consumer_view.tabs.data'), id: 'data', children: <LandingTab {...props} /> },

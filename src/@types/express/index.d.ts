@@ -9,6 +9,6 @@ declare module 'express-serve-static-core' {
     jwt?: string;
     pubapi: PublisherApi;
     conapi: ConsumerApi;
-    buildUrl: (path: string, locale: Locale | string, query?: Record<string, string>) => string;
+    buildUrl: (path: string, locale: Locale | string, query?: Record<string, string>, anchor?: string) => string;
   }
 }
