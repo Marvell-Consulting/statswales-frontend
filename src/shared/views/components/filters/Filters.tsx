@@ -40,12 +40,6 @@ export const Filters = (props: FiltersProps) => {
         </div>
       )}
 
-      {!isPivot && selected?.length > 0 && (
-        <div className="govuk-inset-text">
-          <T>filters.active_filters_notice</T>
-        </div>
-      )}
-
       {disabled && (
         <div className="govuk-inset-text">
           <T>filters.disabled_filters_notice</T>
