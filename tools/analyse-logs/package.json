@@ -1,0 +1,14 @@
+{
+  "name": "statswales-frontend-analyse-logs",
+  "private": true,
+  "scripts": {
+    "analyse": "ts-node index.ts"
+  },
+  "dependencies": {
+    "@duckdb/node-api": "^1.5.1-r.1"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "~5.9.0"
+  }
+}
