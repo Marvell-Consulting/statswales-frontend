@@ -77,7 +77,9 @@ export default function DataTab(props: DataTabProps) {
             <div className="govuk-grid-column-three-quarters">
               <SummaryTable {...props} showAccordion={true} />
 
-              {pivotSelected ? <PivotControls {...props} /> : <DataControls {...props} />}
+              {!props.preview &&
+                !props.isDevPreview &&
+                (pivotSelected ? <PivotControls {...props} /> : <DataControls {...props} />)}
 
               <div className="govuk-!-padding-top-5 govuk-!-margin-bottom-2">
                 <ViewTable {...props} isFiltered={props.selectedFilterOptions?.length > 0} isPivot={pivotSelected} />
