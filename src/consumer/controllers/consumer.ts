@@ -305,18 +305,18 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
       const pivotRows = sanitizePivotAxis(req.body.rows);
       const pivotColumns = sanitizePivotAxis(req.body.columns);
 
-      const includeExtended = (req.body.extended ?? 'no') as string;
-      const isPivotedFiltered = req.body.view_type === 'filtered' && pivotRows.length > 0 && pivotColumns.length > 0;
-      const data_value_type = (`${viewChoice}` +
-        `${!isPivotedFiltered && includeExtended === 'yes' ? '_extended' : ''}`) as DataValueType;
-
-      let pivot = 'false';
-      let filterId: string;
       const hasValidPivotAxes =
         req.body.view_type === 'filtered' &&
         pivotRows.length > 0 &&
         pivotColumns.length > 0 &&
         !pivotRows.some((row) => pivotColumns.includes(row));
+
+      const includeExtended = (req.body.extended ?? 'no') as string;
+      const data_value_type = (`${viewChoice}` +
+        `${!hasValidPivotAxes && includeExtended === 'yes' ? '_extended' : ''}`) as DataValueType;
+
+      let pivot = 'false';
+      let filterId: string;
 
       if (hasValidPivotAxes) {
         pivot = 'true';
