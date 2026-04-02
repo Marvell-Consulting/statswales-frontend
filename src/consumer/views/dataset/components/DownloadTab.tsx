@@ -22,8 +22,32 @@ function ExtendedHint() {
   );
 }
 
+function ExtendedOptions() {
+  const { i18n } = useLocals();
+  return (
+    <RadioGroup
+      name="extended"
+      label={i18n.t('consumer_view.downloads.extended.heading')}
+      hint={<ExtendedHint />}
+      options={[
+        {
+          value: 'yes',
+          label: i18n.t('consumer_view.downloads.extended.options.yes.label'),
+          hint: i18n.t('consumer_view.downloads.extended.options.yes.hint')
+        },
+        {
+          value: 'no',
+          label: i18n.t('consumer_view.downloads.extended.options.no.label')
+        }
+      ]}
+      value="yes"
+    />
+  );
+}
+
 export default function DownloadTab(props: DownloadTabProps) {
   const { buildUrl, i18n } = useLocals();
+  const isPivoted = !!(props.columns && props.rows);
 
   const downloadMetaUrl = props.preview
     ? buildUrl(`/publish/${props.dataset.id}/download/metadata`, i18n.language)
@@ -47,7 +71,8 @@ export default function DownloadTab(props: DownloadTabProps) {
               },
               {
                 value: 'unfiltered',
-                label: i18n.t('consumer_view.downloads.type.options.full.label')
+                label: i18n.t('consumer_view.downloads.type.options.full.label'),
+                children: isPivoted ? <ExtendedOptions /> : undefined
               }
             ]}
             value={props.selectedFilterOptions ? 'filtered' : 'unfiltered'}
@@ -90,27 +115,7 @@ export default function DownloadTab(props: DownloadTabProps) {
             value="formatted"
           />
 
-          {props.columns && props.rows ? (
-            <input type="hidden" value="no" name="extended"></input>
-          ) : (
-            <RadioGroup
-              name="extended"
-              label={i18n.t('consumer_view.downloads.extended.heading')}
-              hint={<ExtendedHint />}
-              options={[
-                {
-                  value: 'yes',
-                  label: i18n.t('consumer_view.downloads.extended.options.yes.label'),
-                  hint: i18n.t('consumer_view.downloads.extended.options.yes.hint')
-                },
-                {
-                  value: 'no',
-                  label: i18n.t('consumer_view.downloads.extended.options.no.label')
-                }
-              ]}
-              value="yes"
-            />
-          )}
+          {!isPivoted && <ExtendedOptions />}
           <RadioGroup
             name="download_language"
             label={i18n.t('consumer_view.downloads.language.heading')}
