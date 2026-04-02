@@ -13,6 +13,7 @@ export type ViewTableProps = NoteCodesLegendProps & {
   headers: ColumnHeader[];
   data: string[][];
   isFiltered?: boolean;
+  isPivot?: boolean;
 };
 
 export default function ViewTable(props: ViewTableProps) {
@@ -81,7 +82,7 @@ export default function ViewTable(props: ViewTableProps) {
         </div>
       </div>
 
-      {props.isFiltered && (
+      {!props.isPivot && props.isFiltered && (
         <div className="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-2 govuk-!-padding-3">
           <T>filters.active_filters_notice</T>
         </div>
