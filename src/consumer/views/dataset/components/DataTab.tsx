@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { Filters } from '../../../../shared/views/components/filters';
 import Pagination, { PaginationProps } from '../../../../shared/views/components/Pagination';
 import { NoteCodesLegendProps } from './NoteCodesLegend';
@@ -38,11 +38,6 @@ export default function DataTab(props: DataTabProps) {
   if (props.isDevPreview) formUrl = buildUrl(`/developer/${props.dataset.id}/filtered`, i18n.language, {}, 'data');
   else if (props.preview) formUrl = buildUrl(`/publish/${props.dataset.id}/cube-preview`, i18n.language);
   else if (props.columns && props.rows) formUrl = buildUrl(`/${props.dataset.id}/pivot`, i18n.language);
-  let controls: ReactNode | null = null;
-  if (props.url.includes('data') || props.url.includes('pivot')) {
-    controls = pivotSelected ? <PivotControls {...props} /> : <DataControls {...props} />;
-  }
-
   return (
     <div className="govuk-width-container">
       <div className="govuk-main-wrapper govuk-!-padding-top-0">
@@ -81,7 +76,11 @@ export default function DataTab(props: DataTabProps) {
           ) : (
             <div className="govuk-grid-column-three-quarters">
               <SummaryTable {...props} showAccordion={true} />
-              {controls}
+
+              {!props.preview &&
+                !props.isDevPreview &&
+                (pivotSelected ? <PivotControls {...props} /> : <DataControls {...props} />)}
+
               <div className="govuk-!-padding-top-5 govuk-!-margin-bottom-2">
                 <ViewTable {...props} isFiltered={props.selectedFilterOptions?.length > 0} isPivot={pivotSelected} />
               </div>
