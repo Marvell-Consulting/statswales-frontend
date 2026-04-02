@@ -82,7 +82,7 @@ export default function ViewTable(props: ViewTableProps) {
       </div>
 
       {props.isFiltered && (
-        <div className="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-2">
+        <div className="govuk-inset-text govuk-!-margin-top-2 govuk-!-margin-bottom-2 govuk-!-padding-3">
           <T>filters.active_filters_notice</T>
         </div>
       )}
