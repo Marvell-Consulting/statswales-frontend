@@ -9,6 +9,7 @@ import { Locale } from '../src/shared/enums/locale';
 import { config } from '../src/shared/config';
 
 import { mockBackend } from './mocks/backend';
+import { datasetWithTitle } from './mocks/fixtures';
 
 jest.mock('../src/publisher/middleware/ensure-authenticated', () => ({
   ensureAuthenticated: (req: Request, res: Response, next: NextFunction) => next()
@@ -54,6 +55,14 @@ describe('Error handling', () => {
     const res = await request(app).get('/en-GB');
     expect(res.status).toBe(500);
     expect(res.text).toContain(t('errors.server_error', { lng: Locale.English }));
+  });
+
+  test('should render the bad request page for 400s', async () => {
+    const datasetId = '5caeb8ed-ea64-4a58-8cf0-b728308833e5';
+    mockBackend.use(http.get(`http://localhost:3001/dataset/${datasetId}`, () => HttpResponse.json(datasetWithTitle)));
+    const res = await request(app).post(`/en-GB/publish/${datasetId}/download`).send({});
+    expect(res.status).toBe(400);
+    expect(res.text).toContain(t('errors.bad_request', { lng: Locale.English }));
   });
 
   test('should render the error page for everything else', async () => {

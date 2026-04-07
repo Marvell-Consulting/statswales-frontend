@@ -1613,6 +1613,7 @@
       "no_csv": "Dewis tabl am-edrych",
       "no_csv_data": "Dewis tabl am-edrych"
     },
+    "bad_request": "Cais annilys",
     "not_found": "Ni ddaethpwyd o hyd i'r dudalen",
     "server_error": "Mae gwall anhysbys wedi digwydd, rhowch gynnig arall yn nes ymlaen",
     "forbidden": {
