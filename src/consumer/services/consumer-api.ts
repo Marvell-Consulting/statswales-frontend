@@ -90,7 +90,7 @@ export class ConsumerApi {
       .catch((error) => {
         if (error instanceof ApiException) throw error;
         logger.error(error, `An unknown error occurred attempting to fetch ${fullUrl}`);
-        throw new UnknownException(error.mesage);
+        throw new UnknownException(error.message);
       });
   }
 
