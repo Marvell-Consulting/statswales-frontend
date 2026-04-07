@@ -1,3 +1,5 @@
+import fs from 'node:fs/promises';
+
 import { test, expect, Page } from '@playwright/test';
 
 import { resolveDatasetUrlByTitle } from './helpers/find-dataset';
@@ -164,5 +166,42 @@ test.describe('Non-CSV Format Downloads', () => {
 
     const suggestedFilename = download.suggestedFilename();
     expect(suggestedFilename).toMatch(/\.json$/);
+  });
+});
+
+test.describe('CSV Download Language Content', () => {
+  test('Welsh CSV download contains Welsh column headers', async ({ page }) => {
+    await goToDownloadTab(page);
+
+    const enDownload = await submitDownload(page, {
+      viewType: 'unfiltered',
+      format: 'csv',
+      viewChoice: 'raw',
+      extended: 'no',
+      language: 'en-GB'
+    });
+
+    const enPath = await enDownload.path();
+    expect(enPath).toBeTruthy();
+    const enContent = await fs.readFile(enPath!, 'utf-8');
+    const enHeaders = enContent.split('\n')[0];
+
+    await goToDownloadTab(page);
+
+    const cyDownload = await submitDownload(page, {
+      viewType: 'unfiltered',
+      format: 'csv',
+      viewChoice: 'raw',
+      extended: 'no',
+      language: 'cy-GB'
+    });
+
+    const cyPath = await cyDownload.path();
+    expect(cyPath).toBeTruthy();
+    const cyContent = await fs.readFile(cyPath!, 'utf-8');
+    const cyHeaders = cyContent.split('\n')[0];
+
+    expect(cyHeaders).not.toEqual(enHeaders);
+    expect(cyHeaders).toContain(' - CY');
   });
 });

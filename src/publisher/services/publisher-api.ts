@@ -928,8 +928,8 @@ export class PublisherApi {
     language: string
   ): Promise<ReadableStream> {
     logger.debug(`Fetching ${format} stream for dataset: ${datasetId}...`);
-    const query = new URLSearchParams({ format, lang: language });
-    return this.fetch({ url: `dataset/${datasetId}/preview/${filterId}`, query }).then(
+    const query = new URLSearchParams({ format });
+    return this.fetch({ url: `dataset/${datasetId}/preview/${filterId}`, query, lang: language as Locale }).then(
       (response) => response.body as ReadableStream
     );
   }

@@ -224,8 +224,8 @@ export class ConsumerApi {
     language: string
   ): Promise<ReadableStream> {
     logger.debug(`Fetching ${format} stream for dataset: ${datasetId}...`);
-    const query = new URLSearchParams({ format, lang: language });
-    return this.fetch({ url: `v2/${datasetId}/data/${filterId}`, query }).then(
+    const query = new URLSearchParams({ format });
+    return this.fetch({ url: `v2/${datasetId}/data/${filterId}`, query, lang: language as Locale }).then(
       (response) => response.body as ReadableStream<any>
     );
   }
@@ -237,8 +237,8 @@ export class ConsumerApi {
     language: string
   ): Promise<ReadableStream> {
     logger.debug(`Fetching ${format} stream for dataset: ${datasetId}...`);
-    const query = new URLSearchParams({ format, lang: language });
-    return this.fetch({ url: `v2/${datasetId}/pivot/${filterId}`, query }).then(
+    const query = new URLSearchParams({ format });
+    return this.fetch({ url: `v2/${datasetId}/pivot/${filterId}`, query, lang: language as Locale }).then(
       (response) => response.body as ReadableStream<any>
     );
   }
