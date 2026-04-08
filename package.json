@@ -29,7 +29,8 @@
     "start:dev": "npm run build && (node dist/publisher/server.js | pino-colada & node dist/consumer/server.js | pino-colada)",
     "start:ci": "node dist/publisher/server.js & node dist/consumer/server.js",
     "start:publisher": "node dist/publisher/server.js",
-    "start:consumer": "node dist/consumer/server.js"
+    "start:consumer": "node dist/consumer/server.js",
+    "replay-dataset": "ts-node tools/replay-dataset.ts"
   },
   "keywords": [],
   "author": "",
