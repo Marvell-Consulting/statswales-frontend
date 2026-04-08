@@ -121,8 +121,8 @@ function validateFiles(datasetDir: string, cfg: DebugDatasetConfig): void {
 async function main() {
   const datasetDir = process.argv[2];
   if (!datasetDir) {
-    console.error('Usage: ts-node tools/replay-dataset.ts <dataset-dir-name>');
-    console.error('Example: ts-node tools/replay-dataset.ts SW-1188');
+    console.error('Usage: npm run replay-dataset -- <dataset-dir-name>');
+    console.error('Example: npm run replay-dataset -- SW-1188');
     process.exit(1);
   }
 
@@ -222,7 +222,7 @@ async function main() {
 
     console.log('\nDataset published successfully!');
     console.log(`  Publisher: ${baseUrl}/en-GB/publish/${datasetId}/overview`);
-    console.log(`  Consumer:  ${config.frontend.consumer.url}/en-GB/${datasetId}`);
+    console.log(`  Consumer:  ${config.frontend.consumer.url}/en-GB/${datasetId}/start`);
   } finally {
     await context.close();
     await browser.close();
