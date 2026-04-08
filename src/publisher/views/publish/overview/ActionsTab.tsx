@@ -171,7 +171,7 @@ export function ActionsTab({
         {[DatasetStatus.Live, DatasetStatus.Archived].includes(datasetStatus) && (
           <li>
             <ActionLink
-              fullUrl={`${consumerUrl}/${i18n.language}/${datasetId}`}
+              fullUrl={`${consumerUrl}/${i18n.language}/${datasetId}/start`}
               action="view_published_dataset"
               newTab
             />
