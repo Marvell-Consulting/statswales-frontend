@@ -16,7 +16,7 @@ export default function Overview(props) {
   const openUnpublishTask = props.openTasks.find((task) => task.action === 'unpublish');
   const openArchiveTask = props.openTasks.find((task) => task.action === 'archive');
   const openUnarchiveTask = props.openTasks.find((task) => task.action === 'unarchive');
-  const eventualPublicUrl = `${config.frontend.consumer.url}/${props.i18n.language}/${props.dataset.id}`;
+  const eventualPublicUrl = `${config.frontend.consumer.url}/${props.i18n.language}/${props.dataset.id}/start`;
 
   return (
     <Layout {...props} title={props.title}>

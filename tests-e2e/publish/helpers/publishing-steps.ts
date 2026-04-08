@@ -145,8 +145,8 @@ export async function configureDimension(page: Page, datasetId: string, dimensio
   await page.getByRole('textbox').fill(dimensionConfig.dimensionName);
   await page.getByRole('button', { name: 'Continue' }).click();
   expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
-  await expect(page.getByText(dimensionConfig.dimensionName)).toBeVisible();
-  await checkTasklistItemComplete(page, dimensionConfig.dimensionName);
+  await expect(page.getByText(dimensionConfig.dimensionName, { exact: true })).toBeVisible();
+  await checkTasklistItemComplete(page, new RegExp(`^${escapeRegExp(dimensionConfig.dimensionName)}$`));
 }
 
 export async function configureLookupDimension(page: Page, datasetId: string, dimensionConfig: DimensionConfig) {
@@ -161,8 +161,8 @@ export async function configureLookupDimension(page: Page, datasetId: string, di
   await page.getByRole('textbox').fill(dimensionConfig.dimensionName);
   await page.getByRole('button', { name: 'Continue' }).click();
   expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
-  await expect(page.getByText(dimensionConfig.dimensionName)).toBeVisible();
-  await checkTasklistItemComplete(page, dimensionConfig.dimensionName);
+  await expect(page.getByText(dimensionConfig.dimensionName, { exact: true })).toBeVisible();
+  await checkTasklistItemComplete(page, new RegExp(`^${escapeRegExp(dimensionConfig.dimensionName)}$`));
 }
 
 export async function completeMetadata(page: Page, section: string, text: string) {
@@ -281,7 +281,9 @@ export async function completeUpdateFrequency(
     await page.getByRole('textbox', { name: 'Month' }).fill(String(frequency.month));
     await page.getByRole('textbox', { name: 'Year' }).fill(String(frequency.year));
   } else {
-    await page.getByLabel('This dataset is not expected to be updated').click({ force: true });
+    await page
+      .getByLabel('This dataset is not expected to be updated or replaced in the future', { exact: true })
+      .click({ force: true });
   }
   await page.getByRole('button', { name: 'Continue' }).click();
   expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);

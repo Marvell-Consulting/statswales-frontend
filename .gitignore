@@ -50,3 +50,6 @@ failing-datasets.txt
 .vscode/
 .nova/
 .claude/
+
+# ignore dataset source files used for debugging
+tests-e2e/sample-csvs/.debug

@@ -97,6 +97,12 @@ const config = defineConfig([
     rules: {
       '@typescript-eslint/no-explicit-any': 'off'
     }
+  },
+  {
+    files: ['tools/**/*.ts'],
+    rules: {
+      'no-console': 'off'
+    }
   }
 ]);
 
