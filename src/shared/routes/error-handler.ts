@@ -8,6 +8,12 @@ const cookieDomain = new URL(config.auth.jwt.cookieDomain).hostname;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const errorHandler: ErrorRequestHandler = (err: any, req: Request, res: Response, _next: NextFunction) => {
   switch (err.status) {
+    case 400:
+      logger.warn(`400 error detected: ${err.message}`);
+      res.status(400);
+      res.render('errors/bad-request');
+      break;
+
     case 401:
       logger.warn('401 error detected, logging user out');
       res.status(401);

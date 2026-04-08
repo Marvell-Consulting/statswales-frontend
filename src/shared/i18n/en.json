@@ -1660,6 +1660,7 @@
       "no_csv": "Select a lookup table",
       "no_csv_data": "Select a lookup table"
     },
+    "bad_request": "Bad request",
     "not_found": "Page not found",
     "server_error": "An unknown error occurred, try again later",
     "forbidden": {
