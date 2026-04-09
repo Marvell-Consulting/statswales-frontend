@@ -24,6 +24,7 @@ const config = defineConfig([
       'node_modules/**',
       'playwright/**',
       'src/shared/public/**',
+      'tools/analyse-logs/**',
       '**/*.config.{mjs,ts}'
     ]
   },
