@@ -5,6 +5,7 @@ export function heading(level: number, text: string): string {
 function escapeCell(value: string | number | null | undefined): string {
   return String(value ?? '')
     .replace(/\r\n|\r|\n/g, ' ')
+    .replace(/\\/g, '\\\\')
     .replace(/\|/g, '\\|');
 }
 
