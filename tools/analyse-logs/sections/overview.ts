@@ -11,9 +11,13 @@ export async function overview(): Promise<string> {
       count(*) AS total_rows
     FROM logs
   `);
-  const earliest = new Date(Number(timeRange.earliest)).toISOString();
-  const latest = new Date(Number(timeRange.latest)).toISOString();
-  lines.push(`${bold('Time range:')} ${earliest} → ${latest}`);
+  const earliestMs = Number(timeRange.earliest);
+  const latestMs = Number(timeRange.latest);
+  const timeRangeLabel =
+    Number.isFinite(earliestMs) && Number.isFinite(latestMs)
+      ? `${new Date(earliestMs).toISOString()} → ${new Date(latestMs).toISOString()}`
+      : 'n/a';
+  lines.push(`${bold('Time range:')} ${timeRangeLabel}`);
   lines.push(`${bold('Total rows:')} ${Number(timeRange.total_rows).toLocaleString()}\n`);
 
   const healthcheck = await query(`

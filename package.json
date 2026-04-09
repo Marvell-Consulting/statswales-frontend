@@ -4,7 +4,7 @@
   "description": "This is the StatsWales private alpha repository.  This repository is here to allow us to experiment with a number of technologies to prove out a number of hypotheses and establish the technologies we may wish to take in to Beta.",
   "main": "server.js",
   "scripts": {
-    "analyse-logs": "ts-node ./tools/analyse-logs/index.ts",
+    "analyse-logs": "npm --prefix tools/analyse-logs run analyse --",
     "clean": "rimraf dist",
     "css": " sass src/shared/public/scss/app.scss:src/shared/public/css/app.css node_modules/highlight.js/scss/github-dark-dimmed.scss:src/shared/public/css/highlight.css",
     "copy-assets": "ts-node tools/copy-assets",

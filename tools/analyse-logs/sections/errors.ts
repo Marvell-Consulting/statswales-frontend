@@ -33,17 +33,20 @@ export async function errors(): Promise<string> {
     SELECT
       COALESCE(err_type, 'unknown') AS error_type,
       COALESCE(split_part(err_message, chr(10), 1), 'no message') AS first_line,
-      err_stack
+      err_stack,
+      count(*) AS cnt
     FROM logs
     WHERE level >= 50 AND err_stack IS NOT NULL
     GROUP BY error_type, first_line, err_stack
-    ORDER BY count(*) DESC
+    ORDER BY cnt DESC
     LIMIT 5
   `);
   if (stacks.length > 0) {
     lines.push(heading(3, 'Example Stack Traces (top 5 by frequency)'));
     for (const s of stacks) {
-      lines.push(`**${s.error_type}: ${(s.first_line as string).substring(0, 100)}**\n`);
+      lines.push(
+        `**${s.error_type}: ${(s.first_line as string).substring(0, 100)} (${Number(s.cnt).toLocaleString()})**\n`
+      );
       const stackLines = (s.err_stack as string).split('\n').slice(0, 15);
       lines.push(codeBlock(stackLines.join('\n')));
     }
