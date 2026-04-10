@@ -48,6 +48,50 @@ describe('PublisherApi', () => {
     });
   });
 
+  describe('Rate limit bypass', () => {
+    const bypassToken = 'test-bypass-token';
+    const originalToken = config.backend.rateLimitBypassToken;
+
+    beforeEach(() => {
+      delete (config.backend as Record<string, unknown>).rateLimitBypassToken;
+    });
+
+    afterAll(() => {
+      config.backend.rateLimitBypassToken = originalToken;
+    });
+
+    it('should include x-rate-limit-bypass header when bypass token is configured', async () => {
+      config.backend.rateLimitBypassToken = bypassToken;
+      mockResponse = Promise.resolve(new Response(null, { status: 200 }));
+
+      await statsWalesApi.ping();
+
+      expect(fetchSpy).toHaveBeenCalledWith(
+        `${baseUrl}/healthcheck?lang=en`,
+        expect.objectContaining({
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          headers: { ...headers, 'x-rate-limit-bypass': bypassToken }
+        })
+      );
+    });
+
+    it('should not include x-rate-limit-bypass header when bypass token is not configured', async () => {
+      mockResponse = Promise.resolve(new Response(null, { status: 200 }));
+
+      await statsWalesApi.ping();
+
+      expect(fetchSpy).toHaveBeenCalledWith(
+        `${baseUrl}/healthcheck?lang=en`,
+        expect.objectContaining({
+          headers: expect.not.objectContaining({
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            'x-rate-limit-bypass': expect.anything()
+          })
+        })
+      );
+    });
+  });
+
   describe('Error handling', () => {
     it('should throw an UnknownException when the backend is unreachable', async () => {
       mockResponse = Promise.reject(new Error('Service Unavailable'));
