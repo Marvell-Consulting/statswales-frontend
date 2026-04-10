@@ -97,6 +97,8 @@ export class PublisherApi {
       'Accept-Language': lang,
       ...(this.token ? { Authorization: `Bearer ${this.token}` } : {}),
       // eslint-disable-next-line @typescript-eslint/naming-convention
+      ...(config.backend.rateLimitBypassToken ? { 'x-rate-limit-bypass': config.backend.rateLimitBypassToken } : {}),
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       ...(json ? { 'Content-Type': 'application/json; charset=UTF-8' } : {}),
       ...headers
     };

@@ -33,7 +33,8 @@ export const getDefaultConfig = (): AppConfig => {
     },
     backend: {
       port: parseInt(process.env.BACKEND_PORT || '3000', 10),
-      url: process.env.BACKEND_URL!
+      url: process.env.BACKEND_URL!,
+      rateLimitBypassToken: process.env.RATE_LIMIT_BYPASS_TOKEN
     },
     language: {
       availableTranslations: [Locale.English, Locale.Welsh],

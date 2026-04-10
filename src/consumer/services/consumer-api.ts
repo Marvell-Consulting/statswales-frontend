@@ -55,6 +55,7 @@ export class ConsumerApi {
     /* eslint-disable @typescript-eslint/naming-convention */
     const head = {
       'Accept-Language': lang,
+      ...(config.backend.rateLimitBypassToken ? { 'x-rate-limit-bypass': config.backend.rateLimitBypassToken } : {}),
       ...(json ? { 'Content-Type': 'application/json; charset=UTF-8' } : {}),
       ...headers
     };

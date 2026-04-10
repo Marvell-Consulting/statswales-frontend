@@ -32,6 +32,7 @@ export interface AppConfig {
   backend: {
     port: number;
     url: string;
+    rateLimitBypassToken?: string;
   };
   language: {
     availableTranslations: Locale[];
@@ -68,4 +69,4 @@ export interface AppConfig {
 
 // list any optional properties here so we can ignore missing values when we check the config on boot
 // it would be nice to get them directly from the interface, but interfaces are compile-time only
-export const optionalProperties = ['redisUrl', 'redisPassword', 'basic', 'welshUrl'];
+export const optionalProperties = ['redisUrl', 'redisPassword', 'basic', 'welshUrl', 'rateLimitBypassToken'];
