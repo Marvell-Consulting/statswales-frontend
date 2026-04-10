@@ -8,7 +8,7 @@ import { i18next } from '../middleware/translation';
 import { Locale } from '../enums/locale';
 import { dateFormat } from './date-format';
 import { NextUpdateType } from '../enums/next-update-type';
-import { parse } from 'date-fns';
+import { isValid, parse } from 'date-fns';
 
 export const getDatasetMetadata = async (
   dataset: SingleLanguageDataset,
@@ -77,7 +77,9 @@ export const metadataToCSV = (metadata: PreviewMetadata, locale: Locale): string
         ]);
         break;
       case NextUpdateType.Update:
-        if (day) {
+        if (!isValid(date)) {
+          lines.push([t('dataset_view.key_information.next_update'), '']);
+        } else if (day) {
           lines.push([t('dataset_view.key_information.next_update'), dateFormat(date, 'd MMMM yyyy', { locale })]);
         } else {
           lines.push([t('dataset_view.key_information.next_update'), dateFormat(date, 'MMMM yyyy', { locale })]);
