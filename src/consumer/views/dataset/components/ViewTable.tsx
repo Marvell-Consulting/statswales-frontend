@@ -34,7 +34,7 @@ export default function ViewTable(props: ViewTableProps) {
 
         case col.name === i18n.t('consumer_view.start_date') || col.name === i18n.t('consumer_view.end_date'): {
           const parsedDate = parseISO(value.split('T')[0]);
-          return dateFormat(parsedDate, 'do MMMM yyyy', { locale: i18n.language });
+          return isValid(parsedDate) ? dateFormat(parsedDate, 'do MMMM yyyy', { locale: i18n.language }) : value;
         }
 
         default:

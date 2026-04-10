@@ -3,6 +3,7 @@ import { SingleLanguageDataset } from '../../src/shared/dtos/single-language/dat
 import { SingleLanguageRevision } from '../../src/shared/dtos/single-language/revision';
 import { Designation } from '../../src/shared/enums/designation';
 import { Locale } from '../../src/shared/enums/locale';
+import { NextUpdateType } from '../../src/shared/enums/next-update-type';
 import { i18next } from '../../src/shared/middleware/translation';
 
 const makeRevision = (overrides: Record<string, unknown> = {}): SingleLanguageRevision =>
@@ -191,5 +192,52 @@ describe('metadataToCSV', () => {
     expect(timePeriodRow).toBeDefined();
     // The row value should contain formatted date text
     expect(timePeriodRow![1]).toBeTruthy();
+  });
+
+  it('does not throw when next update has invalid date components', async () => {
+    const revision = makeRevision({
+      update_frequency: {
+        update_type: NextUpdateType.Update,
+        date: { day: undefined, month: undefined, year: undefined }
+      }
+    });
+    const metadata = await getDatasetMetadata(makeDataset(), revision, false);
+
+    expect(() => metadataToCSV(metadata, Locale.EnglishGb)).not.toThrow();
+
+    const csv = metadataToCSV(metadata, Locale.EnglishGb);
+    const nextUpdateRow = csv.find((row) => row[0] === i18next.t('dataset_view.key_information.next_update'));
+    expect(nextUpdateRow).toBeDefined();
+    expect(nextUpdateRow![1]).toBe('');
+  });
+
+  it('formats year-only next update correctly', async () => {
+    const revision = makeRevision({
+      update_frequency: {
+        update_type: NextUpdateType.Update,
+        date: { day: undefined, month: undefined, year: '2027' }
+      }
+    });
+    const metadata = await getDatasetMetadata(makeDataset(), revision, false);
+    const csv = metadataToCSV(metadata, Locale.EnglishGb);
+
+    const nextUpdateRow = csv.find((row) => row[0] === i18next.t('dataset_view.key_information.next_update'));
+    expect(nextUpdateRow).toBeDefined();
+    expect(nextUpdateRow![1]).toBe('2027');
+  });
+
+  it('formats month-and-year next update correctly', async () => {
+    const revision = makeRevision({
+      update_frequency: {
+        update_type: NextUpdateType.Update,
+        date: { day: undefined, month: '06', year: '2027' }
+      }
+    });
+    const metadata = await getDatasetMetadata(makeDataset(), revision, false);
+    const csv = metadataToCSV(metadata, Locale.EnglishGb);
+
+    const nextUpdateRow = csv.find((row) => row[0] === i18next.t('dataset_view.key_information.next_update'));
+    expect(nextUpdateRow).toBeDefined();
+    expect(nextUpdateRow![1]).toBe('June 2027');
   });
 });

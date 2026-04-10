@@ -1,6 +1,6 @@
 import React from 'react';
 import T from '../T';
-import { parse } from 'date-fns';
+import { isValid, parse } from 'date-fns';
 
 import { dateFormat } from '../../../utils/date-format';
 import { NextUpdateType } from '../../../enums/next-update-type';
@@ -30,7 +30,9 @@ const getNextUpdate = (nextUpdateAt?: NextUpdateAt, locale?: string) => {
       const { day, month, year } = nextUpdateAt.date || {};
       const date = parse(`${day || '01'} ${month || '01'} ${year}`, 'dd MM yyyy', new Date());
 
-      if (day && month && year) {
+      if (!isValid(date)) {
+        return <T>dataset_view.key_information.next_update_missing</T>;
+      } else if (day && month && year) {
         return dateFormat(date, 'd MMMM yyyy', { locale });
       } else if (month && year) {
         return dateFormat(date, 'MMMM yyyy', { locale });
