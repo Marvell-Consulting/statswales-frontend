@@ -64,7 +64,7 @@ export const metadataToCSV = (metadata: PreviewMetadata, locale: Locale): string
   if (metadata.keyInfo.nextUpdateAt) {
     const { update_type } = metadata.keyInfo.nextUpdateAt;
     const { day, month, year } = metadata.keyInfo.nextUpdateAt.date || {};
-    const date = parse(`${day || '01'} ${month} ${year}`, 'dd MM yyyy', new Date());
+    const date = parse(`${day || '01'} ${month || '01'} ${year}`, 'dd MM yyyy', new Date());
 
     switch (update_type) {
       case NextUpdateType.None:
@@ -79,10 +79,12 @@ export const metadataToCSV = (metadata: PreviewMetadata, locale: Locale): string
       case NextUpdateType.Update:
         if (!isValid(date)) {
           lines.push([t('dataset_view.key_information.next_update'), '']);
-        } else if (day) {
+        } else if (day && month && year) {
           lines.push([t('dataset_view.key_information.next_update'), dateFormat(date, 'd MMMM yyyy', { locale })]);
-        } else {
+        } else if (month && year) {
           lines.push([t('dataset_view.key_information.next_update'), dateFormat(date, 'MMMM yyyy', { locale })]);
+        } else {
+          lines.push([t('dataset_view.key_information.next_update'), dateFormat(date, 'yyyy', { locale })]);
         }
         break;
     }
