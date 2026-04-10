@@ -25,9 +25,14 @@ describe('ConsumerApi', () => {
 
   describe('Rate limit bypass', () => {
     const bypassToken = 'test-bypass-token';
+    const originalToken = config.backend.rateLimitBypassToken;
 
-    afterEach(() => {
+    beforeEach(() => {
       delete (config.backend as Record<string, unknown>).rateLimitBypassToken;
+    });
+
+    afterAll(() => {
+      config.backend.rateLimitBypassToken = originalToken;
     });
 
     it('should include x-rate-limit-bypass header when bypass token is configured', async () => {
