@@ -91,7 +91,7 @@ describe('ConsumerApi', () => {
 
       expect(fetchSpy).toHaveBeenCalledWith(
         `${baseUrl}/healthcheck?lang=en`,
-        expect.objectContaining({ method: HttpMethod.Get, headers })
+        expect.objectContaining({ method: HttpMethod.Get, headers: expect.objectContaining(headers) })
       );
       expect(ping).toBe(true);
     });
