@@ -12,6 +12,8 @@ import { RowsPerPage } from '../../../../shared/views/components/RowsPerPage';
 import { SortByInterface, serializeSortBy } from '../../../../shared/interfaces/sort-by';
 import { PivotControls } from './pivot/PivotControls';
 import { DataControls } from './pivot/DataControls';
+import { isFeatureEnabled } from '../../../../shared/utils/feature-flags';
+import { FeatureFlag } from '../../../../shared/enums/feature-flag';
 
 type DataTabProps = NoteCodesLegendProps &
   PaginationProps &
@@ -31,7 +33,9 @@ type DataTabProps = NoteCodesLegendProps &
   };
 
 export default function DataTab(props: DataTabProps) {
-  const { buildUrl, i18n } = useLocals();
+  const { buildUrl, i18n, protocol, hostname, url, featureFlags } = useLocals();
+  const urlObj = new URL(url, `${protocol}://${hostname}`);
+  const showPivot = isFeatureEnabled(urlObj.searchParams, FeatureFlag.PivotFlow, featureFlags);
   const pivotSelected = !!props.columns && !!props.rows;
 
   let formUrl = buildUrl(`/${props.dataset.id}/filtered`, i18n.language);
@@ -79,6 +83,7 @@ export default function DataTab(props: DataTabProps) {
 
               {!props.preview &&
                 !props.isDevPreview &&
+                showPivot &&
                 (pivotSelected ? <PivotControls {...props} /> : <DataControls {...props} />)}
 
               <div className="govuk-!-padding-top-5 govuk-!-margin-bottom-2">
