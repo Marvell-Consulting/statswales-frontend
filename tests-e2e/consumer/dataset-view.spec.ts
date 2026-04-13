@@ -53,6 +53,22 @@ test.describe('Dataset View', () => {
     await page.close();
   });
 
+  test('Numeric columns and cells are right-aligned in the data table', async ({ page }) => {
+    await page.goto(datasetUrl);
+
+    // At least one header should carry the numeric alignment class
+    const numericHeaders = page.locator('#data_table th.govuk-table__header--numeric');
+    await expect(numericHeaders.first()).toBeVisible();
+
+    // At least one data cell should carry the numeric alignment class
+    const numericCells = page.locator('#data_table td.govuk-table__cell--numeric');
+    await expect(numericCells.first()).toBeVisible();
+
+    // The CSS class must actually produce right-aligned text
+    const textAlign = await numericCells.first().evaluate((el) => window.getComputedStyle(el).textAlign);
+    expect(textAlign).toBe('right');
+  });
+
   test('Can switch to Welsh on dataset view', async ({ page }) => {
     await page.goto(datasetUrl);
     await page.getByText('Cymraeg').click();
