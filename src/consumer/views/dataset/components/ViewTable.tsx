@@ -62,7 +62,7 @@ export default function ViewTable(props: ViewTableProps) {
         : isNumericColumn(col, index)
           ? 'govuk-table__header--numeric'
           : '',
-    cellClassName: (value: string) => {
+    cellClassName: (value: string | undefined) => {
       if (col.source_type === FactTableColumnType.LineNumber) return 'line-number';
       if (isNumericValue(value)) return 'govuk-table__cell--numeric';
       return undefined;
