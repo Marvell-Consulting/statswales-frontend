@@ -21,7 +21,7 @@ export default function Datasets({ datasets }: DatasetsProps) {
         <li className="index-list__item" key={dataset.id}>
           <a
             className="govuk-heading-s govuk-!-margin-bottom-0 govuk-link inline"
-            href={buildUrl(`/${dataset.id}`, i18n.language)}
+            href={buildUrl(`/${dataset.id}/start`, i18n.language)}
           >
             {dataset.title}
           </a>
