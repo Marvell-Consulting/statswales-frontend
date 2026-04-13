@@ -18,8 +18,9 @@ export type ViewTableProps = NoteCodesLegendProps & {
 
 // Matches humanized numbers (commas as thousand separators), optional decimal,
 // optional whitespace padding, and optional postfix codes like [x] or [z].
+// Also matches standalone note codes with no numeric value (e.g. [x], [x][z]).
 const isNumericValue = (value: string | undefined): boolean =>
-  /^\s*-?(?:\d+|\d{1,3}(?:,\d{3})+)(\.\d+)?(\s*\[\w+\])*\s*$/.test(value ?? '');
+  /^\s*(?:-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?(?:\s*\[\w+\])*|(?:\[\w+\]\s*)+)\s*$/.test(value ?? '');
 
 export default function ViewTable(props: ViewTableProps) {
   const { i18n } = useLocals();
