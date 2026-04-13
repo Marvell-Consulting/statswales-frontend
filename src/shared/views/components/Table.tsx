@@ -9,7 +9,8 @@ import { omit, size } from 'lodash';
 type ColumnBase<T> = {
   key: (keyof T & string) | number;
   className?: string;
-  cellClassName?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  cellClassName?: string | ((value: any, row: T) => string | undefined);
   style?: CSSProperties;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   format?: (value: any, row: T) => ReactNode;
@@ -193,13 +194,19 @@ export default function Table<T>({
                 <tr key={index} className="govuk-table__row">
                   {columns.map((col, index) => {
                     const isObject = typeof col === 'object';
+                    const cellValue = isObject ? row[col.key as keyof typeof row] : row[col as keyof typeof row];
+                    const cellClass = isObject
+                      ? typeof col.cellClassName === 'function'
+                        ? col.cellClassName(cellValue, row)
+                        : col.cellClassName
+                      : undefined;
                     return (
-                      <td key={index} className={clsx('govuk-table__cell', isObject && col.cellClassName)}>
+                      <td key={index} className={clsx('govuk-table__cell', cellClass)}>
                         {isObject
                           ? col.format
-                            ? col.format(row[col.key as keyof typeof row], row)
-                            : (row[col.key as keyof typeof row] as ReactNode)
-                          : (row[col as keyof typeof row] as ReactNode)}
+                            ? col.format(cellValue, row)
+                            : (cellValue as ReactNode)
+                          : (cellValue as ReactNode)}
                       </td>
                     );
                   })}
