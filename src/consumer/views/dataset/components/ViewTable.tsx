@@ -16,8 +16,23 @@ export type ViewTableProps = NoteCodesLegendProps & {
   isPivot?: boolean;
 };
 
+// Matches humanized numbers (commas as thousand separators), optional decimal,
+// optional whitespace padding, and optional postfix codes like [x] or [z].
+const isNumericValue = (value: string | undefined): boolean =>
+  /^\s*-?(?:\d+|\d{1,3}(?:,\d{3})+)(\.\d+)?(\s*\[\w+\])*\s*$/.test(value ?? '');
+
 export default function ViewTable(props: ViewTableProps) {
   const { i18n } = useLocals();
+
+  // A column is numeric if it is typed as DataValues, or — for untyped/unknown columns
+  // (e.g. pivoted columns whose headers come from dimension values) — if the first
+  // non-empty cell in that column looks like a number.
+  const isNumericColumn = (col: ColumnHeader, colIndex: number): boolean => {
+    if (col.source_type === FactTableColumnType.DataValues) return true;
+    if (col.source_type && col.source_type !== FactTableColumnType.Unknown) return false;
+    const firstValue = props.data?.slice(0, 5).find((row) => row[colIndex])?.[colIndex];
+    return firstValue !== undefined && isNumericValue(firstValue);
+  };
 
   const columns = props.headers?.map((col, index) => ({
     key: index,
@@ -41,8 +56,17 @@ export default function ViewTable(props: ViewTableProps) {
           return value;
       }
     },
-    className: col.source_type === FactTableColumnType.LineNumber ? 'line-number' : '',
-    cellClassName: col.source_type === FactTableColumnType.LineNumber ? 'line-number' : ''
+    className:
+      col.source_type === FactTableColumnType.LineNumber
+        ? 'line-number'
+        : isNumericColumn(col, index)
+          ? 'govuk-table__header--numeric'
+          : '',
+    cellClassName: (value: string | undefined) => {
+      if (col.source_type === FactTableColumnType.LineNumber) return 'line-number';
+      if (isNumericValue(value)) return 'govuk-table__cell--numeric';
+      return undefined;
+    }
   }));
 
   return (
