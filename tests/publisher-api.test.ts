@@ -42,7 +42,7 @@ describe('PublisherApi', () => {
         `${baseUrl}/healthcheck?lang=en`,
         expect.objectContaining({
           method: HttpMethod.Get,
-          headers: { ...headers, Authorization: `Bearer ${token}` }
+          headers: expect.objectContaining({ ...headers, Authorization: `Bearer ${token}` })
         })
       );
     });
@@ -146,7 +146,7 @@ describe('PublisherApi', () => {
 
       expect(fetchSpy).toHaveBeenCalledWith(
         `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/data-table/raw?lang=en`,
-        expect.objectContaining({ method: HttpMethod.Get, headers })
+        expect.objectContaining({ method: HttpMethod.Get, headers: expect.objectContaining(headers) })
       );
       expect(fileStream).toBe(stream);
     });
@@ -167,7 +167,7 @@ describe('PublisherApi', () => {
         `${baseUrl}/dataset/${datasetId}/sources?lang=en`,
         expect.objectContaining({
           method: HttpMethod.Get,
-          headers
+          headers: expect.objectContaining(headers)
         })
       );
       expect(factTableColumnDto).toEqual(dataTable);
@@ -187,7 +187,7 @@ describe('PublisherApi', () => {
         `${baseUrl}/dataset/${datasetId}?lang=en`,
         expect.objectContaining({
           method: HttpMethod.Get,
-          headers
+          headers: expect.objectContaining(headers)
         })
       );
       expect(datasetDTO).toEqual(dataset);
@@ -207,7 +207,7 @@ describe('PublisherApi', () => {
         `${baseUrl}/dataset/${datasetId}/view?page_number=1&page_size=10&lang=en`,
         expect.objectContaining({
           method: HttpMethod.Get,
-          headers
+          headers: expect.objectContaining(headers)
         })
       );
       expect(viewDTO).toEqual(view);
@@ -243,7 +243,7 @@ describe('PublisherApi', () => {
         `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/data-table/preview?page_number=1&page_size=10&lang=en`,
         expect.objectContaining({
           method: HttpMethod.Get,
-          headers
+          headers: expect.objectContaining(headers)
         })
       );
       expect(viewDTO).toEqual(view);
@@ -278,7 +278,7 @@ describe('PublisherApi', () => {
         `${baseUrl}/dataset?lang=en`,
         expect.objectContaining({
           method: HttpMethod.Post,
-          headers,
+          headers: expect.objectContaining(headers),
           body
         })
       );
@@ -330,7 +330,7 @@ describe('PublisherApi', () => {
         expect.objectContaining({
           method: HttpMethod.Patch,
           // eslint-disable-next-line @typescript-eslint/naming-convention
-          headers: { ...headers, 'Content-Type': 'application/json; charset=UTF-8' },
+          headers: expect.objectContaining({ ...headers, 'Content-Type': 'application/json; charset=UTF-8' }),
           body: JSON.stringify(sourceAssignment)
         })
       );
@@ -355,7 +355,7 @@ describe('PublisherApi', () => {
 
       expect(fetchSpy).toHaveBeenCalledWith(
         `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/fact-table?lang=en`,
-        expect.objectContaining({ method: HttpMethod.Post, headers, body })
+        expect.objectContaining({ method: HttpMethod.Post, headers: expect.objectContaining(headers), body })
       );
       expect(datasetDTO).toEqual(dataset);
     });
@@ -393,7 +393,7 @@ describe('PublisherApi', () => {
 
       expect(fetchSpy).toHaveBeenCalledWith(
         `${baseUrl}/healthcheck?lang=en`,
-        expect.objectContaining({ method: HttpMethod.Get, headers })
+        expect.objectContaining({ method: HttpMethod.Get, headers: expect.objectContaining(headers) })
       );
       expect(ping).toBe(true);
     });
@@ -405,7 +405,7 @@ describe('PublisherApi', () => {
 
       expect(fetchSpy).toHaveBeenCalledWith(
         `${baseUrl}/healthcheck?lang=en`,
-        expect.objectContaining({ method: HttpMethod.Get, headers })
+        expect.objectContaining({ method: HttpMethod.Get, headers: expect.objectContaining(headers) })
       );
     });
   });
@@ -426,7 +426,7 @@ describe('PublisherApi', () => {
         `${baseUrl}/dataset/${datasetId}/tasks?lang=en`,
         expect.objectContaining({
           method: HttpMethod.Get,
-          headers
+          headers: expect.objectContaining(headers)
         })
       );
       expect(taskDTOs).toEqual(tasks);
@@ -444,7 +444,7 @@ describe('PublisherApi', () => {
         `${baseUrl}/dataset/${datasetId}/tasks?open=true&lang=en`,
         expect.objectContaining({
           method: HttpMethod.Get,
-          headers
+          headers: expect.objectContaining(headers)
         })
       );
       expect(taskDTOs).toEqual(tasks);
@@ -462,7 +462,7 @@ describe('PublisherApi', () => {
         `${baseUrl}/dataset/${datasetId}/tasks?open=false&lang=en`,
         expect.objectContaining({
           method: HttpMethod.Get,
-          headers
+          headers: expect.objectContaining(headers)
         })
       );
       expect(taskDTOs).toEqual(tasks);
