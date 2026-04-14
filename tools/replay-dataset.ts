@@ -157,7 +157,7 @@ async function main() {
     // Phase 1: Create dataset
     console.log('Starting new dataset...');
     await startNewDataset(page);
-    await selectUserGroup(page, cfg.groupName);
+    await selectUserGroup(page, 'E2E tests');
     const datasetId = await provideDatasetTitle(page, cfg.title);
     console.log(`Dataset created: ${datasetId}`);
 

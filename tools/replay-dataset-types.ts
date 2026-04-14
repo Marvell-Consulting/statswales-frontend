@@ -11,7 +11,6 @@ export interface DebugDimensionConfig {
 
 export interface DebugDatasetConfig {
   title: string;
-  groupName: string;
   dataFile: string; // CSV filename relative to dataset dir
   columnAssignments: ColumnAssignment[];
   measure: { filename: string }; // CSV filename relative to dataset dir
