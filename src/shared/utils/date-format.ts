@@ -7,10 +7,11 @@ import { Locale } from '../enums/locale';
 // override date-fns locale option with our own Locale enum so we don't have to convert it everywhere we use this function
 interface DateFormatOptions extends Omit<FormatOptions, 'locale'> {
   locale?: Locale | string;
+  utc?: boolean;
 }
 
 export const dateFormat = (date: DateArg<Date> & {}, formatStr: string, options?: DateFormatOptions): string => {
-  const tzDate = new TZDate(date as Date, 'Europe/London');
+  const tzDate = new TZDate(date as Date, options?.utc ? 'UTC' : 'Europe/London');
 
   const formatOptions: FormatOptions = {
     ...options,

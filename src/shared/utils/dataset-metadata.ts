@@ -100,9 +100,11 @@ export const metadataToCSV = (metadata: PreviewMetadata, locale: Locale): string
       t('dataset_view.key_information.time_covered'),
       t('dataset_view.key_information.time_period', {
         start: metadata.keyInfo.timePeriod.start
-          ? dateFormat(metadata.keyInfo.timePeriod.start, 'MMMM yyyy', { locale })
+          ? dateFormat(metadata.keyInfo.timePeriod.start, 'MMMM yyyy', { locale, utc: true })
           : '',
-        end: metadata.keyInfo.timePeriod.end ? dateFormat(metadata.keyInfo.timePeriod.end, 'MMMM yyyy', { locale }) : ''
+        end: metadata.keyInfo.timePeriod.end
+          ? dateFormat(metadata.keyInfo.timePeriod.end, 'MMMM yyyy', { locale, utc: true })
+          : ''
       })
     ]);
   }
