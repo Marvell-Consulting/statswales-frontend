@@ -40,6 +40,9 @@ test.describe('Dataset View', () => {
     await expect(page.getByRole('heading', { name: 'Main information' })).toBeVisible();
     // Realistic dataset has a Financial year date dimension — time period should be visible
     await expect(page.locator('#time-period')).toBeVisible();
+    // Financial year coverage should show correct months (not shifted by timezone)
+    await expect(page.locator('#time-period')).toContainText('April 2013');
+    await expect(page.locator('#time-period')).toContainText('March 2024');
   });
 
   test('Custom year dataset About tab does not show time period', async ({ browser }) => {

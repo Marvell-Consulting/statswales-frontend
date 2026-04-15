@@ -80,7 +80,8 @@ test.describe('Publish dataset', () => {
       await configureDimension(page, datasetId, {
         originalColName: 'YearCode',
         dimensionName: columnAssignments.find((c) => c.column === 'YearCode')!.name!,
-        optionSelections: ['Dates', 'Periods', 'Financial', 'YYYYYY', 'Years']
+        optionSelections: ['Dates', 'Periods', 'Financial', 'YYYYYY', 'Years'],
+        previewChecks: ['1st April 2013', '31st March 2014']
       });
 
       await configureLookupDimension(page, datasetId, {
@@ -134,6 +135,9 @@ test.describe('Publish dataset', () => {
       await expect(previewPage.getByText('Main information', { exact: true })).toBeVisible();
       await expect(previewPage.getByText('Overview', { exact: true })).toBeVisible();
       await expect(previewPage.getByText('Published by', { exact: true })).toBeVisible();
+      // Financial year coverage: April 2013 to March 2024
+      await expect(previewPage.locator('#time-period')).toContainText('April 2013');
+      await expect(previewPage.locator('#time-period')).toContainText('March 2024');
       await expect(previewPage.getByText(metadata.summary, { exact: true })).toBeVisible();
       await expect(previewPage.getByText(metadata.collection, { exact: true })).toBeVisible();
       await expect(previewPage.getByText(metadata.quality, { exact: true })).toBeVisible();

@@ -131,6 +131,7 @@ export type DimensionConfig = {
   dimensionName: string;
   optionSelections: string[];
   filename?: string;
+  previewChecks?: string[];
 };
 
 export async function configureDimension(page: Page, datasetId: string, dimensionConfig: DimensionConfig) {
@@ -139,6 +140,13 @@ export async function configureDimension(page: Page, datasetId: string, dimensio
   for (const option of dimensionConfig.optionSelections) {
     await page.getByLabel(option).first().click({ force: true });
     await page.getByRole('button', { name: 'Continue' }).click();
+  }
+
+  if (dimensionConfig.previewChecks) {
+    const firstRow = page.locator('table tbody tr').first();
+    for (const text of dimensionConfig.previewChecks) {
+      await expect(firstRow).toContainText(text);
+    }
   }
 
   await page.getByRole('button', { name: 'Continue' }).click();
