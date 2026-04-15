@@ -46,7 +46,7 @@ export default function DimensionPreviewTable(props: DimensionPreviewTableProps)
       switch (heading.name) {
         case 'start_date':
         case 'end_date': {
-          return dateFormat(new Date(value), 'do MMMM yyyy', { utc: true });
+          return dateFormat(new Date(value), 'do MMMM yyyy', { utc: true, locale: i18n.language });
         }
       }
       return value;
