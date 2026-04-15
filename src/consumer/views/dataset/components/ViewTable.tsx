@@ -1,5 +1,5 @@
 import React from 'react';
-import { isValid, parse, parseISO } from 'date-fns';
+import { isValid, parse } from 'date-fns';
 
 import { useLocals } from '../../../../shared/views/context/Locals';
 import Table from '../../../../shared/views/components/Table';
@@ -49,8 +49,10 @@ export default function ViewTable(props: ViewTableProps) {
         }
 
         case col.name === i18n.t('consumer_view.start_date') || col.name === i18n.t('consumer_view.end_date'): {
-          const parsedDate = parseISO(value.split('T')[0]);
-          return isValid(parsedDate) ? dateFormat(parsedDate, 'do MMMM yyyy', { locale: i18n.language }) : value;
+          const parsedDate = new Date(value);
+          return isValid(parsedDate)
+            ? dateFormat(parsedDate, 'do MMMM yyyy', { locale: i18n.language, utc: true })
+            : value;
         }
 
         default:

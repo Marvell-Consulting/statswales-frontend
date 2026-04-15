@@ -14,8 +14,8 @@ function PeriodCovered({ timePeriod, locale }) {
       </dt>
       <dd className="govuk-summary-list__value">
         <T
-          start={dateFormat(timePeriod.start, 'MMMM yyyy', { locale })}
-          end={dateFormat(timePeriod.end, 'MMMM yyyy', { locale })}
+          start={dateFormat(timePeriod.start, 'MMMM yyyy', { locale, utc: true })}
+          end={dateFormat(timePeriod.end, 'MMMM yyyy', { locale, utc: true })}
         >
           dataset_view.key_information.time_period
         </T>

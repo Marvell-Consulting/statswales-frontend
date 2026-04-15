@@ -37,7 +37,7 @@ export default function DateChooser(props) {
         case 'end_date':
           return dateFormat(new Date(value), 'do MMMM yyyy', {
             locale: props.i18n.language,
-            timeZone: 'Europe/London'
+            utc: true
           });
       }
       return value;

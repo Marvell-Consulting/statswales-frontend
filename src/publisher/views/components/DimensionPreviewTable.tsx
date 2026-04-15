@@ -1,5 +1,4 @@
 import React from 'react';
-import { parseISO } from 'date-fns';
 
 import Table from '../../../shared/views/components/Table';
 import { ColumnHeader, ViewDTO } from '../../../shared/dtos/view-dto';
@@ -47,7 +46,7 @@ export default function DimensionPreviewTable(props: DimensionPreviewTableProps)
       switch (heading.name) {
         case 'start_date':
         case 'end_date': {
-          return dateFormat(parseISO(value.split('T')[0]), 'do MMMM yyyy');
+          return dateFormat(new Date(value), 'do MMMM yyyy', { utc: true });
         }
       }
       return value;
