@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { ApiException } from '../../shared/exceptions/api.exception';
 import { NotFoundException } from '../../shared/exceptions/not-found.exception';
 import { hasError, datasetIdValidator } from '../../shared/validators';
 
@@ -19,8 +20,12 @@ export const fetchPublishedDataset = async (req: Request, res: Response, next: N
       res.redirect(301, req.buildUrl(`/${dataset.replaced_by.dataset_id}`, req.language));
       return;
     }
-  } catch (_err) {
-    next(new NotFoundException('errors.dataset_missing'));
+  } catch (err) {
+    if (err instanceof ApiException && err.status >= 400 && err.status < 500) {
+      next(new NotFoundException('errors.dataset_missing'));
+      return;
+    }
+    next(err);
     return;
   }
 
