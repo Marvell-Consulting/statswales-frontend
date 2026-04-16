@@ -72,6 +72,18 @@ describe('fetchPublishedDataset middleware', () => {
     expect(next).toHaveBeenCalledWith(expect.any(NotFoundException));
   });
 
+  it('should pass through ApiException with a non-error status code', async () => {
+    const apiError = new ApiException('Moved Permanently', 301);
+    const getPublishedDataset = jest.fn().mockRejectedValue(apiError);
+    const req = mockReq(validDatasetId, getPublishedDataset);
+    const res = mockRes();
+    const next = jest.fn();
+
+    await fetchPublishedDataset(req, res, next as NextFunction);
+
+    expect(next).toHaveBeenCalledWith(apiError);
+  });
+
   it('should pass through the original error when the API returns 500', async () => {
     const apiError = new ApiException('Internal Server Error', 500);
     const getPublishedDataset = jest.fn().mockRejectedValue(apiError);
@@ -82,6 +94,18 @@ describe('fetchPublishedDataset middleware', () => {
     await fetchPublishedDataset(req, res, next as NextFunction);
 
     expect(next).toHaveBeenCalledWith(apiError);
+  });
+
+  it('should pass through unexpected errors without a status property', async () => {
+    const unexpectedError = new Error('Cannot read properties of undefined');
+    const getPublishedDataset = jest.fn().mockRejectedValue(unexpectedError);
+    const req = mockReq(validDatasetId, getPublishedDataset);
+    const res = mockRes();
+    const next = jest.fn();
+
+    await fetchPublishedDataset(req, res, next as NextFunction);
+
+    expect(next).toHaveBeenCalledWith(unexpectedError);
   });
 
   it('should pass through the original error on network failure (UnknownException)', async () => {
