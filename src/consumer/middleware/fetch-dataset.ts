@@ -19,7 +19,12 @@ export const fetchPublishedDataset = async (req: Request, res: Response, next: N
       res.redirect(301, req.buildUrl(`/${dataset.replaced_by.dataset_id}`, req.language));
       return;
     }
-  } catch (_err) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
+    if (err.status >= 500) {
+      next(err);
+      return;
+    }
     next(new NotFoundException('errors.dataset_missing'));
     return;
   }
