@@ -1,4 +1,5 @@
 import React from 'react';
+import { isValid } from 'date-fns';
 
 import Table from '../../../shared/views/components/Table';
 import { ColumnHeader, ViewDTO } from '../../../shared/dtos/view-dto';
@@ -46,7 +47,9 @@ export default function DimensionPreviewTable(props: DimensionPreviewTableProps)
       switch (heading.name) {
         case 'start_date':
         case 'end_date': {
-          return dateFormat(new Date(value), 'do MMMM yyyy', { utc: true, locale: i18n.language });
+          const date = new Date(value);
+          if (!isValid(date)) return value;
+          return dateFormat(date, 'do MMMM yyyy', { utc: true, locale: i18n.language });
         }
       }
       return value;
