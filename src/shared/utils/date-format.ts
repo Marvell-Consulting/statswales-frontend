@@ -1,5 +1,5 @@
 import { TZDate } from '@date-fns/tz';
-import { FormatOptions, DateArg, format } from 'date-fns';
+import { FormatOptions, DateArg, format, isValid } from 'date-fns';
 import { cy, enGB } from 'date-fns/locale';
 
 import { Locale } from '../enums/locale';
@@ -10,8 +10,19 @@ interface DateFormatOptions extends Omit<FormatOptions, 'locale'> {
   utc?: boolean;
 }
 
-export const dateFormat = (date: DateArg<Date> & {}, formatStr: string, options?: DateFormatOptions): string => {
+// Returns the raw input (or '') when the value isn't a valid date, so callers can safely pass through
+// user-supplied strings (e.g. lookup table values) without crashing the render.
+export const dateFormat = (
+  date: DateArg<Date> | null | undefined,
+  formatStr: string,
+  options?: DateFormatOptions
+): string => {
+  if (date == null || date === '') return '';
+
   const tzDate = new TZDate(date as Date, options?.utc ? 'UTC' : 'Europe/London');
+  if (!isValid(tzDate)) {
+    return typeof date === 'string' ? date : '';
+  }
 
   const formatOptions: FormatOptions = {
     ...options,

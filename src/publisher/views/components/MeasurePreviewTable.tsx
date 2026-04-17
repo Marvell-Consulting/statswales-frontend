@@ -21,7 +21,7 @@ export default function MeasurePreviewTable(props: MeasurePreviewTableProps) {
       switch (col.name.toLowerCase()) {
         case 'start_date':
         case 'end_date': {
-          return dateFormat(new Date(value), 'do MMMM yyyy', { utc: true, locale: i18n.language });
+          return dateFormat(value, 'do MMMM yyyy', { utc: true, locale: i18n.language });
         }
         case 'date_type': {
           return <T>publish.measure_review.year_type.{value}</T>;
