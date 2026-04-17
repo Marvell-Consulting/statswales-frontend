@@ -19,7 +19,7 @@ export const dateFormat = (
 ): string => {
   if (date == null || date === '') return '';
 
-  const tzDate = new TZDate(date as Date, options?.utc ? 'UTC' : 'Europe/London');
+  const tzDate = new TZDate(date instanceof Date ? date : new Date(date), options?.utc ? 'UTC' : 'Europe/London');
   if (!isValid(tzDate)) {
     return typeof date === 'string' ? date : '';
   }
