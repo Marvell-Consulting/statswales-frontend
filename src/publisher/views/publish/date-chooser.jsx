@@ -35,7 +35,7 @@ export default function DateChooser(props) {
           }
         case 'start_date':
         case 'end_date':
-          return dateFormat(new Date(value), 'do MMMM yyyy', {
+          return dateFormat(value, 'do MMMM yyyy', {
             locale: props.i18n.language,
             utc: true
           });

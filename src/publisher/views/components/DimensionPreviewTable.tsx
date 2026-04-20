@@ -5,6 +5,7 @@ import { ColumnHeader, ViewDTO } from '../../../shared/dtos/view-dto';
 import { useLocals } from '../../../shared/views/context/Locals';
 import T from '../../../shared/views/components/T';
 import { SingleLanguageDimension } from '../../../shared/dtos/single-language/dimension';
+import { DimensionType } from '../../../shared/enums/dimension-type';
 import { SourceType } from '../../../shared/enums/source-type';
 import { dateFormat } from '../../../shared/utils/date-format';
 
@@ -21,6 +22,11 @@ export type DimensionPreviewTableProps = {
 
 export default function DimensionPreviewTable(props: DimensionPreviewTableProps) {
   const { i18n } = useLocals();
+  // Only typed date dimensions are guaranteed by the backend to return ISO-formatted date strings.
+  // For other dimension types (e.g. lookup_table), `start_date`/`end_date` columns are user-supplied
+  // and may contain ambiguous formats like `DD/MM/YYYY` that JS would misinterpret as US dates.
+  const isTypedDateDimension =
+    props.dimension.type === DimensionType.Date || props.dimension.type === DimensionType.DatePeriod;
   const columns = props.headers.map((heading, index) => ({
     key: index,
     label:
@@ -43,11 +49,8 @@ export default function DimensionPreviewTable(props: DimensionPreviewTableProps)
       if (heading.source_type === 'line_number') {
         return <span className="linespan">{value}</span>;
       }
-      switch (heading.name) {
-        case 'start_date':
-        case 'end_date': {
-          return dateFormat(new Date(value), 'do MMMM yyyy', { utc: true, locale: i18n.language });
-        }
+      if (isTypedDateDimension && (heading.name === 'start_date' || heading.name === 'end_date')) {
+        return dateFormat(value, 'do MMMM yyyy', { utc: true, locale: i18n.language });
       }
       return value;
     },
