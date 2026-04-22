@@ -31,5 +31,32 @@ test.describe('Preview without data table', () => {
         page.getByText('You cannot preview this dataset until you have uploaded a data table')
       ).toBeVisible();
     });
+
+    test('Clicking the tasklist preview link before uploading data shows the not-found page', async ({
+      page,
+      context
+    }) => {
+      // Create a new dataset, navigate away, then return via the tasklist and use the sidebar link —
+      // i.e. the path a user would actually take, not a direct URL hit.
+      const altTitle = `${title} - via-tasklist`;
+      await startNewDataset(page);
+      await selectUserGroup(page, 'E2E tests');
+      const altDatasetId = await provideDatasetTitle(page, altTitle);
+
+      await page.goto(`${baseUrl}/en-GB`);
+      await page.goto(`${baseUrl}/en-GB/publish/${altDatasetId}/tasklist`);
+
+      const pagePromise = context.waitForEvent('page');
+      await page.getByRole('link', { name: 'Preview (opens in new tab)' }).click();
+      const previewPage = await pagePromise;
+      await previewPage.waitForLoadState('load');
+
+      expect(previewPage.url()).toContain(`${baseUrl}/en-GB/publish/${altDatasetId}/cube-preview`);
+      await expect(previewPage.getByRole('heading', { name: 'Page not found' })).toBeVisible();
+      await expect(
+        previewPage.getByText('You cannot preview this dataset until you have uploaded a data table')
+      ).toBeVisible();
+      await previewPage.close();
+    });
   });
 });
