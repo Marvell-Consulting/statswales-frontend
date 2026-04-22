@@ -69,7 +69,7 @@ export default function PeriodMatchFailure(props) {
         {props.extension.nonMatchingValues?.length ? (
           props.extension.nonMatchingValues.map((value, idx) => (
             <li className="govuk-list--bullet" key={idx}>
-              {value}
+              {value.date_data}
             </li>
           ))
         ) : (
