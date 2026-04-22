@@ -50,7 +50,7 @@ test.describe('Update dataset', () => {
       await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
     });
 
-    test('Preview the dataset before any changes are made to the update', async ({ page, context }) => {
+    test('Preview the dataset before any data is uploaded to the update', async ({ page, context }) => {
       // regression guard (SW-1235): the draft revision has no data table yet, so the preview must
       // fall back to the previously-published revision rather than 404.
       await page.goto(`/en-GB/publish/${datasetId}/tasklist`);
