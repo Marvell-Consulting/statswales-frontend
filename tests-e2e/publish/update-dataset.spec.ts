@@ -50,6 +50,19 @@ test.describe('Update dataset', () => {
       await expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
     });
 
+    test('Preview the dataset before any changes are made to the update', async ({ page, context }) => {
+      // regression guard (SW-1235): the draft revision has no data table yet, so the preview must
+      // fall back to the previously-published revision rather than 404.
+      await page.goto(`/en-GB/publish/${datasetId}/tasklist`);
+      const pagePromise = context.waitForEvent('page');
+      await page.getByRole('link', { name: 'Preview (opens in new tab)' }).click();
+      const previewPage = await pagePromise;
+      await previewPage.waitForLoadState('load');
+      expect(previewPage.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/cube-preview`);
+      await expect(previewPage.getByText('This is a preview of this dataset.')).toBeVisible();
+      await previewPage.close();
+    });
+
     test('Update the dataset', async ({ page }, testInfo) => {
       await page.goto(`/en-GB/publish/${datasetId}/tasklist`);
       await page.getByRole('link', { name: 'Data table' }).click();
@@ -67,6 +80,17 @@ test.describe('Update dataset', () => {
       await completeUpdateReason(page, datasetId, 'Adding new data for the latest period.');
       await completeTranslations(page, testInfo, datasetId);
       await completePublicationDate(page, datasetId, 1);
+    });
+
+    test('Preview the dataset after updating the data, before submission', async ({ page, context }) => {
+      await page.goto(`/en-GB/publish/${datasetId}/tasklist`);
+      const pagePromise = context.waitForEvent('page');
+      await page.getByRole('link', { name: 'Preview (opens in new tab)' }).click();
+      const previewPage = await pagePromise;
+      await previewPage.waitForLoadState('load');
+      expect(previewPage.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/cube-preview`);
+      await expect(previewPage.getByText('This is a preview of this dataset.')).toBeVisible();
+      await previewPage.close();
     });
 
     test('Submit dataset for approval', async ({ page }) => {
