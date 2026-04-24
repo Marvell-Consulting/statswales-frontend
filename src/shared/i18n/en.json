@@ -1623,6 +1623,9 @@
       "some_references_failed_to_match": "Lookup table cannot be matched to the data table. Check you uploaded the correct lookup table and that your data table is correct.",
       "unknown_error": "Measure lookup table could not be added to the cube by the system. Try again later or contact support."
     },
+    "lookup_table_validation": {
+      "bad_hierarchy": "The hierarchy in the lookup is incomplete or contains reference errors"
+    },
     "file_validation": {
       "invalid_decimals_present": "The decimal column in the measure lookup table should only contain positive integer values. Correct the measure lookup table and upload it again.",
       "wrong_data_type_in_reference": "Lookup table cannot be matched to the data table. Check you uploaded the correct lookup table and that your data table is correct.",
