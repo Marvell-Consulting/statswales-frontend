@@ -1047,7 +1047,7 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
           return;
         }
 
-        res.status(500);
+        res.status(error.status || 500);
         if (error.status === 500 && body?.errors?.[0]?.message?.key?.includes('lookup_table_loading_failed')) {
           const failurePreview = body as ViewErrDTO;
           res.render('publish/dimension-match-failure', {
