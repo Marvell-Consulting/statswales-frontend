@@ -1015,20 +1015,25 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
         return;
       } catch (err) {
         const error = err as ApiException;
-        res.status(error.status);
         const body = JSON.parse((error.body as string) || '{}');
 
         if (body?.error?.includes('infected')) {
-          errors = [{ field: 'csv', message: { key: `publish.upload.errors.infected` } }];
           res.status(400);
+          errors = [{ field: 'csv', message: { key: `publish.upload.errors.infected` } }];
           throw new Error();
         }
 
         if (error.status === 400) {
+          res.status(error.status);
           if (body?.errors?.[0]?.message?.key?.includes('primary_key_failed')) {
             logger.error('Lookup table has duplicate rows');
             errors = [{ field: 'csv', message: { key: `errors.dimension_validation.primary_key_failed` } }];
-            res.status(400);
+            throw new Error();
+          }
+
+          const hasMismatch = (body?.extension as { mismatch?: boolean } | undefined)?.mismatch === true;
+          if (!hasMismatch) {
+            errors = [{ field: 'csv', message: { key: body?.errors?.[0]?.message?.key } }];
             throw new Error();
           }
 
@@ -1043,6 +1048,7 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
           return;
         }
 
+        res.status(error.status || 500);
         if (error.status === 500 && body?.errors?.[0]?.message?.key?.includes('lookup_table_loading_failed')) {
           const failurePreview = body as ViewErrDTO;
           res.render('publish/dimension-match-failure', {
@@ -1054,7 +1060,6 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
         }
 
         logger.error(error, 'Something went wrong other than not matching');
-        res.status(500);
         errors = [{ field: 'unknown', message: { key: 'errors.dimension_validation.unknown_error' } }];
         throw new Error();
       }
