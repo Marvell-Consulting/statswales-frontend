@@ -1031,7 +1031,8 @@ export const uploadLookupTable = async (req: Request, res: Response, next: NextF
             throw new Error();
           }
 
-          if (!(body.extension as { mismatch: boolean }).mismatch) {
+          const hasMismatch = (body?.extension as { mismatch?: boolean } | undefined)?.mismatch === true;
+          if (!hasMismatch) {
             errors = [{ field: 'csv', message: { key: body?.errors?.[0]?.message?.key } }];
             throw new Error();
           }
