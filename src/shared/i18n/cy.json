@@ -1576,6 +1576,9 @@
       "some_references_failed_to_match": "Ni ellir cyfateb y tabl am-edrych mesur gyda'r tabl data. Gwiriwch eich bod wedi lanlwytho'r tabl am-edrych cywir a bod eich tabl data yn gywir.",
       "unknown_error": "Nid oedd modd i'r system ychwanegu'r tabl am-edrych mesur i'r ciwb. Rhowch gynnig arall yn nes ymlaen neu cysylltwch â'r tîm cymorth."
     },
+    "lookup_table_validation": {
+      "bad_hierarchy": "Mae'r hierarchaeth yn y chwiliad yn anghyflawn neu'n cynnwys gwallau cyfeirio"
+    },
     "file_validation": {
       "invalid_decimals_present": "Dim ond gwerthoedd cyfanrifol cadarnhaol ddylai fod yn y golofn ddegol yn y tabl am-edrych mesur. Cywirwch y tabl am-edrych mesur a'i lanlwytho eto.",
       "wrong_data_type_in_reference": "Ni ellir cyfateb y tabl am-edrych gyda'r tabl data. Gwiriwch eich bod wedi lanlwytho'r tabl am-edrych cywir a bod eich tabl data yn gywir.",
