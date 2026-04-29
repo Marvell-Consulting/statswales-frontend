@@ -132,7 +132,6 @@ export const CheckboxFilter = ({ filter, values, disabled = false }: CheckboxFil
                   />
                 )
               }
-              disabled={disabled}
             />
             <span className="filter-search-no-match govuk-body js-hidden">
               <T>filters.search.no_match</T>

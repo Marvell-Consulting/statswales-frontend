@@ -80,7 +80,6 @@ export const Checkbox = ({
             values={values}
             independentExpand={independentExpand}
             controls={controls}
-            disabled={disabled}
           />
         </div>
       )}

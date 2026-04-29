@@ -8,7 +8,6 @@ export type CheckboxGroupProps = {
   values?: string[];
   independentExpand?: boolean;
   controls?: ReactNode;
-  disabled?: boolean;
 };
 
 export const CheckboxGroup = ({ options, name, values = [], independentExpand, controls }: CheckboxGroupProps) => {
