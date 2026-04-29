@@ -5,7 +5,7 @@ import { NoteCodesLegendProps } from './NoteCodesLegend';
 import { ViewTableProps } from './ViewTable';
 import { useLocals } from '../../../../shared/views/context/Locals';
 import { Filter } from '../../../../shared/interfaces/filter';
-import { FilterTable } from '../../../../shared/dtos/filter-table';
+import { FilterTable, FilterValues } from '../../../../shared/dtos/filter-table';
 import { DatasetDTO } from '../../../../shared/dtos/dataset';
 import TableChooser from './TableChooser';
 import { PivotStage } from '../../../../shared/enums/pivot-stage';
@@ -28,6 +28,19 @@ type DataTabProps = NoteCodesLegendProps &
     rows?: string;
   };
 
+function zeroReferenceCount(filterValues: FilterValues[]): void {
+  for (const filterValue of filterValues) {
+    filterValue.count = '0';
+    if (filterValue.children) zeroReferenceCount(filterValue.children);
+  }
+}
+
+function disableFilters(filters: FilterTable[]): void {
+  for (const filter of filters) {
+    zeroReferenceCount(filter.values);
+  }
+}
+
 export default function LandingTab(props: DataTabProps) {
   const { buildUrl, i18n } = useLocals();
 
@@ -37,16 +50,17 @@ export default function LandingTab(props: DataTabProps) {
   else if (props.columns && props.rows) formUrl = buildUrl(`/${props.dataset.id}/pivot`, i18n.language);
 
   let pivotActionChooser = <TableChooser />;
-  let disabled = true;
   switch (props.pivotStage) {
     case PivotStage.Columns:
     case PivotStage.Rows:
+      disableFilters(props.filters);
       pivotActionChooser = <ColumnRowChooser {...props} />;
       break;
     case PivotStage.Summary:
       pivotActionChooser = <PivotSummary {...props} />;
-      disabled = false;
       break;
+    default:
+      disableFilters(props.filters);
   }
 
   return (
@@ -65,7 +79,6 @@ export default function LandingTab(props: DataTabProps) {
                 selected={props.selectedFilterOptions}
                 columns={props.columns}
                 rows={props.rows}
-                disabled={disabled}
               />
               {props.columns ? <input type="hidden" name="columns" value={props.columns} /> : null}
               {props.rows ? <input type="hidden" name="rows" value={props.rows} /> : null}

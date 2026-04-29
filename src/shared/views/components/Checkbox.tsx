@@ -5,6 +5,7 @@ import { CheckboxGroup } from './CheckboxGroup';
 export type CheckboxOptions = {
   label: ReactNode;
   value: string;
+  disabled?: boolean;
   children?: CheckboxOptions[];
   independentExpand?: boolean;
 };
@@ -62,7 +63,6 @@ export const Checkbox = ({
             values={values}
             independentExpand={independentExpand}
             controls={controls}
-            disabled={disabled}
           />
         </div>
       </details>

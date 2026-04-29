@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react';
 export type RadioOption = {
   label: string;
   value: string;
+  disabled?: boolean;
   children?: RadioOption[];
 };
 
@@ -12,9 +13,10 @@ export type RadioItemProps = {
   value: string;
   checked?: boolean;
   children?: ReactNode;
+  disabled?: boolean;
 };
 
-export const RadioItem = ({ name, label, value, checked, children }: RadioItemProps) => {
+export const RadioItem = ({ name, label, value, checked, children, disabled }: RadioItemProps) => {
   const formattedId = `${name}.${value}`.replaceAll(/\s+/g, '_');
 
   const RadioField = (
@@ -26,6 +28,7 @@ export const RadioItem = ({ name, label, value, checked, children }: RadioItemPr
         type="radio"
         value={value}
         defaultChecked={checked}
+        disabled={disabled}
       />
       <label className="govuk-label govuk-radios__label" htmlFor={formattedId}>
         {label}
