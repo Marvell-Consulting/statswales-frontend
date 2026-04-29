@@ -28,19 +28,19 @@ type DataTabProps = NoteCodesLegendProps &
     rows?: string;
   };
 
-function zeroReferenceCount(filterValues: FilterValues[]): void {
-  for (const filterValue of filterValues) {
-    filterValue.count = '0';
-    if (filterValue.children) zeroReferenceCount(filterValue.children);
-  }
+function zeroReferenceCount(filterValues: FilterValues[]): FilterValues[] {
+  return filterValues.map((filterValue) => ({
+    ...filterValue,
+    count: '0',
+    children: filterValue.children ? zeroReferenceCount(filterValue.children) : filterValue.children,
+  }));
 }
 
 function disableFilters(filters: FilterTable[]): FilterTable[] {
-  const disabledFilters = filters;
-  for (const filter of disabledFilters) {
-    zeroReferenceCount(filter.values);
-  }
-  return disabledFilters;
+  return filters.map((filter) => ({
+    ...filter,
+    values: zeroReferenceCount(filter.values),
+  }));
 }
 
 export default function LandingTab(props: DataTabProps) {
