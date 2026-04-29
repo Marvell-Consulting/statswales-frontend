@@ -32,14 +32,14 @@ function zeroReferenceCount(filterValues: FilterValues[]): FilterValues[] {
   return filterValues.map((filterValue) => ({
     ...filterValue,
     count: '0',
-    children: filterValue.children ? zeroReferenceCount(filterValue.children) : filterValue.children,
+    children: filterValue.children ? zeroReferenceCount(filterValue.children) : filterValue.children
   }));
 }
 
 function disableFilters(filters: FilterTable[]): FilterTable[] {
   return filters.map((filter) => ({
     ...filter,
-    values: zeroReferenceCount(filter.values),
+    values: zeroReferenceCount(filter.values)
   }));
 }
 
