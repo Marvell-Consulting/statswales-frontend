@@ -35,10 +35,12 @@ function zeroReferenceCount(filterValues: FilterValues[]): void {
   }
 }
 
-function disableFilters(filters: FilterTable[]): void {
-  for (const filter of filters) {
+function disableFilters(filters: FilterTable[]): FilterTable[] {
+  const disabledFilters = filters;
+  for (const filter of disabledFilters) {
     zeroReferenceCount(filter.values);
   }
+  return disabledFilters;
 }
 
 export default function LandingTab(props: DataTabProps) {
@@ -50,17 +52,21 @@ export default function LandingTab(props: DataTabProps) {
   else if (props.columns && props.rows) formUrl = buildUrl(`/${props.dataset.id}/pivot`, i18n.language);
 
   let pivotActionChooser = <TableChooser />;
+  let disabled = false;
+  let activeFilters = props.filters;
   switch (props.pivotStage) {
     case PivotStage.Columns:
     case PivotStage.Rows:
-      disableFilters(props.filters);
+      activeFilters = disableFilters(props.filters);
+      disabled = true;
       pivotActionChooser = <ColumnRowChooser {...props} />;
       break;
     case PivotStage.Summary:
       pivotActionChooser = <PivotSummary {...props} />;
       break;
     default:
-      disableFilters(props.filters);
+      activeFilters = disableFilters(props.filters);
+      disabled = true;
   }
 
   return (
@@ -73,12 +79,13 @@ export default function LandingTab(props: DataTabProps) {
               <Filters
                 dataset={props.dataset}
                 preview={props.preview}
-                filters={props.filters}
+                filters={activeFilters}
                 url={props.url}
                 title={props.t('consumer_view.filters')}
                 selected={props.selectedFilterOptions}
                 columns={props.columns}
                 rows={props.rows}
+                disabled={disabled}
               />
               {props.columns ? <input type="hidden" name="columns" value={props.columns} /> : null}
               {props.rows ? <input type="hidden" name="rows" value={props.rows} /> : null}
