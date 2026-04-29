@@ -16,7 +16,6 @@ export type CheckboxProps = CheckboxOptions & {
   values: string[];
   omitName?: boolean;
   controls?: ReactNode;
-  disabled?: boolean;
 };
 
 export const Checkbox = ({
