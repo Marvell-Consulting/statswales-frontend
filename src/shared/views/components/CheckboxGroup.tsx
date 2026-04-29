@@ -27,7 +27,6 @@ export const CheckboxGroup = ({ options, name, values = [], independentExpand, c
             values={values}
             independentExpand={independentExpand}
             controls={controls}
-            disabled={option.disabled}
           />
         );
       })}
