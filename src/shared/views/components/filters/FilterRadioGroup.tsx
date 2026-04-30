@@ -19,7 +19,7 @@ export const FilterRadioGroup = ({ options, name, selectedValue }: FilterRadioGr
             name={name}
             label={option.label}
             value={option.value}
-            checked={selectedValue === option.value}
+            checked={!option.disabled && selectedValue === option.value}
             disabled={option.disabled}
           >
             {option.children?.length ? (
