@@ -99,7 +99,7 @@ test.describe('Fact table validation errors on update', () => {
   test('Validates for incomplete facts', async ({ page }) => {
     await updateAddNewDataUpload(page, datasetId);
     await uploadInvalidDataTable(page, 'invalid/update-incomplete-fact.csv');
-    await expect(page.getByText('There is a problem')).toBeVisible();
+    await expect(page.getByText('Data table has 1 incomplete facts')).toBeVisible();
   });
 
   test('Validates for bad note codes', async ({ page }) => {

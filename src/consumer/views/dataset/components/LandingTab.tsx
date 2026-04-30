@@ -5,7 +5,7 @@ import { NoteCodesLegendProps } from './NoteCodesLegend';
 import { ViewTableProps } from './ViewTable';
 import { useLocals } from '../../../../shared/views/context/Locals';
 import { Filter } from '../../../../shared/interfaces/filter';
-import { FilterTable } from '../../../../shared/dtos/filter-table';
+import { FilterTable, FilterValues } from '../../../../shared/dtos/filter-table';
 import { DatasetDTO } from '../../../../shared/dtos/dataset';
 import TableChooser from './TableChooser';
 import { PivotStage } from '../../../../shared/enums/pivot-stage';
@@ -28,6 +28,21 @@ type DataTabProps = NoteCodesLegendProps &
     rows?: string;
   };
 
+function zeroReferenceCount(filterValues: FilterValues[]): FilterValues[] {
+  return filterValues.map((filterValue) => ({
+    ...filterValue,
+    count: '0',
+    children: filterValue.children ? zeroReferenceCount(filterValue.children) : filterValue.children
+  }));
+}
+
+function disableFilters(filters: FilterTable[]): FilterTable[] {
+  return filters.map((filter) => ({
+    ...filter,
+    values: zeroReferenceCount(filter.values)
+  }));
+}
+
 export default function LandingTab(props: DataTabProps) {
   const { buildUrl, i18n } = useLocals();
 
@@ -37,16 +52,21 @@ export default function LandingTab(props: DataTabProps) {
   else if (props.columns && props.rows) formUrl = buildUrl(`/${props.dataset.id}/pivot`, i18n.language);
 
   let pivotActionChooser = <TableChooser />;
-  let disabled = true;
+  let disabled = false;
+  let activeFilters = props.filters;
   switch (props.pivotStage) {
     case PivotStage.Columns:
     case PivotStage.Rows:
+      activeFilters = disableFilters(props.filters);
+      disabled = true;
       pivotActionChooser = <ColumnRowChooser {...props} />;
       break;
     case PivotStage.Summary:
       pivotActionChooser = <PivotSummary {...props} />;
-      disabled = false;
       break;
+    default:
+      activeFilters = disableFilters(props.filters);
+      disabled = true;
   }
 
   return (
@@ -59,7 +79,7 @@ export default function LandingTab(props: DataTabProps) {
               <Filters
                 dataset={props.dataset}
                 preview={props.preview}
-                filters={props.filters}
+                filters={activeFilters}
                 url={props.url}
                 title={props.t('consumer_view.filters')}
                 selected={props.selectedFilterOptions}

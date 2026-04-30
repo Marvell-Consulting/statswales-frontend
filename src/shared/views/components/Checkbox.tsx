@@ -5,6 +5,7 @@ import { CheckboxGroup } from './CheckboxGroup';
 export type CheckboxOptions = {
   label: ReactNode;
   value: string;
+  disabled?: boolean;
   children?: CheckboxOptions[];
   independentExpand?: boolean;
 };
@@ -15,7 +16,6 @@ export type CheckboxProps = CheckboxOptions & {
   values: string[];
   omitName?: boolean;
   controls?: ReactNode;
-  disabled?: boolean;
 };
 
 export const Checkbox = ({
@@ -40,7 +40,7 @@ export const Checkbox = ({
         type="checkbox"
         value={value}
         data-aria-controls={children ? `conditional-${name}` : undefined}
-        defaultChecked={checked}
+        defaultChecked={disabled ? false : checked}
         disabled={disabled}
       />
       <label className="govuk-label govuk-checkboxes__label" htmlFor={formattedId}>
@@ -62,7 +62,6 @@ export const Checkbox = ({
             values={values}
             independentExpand={independentExpand}
             controls={controls}
-            disabled={disabled}
           />
         </div>
       </details>
@@ -80,7 +79,6 @@ export const Checkbox = ({
             values={values}
             independentExpand={independentExpand}
             controls={controls}
-            disabled={disabled}
           />
         </div>
       )}

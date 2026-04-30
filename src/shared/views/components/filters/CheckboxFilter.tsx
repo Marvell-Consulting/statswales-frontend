@@ -18,6 +18,7 @@ const normalizeFilters = (options: FilterValues[]): CheckboxOptions[] => {
     return {
       label: opt.description,
       value: encodeURIComponent(opt.reference),
+      disabled: opt.count === '0',
       children: opt.children ? normalizeFilters(opt.children) : undefined
     };
   });
@@ -131,7 +132,6 @@ export const CheckboxFilter = ({ filter, values, disabled = false }: CheckboxFil
                   />
                 )
               }
-              disabled={disabled}
             />
             <span className="filter-search-no-match govuk-body js-hidden">
               <T>filters.search.no_match</T>

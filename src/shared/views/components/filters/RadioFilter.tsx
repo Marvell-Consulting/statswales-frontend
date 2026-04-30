@@ -16,6 +16,7 @@ const normalizeFilters = (options: FilterValues[]): RadioOption[] => {
     return {
       label: opt.description,
       value: encodeURIComponent(opt.reference),
+      disabled: opt.count === '0',
       children: opt.children ? normalizeFilters(opt.children) : undefined
     };
   });
