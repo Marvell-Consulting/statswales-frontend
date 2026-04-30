@@ -38,9 +38,9 @@ export const Checkbox = ({
         id={formattedId}
         name={omitName ? undefined : `${name}`}
         type="checkbox"
-        value={disabled ? '' : value}
+        value={value}
         data-aria-controls={children ? `conditional-${name}` : undefined}
-        defaultChecked={checked}
+        defaultChecked={disabled ? false : checked}
         disabled={disabled}
       />
       <label className="govuk-label govuk-checkboxes__label" htmlFor={formattedId}>
