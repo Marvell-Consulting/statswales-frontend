@@ -35,13 +35,13 @@ export const Filters = (props: FiltersProps) => {
       <h2 className="govuk-heading-m">{title}</h2>
 
       {isPivot && (
-        <div className="govuk-inset-text highlight">
+        <div className="govuk-inset-text--highlight">
           <T>filters.pivot_hidden_notice</T>
         </div>
       )}
 
       {disabled && (
-        <div className="govuk-inset-text highlight">
+        <div className="govuk-inset-text--highlight">
           <T>filters.disabled_filters_notice</T>
         </div>
       )}
