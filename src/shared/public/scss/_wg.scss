@@ -605,6 +605,16 @@
     display: inline-block;
   }
 
+  .govuk-form-select-inline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .govuk-form-select-inline > label {
+    margin-right: 1em;
+  }
+
   .govuk-error-message {
     font-weight: normal;
     color: colours.$black;
