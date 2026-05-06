@@ -674,6 +674,8 @@
   .govuk-inset-text--highlight {
     border-left: 10px solid colours.$yellow;
     background: colours.$paleyellow;
+    color: colours.$black;
+    padding: 25px 30px;
   }
 
   .govuk-radios--small .govuk-radios__item {
