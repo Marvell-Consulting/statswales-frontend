@@ -89,7 +89,7 @@ function Sort(props) {
   return (
     <>
       <form id="sort-form" className="govuk-!-margin-bottom-6" method="GET">
-        <div className="govuk-form-group">
+        <div className="govuk-form-group govuk-form-select-inline">
           <label className="govuk-label" htmlFor="sort-by">
             <T>consumer.topic_list.sort.label</T>
           </label>
