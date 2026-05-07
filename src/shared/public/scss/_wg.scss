@@ -681,6 +681,11 @@
     padding: 25px 30px;
   }
 
+  .govuk-inset-text--highlight {
+    border-left: 10px solid colours.$yellow;
+    background: colours.$paleyellow;
+  }
+
   .govuk-radios--small .govuk-radios__item {
     margin-bottom: 10px;
   }
