@@ -18,14 +18,14 @@
 
   #cookie-banner {
     padding-top: 20px;
-    background-color: #eaeaea;
+    background-color: colours.$lightgrey_semi;
   }
 
   #cookies-accept-all:not(:focus),
   #cookieOptions:not(:focus) {
     background-color: transparent;
-    border: solid #0b4b95 3px;
-    color: #0b4b95;
+    border: solid colours.$blue 3px;
+    color: colours.$blue;
   }
 
   h1,
