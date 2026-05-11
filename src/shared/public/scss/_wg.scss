@@ -16,8 +16,16 @@
     display: inline;
   }
 
-  .cookie-banner {
+  #cookie-banner {
     padding-top: 20px;
+    background-color: #eaeaea;
+  }
+
+  #cookies-accept-all,
+  #cookieOptions {
+    background-color: transparent;
+    border: solid #0b4b95 3px;
+    color: #0b4b95;
   }
 
   h1,
