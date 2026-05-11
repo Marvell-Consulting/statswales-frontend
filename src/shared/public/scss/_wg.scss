@@ -21,8 +21,8 @@
     background-color: #eaeaea;
   }
 
-  #cookies-accept-all,
-  #cookieOptions {
+  #cookies-accept-all:not(:focus),
+  #cookieOptions:not(:focus) {
     background-color: transparent;
     border: solid #0b4b95 3px;
     color: #0b4b95;
