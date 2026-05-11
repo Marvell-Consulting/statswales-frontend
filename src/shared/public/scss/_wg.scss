@@ -22,11 +22,20 @@
     background-color: colours.$lightgrey_semi;
   }
 
-  #cookies-accept-all:not(:focus),
-  #cookieOptions:not(:focus) {
+  #cookies-accept-all,
+  #cookieOptions {
     background-color: transparent;
-    border: solid colours.$blue 3px;
+    border: solid colours.$blue 2px;
     color: colours.$blue;
+    padding: 10px 20px;
+  }
+
+  #cookies-accept-all:active,
+  #cookieOptions:active {
+    background-color: colours.$yellow;
+    border: solid colours.$black 2px;
+    color: colours.$black;
+    padding: 10px 20px;
   }
 
   h1,
