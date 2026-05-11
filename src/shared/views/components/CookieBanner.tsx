@@ -9,7 +9,7 @@ export default function CookieBanner() {
 
   return (
     <div id="cookie-banner">
-      <div className="cookie-banner container-fluid">
+      <div className="container-fluid">
         <p className="govuk-body">
           <T>cookies.banner.required.summary</T>
         </p>
