@@ -201,6 +201,11 @@
     }
   }
 
+  .govuk-button-small:hover {
+    background: colours.$darkgrey;
+    border: 2px colours.$darkgrey solid;
+  }
+
   .button-black {
     background-color: colours.$black;
     border-color: colours.$black;
