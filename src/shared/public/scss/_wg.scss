@@ -202,13 +202,7 @@
   }
 
   .govuk-button-small {
-    &:hover:not(:focus) {
-      background: colours.$darkgrey;
-      border-color: colours.$darkgrey;
-      color: colours.$white;
-    }
-
-    &:hover:focus {
+    &:hover {
       background: colours.$darkgrey;
       border-color: colours.$darkgrey;
       color: colours.$white;
