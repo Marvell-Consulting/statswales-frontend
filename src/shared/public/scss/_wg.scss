@@ -205,10 +205,12 @@
     &:hover:not(:focus) {
       background: colours.$darkgrey;
       border: 2px colours.$darkgrey solid;
+      color: colours.$white;
     }
 
     &:hover:focus {
       background: colours.$darkgrey;
+      color: colours.$white;
     }
   }
 
