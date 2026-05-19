@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode } from 'react';
 
 type Tab = {
   id: string;
@@ -14,10 +14,8 @@ export type TabsProps = {
 };
 
 export default function Tabs({ id, tabs, title }: TabsProps) {
-  const [activeTabIndex, setActiveTabIndex] = useState(0);
-
   return (
-    <div className="govuk-tabs">
+    <div className="govuk-tabs" data-module="govuk-tabs">
       <div className="tabs" id={id}>
         <div className="govuk-width-container">
           <div className="govuk-main-wrapper govuk-!-padding-bottom-0">
@@ -25,8 +23,8 @@ export default function Tabs({ id, tabs, title }: TabsProps) {
             <ul className="govuk-tabs__list" role="tablist">
               {tabs.map((tab, i) => (
                 <li
-                  key={tab.id}
-                  className={clsx('govuk-tabs__list-item', { 'govuk-tabs__list-item--selected': i === activeTabIndex })}
+                  key={i}
+                  className={clsx('govuk-tabs__list-item', { 'govuk-tabs__list-item--selected': i === 0 })}
                   role="presentation"
                 >
                   <a
@@ -35,12 +33,6 @@ export default function Tabs({ id, tabs, title }: TabsProps) {
                     id={`tab_${tab.id}`}
                     role="tab"
                     aria-controls={tab.id}
-                    aria-selected={i === activeTabIndex}
-                    tabIndex={0}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setActiveTabIndex(i);
-                    }}
                   >
                     {tab.label}
                   </a>
@@ -52,16 +44,8 @@ export default function Tabs({ id, tabs, title }: TabsProps) {
       </div>
       {tabs
         .filter((t) => t.children)
-        .map((tab) => (
-          <div
-            key={tab.id}
-            className={clsx('govuk-tabs__panel', {
-              'govuk-tabs__panel--hidden': tabs.indexOf(tab) !== activeTabIndex
-            })}
-            id={tab.id}
-            role="tabpanel"
-            aria-labelledby={`tab_${tab.id}`}
-          >
+        .map((tab, i) => (
+          <div key={i} className="govuk-tabs__panel" id={tab.id} role="tabpanel" aria-labelledby={`tab_${tab.id}`}>
             {tab.children}
           </div>
         ))}
