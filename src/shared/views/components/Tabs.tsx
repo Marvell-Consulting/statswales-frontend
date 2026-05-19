@@ -23,7 +23,7 @@ export default function Tabs({ id, tabs, title }: TabsProps) {
             <ul className="govuk-tabs__list" role="tablist">
               {tabs.map((tab, i) => (
                 <li
-                  key={i}
+                  key={tab.id}
                   className={clsx('govuk-tabs__list-item', { 'govuk-tabs__list-item--selected': i === 0 })}
                   role="presentation"
                 >
@@ -44,8 +44,8 @@ export default function Tabs({ id, tabs, title }: TabsProps) {
       </div>
       {tabs
         .filter((t) => t.children)
-        .map((tab, i) => (
-          <div key={i} className="govuk-tabs__panel" id={tab.id} role="tabpanel" aria-labelledby={`tab_${tab.id}`}>
+        .map((tab) => (
+          <div key={tab.id} className="govuk-tabs__panel" id={tab.id} role="tabpanel" aria-labelledby={`tab_${tab.id}`}>
             {tab.children}
           </div>
         ))}
