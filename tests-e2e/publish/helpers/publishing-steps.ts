@@ -359,6 +359,11 @@ export async function completeTranslations(page: Page, testInfo: TestInfo, datas
   await page.getByRole('link', { name: 'Continue' }).click();
   expect(page.url()).toContain(`${baseUrl}/en-GB/publish/${datasetId}/tasklist`);
   await checkTasklistItemComplete(page, 'Import translations');
+  // SW-1278 — a publisher reported that "Export text fields for translation" reverts
+  // to Incomplete immediately after a successful import. The previous version of this
+  // helper only checked the import item, so a reverted export status would have been
+  // invisible to the publish-dataset spec.
+  await checkTasklistItemComplete(page, 'Export text fields for translation');
 }
 
 export async function completePublicationDate(page: Page, datasetId: string, minutesFromNow: number) {
