@@ -45,10 +45,14 @@ export default function ReplacementDatasetPicker(props) {
               type="checkbox"
               value="true"
               defaultChecked={props.values?.auto_redirect === 'true' || props.values?.auto_redirect === true}
+              aria-describedby="auto-redirect-item-hint"
             />
             <label className="govuk-label govuk-checkboxes__label" htmlFor="auto-redirect">
               <T>publish.task.action.archive.form.auto_redirect.label</T>
             </label>
+            <div id="auto-redirect-item-hint" className="govuk-hint govuk-checkboxes__hint">
+              <T>publish.task.action.archive.form.auto_redirect.hint</T>
+            </div>
           </div>
         </div>
       </div>

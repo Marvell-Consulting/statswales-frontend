@@ -1276,7 +1276,8 @@
               }
             },
             "auto_redirect": {
-              "label": "Automatically redirect visitors to the replacement dataset"
+              "label": "Automatically redirect visitors to the replacement dataset",
+              "hint": "Ticking this will also hide this dataset from search results and topic listings."
             }
           },
           "success": "Dataset archiving requested",

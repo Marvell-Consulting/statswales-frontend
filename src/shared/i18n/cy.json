@@ -1228,7 +1228,8 @@
               }
             },
             "auto_redirect": {
-              "label": "Ailgyfeirio ymwelwyr yn awtomatig i’r set ddata newydd yn ei lle"
+              "label": "Ailgyfeirio ymwelwyr yn awtomatig i’r set ddata newydd yn ei lle",
+              "hint": "Bydd ticio hwn hefyd yn cuddio’r set ddata hon o ganlyniadau chwilio a rhestrau pynciau."
             }
           },
           "success": "Gwnaethpwyd cais i archifo’r set ddata",
