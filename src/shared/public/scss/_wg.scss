@@ -25,16 +25,17 @@
   #cookies-accept-all,
   #cookieOptions {
     background-color: transparent;
+    font-size: 14pt;
+    font-weight: bold;
     border: solid colours.$blue 2px;
     color: colours.$blue;
-    padding: 10px 20px;
+    padding: 7px 14px;
   }
 
   #cookies-accept-all:active,
   #cookieOptions:active {
-    background-color: colours.$yellow;
-    border: solid colours.$black 2px;
-    color: colours.$black;
+    background-color: colours.$blue;
+    color: colours.$white;
   }
 
   h1,
