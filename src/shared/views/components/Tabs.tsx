@@ -33,6 +33,8 @@ export default function Tabs({ id, tabs, title }: TabsProps) {
                     id={`tab_${tab.id}`}
                     role="tab"
                     aria-controls={tab.id}
+                    aria-selected={i === 0}
+                    tabIndex={i === 0 ? 0 : -1}
                   >
                     {tab.label}
                   </a>
@@ -44,8 +46,14 @@ export default function Tabs({ id, tabs, title }: TabsProps) {
       </div>
       {tabs
         .filter((t) => t.children)
-        .map((tab) => (
-          <div key={tab.id} className="govuk-tabs__panel" id={tab.id} role="tabpanel" aria-labelledby={`tab_${tab.id}`}>
+        .map((tab, i) => (
+          <div
+            key={tab.id}
+            className={clsx('govuk-tabs__panel', { 'govuk-tabs__panel--hidden': i !== 0 })}
+            id={tab.id}
+            role="tabpanel"
+            aria-labelledby={`tab_${tab.id}`}
+          >
             {tab.children}
           </div>
         ))}
