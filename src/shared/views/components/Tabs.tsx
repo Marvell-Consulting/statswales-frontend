@@ -46,14 +46,8 @@ export default function Tabs({ id, tabs, title }: TabsProps) {
       </div>
       {tabs
         .filter((t) => t.children)
-        .map((tab, i) => (
-          <div
-            key={tab.id}
-            className={clsx('govuk-tabs__panel', { 'govuk-tabs__panel--hidden': i !== 0 })}
-            id={tab.id}
-            role="tabpanel"
-            aria-labelledby={`tab_${tab.id}`}
-          >
+        .map((tab) => (
+          <div key={tab.id} className="govuk-tabs__panel" id={tab.id} role="tabpanel" aria-labelledby={`tab_${tab.id}`}>
             {tab.children}
           </div>
         ))}
