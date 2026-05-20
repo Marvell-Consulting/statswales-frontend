@@ -34,7 +34,7 @@ export default function Tabs({ id, tabs, title }: TabsProps) {
                     role="tab"
                     aria-controls={tab.id}
                     aria-selected={i === 0}
-                    tabIndex={i === 0 ? 0 : -1}
+                    tabIndex={0}
                   >
                     {tab.label}
                   </a>
