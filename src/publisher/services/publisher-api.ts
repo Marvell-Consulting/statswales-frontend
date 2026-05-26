@@ -117,7 +117,7 @@ export class PublisherApi {
 
     return fetch(fullUrl, { method, headers: head, body: data })
       .then((response: Response) => {
-        logRequestTime(method, url, start);
+        logRequestTime(method, `${url}${qs}`, start);
         return response;
       })
       .then(async (response: Response) => {
@@ -125,7 +125,13 @@ export class PublisherApi {
           logger.error(
             `API request to ${this.backendUrl}/${url} failed with status '${response.status}' and message '${response.statusText}'`
           );
-          const body = (await new Response(response.body).text()) || undefined;
+          // Read the body defensively so a stream error doesn't strip the HTTP status off the thrown exception.
+          let body: string | undefined;
+          try {
+            body = (await new Response(response.body).text()) || undefined;
+          } catch (err) {
+            logger.warn(err, `Failed to read error body from ${this.backendUrl}/${url}`);
+          }
           throw new ApiException(response.statusText, response.status, body);
         }
         return response;

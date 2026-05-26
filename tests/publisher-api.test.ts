@@ -116,7 +116,20 @@ describe('PublisherApi', () => {
 
     it('should throw an ApiException when the backend returns a 404', async () => {
       mockResponse = Promise.resolve(new Response(null, { status: 404, statusText: 'Not Found' }));
-      await expect(statsWalesApi.fetch({ url: 'example.com/api' })).rejects.toThrow(new ApiException('Not Found', 400));
+      await expect(statsWalesApi.fetch({ url: 'example.com/api' })).rejects.toThrow(new ApiException('Not Found', 404));
+    });
+
+    it('should still throw an ApiException with the original status when the error body cannot be read', async () => {
+      const erroringStream = new ReadableStream({
+        start(controller) {
+          controller.error(new Error('stream read failure'));
+        }
+      });
+      mockResponse = Promise.resolve(new Response(erroringStream, { status: 503, statusText: 'Service Unavailable' }));
+
+      await expect(statsWalesApi.fetch({ url: 'example.com/api' })).rejects.toThrow(
+        new ApiException('Service Unavailable', 503)
+      );
     });
   });
 
