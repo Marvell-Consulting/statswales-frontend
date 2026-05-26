@@ -19,17 +19,17 @@ export const isObject = (item: unknown) => {
 export const walkObject = (root: UnknownObject, fn: WalkObjectCallback) => {
   const walk = (obj: UnknownObject, location: (string | number)[] = []) => {
     Object.keys(obj).forEach((key) => {
-      // Value is an array, call walk on each item in the array
+      // Value is an array; emit each item and recurse only when the item is itself a branch
       if (Array.isArray(obj[key])) {
         obj[key].forEach((el, j) => {
-          fn({
-            value: el,
-            key: `${key}:${j}`,
-            location: [...location, ...[key], ...[j]],
-            isLeaf: false
-          });
-
-          walk(el, [...location, ...[key], ...[j]]);
+          const childLocation = [...location, key, j];
+          const childKey = `${key}:${j}`;
+          if (isObject(el) || Array.isArray(el)) {
+            fn({ value: el, key: childKey, location: childLocation, isLeaf: false });
+            walk(el as UnknownObject, childLocation);
+          } else {
+            fn({ value: el, key: childKey, location: childLocation, isLeaf: true });
+          }
         });
 
         // Value is an object, walk the keys of the object
