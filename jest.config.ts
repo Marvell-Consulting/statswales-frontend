@@ -22,6 +22,15 @@ const config: Config = {
     '/src/controllers/datalake.ts',
     '/src/config/envs/'
   ],
+  // Thresholds set ~2% below current coverage to prevent regression. See #541.
+  coverageThreshold: {
+    global: {
+      statements: 35,
+      branches: 19,
+      functions: 24,
+      lines: 33
+    }
+  },
   setupFiles: ['<rootDir>/tests/.jest/set-env-vars.ts']
 };
 
