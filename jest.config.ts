@@ -9,7 +9,6 @@ const config: Config = {
     '^(\\.{1,2}/.*)\\.js$': '$1'
   },
   verbose: true,
-  reporters: ['default', ['jest-junit', { outputDirectory: 'coverage/test-report', outputName: 'junit-report.xml' }]],
   testEnvironment: 'node',
   testPathIgnorePatterns: ['/node_modules/', '/tests-e2e/'],
   coverageDirectory: './coverage',
