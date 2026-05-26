@@ -35,7 +35,7 @@ describe('parsePageOptions', () => {
     expect(result.pageSize).toBe(DEFAULT_PAGE_SIZE);
   });
 
-  it('falls back to defaults when values are zero (falsy)', () => {
+  it('falls back to defaults when values are zero', () => {
     const result = parsePageOptions(
       mockReq('/datasets?page_number=0&page_size=0', { page_number: '0', page_size: '0' })
     );
@@ -64,9 +64,6 @@ describe('parsePageOptions', () => {
     expect(result.sortBy).toBeUndefined();
   });
 
-  // BUG: negative page values pass through because `parseInt('-5', 10) || default`
-  // returns the negative number (it's truthy). These get forwarded to the backend
-  // API verbatim. Failing on purpose to flag the bug.
   it('clamps negative page_number to 1', () => {
     const result = parsePageOptions(mockReq('/datasets?page_number=-5', { page_number: '-5' }));
     expect(result.pageNumber).toBe(1);

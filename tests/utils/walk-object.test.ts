@@ -81,15 +81,6 @@ describe('walkObject', () => {
     expect(collect({ items: [] })).toEqual([]);
   });
 
-  // BUG: when an array contains primitives, walkObject:
-  //   (a) emits the array entry with isLeaf: false (it should be a leaf), and
-  //   (b) then recurses into the primitive, treating a string like an object
-  //       keyed by character index. For input { tags: ['a'] } the current output
-  //       is two callbacks: {key:'tags:0', isLeaf:false} and {key:'0', isLeaf:true,
-  //       location:['tags', 0, '0']} — both about the same scalar 'a'.
-  // Failing on purpose to flag the bug. The only current caller (`checkConfig`)
-  // doesn't exercise this path because config has no primitive arrays, but the
-  // helper is exported as a generic utility.
   it('emits a single leaf callback for a primitive inside an array', () => {
     const calls = collect({ tags: ['a', 'b'] });
     expect(calls).toEqual([
