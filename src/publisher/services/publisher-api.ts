@@ -123,14 +123,14 @@ export class PublisherApi {
       .then(async (response: Response) => {
         if (!response.ok) {
           logger.error(
-            `API request to ${this.backendUrl}/${url} failed with status '${response.status}' and message '${response.statusText}'`
+            `API request to ${fullUrl} failed with status '${response.status}' and message '${response.statusText}'`
           );
           // Read the body defensively so a stream error doesn't strip the HTTP status off the thrown exception.
           let body: string | undefined;
           try {
             body = (await new Response(response.body).text()) || undefined;
           } catch (err) {
-            logger.warn(err, `Failed to read error body from ${this.backendUrl}/${url}`);
+            logger.warn(err, `Failed to read error body from ${fullUrl}`);
           }
           throw new ApiException(response.statusText, response.status, body);
         }
@@ -138,7 +138,7 @@ export class PublisherApi {
       })
       .catch((error) => {
         if (error instanceof ApiException) throw error;
-        logger.error(error, `An unknown error occurred attempting to fetch ${this.backendUrl}/${url}`);
+        logger.error(error, `An unknown error occurred attempting to fetch ${fullUrl}`);
         throw new UnknownException(error.message);
       });
   }

@@ -40,7 +40,7 @@ describe('ConsumerApi', () => {
       );
     });
 
-    it('should use Welsh when constructed with cy-GB', async () => {
+    it('should use Welsh when constructed with the Welsh locale', async () => {
       consumerApi = new ConsumerApi(Locale.Welsh);
       mockResponse = Promise.resolve(new Response(null, { status: 200 }));
 
@@ -120,27 +120,40 @@ describe('ConsumerApi', () => {
 
     it('should throw an ApiException when the backend returns a 400', async () => {
       mockResponse = Promise.resolve(new Response(null, { status: 400, statusText: 'Bad Request' }));
-      await expect(consumerApi.fetch({ url: 'example.com/api' })).rejects.toThrow(new ApiException('Bad Request', 400));
+      await expect(consumerApi.fetch({ url: 'example.com/api' })).rejects.toMatchObject({
+        name: 'ApiException',
+        message: 'Bad Request',
+        status: 400
+      });
     });
 
     it('should throw an ApiException when the backend returns a 404', async () => {
       mockResponse = Promise.resolve(new Response(null, { status: 404, statusText: 'Not Found' }));
-      await expect(consumerApi.fetch({ url: 'example.com/api' })).rejects.toThrow(new ApiException('Not Found', 404));
+      await expect(consumerApi.fetch({ url: 'example.com/api' })).rejects.toMatchObject({
+        name: 'ApiException',
+        message: 'Not Found',
+        status: 404
+      });
     });
 
     it('should throw an ApiException when the backend returns a 500', async () => {
       mockResponse = Promise.resolve(new Response(null, { status: 500, statusText: 'Internal Server Error' }));
-      await expect(consumerApi.fetch({ url: 'example.com/api' })).rejects.toThrow(
-        new ApiException('Internal Server Error', 500)
-      );
+      await expect(consumerApi.fetch({ url: 'example.com/api' })).rejects.toMatchObject({
+        name: 'ApiException',
+        message: 'Internal Server Error',
+        status: 500
+      });
     });
 
     it('should include the response body in the ApiException when present', async () => {
       mockResponse = Promise.resolve(new Response('detailed error body', { status: 400, statusText: 'Bad Request' }));
 
-      await expect(consumerApi.fetch({ url: 'example.com/api' })).rejects.toThrow(
-        new ApiException('Bad Request', 400, 'detailed error body')
-      );
+      await expect(consumerApi.fetch({ url: 'example.com/api' })).rejects.toMatchObject({
+        name: 'ApiException',
+        message: 'Bad Request',
+        status: 400,
+        body: 'detailed error body'
+      });
     });
 
     it('should still throw an ApiException with the original status when the error body cannot be read', async () => {
@@ -151,9 +164,11 @@ describe('ConsumerApi', () => {
       });
       mockResponse = Promise.resolve(new Response(erroringStream, { status: 503, statusText: 'Service Unavailable' }));
 
-      await expect(consumerApi.fetch({ url: 'example.com/api' })).rejects.toThrow(
-        new ApiException('Service Unavailable', 503)
-      );
+      await expect(consumerApi.fetch({ url: 'example.com/api' })).rejects.toMatchObject({
+        name: 'ApiException',
+        message: 'Service Unavailable',
+        status: 503
+      });
     });
   });
 
@@ -297,7 +312,11 @@ describe('ConsumerApi', () => {
 
     it('should throw when the dataset is not found', async () => {
       mockResponse = Promise.resolve(new Response(null, { status: 404, statusText: 'Not Found' }));
-      await expect(consumerApi.getPublishedDataset(randomUUID())).rejects.toThrow(new ApiException('Not Found', 404));
+      await expect(consumerApi.getPublishedDataset(randomUUID())).rejects.toMatchObject({
+        name: 'ApiException',
+        message: 'Not Found',
+        status: 404
+      });
     });
   });
 
