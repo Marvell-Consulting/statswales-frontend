@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction, RequestHandler } from 'express';
 import multer from 'multer';
 
 import { fetchDataset } from '../middleware/fetch-dataset';
@@ -59,7 +59,30 @@ import { redirectIfOpenPublishRequest } from '../middleware/redirect-if-open-pub
 
 export const publish = Router();
 
-const upload = multer({ storage: multer.memoryStorage() });
+export const MULTIPART_FIELD_SIZE_LIMIT = 10 * 1024 * 1024;
+
+const upload = multer({ storage: multer.memoryStorage(), limits: { fieldSize: MULTIPART_FIELD_SIZE_LIMIT } });
+
+const uploadNoneOrFieldError =
+  (field: string, errorKey: string): RequestHandler =>
+  (req: Request, res: Response, next: NextFunction) => {
+    upload.none()(req, res, (err: unknown) => {
+      if (err instanceof multer.MulterError && err.code === 'LIMIT_FIELD_VALUE') {
+        req.session.errors = [{ field, message: { key: errorKey } }];
+        const redirectTarget =
+          req.originalUrl.startsWith('/') && !req.originalUrl.startsWith('//') ? req.originalUrl : '/';
+        req.session.save((saveErr) => {
+          if (saveErr) {
+            next(saveErr);
+            return;
+          }
+          res.redirect(redirectTarget);
+        });
+        return;
+      }
+      next(err);
+    });
+  };
 
 publish.use(noCache, flashMessages, flashErrors);
 
@@ -395,7 +418,7 @@ publish.post(
   '/:datasetId/summary',
   fetchDataset(Include.Meta),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNoneOrFieldError('summary', 'publish.summary.form.description.error.too_long'),
   provideSummary
 );
 
@@ -404,7 +427,7 @@ publish.post(
   '/:datasetId/collection',
   fetchDataset(Include.Meta),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNoneOrFieldError('collection', 'publish.collection.form.collection.error.too_long'),
   provideCollection
 );
 
