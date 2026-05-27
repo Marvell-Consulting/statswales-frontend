@@ -59,7 +59,9 @@ import { redirectIfOpenPublishRequest } from '../middleware/redirect-if-open-pub
 
 export const publish = Router();
 
-const upload = multer({ storage: multer.memoryStorage(), limits: { fieldSize: 10 * 1024 * 1024 } });
+export const MULTIPART_FIELD_SIZE_LIMIT = 10 * 1024 * 1024;
+
+const upload = multer({ storage: multer.memoryStorage(), limits: { fieldSize: MULTIPART_FIELD_SIZE_LIMIT } });
 
 const uploadNoneOrFieldError =
   (field: string, errorKey: string): RequestHandler =>

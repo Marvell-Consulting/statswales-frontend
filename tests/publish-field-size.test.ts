@@ -10,8 +10,7 @@ import { GlobalRole } from '../src/shared/enums/global-role';
 import { UserStatus } from '../src/shared/enums/user-status';
 import { mockBackend } from './mocks/backend';
 import { completedDataset } from './mocks/fixtures';
-
-const FIELD_SIZE_LIMIT = 10 * 1024 * 1024; // must match limit in publish.ts
+import { MULTIPART_FIELD_SIZE_LIMIT } from '../src/publisher/routes/publish';
 
 const testUser = {
   id: 'test-user-id',
@@ -64,7 +63,7 @@ describe('Publish route field size errors', () => {
   describe('POST /:datasetId/summary', () => {
     test('redirects back and shows error when summary exceeds field size limit', async () => {
       const agent = makeAgent();
-      const oversizedValue = 'a'.repeat(FIELD_SIZE_LIMIT + 1);
+      const oversizedValue = 'a'.repeat(MULTIPART_FIELD_SIZE_LIMIT + 1);
 
       const postRes = await agent.post(`/en-GB/publish/${datasetId}/summary`).field('summary', oversizedValue);
 
@@ -81,7 +80,7 @@ describe('Publish route field size errors', () => {
   describe('POST /:datasetId/collection', () => {
     test('redirects back and shows error when collection exceeds field size limit', async () => {
       const agent = makeAgent();
-      const oversizedValue = 'a'.repeat(FIELD_SIZE_LIMIT + 1);
+      const oversizedValue = 'a'.repeat(MULTIPART_FIELD_SIZE_LIMIT + 1);
 
       const postRes = await agent.post(`/en-GB/publish/${datasetId}/collection`).field('collection', oversizedValue);
 
