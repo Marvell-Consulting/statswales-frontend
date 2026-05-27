@@ -71,7 +71,13 @@ const uploadNoneOrFieldError =
         req.session.errors = [{ field, message: { key: errorKey } }];
         const redirectTarget =
           req.originalUrl.startsWith('/') && !req.originalUrl.startsWith('//') ? req.originalUrl : '/';
-        req.session.save(() => res.redirect(redirectTarget));
+        req.session.save((saveErr) => {
+          if (saveErr) {
+            next(saveErr);
+            return;
+          }
+          res.redirect(redirectTarget);
+        });
         return;
       }
       next(err);
