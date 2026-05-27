@@ -67,7 +67,9 @@ const uploadNoneOrFieldError =
     upload.none()(req, res, (err: unknown) => {
       if (err instanceof multer.MulterError && err.code === 'LIMIT_FIELD_VALUE') {
         req.session.errors = [{ field, message: { key: errorKey } }];
-        req.session.save(() => res.redirect(req.originalUrl));
+        const redirectTarget =
+          req.originalUrl.startsWith('/') && !req.originalUrl.startsWith('//') ? req.originalUrl : '/';
+        req.session.save(() => res.redirect(redirectTarget));
         return;
       }
       next(err);
