@@ -75,7 +75,7 @@ export class ConsumerApi {
 
     return fetch(fullUrl, { method, headers: head, body: data })
       .then((response: Response) => {
-        logRequestTime(method, fullUrl, start);
+        logRequestTime(method, `${url}${qs}`, start);
         return response;
       })
       .then(async (response: Response) => {
@@ -83,7 +83,13 @@ export class ConsumerApi {
           logger.error(
             `API request to ${fullUrl} failed with status '${response.status}' and message '${response.statusText}'`
           );
-          const body = (await new Response(response.body).text()) || undefined;
+          // Read the body defensively so a stream error doesn't strip the HTTP status off the thrown exception.
+          let body: string | undefined;
+          try {
+            body = (await new Response(response.body).text()) || undefined;
+          } catch (err) {
+            logger.warn(err, `Failed to read error body from ${fullUrl}`);
+          }
           throw new ApiException(response.statusText, response.status, body);
         }
         return response;

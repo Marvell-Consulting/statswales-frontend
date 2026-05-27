@@ -4,7 +4,6 @@ import { config } from '../src/shared/config';
 import { HttpMethod } from '../src/shared/enums/http-method';
 import { Locale } from '../src/shared/enums/locale';
 import { SourceType } from '../src/shared/enums/source-type';
-import { ApiException } from '../src/shared/exceptions/api.exception';
 import { ViewException } from '../src/shared/exceptions/view.exception';
 import { SourceAssignmentDTO } from '../src/shared/dtos/source-assignment-dto';
 import { DatasetListItemDTO } from '../src/shared/dtos/dataset-list-item';
@@ -102,21 +101,44 @@ describe('PublisherApi', () => {
 
     it('should throw an ApiException when the backend returns a 500', async () => {
       mockResponse = Promise.resolve(new Response(null, { status: 500, statusText: 'Internal Server Error' }));
-      await expect(statsWalesApi.fetch({ url: 'example.com/api' })).rejects.toThrow(
-        new ApiException('Internal Server Error', 500)
-      );
+      await expect(statsWalesApi.fetch({ url: 'example.com/api' })).rejects.toMatchObject({
+        name: 'ApiException',
+        message: 'Internal Server Error',
+        status: 500
+      });
     });
 
     it('should throw an ApiException when the backend returns a 400', async () => {
       mockResponse = Promise.resolve(new Response(null, { status: 400, statusText: 'Bad Request' }));
-      await expect(statsWalesApi.fetch({ url: 'example.com/api' })).rejects.toThrow(
-        new ApiException('Bad Request', 400)
-      );
+      await expect(statsWalesApi.fetch({ url: 'example.com/api' })).rejects.toMatchObject({
+        name: 'ApiException',
+        message: 'Bad Request',
+        status: 400
+      });
     });
 
     it('should throw an ApiException when the backend returns a 404', async () => {
       mockResponse = Promise.resolve(new Response(null, { status: 404, statusText: 'Not Found' }));
-      await expect(statsWalesApi.fetch({ url: 'example.com/api' })).rejects.toThrow(new ApiException('Not Found', 400));
+      await expect(statsWalesApi.fetch({ url: 'example.com/api' })).rejects.toMatchObject({
+        name: 'ApiException',
+        message: 'Not Found',
+        status: 404
+      });
+    });
+
+    it('should still throw an ApiException with the original status when the error body cannot be read', async () => {
+      const erroringStream = new ReadableStream({
+        start(controller) {
+          controller.error(new Error('stream read failure'));
+        }
+      });
+      mockResponse = Promise.resolve(new Response(erroringStream, { status: 503, statusText: 'Service Unavailable' }));
+
+      await expect(statsWalesApi.fetch({ url: 'example.com/api' })).rejects.toMatchObject({
+        name: 'ApiException',
+        message: 'Service Unavailable',
+        status: 503
+      });
     });
   });
 

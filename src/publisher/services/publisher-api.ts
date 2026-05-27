@@ -117,22 +117,28 @@ export class PublisherApi {
 
     return fetch(fullUrl, { method, headers: head, body: data })
       .then((response: Response) => {
-        logRequestTime(method, url, start);
+        logRequestTime(method, `${url}${qs}`, start);
         return response;
       })
       .then(async (response: Response) => {
         if (!response.ok) {
           logger.error(
-            `API request to ${this.backendUrl}/${url} failed with status '${response.status}' and message '${response.statusText}'`
+            `API request to ${fullUrl} failed with status '${response.status}' and message '${response.statusText}'`
           );
-          const body = (await new Response(response.body).text()) || undefined;
+          // Read the body defensively so a stream error doesn't strip the HTTP status off the thrown exception.
+          let body: string | undefined;
+          try {
+            body = (await new Response(response.body).text()) || undefined;
+          } catch (err) {
+            logger.warn(err, `Failed to read error body from ${fullUrl}`);
+          }
           throw new ApiException(response.statusText, response.status, body);
         }
         return response;
       })
       .catch((error) => {
         if (error instanceof ApiException) throw error;
-        logger.error(error, `An unknown error occurred attempting to fetch ${this.backendUrl}/${url}`);
+        logger.error(error, `An unknown error occurred attempting to fetch ${fullUrl}`);
         throw new UnknownException(error.message);
       });
   }
