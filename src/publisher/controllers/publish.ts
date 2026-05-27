@@ -2163,7 +2163,7 @@ export const provideSummary = async (req: Request, res: Response) => {
     }
   }
 
-  res.render('publish/summary', { summary, errors });
+  res.render('publish/summary', { summary, errors: errors ?? res.locals.errors });
 };
 
 export const provideCollection = async (req: Request, res: Response) => {
@@ -2195,7 +2195,7 @@ export const provideCollection = async (req: Request, res: Response) => {
     }
   }
 
-  res.render('publish/collection', { collection, errors });
+  res.render('publish/collection', { collection, errors: errors ?? res.locals.errors });
 };
 
 export const provideQuality = async (req: Request, res: Response) => {

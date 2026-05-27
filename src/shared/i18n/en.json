@@ -662,7 +662,8 @@
       "form": {
         "description": {
           "error": {
-            "missing": "Enter the summary of this dataset and its variables"
+            "missing": "Enter the summary of this dataset and its variables",
+            "too_long": "The summary is too long"
           }
         }
       }
@@ -677,7 +678,8 @@
       "form": {
         "collection": {
           "error": {
-            "missing": "Enter how the data was collected or calculated"
+            "missing": "Enter how the data was collected or calculated",
+            "too_long": "The collection description is too long"
           }
         }
       }
