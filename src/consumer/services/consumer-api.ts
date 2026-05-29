@@ -140,15 +140,11 @@ export class ConsumerApi {
     datasetId: string,
     pageNumber: number,
     pageSize: number,
-    sortBy?: SortByInterface
+    sortBy?: SortByInterface,
+    cursor?: string
   ): Promise<ViewV2DTO> {
     logger.debug(`Fetching published view of dataset: ${datasetId}`);
-    const query = new URLSearchParams({ page_number: pageNumber.toString(), page_size: pageSize.toString() });
-    query.append('format', 'frontend');
-
-    if (sortBy) {
-      query.append('sort_by', serializeSortBy(sortBy));
-    }
+    const query = buildPagedViewQuery(pageNumber, pageSize, sortBy, cursor);
 
     return this.fetch({ url: `v2/${datasetId}/data`, query }).then(
       (response) => response.json() as unknown as ViewV2DTO
@@ -183,18 +179,11 @@ export class ConsumerApi {
     filterId: string,
     pageNumber: number,
     pageSize: number,
-    sortBy?: SortByInterface
+    sortBy?: SortByInterface,
+    cursor?: string
   ): Promise<ViewV2DTO> {
     logger.debug(`Fetching filtered view of dataset: ${datasetId} with filter ID: ${filterId}`);
-    const query = new URLSearchParams({
-      page_number: pageNumber.toString(),
-      page_size: pageSize.toString(),
-      format: 'frontend'
-    });
-
-    if (sortBy) {
-      query.append('sort_by', serializeSortBy(sortBy));
-    }
+    const query = buildPagedViewQuery(pageNumber, pageSize, sortBy, cursor);
 
     return this.fetch({ url: `v2/${datasetId}/data/${filterId}`, query }).then(
       (response) => response.json() as unknown as ViewV2DTO
@@ -206,18 +195,11 @@ export class ConsumerApi {
     filterId: string,
     pageNumber: number,
     pageSize: number,
-    sortBy?: SortByInterface
+    sortBy?: SortByInterface,
+    cursor?: string
   ): Promise<ViewV2DTO> {
     logger.debug(`Fetching pivoted view of dataset: ${datasetId} with filter ID: ${filterId}`);
-    const query = new URLSearchParams({
-      page_number: pageNumber.toString(),
-      page_size: pageSize.toString(),
-      format: 'frontend'
-    });
-
-    if (sortBy) {
-      query.append('sort_by', serializeSortBy(sortBy));
-    }
+    const query = buildPagedViewQuery(pageNumber, pageSize, sortBy, cursor);
 
     return this.fetch({ url: `v2/${datasetId}/pivot/${filterId}`, query }).then(
       (response) => response.json() as unknown as ViewV2DTO
@@ -275,4 +257,27 @@ export class ConsumerApi {
       (response) => response.json() as unknown as ResultsetWithCount<SearchResultDTO>
     );
   }
+}
+
+// Backend rejects `cursor` + `page_number > 1` as mutually exclusive, so when
+// the caller has a cursor we drop page_number from the query entirely and let
+// the server treat it as a cursor-mode request.
+function buildPagedViewQuery(
+  pageNumber: number,
+  pageSize: number,
+  sortBy: SortByInterface | undefined,
+  cursor: string | undefined
+): URLSearchParams {
+  const query = new URLSearchParams();
+  if (cursor) {
+    query.append('cursor', cursor);
+  } else {
+    query.append('page_number', pageNumber.toString());
+  }
+  query.append('page_size', pageSize.toString());
+  query.append('format', 'frontend');
+  if (sortBy) {
+    query.append('sort_by', serializeSortBy(sortBy));
+  }
+  return query;
 }

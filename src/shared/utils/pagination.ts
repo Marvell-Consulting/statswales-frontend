@@ -1,3 +1,22 @@
+// Mirror of the backend's SW-1246 page_number cap. Numbered pagination is only
+// rendered up to this page; beyond it the UI must drive navigation via the
+// `next_cursor` / `prev_cursor` opaque tokens, because keyset queries are far
+// cheaper than deep OFFSET reads.
+export const PAGE_NUMBER_CAP = 100;
+
+// Same shape as `paginationSequence` but treats `min(totalPages, PAGE_NUMBER_CAP)`
+// as the effective last page. The "summary" copy ("Page X of Y") still uses
+// the real `total_pages` from the response — only the numbered jump links are
+// capped.
+export function cappedPaginationSequence(
+  currentPage: number,
+  totalPages: number,
+  cap: number = PAGE_NUMBER_CAP
+): (string | number)[] {
+  const effective = Math.min(totalPages, cap);
+  return paginationSequence(currentPage, effective);
+}
+
 export function paginationSequence(currentPage: number, totalPages: number): (string | number)[] {
   if (totalPages <= 1) {
     return [];
@@ -42,8 +61,42 @@ export function paginationSequence(currentPage: number, totalPages: number): (st
   return sequence;
 }
 
-export const pageInfo = (currentPage: number, pageSize: number, totalRows: number) => {
+// Combine the offset-based page_info from `pageInfo()` with the cursor fields
+// that come back on the backend view response. The backend's page_info carries
+// `next_cursor` / `prev_cursor`; the helper-computed page_info doesn't know
+// about cursors. Template render spreads merge in order so this restores the
+// cursor fields onto the final object.
+export function mergeCursorPageInfo<T extends { next_cursor?: string | null; prev_cursor?: string | null } | undefined>(
+  base: object,
+  fromView: T
+): object {
+  return {
+    ...base,
+    next_cursor: fromView?.next_cursor ?? null,
+    prev_cursor: fromView?.prev_cursor ?? null
+  };
+}
+
+export const pageInfo = (currentPage: number | null | undefined, pageSize: number, totalRows: number) => {
   const totalPages = Math.ceil(totalRows / pageSize);
+
+  // Cursor-mode responses set current_page to null because row offsets aren't
+  // meaningful when paginating by keyset. Surface that to the view layer by
+  // returning null fields rather than NaN — the Pagination component renders
+  // the cursor-only "Next / Previous" variant in that case.
+  if (currentPage == null) {
+    return {
+      current_page: null,
+      total_pages: totalPages,
+      page_size: pageSize,
+      page_info: {
+        total_records: totalRows,
+        start_record: null,
+        end_record: null
+      },
+      pagination: [] as (string | number)[]
+    };
+  }
 
   return {
     current_page: currentPage,
@@ -54,6 +107,6 @@ export const pageInfo = (currentPage: number, pageSize: number, totalRows: numbe
       start_record: (currentPage - 1) * pageSize + 1,
       end_record: Math.min(currentPage * pageSize, totalRows)
     },
-    pagination: totalPages > 1 ? paginationSequence(currentPage, totalPages) : []
+    pagination: totalPages > 1 ? cappedPaginationSequence(currentPage, totalPages) : []
   };
 };

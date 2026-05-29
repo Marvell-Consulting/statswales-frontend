@@ -351,6 +351,18 @@ describe('ConsumerApi', () => {
       mockResponse = Promise.resolve(new Response(null, { status: 500, statusText: 'Internal Server Error' }));
       await expect(consumerApi.getPublishedDatasetView(randomUUID(), 1, 10)).rejects.toThrow(ApiException);
     });
+
+    it('sends cursor and omits page_number when a cursor is supplied (SW-1246)', async () => {
+      const datasetId = randomUUID();
+      mockResponse = Promise.resolve(new Response(JSON.stringify({})));
+
+      await consumerApi.getPublishedDatasetView(datasetId, 1, 25, undefined, 'opaque-cursor-token');
+
+      expect(fetchSpy).toHaveBeenCalledWith(
+        `${baseUrl}/v2/${datasetId}/data?cursor=opaque-cursor-token&page_size=25&format=frontend&lang=en`,
+        expect.any(Object)
+      );
+    });
   });
 
   describe('getPublishedDatasetFilters', () => {

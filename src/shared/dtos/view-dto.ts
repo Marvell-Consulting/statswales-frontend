@@ -18,9 +18,17 @@ export interface PageInfo {
 }
 
 export interface PageInfoV2 extends PageInfo {
-  current_page: number;
+  // current_page / start_record / end_record are nullable: the backend omits
+  // them in cursor-pagination mode where row offsets aren't meaningful.
+  current_page: number | null;
   page_size: number;
   total_pages: number;
+  // Opaque keyset cursors. The backend emits next_cursor whenever there are
+  // more rows after the current page (in either offset or cursor mode), and
+  // prev_cursor in cursor mode when a previous page exists. Both null when
+  // there is no further direction to travel.
+  next_cursor?: string | null;
+  prev_cursor?: string | null;
 }
 
 export interface ViewErrDTO {

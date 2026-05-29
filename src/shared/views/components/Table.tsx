@@ -99,7 +99,12 @@ function TableHeader<T>({
     }
 
     const param = getSortParam();
-    const newQuery = param ? qs.stringify({ ...query, sort_by: param }) : qs.stringify(omit(query, 'sort_by'));
+    // Changing the sort resolves a different keyset sort plan on the backend
+    // (different sortHash), so any cursor we were carrying is no longer valid.
+    // Drop it so the new sort starts a fresh traversal from the first page
+    // rather than hitting a 400 (see SW-1246).
+    const carriedQuery = omit(query, 'cursor');
+    const newQuery = param ? qs.stringify({ ...carriedQuery, sort_by: param }) : qs.stringify(omit(carriedQuery, 'sort_by'));
 
     const url = size(newQuery) ? `${originalUrl}?${newQuery}` : originalUrl;
     return anchor ? `${url}#${anchor}` : url;

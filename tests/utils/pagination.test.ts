@@ -1,4 +1,10 @@
-import { pageInfo, paginationSequence } from '../../src/shared/utils/pagination';
+import {
+  PAGE_NUMBER_CAP,
+  cappedPaginationSequence,
+  mergeCursorPageInfo,
+  pageInfo,
+  paginationSequence
+} from '../../src/shared/utils/pagination';
 
 // input params are [currentPage, totalPages]
 // expected output is an array of page numbers as strings, with skipped pages represented by '...'
@@ -70,5 +76,48 @@ describe('pageInfo', () => {
       },
       pagination: []
     });
+  });
+
+  test('returns the cursor-mode shape when currentPage is null', () => {
+    const result = pageInfo(null, 25, 50000);
+    expect(result.current_page).toBeNull();
+    expect(result.total_pages).toBe(2000);
+    expect(result.page_info.start_record).toBeNull();
+    expect(result.page_info.end_record).toBeNull();
+    expect(result.pagination).toEqual([]);
+  });
+});
+
+describe('cappedPaginationSequence', () => {
+  test('caps numbered links at PAGE_NUMBER_CAP (default 100)', () => {
+    // 30000 pages total — the user is on page 50, well below the cap.
+    const result = cappedPaginationSequence(50, 30000);
+    // Last numbered link should be 100, not 30000
+    expect(result[result.length - 1]).toBe(PAGE_NUMBER_CAP);
+  });
+
+  test('falls through to the real total when below the cap', () => {
+    expect(cappedPaginationSequence(2, 10)).toEqual(paginationSequence(2, 10));
+  });
+
+  test('uses the cap as effective last page when current is below cap', () => {
+    // current=1, totalPages=200 → effective=100 → should look like 1, 2, ..., 100
+    const result = cappedPaginationSequence(1, 200);
+    expect(result).toEqual([1, 2, '...', 100]);
+  });
+});
+
+describe('mergeCursorPageInfo', () => {
+  test('layers next_cursor / prev_cursor from the view onto the base page_info', () => {
+    const base = { total_records: 100, start_record: 1, end_record: 25 };
+    const merged = mergeCursorPageInfo(base, { next_cursor: 'tok', prev_cursor: null });
+    expect(merged).toEqual({ ...base, next_cursor: 'tok', prev_cursor: null });
+  });
+
+  test('emits nulls when the view did not supply cursors', () => {
+    const base = { total_records: 100 };
+    const merged = mergeCursorPageInfo(base, undefined);
+    expect((merged as Record<string, unknown>).next_cursor).toBeNull();
+    expect((merged as Record<string, unknown>).prev_cursor).toBeNull();
   });
 });
