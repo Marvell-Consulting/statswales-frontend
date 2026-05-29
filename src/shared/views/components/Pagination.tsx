@@ -29,9 +29,17 @@ export default function Pagination({
 }: PaginationProps) {
   const { buildUrl, url, i18n } = useLocals();
 
-  const inCursorMode = current_page == null;
-  const nextCursor = page_info.next_cursor ?? null;
-  const prevCursor = page_info.prev_cursor ?? null;
+  // `Pagination` is shared across the consumer view (cursor-aware) AND
+  // non-cursor pages like dataset list, search, topic browse and admin.
+  // Detect cursor opt-in by the *presence* of either cursor field in the
+  // response envelope — not by their value, because a cursor-aware response
+  // legitimately carries `next_cursor: null` on the last page. Without this
+  // gate the cap-and-cursor switching would kick in for non-cursor pages
+  // with >100 pages and break their pagination.
+  const supportsCursor = 'next_cursor' in page_info || 'prev_cursor' in page_info;
+  const inCursorMode = supportsCursor && current_page == null;
+  const nextCursor = supportsCursor ? (page_info.next_cursor ?? null) : null;
+  const prevCursor = supportsCursor ? (page_info.prev_cursor ?? null) : null;
 
   if (total_pages <= 1 && !inCursorMode) {
     return null;
@@ -44,20 +52,24 @@ export default function Pagination({
   delete (parsedQuery as Record<string, unknown>).page_number;
   delete (parsedQuery as Record<string, unknown>).cursor;
 
+  const atOrPastCap = supportsCursor && current_page != null && current_page >= PAGE_NUMBER_CAP;
+
   const showPrevLink = inCursorMode ? prevCursor != null : current_page! > 1;
   const showNextLink = inCursorMode
     ? nextCursor != null
     : current_page! < total_pages &&
       // At the cap boundary the next link switches to a cursor — only emit a
-      // page_number-based link while we're inside the capped range.
-      (current_page! < PAGE_NUMBER_CAP || nextCursor != null);
+      // page_number-based link while we're inside the capped range. For
+      // non-cursor paginations (no cursor fields on the response) the cap
+      // doesn't apply and "Next" works all the way to total_pages.
+      (!supportsCursor || current_page! < PAGE_NUMBER_CAP || nextCursor != null);
 
   const prevHref = inCursorMode
     ? buildUrl(baseUrl, i18n.language, { ...parsedQuery, cursor: prevCursor!, page_size }, anchor)
     : buildUrl(baseUrl, i18n.language, { ...parsedQuery, page_number: current_page! - 1, page_size }, anchor);
 
   const nextHref =
-    inCursorMode || current_page! >= PAGE_NUMBER_CAP
+    inCursorMode || atOrPastCap
       ? buildUrl(baseUrl, i18n.language, { ...parsedQuery, cursor: nextCursor!, page_size }, anchor)
       : buildUrl(baseUrl, i18n.language, { ...parsedQuery, page_number: current_page! + 1, page_size }, anchor);
 

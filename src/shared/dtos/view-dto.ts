@@ -13,8 +13,12 @@ export interface ColumnHeader {
 
 export interface PageInfo {
   total_records: number | undefined;
-  start_record: number | undefined;
-  end_record: number | undefined;
+  // start_record / end_record are nullable to match the cursor-mode response
+  // shape — the backend returns null for these when paginating by keyset
+  // because row offsets aren't meaningful there. Non-cursor pagination still
+  // populates them with numbers.
+  start_record: number | null | undefined;
+  end_record: number | null | undefined;
 }
 
 export interface PageInfoV2 extends PageInfo {

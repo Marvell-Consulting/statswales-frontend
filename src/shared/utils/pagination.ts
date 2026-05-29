@@ -7,14 +7,17 @@ export const PAGE_NUMBER_CAP = 100;
 // Same shape as `paginationSequence` but treats `min(totalPages, PAGE_NUMBER_CAP)`
 // as the effective last page. The "summary" copy ("Page X of Y") still uses
 // the real `total_pages` from the response — only the numbered jump links are
-// capped.
+// capped. `currentPage` is clamped to the effective range so a direct hit at
+// `?page_number=101` doesn't leak the literal current page into the numbered
+// link set (which would render an above-cap page number).
 export function cappedPaginationSequence(
   currentPage: number,
   totalPages: number,
   cap: number = PAGE_NUMBER_CAP
 ): (string | number)[] {
   const effective = Math.min(totalPages, cap);
-  return paginationSequence(currentPage, effective);
+  const clampedCurrent = Math.min(Math.max(1, currentPage), effective);
+  return paginationSequence(clampedCurrent, effective);
 }
 
 export function paginationSequence(currentPage: number, totalPages: number): (string | number)[] {
@@ -66,15 +69,23 @@ export function paginationSequence(currentPage: number, totalPages: number): (st
 // `next_cursor` / `prev_cursor`; the helper-computed page_info doesn't know
 // about cursors. Template render spreads merge in order so this restores the
 // cursor fields onto the final object.
+//
+// Only fields *present* on `fromView` are propagated — a non-cursor response
+// (where the fields are absent rather than null) must leave the merged object
+// without the cursor markers, because the shared Pagination component treats
+// presence as the "this response supports cursors" signal.
 export function mergeCursorPageInfo<T extends { next_cursor?: string | null; prev_cursor?: string | null } | undefined>(
   base: object,
   fromView: T
 ): object {
-  return {
-    ...base,
-    next_cursor: fromView?.next_cursor ?? null,
-    prev_cursor: fromView?.prev_cursor ?? null
-  };
+  const out: Record<string, unknown> = { ...base };
+  if (fromView && 'next_cursor' in fromView) {
+    out.next_cursor = fromView.next_cursor ?? null;
+  }
+  if (fromView && 'prev_cursor' in fromView) {
+    out.prev_cursor = fromView.prev_cursor ?? null;
+  }
+  return out;
 }
 
 export const pageInfo = (currentPage: number | null | undefined, pageSize: number, totalRows: number) => {

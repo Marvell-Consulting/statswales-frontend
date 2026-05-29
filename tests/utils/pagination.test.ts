@@ -105,6 +105,15 @@ describe('cappedPaginationSequence', () => {
     const result = cappedPaginationSequence(1, 200);
     expect(result).toEqual([1, 2, '...', 100]);
   });
+
+  test('clamps currentPage to the effective last page so above-cap pages do not leak in', () => {
+    // A user direct-hits ?page_number=150 on a 30000-page view. Numbered
+    // links must still stop at 100 — the clamp pulls currentPage back so
+    // paginationSequence does not seed the set with 150.
+    const result = cappedPaginationSequence(150, 30000);
+    expect(result.every((p) => typeof p === 'string' || (p as number) <= PAGE_NUMBER_CAP)).toBe(true);
+    expect(result[result.length - 1]).toBe(PAGE_NUMBER_CAP);
+  });
 });
 
 describe('mergeCursorPageInfo', () => {
@@ -114,10 +123,22 @@ describe('mergeCursorPageInfo', () => {
     expect(merged).toEqual({ ...base, next_cursor: 'tok', prev_cursor: null });
   });
 
-  test('emits nulls when the view did not supply cursors', () => {
+  test('omits cursor keys entirely when the view did not supply them', () => {
+    // Shared Pagination treats *presence* of either cursor key as the
+    // "cursor pagination supported" signal — non-cursor views (dataset list,
+    // search, admin) must therefore not have null cursor keys layered on.
     const base = { total_records: 100 };
     const merged = mergeCursorPageInfo(base, undefined);
+    expect('next_cursor' in merged).toBe(false);
+    expect('prev_cursor' in merged).toBe(false);
+  });
+
+  test('preserves null cursors when the view actively supplied them', () => {
+    // A cursor-mode response on the last page genuinely carries
+    // `next_cursor: null` — that must propagate through so the
+    // Pagination component still recognises cursor support.
+    const merged = mergeCursorPageInfo({ total_records: 50 }, { next_cursor: null, prev_cursor: 'tok' });
     expect((merged as Record<string, unknown>).next_cursor).toBeNull();
-    expect((merged as Record<string, unknown>).prev_cursor).toBeNull();
+    expect((merged as Record<string, unknown>).prev_cursor).toBe('tok');
   });
 });
