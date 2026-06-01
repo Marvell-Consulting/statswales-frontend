@@ -964,10 +964,18 @@
     width: 25%;
   }
 
+  .govuk-breadcrumbs {
+    margin-top: 20px;
+  }
+
   .govuk-breadcrumbs__link:link,
   .govuk-breadcrumbs__link:visited {
     color: colours.$blue;
     font-size: 16px;
+  }
+
+  .govuk-breadcrumbs__link:hover {
+    color: colours.$lightblue;
   }
 
   .govuk-heading-xl,
