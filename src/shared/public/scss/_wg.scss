@@ -964,8 +964,9 @@
     width: 25%;
   }
 
-  .govuk-breadcrumbs {
-    margin-top: 20px;
+  .govuk-breadcrumbs.govuk-\!-margin-0,
+  .govuk-breadcrumbs.govuk-\!-margin-top-4 {
+    margin-top: 20px !important;
   }
 
   .govuk-breadcrumbs__link:link,
