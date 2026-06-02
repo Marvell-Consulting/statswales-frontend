@@ -3,7 +3,7 @@ import React from 'react';
 import T from './T';
 import { useLocals } from '../context/Locals';
 import { PageInfo } from '../../dtos/view-dto';
-import { PAGE_NUMBER_CAP } from '../../utils/pagination';
+import { PAGE_NUMBER_CAP, resolveCursorPage } from '../../utils/pagination';
 import qs from 'qs';
 
 export type PaginationProps = {
@@ -46,13 +46,19 @@ export default function Pagination({
   }
 
   const [baseUrl, query] = url.split('?');
-  // Strip page_number / cursor so we can re-emit the right one per link
-  // rather than carrying a stale value forward.
+  // Strip page_number / cursor / page_hint so we can re-emit the right value
+  // per link rather than carrying a stale one forward.
   const parsedQuery = { ...qs.parse(query) };
   delete (parsedQuery as Record<string, unknown>).page_number;
   delete (parsedQuery as Record<string, unknown>).cursor;
+  const rawHint = (parsedQuery as Record<string, unknown>).page_hint;
+  delete (parsedQuery as Record<string, unknown>).page_hint;
 
   const atOrPastCap = supportsCursor && current_page != null && current_page >= PAGE_NUMBER_CAP;
+
+  // Display-only page counter for cursor mode (see resolveCursorPage). null
+  // when untrustworthy, in which case the summary falls back to "Page > cap".
+  const cursorPage = resolveCursorPage(inCursorMode, rawHint);
 
   const showPrevLink = inCursorMode ? prevCursor != null : current_page! > 1;
   const showNextLink = inCursorMode
@@ -64,13 +70,26 @@ export default function Pagination({
       // doesn't apply and "Next" works all the way to total_pages.
       (!supportsCursor || current_page! < PAGE_NUMBER_CAP || nextCursor != null);
 
+  // page_hint for the cursor Prev/Next links. In cursor mode we step the
+  // tracked counter; at the cap boundary (last offset page → first cursor
+  // page) we seed it from the known page number. Omitted when there's nothing
+  // trustworthy to carry, so the summary degrades gracefully.
+  const prevHint = cursorPage != null ? { page_hint: cursorPage - 1 } : {};
+  const nextHint = inCursorMode
+    ? cursorPage != null
+      ? { page_hint: cursorPage + 1 }
+      : {}
+    : atOrPastCap
+      ? { page_hint: current_page! + 1 }
+      : {};
+
   const prevHref = inCursorMode
-    ? buildUrl(baseUrl, i18n.language, { ...parsedQuery, cursor: prevCursor!, page_size }, anchor)
+    ? buildUrl(baseUrl, i18n.language, { ...parsedQuery, ...prevHint, cursor: prevCursor!, page_size }, anchor)
     : buildUrl(baseUrl, i18n.language, { ...parsedQuery, page_number: current_page! - 1, page_size }, anchor);
 
   const nextHref =
     inCursorMode || atOrPastCap
-      ? buildUrl(baseUrl, i18n.language, { ...parsedQuery, cursor: nextCursor!, page_size }, anchor)
+      ? buildUrl(baseUrl, i18n.language, { ...parsedQuery, ...nextHint, cursor: nextCursor!, page_size }, anchor)
       : buildUrl(baseUrl, i18n.language, { ...parsedQuery, page_number: current_page! + 1, page_size }, anchor);
 
   // Numbered jumps are only meaningful in offset mode. In cursor mode we
@@ -159,9 +178,15 @@ export default function Pagination({
 
       <div className="govuk-pagination__summary">
         {inCursorMode ? (
-          <>
-            Page &gt; {PAGE_NUMBER_CAP} of {total_pages}
-          </>
+          cursorPage != null ? (
+            <>
+              Page {cursorPage} of {total_pages}
+            </>
+          ) : (
+            <>
+              Page &gt; {PAGE_NUMBER_CAP} of {total_pages}
+            </>
+          )
         ) : (
           <>
             Page {current_page} of {total_pages}

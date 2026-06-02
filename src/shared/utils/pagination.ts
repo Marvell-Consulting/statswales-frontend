@@ -64,6 +64,19 @@ export function paginationSequence(currentPage: number, totalPages: number): (st
   return sequence;
 }
 
+// Resolve the display-only page counter for cursor mode. Keyset pagination has
+// no inherent page index, so the UI threads an incrementing `page_hint` query
+// param through the Prev/Next links (the backend never sees it). It stays
+// accurate because cursor mode is strictly sequential — there are no numbered
+// jumps. Returns null when there's nothing trustworthy to show (not in cursor
+// mode, or a deep cursor link arrived without a valid positive hint), in which
+// case the summary falls back to the coarser "Page > cap" wording.
+export function resolveCursorPage(inCursorMode: boolean, rawHint: unknown): number | null {
+  if (!inCursorMode) return null;
+  const parsed = typeof rawHint === 'string' ? parseInt(rawHint, 10) : NaN;
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+}
+
 // Combine the offset-based page_info from `pageInfo()` with the cursor fields
 // that come back on the backend view response. The backend's page_info carries
 // `next_cursor` / `prev_cursor`; the helper-computed page_info doesn't know

@@ -3,7 +3,8 @@ import {
   cappedPaginationSequence,
   mergeCursorPageInfo,
   pageInfo,
-  paginationSequence
+  paginationSequence,
+  resolveCursorPage
 } from '../../src/shared/utils/pagination';
 
 // input params are [currentPage, totalPages]
@@ -140,5 +141,42 @@ describe('mergeCursorPageInfo', () => {
     const merged = mergeCursorPageInfo({ total_records: 50 }, { next_cursor: null, prev_cursor: 'tok' });
     expect((merged as Record<string, unknown>).next_cursor).toBeNull();
     expect((merged as Record<string, unknown>).prev_cursor).toBe('tok');
+  });
+});
+
+describe('resolveCursorPage', () => {
+  test('returns null when not in cursor mode regardless of hint', () => {
+    expect(resolveCursorPage(false, '101')).toBeNull();
+  });
+
+  test('returns the hinted page when in cursor mode with a valid hint', () => {
+    expect(resolveCursorPage(true, '101')).toBe(101);
+  });
+
+  test('returns null when the hint is missing', () => {
+    // Deep cursor link arrived without the display counter — fall back to the
+    // coarse "Page > cap" summary rather than guessing.
+    expect(resolveCursorPage(true, undefined)).toBeNull();
+  });
+
+  test('returns null for a non-numeric hint', () => {
+    expect(resolveCursorPage(true, 'abc')).toBeNull();
+  });
+
+  test('returns null for a non-positive hint', () => {
+    expect(resolveCursorPage(true, '0')).toBeNull();
+    expect(resolveCursorPage(true, '-5')).toBeNull();
+  });
+
+  test('ignores non-string hint values', () => {
+    // qs.parse can yield arrays/objects for repeated or nested params; those
+    // are not a usable page number.
+    expect(resolveCursorPage(true, ['101'])).toBeNull();
+    expect(resolveCursorPage(true, 101)).toBeNull();
+  });
+
+  test('parses a leading integer from a hint with trailing characters', () => {
+    // parseInt semantics — tolerant of a stray suffix, still yields the page.
+    expect(resolveCursorPage(true, '102abc')).toBe(102);
   });
 });
