@@ -1198,6 +1198,45 @@
     border-color: colours.$midgrey;
   }
 
+  .govuk-breadcrumbs__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .govuk-breadcrumbs__list-item {
+    float: none;
+  }
+
+  @media screen and (max-width: 767px) {
+    .govuk-breadcrumbs__list-item {
+      display: none;
+    }
+
+    // Fallback for browsers without :has() support: show the current page item
+    .govuk-breadcrumbs__list-item--current {
+      display: flex;
+      align-items: center;
+    }
+
+    // Last item is a link (no current-page indicator) — show it as the parent
+    .govuk-breadcrumbs__list-item:last-child:not(.govuk-breadcrumbs__list-item--current) {
+      display: flex;
+      align-items: center;
+    }
+
+    // Enhancement when :has() is supported: show parent and hide current
+    .govuk-breadcrumbs__list:has(.govuk-breadcrumbs__list-item--current)
+      .govuk-breadcrumbs__list-item:nth-last-child(2) {
+      display: flex;
+      align-items: center;
+    }
+
+    .govuk-breadcrumbs__list:has(.govuk-breadcrumbs__list-item--current) .govuk-breadcrumbs__list-item--current {
+      display: none;
+    }
+  }
+
   .govuk-pagination__prev {
     padding-left: 15px;
   }

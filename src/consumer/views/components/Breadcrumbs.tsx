@@ -48,7 +48,11 @@ export function Breadcrumbs(props: BreadcrumbsProps) {
         )}
 
         {props.breadcrumbs?.map((breadcrumb) => (
-          <li className="govuk-breadcrumbs__list-item" key={breadcrumb.id}>
+          <li
+            className={`govuk-breadcrumbs__list-item${!breadcrumb.url ? ' govuk-breadcrumbs__list-item--current' : ''}`}
+            aria-current={!breadcrumb.url ? 'page' : undefined}
+            key={breadcrumb.id}
+          >
             {breadcrumb.url ? (
               <a className="govuk-breadcrumbs__link" href={breadcrumb.url}>
                 {breadcrumb.label}
