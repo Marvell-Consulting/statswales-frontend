@@ -126,6 +126,16 @@ export default function Pagination({
               </div>
             )}
             <ul className="govuk-pagination__list">
+              {/* Cursor mode has no numbered jump links, but we still surface
+                  the tracked page number as the current item so it reads like
+                  the offset pagination (just without the other page links).
+                  Omitted when the counter is untrustworthy (deep cursor link
+                  with no page_hint). */}
+              {inCursorMode && cursorPage != null && (
+                <li className="govuk-pagination__item govuk-pagination__item--current govuk-pagination__inactive">
+                  <span aria-current="page">{cursorPage}</span>
+                </li>
+              )}
               {numberedLinks.map((page, index) => {
                 if (page === '...') {
                   return (
