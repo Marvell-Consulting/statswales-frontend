@@ -16,7 +16,8 @@ export default function Overview(props) {
   const openUnpublishTask = props.openTasks.find((task) => task.action === 'unpublish');
   const openArchiveTask = props.openTasks.find((task) => task.action === 'archive');
   const openUnarchiveTask = props.openTasks.find((task) => task.action === 'unarchive');
-  const eventualPublicUrl = `${config.frontend.consumer.url}/${props.i18n.language}/${props.dataset.id}/start`;
+  const englishPublicUrl = `${config.frontend.consumer.url}/en-GB/${props.dataset.id}/start`;
+  const welshPublicUrl = `${config.frontend.consumer.welshUrl || config.frontend.consumer.url}/cy-GB/${props.dataset.id}/start`;
 
   return (
     <Layout {...props} title={props.title}>
@@ -50,12 +51,21 @@ export default function Overview(props) {
           )}
 
           {props.datasetStatus === 'new' && (
-            <p
-              className="govuk-body govuk-!-margin-0"
-              dangerouslySetInnerHTML={{
-                __html: props.t('publish.overview.live_url', { url: eventualPublicUrl })
-              }}
-            />
+            <>
+              <p className="govuk-body govuk-!-margin-0">{props.t('publish.overview.live_url')}</p>
+              <p
+                className="govuk-body govuk-!-margin-0"
+                dangerouslySetInnerHTML={{
+                  __html: props.t('publish.overview.live_url_en', { url: englishPublicUrl })
+                }}
+              />
+              <p
+                className="govuk-body govuk-!-margin-0"
+                dangerouslySetInnerHTML={{
+                  __html: props.t('publish.overview.live_url_cy', { url: welshPublicUrl })
+                }}
+              />
+            </>
           )}
 
           <div className="overview-details">

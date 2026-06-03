@@ -1075,6 +1075,10 @@
     },
     "overview": {
       "subheading": "Trosolwg o'r set ddata",
+      "group": "Grŵp: <strong>{{groupName}}</strong>",
+      "live_url": "Ar ôl ei chyhoeddi, bydd y set ddata ar gael yn:",
+      "live_url_en": "Saesneg: <strong>{{url}}</strong>",
+      "live_url_cy": "Cymraeg: <strong>{{url}}</strong>",
       "publish": {
         "requested": {
           "publish_at": "Dyddiad cyhoeddi arfaethedig: <strong>{{publishAt}}</strong>",
