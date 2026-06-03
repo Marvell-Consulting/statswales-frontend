@@ -73,4 +73,29 @@ describe('parsePageOptions', () => {
     const result = parsePageOptions(mockReq('/datasets?page_size=-10', { page_size: '-10' }));
     expect(result.pageSize).toBe(DEFAULT_PAGE_SIZE);
   });
+
+  it('caps page_number at the page-number cap to match backend rejection (SW-1246)', () => {
+    const result = parsePageOptions(mockReq('/datasets?page_number=500', { page_number: '500' }));
+    expect(result.pageNumber).toBe(100);
+  });
+
+  it('passes page_number through unchanged when under the cap', () => {
+    const result = parsePageOptions(mockReq('/datasets?page_number=42', { page_number: '42' }));
+    expect(result.pageNumber).toBe(42);
+  });
+
+  it('parses a cursor query parameter', () => {
+    const result = parsePageOptions(mockReq('/datasets?cursor=abc.def', { cursor: 'abc.def' }));
+    expect(result.cursor).toBe('abc.def');
+  });
+
+  it('treats an empty cursor as absent', () => {
+    const result = parsePageOptions(mockReq('/datasets?cursor=', { cursor: '' }));
+    expect(result.cursor).toBeUndefined();
+  });
+
+  it('returns undefined cursor when not supplied', () => {
+    const result = parsePageOptions(mockReq('/datasets?page_number=2', { page_number: '2' }));
+    expect(result.cursor).toBeUndefined();
+  });
 });

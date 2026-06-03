@@ -84,7 +84,7 @@ export default function DataTab(props: DataTabProps) {
               <div className="govuk-!-padding-top-5 govuk-!-margin-bottom-2">
                 <ViewTable {...props} isFiltered={props.selectedFilterOptions?.length > 0} isPivot={pivotSelected} />
               </div>
-              <Pagination {...props} />
+              <Pagination {...props} anchor="dataset-nav" />
               <RowsPerPage pageSize={props.page_size} />
             </div>
           )}

@@ -8,7 +8,7 @@ import { stringify } from 'csv-stringify/sync';
 
 import { DatasetListItemDTO } from '../../shared/dtos/dataset-list-item';
 import { ResultsetWithCount } from '../../shared/interfaces/resultset-with-count';
-import { pageInfo } from '../../shared/utils/pagination';
+import { mergeCursorPageInfo, pageInfo } from '../../shared/utils/pagination';
 import { singleLangPublishedDataset, singleLangRevision } from '../../shared/utils/single-lang-dataset';
 import { getDatasetMetadata, metadataToCSV } from '../../shared/utils/dataset-metadata';
 import { NotFoundException } from '../../shared/exceptions/not-found.exception';
@@ -120,7 +120,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   const revision = dataset.published_revision;
   const isUnpublished = revision?.unpublished_at || false;
   const isArchived = (dataset.archived_at && dataset.archived_at < new Date().toISOString()) || false;
-  const { pageNumber, pageSize, sortBy } = parsePageOptions(req);
+  const { pageNumber, pageSize, sortBy, cursor } = parsePageOptions(req);
 
   if (!revision) {
     next(new NotFoundException('no published revision found'));
@@ -134,7 +134,7 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
     RevisionDTO[]
   ] = await Promise.all([
     getDatasetMetadata(dataset, revision),
-    req.conapi.getPublishedDatasetView(dataset.id, pageNumber, pageSize, sortBy),
+    req.conapi.getPublishedDatasetView(dataset.id, pageNumber, pageSize, sortBy, cursor),
     req.conapi.getPublishedDatasetFilters(dataset.id),
     req.conapi.getPublicationHistory(dataset.id)
   ]);
@@ -152,6 +152,10 @@ export const viewPublishedDataset = async (req: Request, res: Response, next: Ne
   res.render('dataset/view', {
     ...view,
     ...pagination,
+    // Preserve the cursors emitted by the backend — the `pageInfo` helper
+    // only computes offset-based fields, but the Pagination component needs
+    // next_cursor / prev_cursor to render past the page-number cap.
+    page_info: mergeCursorPageInfo(pagination.page_info, view.page_info),
     datasetMetadata,
     filters,
     topics,
@@ -215,7 +219,7 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
     return;
   }
 
-  const { pageNumber, pageSize, sortBy } = parsePageOptions(req);
+  const { pageNumber, pageSize, sortBy, cursor } = parsePageOptions(req);
 
   const [datasetMetadata, view, filters, publishedRevisions]: [
     PreviewMetadata,
@@ -224,7 +228,7 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
     RevisionDTO[]
   ] = await Promise.all([
     getDatasetMetadata(dataset, revision),
-    req.conapi.getFilteredDatasetView(dataset.id, filterId, pageNumber, pageSize, sortBy),
+    req.conapi.getFilteredDatasetView(dataset.id, filterId, pageNumber, pageSize, sortBy, cursor),
     req.conapi.getPublishedDatasetFilters(dataset.id),
     req.conapi.getPublicationHistory(dataset.id)
   ]);
@@ -242,6 +246,7 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
   res.render('dataset/view', {
     ...view,
     ...pagination,
+    page_info: mergeCursorPageInfo(pagination.page_info, view.page_info),
     datasetMetadata,
     filters,
     topics,
@@ -690,7 +695,7 @@ export const viewPivotedDataset = async (req: Request, res: Response, next: Next
       return;
     }
 
-    const { pageNumber, pageSize, sortBy } = parsePageOptions(req);
+    const { pageNumber, pageSize, sortBy, cursor } = parsePageOptions(req);
 
     const [datasetMetadata, view, filters, publishedRevisions]: [
       PreviewMetadata,
@@ -699,7 +704,7 @@ export const viewPivotedDataset = async (req: Request, res: Response, next: Next
       RevisionDTO[]
     ] = await Promise.all([
       getDatasetMetadata(dataset, revision),
-      req.conapi.getPivotedDatasetView(dataset.id, filterId, pageNumber, pageSize, sortBy),
+      req.conapi.getPivotedDatasetView(dataset.id, filterId, pageNumber, pageSize, sortBy, cursor),
       req.conapi.getPublishedDatasetFilters(dataset.id),
       req.conapi.getPublicationHistory(dataset.id)
     ]);
@@ -717,6 +722,7 @@ export const viewPivotedDataset = async (req: Request, res: Response, next: Next
     res.render('dataset/view', {
       ...view,
       ...pagination,
+      page_info: mergeCursorPageInfo(pagination.page_info, view.page_info),
       datasetMetadata,
       filters,
       topics,

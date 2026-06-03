@@ -35,8 +35,12 @@ export const languageSwitcher: RequestHandler = (req, res, next): void => {
 
   const lang = req.language; // language detected by the translation middleware
 
-  // lang switching uses lang=xx query param, once triggered we want to remove it while keeping other query params
-  const queryParams = omit(req.query as Record<string, string>, 'lang');
+  // lang switching uses lang=xx query param, once triggered we want to remove it while keeping other query params.
+  // `cursor` is dropped too — keyset cursors are bound to the language they were issued in (see SW-1246), and the
+  // backend rejects mismatches with 400. Stripping it here resets the user to page 1 in the new language, which is
+  // the right place to start a fresh translated traversal anyway. `page_hint` is the display-only counter that rides
+  // alongside the cursor, so it goes with it rather than lingering stale on the reset-to-page-1 URL.
+  const queryParams = omit(req.query as Record<string, string>, 'lang', 'cursor', 'page_hint');
 
   if ([Locale.English, Locale.EnglishGb].includes(lang as Locale) && !/^\/en-GB/.test(req.originalUrl)) {
     const newUrl = localeUrl(req.path, Locale.EnglishGb, queryParams);

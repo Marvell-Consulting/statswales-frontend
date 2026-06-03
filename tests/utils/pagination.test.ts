@@ -1,4 +1,11 @@
-import { pageInfo, paginationSequence } from '../../src/shared/utils/pagination';
+import {
+  PAGE_NUMBER_CAP,
+  cappedPaginationSequence,
+  mergeCursorPageInfo,
+  pageInfo,
+  paginationSequence,
+  resolveCursorPage
+} from '../../src/shared/utils/pagination';
 
 // input params are [currentPage, totalPages]
 // expected output is an array of page numbers as strings, with skipped pages represented by '...'
@@ -70,5 +77,106 @@ describe('pageInfo', () => {
       },
       pagination: []
     });
+  });
+
+  test('returns the cursor-mode shape when currentPage is null', () => {
+    const result = pageInfo(null, 25, 50000);
+    expect(result.current_page).toBeNull();
+    expect(result.total_pages).toBe(2000);
+    expect(result.page_info.start_record).toBeNull();
+    expect(result.page_info.end_record).toBeNull();
+    expect(result.pagination).toEqual([]);
+  });
+});
+
+describe('cappedPaginationSequence', () => {
+  test('caps numbered links at PAGE_NUMBER_CAP (default 100)', () => {
+    // 30000 pages total — the user is on page 50, well below the cap.
+    const result = cappedPaginationSequence(50, 30000);
+    // Last numbered link should be 100, not 30000
+    expect(result[result.length - 1]).toBe(PAGE_NUMBER_CAP);
+  });
+
+  test('falls through to the real total when below the cap', () => {
+    expect(cappedPaginationSequence(2, 10)).toEqual(paginationSequence(2, 10));
+  });
+
+  test('uses the cap as effective last page when current is below cap', () => {
+    // current=1, totalPages=200 → effective=100 → should look like 1, 2, ..., 100
+    const result = cappedPaginationSequence(1, 200);
+    expect(result).toEqual([1, 2, '...', 100]);
+  });
+
+  test('clamps currentPage to the effective last page so above-cap pages do not leak in', () => {
+    // A user direct-hits ?page_number=150 on a 30000-page view. Numbered
+    // links must still stop at 100 — the clamp pulls currentPage back so
+    // paginationSequence does not seed the set with 150.
+    const result = cappedPaginationSequence(150, 30000);
+    expect(result.every((p) => typeof p === 'string' || (p as number) <= PAGE_NUMBER_CAP)).toBe(true);
+    expect(result[result.length - 1]).toBe(PAGE_NUMBER_CAP);
+  });
+});
+
+describe('mergeCursorPageInfo', () => {
+  test('layers next_cursor / prev_cursor from the view onto the base page_info', () => {
+    const base = { total_records: 100, start_record: 1, end_record: 25 };
+    const merged = mergeCursorPageInfo(base, { next_cursor: 'tok', prev_cursor: null });
+    expect(merged).toEqual({ ...base, next_cursor: 'tok', prev_cursor: null });
+  });
+
+  test('omits cursor keys entirely when the view did not supply them', () => {
+    // Shared Pagination treats *presence* of either cursor key as the
+    // "cursor pagination supported" signal — non-cursor views (dataset list,
+    // search, admin) must therefore not have null cursor keys layered on.
+    const base = { total_records: 100 };
+    const merged = mergeCursorPageInfo(base, undefined);
+    expect('next_cursor' in merged).toBe(false);
+    expect('prev_cursor' in merged).toBe(false);
+  });
+
+  test('preserves null cursors when the view actively supplied them', () => {
+    // A cursor-mode response on the last page genuinely carries
+    // `next_cursor: null` — that must propagate through so the
+    // Pagination component still recognises cursor support.
+    const merged = mergeCursorPageInfo({ total_records: 50 }, { next_cursor: null, prev_cursor: 'tok' });
+    expect((merged as Record<string, unknown>).next_cursor).toBeNull();
+    expect((merged as Record<string, unknown>).prev_cursor).toBe('tok');
+  });
+});
+
+describe('resolveCursorPage', () => {
+  test('returns null when not in cursor mode regardless of hint', () => {
+    expect(resolveCursorPage(false, '101')).toBeNull();
+  });
+
+  test('returns the hinted page when in cursor mode with a valid hint', () => {
+    expect(resolveCursorPage(true, '101')).toBe(101);
+  });
+
+  test('returns null when the hint is missing', () => {
+    // Deep cursor link arrived without the display counter — fall back to the
+    // coarse "Page > cap" summary rather than guessing.
+    expect(resolveCursorPage(true, undefined)).toBeNull();
+  });
+
+  test('returns null for a non-numeric hint', () => {
+    expect(resolveCursorPage(true, 'abc')).toBeNull();
+  });
+
+  test('returns null for a non-positive hint', () => {
+    expect(resolveCursorPage(true, '0')).toBeNull();
+    expect(resolveCursorPage(true, '-5')).toBeNull();
+  });
+
+  test('ignores non-string hint values', () => {
+    // qs.parse can yield arrays/objects for repeated or nested params; those
+    // are not a usable page number.
+    expect(resolveCursorPage(true, ['101'])).toBeNull();
+    expect(resolveCursorPage(true, 101)).toBeNull();
+  });
+
+  test('parses a leading integer from a hint with trailing characters', () => {
+    // parseInt semantics — tolerant of a stray suffix, still yields the page.
+    expect(resolveCursorPage(true, '102abc')).toBe(102);
   });
 });
