@@ -8,6 +8,9 @@ import { SessionStore } from './session-store.enum';
 
 export interface AppConfig {
   env: AppEnv;
+  build: {
+    gitSha: string;
+  };
   email: {
     support: {
       en: string;
