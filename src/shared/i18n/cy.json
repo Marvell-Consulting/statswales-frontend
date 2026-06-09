@@ -1673,6 +1673,12 @@
       "aria": "Chwilio gwerthoedd {{columnName}}",
       "no_match": "Nid oes gwerthoedd yn cyfateb â'ch chwiliad"
     },
+    "searchable": {
+      "select_all": "Dewis pob gwerth<span class=\"govuk-visually-hidden\"> ar gyfer {{columnName}}</span>",
+      "clear": "Clirio'r dewis<span class=\"govuk-visually-hidden\"> ar gyfer {{columnName}}</span>",
+      "remove": "Tynnu",
+      "no_js_notice": "Mae gan y newidyn hwn {{total}} o werthoedd, sy'n ormod i'w rhestru. Mae angen JavaScript i chwilio. Dangosir y {{cap}} gwerth cyntaf isod; trowch JavaScript ymlaen i chwilio a dewis o'u plith i gyd."
+    },
     "apply_all_selections": "Cymhwyso’r holl ddewisiadau",
     "select_all_variables": "Ailosod yr holl hidlwyr",
     "active_filters_notice": "Mae newidynnau yn y tabl hwn wedi'u hidlo. Gallwch newid pa werthoedd sy'n cael eu dangos yn y tabl yn y ddewislen 'Hidlwyr newidynnau'.",

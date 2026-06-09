@@ -1721,6 +1721,12 @@
       "aria": "Search {{columnName}} values",
       "no_match": "No values match your search"
     },
+    "searchable": {
+      "select_all": "Select all values<span class=\"govuk-visually-hidden\"> for {{columnName}}</span>",
+      "clear": "Clear selection<span class=\"govuk-visually-hidden\"> for {{columnName}}</span>",
+      "remove": "Remove",
+      "no_js_notice": "This variable has {{total}} values, which is too many to list. Searching requires JavaScript. The first {{cap}} values are shown below; turn on JavaScript to search and choose from all of them."
+    },
     "apply_all_selections": "Apply all selections",
     "select_all_variables": "Reset all filters",
     "pivot_hidden_notice": "Your current table can only show the data for 2 sets of variables at a time. All other variables have to be represented by a single value. You can change which variables and values are shown in your table.",

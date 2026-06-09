@@ -54,6 +54,7 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
         <link rel="apple-touch-icon" href="/assets/images/govuk-icon-180.png" />
         <link rel="manifest" href="/assets/manifest.json" />
         <link rel="stylesheet" href="/assets/css/govuk-frontend.min.css" />
+        <link rel="stylesheet" href="/assets/css/accessible-autocomplete.min.css" />
         <link rel="stylesheet" href="/assets/css/app.css" />
 
         <CanonicalUrls />
