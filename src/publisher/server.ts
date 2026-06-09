@@ -7,5 +7,8 @@ import { logger } from '../shared/utils/logger';
 const PORT = config.frontend.publisher.port;
 
 app.listen(PORT, () => {
-  logger.info(`Publisher frontend is running on port ${PORT}`);
+  logger.info(
+    { event: 'app_boot', service: 'publisher', gitSha: config.build.gitSha, appEnv: config.env, port: PORT },
+    `Publisher frontend is running on port ${PORT}`
+  );
 });

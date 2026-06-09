@@ -10,6 +10,9 @@ const ONE_DAY = 24 * 60 * 60 * 1000;
 export const getDefaultConfig = (): AppConfig => {
   return {
     env: AppEnv.Default, // MUST be overridden by other configs
+    build: {
+      gitSha: process.env.GIT_SHA || 'unknown'
+    },
     email: {
       support: {
         en: 'StatsWales@gov.wales',
