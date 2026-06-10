@@ -85,23 +85,37 @@
       }
     };
 
+    // Move checked items to the top of the group so the current selection stays
+    // visible even when a search term filters out everything that doesn't match.
+    const pinCheckedFirst = () => {
+      const checked = [...group.querySelectorAll('.govuk-checkboxes__item')].filter(
+        (item) => item.querySelector('input')?.checked
+      );
+      for (let i = checked.length - 1; i >= 0; i--) {
+        if (group.firstChild !== checked[i]) group.insertBefore(checked[i], group.firstChild);
+      }
+    };
+
     const applySearch = (term) => {
       const q = term.trim().toLowerCase();
       pruneInjected();
 
       if (!q) {
         group.querySelectorAll('.govuk-checkboxes__item').forEach((item) => (item.style.display = ''));
+        pinCheckedFirst();
         noMatch?.classList.add('js-hidden');
         return;
       }
 
       let matches = 0;
 
-      // Filter the boxes already on the page by their label.
+      // Filter the boxes already on the page by their label. Checked boxes stay
+      // visible regardless, so a search never hides the user's current selection.
       group.querySelectorAll('.govuk-checkboxes__item').forEach((item) => {
+        const cb = item.querySelector('input');
         const label = item.querySelector('label');
         const hit = !!label && label.textContent.toLowerCase().includes(q);
-        item.style.display = hit ? '' : 'none';
+        item.style.display = hit || cb?.checked ? '' : 'none';
         if (hit) matches++;
       });
 
@@ -115,6 +129,7 @@
         matches++;
       }
 
+      pinCheckedFirst();
       noMatch?.classList.toggle('js-hidden', matches > 0);
     };
 
