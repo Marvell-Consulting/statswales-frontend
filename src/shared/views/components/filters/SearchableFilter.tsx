@@ -93,12 +93,12 @@ export const SearchableFilter = ({ filter, values, disabled = false }: Searchabl
           {/* Enhanced by filter-search.js once JS is available */}
           <div className="filter-search-app js-only" hidden>
             <div className="filter-search-controls">
-              <button type="button" className="filter-search-select-all govuk-link button-as-link">
+              <button type="button" className="filter-search-select-all govuk-link">
                 <T columnName={filter.columnName} raw>
                   filters.searchable.select_all
                 </T>
               </button>
-              <button type="button" className="filter-search-clear govuk-link button-as-link">
+              <button type="button" className="filter-search-clear govuk-link">
                 <T columnName={filter.columnName} raw>
                   filters.searchable.clear
                 </T>
