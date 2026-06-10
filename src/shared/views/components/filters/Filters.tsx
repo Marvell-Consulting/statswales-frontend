@@ -85,12 +85,7 @@ export const Filters = (props: FiltersProps) => {
       )}
 
       <script type="module" src="/assets/js/filters.js" />
-      {hasSearchable && (
-        <>
-          <script src="/assets/js/accessible-autocomplete.min.js" />
-          <script type="module" src="/assets/js/filter-search.js" />
-        </>
-      )}
+      {hasSearchable && <script type="module" src="/assets/js/filter-search.js" />}
     </div>
   );
 };

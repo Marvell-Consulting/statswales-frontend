@@ -1722,10 +1722,8 @@
       "no_match": "No values match your search"
     },
     "searchable": {
-      "select_all": "Select all values<span class=\"govuk-visually-hidden\"> for {{columnName}}</span>",
-      "clear": "Clear selection<span class=\"govuk-visually-hidden\"> for {{columnName}}</span>",
-      "remove": "Remove",
-      "no_js_notice": "This variable has {{total}} values, which is too many to list. Searching requires JavaScript. The first {{cap}} values are shown below; turn on JavaScript to search and choose from all of them."
+      "notice": "Showing the first {{cap}} of {{total}} values. This variable is not filtered until you select values.",
+      "clear": "Clear selection<span class=\"govuk-visually-hidden\"> for {{columnName}}</span>"
     },
     "apply_all_selections": "Apply all selections",
     "select_all_variables": "Reset all filters",

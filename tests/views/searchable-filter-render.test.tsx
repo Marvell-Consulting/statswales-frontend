@@ -30,19 +30,30 @@ describe('CheckboxFilter — high-cardinality dimensions', () => {
     const html = render({ columnName: 'Drug', factTableColumn: 'drug', values: flatValues(44000) });
 
     expect(html).toContain('data-searchable');
-    expect(html).toContain('filter-search-app');
     // the full value list is embedded once as JSON for the client script
-    expect(html).toContain('application/json');
     expect(html).toContain('filter-options-data');
-    // only the no-JS fallback checkboxes hit the DOM — capped, not 44k
-    expect(countCheckboxes(html)).toBeLessThanOrEqual(NO_JS_FILTER_CAP);
+    // a search box is present to reach values beyond the rendered cap
+    expect(html).toContain('filter-search-input');
   });
 
-  test('an active selection on a huge dimension is preserved in the embedded state', () => {
-    const html = render({ columnName: 'Drug', factTableColumn: 'drug', values: flatValues(44000) }, ['ref-5']);
-    // encoded selection echoed into the state script the client reads on load
-    expect(html).toContain('"state":"some"');
-    expect(html).toContain('ref-5');
+  test('renders the first cap values as real checkboxes (the part that fixes the freeze)', () => {
+    const html = render({ columnName: 'Drug', factTableColumn: 'drug', values: flatValues(44000) });
+    const count = countCheckboxes(html);
+    // a usable list is shown immediately, but capped well below 44k
+    expect(count).toBe(NO_JS_FILTER_CAP);
+    expect(count).toBeGreaterThan(0);
+  });
+
+  test('carries an always-present filter_all sentinel so an untouched filter is "not filtered"', () => {
+    const html = render({ columnName: 'Drug', factTableColumn: 'drug', values: flatValues(44000) });
+    expect(html).toContain('name="filter_all[drug]"');
+  });
+
+  test('an active selection is rendered as checked checkboxes, selected-first', () => {
+    const html = render({ columnName: 'Drug', factTableColumn: 'drug', values: flatValues(44000) }, ['ref-9000']);
+    // the selected value is within the cap (selected-first) and checked
+    expect(html).toContain('value="ref-9000"');
+    expect(html).toContain('checked');
   });
 
   test('embedded JSON cannot break out of the script element', () => {

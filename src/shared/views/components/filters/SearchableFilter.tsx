@@ -16,39 +16,40 @@ export type SearchableFilterProps = {
 // "<!--" in a label break out of the element. JSON.parse reads < fine.
 const safeJson = (data: unknown): string => JSON.stringify(data).replace(/</g, '\\u003c');
 
-// High-cardinality dimensions (thousands of values). Instead of one checkbox per
-// value — which freezes the browser — we render a search-driven selector:
-//   - the full value list is embedded once as compact JSON for the client script
-//   - JS builds a typeahead + chips UI from it (filter-search.js)
-//   - without JS a capped list of plain checkboxes is shown as a fallback
+// High-cardinality dimensions (thousands of values). Rendering one checkbox per
+// value freezes the browser, so we render the first NO_JS_FILTER_CAP values as a
+// normal checkbox list and embed the full value list as JSON. filter-search.js
+// lets the search box reach values beyond the rendered cap by injecting matching
+// checkboxes on demand. Without JS the first cap values remain selectable.
+//
+// Selection is positive: the dimension is "not filtered" until the user ticks a
+// value. An always-present filter_all sentinel encodes that default — when no
+// value is checked the server treats the column as not filtered; when values are
+// checked they apply via the filter[col].VALUE[] inputs. (See the cubePreview
+// controller: the sentinel only suppresses the "select a value" validation;
+// actual filtering is driven by the submitted filter[] values.)
 export const SearchableFilter = ({ filter, values, disabled = false }: SearchableFilterProps) => {
   const { t, errors } = useLocals();
   const fieldName = `filter[${filter.factTableColumn}]`;
   const hasError = errors?.some((e) => e.field === fieldName);
 
   const total = filter.values.length;
+  const cap = Math.min(NO_JS_FILTER_CAP, total);
   const filterId = `filter-${filter.factTableColumn.replaceAll(/\s+/g, '_')}`;
 
   // `values` is the active selection echoed back by the API (decoded references).
   const selected = values ?? [];
   const selectedEncoded = selected.map(encodeURIComponent);
 
-  // Initial state: an active selection shows those chips; an error shows none;
-  // otherwise the default is "all selected" (i.e. the dimension is not filtered).
-  const initialState = hasError ? 'none' : selected.length > 0 ? 'some' : 'all';
-  const selectedCount = initialState === 'all' ? total : selected.length;
-
+  // Full list for the client search, and the capped slice rendered as checkboxes
+  // (selected values first so an active selection is always on the page).
   const options = toSearchOptions(filter.values);
-
-  // No-JS fallback: render a capped slice of plain checkboxes so the dimension
-  // remains (partially) usable without JavaScript.
   const cappedOptions = cappedFilterValues(filter.values, selected, NO_JS_FILTER_CAP);
   const cappedNormalized = cappedOptions.map((opt) => ({
     label: opt.description,
     value: encodeURIComponent(opt.reference),
     disabled: opt.count === '0'
   }));
-  const cappedCheckedValues = hasError ? [] : selectedEncoded;
 
   return (
     <div
@@ -73,7 +74,7 @@ export const SearchableFilter = ({ filter, values, disabled = false }: Searchabl
         )}
 
         <div className="dimension-accordion__count">
-          <T filtered={selectedCount} total={total} raw>
+          <T filtered={selected.length} total={total} raw>
             filters.summary
           </T>
         </div>
@@ -84,51 +85,45 @@ export const SearchableFilter = ({ filter, values, disabled = false }: Searchabl
             className="filter-options-data"
             dangerouslySetInnerHTML={{ __html: safeJson(options) }}
           />
-          <script
-            type="application/json"
-            className="filter-state-data"
-            dangerouslySetInnerHTML={{ __html: safeJson({ state: initialState, selected: selectedEncoded }) }}
-          />
 
-          {/* Enhanced by filter-search.js once JS is available */}
-          <div className="filter-search-app js-only" hidden>
-            <div className="filter-search-controls">
-              <button type="button" className="filter-search-select-all govuk-link">
-                <T columnName={filter.columnName} raw>
-                  filters.searchable.select_all
-                </T>
-              </button>
-              <button type="button" className="filter-search-clear govuk-link">
-                <T columnName={filter.columnName} raw>
-                  filters.searchable.clear
-                </T>
-              </button>
-            </div>
-            <div
-              className="filter-search-input-wrap"
-              data-placeholder={t('filters.search.placeholder')}
-              data-aria={t('filters.search.aria', { columnName: filter.columnName })}
-              data-no-match={t('filters.search.no_match')}
-              data-remove-label={t('filters.searchable.remove')}
-            />
-            <ul className="filter-chips" />
-          </div>
+          <p className="govuk-hint govuk-!-font-size-16 filter-searchable-notice">
+            <T cap={cap} total={total} raw>
+              filters.searchable.notice
+            </T>
+          </p>
 
-          {/* No-JS fallback */}
-          <div className="filter-nojs">
-            <p className="govuk-body govuk-!-font-size-16">
-              <T total={total} cap={Math.min(NO_JS_FILTER_CAP, total)} raw>
-                filters.searchable.no_js_notice
-              </T>
-            </p>
-            <div className="filter-body">
-              <CheckboxGroup
-                name={`filter[${filter.factTableColumn}]`}
-                options={cappedNormalized}
-                values={cappedCheckedValues}
+          <div className="filter-head js-hidden">
+            <div className="filter-search js-hidden">
+              <input
+                type="text"
+                id={`${filterId}-search`}
+                className="govuk-input filter-search-input"
+                placeholder={t('filters.search.placeholder')}
+                aria-label={t('filters.search.aria', { columnName: filter.columnName })}
               />
             </div>
+            {!disabled && (
+              <div className="filter-controls">
+                <button type="button" className="filter-search-clear">
+                  <T columnName={filter.columnName} raw>
+                    filters.searchable.clear
+                  </T>
+                </button>
+              </div>
+            )}
           </div>
+
+          <div className="filter-body">
+            <CheckboxGroup name={fieldName} options={cappedNormalized} values={hasError ? [] : selectedEncoded} />
+            <span className="filter-search-no-match govuk-body js-hidden">
+              <T>filters.search.no_match</T>
+            </span>
+          </div>
+
+          {/* Default = not filtered until a value is picked. Always present so the
+              server never reports this column as missing a selection; submitted
+              filter[] values still take effect when the user ticks options. */}
+          {!disabled && <input type="hidden" name={`filter_all[${filter.factTableColumn}]`} value="1" />}
         </div>
 
         {disabled ? null : (
