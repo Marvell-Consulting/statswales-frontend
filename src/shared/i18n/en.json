@@ -205,7 +205,8 @@
       "time_covered": "Time period covered",
       "time_period": "{{start}} to {{end}}",
       "update_missing": "Publish date not entered yet",
-      "not_updated": "This dataset will not be updated"
+      "not_updated": "This dataset will not be updated",
+      "dataset_id": "Dataset ID"
     },
     "downloads": {
       "heading": "Downloads"

@@ -203,7 +203,8 @@
       "time_covered": "Cyfnod amser dan sylw",
       "time_period": "{{start}} i {{end}}",
       "update_missing": "Dyddiad cyhoeddi heb ei nodi eto",
-      "not_updated": "Ni chaiff y set ddata hon ei diweddaru"
+      "not_updated": "Ni chaiff y set ddata hon ei diweddaru",
+      "dataset_id": "ID y set ddata"
     },
     "downloads": {
       "heading": "Lawrlwythiadau"
