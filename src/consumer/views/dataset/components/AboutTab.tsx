@@ -6,6 +6,7 @@ import { PreviewMetadata } from '../../../../shared/interfaces/preview-metadata'
 
 export type AboutTabProps = {
   datasetMetadata: PreviewMetadata;
+  datasetId?: string;
 };
 
 export default function AboutTab(props: AboutTabProps) {

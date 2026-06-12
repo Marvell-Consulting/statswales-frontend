@@ -76,6 +76,13 @@ export default function KeyInfo(props) {
         )}
 
         <PeriodCovered locale={props.i18n.language} timePeriod={props.keyInfo.timePeriod} />
+
+        {props.datasetId && (
+          <div id="dataset-id" className="govuk-summary-list__row">
+            <dt className="govuk-summary-list__key">{props.t('dataset_view.key_information.dataset_id')}</dt>
+            <dd className="govuk-summary-list__value">{props.datasetId}</dd>
+          </div>
+        )}
       </dl>
     </div>
   );

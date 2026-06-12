@@ -45,6 +45,29 @@ test.describe('Dataset View', () => {
     await expect(page.locator('#time-period')).toContainText('March 2024');
   });
 
+  test('About tab shows dataset ID at the bottom of Main information', async ({ page }) => {
+    await page.goto(datasetUrl);
+    await page.getByRole('tab', { name: 'About this dataset' }).click();
+
+    const datasetIdRow = page.locator('#dataset-id');
+    await expect(datasetIdRow).toBeVisible();
+    await expect(datasetIdRow.locator('dt')).toHaveText('Dataset ID');
+
+    // The value should be the UUID from the URL
+    const urlId = new URL(datasetUrl).pathname.split('/').find((s) => s.match(/^[0-9a-f-]{36}$/i));
+    await expect(datasetIdRow.locator('dd')).toHaveText(urlId!);
+  });
+
+  test('About tab shows dataset ID label in Welsh', async ({ page }) => {
+    await page.goto(datasetUrl);
+    await page.getByText('Cymraeg').click();
+    await page.getByRole('tab', { name: 'Am y set ddata hon' }).click();
+
+    const datasetIdRow = page.locator('#dataset-id');
+    await expect(datasetIdRow).toBeVisible();
+    await expect(datasetIdRow.locator('dt')).toHaveText('ID y set ddata');
+  });
+
   test('Custom year dataset About tab does not show time period', async ({ browser }) => {
     const customYearUrl = await resolveDatasetUrlByTitle(browser, CUSTOM_YEAR_DATASET_TITLE);
     const page = await browser.newPage();
