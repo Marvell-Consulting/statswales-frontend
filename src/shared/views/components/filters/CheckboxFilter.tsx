@@ -6,6 +6,8 @@ import { CheckboxOptions } from '../Checkbox';
 import { CheckboxGroup } from '../CheckboxGroup';
 import T from '../T';
 import { useLocals } from '../../context/Locals';
+import { SearchableFilter } from './SearchableFilter';
+import { isSearchableFilter } from './searchable-filter';
 
 export type CheckboxFilterProps = {
   filter: FilterTable;
@@ -42,6 +44,11 @@ const allOptionValues = (options: FilterValues[]): string[] => {
 
 export const CheckboxFilter = ({ filter, values, disabled = false }: CheckboxFilterProps) => {
   const { t, errors } = useLocals();
+
+  if (isSearchableFilter(filter)) {
+    return <SearchableFilter filter={filter} values={values} disabled={disabled} />;
+  }
+
   const fieldName = `filter[${filter.factTableColumn}]`;
   const hasError = errors?.some((e) => e.field === fieldName);
 

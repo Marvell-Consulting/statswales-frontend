@@ -7,6 +7,7 @@ import { Filter } from '../../../interfaces/filter';
 import { useLocals } from '../../context/Locals';
 import { DatasetDTO } from '../../../dtos/dataset';
 import { RadioFilter } from './RadioFilter';
+import { isSearchableFilter } from './searchable-filter';
 
 export type FiltersProps = {
   filters: FilterTable[];
@@ -25,6 +26,7 @@ export const Filters = (props: FiltersProps) => {
   const { buildUrl, i18n } = useLocals();
 
   const isPivot = !!(props.rows && props.columns);
+  const hasSearchable = filters?.some((filter) => isSearchableFilter(filter));
 
   const selectAllLink = preview
     ? buildUrl(`/publish/${dataset.id}/cube-preview`, i18n.language)
@@ -83,6 +85,7 @@ export const Filters = (props: FiltersProps) => {
       )}
 
       <script type="module" src="/assets/js/filters.js" />
+      {hasSearchable && <script type="module" src="/assets/js/filter-search.js" />}
     </div>
   );
 };
