@@ -1722,6 +1722,10 @@
       "aria": "Search {{columnName}} values",
       "no_match": "No values match your search"
     },
+    "searchable": {
+      "notice": "Showing the first {{cap}} of {{total}} values. This variable is not filtered until you select values.",
+      "clear": "Clear selection<span class=\"govuk-visually-hidden\"> for {{columnName}}</span>"
+    },
     "apply_all_selections": "Apply all selections",
     "select_all_variables": "Reset all filters",
     "pivot_hidden_notice": "Your current table can only show the data for 2 sets of variables at a time. All other variables have to be represented by a single value. You can change which variables and values are shown in your table.",

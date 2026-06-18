@@ -16,7 +16,8 @@
     }
   }
 
-  const filters = document.querySelectorAll('.filter');
+  // Searchable (high-cardinality) filters are handled by filter-search.js.
+  const filters = [...document.querySelectorAll('.filter')].filter((f) => !f.hasAttribute('data-searchable'));
 
   // On submit, disable all checkboxes for filters where every option is checked
   // so the server receives an empty selection (= no filter applied).

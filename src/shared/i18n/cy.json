@@ -1674,6 +1674,10 @@
       "aria": "Chwilio gwerthoedd {{columnName}}",
       "no_match": "Nid oes gwerthoedd yn cyfateb â'ch chwiliad"
     },
+    "searchable": {
+      "notice": "Yn dangos y {{cap}} gwerth cyntaf o {{total}}. Nid yw'r newidyn hwn wedi'i hidlo hyd nes i chi ddewis gwerthoedd.",
+      "clear": "Clirio'r dewis<span class=\"govuk-visually-hidden\"> ar gyfer {{columnName}}</span>"
+    },
     "apply_all_selections": "Cymhwyso’r holl ddewisiadau",
     "select_all_variables": "Ailosod yr holl hidlwyr",
     "active_filters_notice": "Mae newidynnau yn y tabl hwn wedi'u hidlo. Gallwch newid pa werthoedd sy'n cael eu dangos yn y tabl yn y ddewislen 'Hidlwyr newidynnau'.",
