@@ -159,7 +159,7 @@ export default function Pagination({
                     { ...parsedQuery, page_number: page, page_size: page_size },
                     anchor
                   )}
-                  aria-label={`Page ${page}`}
+                  aria-label={i18n.t('pagination.page_aria', { page })}
                 >
                   {page}
                 </a>
