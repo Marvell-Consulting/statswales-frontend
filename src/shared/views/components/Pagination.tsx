@@ -110,7 +110,7 @@ export default function Pagination({
         </div>
       )}
 
-      <nav className="govuk-pagination" aria-label="Pagination">
+      <nav className="govuk-pagination" aria-label={i18n.t('pagination.nav_aria')}>
         {showPrevLink && (
           <div className={clsx('govuk-pagination__prev')}>
             <a className="govuk-link govuk-pagination__link" href={prevHref} rel="prev">
