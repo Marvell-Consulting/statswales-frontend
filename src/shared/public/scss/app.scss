@@ -47,6 +47,18 @@
     background-color: inherit;
   }
 
+  .govuk-pagination__item:hover,
+  .govuk-pagination__prev:hover,
+  .govuk-pagination__next:hover {
+    background-color: transparent;
+  }
+
+  .govuk-pagination__item:hover .govuk-pagination__link,
+  .govuk-pagination__prev:hover .govuk-pagination__link,
+  .govuk-pagination__next:hover .govuk-pagination__link {
+    color: colours.$brightred;
+  }
+
   .tasklist-no-border:first-child {
     border-top: none;
   }
