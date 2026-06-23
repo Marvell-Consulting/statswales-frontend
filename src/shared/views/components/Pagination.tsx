@@ -98,86 +98,93 @@ export default function Pagination({
 
   return (
     <>
-      {!hide_pagination_hint && !inCursorMode && (
-        <div className="total-rows">
-          <T
-            start={page_info.start_record?.toLocaleString()}
-            end={page_info.end_record?.toLocaleString()}
-            total={page_info.total_records?.toLocaleString()}
-          >
-            publish.preview.showing_rows
-          </T>
+      <div className="govuk-grid-row">
+        <div className="govuk-grid-column-one-third">
+          <div className="total-rows">
+            {!hide_pagination_hint && !inCursorMode && (
+              <div>
+                <T
+                  start={page_info.start_record?.toLocaleString()}
+                  end={page_info.end_record?.toLocaleString()}
+                  total={page_info.total_records?.toLocaleString()}
+                >
+                  publish.preview.showing_rows
+                </T>
+              </div>
+            )}
+          </div>
         </div>
-      )}
-
-      <nav className="govuk-pagination" aria-label="Pagination">
-        {showPrevLink && (
-          <div className={clsx('govuk-pagination__prev')}>
-            <a className="govuk-link govuk-pagination__link" href={prevHref} rel="prev">
-              <span className="govuk-pagination__link-title">
-                <T>pagination.previous</T>
-              </span>
-            </a>
-          </div>
-        )}
-        <ul className="govuk-pagination__list">
-          {/* Cursor mode has no numbered jump links, but we still surface
-              the tracked page number as the current item so it reads like
-              the offset pagination (just without the other page links).
-              Omitted when the counter is untrustworthy (deep cursor link
-              with no page_hint). */}
-          {inCursorMode && cursorPage != null && (
-            <li className="govuk-pagination__item govuk-pagination__item--current govuk-pagination__inactive">
-              <span aria-current="page">{cursorPage}</span>
-            </li>
-          )}
-          {numberedLinks.map((page, index) => {
-            if (page === '...') {
-              return (
-                <li key={index} className="govuk-pagination__item govuk-pagination__item--ellipses">
-                  ⋯
-                </li>
-              );
-            }
-            if (page === current_page) {
-              return (
-                <li
-                  key={index}
-                  className="govuk-pagination__item govuk-pagination__item--current govuk-pagination__inactive"
-                >
-                  <span aria-current="page">{page}</span>
-                </li>
-              );
-            }
-            return (
-              <li key={index} className="govuk-pagination__item">
-                <a
-                  className="govuk-link govuk-pagination__link"
-                  href={buildUrl(
-                    baseUrl,
-                    i18n.language,
-                    { ...parsedQuery, page_number: page, page_size: page_size },
-                    anchor
-                  )}
-                  aria-label={`Page ${page}`}
-                >
-                  {page}
+        <div className="govuk-grid-column-two-thirds">
+          <nav className="govuk-pagination" aria-label="Pagination">
+            {showPrevLink && (
+              <div className={clsx('govuk-pagination__prev')}>
+                <a className="govuk-link govuk-pagination__link" href={prevHref} rel="prev">
+                  <span className="govuk-pagination__link-title">
+                    <T>pagination.previous</T>
+                  </span>
                 </a>
-              </li>
-            );
-          })}
-        </ul>
+              </div>
+            )}
+            <ul className="govuk-pagination__list">
+              {/* Cursor mode has no numbered jump links, but we still surface
+                  the tracked page number as the current item so it reads like
+                  the offset pagination (just without the other page links).
+                  Omitted when the counter is untrustworthy (deep cursor link
+                  with no page_hint). */}
+              {inCursorMode && cursorPage != null && (
+                <li className="govuk-pagination__item govuk-pagination__item--current govuk-pagination__inactive">
+                  <span aria-current="page">{cursorPage}</span>
+                </li>
+              )}
+              {numberedLinks.map((page, index) => {
+                if (page === '...') {
+                  return (
+                    <li key={index} className="govuk-pagination__item govuk-pagination__item--ellipses">
+                      ⋯
+                    </li>
+                  );
+                }
+                if (page === current_page) {
+                  return (
+                    <li
+                      key={index}
+                      className="govuk-pagination__item govuk-pagination__item--current govuk-pagination__inactive"
+                    >
+                      <span aria-current="page">{page}</span>
+                    </li>
+                  );
+                }
+                return (
+                  <li key={index} className="govuk-pagination__item">
+                    <a
+                      className="govuk-link govuk-pagination__link"
+                      href={buildUrl(
+                        baseUrl,
+                        i18n.language,
+                        { ...parsedQuery, page_number: page, page_size: page_size },
+                        anchor
+                      )}
+                      aria-label={`Page ${page}`}
+                    >
+                      {page}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
 
-        {showNextLink && (
-          <div className={clsx('govuk-pagination__next')}>
-            <a className="govuk-link govuk-pagination__link" href={nextHref} rel="next">
-              <span className="govuk-pagination__link-title">
-                <T>pagination.next</T>
-              </span>
-            </a>
-          </div>
-        )}
-      </nav>
+            {showNextLink && (
+              <div className={clsx('govuk-pagination__next')}>
+                <a className="govuk-link govuk-pagination__link" href={nextHref} rel="next">
+                  <span className="govuk-pagination__link-title">
+                    <T>pagination.next</T>
+                  </span>
+                </a>
+              </div>
+            )}
+          </nav>
+        </div>
+      </div>
 
       <div className="govuk-pagination__summary">
         {inCursorMode ? (
