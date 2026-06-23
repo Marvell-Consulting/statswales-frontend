@@ -47,10 +47,12 @@
     background-color: inherit;
   }
 
-  .govuk-pagination__item:hover,
-  .govuk-pagination__prev:hover,
-  .govuk-pagination__next:hover {
-    background-color: transparent;
+  @media screen and (min-width: 769px) {
+    .govuk-pagination__item:hover,
+    .govuk-pagination__prev:hover,
+    .govuk-pagination__next:hover {
+      background-color: transparent;
+    }
   }
 
   .govuk-pagination__item:hover .govuk-pagination__link,
