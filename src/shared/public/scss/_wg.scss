@@ -902,6 +902,10 @@
     font-size: 20px;
   }
 
+  .govuk-pagination__item.govuk-pagination__inactive span {
+    display: block;
+  }
+
   .border-top {
     border-top: 8px solid colours.$lightgrey_semi;
     padding-top: 15px;
@@ -1398,7 +1402,11 @@
 
     .govuk-pagination__prev:hover,
     .govuk-pagination__next:hover {
-      background-color: colours.$midgrey;
+      background-color: colours.$black;
+
+      a {
+        color: colours.$brightred;
+      }
     }
 
     .govuk-pagination__prev::before {
@@ -1417,6 +1425,12 @@
 
     .govuk-pagination {
       flex-direction: row;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .govuk-pagination__summary {
+      font-family: Arial, Helvetica, 'Nimbus Sans L', sans-serif;
     }
   }
 

@@ -43,7 +43,9 @@
     "previous": "Previous",
     "next": "Next",
     "update": "Update",
-    "page_size": "Page size"
+    "page_size": "Page size",
+    "page_aria": "Page {{page}}",
+    "nav_aria": "Pagination"
   },
   "header": {
     "product_name": "StatsWales V3.0",

@@ -42,7 +42,9 @@
     "previous": "Blaenorol",
     "next": "Nesaf",
     "update": "Diweddaru",
-    "page_size": "Maint y dudalen"
+    "page_size": "Maint y dudalen",
+    "page_aria": "Tudalen {{page}}",
+    "nav_aria": "Tudaleniad"
   },
   "header": {
     "product_name": "StatsCymru V3.0",
