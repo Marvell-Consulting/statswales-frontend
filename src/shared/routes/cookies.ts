@@ -108,4 +108,4 @@ const cookieDetailsPage = async (req: Request, res: Response, next: NextFunction
 
 cookies.get('/', bodyParser, cookiePage);
 cookies.post('/', bodyParser, cookiePage);
-cookies.get('/details', bodyParser, cookieDetailsPage);
+cookies.get('/details', cookieDetailsPage);
