@@ -26,3 +26,5 @@ defnyddwyr. Mae Google Analytics yn gosod cwcis sy'n storio gwybodaeth wedi anon
 - beth ydych chi'n clicio arno wrth ymweld â'r safle
 
 Nid ydym yn caniatâu i Google ddefnyddio na rhannu'r data ynghylch sut yr ydych yn defnyddio'r safle.
+
+[Mwy o wybodaeth am cwcis ar stats.llyw.cymru.](./cookie-details)

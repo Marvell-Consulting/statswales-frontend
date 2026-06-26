@@ -80,5 +80,25 @@ const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const cookieDetailsPage = async (req: Request, res: Response, next: NextFunction) => {
+  const lang = req.language.split('-')[0]?.toLowerCase() || 'en';
+  const requestedFilePath = path.join(docsPath, `cookie-details.${lang}.md`);
+  const normalizedFilePath = path.resolve(requestedFilePath);
+  try {
+    const title = await getTitle(normalizedFilePath);
+    const markdownFile: string = await readFile(normalizedFilePath, 'utf8');
+    const { window } = new JSDOM(`<!DOCTYPE html>`);
+    const domPurify = DOMPurify(window);
+    const tableOfContents = createToc(markdownFile);
+    marked.use({ renderer: docRenderer });
+    const content = domPurify.sanitize(await marked.parse(markdownFile));
+    res.render('static-page', { content, tableOfContents, title });
+  } catch (err) {
+    logger.warn(err, 'Could not render cookies page');
+    next(new NotFoundException());
+  }
+};
+
 cookies.get('/', bodyParser, cookiePage);
 cookies.post('/', bodyParser, cookiePage);
+cookies.get('/details', bodyParser, cookieDetailsPage);
