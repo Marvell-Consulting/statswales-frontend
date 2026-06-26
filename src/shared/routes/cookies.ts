@@ -84,8 +84,9 @@ const cookieDetailsPage = async (req: Request, res: Response, next: NextFunction
   const lang = req.language.split('-')[0]?.toLowerCase() || 'en';
   const requestedFilePath = path.join(docsPath, `cookie-details.${lang}.md`);
   const normalizedFilePath = path.resolve(requestedFilePath);
+  const docsRoot = `${path.resolve(docsPath)}${path.sep}`;
 
-  if (!normalizedFilePath.startsWith(docsPath) || !fs.existsSync(normalizedFilePath)) {
+  if (!normalizedFilePath.startsWith(docsRoot) || !fs.existsSync(normalizedFilePath)) {
     logger.warn(`Could not load ${normalizedFilePath}`);
     next(new NotFoundException());
     return;
