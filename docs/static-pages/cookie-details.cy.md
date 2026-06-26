@@ -9,7 +9,7 @@ hanfon i’ch cyfrifiadur neu’ch dyfais symudol. Maen nhw’n helpu gwefannau 
 weithio’n well ac yn rhoi gwybodaeth i berchnogion gwefannau. Er enghraifft, rydym
 yn defnyddio cwcis iaith er mwyn gwybod ym mha iaith yr hoffech weld y wefan,
 rydym hefyd yn defnyddio cwcis YouTube i osod fideos ar dudalennau a chwcis Google
-Anaytics i olrhain ymddygiad defnyddwyr ar y wefan. Drwy ddeall sut mae pobl yn
+Analytics i olrhain ymddygiad defnyddwyr ar y wefan. Drwy ddeall sut mae pobl yn
 defnyddio’n gwefan, gallwn ei gwneud yn haws i'w defnyddio a chynnig cynnwys sy’n
 diwallu anghenion pobl yn well. Mae’r wybodaeth y mae LLYW.CYMRU yn ei chasglu yn
 cynnwys cyfeiriad IP, tudalennau yr ymwelwyd â nhw, y porwr a'r system weithredu.
