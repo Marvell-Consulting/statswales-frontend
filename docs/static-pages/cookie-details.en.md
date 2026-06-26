@@ -22,7 +22,7 @@ not be used to identify any user personally. The cookies we use on our site are:
 | Session Cookie   | statswales.frontend | This cookie contains various session infromation to facilitate your use of the site                                                                                                                                                                                                                    | 24 Hours |
 
 Web browsers allow some control of cookies through browser settings. To find out
-more about cookies and how to manage them, visit www.allaboutcookies.org.
+more about cookies and how to manage them, visit [www.allaboutcookies.org](https://allaboutcookies.org/).
 
 ## What information do we collect?
 
