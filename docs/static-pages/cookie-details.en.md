@@ -7,7 +7,7 @@ Lists the cookies on stats.gov.wales and explains their purpose.
 Cookies are small text files sent to your computer or mobile device by the websites
 that you visit. They help make websites work better and provide information to the
 owners of the site. For instance, we use language cookies to know what language you
-would like the web site displayed to you in, we also use YouTube cookies to embed
+would like the website displayed to you in, we also use YouTube cookies to embed
 videos in pages and Google Analytics cookies to track users’ behaviour whilst on
 the site. By understanding how people use our site, we can improve the navigation
 and content to better meet people’s needs. The information collected by stats.gov.wales
@@ -21,7 +21,7 @@ not be used to identify any user personally. The cookies we use on our site are:
 | Language           | lang                | This cookie sets your language preferences for the site so you see the language of your choice when browsing the site                                                                                                                                                                                  | 2 years  |
 | Cookie preferences | cookiePref          | This cookie stores your cookie consent choices (including whether measuring cookies are allowed) and whether to show the cookie banner                                                                                                                                                                  | 1 year   |
 | Feature flags      | features            | This cookie stores enabled feature flags (staging/production only) so feature previews remain active without needing the query parameter on every request                                                                                                                                              | 24 hours |
-| Session Cookie     | statswales.frontend | This cookie contains various session information to facilitate your use of the site                                                                                                                                                                                                                    | 24 Hours |
+| Session Cookie     | statswales.frontend | This cookie contains various session information to facilitate your use of the site                                                                                                                                                                                                                    | Configurable (default 24 hours) |
 
 Web browsers allow some control of cookies through browser settings. To find out
 more about cookies and how to manage them, visit [www.allaboutcookies.org](https://allaboutcookies.org/).
@@ -34,7 +34,7 @@ information (for example, your name or address) that would be able to identify y
 
 Google Analytics cookies are a web service provided by Google Inc. (‘Google’)
 and help to gather and analyse user activity. The information gathered about your
-use of the web site (including your anonymised IP address) will be transmitted to,
+use of the website (including your anonymised IP address) will be transmitted to,
 and stored on Google servers in the United States. Please see the Google privacy
 policy, and Google's Terms of Service for detailed information.
 
