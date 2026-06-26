@@ -1,8 +1,8 @@
-# Details about cookies on GOV.WALES
+# Details about cookies on stats.gov.wales
 
-Lists the cookies on GOV.WALES and explains their purpose.
+Lists the cookies on stats.gov.wales and explains their purpose.
 
-## Use of cookies by GOV.WALES
+## Use of cookies by stats.gov.wales
 
 Cookies are small text files sent to your computer or mobile device by the websites
 that you visit. They help make websites work better and provide information to the
