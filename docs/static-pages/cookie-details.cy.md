@@ -33,7 +33,7 @@ ble gellid gwneud gwelliannau i'r safle. Nid ydym yn casglu unrhyw ddata persono
 (fel eich enw neu'ch cyfeiriad) fyddai'n golygu ein bod yn gallu eich adnabod chi.
 
 Mae cwcis Google Analytics yn wasanaeth ar y we a ddarperir gan Google Inc. (‘Google’)
-ac sy'n helpu casglu a dadansoddi gweithgarwch defnyddwyr. Byd y wybodaeth a gesglir
+ac sy'n helpu casglu a dadansoddi gweithgarwch defnyddwyr. Bydd y wybodaeth a gesglir
 am eich defnydd o'r wefan (gan gynnwys eich cyfeiriad IP dienw) yn cael eu trosglwyddo
 i, ac yn cael ei storio ar weinyddion Google yn yr Unol Daleithiau. Mae mwy o wybodaeth
 ar gael ym mholisi preifatrwydd Google, a Thelerau Gwasanaeth Google.
