@@ -11,7 +11,7 @@ yn defnyddio cwcis iaith er mwyn gwybod ym mha iaith yr hoffech weld y wefan,
 rydym hefyd yn defnyddio cwcis YouTube i osod fideos ar dudalennau a chwcis Google
 Analytics i olrhain ymddygiad defnyddwyr ar y wefan. Drwy ddeall sut mae pobl yn
 defnyddio’n gwefan, gallwn ei gwneud yn haws i'w defnyddio a chynnig cynnwys sy’n
-diwallu anghenion pobl yn well. Mae’r wybodaeth y mae LLYW.CYMRU yn ei chasglu yn
+diwallu anghenion pobl yn well. Mae’r wybodaeth y mae stats.llyw.cymru yn ei chasglu yn
 cynnwys cyfeiriad IP, tudalennau yr ymwelwyd â nhw, y porwr a'r system weithredu.
 Ni chaiff y data eu defnyddio i adnabod unrhyw ddefnyddwyr yn bersonol. Dyma’r
 cwcis rydym yn eu defnyddio ar ein gwefan:
