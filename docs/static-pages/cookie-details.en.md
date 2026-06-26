@@ -10,7 +10,7 @@ owners of the site. For instance, we use language cookies to know what language 
 would like the web site displayed to you in, we also use YouTube cookies to embed
 videos in pages and Google Analytics cookies to track users’ behaviour whilst on
 the site. By understanding how people use our site, we can improve the navigation
-and content to better meet people’s needs. The information collected by GOV.WALES
+and content to better meet people’s needs. The information collected by stats.gov.wales
 includes IP address, pages visited, browser and operating system. The data will
 not be used to identify any user personally. The cookies we use on our site are:
 
