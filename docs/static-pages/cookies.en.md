@@ -27,4 +27,4 @@ sets cookies that store anonymised information about:
 
 We do not allow Google to use or share the data about how you use this site.
 
-[Find out more about cookies on stats.gov.wales](/en-GB/cookies/details).
+[Find out more about cookies on StatsWales](/en-GB/cookies/details).

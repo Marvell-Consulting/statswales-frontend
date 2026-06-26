@@ -1,8 +1,8 @@
-# Details about cookies on stats.gov.wales
+# Details about cookies on StatsWales
 
-Lists the cookies on stats.gov.wales and explains their purpose.
+Lists the cookies used by the StatsWales website and explains their purpose.
 
-## Use of cookies by stats.gov.wales
+## Use of cookies by the StatsWales website
 
 Cookies are small text files sent to your computer or mobile device by the websites
 that you visit. They help make websites work better and provide information to the
@@ -10,7 +10,7 @@ owners of the site. For instance, we use language cookies to know what language 
 would like the website displayed to you in, we also use YouTube cookies to embed
 videos in pages and Google Analytics cookies to track users’ behaviour whilst on
 the site. By understanding how people use our site, we can improve the navigation
-and content to better meet people’s needs. The information collected by stats.gov.wales
+and content to better meet people’s needs. The information collected by the StatsWales website
 includes IP address, pages visited, browser and operating system. The data will
 not be used to identify any user personally. The cookies we use on our site are:
 
