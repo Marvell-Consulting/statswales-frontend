@@ -1,8 +1,8 @@
-# Manylion am gwcis ar stats.llyw.cymru
+# Manylion am gwcis ar StatsCymru
 
-Rhestru'r cwcis ar stats.llyw.cymru ac yn esbonio eu pwrpas.
+Rhestru'r cwcis ar StatsCymru ac yn esbonio eu pwrpas.
 
-## Defnydd o gwcis gan stats.llyw.cymru
+## Defnydd o gwcis gan StatsCymru
 
 Ffeiliau testun bach yw cwcis y mae’r gwefannau rydych chi’n ymweld â nhw yn eu
 hanfon i’ch cyfrifiadur neu’ch dyfais symudol. Maen nhw’n helpu gwefannau i
