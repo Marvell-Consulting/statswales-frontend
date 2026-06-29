@@ -7,8 +7,7 @@ Lists the cookies used by the StatsWales website and explains their purpose.
 Cookies are small text files sent to your computer or mobile device by the websites
 that you visit. They help make websites work better and provide information to the
 owners of the site. For instance, we use language cookies to know what language you
-would like the website displayed to you in, we also use YouTube cookies to embed
-videos in pages and Google Analytics cookies to track users’ behaviour whilst on
+would like the website displayed to you in, and Google Analytics cookies to track users’ behaviour whilst on
 the site. By understanding how people use our site, we can improve the navigation
 and content to better meet people’s needs. The information collected by the StatsWales website
 includes IP address, pages visited, browser and operating system. The data will

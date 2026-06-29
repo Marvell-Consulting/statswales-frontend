@@ -87,7 +87,7 @@ const cookieDetailsPage = async (req: Request, res: Response, next: NextFunction
   const docsRoot = `${path.resolve(docsPath)}${path.sep}`;
 
   if (!normalizedFilePath.startsWith(docsRoot) || !fs.existsSync(normalizedFilePath)) {
-    logger.warn(`Could not load ${normalizedFilePath}`);
+    logger.warn({ file: path.basename(normalizedFilePath) }, 'Could not load cookie details markdown');
     next(new NotFoundException());
     return;
   }
