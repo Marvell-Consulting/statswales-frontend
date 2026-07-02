@@ -26,3 +26,5 @@ sets cookies that store anonymised information about:
 - what you click on while you're visiting the site
 
 We do not allow Google to use or share the data about how you use this site.
+
+[Find out more about cookies on StatsWales](/en-GB/cookies/details).
