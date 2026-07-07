@@ -15,6 +15,7 @@ interface PivotProps {
   pivotStage: PivotStage;
   columns?: string;
   rows?: string;
+  filterId?: string;
 }
 
 export default function PivotSummary(props: PivotProps) {
@@ -59,6 +60,7 @@ export default function PivotSummary(props: PivotProps) {
             <SummaryTable {...props} />
           </fieldset>
           <div className="govuk-!-padding-top-5 govuk-!-margin-bottom-2">
+            <input type="hidden" name="filter_id" value={props.filterId} />
             <input type="hidden" name="columns" value={props.columns} />
             <input type="hidden" name="rows" value={props.rows} />
             {props.columns && <input type="hidden" name={`filter_all[${props.columns}]`} value="1" />}
