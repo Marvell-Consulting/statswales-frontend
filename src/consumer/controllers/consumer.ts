@@ -543,10 +543,9 @@ export const createPublishedDatasetPivot = async (req: Request, res: Response, n
     };
     const routeFilterId = typeof req.params.filterId === 'string' ? req.params.filterId.trim() : '';
     const bodyFilterId = typeof req.body.filter_id === 'string' ? req.body.filter_id.trim() : '';
-    const providedFilterId = routeFilterId || bodyFilterId;
-    const filterId = providedFilterId
-      ? providedFilterId
-      : await req.conapi.generatePivotFilterId(dataset.id, dataOptions);
+    const candidateFilterId = routeFilterId || bodyFilterId;
+    const providedFilterId = candidateFilterId && !/[\/\\?#\s]/.test(candidateFilterId) ? candidateFilterId : '';
+    const filterId = providedFilterId || (await req.conapi.generatePivotFilterId(dataset.id, dataOptions));
     const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
     if (req.body.stage === PivotStage.Summary) {
       res.redirect(
