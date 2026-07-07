@@ -541,7 +541,11 @@ export const createPublishedDatasetPivot = async (req: Request, res: Response, n
       filters: parseFiltersV2(req.body.filter),
       pivot: { x: trimmedColumns, y: trimmedRows, include_performance: false, backend: 'duckdb' }
     };
-    const filterId = await req.conapi.generatePivotFilterId(dataset.id, dataOptions);
+    const routeFilterId = typeof req.params.filterId === 'string' ? req.params.filterId.trim() : '';
+    const bodyFilterId = typeof req.body.filter_id === 'string' ? req.body.filter_id.trim() : '';
+    const candidateFilterId = routeFilterId || bodyFilterId;
+    const providedFilterId = /^[A-Za-z0-9_-]{1,128}$/.test(candidateFilterId) ? candidateFilterId : '';
+    const filterId = providedFilterId || (await req.conapi.generatePivotFilterId(dataset.id, dataOptions));
     const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
     if (req.body.stage === PivotStage.Summary) {
       res.redirect(
@@ -671,7 +675,8 @@ export const viewPivotedDatasetSummary = async (req: Request, res: Response, nex
       isArchived,
       pivotStage: PivotStage.Summary,
       columns: view.pivot?.x,
-      rows: view.pivot?.y
+      rows: view.pivot?.y,
+      filterId: filterId
     });
   } catch (err) {
     next(err);

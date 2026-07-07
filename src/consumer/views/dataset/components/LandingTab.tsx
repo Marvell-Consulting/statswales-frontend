@@ -26,6 +26,7 @@ type DataTabProps = NoteCodesLegendProps &
     pivotStage: PivotStage;
     columns?: string;
     rows?: string;
+    filterId?: string;
   };
 
 function zeroReferenceCount(filterValues: FilterValues[]): FilterValues[] {
