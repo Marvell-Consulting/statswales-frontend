@@ -541,8 +541,11 @@ export const createPublishedDatasetPivot = async (req: Request, res: Response, n
       filters: parseFiltersV2(req.body.filter),
       pivot: { x: trimmedColumns, y: trimmedRows, include_performance: false, backend: 'duckdb' }
     };
-    const filterId = req.body.filter_id
-      ? req.body.filter_id
+    const routeFilterId = typeof req.params.filterId === 'string' ? req.params.filterId.trim() : '';
+    const bodyFilterId = typeof req.body.filter_id === 'string' ? req.body.filter_id.trim() : '';
+    const providedFilterId = routeFilterId || bodyFilterId;
+    const filterId = providedFilterId
+      ? providedFilterId
       : await req.conapi.generatePivotFilterId(dataset.id, dataOptions);
     const pageSize = Number.parseInt(req.body.page_size as string, 10) || DEFAULT_PAGE_SIZE;
     if (req.body.stage === PivotStage.Summary) {
