@@ -2561,6 +2561,7 @@
     position: relative;
     color: colours.$blue;
     border: 1px solid colours.$blue;
+    display: none;
   }
 
   nav.primary .nav__toggle .toggle__button span {
@@ -2587,10 +2588,27 @@
     opacity: 1;
   }
 
+  // The hamburger toggle and the collapsed nav state are both JS-dependent, so
+  // they only engage once .govuk-frontend-supported is present - without JS the
+  // nav stays permanently expanded/reachable (progressive enhancement).
+  .govuk-frontend-supported nav.primary .nav__toggle .toggle__button {
+    display: inline-block;
+  }
+
+  .govuk-frontend-supported nav.primary .nav__content {
+    display: none;
+  }
+
+  .govuk-frontend-supported nav.primary.nav--is-open .nav__content {
+    display: block;
+  }
+
+  .govuk-frontend-supported nav.primary .nav__content:focus-within {
+    display: block;
+  }
+
   nav.primary .nav__content {
-    height: 0;
-    overflow: hidden;
-    padding: 0;
+    display: block;
   }
 
   nav.primary .nav__content ul {
@@ -2672,14 +2690,6 @@
     transform: rotate(-45deg);
   }
 
-  nav.primary.nav--is-open .nav__content {
-    height: auto;
-  }
-
-  nav.primary .nav__content:focus-within {
-    height: auto;
-  }
-
   nav.primary + h1 {
     padding: 20px 0 0;
   }
@@ -2698,30 +2708,41 @@
     margin: 20px 0 0 0;
   }
 
-  nav.primary .nav__content {
-    height: auto;
-    padding: 0 20px;
-    background-color: colours.$lightgrey_mid;
-  }
+  // Screens 960px and above (GEL 13.1): nav is a single inline bar, hamburger
+  // toggle never shows. Note: no padding is added here on top of the nested
+  // .govuk-width-container's own gutter - that double-indent was the bug that
+  // pushed the first link out of alignment with the logo row above it.
+  @media (min-width: 960px) {
+    nav.primary .nav__toggle .toggle__button,
+    .govuk-frontend-supported nav.primary .nav__toggle .toggle__button {
+      display: none;
+    }
 
-  nav.primary .nav__content ul li {
-    border: 0;
-    float: left;
-    margin: 0;
-    text-align: center;
-  }
+    nav.primary .nav__content,
+    .govuk-frontend-supported nav.primary .nav__content {
+      display: block;
+      background-color: colours.$lightgrey_mid;
+    }
 
-  nav.primary .nav__content ul li:last-of-type {
-    margin: 0;
-  }
+    nav.primary .nav__content ul li {
+      border: 0;
+      float: left;
+      margin: 0;
+      text-align: center;
+    }
 
-  nav.primary .nav__content ul li a {
-    font-size: 18px;
-    padding: 8px 10px;
-  }
+    nav.primary .nav__content ul li:last-of-type {
+      margin: 0;
+    }
 
-  nav.primary .nav__content .is-helper {
-    display: none;
+    nav.primary .nav__content ul li a {
+      font-size: 18px;
+      padding: 8px 10px;
+    }
+
+    nav.primary .nav__content .is-helper {
+      display: none;
+    }
   }
 
   .statsWales-logo {
