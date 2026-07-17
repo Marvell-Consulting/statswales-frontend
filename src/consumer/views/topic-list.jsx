@@ -167,9 +167,9 @@ export default function TopicList(props) {
           {props.selectedTopic && (
             <>
               <ParentTopicBreadcrumbs {...props} />
-              <span className="topic-subhead">
-                <T>{props.parentTopics.length > 0 ? 'consumer.topic_list.sub_topic' : 'consumer.topic_list.topic'}</T>
-              </span>
+              <T className="topic-subhead">
+                {props.parentTopics.length > 0 ? 'consumer.topic_list.sub_topic' : 'consumer.topic_list.topic'}
+              </T>
               <h1 className="govuk-heading-xl">{title}</h1>
             </>
           )}
