@@ -36,9 +36,12 @@ test.describe('Primary navigation', () => {
   test('first nav link aligns with the header logo at desktop widths (no double indent)', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
 
-    const logoBox = await page.locator('.statsWales-logo').boundingBox();
-    const homeLinkBox = await page.getByRole('link', { name: 'Home' }).boundingBox();
-
-    expect(Math.abs((logoBox?.x ?? 0) - (homeLinkBox?.x ?? 0))).toBeLessThanOrEqual(2);
+    const logo = page.locator('.statsWales-logo');
+    const homeLink = page.getByRole('link', { name: 'Home' });
+    const logoBox = await logo.boundingBox();
+    const homeLinkBox = await homeLink.boundingBox();
+    expect(logoBox).not.toBeNull();
+    expect(homeLinkBox).not.toBeNull();
+    expect(Math.abs(logoBox!.x - homeLinkBox!.x)).toBeLessThanOrEqual(2);
   });
 });
