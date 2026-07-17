@@ -140,9 +140,9 @@ export default function TopicList(props) {
       {!props.selectedTopic && (
         <Hero>
           <div className="govuk-width-container">
-            <div className="govuk-grid-row govuk-!-margin-bottom-6">
+            <div className="govuk-grid-row govuk-!-padding-bottom-6">
               <div className="govuk-grid-column-two-thirds">
-                <h1 className="govuk-heading-xl govuk-!-margin-top-6">{title}</h1>
+                <h1 className="govuk-heading-xl govuk-!-padding-top-6">{title}</h1>
               </div>
             </div>
           </div>
@@ -167,9 +167,9 @@ export default function TopicList(props) {
           {props.selectedTopic && (
             <>
               <ParentTopicBreadcrumbs {...props} />
-              <h2 className="topic-subhead">
+              <span className="topic-subhead">
                 <T>{props.parentTopics.length > 0 ? 'consumer.topic_list.sub_topic' : 'consumer.topic_list.topic'}</T>
-              </h2>
+              </span>
               <h1 className="govuk-heading-xl">{title}</h1>
             </>
           )}
