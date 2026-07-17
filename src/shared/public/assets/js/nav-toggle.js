@@ -3,8 +3,7 @@
   if (!nav) return;
 
   const toggle = nav.querySelector('.js-nav-toggle');
-  const content = nav.querySelector('.nav__content');
-  if (!toggle || !content) return;
+  if (!toggle || !nav.querySelector('.nav__content')) return;
 
   toggle.addEventListener('click', () => {
     const isOpen = nav.classList.toggle('nav--is-open');
