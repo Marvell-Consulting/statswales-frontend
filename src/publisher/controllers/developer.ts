@@ -29,6 +29,7 @@ import { SingleLanguageDataset } from '../../shared/dtos/single-language/dataset
 import { PublishingStatus } from '../../shared/enums/publishing-status';
 import { processFileList, getDatasetJson } from '../utils/dev';
 import { DatasetDTO } from '../../shared/dtos/dataset';
+import { set } from 'lodash';
 
 export const listAllDatasets = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -279,8 +280,21 @@ export const rebuildCube = async (req: Request, res: Response, next: NextFunctio
 
   try {
     const dataset = await req.pubapi.getDataset(datasetId);
-    await req.pubapi.rebuildCube(datasetId, dataset.end_revision_id!);
-    res.redirect(req.buildUrl(`/publish/${datasetId}/overview`, req.language));
+    const revId = dataset.draft_revision_id ? dataset.draft_revision_id : dataset.end_revision_id!;
+    if (req.originalUrl.includes('developer')) {
+      set(req.session, `dataset[${dataset.id}].buildNextAction`, req.buildUrl(`/developer`, req.language));
+    } else {
+      set(
+        req.session,
+        `dataset[${dataset.id}].buildNextAction`,
+        req.buildUrl(`/publish/${datasetId}/overview`, req.language)
+      );
+    }
+    set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
+    req.session.save();
+    const buildId = await req.pubapi.rebuildCube(datasetId, revId);
+    logger.debug('Redirecting to build status page');
+    res.redirect(req.buildUrl(`/publish/${dataset.id}/build/${buildId}`, req.language));
   } catch (_err) {
     logger.error(_err, 'Error rebuilding the cube');
     next(new NotFoundException('errors.import_missing'));
