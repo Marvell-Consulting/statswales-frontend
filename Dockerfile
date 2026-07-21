@@ -2,7 +2,7 @@
 
 # This is the initial build image
 # It installs the dependencies and transpiles the TypeScript code to JavaScript.
-FROM node:24-slim AS builder
+FROM node:26-trixie AS builder
 
 WORKDIR /app
 
