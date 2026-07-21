@@ -287,7 +287,7 @@ export const rebuildCube = async (req: Request, res: Response, next: NextFunctio
     } else {
       set(
         req.session,
-        `dataset[${dataset.id}].buildNextAction`,
+        `dataset[${dataset.id}].buildPreviousAction`,
         req.buildUrl(`/publish/${datasetId}/tasklist`, req.language)
       );
       set(
