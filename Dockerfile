@@ -2,7 +2,7 @@
 
 # This is the initial build image
 # It installs the dependencies and transpiles the TypeScript code to JavaScript.
-FROM node:26-trixie AS builder
+FROM node:26-alpine AS builder
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ COPY . ./
 RUN npm run build
 
 # This is the deployable image
-FROM node:24-alpine AS runner
+FROM node:26-alpine AS runner
 
 RUN apk upgrade --no-cache && apk add --no-cache curl
 
