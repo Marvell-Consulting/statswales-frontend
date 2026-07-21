@@ -281,7 +281,7 @@ export const rebuildCube = async (req: Request, res: Response, next: NextFunctio
   try {
     const dataset = await req.pubapi.getDataset(datasetId);
     const revId = dataset.draft_revision_id ? dataset.draft_revision_id : dataset.end_revision_id!;
-    if (req.originalUrl.includes('developer')) {
+    if (req.headers.referer?.includes('developer')) {
       set(req.session, `dataset[${dataset.id}].buildNextAction`, req.buildUrl(`/developer`, req.language));
     } else {
       set(
@@ -292,7 +292,7 @@ export const rebuildCube = async (req: Request, res: Response, next: NextFunctio
     }
     set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
     req.session.save();
-    const buildId = await req.pubapi.rebuildCube(datasetId, revId);
+    const buildId = (await req.pubapi.rebuildCube(datasetId, revId)).buildId;
     logger.debug('Redirecting to build status page');
     res.redirect(req.buildUrl(`/publish/${dataset.id}/build/${buildId}`, req.language));
   } catch (_err) {
