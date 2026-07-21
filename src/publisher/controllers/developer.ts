@@ -282,19 +282,20 @@ export const rebuildCube = async (req: Request, res: Response, next: NextFunctio
     const dataset = await req.pubapi.getDataset(datasetId);
     const revId = dataset.draft_revision_id ? dataset.draft_revision_id : dataset.end_revision_id!;
     if (req.headers.referer?.includes('developer')) {
+      set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.buildUrl(`/developer`, req.language));
       set(req.session, `dataset[${dataset.id}].buildNextAction`, req.buildUrl(`/developer`, req.language));
     } else {
+      set(
+        req.session,
+        `dataset[${dataset.id}].buildNextAction`,
+        req.buildUrl(`/publish/${datasetId}/tasklist`, req.language)
+      );
       set(
         req.session,
         `dataset[${dataset.id}].buildNextAction`,
         req.buildUrl(`/publish/${datasetId}/overview`, req.language)
       );
     }
-    set(
-      req.session,
-      `dataset[${dataset.id}].buildPreviousAction`,
-      req.headers.referer ?? req.buildUrl(`/publish/${datasetId}/overview`, req.language)
-    );
     req.session.save();
     const buildId = (await req.pubapi.rebuildCube(datasetId, revId)).build_id;
     logger.debug('Redirecting to build status page');
