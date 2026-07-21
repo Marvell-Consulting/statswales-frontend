@@ -290,9 +290,13 @@ export const rebuildCube = async (req: Request, res: Response, next: NextFunctio
         req.buildUrl(`/publish/${datasetId}/overview`, req.language)
       );
     }
-    set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.originalUrl);
+    set(
+      req.session,
+      `dataset[${dataset.id}].buildPreviousAction`,
+      req.headers.referer ?? req.buildUrl(`/publish/${datasetId}/overview`, req.language)
+    );
     req.session.save();
-    const buildId = (await req.pubapi.rebuildCube(datasetId, revId)).buildId;
+    const buildId = (await req.pubapi.rebuildCube(datasetId, revId)).build_id;
     logger.debug('Redirecting to build status page');
     res.redirect(req.buildUrl(`/publish/${dataset.id}/build/${buildId}`, req.language));
   } catch (_err) {
