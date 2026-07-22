@@ -210,10 +210,21 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
                 {t('header.navigation.logout')}
               </a>
             )}
+            <button
+              type="button"
+              className="toggle__button js-nav-toggle"
+              aria-expanded={false}
+              aria-controls="primary-nav-content"
+            >
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              {t('header.navigation.menu')}
+            </button>
           </div>
-          <div className="nav__content">
+          <div className="nav__content" id="primary-nav-content">
             <div className="govuk-width-container">
-              <ul aria-hidden="true">
+              <ul>
                 <li>
                   <a
                     href={buildUrl('/', i18n.language)}
@@ -280,6 +291,7 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
             </div>
           </div>
         </nav>
+        <script type="module" src="/assets/js/nav-toggle.js" />
 
         {backLink && (
           <div className="top-links">
