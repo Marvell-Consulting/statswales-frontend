@@ -432,6 +432,27 @@ describe('PublisherApi', () => {
     });
   });
 
+  describe('rebuildCube', () => {
+    it('should POST to the revision endpoint and return the build_id', async () => {
+      const datasetId = randomUUID();
+      const revisionId = randomUUID();
+      const buildId = randomUUID();
+
+      mockResponse = Promise.resolve(new Response(JSON.stringify({ build_id: buildId })));
+
+      const result = await statsWalesApi.rebuildCube(datasetId, revisionId);
+
+      expect(fetchSpy).toHaveBeenCalledWith(
+        `${baseUrl}/dataset/${datasetId}/revision/by-id/${revisionId}/?lang=en`,
+        expect.objectContaining({
+          method: HttpMethod.Post,
+          headers: expect.objectContaining(headers)
+        })
+      );
+      expect(result).toEqual({ build_id: buildId });
+    });
+  });
+
   describe('getDatasetTasks', () => {
     it('should return an array of TaskDTO without open parameter', async () => {
       const datasetId = randomUUID();
