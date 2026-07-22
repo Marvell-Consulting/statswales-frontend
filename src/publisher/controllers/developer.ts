@@ -280,7 +280,11 @@ export const rebuildCube = async (req: Request, res: Response, next: NextFunctio
 
   try {
     const dataset = await req.pubapi.getDataset(datasetId);
-    const revId = dataset.draft_revision_id ? dataset.draft_revision_id : dataset.end_revision_id!;
+    const revId = dataset.draft_revision_id || dataset.end_revision_id;
+    if (!revId) {
+      next(new NotFoundException('errors.import_missing'));
+      return;
+    }
     if (req.headers.referer?.includes('developer')) {
       set(req.session, `dataset[${dataset.id}].buildPreviousAction`, req.buildUrl(`/developer`, req.language));
       set(req.session, `dataset[${dataset.id}].buildNextAction`, req.buildUrl(`/developer`, req.language));
