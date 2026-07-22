@@ -293,7 +293,7 @@ export const rebuildCube = async (req: Request, res: Response, next: NextFunctio
       set(
         req.session,
         `dataset[${dataset.id}].buildNextAction`,
-        req.buildUrl(`/publish/${datasetId}/overview`, req.language)
+        req.buildUrl(`/publish/${dataset.id}/overview`, req.language)
       );
     }
     req.session.save();
