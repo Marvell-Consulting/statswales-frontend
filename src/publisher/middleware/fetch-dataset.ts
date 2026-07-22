@@ -14,7 +14,7 @@ export const fetchDataset = (include?: DatasetInclude) => {
     }
 
     try {
-      const dataset = await req.pubapi.getDataset(req.params.datasetId, include);
+      const dataset = await req.pubapi.getDataset(req.params.datasetId as string, include);
       res.locals.datasetId = dataset.id;
       res.locals.dataset = dataset;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

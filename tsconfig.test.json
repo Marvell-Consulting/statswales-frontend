@@ -2,6 +2,7 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "isolatedModules": true,
-    "module": "commonjs"
+    "module": "commonjs",
+    "rootDir": "./tests/.jest"
   }
 }

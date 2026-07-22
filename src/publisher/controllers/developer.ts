@@ -46,7 +46,7 @@ export const listAllDatasets = async (req: Request, res: Response, next: NextFun
 };
 
 export const datasetPreview = async (req: Request, res: Response) => {
-  const datasetId = req.params.datasetId;
+  const datasetId = req.params.datasetId as string;
 
   if (req.method === 'POST') {
     const parsedFilters = parseFilters(req.body.filter);
@@ -98,7 +98,7 @@ export const datasetPreview = async (req: Request, res: Response) => {
     datasetMetadata = await getDatasetMetadata(dataset, revision);
 
     const { pageNumber, pageSize, sortBy } = parsePageOptions(req);
-    const filterId = req.params.filterId;
+    const filterId = req.params.filterId as string;
     const datasetTitle = revision?.metadata?.title || datasetId;
     let pagination;
     let previewFailed: string | undefined;
@@ -165,8 +165,8 @@ export const datasetPreview = async (req: Request, res: Response) => {
 };
 
 export const downloadDataTableFromRevision = async (req: Request, res: Response, next: NextFunction) => {
-  const datasetId = req.params.datasetId;
-  const revisionId = req.params.revisionId;
+  const datasetId = req.params.datasetId as string;
+  const revisionId = req.params.revisionId as string;
 
   try {
     const dataset = await req.pubapi.getDataset(datasetId, DatasetInclude.LatestRevision);
@@ -198,7 +198,7 @@ export const downloadDataTableFromRevision = async (req: Request, res: Response,
 };
 
 export const downloadLookupFileFromMeasure = async (req: Request, res: Response, next: NextFunction) => {
-  const dataset = await req.pubapi.getDataset(req.params.datasetId, DatasetInclude.Measure);
+  const dataset = await req.pubapi.getDataset(req.params.datasetId as string, DatasetInclude.Measure);
   if (!dataset) {
     next(new NotFoundException('errors.dataset_missing'));
     return;
@@ -227,8 +227,8 @@ export const downloadLookupFileFromMeasure = async (req: Request, res: Response,
 };
 
 export const downloadLookupFileFromDimension = async (req: Request, res: Response, next: NextFunction) => {
-  const datasetId = req.params.datasetId;
-  const dimensionId = req.params.dimensionId;
+  const datasetId = req.params.datasetId as string;
+  const dimensionId = req.params.dimensionId as string;
 
   try {
     const dataset = await req.pubapi.getDataset(datasetId, DatasetInclude.Dimensions);
@@ -260,7 +260,7 @@ export const downloadLookupFileFromDimension = async (req: Request, res: Respons
 export const downloadAllDatasetFiles = async (req: Request, res: Response, next: NextFunction) => {
   logger.debug(`Downloading all files for dataset ${req.params.datasetId}`);
   try {
-    const dataset = await req.pubapi.getDataset(req.params.datasetId, DatasetInclude.LatestRevision);
+    const dataset = await req.pubapi.getDataset(req.params.datasetId as string, DatasetInclude.LatestRevision);
     const latestRevision = singleLangDataset(dataset, req.language).end_revision;
     const datasetTitle = latestRevision?.metadata?.title || dataset.id;
     const headers = getDownloadHeaders(FileFormat.Zip, datasetTitle);
@@ -275,7 +275,7 @@ export const downloadAllDatasetFiles = async (req: Request, res: Response, next:
 };
 
 export const rebuildCube = async (req: Request, res: Response, next: NextFunction) => {
-  const datasetId = req.params.datasetId;
+  const datasetId = req.params.datasetId as string;
 
   try {
     const dataset = await req.pubapi.getDataset(datasetId);

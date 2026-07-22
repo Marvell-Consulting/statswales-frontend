@@ -47,7 +47,7 @@ import { sanitizeSearchResults } from '../../shared/utils/sanitize-search-result
 import { PivotStage } from '../../shared/enums/pivot-stage';
 
 export const listTopics = async (req: Request, res: Response, next: NextFunction) => {
-  const topicId = req.params.topicId ? req.params.topicId.match(/\d+/)?.[0] : undefined;
+  const topicId = req.params.topicId ? (req.params.topicId as string).match(/\d+/)?.[0] : undefined;
   const pageNumber = parseInt(req.query.page_number as string, 10) || 1;
   const pageSize = parseInt(req.query.page_size as string, 10) || 20;
 
@@ -212,7 +212,7 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
     return;
   }
 
-  const filterId = req.params.filterId;
+  const filterId = req.params.filterId as string;
 
   if (!filterId) {
     next(new NotFoundException('filter id is required'));
@@ -353,7 +353,7 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
       return;
     }
 
-    const filterId = req.params.filterId;
+    const filterId = req.params.filterId as string;
     const format = (req.query.format as FileFormat) || FileFormat.Csv;
     const download_language = (req.query.download_language?.toString() || req.language) as Locale;
 
@@ -634,7 +634,7 @@ export const viewPivotedDatasetSummary = async (req: Request, res: Response, nex
   const isArchived = !!dataset.archived_at;
 
   try {
-    const filterId = req.params.filterId;
+    const filterId = req.params.filterId as string;
 
     if (!filterId) {
       next(new NotFoundException('filter id is required'));
@@ -693,7 +693,7 @@ export const viewPivotedDataset = async (req: Request, res: Response, next: Next
   }
 
   try {
-    const filterId = req.params.filterId;
+    const filterId = req.params.filterId as string;
 
     if (!filterId) {
       next(new NotFoundException('filter id is required'));

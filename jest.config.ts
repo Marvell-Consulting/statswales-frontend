@@ -1,10 +1,16 @@
 import type { Config } from 'jest';
 import { createJsWithTsPreset } from 'ts-jest';
 
+const tsPreset = createJsWithTsPreset({ tsconfig: 'tsconfig.test.json' });
+
 const config: Config = {
-  ...createJsWithTsPreset({ tsconfig: 'tsconfig.test.json' }),
+  ...tsPreset,
+  transform: {
+    ...tsPreset.transform,
+    '^.+\\.mjs$': ['babel-jest', { presets: [['@babel/preset-env', { targets: { node: 'current' } }]] }]
+  },
   extensionsToTreatAsEsm: ['.ts'],
-  transformIgnorePatterns: ['/node_modules/(?!(marked|nanoid|until-async|jsdom|parse5)/)'],
+  transformIgnorePatterns: ['/node_modules/(?!(marked|nanoid|until-async|jsdom|parse5|entities|@exodus|@csstools)/)'],
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1'
   },

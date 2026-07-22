@@ -628,7 +628,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
     return;
   }
 
-  const filterId = req.params.filterId;
+  const filterId = req.params.filterId as string;
   const { pageNumber, pageSize, sortBy } = parsePageOptions(req);
   let previewMetadata: PreviewMetadata | undefined;
   let publishedRevisions: RevisionDTO[] = [];
@@ -756,7 +756,7 @@ export const downloadPreview = async (req: Request, res: Response, next: NextFun
       return;
     }
 
-    const filterId = req.params.filterId;
+    const filterId = req.params.filterId as string;
     const format = (req.query.format as FileFormat) || FileFormat.Csv;
     const download_language = (req.query.download_language?.toString() || req.language) as Locale;
 
@@ -1525,7 +1525,7 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
       }
       if (req.body?.yearType === 'calendar') {
         session.dimensionPatch = {
-          dimension_id: req.params.dimensionId,
+          dimension_id: req.params.dimensionId as string,
           dimension_type: DimensionType.DatePeriod,
           date_type: req.body?.yearType,
           year_format: 'YYYY'
@@ -1538,7 +1538,7 @@ export const yearTypeChooser = async (req: Request, res: Response, next: NextFun
         return;
       } else {
         session.dimensionPatch = {
-          dimension_id: req.params.dimensionId,
+          dimension_id: req.params.dimensionId as string,
           dimension_type: DimensionType.Date,
           date_type: req.body?.yearType,
           start_day: req.body?.start_day,
@@ -2055,7 +2055,7 @@ export const pointInTimeChooser = async (req: Request, res: Response, next: Next
 
   if (req.method === 'POST') {
     const patchRequest: DimensionPatchDTO = {
-      dimension_id: req.params.dimensionId,
+      dimension_id: req.params.dimensionId as string,
       date_format: req.body?.dateFormat,
       dimension_type: DimensionType.Date,
       date_type: YearType.PointInTime
@@ -2921,7 +2921,7 @@ export const taskDecision = async (req: Request, res: Response, next: NextFuncti
     dataset = await req.pubapi.getDataset(res.locals.datasetId, DatasetInclude.Overview);
     revision = singleLangRevision(dataset.end_revision, req.language)!;
     title = revision?.metadata?.title;
-    task = await req.pubapi.getTaskById(req.params.taskId);
+    task = await req.pubapi.getTaskById(req.params.taskId as string);
 
     if (!task || task.dataset_id !== res.locals.datasetId) {
       logger.error('Failed to find task');
@@ -3051,7 +3051,7 @@ export const datasetAction = async (req: Request, res: Response, next: NextFunct
 export const longBuildHandling = async (req: Request, res: Response) => {
   const datasetId = res.locals.datasetId;
   logger.debug('Trying to handle build in request...');
-  const buildId = req.params.buildId;
+  const buildId = req.params.buildId as string;
   const showBuildingPageTimeout = 10000;
   let totalTime = 0;
   let buildLogEntry: BuildLogEntry;
@@ -3099,7 +3099,7 @@ export const longBuildHandling = async (req: Request, res: Response) => {
 };
 
 export const ajaxRefreshBuildStatus = async (req: Request, res: Response) => {
-  const buildId = req.params.buildId;
+  const buildId = req.params.buildId as string;
   const datasetId = res.locals.datasetId;
   const buildLogEntry = await req.pubapi.getBuildLogEntry(buildId);
   const nextAction =

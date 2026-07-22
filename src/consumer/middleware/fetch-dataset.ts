@@ -12,7 +12,7 @@ export const fetchPublishedDataset = async (req: Request, res: Response, next: N
   }
 
   try {
-    const dataset = await req.conapi.getPublishedDataset(req.params.datasetId);
+    const dataset = await req.conapi.getPublishedDataset(req.params.datasetId as string);
     res.locals.datasetId = dataset.id;
     res.locals.dataset = dataset;
 

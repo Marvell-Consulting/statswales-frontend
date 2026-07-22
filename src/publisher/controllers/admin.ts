@@ -56,7 +56,7 @@ export const fetchUserGroup = async (req: Request, res: Response, next: NextFunc
   }
 
   try {
-    const group = await req.pubapi.getUserGroup(req.params.userGroupId);
+    const group = await req.pubapi.getUserGroup(req.params.userGroupId as string);
     res.locals.groupId = group.id;
     res.locals.group = group;
   } catch (err: any) {
@@ -80,7 +80,7 @@ export const fetchUser = async (req: Request, res: Response, next: NextFunction)
   }
 
   try {
-    const user = await req.pubapi.getUserById(req.params.userId);
+    const user = await req.pubapi.getUserById(req.params.userId as string);
     res.locals.userId = user.id;
     res.locals.user = user;
   } catch (err: any) {
