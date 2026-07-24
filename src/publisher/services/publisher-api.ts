@@ -354,12 +354,12 @@ export class PublisherApi {
     return this.fetch({ url, lang: language }).then((response) => response.body as ReadableStream);
   }
 
-  public async rebuildCube(datasetId: string, revisionId: string) {
+  public async rebuildCube(datasetId: string, revisionId: string): Promise<{ build_id: string }> {
     logger.debug(`Rebuilding cube for revision: ${revisionId}...`);
     return this.fetch({
       url: `dataset/${datasetId}/revision/by-id/${revisionId}/`,
       method: HttpMethod.Post
-    });
+    }).then((response) => response.json() as unknown as { build_id: string });
   }
 
   public async getSourcesForDataset(datasetId: string): Promise<FactTableColumnDto[]> {
