@@ -50,6 +50,10 @@ export const getDatasetMetadata = async (
   return preview;
 };
 
+// Neutralises CSV/formula injection (CWE-1236): Excel/LibreOffice/Sheets evaluate a quoted cell
+// as a formula if it starts with =, +, -, @, tab or CR, so prefix those with an apostrophe.
+const neutralizeCsvCell = (value: string): string => (/^[=+\-@\t\r]/.test(value) ? `'${value}` : value);
+
 export const metadataToCSV = (metadata: PreviewMetadata, locale: Locale): string[][] => {
   const lines = [];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -143,5 +147,5 @@ export const metadataToCSV = (metadata: PreviewMetadata, locale: Locale): string
   lines.push([t('dataset_view.published.org'), metadata.publisher?.organisation?.name ?? '']);
   lines.push([t('dataset_view.published.contact'), metadata.publisher?.group?.email ?? '']);
 
-  return lines;
+  return lines.map((row) => row.map(neutralizeCsvCell));
 };
