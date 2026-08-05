@@ -1,4 +1,5 @@
 import React from 'react';
+import T from '../../../shared/views/components/T';
 
 export type NonMatchingValueProps = {
   value: unknown;
@@ -21,7 +22,7 @@ export default function NonMatchingValue({ value }: NonMatchingValueProps) {
           {part}
           {index < parts.length - 1 && (
             <>
-              <span className="govuk-visually-hidden">space</span>
+              <T className="govuk-visually-hidden">publish.non_matching_value.space</T>
               <span aria-hidden="true" className="mid-dot">
                 &middot;
               </span>
