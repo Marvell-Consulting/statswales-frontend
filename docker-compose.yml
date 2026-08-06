@@ -54,11 +54,11 @@ services:
       AZURE_BLOB_STORAGE_URL: 'http://blobstorage:10000/devstoreaccount1'
 
     command: sh -c "
-      /app/node_modules/.bin/typeorm migration:run -d ./dist/db/publisher-source.js
-      && node ./dist/seeders/required/data-providers.js
-      && node ./dist/seeders/required/orgs-and-groups.js
-      && node ./dist/seeders/required/topics.js
-      && node ./dist/seeders/tests/seed.js
+      /app/node_modules/.bin/typeorm migration:run -d /app/dist/db/publisher-source.js
+      && node /app/dist/seeders/required/data-providers.js
+      && node /app/dist/seeders/required/orgs-and-groups.js
+      && node /app/dist/seeders/required/topics.js
+      && node /app/dist/seeders/tests/seed.js
       && node dist/server.js
       "
 
