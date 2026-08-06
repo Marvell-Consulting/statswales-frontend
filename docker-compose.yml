@@ -59,7 +59,7 @@ services:
       && node /app/dist/seeders/required/orgs-and-groups.js
       && node /app/dist/seeders/required/topics.js
       && node /app/dist/seeders/tests/seed.js
-      && node dist/server.js
+      && node /app/dist/server.js
       "
 
   ready-for-tests:
