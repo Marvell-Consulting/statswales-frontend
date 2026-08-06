@@ -1,3 +1,6 @@
+import { parse } from 'csv-parse/sync';
+import { stringify } from 'csv-stringify/sync';
+
 import { getDatasetMetadata, metadataToCSV } from '../../src/shared/utils/dataset-metadata';
 import { SingleLanguageDataset } from '../../src/shared/dtos/single-language/dataset';
 import { SingleLanguageRevision } from '../../src/shared/dtos/single-language/revision';
@@ -239,5 +242,53 @@ describe('metadataToCSV', () => {
     const nextUpdateRow = csv.find((row) => row[0] === i18next.t('dataset_view.key_information.next_update'));
     expect(nextUpdateRow).toBeDefined();
     expect(nextUpdateRow![1]).toBe('June 2027');
+  });
+
+  describe('CSV/formula injection neutralisation', () => {
+    it.each(['=HYPERLINK("http://evil.example")', '+cmd|calc', '-2+3', '@SUM(1,1)', '\tmalicious', '\rmalicious'])(
+      'prefixes a cell starting with %j with an apostrophe',
+      async (dangerousValue) => {
+        const revision = makeRevision({
+          metadata: { title: 'Test', summary: dangerousValue, quality: '', collection: '', rounding_description: '' }
+        });
+        const metadata = await getDatasetMetadata(makeDataset(), revision, false);
+        const csv = metadataToCSV(metadata, Locale.EnglishGb);
+
+        const summaryRow = csv.find((row) => row[0] === i18next.t('dataset_view.about.summary'));
+        expect(summaryRow).toBeDefined();
+        expect(summaryRow![1]).toBe(`'${dangerousValue}`);
+      }
+    );
+
+    it.each(['A normal summary', '12345', ''])('leaves a safe value %j unchanged', async (safeValue) => {
+      const revision = makeRevision({
+        metadata: { title: 'Test', summary: safeValue, quality: '', collection: '', rounding_description: '' }
+      });
+      const metadata = await getDatasetMetadata(makeDataset(), revision, false);
+      const csv = metadataToCSV(metadata, Locale.EnglishGb);
+
+      const summaryRow = csv.find((row) => row[0] === i18next.t('dataset_view.about.summary'));
+      expect(summaryRow).toBeDefined();
+      expect(summaryRow![1]).toBe(safeValue);
+    });
+
+    it('produces output that still parses as valid CSV once stringified', async () => {
+      const revision = makeRevision({
+        metadata: {
+          title: 'Test',
+          summary: '=HYPERLINK("http://evil.example")',
+          quality: '+cmd|calc',
+          collection: '-2+3',
+          rounding_description: ''
+        }
+      });
+      const metadata = await getDatasetMetadata(makeDataset(), revision, false);
+      const csv = metadataToCSV(metadata, Locale.EnglishGb);
+      const csvString = stringify(csv, { bom: true, header: false, quoted: true });
+
+      const parsed: string[][] = parse(csvString, { bom: true, relax_column_count: true });
+      const summaryRow = parsed.find((row) => row[0] === i18next.t('dataset_view.about.summary'));
+      expect(summaryRow![1]).toBe(`'=HYPERLINK("http://evil.example")`);
+    });
   });
 });
