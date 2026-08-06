@@ -57,12 +57,12 @@ services:
       - sh
       - -c
       - |
-          /app/node_modules/.bin/typeorm migration:run -d /app/dist/db/publisher-source.js &&
-          node /app/dist/seeders/required/data-providers.js &&
-          node /app/dist/seeders/required/orgs-and-groups.js &&
-          node /app/dist/seeders/required/topics.js &&
-          node /app/dist/seeders/tests/seed.js &&
-          node /app/dist/server.js
+        /app/node_modules/.bin/typeorm migration:run -d /app/dist/db/publisher-source.js &&
+        node /app/dist/seeders/required/data-providers.js &&
+        node /app/dist/seeders/required/orgs-and-groups.js &&
+        node /app/dist/seeders/required/topics.js &&
+        node /app/dist/seeders/tests/seed.js &&
+        node /app/dist/server.js
 
   ready-for-tests:
     image: busybox
