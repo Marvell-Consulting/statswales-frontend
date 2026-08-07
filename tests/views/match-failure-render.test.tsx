@@ -37,7 +37,7 @@ describe('DimensionMatchFailure — uploaded lookup/fact-table values that faile
       />
     );
 
-  it('renders a fact-table value containing a script payload inert', () => {
+  it('renders a fact-table value containing an img onerror payload inert', () => {
     const html = render([XSS_PAYLOAD]);
     // React's default escaping neutralizes the tag; "onerror" survives only as inert escaped text
     expect(html).not.toContain('<img');
@@ -72,7 +72,7 @@ describe('MeasureMatchFailure — uploaded measure lookup values that failed to 
       />
     );
 
-  it('renders a fact-table value containing a script payload inert', () => {
+  it('renders a fact-table value containing an img onerror payload inert', () => {
     const html = render([XSS_PAYLOAD]);
     expect(html).not.toContain('<img');
     expect(html).toContain('&lt;img');
