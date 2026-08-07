@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { RequestHistory } from '../interfaces/request-history';
 
-const isRelativeUrl = (url: string): boolean => {
-  return url.startsWith('/') && !url.includes('://');
+// rejects protocol-relative ("//evil.com") and backslash-obfuscated ("/\evil.com") forms, both of which
+// browsers will treat as absolute URLs pointing off-site even though they pass a naive "starts with /" check
+export const isRelativeUrl = (url: string): boolean => {
+  return /^\/(?!\/|\\)/.test(url);
 };
 
 // records the last 10 URLs visited by the user

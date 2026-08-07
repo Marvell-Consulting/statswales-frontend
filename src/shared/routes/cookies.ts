@@ -14,6 +14,7 @@ import { CookiePreferences } from '../interfaces/cookie-preferences';
 import { config } from '../config';
 import { flashMessages } from '../middleware/flash';
 import { RequestHistory } from '../interfaces/request-history';
+import { Locale } from '../enums/locale';
 
 export const cookies = Router();
 
@@ -21,6 +22,15 @@ cookies.use(flashMessages);
 
 const bodyParser = express.urlencoded({ extended: true });
 const docsPath = path.join(__dirname, '..', '..', '..', 'docs', 'static-pages');
+
+// path-based i18n only ever uses en-GB/cy-GB prefixes (see language-switcher.ts) - only ever redirect back
+// into the app under one of those, since the referrer is sourced from stored request history and a crafted
+// //evil.com or /\evil.com history entry must never be redirected to
+const SUPPORTED_LOCALE_PATH_PREFIXES: string[] = [Locale.EnglishGb, Locale.WelshGb];
+
+const isSupportedLocaleUrl = (url: string): boolean => {
+  return SUPPORTED_LOCALE_PATH_PREFIXES.some((locale) => url === `/${locale}` || url.startsWith(`/${locale}/`));
+};
 
 const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
   const defaultPref: CookiePreferences = { acceptAll: false, measuring: false, showBanner: true };
@@ -51,7 +61,9 @@ const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
 
     req.session.flash = [`cookies.settings.saved.heading`];
     req.session.save();
-    res.redirect(acceptAll === 'true' ? referrer : req.buildUrl('/cookies', req.language));
+    res.redirect(
+      acceptAll === 'true' && isSupportedLocaleUrl(referrer) ? referrer : req.buildUrl('/cookies', req.language)
+    );
     return;
   }
 
