@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 import Table from '../../../shared/views/components/Table';
 import RadioGroup from '../../../shared/views/components/RadioGroup';
@@ -75,6 +76,7 @@ export default function DateChooser(props) {
             <div className="govuk-grid-row">
               <div className="govuk-grid-column-full">
                 <form method="post" role="continue">
+                  <CsrfField />
                   <fieldset className="govuk-fieldset">
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
                       <h2 className="govuk-fieldset__heading">{props.t('publish.time_dimension_review.confirm')}</h2>
@@ -100,6 +102,7 @@ export default function DateChooser(props) {
             <div className="govuk-grid-row">
               <div className="govuk-grid-column-full">
                 <form method="post" role="continue">
+                  <CsrfField />
                   <RadioGroup
                     name="dimensionType"
                     label={props.t('publish.time_dimension_chooser.question')}

@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 import T from '../../../shared/views/components/T';
 import Select from '../../../shared/views/components/Select';
@@ -20,6 +21,7 @@ export default function Sources(props) {
       <h1 className="govuk-heading-xl">{title}</h1>
       <ErrorHandler />
       <form action={props.buildUrl(`/publish/${props.datasetId}/sources`, props.i18n.language)} method="post">
+        <CsrfField />
         <div
           className="source-list"
           style={{

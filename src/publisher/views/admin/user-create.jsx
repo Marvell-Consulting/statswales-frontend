@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 import { clsx } from 'clsx';
 
@@ -14,6 +15,7 @@ export default function UserCreate(props) {
           <ErrorHandler />
 
           <form method="post">
+            <CsrfField />
             <div className="govuk-form-group">
               <input
                 className={clsx('govuk-input', {

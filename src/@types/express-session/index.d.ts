@@ -16,6 +16,7 @@ declare module 'express-session' {
     flash: FlashMessage[] | string[] | undefined;
     errors: ViewError[] | undefined;
     history?: RequestHistory[];
+    csrfToken?: string;
     dataset: {
       [id: string]: DatasetProps;
     };

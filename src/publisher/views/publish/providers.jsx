@@ -1,6 +1,7 @@
 import React from 'react';
 import ErrorHandler from '../components/ErrorHandler';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import Table from '../../../shared/views/components/Table';
 import RadioGroup from '../../../shared/views/components/RadioGroup';
 import T from '../../../shared/views/components/T';
@@ -106,6 +107,7 @@ export default function Providers(props) {
               />
 
               <form encType="multipart/form-data" method="post">
+                <CsrfField />
                 <Autocomplete
                   name="provider_id"
                   hint={<T>publish.providers.add.form.provider.hint</T>}
@@ -150,6 +152,7 @@ export default function Providers(props) {
               <div className="govuk-grid-column-two-thirds">
                 {/* Add another provider form is displayed whenever we're not editing a provider*/}
                 <form encType="multipart/form-data" method="post">
+                  <CsrfField />
                   <input type="hidden" name="add_another" value="true" />
                   <RadioGroup
                     name="add_provider"
@@ -193,6 +196,7 @@ export default function Providers(props) {
               )}
 
               <form encType="multipart/form-data" method="post">
+                <CsrfField />
                 <input type="hidden" name="provider_id" value={props.dataProvider?.provider_id} />
 
                 <RadioGroup

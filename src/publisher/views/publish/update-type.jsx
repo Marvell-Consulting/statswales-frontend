@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 import RadioGroup from '../../../shared/views/components/RadioGroup';
 import T from '../../../shared/views/components/T';
@@ -25,6 +26,7 @@ export default function UpdateType(props) {
             {title}
           </h1>
           <form method="post" role="continue" id="updateType">
+            <CsrfField />
             <RadioGroup name="updateType" labelledBy="update-type-heading" options={options} />
 
             <div className="govuk-button-group">

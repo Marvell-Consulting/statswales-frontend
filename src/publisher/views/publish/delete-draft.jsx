@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import DatasetStatus from '../../../shared/views/components/dataset/DatasetStatus';
 import ErrorHandler from '../components/ErrorHandler';
 
@@ -22,6 +23,7 @@ export default function DeleteDraft(props) {
           <div className="warning-background">
             <div className="govuk-error-message alert-warning">
               <form method="post">
+                <CsrfField />
                 <fieldset className="govuk-fieldset" role="group">
                   <h2 className="govuk-heading-l">
                     {props.t(

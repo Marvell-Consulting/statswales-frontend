@@ -3,6 +3,7 @@ import { addYears, format } from 'date-fns';
 import { clsx } from 'clsx';
 
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 import RadioGroup from '../../../shared/views/components/RadioGroup';
 import T from '../../../shared/views/components/T';
@@ -46,6 +47,7 @@ export default function UpdateFrequency(props) {
             </h1>
 
             <form encType="multipart/form-data" method="post">
+              <CsrfField />
               <ErrorHandler />
 
               <RadioGroup

@@ -45,6 +45,8 @@ export default session({
   cookie: {
     path: '/',
     secure: config.session.secure,
+    httpOnly: true,
+    sameSite: 'lax',
     maxAge: config.session.maxAge
   }
 });

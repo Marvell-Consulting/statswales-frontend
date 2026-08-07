@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 import { clsx } from 'clsx';
 import RadioGroup from '../../../shared/views/components/RadioGroup';
@@ -17,6 +18,7 @@ export default function Quality(props) {
             <h1 className="govuk-heading-xl">{title}</h1>
 
             <form encType="multipart/form-data" method="post">
+              <CsrfField />
               <ErrorHandler />
 
               <p className="govuk-body">{props.t('publish.quality.explain')}</p>

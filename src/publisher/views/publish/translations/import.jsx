@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../../components/Layout';
+import CsrfField from '../../components/CsrfField';
 import TranslationsPreviewTable from '../../components/TranslationsPreviewTable';
 import ErrorHandler from '../../components/ErrorHandler';
 
@@ -38,6 +39,7 @@ export default function Import(props) {
               method="post"
               encType="multipart/form-data"
             >
+              <CsrfField />
               <div className="govuk-form-group">
                 <label className="govuk-label govuk-label--s" htmlFor="csv">
                   {props.t('translations.import.form.file.label')}

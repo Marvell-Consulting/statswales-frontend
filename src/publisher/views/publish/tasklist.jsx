@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import TasklistStatus from '../components/TasklistStatus';
 import DatasetStatus from '../../../shared/views/components/dataset/DatasetStatus';
 
@@ -246,6 +247,7 @@ export default function Tasklist(props) {
             <div>
               <h2 className="govuk-heading-l govuk-!-margin-top-5">{props.t('publish.tasklist.submit.subheading')}</h2>
               <form encType="multipart/form-data" method="post">
+                <CsrfField />
                 <button type="submit" className="govuk-button" data-module="govuk-button">
                   {props.t('publish.tasklist.submit.button')}
                 </button>

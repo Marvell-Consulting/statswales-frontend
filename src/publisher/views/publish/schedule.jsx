@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 import { clsx } from 'clsx';
 import { DateField } from '../components/DateField';
@@ -21,6 +22,7 @@ export default function Schedule(props) {
             <ErrorHandler />
 
             <form encType="multipart/form-data" method="post">
+              <CsrfField />
               <div className={clsx('govuk-form-group', { 'govuk-form-group--error': props.dateError })}>
                 <fieldset className="govuk-fieldset" aria-describedby="publication-date-hint">
                   <legend className="govuk-fieldset__legend govuk-fieldset__legend--s">

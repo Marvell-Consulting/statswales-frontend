@@ -1,6 +1,7 @@
 import React from 'react';
 import ErrorHandler from '../../components/ErrorHandler';
 import Layout from '../../components/Layout';
+import CsrfField from '../../components/CsrfField';
 import { clsx } from 'clsx';
 import T from '../../../../shared/views/components/T';
 import ReplacementDatasetPicker from './ReplacementDatasetPicker';
@@ -16,6 +17,7 @@ export default function TaskAction(props) {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <form encType="multipart/form-data" method="post">
+            <CsrfField />
             <ErrorHandler />
 
             <div

@@ -55,6 +55,7 @@ import {
 import { DatasetInclude as Include } from '../../shared/enums/dataset-include';
 import { flashMessages, flashErrors } from '../../shared/middleware/flash';
 import { noCache } from '../../shared/middleware/no-cache';
+import { verifyCsrfToken } from '../../shared/middleware/csrf';
 import { redirectIfOpenPublishRequest } from '../middleware/redirect-if-open-publish-request';
 
 export const publish = Router();
@@ -62,6 +63,9 @@ export const publish = Router();
 export const MULTIPART_FIELD_SIZE_LIMIT = 10 * 1024 * 1024;
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fieldSize: MULTIPART_FIELD_SIZE_LIMIT } });
+
+const uploadNone = [upload.none(), verifyCsrfToken];
+const uploadSingle = (field: string) => [upload.single(field), verifyCsrfToken];
 
 const uploadNoneOrFieldError =
   (field: string, errorKey: string): RequestHandler =>
@@ -90,28 +94,22 @@ publish.get('/', start);
 
 /* Dataset creation */
 publish.get('/group', provideDatasetGroup);
-publish.post('/group', upload.none(), provideDatasetGroup);
+publish.post('/group', uploadNone, provideDatasetGroup);
 
 publish.get('/title', provideTitle);
-publish.post('/title', upload.none(), provideTitle);
+publish.post('/title', uploadNone, provideTitle);
 
 publish.get('/:datasetId', redirectToOverview);
 
 publish.get('/:datasetId/title', fetchDataset(Include.Meta), redirectIfOpenPublishRequest, provideTitle);
-publish.post(
-  '/:datasetId/title',
-  fetchDataset(Include.Meta),
-  redirectIfOpenPublishRequest,
-  upload.none(),
-  provideTitle
-);
+publish.post('/:datasetId/title', fetchDataset(Include.Meta), redirectIfOpenPublishRequest, uploadNone, provideTitle);
 
 publish.get('/:datasetId/upload', fetchDataset(Include.DraftDataTable), redirectIfOpenPublishRequest, uploadDataTable);
 publish.post(
   '/:datasetId/upload',
   fetchDataset(Include.DraftDataTable),
   redirectIfOpenPublishRequest,
-  upload.single('csv'),
+  uploadSingle('csv'),
   uploadDataTable
 );
 publish.get(
@@ -131,7 +129,7 @@ publish.post(
   '/:datasetId/preview',
   fetchDataset(Include.DraftDataTable),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   factTablePreview
 );
 
@@ -140,28 +138,22 @@ publish.post(
   '/:datasetId/sources',
   fetchDataset(Include.DraftDataTable),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   sources
 );
 
 /* Tasklist */
 publish.get('/:datasetId/tasklist', fetchDataset(Include.Meta), redirectIfOpenPublishRequest, taskList);
-publish.post('/:datasetId/tasklist', fetchDataset(Include.Meta), redirectIfOpenPublishRequest, upload.none(), taskList);
+publish.post('/:datasetId/tasklist', fetchDataset(Include.Meta), redirectIfOpenPublishRequest, uploadNone, taskList);
 
 publish.get('/:datasetId/delete', fetchDataset(Include.Meta), redirectIfOpenPublishRequest, deleteDraft);
-publish.post(
-  '/:datasetId/delete',
-  fetchDataset(Include.Meta),
-  redirectIfOpenPublishRequest,
-  upload.none(),
-  deleteDraft
-);
+publish.post('/:datasetId/delete', fetchDataset(Include.Meta), redirectIfOpenPublishRequest, uploadNone, deleteDraft);
 
 /* Cube Preview */
-publish.post('/:datasetId/cube-preview', fetchDataset(), upload.none(), cubePreview);
+publish.post('/:datasetId/cube-preview', fetchDataset(), uploadNone, cubePreview);
 publish.get('/:datasetId/cube-preview{/:filterId}', fetchDataset(), cubePreview);
 publish.get('/:datasetId/download/metadata', fetchDataset(), downloadMetadata);
-publish.post('/:datasetId/download', fetchDataset(), downloadPreview);
+publish.post('/:datasetId/download', fetchDataset(), verifyCsrfToken, downloadPreview);
 publish.get('/:datasetId/download{/:filterId}', fetchDataset(), downloadPreview);
 
 publish.get('/:datasetId/build/:buildId', fetchDataset(), longBuildHandling);
@@ -169,13 +161,13 @@ publish.get('/:datasetId/build/:buildId/refresh', fetchDataset(), ajaxRefreshBui
 
 /* Measure creation */
 publish.get('/:datasetId/measure', fetchDataset(), redirectIfOpenPublishRequest, measurePreview);
-publish.post('/:datasetId/measure', fetchDataset(), redirectIfOpenPublishRequest, upload.single('csv'), measurePreview);
+publish.post('/:datasetId/measure', fetchDataset(), redirectIfOpenPublishRequest, uploadSingle('csv'), measurePreview);
 publish.get('/:datasetId/measure/review', fetchDataset(Include.Measure), redirectIfOpenPublishRequest, measureReview);
 publish.post(
   '/:datasetId/measure/review',
   fetchDataset(Include.Measure),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   measureReview
 );
 publish.get(
@@ -188,7 +180,7 @@ publish.post(
   '/:datasetId/measure/change-lookup',
   fetchDataset(Include.Measure),
   redirectIfOpenPublishRequest,
-  upload.single('csv'),
+  uploadSingle('csv'),
   measurePreview
 );
 
@@ -203,7 +195,7 @@ publish.post(
   '/:datasetId/dimension/:dimensionId',
   fetchDataset(Include.Dimensions),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   fetchDimensionPreview
 );
 publish.get(
@@ -216,7 +208,7 @@ publish.post(
   '/:datasetId/dimension/:dimensionId/change-type',
   fetchDataset(Include.Dimensions),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   fetchDimensionPreview
 );
 
@@ -230,7 +222,7 @@ publish.post(
   '/:datasetId/numbers/:dimensionId',
   fetchDataset(Include.Dimensions),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   setupNumberDimension
 );
 
@@ -245,7 +237,7 @@ publish.post(
   '/:datasetId/lookup/:dimensionId',
   fetchDataset(Include.Dimensions),
   redirectIfOpenPublishRequest,
-  upload.single('csv'),
+  uploadSingle('csv'),
   uploadLookupTable
 );
 publish.get(
@@ -258,7 +250,7 @@ publish.post(
   '/:datasetId/lookup/:dimensionId/review',
   fetchDataset(Include.Dimensions),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   lookupReview
 );
 
@@ -272,7 +264,7 @@ publish.post(
   '/:datasetId/dates/:dimensionId',
   fetchDataset(Include.Dimensions),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   fetchTimeDimensionPreview
 );
 publish.get(
@@ -285,7 +277,7 @@ publish.post(
   '/:datasetId/dates/:dimensionId/change-format',
   fetchDataset(Include.Dimensions),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   fetchTimeDimensionPreview
 );
 publish.get(
@@ -298,7 +290,7 @@ publish.post(
   '/:datasetId/dates/:dimensionId/point-in-time',
   fetchDataset(Include.Dimensions),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   pointInTimeChooser
 );
 
@@ -313,7 +305,7 @@ publish.post(
   '/:datasetId/dates/:dimensionId/period',
   fetchDataset(Include.Dimensions),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   yearTypeChooser
 );
 publish.get(
@@ -326,7 +318,7 @@ publish.post(
   '/:datasetId/dates/:dimensionId/period/year-format',
   fetchDataset(Include.Dimensions),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   yearFormat
 );
 publish.get(
@@ -339,7 +331,7 @@ publish.post(
   '/:datasetId/dates/:dimensionId/period/type',
   fetchDataset(Include.Dimensions),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   periodType
 );
 publish.get(
@@ -352,7 +344,7 @@ publish.post(
   '/:datasetId/dates/:dimensionId/period/quarters',
   fetchDataset(Include.Dimensions),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   quarterChooser
 );
 publish.get(
@@ -365,7 +357,7 @@ publish.post(
   '/:datasetId/dates/:dimensionId/period/months',
   fetchDataset(Include.Dimensions),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   monthChooser
 );
 publish.get(
@@ -378,7 +370,7 @@ publish.post(
   '/:datasetId/dates/:dimensionId/review',
   fetchDataset(Include.Dimensions),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   periodReview
 );
 
@@ -394,7 +386,7 @@ publish.post(
   '/:datasetId/dimension/:dimensionId/name',
   fetchDataset(Include.Dimensions),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   dimensionName
 );
 publish.get(
@@ -408,7 +400,7 @@ publish.post(
   '/:datasetId/dimension/:dimensionId/change-name',
   fetchDataset(Include.Dimensions),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   dimensionName
 );
 
@@ -419,6 +411,7 @@ publish.post(
   fetchDataset(Include.Meta),
   redirectIfOpenPublishRequest,
   uploadNoneOrFieldError('summary', 'publish.summary.form.description.error.too_long'),
+  verifyCsrfToken,
   provideSummary
 );
 
@@ -428,6 +421,7 @@ publish.post(
   fetchDataset(Include.Meta),
   redirectIfOpenPublishRequest,
   uploadNoneOrFieldError('collection', 'publish.collection.form.collection.error.too_long'),
+  verifyCsrfToken,
   provideCollection
 );
 
@@ -436,7 +430,7 @@ publish.post(
   '/:datasetId/quality',
   fetchDataset(Include.Meta),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   provideQuality
 );
 
@@ -445,7 +439,7 @@ publish.post(
   '/:datasetId/providers',
   fetchDataset(Include.Meta),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   provideDataProviders
 );
 
@@ -454,7 +448,7 @@ publish.post(
   '/:datasetId/related',
   fetchDataset(Include.Meta),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   provideRelatedLinks
 );
 
@@ -468,7 +462,7 @@ publish.post(
   '/:datasetId/update-frequency',
   fetchDataset(Include.Meta),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   provideUpdateFrequency
 );
 
@@ -477,25 +471,19 @@ publish.post(
   '/:datasetId/designation',
   fetchDataset(Include.Meta),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   provideDesignation
 );
 
 publish.get('/:datasetId/topics', fetchDataset(Include.Meta), redirectIfOpenPublishRequest, provideTopics);
-publish.post(
-  '/:datasetId/topics',
-  fetchDataset(Include.Meta),
-  redirectIfOpenPublishRequest,
-  upload.none(),
-  provideTopics
-);
+publish.post('/:datasetId/topics', fetchDataset(Include.Meta), redirectIfOpenPublishRequest, uploadNone, provideTopics);
 
 publish.get('/:datasetId/reason', fetchDataset(Include.Meta), redirectIfOpenPublishRequest, provideUpdateReason);
 publish.post(
   '/:datasetId/reason',
   fetchDataset(Include.Meta),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   provideUpdateReason
 );
 
@@ -505,7 +493,7 @@ publish.post(
   '/:datasetId/schedule',
   fetchDataset(Include.Meta),
   redirectIfOpenPublishRequest,
-  upload.none(),
+  uploadNone,
   providePublishDate
 );
 
@@ -516,26 +504,26 @@ publish.post(
   '/:datasetId/translation/import',
   fetchDataset(),
   redirectIfOpenPublishRequest,
-  upload.single('csv'),
+  uploadSingle('csv'),
   importTranslations
 );
 
 /* Dataset Overview */
 publish.get('/:datasetId/overview', fetchDataset(), overview);
-publish.post('/:datasetId/overview', fetchDataset(), upload.none(), overview);
+publish.post('/:datasetId/overview', fetchDataset(), uploadNone, overview);
 
 /* Start new dataset revision */
 publish.get('/:datasetId/update', fetchDataset(), redirectIfOpenPublishRequest, createNewUpdate);
 publish.get('/:datasetId/update-type', fetchDataset(), redirectIfOpenPublishRequest, updateDatatable);
-publish.post('/:datasetId/update-type', fetchDataset(), redirectIfOpenPublishRequest, upload.none(), updateDatatable);
+publish.post('/:datasetId/update-type', fetchDataset(), redirectIfOpenPublishRequest, uploadNone, updateDatatable);
 
 /* Move a dataset between groups */
 publish.get('/:datasetId/move', fetchDataset(), moveDatasetGroup);
-publish.post('/:datasetId/move', fetchDataset(), upload.none(), moveDatasetGroup);
+publish.post('/:datasetId/move', fetchDataset(), uploadNone, moveDatasetGroup);
 
 publish.get('/:datasetId/task-decision/:taskId', fetchDataset(), taskDecision);
-publish.post('/:datasetId/task-decision/:taskId', fetchDataset(), upload.none(), taskDecision);
+publish.post('/:datasetId/task-decision/:taskId', fetchDataset(), uploadNone, taskDecision);
 
 /* Handle dataset actions (e.g. request publish, unpublish, archive etc) */
 publish.get('/:datasetId/:action', fetchDataset(), datasetAction);
-publish.post('/:datasetId/:action', fetchDataset(), upload.none(), datasetAction);
+publish.post('/:datasetId/:action', fetchDataset(), uploadNone, datasetAction);

@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 import Table from '../../../shared/views/components/Table';
 import { clsx } from 'clsx';
@@ -69,6 +70,7 @@ export default function RelatedLinks(props) {
                 <Table columns={columns} rows={props.related_links} />
 
                 <form encType="multipart/form-data" method="post">
+                  <CsrfField />
                   <input type="hidden" name="add_another" value="true" />
                   <RadioGroup
                     name="add_link"
@@ -100,6 +102,7 @@ export default function RelatedLinks(props) {
                 </ul>
 
                 <form encType="multipart/form-data" method="post">
+                  <CsrfField />
                   <fieldset className="govuk-fieldset">
                     <input type="hidden" name="link_id" value={props.link.id} />
                     <div

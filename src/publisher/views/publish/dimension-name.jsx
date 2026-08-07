@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 
 export default function DimensionName(props) {
@@ -42,6 +43,7 @@ export default function DimensionName(props) {
         <li>{props.t('publish.dimension_name.language')}</li>
       </ul>
       <form encType="multipart/form-data" method="post">
+        <CsrfField />
         <div className="govuk-form-group">
           <input className="govuk-input" id="name" name="name" type="text" defaultValue={props.dimensionName} />
         </div>

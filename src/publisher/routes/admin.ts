@@ -21,9 +21,10 @@ import {
 import { ensureAdmin } from '../middleware/ensure-admin';
 import { flashMessages } from '../../shared/middleware/flash';
 import { noCache } from '../../shared/middleware/no-cache';
+import { verifyCsrfToken } from '../../shared/middleware/csrf';
 
 export const admin = Router();
-const bodyParser = express.urlencoded({ extended: true });
+const bodyParser = [express.urlencoded({ extended: true }), verifyCsrfToken];
 
 admin.use(ensureAdmin, noCache, flashMessages);
 

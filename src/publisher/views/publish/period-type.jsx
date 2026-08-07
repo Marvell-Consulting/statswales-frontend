@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 import RadioGroup from '../../../shared/views/components/RadioGroup';
 
@@ -22,6 +23,7 @@ export default function PeriodType(props) {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
           <form method="post" role="continue">
+            <CsrfField />
             <RadioGroup
               name="periodType"
               labelledBy="period-type"
