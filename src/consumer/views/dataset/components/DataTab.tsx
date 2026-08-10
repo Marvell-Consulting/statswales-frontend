@@ -12,6 +12,7 @@ import { RowsPerPage } from '../../../../shared/views/components/RowsPerPage';
 import { SortByInterface, serializeSortBy } from '../../../../shared/interfaces/sort-by';
 import { PivotControls } from './pivot/PivotControls';
 import { DataControls } from './pivot/DataControls';
+import CsrfField from '../../../../shared/views/components/CsrfField';
 
 type DataTabProps = NoteCodesLegendProps &
   PaginationProps &
@@ -45,6 +46,7 @@ export default function DataTab(props: DataTabProps) {
           {/* Sidebar filters */}
           <div className="govuk-grid-column-one-quarter">
             <form method="POST" action={formUrl}>
+              <CsrfField />
               <input type="hidden" name="page_size" value={props.page_size} />
               {props.sortBy && <input type="hidden" name="sort_by" value={serializeSortBy(props.sortBy)} />}
 

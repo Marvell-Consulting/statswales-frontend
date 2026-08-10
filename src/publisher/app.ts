@@ -69,7 +69,7 @@ app.use('/:lang', rateLimiter, staticPages);
 
 // authenticated routes
 app.use('/:lang/publish', rateLimiter, ensureAuthenticated, csrfToken, publish);
-app.use('/:lang/developer', rateLimiter, ensureAuthenticated, developer);
+app.use('/:lang/developer', rateLimiter, ensureAuthenticated, csrfToken, developer);
 app.use('/:lang/admin', rateLimiter, ensureAuthenticated, csrfToken, admin);
 app.use('/:lang', rateLimiter, ensureAuthenticated, homepage);
 

@@ -3,6 +3,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { ensureDeveloper } from '../middleware/ensure-developer';
 import { flashErrors, flashMessages } from '../../shared/middleware/flash';
 import { noCache } from '../../shared/middleware/no-cache';
+import { verifyCsrfToken } from '../../shared/middleware/csrf';
 import {
   datasetPreview,
   downloadAllDatasetFiles,
@@ -25,7 +26,7 @@ developer.use((req: Request, res: Response, next: NextFunction) => {
 developer.get('/', listAllDatasets);
 
 developer.get('/:datasetId', datasetPreview);
-developer.post('/:datasetId/filtered', datasetPreview);
+developer.post('/:datasetId/filtered', verifyCsrfToken, datasetPreview);
 developer.get('/:datasetId/filtered{/:filterId}', datasetPreview);
 developer.get('/:datasetId/download', downloadAllDatasetFiles);
 developer.get('/:datasetId/revision/:revisionId/datatable', downloadDataTableFromRevision);
