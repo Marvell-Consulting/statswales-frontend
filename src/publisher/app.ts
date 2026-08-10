@@ -49,7 +49,6 @@ app.use(httpLogger);
 app.use(cookieParser());
 app.use(featureFlags);
 app.use(session);
-app.use(csrfToken);
 app.use(cookieBanner);
 app.use(i18nextMiddleware.handle(i18next));
 app.use(languageSwitcher);
@@ -69,9 +68,9 @@ app.use('/:lang/cookies', rateLimiter, cookies);
 app.use('/:lang', rateLimiter, staticPages);
 
 // authenticated routes
-app.use('/:lang/publish', rateLimiter, ensureAuthenticated, publish);
+app.use('/:lang/publish', rateLimiter, ensureAuthenticated, csrfToken, publish);
 app.use('/:lang/developer', rateLimiter, ensureAuthenticated, developer);
-app.use('/:lang/admin', rateLimiter, ensureAuthenticated, admin);
+app.use('/:lang/admin', rateLimiter, ensureAuthenticated, csrfToken, admin);
 app.use('/:lang', rateLimiter, ensureAuthenticated, homepage);
 
 // handle 404s

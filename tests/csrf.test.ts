@@ -21,9 +21,10 @@ const testUser = {
 };
 
 const extractCsrfToken = (html: string): string => {
-  const match = html.match(/name="_csrf" value="([^"]*)"/);
-  if (!match) throw new Error('Could not find CSRF token in rendered page');
-  return match[1];
+  const inputMatch = html.match(/<input\b[^>]*\bname="_csrf"[^>]*>/);
+  const valueMatch = inputMatch?.[0].match(/\bvalue="([^"]*)"/);
+  if (!valueMatch) throw new Error('Could not find CSRF token in rendered page');
+  return valueMatch[1];
 };
 
 describe('CSRF protection on publisher state-changing routes', () => {
