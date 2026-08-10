@@ -108,6 +108,8 @@ export default function Title(props) {
                 formData.append('updateType', document.getElementsByName('updateType')[0].value);
               }
 
+              formData.append('_csrf', form.elements['_csrf'].value);
+
               try {
                 const res = await fetch('${props.url}', {
                   method: "POST",
