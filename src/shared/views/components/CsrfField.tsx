@@ -3,5 +3,6 @@ import { useLocals } from '../context/Locals';
 
 export default function CsrfField() {
   const { csrfToken } = useLocals();
+  if (!csrfToken) return null;
   return <input type="hidden" name="_csrf" value={csrfToken} />;
 }
