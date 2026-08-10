@@ -62,8 +62,8 @@ describe('Error handling', () => {
     mockBackend.use(http.get(`http://localhost:3001/dataset/${datasetId}`, () => HttpResponse.json(datasetWithTitle)));
 
     const agent = request.agent(app);
-    const healthcheckRes = await agent.get('/healthcheck');
-    const csrfToken = healthcheckRes.headers['x-csrf-token'];
+    const tokenRes = await agent.get(`/en-GB/publish/${datasetId}/download`);
+    const csrfToken = tokenRes.headers['x-csrf-token'] as string;
 
     const res = await agent.post(`/en-GB/publish/${datasetId}/download`).set('x-csrf-token', csrfToken).send({});
     expect(res.status).toBe(400);
