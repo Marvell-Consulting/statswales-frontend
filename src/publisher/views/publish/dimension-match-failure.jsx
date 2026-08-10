@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import NonMatchingValue from '../components/NonMatchingValue';
 
 export default function DimensionMatchFailure(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
@@ -54,23 +55,9 @@ export default function DimensionMatchFailure(props) {
               <li className="govuk-list--bullet">{props.t('publish.dimension_match_failure.no_matches')}</li>
             ) : (
               props.extension.nonMatchingDataTableValues.map((value, index) => (
-                <li
-                  key={index}
-                  className="govuk-list--bullet"
-                  dangerouslySetInnerHTML={{
-                    __html: `
-                          "${value.toString().replace(
-                            ' ',
-                            <>
-                              <span className="govuk-visually-hidden">space</span>
-                              <span aria-hidden="true" className="mid-dot">
-                                &middot;
-                              </span>
-                            </>
-                          )}"
-                          `
-                  }}
-                />
+                <li key={index} className="govuk-list--bullet">
+                  <NonMatchingValue value={value} />
+                </li>
               ))
             )}
           </ul>
@@ -86,21 +73,9 @@ export default function DimensionMatchFailure(props) {
               <li className="govuk-list--bullet">{props.t('publish.dimension_match_failure.no_matches')}</li>
             ) : (
               props.extension.nonMatchedLookupValues.map((value, index) => (
-                <li
-                  key={index}
-                  className="govuk-list--bullet"
-                  dangerouslySetInnerHTML={{
-                    __html: `"${value.toString().replace(
-                      ' ',
-                      <>
-                        <span className="govuk-visually-hidden">space</span>
-                        <span aria-hidden="true" className="mid-dot">
-                          &middot;
-                        </span>
-                      </>
-                    )}"`
-                  }}
-                />
+                <li key={index} className="govuk-list--bullet">
+                  <NonMatchingValue value={value} />
+                </li>
               ))
             )}
           </ul>

@@ -577,6 +577,9 @@
       "missing_data_table_values": "Codau cyfeirio yn y tabl data na ellir eu cyfateb",
       "missing_lookup_table_values": "Codau cyfeirio yn y tabl am-edrych na ellir eu cyfateb"
     },
+    "non_matching_value": {
+      "space": "bwlch"
+    },
     "period_match_failure": {
       "heading": "Ni ellir cyfateb fformat y dyddiad gyda’r dimensiwn",
       "information": "{{failureCount, number}} achos o godau dyddiadau yn y dimensiwn heb fod yn cyfateb â’r fformat dyddiadau a nodwyd gennych. Dylech wirio:",
