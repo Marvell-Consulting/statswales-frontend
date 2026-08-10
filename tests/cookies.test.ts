@@ -25,6 +25,11 @@ const buildHarness = (seedHistory: RequestHistory[]) => {
     res.locals.history = seedHistory;
     next();
   });
+  // stub out the view engine - we only need to see what locals the route would have rendered with
+  app.use((_req: Request, res: Response, next: NextFunction) => {
+    res.render = ((view: string, locals?: object) => res.json({ view, locals })) as Response['render'];
+    next();
+  });
   app.use('/en-GB/cookies', cookies);
   return app;
 };
@@ -66,5 +71,31 @@ describe('POST /cookies (accept all)', () => {
 
     expect(res.status).toBe(302);
     expect(res.header.location).toBe('/en-GB/cookies');
+  });
+});
+
+describe('GET /cookies', () => {
+  test('passes a normal /en-GB/... referrer through to the rendered page', async () => {
+    const app = buildHarness([entry('/en-GB/some-page')]);
+
+    const res = await request(app).get('/en-GB/cookies');
+
+    expect(res.body.locals.referrer).toBe('/en-GB/some-page');
+  });
+
+  test('does not pass a protocol-relative referrer to the rendered page, falls back to /cookies', async () => {
+    const app = buildHarness([entry('//evil.com/x')]);
+
+    const res = await request(app).get('/en-GB/cookies');
+
+    expect(res.body.locals.referrer).toBe('/en-GB/cookies');
+  });
+
+  test('does not pass a backslash-obfuscated referrer to the rendered page, falls back to /cookies', async () => {
+    const app = buildHarness([entry('/\\evil.com')]);
+
+    const res = await request(app).get('/en-GB/cookies');
+
+    expect(res.body.locals.referrer).toBe('/en-GB/cookies');
   });
 });

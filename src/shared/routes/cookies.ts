@@ -35,7 +35,12 @@ const isSupportedLocaleUrl = (url: string): boolean => {
 const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
   const defaultPref: CookiePreferences = { acceptAll: false, measuring: false, showBanner: true };
   const cookiePreferences = req.cookies['cookiePref'] || defaultPref;
-  const referrer = res.locals.history?.find((h: RequestHistory) => h.url !== req.originalUrl)?.url || req.originalUrl;
+  const rawReferrer =
+    res.locals.history?.find((h: RequestHistory) => h.url !== req.originalUrl)?.url || req.originalUrl;
+  // normalise before use in either the redirect or the rendered page - referrer is sourced from stored
+  // request history, and a crafted //evil.com or /\evil.com history entry must never end up as a redirect
+  // target or as the href of the "saved" banner link on the page itself
+  const referrer = isSupportedLocaleUrl(rawReferrer) ? rawReferrer : req.buildUrl('/cookies', req.language);
   const saved = res.locals.flash || false;
 
   if (req.method === 'POST') {
@@ -61,9 +66,7 @@ const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
 
     req.session.flash = [`cookies.settings.saved.heading`];
     req.session.save();
-    res.redirect(
-      acceptAll === 'true' && isSupportedLocaleUrl(referrer) ? referrer : req.buildUrl('/cookies', req.language)
-    );
+    res.redirect(acceptAll === 'true' ? referrer : req.buildUrl('/cookies', req.language));
     return;
   }
 

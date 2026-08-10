@@ -11,6 +11,11 @@ describe('isRelativeUrl', () => {
     ['/\\\\evil.com', false],
     ['https://evil.com', false],
     ['http://evil.com/x', false],
+    ['/%2F%2Fevil.com', false],
+    ['/%2f%2fevil.com', false],
+    ['/%5Cevil.com', false],
+    ['/%5cevil.com', false],
+    ['/%', false],
     ['/en-GB/some-page', true],
     ['/cy-GB/rhyw-dudalen', true],
     ['/', true]
