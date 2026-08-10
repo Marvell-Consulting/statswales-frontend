@@ -17,6 +17,9 @@ export const csrfToken = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const tokensMatch = (sessionToken: string, submittedToken: string): boolean => {
+  if (sessionToken.length !== submittedToken.length) {
+    return false;
+  }
   const sessionBuffer = Buffer.from(sessionToken);
   const submittedBuffer = Buffer.from(submittedToken);
   return sessionBuffer.length === submittedBuffer.length && timingSafeEqual(sessionBuffer, submittedBuffer);
