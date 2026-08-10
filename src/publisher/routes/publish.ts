@@ -55,6 +55,7 @@ import {
 import { DatasetInclude as Include } from '../../shared/enums/dataset-include';
 import { flashMessages, flashErrors } from '../../shared/middleware/flash';
 import { noCache } from '../../shared/middleware/no-cache';
+import { isRelativeUrl } from '../../shared/middleware/history';
 import { redirectIfOpenPublishRequest } from '../middleware/redirect-if-open-publish-request';
 
 export const publish = Router();
@@ -69,8 +70,7 @@ const uploadNoneOrFieldError =
     upload.none()(req, res, (err: unknown) => {
       if (err instanceof multer.MulterError && err.code === 'LIMIT_FIELD_VALUE') {
         req.session.errors = [{ field, message: { key: errorKey } }];
-        const redirectTarget =
-          req.originalUrl.startsWith('/') && !req.originalUrl.startsWith('//') ? req.originalUrl : '/';
+        const redirectTarget = isRelativeUrl(req.originalUrl) ? req.originalUrl : '/';
         req.session.save((saveErr) => {
           if (saveErr) {
             next(saveErr);

@@ -14,6 +14,7 @@ import { CookiePreferences } from '../interfaces/cookie-preferences';
 import { config } from '../config';
 import { flashMessages } from '../middleware/flash';
 import { RequestHistory } from '../interfaces/request-history';
+import { Locale } from '../enums/locale';
 
 export const cookies = Router();
 
@@ -22,10 +23,29 @@ cookies.use(flashMessages);
 const bodyParser = express.urlencoded({ extended: true });
 const docsPath = path.join(__dirname, '..', '..', '..', 'docs', 'static-pages');
 
+// path-based i18n only ever uses en-GB/cy-GB prefixes (see language-switcher.ts) - only ever redirect back
+// into the app under one of those, since the referrer is sourced from stored request history and a crafted
+// //evil.com or /\evil.com history entry must never be redirected to.
+// Written as direct startsWith/equality checks on `url` (rather than iterating an array of prefixes) so
+// static analysis can see `url` is checked against a fixed prefix right at the guard, not just inside an
+// array-method callback - CodeQL's untrusted-redirect check couldn't otherwise trace it as a sanitizer.
+const isSupportedLocaleUrl = (url: string): boolean =>
+  url === `/${Locale.EnglishGb}` ||
+  url.startsWith(`/${Locale.EnglishGb}/`) ||
+  url.startsWith(`/${Locale.EnglishGb}?`) ||
+  url === `/${Locale.WelshGb}` ||
+  url.startsWith(`/${Locale.WelshGb}/`) ||
+  url.startsWith(`/${Locale.WelshGb}?`);
+
 const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
   const defaultPref: CookiePreferences = { acceptAll: false, measuring: false, showBanner: true };
   const cookiePreferences = req.cookies['cookiePref'] || defaultPref;
-  const referrer = res.locals.history?.find((h: RequestHistory) => h.url !== req.originalUrl)?.url || req.originalUrl;
+  const rawReferrer =
+    res.locals.history?.find((h: RequestHistory) => h.url !== req.originalUrl)?.url || req.originalUrl;
+  // normalise before use in either the redirect or the rendered page - referrer is sourced from stored
+  // request history, and a crafted //evil.com or /\evil.com history entry must never end up as a redirect
+  // target or as the href of the "saved" banner link on the page itself
+  const referrer = isSupportedLocaleUrl(rawReferrer) ? rawReferrer : req.buildUrl('/cookies', req.language);
   const saved = res.locals.flash || false;
 
   if (req.method === 'POST') {
