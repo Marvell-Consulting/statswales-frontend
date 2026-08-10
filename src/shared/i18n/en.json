@@ -606,6 +606,9 @@
       "missing_data_table_values": "Reference codes in the data table that cannot be matched",
       "missing_lookup_table_values": "Reference codes in the lookup table that cannot be matched"
     },
+    "non_matching_value": {
+      "space": "space"
+    },
     "period_match_failure": {
       "heading": "Date formatting cannot be matched to the dimension",
       "information": "{{failureCount, number}} instances of date codes in the dimension do not match the date formatting you have indicated. You should check:",

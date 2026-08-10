@@ -51,13 +51,14 @@ export const parseUploadedTranslations = async (fileBuffer: Buffer): Promise<Tra
 };
 
 export const markdownToHtml = async (translations: TranslationDTO[]): Promise<TranslationDTO[]> => {
-  return Promise.all(
-    translations.map(async (translation: TranslationDTO) => {
-      if (translation.type === 'metadata') {
-        translation.english = await markdownToSafeHTML(translation.english);
-        translation.cymraeg = await markdownToSafeHTML(translation.cymraeg);
-      }
-      return translation;
-    })
-  );
+  // Sanitize every row regardless of `type` — that field comes straight from the
+  // uploaded CSV, so it must never gate whether a row gets sanitized (CWE-79).
+  // Processed sequentially: markdownToSafeHTML spins up a JSDOM/DOMPurify instance per
+  // call, so running them all concurrently via Promise.all could spike CPU/memory on
+  // large uploads.
+  for (const translation of translations) {
+    translation.english = await markdownToSafeHTML(translation.english);
+    translation.cymraeg = await markdownToSafeHTML(translation.cymraeg);
+  }
+  return translations;
 };
