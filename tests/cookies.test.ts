@@ -72,6 +72,15 @@ describe('POST /cookies (accept all)', () => {
     expect(res.status).toBe(302);
     expect(res.header.location).toBe('/en-GB/cookies');
   });
+
+  test('redirects back to a locale-root referrer with a query string', async () => {
+    const app = buildHarness([entry('/en-GB?feature=x')]);
+
+    const res = await request(app).post('/en-GB/cookies').type('form').send({ acceptAll: 'true' });
+
+    expect(res.status).toBe(302);
+    expect(res.header.location).toBe('/en-GB?feature=x');
+  });
 });
 
 describe('GET /cookies', () => {

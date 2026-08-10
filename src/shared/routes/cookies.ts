@@ -32,8 +32,10 @@ const docsPath = path.join(__dirname, '..', '..', '..', 'docs', 'static-pages');
 const isSupportedLocaleUrl = (url: string): boolean =>
   url === `/${Locale.EnglishGb}` ||
   url.startsWith(`/${Locale.EnglishGb}/`) ||
+  url.startsWith(`/${Locale.EnglishGb}?`) ||
   url === `/${Locale.WelshGb}` ||
-  url.startsWith(`/${Locale.WelshGb}/`);
+  url.startsWith(`/${Locale.WelshGb}/`) ||
+  url.startsWith(`/${Locale.WelshGb}?`);
 
 const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
   const defaultPref: CookiePreferences = { acceptAll: false, measuring: false, showBanner: true };
