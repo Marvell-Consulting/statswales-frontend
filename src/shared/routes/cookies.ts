@@ -25,12 +25,15 @@ const docsPath = path.join(__dirname, '..', '..', '..', 'docs', 'static-pages');
 
 // path-based i18n only ever uses en-GB/cy-GB prefixes (see language-switcher.ts) - only ever redirect back
 // into the app under one of those, since the referrer is sourced from stored request history and a crafted
-// //evil.com or /\evil.com history entry must never be redirected to
-const SUPPORTED_LOCALE_PATH_PREFIXES: string[] = [Locale.EnglishGb, Locale.WelshGb];
-
-const isSupportedLocaleUrl = (url: string): boolean => {
-  return SUPPORTED_LOCALE_PATH_PREFIXES.some((locale) => url === `/${locale}` || url.startsWith(`/${locale}/`));
-};
+// //evil.com or /\evil.com history entry must never be redirected to.
+// Written as direct startsWith/equality checks on `url` (rather than iterating an array of prefixes) so
+// static analysis can see `url` is checked against a fixed prefix right at the guard, not just inside an
+// array-method callback - CodeQL's untrusted-redirect check couldn't otherwise trace it as a sanitizer.
+const isSupportedLocaleUrl = (url: string): boolean =>
+  url === `/${Locale.EnglishGb}` ||
+  url.startsWith(`/${Locale.EnglishGb}/`) ||
+  url === `/${Locale.WelshGb}` ||
+  url.startsWith(`/${Locale.WelshGb}/`);
 
 const cookiePage = async (req: Request, res: Response, next: NextFunction) => {
   const defaultPref: CookiePreferences = { acceptAll: false, measuring: false, showBanner: true };
