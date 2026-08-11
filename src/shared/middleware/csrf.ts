@@ -25,15 +25,17 @@ const tokensMatch = (sessionToken: string, submittedToken: string): boolean => {
   return sessionBuffer.length === submittedBuffer.length && timingSafeEqual(sessionBuffer, submittedBuffer);
 };
 
-export const verifyCsrfToken = (req: Request, res: Response, next: NextFunction) => {
+export const hasValidCsrfToken = (req: Request): boolean => {
   const sessionToken = req.session.csrfToken;
   const submittedToken = req.body?.[CSRF_FIELD_NAME] || req.get(CSRF_HEADER_NAME);
 
-  if (
-    typeof sessionToken !== 'string' ||
-    typeof submittedToken !== 'string' ||
-    !tokensMatch(sessionToken, submittedToken)
-  ) {
+  return (
+    typeof sessionToken === 'string' && typeof submittedToken === 'string' && tokensMatch(sessionToken, submittedToken)
+  );
+};
+
+export const verifyCsrfToken = (req: Request, _res: Response, next: NextFunction) => {
+  if (!hasValidCsrfToken(req)) {
     next(new ForbiddenException('Invalid or missing CSRF token'));
     return;
   }

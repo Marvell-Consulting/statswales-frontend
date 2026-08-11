@@ -55,9 +55,10 @@ import {
 import { DatasetInclude as Include } from '../../shared/enums/dataset-include';
 import { flashMessages, flashErrors } from '../../shared/middleware/flash';
 import { noCache } from '../../shared/middleware/no-cache';
-import { verifyCsrfToken } from '../../shared/middleware/csrf';
+import { verifyCsrfToken, hasValidCsrfToken } from '../../shared/middleware/csrf';
 import { isRelativeUrl } from '../../shared/middleware/history';
 import { redirectIfOpenPublishRequest } from '../middleware/redirect-if-open-publish-request';
+import { ForbiddenException } from '../../shared/exceptions/forbidden.exception';
 
 export const publish = Router();
 
@@ -73,6 +74,10 @@ const uploadNoneOrFieldError =
   (req: Request, res: Response, next: NextFunction) => {
     upload.none()(req, res, (err: unknown) => {
       if (err instanceof multer.MulterError && err.code === 'LIMIT_FIELD_VALUE') {
+        if (!hasValidCsrfToken(req)) {
+          next(new ForbiddenException('Invalid or missing CSRF token'));
+          return;
+        }
         req.session.errors = [{ field, message: { key: errorKey } }];
         const redirectTarget = isRelativeUrl(req.originalUrl) ? req.originalUrl : '/';
         req.session.save((saveErr) => {

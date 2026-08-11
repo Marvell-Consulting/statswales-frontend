@@ -76,8 +76,8 @@ describe('Publish route field size errors', () => {
 
       const postRes = await agent
         .post(`/en-GB/publish/${datasetId}/summary`)
-        .field('summary', oversizedValue)
-        .field('_csrf', csrfToken);
+        .field('_csrf', csrfToken)
+        .field('summary', oversizedValue);
 
       expect(postRes.status).toBe(302);
       expect(postRes.header.location).toBe(`/en-GB/publish/${datasetId}/summary`);
@@ -86,6 +86,18 @@ describe('Publish route field size errors', () => {
 
       expect(getRes.status).toBe(200);
       expect(getRes.text).toContain(t('publish.summary.form.description.error.too_long', { lng: Locale.English }));
+    });
+
+    test('rejects with 403 when field exceeds size limit without a valid CSRF token', async () => {
+      const agent = makeAgent();
+      const oversizedValue = 'a'.repeat(MULTIPART_FIELD_SIZE_LIMIT + 1);
+
+      const postRes = await agent
+        .post(`/en-GB/publish/${datasetId}/summary`)
+        .field('_csrf', 'not-a-valid-token')
+        .field('summary', oversizedValue);
+
+      expect(postRes.status).toBe(403);
     });
   });
 
@@ -98,8 +110,8 @@ describe('Publish route field size errors', () => {
 
       const postRes = await agent
         .post(`/en-GB/publish/${datasetId}/collection`)
-        .field('collection', oversizedValue)
-        .field('_csrf', csrfToken);
+        .field('_csrf', csrfToken)
+        .field('collection', oversizedValue);
 
       expect(postRes.status).toBe(302);
       expect(postRes.header.location).toBe(`/en-GB/publish/${datasetId}/collection`);
