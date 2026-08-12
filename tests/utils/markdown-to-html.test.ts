@@ -3,9 +3,9 @@ import { markdownToSafeHTML } from '../../src/shared/utils/markdown-to-html';
 describe('markdownToSafeHTML', () => {
   it('renders legitimate markdown to HTML', async () => {
     const result = await markdownToSafeHTML('# Heading\n\nSome **bold** text and a [link](https://example.com).');
-    expect(result).toContain('<h1>Heading</h1>');
+    expect(result).toMatch(/<h1\b[^>]*>Heading<\/h1>/);
     expect(result).toContain('<strong>bold</strong>');
-    expect(result).toContain('<a href="https://example.com">link</a>');
+    expect(result).toMatch(/<a\b[^>]*href="https:\/\/example\.com"[^>]*>link<\/a>/);
   });
 
   it('strips <script> tags injected via raw HTML in markdown', async () => {
