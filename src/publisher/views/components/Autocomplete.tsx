@@ -1,5 +1,6 @@
 import React from 'react';
 import Select, { SelectProps } from '../../../shared/views/components/Select';
+import { useLocals } from '../../../shared/views/context/Locals';
 
 export type AutocompleteProps = SelectProps & {
   autoSelect?: boolean;
@@ -13,11 +14,14 @@ export default function Autocomplete({
   defaultValue,
   ...props
 }: AutocompleteProps) {
+  const { cspNonce } = useLocals();
+
   return (
     <div className="govuk-form-group">
       <Select {...props} />
       <script
         type="text/javascript"
+        nonce={cspNonce}
         dangerouslySetInnerHTML={{
           __html: `
             (() => {

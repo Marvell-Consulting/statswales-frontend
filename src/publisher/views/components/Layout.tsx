@@ -13,7 +13,8 @@ export type LayoutProps = {
 };
 
 const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithChildren<LayoutProps>) => {
-  const { i18n, t, isAuthenticated, buildUrl, activePage, isAdmin, isDeveloper, appEnv, hostname } = useLocals();
+  const { i18n, t, isAuthenticated, buildUrl, activePage, isAdmin, isDeveloper, appEnv, hostname, cspNonce } =
+    useLocals();
   const envBadge = hostname.includes('dev')
     ? 'dev'
     : hostname.includes('preview')
@@ -98,6 +99,7 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
             {/* Google tag (gtag.js) */}
             <script async src="https://www.googletagmanager.com/gtag/js?id=G-955WY5XQTC"></script>
             <script
+              nonce={cspNonce}
               dangerouslySetInnerHTML={{
                 __html: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-955WY5XQTC');`
               }}
@@ -109,6 +111,7 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
       <body className="govuk-template__body app-body-className" data-test="My value" data-other="report:details">
         <span id="top"></span>
         <script
+          nonce={cspNonce}
           dangerouslySetInnerHTML={{
             __html: `
               document.body.classList.add('js-enabled');
@@ -356,6 +359,7 @@ const Layout = ({ title, children, backLink, returnLink, formPage }: PropsWithCh
         <script type="module" src="/assets/js/govuk-frontend.min.js"></script>
         <script
           type="module"
+          nonce={cspNonce}
           dangerouslySetInnerHTML={{
             __html: `
               import { initAll } from '/assets/js/govuk-frontend.min.js';
