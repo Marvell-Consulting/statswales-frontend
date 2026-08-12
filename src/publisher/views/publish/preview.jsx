@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 import Pagination from '../../../shared/views/components/Pagination';
 import Table from '../../../shared/views/components/Table';
@@ -110,6 +111,7 @@ export default function Preview(props) {
             <div className="govuk-grid-row">
               <div className="govuk-grid-column-full">
                 <form method="post" role="continue">
+                  <CsrfField />
                   <RadioGroup
                     name="actionChooser"
                     label={props.t('publish.preview.revisit_question')}
@@ -146,6 +148,7 @@ export default function Preview(props) {
             <div className="govuk-grid-row">
               <div className="govuk-grid-column-full">
                 <form method="post" role="continue">
+                  <CsrfField />
                   <fieldset className="govuk-fieldset">
                     <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
                       <h2 className="govuk-fieldset__heading">{props.t('publish.preview.confirm_correct')}</h2>

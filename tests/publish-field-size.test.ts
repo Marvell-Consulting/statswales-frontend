@@ -60,12 +60,24 @@ describe('Publish route field size errors', () => {
     return agent;
   };
 
+  const extractCsrfToken = (html: string): string => {
+    const inputMatch = html.match(/<input\b[^>]*\bname="_csrf"[^>]*>/);
+    const valueMatch = inputMatch?.[0].match(/\bvalue="([^"]*)"/);
+    if (!valueMatch) throw new Error('Could not find CSRF token in rendered page');
+    return valueMatch[1];
+  };
+
   describe('POST /:datasetId/summary', () => {
     test('redirects back and shows error when summary exceeds field size limit', async () => {
       const agent = makeAgent();
+      const formPage = await agent.get(`/en-GB/publish/${datasetId}/summary`);
+      const csrfToken = extractCsrfToken(formPage.text);
       const oversizedValue = 'a'.repeat(MULTIPART_FIELD_SIZE_LIMIT + 1);
 
-      const postRes = await agent.post(`/en-GB/publish/${datasetId}/summary`).field('summary', oversizedValue);
+      const postRes = await agent
+        .post(`/en-GB/publish/${datasetId}/summary`)
+        .field('_csrf', csrfToken)
+        .field('summary', oversizedValue);
 
       expect(postRes.status).toBe(302);
       expect(postRes.header.location).toBe(`/en-GB/publish/${datasetId}/summary`);
@@ -75,14 +87,31 @@ describe('Publish route field size errors', () => {
       expect(getRes.status).toBe(200);
       expect(getRes.text).toContain(t('publish.summary.form.description.error.too_long', { lng: Locale.English }));
     });
+
+    test('rejects with 403 when field exceeds size limit without a valid CSRF token', async () => {
+      const agent = makeAgent();
+      const oversizedValue = 'a'.repeat(MULTIPART_FIELD_SIZE_LIMIT + 1);
+
+      const postRes = await agent
+        .post(`/en-GB/publish/${datasetId}/summary`)
+        .field('_csrf', 'not-a-valid-token')
+        .field('summary', oversizedValue);
+
+      expect(postRes.status).toBe(403);
+    });
   });
 
   describe('POST /:datasetId/collection', () => {
     test('redirects back and shows error when collection exceeds field size limit', async () => {
       const agent = makeAgent();
+      const formPage = await agent.get(`/en-GB/publish/${datasetId}/collection`);
+      const csrfToken = extractCsrfToken(formPage.text);
       const oversizedValue = 'a'.repeat(MULTIPART_FIELD_SIZE_LIMIT + 1);
 
-      const postRes = await agent.post(`/en-GB/publish/${datasetId}/collection`).field('collection', oversizedValue);
+      const postRes = await agent
+        .post(`/en-GB/publish/${datasetId}/collection`)
+        .field('_csrf', csrfToken)
+        .field('collection', oversizedValue);
 
       expect(postRes.status).toBe(302);
       expect(postRes.header.location).toBe(`/en-GB/publish/${datasetId}/collection`);

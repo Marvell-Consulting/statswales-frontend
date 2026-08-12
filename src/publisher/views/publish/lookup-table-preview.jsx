@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 import DimensionPreviewTable from '../components/DimensionPreviewTable';
 
@@ -56,6 +57,7 @@ export default function LookupTablePreview(props) {
           <div className="govuk-grid-row">
             <div className="govuk-grid-column-full">
               <form method="post" role="continue">
+                <CsrfField />
                 <fieldset className="govuk-fieldset">
                   <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
                     <h2 className="govuk-fieldset__heading">

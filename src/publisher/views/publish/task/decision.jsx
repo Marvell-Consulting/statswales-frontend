@@ -1,6 +1,7 @@
 import React from 'react';
 import ErrorHandler from '../../components/ErrorHandler';
 import Layout from '../../components/Layout';
+import CsrfField from '../../components/CsrfField';
 import { clsx } from 'clsx';
 import RadioGroup from '../../../../shared/views/components/RadioGroup';
 import T from '../../../../shared/views/components/T';
@@ -15,6 +16,7 @@ export default function TaskDecision(props) {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <form encType="multipart/form-data" method="post">
+            <CsrfField />
             <h1 className="govuk-heading-xl govuk-!-margin-top-2" id="task-decision">
               {title}
             </h1>

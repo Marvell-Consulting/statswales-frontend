@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 import { clsx } from 'clsx';
 
@@ -23,6 +24,7 @@ export default function Title(props) {
       <div className="govuk-hint">{props.t('publish.title.form.title.hint')}</div>
 
       <form encType="multipart/form-data" method="post">
+        <CsrfField />
         <div className="govuk-form-group">
           <input
             className={clsx('govuk-input', {

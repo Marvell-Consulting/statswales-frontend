@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 import { clsx } from 'clsx';
 
@@ -15,6 +16,7 @@ export default function UserGroupName(props) {
           <ErrorHandler />
 
           <form method="post">
+            <CsrfField />
             <div className="govuk-form-group">
               <label className="govuk-label" htmlFor="name_cy">
                 {props.t('admin.group.name.form.name_cy.label')}

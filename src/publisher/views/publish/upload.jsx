@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 import { Spinner } from '../../../shared/views/components/Spinner';
 import T from '../../../shared/views/components/T';
@@ -42,6 +43,7 @@ export default function Title(props) {
       <div id="error-wrapper" />
 
       <form method="post" id="upload-form" encType="multipart/form-data">
+        <CsrfField />
         <div className="govuk-form-group">
           <label className="govuk-label govuk-label--m" htmlFor="csv">
             {props.t('publish.upload.form.file.label')}
@@ -105,6 +107,8 @@ export default function Title(props) {
               if (document.getElementsByName('updateType').length > 0) {
                 formData.append('updateType', document.getElementsByName('updateType')[0].value);
               }
+
+              formData.append('_csrf', form.elements['_csrf'].value);
 
               try {
                 const res = await fetch('${props.url}', {

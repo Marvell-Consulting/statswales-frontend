@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import FlashMessages from '../../../shared/views/components/FlashMessages';
 import ErrorHandler from '../components/ErrorHandler';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 
 export default function UserRoles(props) {
   const title = props.t('admin.user.roles.heading', { userName: props.userName });
@@ -16,6 +17,7 @@ export default function UserRoles(props) {
           <ErrorHandler />
 
           <form method="post">
+            <CsrfField />
             <div className="govuk-form-group">
               <fieldset className="govuk-fieldset">
                 <h2 className="govuk-heading-l">{props.t('admin.user.roles.service.heading')}</h2>

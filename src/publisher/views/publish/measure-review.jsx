@@ -2,6 +2,7 @@ import React from 'react';
 import ErrorHandler from '../components/ErrorHandler';
 import MeasurePreviewTable from '../components/MeasurePreviewTable';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 
 export default function MeasureReview(props) {
   const returnLink = props.buildUrl(`/publish/${props.datasetId}/tasklist`, props.i18n.language);
@@ -39,6 +40,7 @@ export default function MeasureReview(props) {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-full">
           <form method="post" role="continue">
+            <CsrfField />
             <fieldset className="govuk-fieldset">
               <legend className="govuk-fieldset__legend govuk-fieldset__legend--m">
                 <h2 className="govuk-fieldset__heading">{props.t('publish.measure_review.confirm')}</h2>

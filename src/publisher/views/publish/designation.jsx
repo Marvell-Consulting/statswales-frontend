@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 import RadioGroup from '../../../shared/views/components/RadioGroup';
 
@@ -17,6 +18,7 @@ export default function Designation(props) {
             </h1>
 
             <form encType="multipart/form-data" method="post">
+              <CsrfField />
               <ErrorHandler />
 
               <RadioGroup

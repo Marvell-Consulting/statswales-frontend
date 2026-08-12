@@ -1,6 +1,7 @@
 import React from 'react';
 import ErrorHandler from '../components/ErrorHandler';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import { clsx } from 'clsx';
 
 export default function Summary(props) {
@@ -27,6 +28,7 @@ export default function Summary(props) {
             <div className="govuk-hint">{props.t('publish.summary.language')}</div>
 
             <form encType="multipart/form-data" method="post">
+              <CsrfField />
               <div className="govuk-form-group">
                 <textarea
                   className={clsx('govuk-textarea', {

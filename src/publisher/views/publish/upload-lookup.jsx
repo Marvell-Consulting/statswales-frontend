@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 import DimensionPreviewTable from '../components/DimensionPreviewTable';
 
@@ -35,6 +36,7 @@ export default function UploadLookup(props) {
           <div className="govuk-grid-row">
             <div className="govuk-grid-column-full">
               <form method="post" role="continue" encType="multipart/form-data">
+                <CsrfField />
                 <fieldset className="govuk-fieldset">
                   <div className="govuk-form-group">
                     <label className="govuk-label govuk-label--m" htmlFor="csv">

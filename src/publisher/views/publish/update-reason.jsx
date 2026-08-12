@@ -1,6 +1,7 @@
 import React from 'react';
 import ErrorHandler from '../components/ErrorHandler';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import { clsx } from 'clsx';
 
 export default function UpdateReason(props) {
@@ -14,6 +15,7 @@ export default function UpdateReason(props) {
         <div className="govuk-grid-row">
           <div className="govuk-grid-column-two-thirds">
             <form encType="multipart/form-data" method="post">
+              <CsrfField />
               <h1 className="govuk-heading-xl">
                 <label htmlFor="update_reason">{title}</label>
               </h1>

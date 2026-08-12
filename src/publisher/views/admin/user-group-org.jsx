@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 import RadioGroup from '../../../shared/views/components/RadioGroup';
 
@@ -16,6 +17,7 @@ export default function UserGroupOrg(props) {
             <ErrorHandler />
 
             <form method="post">
+              <CsrfField />
               <RadioGroup
                 name="organisation_id"
                 labelledBy="organisation"

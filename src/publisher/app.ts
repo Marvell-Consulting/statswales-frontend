@@ -8,6 +8,7 @@ import { checkConfig } from '../shared/config/check-config';
 import { httpLogger, logger } from '../shared/utils/logger';
 import { strictTransport } from '../shared/middleware/strict-transport';
 import session from '../shared/middleware/session';
+import { csrfToken } from '../shared/middleware/csrf';
 import { ensureAuthenticated } from './middleware/ensure-authenticated';
 import { rateLimiter } from '../shared/middleware/rate-limiter';
 import { i18next, i18nextMiddleware } from '../shared/middleware/translation';
@@ -67,9 +68,9 @@ app.use('/:lang/cookies', rateLimiter, cookies);
 app.use('/:lang', rateLimiter, staticPages);
 
 // authenticated routes
-app.use('/:lang/publish', rateLimiter, ensureAuthenticated, publish);
-app.use('/:lang/developer', rateLimiter, ensureAuthenticated, developer);
-app.use('/:lang/admin', rateLimiter, ensureAuthenticated, admin);
+app.use('/:lang/publish', rateLimiter, ensureAuthenticated, csrfToken, publish);
+app.use('/:lang/developer', rateLimiter, ensureAuthenticated, csrfToken, developer);
+app.use('/:lang/admin', rateLimiter, ensureAuthenticated, csrfToken, admin);
 app.use('/:lang', rateLimiter, ensureAuthenticated, homepage);
 
 // handle 404s

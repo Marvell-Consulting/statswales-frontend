@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 
 export default function Topics(props) {
@@ -16,6 +17,7 @@ export default function Topics(props) {
           <ErrorHandler />
 
           <form encType="multipart/form-data" method="post">
+            <CsrfField />
             <input type="hidden" name="topics" value="" />
             <div className="govuk-form-group">
               <fieldset className="govuk-fieldset" aria-describedby="topic-hint">

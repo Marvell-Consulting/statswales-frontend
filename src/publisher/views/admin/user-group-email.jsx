@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 import { clsx } from 'clsx';
 
@@ -18,6 +19,7 @@ export default function UserGroupEmail(props) {
           <ErrorHandler />
 
           <form method="post">
+            <CsrfField />
             <div className="govuk-form-group">
               <label className="govuk-label" htmlFor="email_cy">
                 {props.t('admin.group.email.form.email_cy.label')}

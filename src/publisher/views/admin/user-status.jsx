@@ -1,5 +1,6 @@
 import React from 'react';
 import Layout from '../components/Layout';
+import CsrfField from '../components/CsrfField';
 import FlashMessages from '../../../shared/views/components/FlashMessages';
 import ErrorHandler from '../components/ErrorHandler';
 
@@ -17,6 +18,7 @@ export default function UserStatus(props) {
           <p className="govuk-body">{props.t(`admin.user.${props.action}.description`)}</p>
 
           <form method="post">
+            <CsrfField />
             <button type="submit" className="govuk-button" data-module="govuk-button">
               {props.t('buttons.continue')}
             </button>{' '}

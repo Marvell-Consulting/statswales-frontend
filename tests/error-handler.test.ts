@@ -60,7 +60,12 @@ describe('Error handling', () => {
   test('should render the bad request page for 400s', async () => {
     const datasetId = '5caeb8ed-ea64-4a58-8cf0-b728308833e5';
     mockBackend.use(http.get(`http://localhost:3001/dataset/${datasetId}`, () => HttpResponse.json(datasetWithTitle)));
-    const res = await request(app).post(`/en-GB/publish/${datasetId}/download`).send({});
+
+    const agent = request.agent(app);
+    const tokenRes = await agent.get(`/en-GB/publish/${datasetId}/download`);
+    const csrfToken = tokenRes.headers['x-csrf-token'] as string;
+
+    const res = await agent.post(`/en-GB/publish/${datasetId}/download`).set('x-csrf-token', csrfToken).send({});
     expect(res.status).toBe(400);
     expect(res.text).toContain(t('errors.bad_request', { lng: Locale.English }));
   });

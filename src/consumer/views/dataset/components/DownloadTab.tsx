@@ -46,7 +46,7 @@ function ExtendedOptions() {
 }
 
 export default function DownloadTab(props: DownloadTabProps) {
-  const { buildUrl, i18n } = useLocals();
+  const { buildUrl, i18n, csrfToken } = useLocals();
   const isPivoted = !!(props.columns && props.rows);
 
   const downloadMetaUrl = props.preview
@@ -61,6 +61,7 @@ export default function DownloadTab(props: DownloadTabProps) {
     <div className="govuk-grid-row">
       <div className="govuk-grid-column-two-thirds">
         <form method="POST" action={formSubmitUrl}>
+          {csrfToken && <input type="hidden" name="_csrf" value={csrfToken} />}
           <RadioGroup
             name="view_type"
             label={i18n.t('consumer_view.downloads.type.heading')}
