@@ -43,7 +43,7 @@ export const buildCspDirectives = () => {
     objectSrc: defaults['object-src'],
     scriptSrcAttr: defaults['script-src-attr'],
     upgradeInsecureRequests: defaults['upgrade-insecure-requests'],
-    styleSrc: ["'self'", 'https:', "'unsafe-inline'", FIRA_CODE_STYLESHEET],
+    styleSrc: ["'self'", "'unsafe-inline'", FIRA_CODE_STYLESHEET],
     scriptSrc: ["'self'", GOOGLE_TAG_MANAGER_ORIGIN, nonceDirectiveValue]
   };
 };
