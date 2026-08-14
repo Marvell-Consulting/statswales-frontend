@@ -12,16 +12,8 @@ describe('buildCspDirectives', () => {
     expect(scriptSrc).not.toContain("'unsafe-inline'");
   });
 
-  it('tightens default-src to self rather than a wildcard', () => {
-    expect(directives.defaultSrc).toEqual(["'self'"]);
-  });
-
-  it('re-adds the directives Helmet drops when its defaults are overwritten', () => {
-    expect(directives.objectSrc).toEqual(["'none'"]);
-    expect(directives.baseUri).toEqual(["'self'"]);
-    expect(directives.formAction).toEqual(["'self'"]);
-    expect(directives.frameAncestors).toEqual(["'self'"]);
-    expect(directives.scriptSrcAttr).toEqual(["'none'"]);
+  it('does not override default-src, leaving Helmet to supply its self default', () => {
+    expect(directives.defaultSrc).toBeUndefined();
   });
 
   it('allow-lists Google Tag Manager for scripts', () => {
@@ -71,7 +63,7 @@ describe('CSP header produced by buildCspDirectives()', () => {
   const buildTestApp = () => {
     const app = express();
     app.use(generateNonce);
-    app.use(helmet.contentSecurityPolicy({ useDefaults: false, directives: buildCspDirectives() }));
+    app.use(helmet.contentSecurityPolicy({ directives: buildCspDirectives() }));
     app.get('/', (req, res) => res.send('ok'));
     return app;
   };

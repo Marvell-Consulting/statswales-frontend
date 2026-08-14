@@ -27,26 +27,13 @@ const nonceDirectiveValue = (_req: IncomingMessage, res: ServerResponse): string
 // them wholesale - the previous policy overwrote those defaults with `defaultSrc: ['*']` and
 // `'unsafe-inline'` in script-src, defeating CSP's XSS protection entirely (SW-1319). Only the
 // directives that genuinely need widening (for GTM, the Fira Code CDN, and the per-request
-// nonce) are overridden here. Directive values are read out of getDefaultDirectives() by their
-// (kebab-case) key rather than spread wholesale, so every directive here can use a lint-friendly
-// camelCase property name - helmet accepts either casing and dashifies it before sending the header.
-export const buildCspDirectives = () => {
-  const defaults = helmet.contentSecurityPolicy.getDefaultDirectives();
-
-  return {
-    defaultSrc: defaults['default-src'],
-    baseUri: defaults['base-uri'],
-    fontSrc: defaults['font-src'],
-    formAction: defaults['form-action'],
-    frameAncestors: defaults['frame-ancestors'],
-    imgSrc: defaults['img-src'],
-    objectSrc: defaults['object-src'],
-    scriptSrcAttr: defaults['script-src-attr'],
-    upgradeInsecureRequests: defaults['upgrade-insecure-requests'],
-    styleSrc: ["'self'", "'unsafe-inline'", FIRA_CODE_STYLESHEET],
-    scriptSrc: ["'self'", GOOGLE_TAG_MANAGER_ORIGIN, nonceDirectiveValue]
-  };
-};
+// nonce) are overridden here; every other directive is left for Helmet to fill in from its own
+// defaults (useDefaults defaults to true), so this policy tracks Helmet's defaults automatically
+// rather than drifting from a hand-copied snapshot.
+export const buildCspDirectives = () => ({
+  styleSrc: ["'self'", "'unsafe-inline'", FIRA_CODE_STYLESHEET],
+  scriptSrc: ["'self'", GOOGLE_TAG_MANAGER_ORIGIN, nonceDirectiveValue]
+});
 
 export const strictTransport = [AppEnv.Ci, AppEnv.Local].includes(config.env)
   ? Router().use(generateNonce)
@@ -54,6 +41,7 @@ export const strictTransport = [AppEnv.Ci, AppEnv.Local].includes(config.env)
       .use(generateNonce)
       .use(
         helmet({
+          contentSecurityPolicy: false, // applied explicitly below via buildCspDirectives()
           hsts: {
             maxAge: 63072000, // 2 years in seconds
             includeSubDomains: true,
@@ -63,7 +51,6 @@ export const strictTransport = [AppEnv.Ci, AppEnv.Local].includes(config.env)
       )
       .use(
         helmet.contentSecurityPolicy({
-          useDefaults: false,
           directives: buildCspDirectives()
         })
       );
