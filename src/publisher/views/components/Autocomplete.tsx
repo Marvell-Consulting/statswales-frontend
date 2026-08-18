@@ -29,7 +29,7 @@ export default function Autocomplete({
                 selectElement: document.querySelector('#${props.name}'),
                 autoSelect: ${autoSelect ? true : false},
                 showAllValues: ${showAllValues ? true : false},
-                defaultValue: ${defaultValue ? defaultValue : '""'}
+                defaultValue: ${JSON.stringify(defaultValue ?? '')}
               });
             })()`
         }}
