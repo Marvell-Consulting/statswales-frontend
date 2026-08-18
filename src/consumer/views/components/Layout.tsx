@@ -29,7 +29,7 @@ const CanonicalUrls = () => {
 };
 
 const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; noPad?: boolean }>) => {
-  const { i18n, t, buildUrl, appEnv, hostname } = useLocals();
+  const { i18n, t, buildUrl, appEnv, hostname, cspNonce } = useLocals();
   const envBadge = hostname.includes('dev')
     ? 'dev'
     : hostname.includes('preview')
@@ -63,6 +63,7 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
             {/* Google tag (gtag.js) */}
             <script async src="https://www.googletagmanager.com/gtag/js?id=G-955WY5XQTC"></script>
             <script
+              nonce={cspNonce}
               dangerouslySetInnerHTML={{
                 __html: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-955WY5XQTC');`
               }}
@@ -74,6 +75,7 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
       <body className="govuk-template__body app-body-className" data-test="My value" data-other="report:details">
         <span id="top"></span>
         <script
+          nonce={cspNonce}
           dangerouslySetInnerHTML={{
             __html: `
               document.body.classList.add('js-enabled');
@@ -228,6 +230,7 @@ const Layout = ({ children, title, noPad }: PropsWithChildren<{ title?: string; 
         <script type="module" src="/assets/js/govuk-frontend.min.js" />
         <script
           type="module"
+          nonce={cspNonce}
           dangerouslySetInnerHTML={{
             __html: `
             import { initAll } from '/assets/js/govuk-frontend.min.js';

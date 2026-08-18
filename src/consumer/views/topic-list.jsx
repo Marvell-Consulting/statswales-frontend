@@ -85,6 +85,7 @@ function Datasets({ datasets }) {
 
 function Sort(props) {
   const { sortBy, sortOptions } = props;
+  const { cspNonce } = useLocals();
 
   return (
     <>
@@ -117,6 +118,7 @@ function Sort(props) {
       </form>
       <script
         type="module"
+        nonce={cspNonce}
         dangerouslySetInnerHTML={{
           __html: `
           (() => {

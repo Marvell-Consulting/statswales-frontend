@@ -86,6 +86,7 @@ export default function Title(props) {
       </div>
 
       <script
+        nonce={props.cspNonce}
         dangerouslySetInnerHTML={{
           __html: `
             const form = document.getElementById("upload-form");

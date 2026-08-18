@@ -23,7 +23,7 @@ const isNumericValue = (value: string | undefined): boolean =>
   /^\s*(?:-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?(?:\s*\[\w+\])*|(?:\[\w+\]\s*)+)\s*$/.test(value ?? '');
 
 export default function ViewTable(props: ViewTableProps) {
-  const { i18n } = useLocals();
+  const { i18n, cspNonce } = useLocals();
 
   // A column is numeric if it is typed as DataValues, or — for untyped/unknown columns
   // (e.g. pivoted columns whose headers come from dimension values) — if the first
@@ -127,6 +127,7 @@ export default function ViewTable(props: ViewTableProps) {
 
       <script
         type="module"
+        nonce={cspNonce}
         dangerouslySetInnerHTML={{
           __html: `
           (() => {
