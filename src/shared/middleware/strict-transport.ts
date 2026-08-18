@@ -41,16 +41,13 @@ export const strictTransport = [AppEnv.Ci, AppEnv.Local].includes(config.env)
       .use(generateNonce)
       .use(
         helmet({
-          contentSecurityPolicy: false, // applied explicitly below via buildCspDirectives()
+          contentSecurityPolicy: {
+            directives: buildCspDirectives()
+          },
           hsts: {
             maxAge: 63072000, // 2 years in seconds
             includeSubDomains: true,
             preload: true
           }
-        })
-      )
-      .use(
-        helmet.contentSecurityPolicy({
-          directives: buildCspDirectives()
         })
       );
