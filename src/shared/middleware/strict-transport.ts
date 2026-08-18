@@ -8,6 +8,8 @@ import { config } from '../config';
 import { AppEnv } from '../config/env.enum';
 
 const GOOGLE_TAG_MANAGER_ORIGIN = 'https://www.googletagmanager.com';
+const GOOGLE_ANALYTICS_ORIGIN = 'https://www.google-analytics.com';
+const GOOGLE_DOUBLECLICK_ORIGIN = 'https://stats.g.doubleclick.net';
 const FIRA_CODE_STYLESHEET = 'https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/fira_code.min.css';
 
 // A fresh nonce per request lets SSR views (see Layout.tsx and friends) allow-list their own
@@ -26,13 +28,17 @@ const nonceDirectiveValue = (_req: IncomingMessage, res: ServerResponse): string
 // frame-ancestors 'self', script-src-attr 'none', default-src 'self', ...) instead of replacing
 // them wholesale - the previous policy overwrote those defaults with `defaultSrc: ['*']` and
 // `'unsafe-inline'` in script-src, defeating CSP's XSS protection entirely (SW-1319). Only the
-// directives that genuinely need widening (for GTM, the Fira Code CDN, and the per-request
+// directives that genuinely need widening (for GTM/GA, the Fira Code CDN, and the per-request
 // nonce) are overridden here; every other directive is left for Helmet to fill in from its own
 // defaults (useDefaults defaults to true), so this policy tracks Helmet's defaults automatically
 // rather than drifting from a hand-copied snapshot.
 export const buildCspDirectives = () => ({
   styleSrc: ["'self'", "'unsafe-inline'", FIRA_CODE_STYLESHEET],
-  scriptSrc: ["'self'", GOOGLE_TAG_MANAGER_ORIGIN, nonceDirectiveValue]
+  scriptSrc: ["'self'", GOOGLE_TAG_MANAGER_ORIGIN, nonceDirectiveValue],
+  // gtag.js (loaded from GOOGLE_TAG_MANAGER_ORIGIN above) reports hits to google-analytics.com
+  // and doubleclick.net - without these, default-src 'self' silently blocks every GA beacon.
+  connectSrc: ["'self'", GOOGLE_ANALYTICS_ORIGIN, GOOGLE_DOUBLECLICK_ORIGIN],
+  imgSrc: ["'self'", 'data:', GOOGLE_ANALYTICS_ORIGIN, GOOGLE_DOUBLECLICK_ORIGIN]
 });
 
 export const strictTransport = [AppEnv.Ci, AppEnv.Local].includes(config.env)

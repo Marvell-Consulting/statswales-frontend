@@ -26,6 +26,16 @@ describe('buildCspDirectives', () => {
     expect(styleSrc).toContain('https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/fira_code.min.css');
   });
 
+  it('allow-lists Google Analytics/DoubleClick beacon endpoints for connect-src and img-src', () => {
+    const connectSrc = directives.connectSrc as string[];
+    const imgSrc = directives.imgSrc as string[];
+
+    expect(connectSrc).toContain('https://www.google-analytics.com');
+    expect(connectSrc).toContain('https://stats.g.doubleclick.net');
+    expect(imgSrc).toContain('https://www.google-analytics.com');
+    expect(imgSrc).toContain('https://stats.g.doubleclick.net');
+  });
+
   it('threads a nonce function through script-src for inline SSR scripts', () => {
     const scriptSrc = directives.scriptSrc as Array<string | ((...args: unknown[]) => string)>;
     const nonceFn = scriptSrc.find((entry) => typeof entry === 'function');
@@ -96,6 +106,19 @@ describe('CSP header produced by buildCspDirectives()', () => {
     const csp = res.headers['content-security-policy'];
 
     expect(csp).toMatch(/script-src[^;]*'nonce-[A-Za-z0-9+/]+=*'/);
+  });
+
+  it('allow-lists Google Analytics/DoubleClick for connect-src and img-src', async () => {
+    const res = await request(buildTestApp()).get('/');
+    const csp = res.headers['content-security-policy'];
+
+    const connectSrc = csp.split(';').find((directive: string) => directive.trim().startsWith('connect-src '));
+    const imgSrc = csp.split(';').find((directive: string) => directive.trim().startsWith('img-src '));
+
+    expect(connectSrc).toContain('https://www.google-analytics.com');
+    expect(connectSrc).toContain('https://stats.g.doubleclick.net');
+    expect(imgSrc).toContain('https://www.google-analytics.com');
+    expect(imgSrc).toContain('https://stats.g.doubleclick.net');
   });
 });
 
