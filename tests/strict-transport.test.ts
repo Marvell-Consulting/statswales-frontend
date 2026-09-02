@@ -38,6 +38,8 @@ describe('buildCspDirectives', () => {
     expect(connectSrc).toContain('https://analytics.google.com');
     expect(connectSrc).toContain('https://stats.g.doubleclick.net');
     expect(imgSrc).toContain('https://*.google-analytics.com');
+    expect(imgSrc).toContain('https://*.analytics.google.com');
+    expect(imgSrc).toContain('https://analytics.google.com');
     expect(imgSrc).toContain('https://stats.g.doubleclick.net');
   });
 
@@ -125,6 +127,8 @@ describe('CSP header produced by buildCspDirectives()', () => {
     expect(connectSrc).toContain('https://analytics.google.com');
     expect(connectSrc).toContain('https://stats.g.doubleclick.net');
     expect(imgSrc).toContain('https://*.google-analytics.com');
+    expect(imgSrc).toContain('https://*.analytics.google.com');
+    expect(imgSrc).toContain('https://analytics.google.com');
     expect(imgSrc).toContain('https://stats.g.doubleclick.net');
   });
 });
