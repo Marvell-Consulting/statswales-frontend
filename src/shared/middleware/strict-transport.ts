@@ -8,7 +8,10 @@ import { config } from '../config';
 import { AppEnv } from '../config/env.enum';
 
 const GOOGLE_TAG_MANAGER_ORIGIN = 'https://www.googletagmanager.com';
-const GOOGLE_ANALYTICS_ORIGIN = 'https://www.google-analytics.com';
+// gtag.js reports hits to a region-specific subdomain (e.g. region1.google-analytics.com) rather
+// than always www.google-analytics.com, so these must be wildcarded - a literal www-only origin
+// silently drops every beacon sent from a region-pinned subdomain (SW-1333).
+const GOOGLE_ANALYTICS_ORIGINS = ['https://*.google-analytics.com', 'https://*.analytics.google.com'];
 const GOOGLE_DOUBLECLICK_ORIGIN = 'https://stats.g.doubleclick.net';
 const FIRA_CODE_STYLESHEET = 'https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/fira_code.min.css';
 
@@ -37,8 +40,8 @@ export const buildCspDirectives = () => ({
   scriptSrc: ["'self'", GOOGLE_TAG_MANAGER_ORIGIN, nonceDirectiveValue],
   // gtag.js (loaded from GOOGLE_TAG_MANAGER_ORIGIN above) reports hits to google-analytics.com
   // and doubleclick.net - without these, default-src 'self' silently blocks every GA beacon.
-  connectSrc: ["'self'", GOOGLE_ANALYTICS_ORIGIN, GOOGLE_DOUBLECLICK_ORIGIN],
-  imgSrc: ["'self'", 'data:', GOOGLE_ANALYTICS_ORIGIN, GOOGLE_DOUBLECLICK_ORIGIN]
+  connectSrc: ["'self'", ...GOOGLE_ANALYTICS_ORIGINS, GOOGLE_DOUBLECLICK_ORIGIN],
+  imgSrc: ["'self'", 'data:', ...GOOGLE_ANALYTICS_ORIGINS, GOOGLE_DOUBLECLICK_ORIGIN]
 });
 
 export const strictTransport = [AppEnv.Ci, AppEnv.Local].includes(config.env)

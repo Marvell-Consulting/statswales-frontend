@@ -30,9 +30,12 @@ describe('buildCspDirectives', () => {
     const connectSrc = directives.connectSrc as string[];
     const imgSrc = directives.imgSrc as string[];
 
-    expect(connectSrc).toContain('https://www.google-analytics.com');
+    // gtag.js sends hits from region-pinned subdomains (e.g. region1.google-analytics.com), not
+    // just the bare www host, so these must be wildcarded rather than pinned to a literal origin.
+    expect(connectSrc).toContain('https://*.google-analytics.com');
+    expect(connectSrc).toContain('https://*.analytics.google.com');
     expect(connectSrc).toContain('https://stats.g.doubleclick.net');
-    expect(imgSrc).toContain('https://www.google-analytics.com');
+    expect(imgSrc).toContain('https://*.google-analytics.com');
     expect(imgSrc).toContain('https://stats.g.doubleclick.net');
   });
 
@@ -115,9 +118,10 @@ describe('CSP header produced by buildCspDirectives()', () => {
     const connectSrc = csp.split(';').find((directive: string) => directive.trim().startsWith('connect-src '));
     const imgSrc = csp.split(';').find((directive: string) => directive.trim().startsWith('img-src '));
 
-    expect(connectSrc).toContain('https://www.google-analytics.com');
+    expect(connectSrc).toContain('https://*.google-analytics.com');
+    expect(connectSrc).toContain('https://*.analytics.google.com');
     expect(connectSrc).toContain('https://stats.g.doubleclick.net');
-    expect(imgSrc).toContain('https://www.google-analytics.com');
+    expect(imgSrc).toContain('https://*.google-analytics.com');
     expect(imgSrc).toContain('https://stats.g.doubleclick.net');
   });
 });
