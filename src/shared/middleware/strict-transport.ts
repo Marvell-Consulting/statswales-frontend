@@ -10,8 +10,14 @@ import { AppEnv } from '../config/env.enum';
 const GOOGLE_TAG_MANAGER_ORIGIN = 'https://www.googletagmanager.com';
 // gtag.js reports hits to a region-specific subdomain (e.g. region1.google-analytics.com) rather
 // than always www.google-analytics.com, so these must be wildcarded - a literal www-only origin
-// silently drops every beacon sent from a region-pinned subdomain (SW-1333).
-const GOOGLE_ANALYTICS_ORIGINS = ['https://*.google-analytics.com', 'https://*.analytics.google.com'];
+// silently drops every beacon sent from a region-pinned subdomain (SW-1333). The apex
+// analytics.google.com is listed separately alongside the wildcard because a CSP host-source
+// wildcard (*.analytics.google.com) never matches its own apex domain.
+const GOOGLE_ANALYTICS_ORIGINS = [
+  'https://*.google-analytics.com',
+  'https://*.analytics.google.com',
+  'https://analytics.google.com'
+];
 const GOOGLE_DOUBLECLICK_ORIGIN = 'https://stats.g.doubleclick.net';
 const FIRA_CODE_STYLESHEET = 'https://cdnjs.cloudflare.com/ajax/libs/firacode/6.2.0/fira_code.min.css';
 
