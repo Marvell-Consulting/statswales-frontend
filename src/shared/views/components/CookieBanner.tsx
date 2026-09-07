@@ -1,5 +1,6 @@
 import React from 'react';
 import T from './T';
+import PublicCsrfField from './PublicCsrfField';
 import { useLocals } from '../context/Locals';
 
 export default function CookieBanner() {
@@ -19,6 +20,7 @@ export default function CookieBanner() {
         </p>
 
         <form id="cookie-banner-form" action={buildUrl('/cookies', i18n.language)} method="post">
+          <PublicCsrfField />
           <input type="hidden" name="acceptAll" value="true" />
 
           <div className="govuk-button-group">

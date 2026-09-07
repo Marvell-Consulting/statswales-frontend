@@ -22,6 +22,7 @@ import { cookieBanner } from '../shared/middleware/cookie-banner';
 import { featureFlags } from '../shared/middleware/feature-flags';
 import { history } from '../shared/middleware/history';
 import session from '../shared/middleware/session';
+import { publicCsrfToken } from '../shared/middleware/csrf-cookie';
 import { staticPages } from '../shared/routes/static-pages';
 
 const app: Application = express();
@@ -44,6 +45,7 @@ app.use(handleAsset404);
 app.use(express.json());
 app.use(httpLogger);
 app.use(cookieParser());
+app.use(publicCsrfToken);
 app.use(featureFlags);
 app.use(cookieBanner);
 app.use(i18nextMiddleware.handle(i18next));

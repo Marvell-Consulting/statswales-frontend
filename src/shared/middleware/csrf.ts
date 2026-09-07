@@ -16,13 +16,11 @@ export const csrfToken = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-const tokensMatch = (sessionToken: string, submittedToken: string): boolean => {
-  if (sessionToken.length !== submittedToken.length) {
+export const timingSafeTokensMatch = (a: string, b: string): boolean => {
+  if (a.length !== b.length) {
     return false;
   }
-  const sessionBuffer = Buffer.from(sessionToken);
-  const submittedBuffer = Buffer.from(submittedToken);
-  return sessionBuffer.length === submittedBuffer.length && timingSafeEqual(sessionBuffer, submittedBuffer);
+  return timingSafeEqual(Buffer.from(a), Buffer.from(b));
 };
 
 export const hasValidCsrfToken = (req: Request): boolean => {
@@ -30,7 +28,9 @@ export const hasValidCsrfToken = (req: Request): boolean => {
   const submittedToken = req.body?.[CSRF_FIELD_NAME] || req.get(CSRF_HEADER_NAME);
 
   return (
-    typeof sessionToken === 'string' && typeof submittedToken === 'string' && tokensMatch(sessionToken, submittedToken)
+    typeof sessionToken === 'string' &&
+    typeof submittedToken === 'string' &&
+    timingSafeTokensMatch(sessionToken, submittedToken)
   );
 };
 

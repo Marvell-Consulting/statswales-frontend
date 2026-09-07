@@ -6,6 +6,7 @@ export type Locals = {
   errors?: ViewError[];
   flash?: FlashMessage[] | string[];
   csrfToken?: string;
+  publicCsrfToken?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } & Record<string, any>;
 
