@@ -1716,6 +1716,9 @@
     "downloads": {
       "type": {
         "heading": "Dewiswch beth i'w lawrlwytho",
+        "errors": {
+          "missing": "Dewiswch beth i'w lawrlwytho"
+        },
         "options": {
           "filtered": {
             "label": "Tabl presennol yn y tab 'Gweld data'"
@@ -1727,6 +1730,9 @@
       },
       "file_type": {
         "heading": "Dewiswch fformat lawrlwytho",
+        "errors": {
+          "missing": "Dewiswch fformat lawrlwytho"
+        },
         "options": {
           "csv": {
             "label": "CSV",
@@ -1744,6 +1750,9 @@
       },
       "number_formatting": {
         "heading": "Dewiswch fformat rhifau",
+        "errors": {
+          "missing": "Dewiswch fformat rhifau"
+        },
         "options": {
           "formatted": {
             "label": "Rhifau wedi'u fformatio",
@@ -1756,6 +1765,9 @@
       },
       "extended": {
         "heading": "Dewiswch a ddylid cynnwys codau cyfeirio a hierarchiaethau",
+        "errors": {
+          "missing": "Dewiswch a ddylid cynnwys codau cyfeirio a hierarchiaethau"
+        },
         "description": {
           "reference_codes": "Mae codau cyfeirio yn ddynodwyr unigryw ar gyfer gwerthoedd newidyn penodol, fel ardaloedd daearyddol",
           "hierarchies": "Mae hierarchiaethau'n dangos sut mae gwerthoedd newidyn yn cael eu grwpio gyda'i gilydd, fel pa ardaloedd daearyddol sydd ym mha ardaloedd daearyddol mwy",
@@ -1773,6 +1785,9 @@
       },
       "language": {
         "heading": "Dewiswch iaith",
+        "errors": {
+          "missing": "Dewiswch iaith"
+        },
         "options": {
           "english": {
             "label": "Saesneg"

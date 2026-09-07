@@ -39,7 +39,8 @@ import {
   formatValidator,
   downloadLanguageValidator,
   viewChoiceValidator,
-  extendedValidator
+  extendedValidator,
+  downloadFormErrorKey
 } from '../../shared/validators';
 import { FieldValidationError } from 'express-validator';
 import { SearchResultDTO } from '../../shared/dtos/search-result';
@@ -279,14 +280,17 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
         extendedValidator()
       ];
 
-      const errors = (await getErrors(validators, req)).map((error: FieldValidationError) => {
-        return { field: error.path, message: error.msg };
-      });
+      const errors = await getErrors(validators, req);
 
       if (errors.length > 0) {
-        logger.error(errors, 'Validation errors in download form');
-        const errorMessage = errors.map((e) => `${e.field}: ${e.message}`).join(', ');
-        return next(new BadRequestException(errorMessage));
+        logger.debug(errors, 'Validation errors in download form');
+        req.session.errors = errors.map((error: FieldValidationError) => ({
+          field: error.path,
+          message: { key: downloadFormErrorKey(error.path) }
+        }));
+        req.session.save();
+        res.redirect(req.buildUrl(`/${dataset.id}`, req.language, {}, 'downloads'));
+        return;
       }
 
       let filters: FilterV2[] = [];

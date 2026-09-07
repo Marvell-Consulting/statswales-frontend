@@ -1750,6 +1750,9 @@
     "downloads": {
       "type": {
         "heading": "Select what to download",
+        "errors": {
+          "missing": "Select what to download"
+        },
         "options": {
           "filtered": {
             "label": "Current table in 'View data' tab"
@@ -1761,6 +1764,9 @@
       },
       "file_type": {
         "heading": "Select download format",
+        "errors": {
+          "missing": "Select download format"
+        },
         "options": {
           "csv": {
             "label": "CSV",
@@ -1778,6 +1784,9 @@
       },
       "number_formatting": {
         "heading": "Select number formatting",
+        "errors": {
+          "missing": "Select number formatting"
+        },
         "options": {
           "formatted": {
             "label": "Formatted numbers",
@@ -1790,6 +1799,9 @@
       },
       "extended": {
         "heading": "Select whether to include reference codes and hierarchies",
+        "errors": {
+          "missing": "Select whether to include reference codes and hierarchies"
+        },
         "description": {
           "reference_codes": "Reference codes are unique identifiers for specific variable values, such as geographic areas",
           "hierarchies": "Hierarchies show how variable values are grouped together, such as which geographic areas are in which larger geographic areas",
@@ -1807,6 +1819,9 @@
       },
       "language": {
         "heading": "Select language",
+        "errors": {
+          "missing": "Select language"
+        },
         "options": {
           "english": {
             "label": "English"

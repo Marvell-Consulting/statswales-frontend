@@ -118,3 +118,18 @@ export const downloadLanguageValidator = () => body('download_language').trim().
 export const viewChoiceValidator = () => body('view_choice').trim().notEmpty().isIn(['raw', 'formatted']);
 
 export const extendedValidator = () => body('extended').optional().isIn(['yes', 'no']);
+
+// download form fields no longer have a pre-selected radio option, so a submission that skips
+// one of these now genuinely fails validation - maps each field back to its error copy. Falls
+// back to the generic "there is a problem" key for any field not listed here (e.g. future/unknown validation fields),
+// so a session error can never end up with an undefined message key.
+// (Optional fields like `extended` can still map to a key when present but invalid.)
+export const DOWNLOAD_FORM_ERROR_KEYS: Record<string, string> = {
+  view_type: 'consumer_view.downloads.type.errors.missing',
+  format: 'consumer_view.downloads.file_type.errors.missing',
+  view_choice: 'consumer_view.downloads.number_formatting.errors.missing',
+  download_language: 'consumer_view.downloads.language.errors.missing',
+  extended: 'consumer_view.downloads.extended.errors.missing'
+};
+
+export const downloadFormErrorKey = (field: string): string => DOWNLOAD_FORM_ERROR_KEYS[field] ?? 'errors.problem';
