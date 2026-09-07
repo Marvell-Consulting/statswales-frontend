@@ -82,9 +82,9 @@ describe('download form validation (radios no longer default to a value)', () =>
       expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining('/download/filter-id-123'));
     });
 
-    // `extended` is optional (omitting it is fine, treated as "no"), but it's not in
-    // DOWNLOAD_FORM_ERROR_KEYS's explicit list - a field left out of that map must still get a
-    // real message key, not `undefined` (github.com/Marvell-Consulting/statswales-frontend/pull/689)
+    // `extended` is optional (omitting it is fine, treated as "no"), but an out-of-range value should still map to a
+    // real message key, not `undefined` (github.com/Marvell-Consulting/statswales-frontend/pull/689).
+    // This protects error rendering/translation when handling tampered POSTs.
     test('gives a real error key for an out-of-range extended value, not an undefined one', async () => {
       const req = mockReq({ ...validSubmission, extended: 'maybe' });
       const res = mockRes();
