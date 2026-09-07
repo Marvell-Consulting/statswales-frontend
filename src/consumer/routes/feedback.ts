@@ -4,6 +4,7 @@ import { NotifyClient } from 'notifications-node-client';
 
 import { i18next } from '../../shared/middleware/translation';
 import { flashMessages } from '../../shared/middleware/flash';
+import { verifyPublicCsrfToken } from '../../shared/middleware/csrf-cookie';
 import { ViewError } from '../../shared/dtos/view-error';
 import {
   emailValidator,
@@ -73,4 +74,4 @@ const feedbackForm = async (req: Request, res: Response) => {
 };
 
 feedback.get('/', feedbackForm);
-feedback.post('/', bodyParser, feedbackForm);
+feedback.post('/', bodyParser, verifyPublicCsrfToken, feedbackForm);

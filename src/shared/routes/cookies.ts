@@ -13,6 +13,7 @@ import { docRenderer, createToc, getTitle } from '../services/marked';
 import { CookiePreferences } from '../interfaces/cookie-preferences';
 import { config } from '../config';
 import { flashMessages } from '../middleware/flash';
+import { verifyPublicCsrfToken } from '../middleware/csrf-cookie';
 import { RequestHistory } from '../interfaces/request-history';
 import { Locale } from '../enums/locale';
 
@@ -128,5 +129,5 @@ const cookieDetailsPage = async (req: Request, res: Response, next: NextFunction
 };
 
 cookies.get('/', bodyParser, cookiePage);
-cookies.post('/', bodyParser, cookiePage);
+cookies.post('/', bodyParser, verifyPublicCsrfToken, cookiePage);
 cookies.get('/details', cookieDetailsPage);

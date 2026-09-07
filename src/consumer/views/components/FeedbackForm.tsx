@@ -6,6 +6,7 @@ import { clsx } from 'clsx';
 import { ViewError } from '../../../shared/dtos/view-error';
 import { SatisfactionOptions } from '../../../shared/enums/satisfaction-options';
 import FlashMessages from '../../../shared/views/components/FlashMessages';
+import PublicCsrfField from '../../../shared/views/components/PublicCsrfField';
 
 type FeedbackFormProps = {
   values: { satisfaction: string; improve: string; name?: string; email?: string };
@@ -29,6 +30,7 @@ export default function FeedbackForm(props: FeedbackFormProps) {
         </h1>
 
         <form method="POST" action={buildUrl('/feedback', i18n.language)} className="govuk-form-group" noValidate>
+          <PublicCsrfField />
           <RadioGroup
             name="satisfaction"
             label={i18n.t('feedback.form.satisfaction.label')}

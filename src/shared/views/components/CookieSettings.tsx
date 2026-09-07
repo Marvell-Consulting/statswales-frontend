@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocals } from '../context/Locals';
 import RadioGroup from './RadioGroup';
 import T from './T';
+import PublicCsrfField from './PublicCsrfField';
 import { CookiePreferences } from '../../interfaces/cookie-preferences';
 
 type CookieSettingsProps = {
@@ -66,6 +67,7 @@ export default function CookieSettings(props: CookieSettingsProps) {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <form method="POST" action={buildUrl('/cookies', i18n.language)} className="govuk-form-group">
+            <PublicCsrfField />
             <RadioGroup
               name="measuring"
               labelledBy="guidance-cookies-that-measure-website-use"

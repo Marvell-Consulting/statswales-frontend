@@ -60,8 +60,12 @@ describe('Publish route field size errors', () => {
     return agent;
   };
 
+  // the cookie banner (rendered on every page) carries its own "_csrf" field for the separate
+  // double-submit-cookie mechanism, so it must be stripped out before looking for the
+  // session-bound token in the page's actual form
   const extractCsrfToken = (html: string): string => {
-    const inputMatch = html.match(/<input\b[^>]*\bname="_csrf"[^>]*>/);
+    const withoutCookieBanner = html.replace(/<form id="cookie-banner-form"[\s\S]*?<\/form>/, '');
+    const inputMatch = withoutCookieBanner.match(/<input\b[^>]*\bname="_csrf"[^>]*>/);
     const valueMatch = inputMatch?.[0].match(/\bvalue="([^"]*)"/);
     if (!valueMatch) throw new Error('Could not find CSRF token in rendered page');
     return valueMatch[1];
