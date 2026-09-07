@@ -43,7 +43,8 @@ import {
   extendedValidator,
   formatValidator,
   viewChoiceValidator,
-  viewTypeValidator
+  viewTypeValidator,
+  DOWNLOAD_FORM_ERROR_KEYS
 } from '../../shared/validators';
 import { ViewError } from '../../shared/dtos/view-error';
 import { logger } from '../../shared/utils/logger';
@@ -53,7 +54,6 @@ import { SourceAssignmentDTO } from '../../shared/dtos/source-assignment-dto';
 import { UnknownException } from '../../shared/exceptions/unknown.exception';
 import { TaskListState } from '../../shared/dtos/task-list-state';
 import { NotFoundException } from '../../shared/exceptions/not-found.exception';
-import { BadRequestException } from '../../shared/exceptions/bad-request.exception';
 import { singleLangDataset, singleLangRevision } from '../../shared/utils/single-lang-dataset';
 import { Designation } from '../../shared/enums/designation';
 import { RelatedLinkDTO } from '../../shared/dtos/related-link';
@@ -717,14 +717,17 @@ export const downloadPreview = async (req: Request, res: Response, next: NextFun
         extendedValidator()
       ];
 
-      const errors = (await getErrors(validators, req)).map((error: FieldValidationError) => {
-        return { field: error.path, message: error.msg };
-      });
+      const errors = await getErrors(validators, req);
 
       if (errors.length > 0) {
-        logger.error(errors, 'Validation errors in download preview form');
-        const errorMessage = errors.map((e) => `${e.field}: ${e.message}`).join(', ');
-        return next(new BadRequestException(errorMessage));
+        logger.debug(errors, 'Validation errors in download preview form');
+        req.session.errors = errors.map((error: FieldValidationError) => ({
+          field: error.path,
+          message: { key: DOWNLOAD_FORM_ERROR_KEYS[error.path] }
+        }));
+        req.session.save();
+        res.redirect(req.buildUrl(`publish/${datasetId}/cube-preview`, req.language, {}, 'downloads'));
+        return;
       }
 
       let filters: FilterV2[] = [];

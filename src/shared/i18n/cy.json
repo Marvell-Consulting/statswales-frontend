@@ -1716,6 +1716,9 @@
     "downloads": {
       "type": {
         "heading": "Dewiswch beth i'w lawrlwytho",
+        "errors": {
+          "missing": "Dewiswch beth i'w lawrlwytho"
+        },
         "options": {
           "filtered": {
             "label": "Tabl presennol yn y tab 'Gweld data'"
@@ -1727,6 +1730,9 @@
       },
       "file_type": {
         "heading": "Dewiswch fformat lawrlwytho",
+        "errors": {
+          "missing": "Dewiswch fformat lawrlwytho"
+        },
         "options": {
           "csv": {
             "label": "CSV",
@@ -1744,6 +1750,9 @@
       },
       "number_formatting": {
         "heading": "Dewiswch fformat rhifau",
+        "errors": {
+          "missing": "Dewiswch fformat rhifau"
+        },
         "options": {
           "formatted": {
             "label": "Rhifau wedi'u fformatio",
@@ -1773,6 +1782,9 @@
       },
       "language": {
         "heading": "Dewiswch iaith",
+        "errors": {
+          "missing": "Dewiswch iaith"
+        },
         "options": {
           "english": {
             "label": "Saesneg"

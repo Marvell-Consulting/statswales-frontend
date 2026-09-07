@@ -40,7 +40,6 @@ function ExtendedOptions() {
           label: i18n.t('consumer_view.downloads.extended.options.no.label')
         }
       ]}
-      value="yes"
     />
   );
 }
@@ -65,6 +64,7 @@ export default function DownloadTab(props: DownloadTabProps) {
           <RadioGroup
             name="view_type"
             label={i18n.t('consumer_view.downloads.type.heading')}
+            errorMessage={i18n.t('consumer_view.downloads.type.errors.missing')}
             options={[
               {
                 value: 'filtered',
@@ -76,12 +76,12 @@ export default function DownloadTab(props: DownloadTabProps) {
                 children: isPivoted ? <ExtendedOptions /> : undefined
               }
             ]}
-            value={props.selectedFilterOptions ? 'filtered' : 'unfiltered'}
           />
 
           <RadioGroup
             name="format"
             label={i18n.t('consumer_view.downloads.file_type.heading')}
+            errorMessage={i18n.t('consumer_view.downloads.file_type.errors.missing')}
             options={[
               {
                 value: 'csv',
@@ -96,12 +96,12 @@ export default function DownloadTab(props: DownloadTabProps) {
                 label: i18n.t('consumer_view.downloads.file_type.options.json.label')
               }
             ]}
-            value="csv"
           />
 
           <RadioGroup
             name="view_choice"
             label={i18n.t('consumer_view.downloads.number_formatting.heading')}
+            errorMessage={i18n.t('consumer_view.downloads.number_formatting.errors.missing')}
             options={[
               {
                 value: 'formatted',
@@ -113,13 +113,13 @@ export default function DownloadTab(props: DownloadTabProps) {
                 label: i18n.t('consumer_view.downloads.number_formatting.options.unformatted.label')
               }
             ]}
-            value="formatted"
           />
 
           {!isPivoted && <ExtendedOptions />}
           <RadioGroup
             name="download_language"
             label={i18n.t('consumer_view.downloads.language.heading')}
+            errorMessage={i18n.t('consumer_view.downloads.language.errors.missing')}
             options={[
               {
                 value: 'en-GB',
@@ -130,7 +130,6 @@ export default function DownloadTab(props: DownloadTabProps) {
                 label: i18n.t('consumer_view.downloads.language.options.welsh.label')
               }
             ]}
-            value={i18n.language}
           />
 
           <input

@@ -1750,6 +1750,9 @@
     "downloads": {
       "type": {
         "heading": "Select what to download",
+        "errors": {
+          "missing": "Select what to download"
+        },
         "options": {
           "filtered": {
             "label": "Current table in 'View data' tab"
@@ -1761,6 +1764,9 @@
       },
       "file_type": {
         "heading": "Select download format",
+        "errors": {
+          "missing": "Select download format"
+        },
         "options": {
           "csv": {
             "label": "CSV",
@@ -1778,6 +1784,9 @@
       },
       "number_formatting": {
         "heading": "Select number formatting",
+        "errors": {
+          "missing": "Select number formatting"
+        },
         "options": {
           "formatted": {
             "label": "Formatted numbers",
@@ -1807,6 +1816,9 @@
       },
       "language": {
         "heading": "Select language",
+        "errors": {
+          "missing": "Select language"
+        },
         "options": {
           "english": {
             "label": "English"
