@@ -39,10 +39,13 @@ const buildHarness = (seedHistory: RequestHistory[]) => {
 const entry = (url: string): RequestHistory => ({ url, timestamp: new Date().toISOString(), method: 'GET' });
 
 const extractCookieValue = (res: request.Response, name: string): string => {
-  const setCookie = (res.headers['set-cookie'] as unknown as string[]) || [];
+  const raw = res.headers['set-cookie'];
+  const setCookie = Array.isArray(raw) ? raw : typeof raw === 'string' ? [raw] : [];
   const line = setCookie.find((c) => c.startsWith(`${name}=`));
   if (!line) throw new Error(`${name} cookie was not set`);
-  return line.split(';')[0].split('=')[1];
+  // take everything up to the first ";" rather than splitting on "=", so a value that itself
+  // contains "=" (e.g. base64 padding) isn't truncated
+  return line.split(';')[0].slice(name.length + 1);
 };
 
 // primes the double-submit CSRF cookie via a GET, as a real browser would before submitting

@@ -16,7 +16,7 @@ export const csrfToken = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-export const timingSafeTokensMatch = (a: string, b: string): boolean => {
+const timingSafeTokensMatch = (a: string, b: string): boolean => {
   if (a.length !== b.length) {
     return false;
   }
