@@ -49,4 +49,11 @@ describe('DownloadTab — no radio pre-selected (SW-1334)', () => {
     const html = render([{ field: 'format', message: { key: 'consumer_view.downloads.file_type.errors.missing' } }]);
     expect(html).not.toContain('consumer_view.downloads.type.errors.missing');
   });
+
+  // extended is optional, but an out-of-range value (e.g. a tampered POST) still produces a
+  // real field error - the RadioGroup must actually render it, not just apply the error styling
+  test('shows the field-level error message for an out-of-range extended value', () => {
+    const html = render([{ field: 'extended', message: { key: 'consumer_view.downloads.extended.errors.missing' } }]);
+    expect(html).toContain('consumer_view.downloads.extended.errors.missing');
+  });
 });

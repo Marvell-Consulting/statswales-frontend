@@ -28,6 +28,7 @@ function ExtendedOptions() {
     <RadioGroup
       name="extended"
       label={i18n.t('consumer_view.downloads.extended.heading')}
+      errorMessage={i18n.t('consumer_view.downloads.extended.errors.missing')}
       hint={<ExtendedHint />}
       options={[
         {
