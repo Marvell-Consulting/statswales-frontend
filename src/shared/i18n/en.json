@@ -1799,6 +1799,9 @@
       },
       "extended": {
         "heading": "Select whether to include reference codes and hierarchies",
+        "errors": {
+          "missing": "Select whether to include reference codes and hierarchies"
+        },
         "description": {
           "reference_codes": "Reference codes are unique identifiers for specific variable values, such as geographic areas",
           "hierarchies": "Hierarchies show how variable values are grouped together, such as which geographic areas are in which larger geographic areas",

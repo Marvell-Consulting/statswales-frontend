@@ -44,7 +44,7 @@ import {
   formatValidator,
   viewChoiceValidator,
   viewTypeValidator,
-  DOWNLOAD_FORM_ERROR_KEYS
+  downloadFormErrorKey
 } from '../../shared/validators';
 import { ViewError } from '../../shared/dtos/view-error';
 import { logger } from '../../shared/utils/logger';
@@ -723,7 +723,7 @@ export const downloadPreview = async (req: Request, res: Response, next: NextFun
         logger.debug(errors, 'Validation errors in download preview form');
         req.session.errors = errors.map((error: FieldValidationError) => ({
           field: error.path,
-          message: { key: DOWNLOAD_FORM_ERROR_KEYS[error.path] }
+          message: { key: downloadFormErrorKey(error.path) }
         }));
         req.session.save();
         res.redirect(req.buildUrl(`publish/${datasetId}/cube-preview`, req.language, {}, 'downloads'));

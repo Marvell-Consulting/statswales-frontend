@@ -3,7 +3,14 @@ import { Request, Response, NextFunction } from 'express';
 import { downloadPublishedDataset } from '../src/consumer/controllers/consumer';
 import { downloadPreview } from '../src/publisher/controllers/publish';
 import { localeUrl } from '../src/shared/middleware/language-switcher';
+import { downloadFormErrorKey } from '../src/shared/validators';
 import { Locale } from '../src/shared/enums/locale';
+
+describe('downloadFormErrorKey', () => {
+  test('falls back to the generic "there is a problem" key for a field with no explicit mapping', () => {
+    expect(downloadFormErrorKey('some_unmapped_field')).toBe('errors.problem');
+  });
+});
 
 // the download form used to pre-select a radio in every group, so this validation branch was
 // unreachable from a real browser - now the radios start blank (SW-1334), a submission that
@@ -74,6 +81,22 @@ describe('download form validation (radios no longer default to a value)', () =>
       expect(req.session.errors).toBeUndefined();
       expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining('/download/filter-id-123'));
     });
+
+    // `extended` is optional (omitting it is fine, treated as "no"), but it's not in
+    // DOWNLOAD_FORM_ERROR_KEYS's explicit list - a field left out of that map must still get a
+    // real message key, not `undefined` (github.com/Marvell-Consulting/statswales-frontend/pull/689)
+    test('gives a real error key for an out-of-range extended value, not an undefined one', async () => {
+      const req = mockReq({ ...validSubmission, extended: 'maybe' });
+      const res = mockRes();
+      const next = jest.fn();
+
+      await downloadPublishedDataset(req, res, next as NextFunction);
+
+      expect(next).not.toHaveBeenCalled();
+      expect(req.session.errors).toEqual([
+        { field: 'extended', message: { key: 'consumer_view.downloads.extended.errors.missing' } }
+      ]);
+    });
   });
 
   describe('publisher downloadPreview', () => {
@@ -119,6 +142,19 @@ describe('download form validation (radios no longer default to a value)', () =>
       expect(next).not.toHaveBeenCalled();
       expect(req.session.errors).toBeUndefined();
       expect(res.redirect).toHaveBeenCalledWith(expect.stringContaining('/download/filter-id-456'));
+    });
+
+    test('gives a real error key for an out-of-range extended value, not an undefined one', async () => {
+      const req = mockReq({ ...validSubmission, extended: 'maybe' });
+      const res = mockRes();
+      const next = jest.fn();
+
+      await downloadPreview(req, res, next as NextFunction);
+
+      expect(next).not.toHaveBeenCalled();
+      expect(req.session.errors).toEqual([
+        { field: 'extended', message: { key: 'consumer_view.downloads.extended.errors.missing' } }
+      ]);
     });
   });
 });

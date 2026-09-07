@@ -1765,6 +1765,9 @@
       },
       "extended": {
         "heading": "Dewiswch a ddylid cynnwys codau cyfeirio a hierarchiaethau",
+        "errors": {
+          "missing": "Dewiswch a ddylid cynnwys codau cyfeirio a hierarchiaethau"
+        },
         "description": {
           "reference_codes": "Mae codau cyfeirio yn ddynodwyr unigryw ar gyfer gwerthoedd newidyn penodol, fel ardaloedd daearyddol",
           "hierarchies": "Mae hierarchiaethau'n dangos sut mae gwerthoedd newidyn yn cael eu grwpio gyda'i gilydd, fel pa ardaloedd daearyddol sydd ym mha ardaloedd daearyddol mwy",

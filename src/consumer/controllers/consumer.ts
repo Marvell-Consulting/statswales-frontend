@@ -40,7 +40,7 @@ import {
   downloadLanguageValidator,
   viewChoiceValidator,
   extendedValidator,
-  DOWNLOAD_FORM_ERROR_KEYS
+  downloadFormErrorKey
 } from '../../shared/validators';
 import { FieldValidationError } from 'express-validator';
 import { SearchResultDTO } from '../../shared/dtos/search-result';
@@ -286,7 +286,7 @@ export const downloadPublishedDataset = async (req: Request, res: Response, next
         logger.debug(errors, 'Validation errors in download form');
         req.session.errors = errors.map((error: FieldValidationError) => ({
           field: error.path,
-          message: { key: DOWNLOAD_FORM_ERROR_KEYS[error.path] }
+          message: { key: downloadFormErrorKey(error.path) }
         }));
         req.session.save();
         res.redirect(req.buildUrl(`/${dataset.id}`, req.language, {}, 'downloads'));
