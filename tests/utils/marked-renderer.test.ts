@@ -21,7 +21,11 @@ describe('sanitizeHref', () => {
     'java\tscript:alert(1)',
     'java\nscript:alert(1)',
     'data:text/html,<script>alert(1)</script>',
-    'vbscript:msgbox(1)'
+    'vbscript:msgbox(1)',
+    '/\\javascript:alert(1)',
+    '//evil.example.com',
+    '\\\\evil.example.com',
+    '/\\evil.example.com'
   ])('rejects %j', (href) => {
     expect(sanitizeHref(href)).toBeUndefined();
   });
@@ -50,6 +54,23 @@ describe.each([
     expect(html).not.toContain('javascript:');
     expect(html).not.toContain('<a');
     expect(html).toContain('click me');
+  });
+
+  it('renders images with allowed sources', () => {
+    expect(render('![Chart](/assets/chart.png "A chart")')).toContain(
+      '<img src="/assets/chart.png" alt="Chart" title="A chart">'
+    );
+  });
+
+  it('drops the image for javascript: sources but keeps the alt text', () => {
+    const html = render('![click me](javascript:alert(1))');
+    expect(html).not.toContain('javascript:');
+    expect(html).not.toContain('<img');
+    expect(html).toContain('click me');
+  });
+
+  it('escapes image titles', () => {
+    expect(render('![x](/a.png "a\\" onerror=\\"alert(1)")')).not.toContain('" onerror="');
   });
 
   it('only emits allow-listed align values on table cells', () => {
