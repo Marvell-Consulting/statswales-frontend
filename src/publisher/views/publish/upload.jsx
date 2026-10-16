@@ -4,6 +4,7 @@ import CsrfField from '../components/CsrfField';
 import ErrorHandler from '../components/ErrorHandler';
 import { Spinner } from '../../../shared/views/components/Spinner';
 import T from '../../../shared/views/components/T';
+import { safeJson } from '../../../shared/utils/safe-json';
 
 export default function Title(props) {
   const backLink = props.revisit && props.referrer;
@@ -112,7 +113,7 @@ export default function Title(props) {
               formData.append('_csrf', form.elements['_csrf'].value);
 
               try {
-                const res = await fetch('${props.url}', {
+                const res = await fetch(${safeJson(props.url)}, {
                   method: "POST",
                   body: formData,
                   headers: {
@@ -127,7 +128,7 @@ export default function Title(props) {
                   loading.classList.add("hidden");
                   const errors = resJson.errors;
 
-                  errorWrapper.innerHTML = '${errorHtml.split('\n').join('')}';
+                  errorWrapper.innerHTML = ${safeJson(errorHtml.split('\n').join(''))};
                   const innerWrapper = errorWrapper.querySelector(".govuk-error-summary__list");
 
                   errors.forEach(error => {
@@ -141,7 +142,7 @@ export default function Title(props) {
               } catch (err) {
                 console.error(err);
                 loading.classList.add("hidden");
-                errorWrapper.innerHTML = '${errorHtml.split('\n').join('')}';
+                errorWrapper.innerHTML = ${safeJson(errorHtml.split('\n').join(''))};
                 const innerWrapper = errorWrapper.querySelector(".govuk-error-summary__list");
                 const li = document.createElement("li");
                 li.innerHTML = "<a href='#csv'>${props.t('publish.upload.errors.api')}</a>";

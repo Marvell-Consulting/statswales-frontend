@@ -64,7 +64,13 @@ export const publish = Router();
 
 export const MULTIPART_FIELD_SIZE_LIMIT = 10 * 1024 * 1024;
 
-const upload = multer({ storage: multer.memoryStorage(), limits: { fieldSize: MULTIPART_FIELD_SIZE_LIMIT } });
+// matches the backend's maxFileByteLength so the frontend never rejects an upload the backend would accept
+export const MULTIPART_FILE_SIZE_LIMIT = 500 * 1024 * 1024;
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fieldSize: MULTIPART_FIELD_SIZE_LIMIT, fileSize: MULTIPART_FILE_SIZE_LIMIT, files: 1 }
+});
 
 const uploadNone = [upload.none(), verifyCsrfToken];
 const uploadSingle = (field: string) => [upload.single(field), verifyCsrfToken];

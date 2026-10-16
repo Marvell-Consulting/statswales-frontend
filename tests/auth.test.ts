@@ -6,6 +6,7 @@ import { i18next } from '../src/shared/middleware/translation';
 import app from '../src/publisher/app';
 import { config } from '../src/shared/config';
 import { Locale } from '../src/shared/enums/locale';
+import { AppEnv } from '../src/shared/config/env.enum';
 
 import { mockBackend } from './mocks/backend';
 
@@ -44,6 +45,35 @@ describe('Authentication', () => {
     test('expired token error', async () => {
       const res = await request(app).get('/en-GB/auth/login?error=expired');
       expect(res.text).toContain(t('login.error.expired', { lng: Locale.English }));
+    });
+  });
+
+  describe('/local', () => {
+    const originalEnv = config.env;
+
+    afterEach(() => {
+      config.env = originalEnv;
+    });
+
+    test('form login is available in CI', async () => {
+      const res = await request(app).get('/en-GB/auth/local');
+      expect(res.status).toBe(200);
+    });
+
+    test('form login redirects to the backend with the username encoded', async () => {
+      const res = await request(app).post('/en-GB/auth/local').type('form').send({ username: 'a&b=c' });
+      expect(res.status).toBe(302);
+      expect(res.header.location).toBe(`${config.backend.url}/auth/local?username=a%26b%3Dc`);
+    });
+
+    test.each([AppEnv.Staging, AppEnv.Prod, AppEnv.Default])('form login is not found in %s', async (env) => {
+      config.env = env;
+      const getRes = await request(app).get('/en-GB/auth/local');
+      expect(getRes.status).toBe(404);
+
+      const postRes = await request(app).post('/en-GB/auth/local').type('form').send({ username: 'test' });
+      expect(postRes.status).toBe(404);
+      expect(postRes.header.location).toBeUndefined();
     });
   });
 

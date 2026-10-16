@@ -6,6 +6,26 @@ import { marked, Renderer, RendererObject, Tokens } from 'marked';
 
 export const originalRenderer = new Renderer();
 
+const ALLOWED_ALIGNS = new Set(['left', 'right', 'center']);
+const ALLOWED_PROTOCOLS = new Set(['http:', 'https:', 'mailto:']);
+
+// The renderers below build raw HTML, so they must not rely on callers running DOMPurify over the output to stay
+// safe. Returns an attribute-safe href, or undefined for anything that isn't a relative link or an allow-listed
+// protocol (e.g. javascript:, data:, vbscript:), in which case the link text is rendered without an anchor.
+export const sanitizeHref = (href: string): string | undefined => {
+  // browsers ignore ASCII whitespace/control chars when resolving a URL scheme ("java\tscript:"), so strip them
+  // before deciding whether there is one
+  // eslint-disable-next-line no-control-regex
+  const normalised = href.replace(/[\u0000-\u0020\u007f]/g, '');
+  const scheme = normalised.match(/^([a-z][a-z0-9+.-]*):/i);
+
+  if (scheme && !ALLOWED_PROTOCOLS.has(`${scheme[1].toLowerCase()}:`)) {
+    return undefined;
+  }
+
+  return href.trim().replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+};
+
 export const docRenderer: RendererObject = {
   paragraph({ tokens }: Tokens.Paragraph): string {
     const text = this.parser.parseInline(tokens);
@@ -58,10 +78,7 @@ export const docRenderer: RendererObject = {
   },
   tablecell({ tokens, align, header }: Tokens.TableCell) {
     const text = this.parser.parseInline(tokens);
-    let cellAlign = '';
-    if (align !== null) {
-      cellAlign = ` align="${align}"`;
-    }
+    const cellAlign = align && ALLOWED_ALIGNS.has(align) ? ` align="${align}"` : '';
     let alignClass = '';
     if (align === 'right') {
       alignClass = ' govuk-table__header--numeric';
@@ -73,7 +90,8 @@ export const docRenderer: RendererObject = {
   },
   link({ tokens, href }) {
     const text = this.parser.parseInline(tokens);
-    return `<a class="govuk-link" href="${href}">${text}</a>`;
+    const safeHref = sanitizeHref(href);
+    return safeHref ? `<a class="govuk-link" href="${safeHref}">${text}</a>` : text;
   }
 };
 
@@ -123,10 +141,7 @@ export const metadataRenderer: RendererObject = {
   },
   tablecell({ tokens, align, header }: Tokens.TableCell) {
     const text = this.parser.parseInline(tokens);
-    let cellAlign = '';
-    if (align !== null) {
-      cellAlign = ` align="${align}"`;
-    }
+    const cellAlign = align && ALLOWED_ALIGNS.has(align) ? ` align="${align}"` : '';
     let alignClass = '';
     if (align === 'right') {
       alignClass = ' govuk-table__header--numeric';
@@ -138,7 +153,8 @@ export const metadataRenderer: RendererObject = {
   },
   link({ tokens, href }) {
     const text = this.parser.parseInline(tokens);
-    return `<a class="govuk-link" href="${href}">${text}</a>`;
+    const safeHref = sanitizeHref(href);
+    return safeHref ? `<a class="govuk-link" href="${safeHref}">${text}</a>` : text;
   }
 };
 

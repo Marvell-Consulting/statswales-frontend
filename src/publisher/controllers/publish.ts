@@ -116,6 +116,7 @@ import { DEFAULT_PAGE_SIZE, parsePageOptions } from '../../shared/utils/parse-pa
 import { DataValueType } from '../../shared/enums/data-value-type';
 import { FilterV2, Filter } from '../../shared/interfaces/filter';
 import { getDownloadFilename } from '../../shared/utils/download-filename';
+import { safeReferer } from '../../shared/utils/safe-referer';
 
 // the default nanoid alphabet includes hyphens which causes issues with the translation export/import process in Excel
 // - it tries to be smart and interprets strings that start with a hypen as a formula.
@@ -616,7 +617,7 @@ export const cubePreview = async (req: Request, res: Response, next: NextFunctio
       }));
       req.session.save();
       const fallback = req.buildUrl(`/publish/${datasetId}/cube-preview`, req.language);
-      res.redirect(req.headers.referer ?? fallback);
+      res.redirect(safeReferer(req, fallback));
       return;
     }
 
