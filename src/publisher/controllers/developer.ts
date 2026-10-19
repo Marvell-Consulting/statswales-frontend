@@ -30,6 +30,7 @@ import { PublishingStatus } from '../../shared/enums/publishing-status';
 import { processFileList, getDatasetJson } from '../utils/dev';
 import { DatasetDTO } from '../../shared/dtos/dataset';
 import { set } from 'lodash';
+import { safeReferer } from '../../shared/utils/safe-referer';
 
 export const listAllDatasets = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -68,7 +69,7 @@ export const datasetPreview = async (req: Request, res: Response) => {
       }));
       req.session.save();
       const fallback = req.buildUrl(`/developer/${datasetId}`, req.language);
-      res.redirect(req.headers.referer ?? fallback);
+      res.redirect(safeReferer(req, fallback));
       return;
     }
 

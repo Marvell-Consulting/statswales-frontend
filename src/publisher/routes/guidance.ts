@@ -48,9 +48,13 @@ guidance.get('/:file', async (req: Request, res: Response, next: NextFunction) =
       break;
     }
   }
-  const requestedFilePath = path.join(fullDocsPath, `${req.params.file}.md`);
-  const normalizedFilePath = path.resolve(requestedFilePath);
-  if (!normalizedFilePath.startsWith(fullDocsPath) || !fs.existsSync(normalizedFilePath)) {
+  const requestedFile = req.params.file as string;
+  // guidance docs are a flat directory, so a valid name never contains a separator or a parent reference
+  const hasUnsafeChars = /[/\\\0]/.test(requestedFile) || requestedFile.includes('..');
+  const normalizedFilePath = path.resolve(fullDocsPath, `${requestedFile}.md`);
+  // compare against the dir plus a trailing separator so a sibling like "en-old/" can't pass a prefix check for "en"
+  const isInsideDocsDir = normalizedFilePath.startsWith(`${path.resolve(fullDocsPath)}${path.sep}`);
+  if (hasUnsafeChars || !isInsideDocsDir || !fs.existsSync(normalizedFilePath)) {
     logger.warn(`File does not exist in guidance: ${req.params.file}`);
     next(new NotFoundException());
     return;

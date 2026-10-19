@@ -1,10 +1,12 @@
-import { Router, Request, Response, urlencoded } from 'express';
+import { Router, Request, Response, NextFunction, urlencoded } from 'express';
 import JWT from 'jsonwebtoken';
 
 import { logger } from '../../shared/utils/logger';
 import { JWTPayloadWithUser } from '../../shared/interfaces/jwt-payload-with-user';
 import { config } from '../../shared/config';
 import { ViewError } from '../../shared/dtos/view-error';
+import { AppEnv } from '../../shared/config/env.enum';
+import { NotFoundException } from '../../shared/exceptions/not-found.exception';
 
 export const auth = Router();
 
@@ -30,8 +32,18 @@ auth.get('/login', async (req: Request, res: Response) => {
   res.render('auth/login', { providers });
 });
 
-// Should only be used for localstack or testing
-auth.all('/local', urlencoded({ extended: false }), (req: Request, res: Response) => {
+// form login is only for local dev and CI (pre-defined test users) - every other env authenticates via EntraID,
+// so the route must not be reachable there. Checked per request rather than at mount time so config.env is
+// read when the request arrives.
+const localAuthOnly = (_req: Request, _res: Response, next: NextFunction) => {
+  if (![AppEnv.Local, AppEnv.Ci].includes(config.env)) {
+    next(new NotFoundException());
+    return;
+  }
+  next();
+};
+
+auth.all('/local', localAuthOnly, urlencoded({ extended: false }), (req: Request, res: Response) => {
   let errors: ViewError[] | undefined;
 
   if (req.method === 'POST') {
@@ -44,7 +56,7 @@ auth.all('/local', urlencoded({ extended: false }), (req: Request, res: Response
     }
 
     logger.debug('Sending user to backend for form login');
-    res.redirect(`${config.backend.url}/auth/local?username=${username}`);
+    res.redirect(`${config.backend.url}/auth/local?username=${encodeURIComponent(username)}`);
     return;
   }
 

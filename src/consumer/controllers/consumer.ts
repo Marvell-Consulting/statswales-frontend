@@ -45,6 +45,7 @@ import { FieldValidationError } from 'express-validator';
 import { SearchResultDTO } from '../../shared/dtos/search-result';
 import { sanitizeSearchResults } from '../../shared/utils/sanitize-search-results';
 import { PivotStage } from '../../shared/enums/pivot-stage';
+import { safeReferer } from '../../shared/utils/safe-referer';
 
 export const listTopics = async (req: Request, res: Response, next: NextFunction) => {
   const topicId = req.params.topicId ? req.params.topicId.match(/\d+/)?.[0] : undefined;
@@ -195,7 +196,7 @@ export const viewFilteredDataset = async (req: Request, res: Response, next: Nex
       }));
       req.session.save();
       const fallback = req.buildUrl(`/${dataset.id}`, req.language, {}, 'dataset-nav');
-      res.redirect(req.headers.referer ?? fallback);
+      res.redirect(safeReferer(req, fallback));
       return;
     }
 
@@ -532,7 +533,7 @@ export const createPublishedDatasetPivot = async (req: Request, res: Response, n
       }));
       req.session.save();
       const fallback = req.buildUrl(`/${dataset.id}/pivot`, req.language, {}, 'dataset-nav');
-      res.redirect(req.headers.referer ?? fallback);
+      res.redirect(safeReferer(req, fallback));
       return;
     }
 

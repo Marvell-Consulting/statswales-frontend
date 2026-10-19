@@ -3,6 +3,7 @@ import React from 'react';
 import { FilterTable } from '../../../dtos/filter-table';
 import { CheckboxGroup } from '../CheckboxGroup';
 import T from '../T';
+import { safeJson } from '../../../utils/safe-json';
 import { useLocals } from '../../context/Locals';
 import { NO_JS_FILTER_CAP, cappedFilterValues, toSearchOptions } from './searchable-filter';
 
@@ -11,10 +12,6 @@ export type SearchableFilterProps = {
   values?: string[];
   disabled?: boolean;
 };
-
-// Embed data as JSON inside a <script> without letting a stray "</script>" or
-// "<!--" in a label break out of the element. JSON.parse reads < fine.
-const safeJson = (data: unknown): string => JSON.stringify(data).replace(/</g, '\\u003c');
 
 // High-cardinality dimensions (thousands of values). Rendering one checkbox per
 // value freezes the browser, so we render the first NO_JS_FILTER_CAP values as a

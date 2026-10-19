@@ -6,6 +6,48 @@ import { marked, Renderer, RendererObject, Tokens } from 'marked';
 
 export const originalRenderer = new Renderer();
 
+const ALLOWED_ALIGNS = new Set(['left', 'right', 'center']);
+const ALLOWED_PROTOCOLS = new Set(['http:', 'https:', 'mailto:']);
+const SCHEME = /^[a-z][a-z0-9+.-]*:/i;
+// placeholder origin for resolving relative hrefs - anything that resolves elsewhere wasn't relative
+const RELATIVE_BASE = new URL('https://relative.invalid/');
+
+const escapeAttr = (value: string): string =>
+  value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+
+// The renderers below build raw HTML, so they must not rely on callers running DOMPurify over the output to stay
+// safe. Returns an attribute-safe URL, or undefined for anything that isn't a same-origin relative link or an
+// explicit allow-listed protocol (rejecting e.g. javascript:, data:, protocol-relative "//host" and "\\host"), in
+// which case the caller renders the text without a link/image.
+export const sanitizeHref = (href: string): string | undefined => {
+  // browsers ignore ASCII whitespace/control chars when resolving a URL scheme ("java\tscript:"), so strip them
+  // before deciding what the URL resolves to
+  // eslint-disable-next-line no-control-regex
+  const normalised = href.replace(/[\u0000- \u007f]/g, '');
+
+  let resolved: URL;
+  try {
+    // resolve the way a browser would, so backslash and protocol-relative tricks are judged on where they really go
+    resolved = new URL(normalised, RELATIVE_BASE);
+  } catch {
+    return undefined;
+  }
+
+  const isRelative = !SCHEME.test(normalised) && resolved.origin === RELATIVE_BASE.origin;
+  const hasAllowedScheme = SCHEME.test(normalised) && ALLOWED_PROTOCOLS.has(resolved.protocol);
+
+  return isRelative || hasAllowedScheme ? escapeAttr(href.trim()) : undefined;
+};
+
+// marked's default image renderer only URL-encodes src, so e.g. javascript: would still get through
+function image(this: Renderer, { href, title, text, tokens }: Tokens.Image): string {
+  const alt = tokens ? this.parser.parseInline(tokens, this.parser.textRenderer) : escapeAttr(text);
+  const safeSrc = sanitizeHref(href);
+  if (!safeSrc) return alt;
+  const titleAttr = title ? ` title="${escapeAttr(title)}"` : '';
+  return `<img src="${safeSrc}" alt="${alt}"${titleAttr}>`;
+}
+
 export const docRenderer: RendererObject = {
   paragraph({ tokens }: Tokens.Paragraph): string {
     const text = this.parser.parseInline(tokens);
@@ -58,10 +100,7 @@ export const docRenderer: RendererObject = {
   },
   tablecell({ tokens, align, header }: Tokens.TableCell) {
     const text = this.parser.parseInline(tokens);
-    let cellAlign = '';
-    if (align !== null) {
-      cellAlign = ` align="${align}"`;
-    }
+    const cellAlign = align && ALLOWED_ALIGNS.has(align) ? ` align="${align}"` : '';
     let alignClass = '';
     if (align === 'right') {
       alignClass = ' govuk-table__header--numeric';
@@ -73,8 +112,10 @@ export const docRenderer: RendererObject = {
   },
   link({ tokens, href }) {
     const text = this.parser.parseInline(tokens);
-    return `<a class="govuk-link" href="${href}">${text}</a>`;
-  }
+    const safeHref = sanitizeHref(href);
+    return safeHref ? `<a class="govuk-link" href="${safeHref}">${text}</a>` : text;
+  },
+  image
 };
 
 export const metadataRenderer: RendererObject = {
@@ -123,10 +164,7 @@ export const metadataRenderer: RendererObject = {
   },
   tablecell({ tokens, align, header }: Tokens.TableCell) {
     const text = this.parser.parseInline(tokens);
-    let cellAlign = '';
-    if (align !== null) {
-      cellAlign = ` align="${align}"`;
-    }
+    const cellAlign = align && ALLOWED_ALIGNS.has(align) ? ` align="${align}"` : '';
     let alignClass = '';
     if (align === 'right') {
       alignClass = ' govuk-table__header--numeric';
@@ -138,8 +176,10 @@ export const metadataRenderer: RendererObject = {
   },
   link({ tokens, href }) {
     const text = this.parser.parseInline(tokens);
-    return `<a class="govuk-link" href="${href}">${text}</a>`;
-  }
+    const safeHref = sanitizeHref(href);
+    return safeHref ? `<a class="govuk-link" href="${safeHref}">${text}</a>` : text;
+  },
+  image
 };
 
 export async function getTitle(pathToFile: string): Promise<string> {
