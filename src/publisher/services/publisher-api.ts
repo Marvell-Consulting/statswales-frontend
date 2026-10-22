@@ -879,6 +879,13 @@ export class PublisherApi {
     );
   }
 
+  public async getDatasetsWithoutDateDimension(): Promise<ReadableStream> {
+    logger.debug('Fetching datasets without a date dimension...');
+    return this.fetch({ url: 'admin/datasets/without-date-dimension' }).then(
+      (response) => response.body as ReadableStream
+    );
+  }
+
   public async getDatasetPreview(
     datasetId: string,
     pageNumber: number,

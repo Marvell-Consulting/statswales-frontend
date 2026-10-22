@@ -520,6 +520,25 @@ export const similarDatasets = async (req: Request, res: Response, next: NextFun
   }
 };
 
+export const datasetsWithoutDateDimension = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const now = format(new Date(), 'yyyy-MM-dd-HH-mm-ss');
+    const fileName = `datasets-without-date-dimension-${now}.csv`;
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+    const datasetsFilestream = await req.pubapi.getDatasetsWithoutDateDimension();
+    Readable.from(datasetsFilestream).pipe(res);
+    return;
+  } catch (err: any) {
+    logger.error(err, 'there was a problem fetching datasets without a date dimension');
+    if ([401, 403].includes(err.status)) {
+      next(err);
+      return;
+    }
+    next(new NotFoundException('errors.datasets_without_date_dimension_missing'));
+  }
+};
+
 export const downloadSearchLogs = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const start = req.query.start ? new Date(req.query.start as string) : subDays(new Date(), 30);

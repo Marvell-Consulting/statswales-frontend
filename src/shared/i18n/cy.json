@@ -72,7 +72,8 @@
       "login": "Mewngofnodi",
       "developer": "Datblygwr",
       "groups": "Grwpiau",
-      "users": "Defnyddwyr"
+      "users": "Defnyddwyr",
+      "dashboard": "Ystadegau"
     }
   },
   "breadcrumbs": {
@@ -1555,6 +1556,13 @@
     "try_later": "Rhowch gynnig arall yn nes ymlaen",
     "name_missing": "Mae enw'r set ddata ar goll",
     "dataset_missing": "Ni chanfuwyd unrhyw set ddata sydd â'r ID hwn",
+    "dashboard_stats_missing": "Ni fu modd llwytho ystadegau’r gwasanaeth",
+    "similar_by_invalid": "Nid yw’r math o adroddiad setiau data tebyg yn ddilys",
+    "similar_datasets_missing": "Ni fu modd llwytho’r adroddiad setiau data tebyg",
+    "datasets_without_date_dimension_missing": "Ni fu modd llwytho’r adroddiad o setiau data heb ddimensiwn dyddiad",
+    "search_logs_missing": "Ni fu modd llwytho’r logiau chwilio",
+    "user_group_missing": "Ni chanfuwyd unrhyw grŵp sydd â'r ID hwn",
+    "user_missing": "Ni chanfuwyd unrhyw ddefnyddiwr sydd â'r ID hwn",
     "dimension_validation": {
       "duplicate_descriptions_or_notes": "Mae'r colofnau disgrifiadau yn y tabl am-edrych yr un fath ym mhob iaith. Rhaid darparu disgrifiadau ym mhob iaith ofynnol.",
       "fact_table_creation_failed": "Nid oedd modd i'r system greu tabl ffeithiau. Rhowch gynnig arall yn nes ymlaen neu cysylltwch â'r tîm cymorth.",
@@ -1814,6 +1822,124 @@
     "tasklist": "rhestr tasgau"
   },
   "admin": {
+    "dashboard": {
+      "heading": "Ystadegau’r gwasanaeth",
+      "stats": {
+        "datasets": {
+          "summary": {
+            "heading": "Crynodeb o’r setiau data",
+            "note": "*Gall setiau data fod wedi’u cyhoeddi a hefyd fod â diweddariad sy’n anghyflawn neu heb ei gymeradwyo eto. Felly, gall cyfanswm y setiau data ym mhob statws fod yn fwy na chyfanswm nifer y setiau data.",
+            "table": {
+              "status": "Statws",
+              "description": "Disgrifiad",
+              "count": "Nifer y setiau data"
+            },
+            "total": {
+              "label": "Cyfanswm y setiau data",
+              "description": "Pob set ddata ar blatfform StatsCymru*"
+            },
+            "incomplete": {
+              "label": "Anghyflawn",
+              "description": "Setiau data newydd neu ddiweddariadau sydd ar y gweill, heb eu cyflwyno i’w hadolygu eto"
+            },
+            "pending_approval": {
+              "label": "Heb ei gymeradwyo eto",
+              "description": "Setiau data newydd neu ddiweddariadau sy’n aros i gymeradwywr eu hadolygu"
+            },
+            "scheduled": {
+              "label": "Wedi'i drefnu",
+              "description": "Setiau data newydd neu ddiweddariadau sydd wedi’u cymeradwyo a’u trefnu i’w cyhoeddi"
+            },
+            "published": {
+              "label": "Cyhoeddwyd",
+              "description": "Setiau data sy’n fyw ar y wefan gyhoeddus"
+            },
+            "action_requested": {
+              "label": "Camau i'w cymryd",
+              "description": "Ceisiadau i archifo, dadarchifo neu ddatgyhoeddi"
+            },
+            "archived": {
+              "label": "Archifwyd",
+              "description": "Setiau data nad ydynt yn cael eu cynnal mwyach, ond sy’n dal i fod wedi’u cyhoeddi ar y wefan gyhoeddus"
+            },
+            "offline": {
+              "label": "Heb ei chyhoeddi",
+              "description": "Setiau data sydd wedi’u tynnu oddi ar y wefan gyhoeddus dros dro"
+            }
+          },
+          "largest": {
+            "heading": "Y setiau data mwyaf",
+            "table": {
+              "title": "Teitl y set ddata",
+              "row_count": "Nifer y rhesi",
+              "size_bytes": "Maint lawrlwytho bras (MB)"
+            }
+          },
+          "longest": {
+            "heading": "Yr amser hiraf cyn cyhoeddi",
+            "table": {
+              "title": "Teitl y set ddata",
+              "interval": "Amser cyn cyhoeddi",
+              "status": "Statws"
+            }
+          },
+          "similar": {
+            "heading": "Setiau data tebyg (lawrlwytho CSV)",
+            "by_sources": "Setiau data sy’n rhannu’r un ffynonellau",
+            "by_facts": "Setiau data â thabl ffeithiau union yr un fath",
+            "by_title": "Setiau data â theitlau tebyg",
+            "by_dimensions": "Setiau data sy’n rhannu’r un dimensiynau"
+          },
+          "search": {
+            "heading": "Chwiliadau setiau data (lawrlwytho CSV)",
+            "last_30_days": "Logiau chwilio’r wefan gyhoeddus (30 diwrnod diwethaf)"
+          },
+          "without_date_dimension": {
+            "heading": "Setiau data nad ydynt yn defnyddio data cyfeirio dyddiad safonol",
+            "count": "Nid oes gan {{count}} o setiau data drafft neu gyhoeddedig ddimensiwn dyddiad.",
+            "count_other": "Nid oes gan {{count}} o setiau data drafft neu gyhoeddedig ddimensiwn dyddiad.",
+            "note": "Yn cynnwys drafftiau newydd lle nad yw mathau’r dimensiynau wedi’u gosod eto. Nid yw setiau data wedi’u harchifo wedi’u cynnwys.",
+            "download": "Lawrlwytho’r rhestr o setiau data (CSV)"
+          }
+        },
+        "users": {
+          "summary": {
+            "heading": "Crynodeb o’r defnyddwyr",
+            "table": {
+              "status": "Statws",
+              "description": "Disgrifiad",
+              "count": "Nifer y defnyddwyr"
+            },
+            "total": {
+              "label": "Cyfanswm",
+              "description": "Pob defnyddiwr ar blatfform StatsCymru (gan gynnwys rhai sydd wedi’u dadactifadu)"
+            },
+            "active": {
+              "label": "Defnyddwyr gweithredol",
+              "description": "Defnyddwyr sydd wedi mewngofnodi o leiaf unwaith"
+            },
+            "published": {
+              "label": "Defnyddwyr sydd wedi cyhoeddi",
+              "description": "Defnyddwyr sydd ag o leiaf un set ddata wedi’i chyhoeddi"
+            }
+          },
+          "most_published": {
+            "heading": "Defnyddwyr sydd wedi cyhoeddi fwyaf",
+            "table": {
+              "name": "Enw",
+              "count": "Nifer y setiau data"
+            }
+          }
+        },
+        "groups": {
+          "heading": "Grwpiau sydd wedi cyhoeddi fwyaf",
+          "table": {
+            "name": "Enw’r grŵp",
+            "count": "Nifer y setiau data"
+          }
+        }
+      }
+    },
     "group": {
       "list": {
         "heading": "Grwpiau",

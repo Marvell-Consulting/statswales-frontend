@@ -125,6 +125,30 @@ const DatasetStats = (props) => {
 
       <div className="govuk-grid-row govuk-!-margin-bottom-5">
         <div className="govuk-grid-column-full">
+          <h2 className="govuk-heading-m">
+            {props.t('admin.dashboard.stats.datasets.without_date_dimension.heading')}
+          </h2>
+          <p className="govuk-body">
+            {props.t('admin.dashboard.stats.datasets.without_date_dimension.count', {
+              count: props.stats.datasets.without_date_dimension
+            })}
+          </p>
+          <p className="govuk-body-s">{props.t('admin.dashboard.stats.datasets.without_date_dimension.note')}</p>
+          <p className="govuk-body">
+            <a
+              href={props.buildUrl('/admin/datasets/without-date-dimension', props.i18n.language)}
+              className="govuk-link"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {props.t('admin.dashboard.stats.datasets.without_date_dimension.download')}
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <div className="govuk-grid-row govuk-!-margin-bottom-5">
+        <div className="govuk-grid-column-full">
           <h2 className="govuk-heading-m">{props.t('admin.dashboard.stats.datasets.largest.heading')}</h2>
           <Table i18nBase="admin.dashboard.stats.datasets.largest.table" columns={largestCols} rows={largestRows} />
         </div>

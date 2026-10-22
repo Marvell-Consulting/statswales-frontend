@@ -1602,6 +1602,13 @@
     "try_later": "Try again later",
     "name_missing": "Dataset name missing",
     "dataset_missing": "No dataset found with this ID",
+    "dashboard_stats_missing": "Unable to load the service statistics",
+    "similar_by_invalid": "The similar datasets report type is not valid",
+    "similar_datasets_missing": "Unable to load the similar datasets report",
+    "datasets_without_date_dimension_missing": "Unable to load the report of datasets without a date dimension",
+    "search_logs_missing": "Unable to load the search logs",
+    "user_group_missing": "No group found with this ID",
+    "user_missing": "No user found with this ID",
     "dimension_validation": {
       "duplicate_descriptions_or_notes": "The descriptions columns in the lookup table are the same in all languages. Descriptions must be provided in all required languages.",
       "fact_table_creation_failed": "Fact table could not be created by the system. Try again later or contact support.",
@@ -1929,6 +1936,13 @@
             "by_facts": "Datasets with an identical fact table",
             "by_title": "Datasets with similar titles",
             "by_dimensions": "Datasets sharing the same dimensions"
+          },
+          "without_date_dimension": {
+            "heading": "Datasets not using standardised date reference data",
+            "count_one": "{{count}} draft or published dataset does not have a date dimension.",
+            "count_other": "{{count}} draft or published datasets do not have a date dimension.",
+            "note": "Includes new drafts where the dimension types have not been set yet. Archived datasets are not included.",
+            "download": "Download the list of datasets (CSV)"
           },
           "search": {
             "heading": "Dataset searches (CSV download)",

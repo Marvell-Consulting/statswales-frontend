@@ -174,6 +174,22 @@ describe('PublisherApi', () => {
     });
   });
 
+  describe('getDatasetsWithoutDateDimension', () => {
+    it('should return a ReadableStream', async () => {
+      const stream = new ReadableStream();
+
+      mockResponse = Promise.resolve(new Response(stream));
+
+      const fileStream = await statsWalesApi.getDatasetsWithoutDateDimension();
+
+      expect(fetchSpy).toHaveBeenCalledWith(
+        `${baseUrl}/admin/datasets/without-date-dimension?lang=en`,
+        expect.objectContaining({ method: HttpMethod.Get, headers: expect.objectContaining(headers) })
+      );
+      expect(fileStream).toBe(stream);
+    });
+  });
+
   describe('getSourcesForDataset', () => {
     it('should return an array of FactTableColumnDto', async () => {
       const datasetId = randomUUID();
