@@ -52,4 +52,11 @@ describe('Dashboard — datasets without a date dimension', () => {
     expect(html).toContain('href="/en-GB/admin/datasets/without-date-dimension"');
     expect(html).toContain('admin.dashboard.stats.datasets.without_date_dimension.download');
   });
+
+  it('hides the section when the backend does not supply the count', () => {
+    const { without_date_dimension: _omitted, ...datasets } = stats.datasets!;
+    const partialStats = { ...stats, datasets } as DashboardStats;
+    const partialHtml = renderToStaticMarkup(<Dashboard {...baseProps} stats={partialStats} />);
+    expect(partialHtml).not.toContain('admin.dashboard.stats.datasets.without_date_dimension');
+  });
 });
