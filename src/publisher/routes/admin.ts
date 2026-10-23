@@ -16,6 +16,7 @@ import {
   groupStatus,
   dashboard,
   similarDatasets,
+  datasetsWithoutDateDimension,
   downloadSearchLogs
 } from '../controllers/admin';
 import { ensureAdmin } from '../middleware/ensure-admin';
@@ -58,6 +59,7 @@ admin.use('/user', (req: Request, res: Response, next: NextFunction) => {
 
 admin.get('/dashboard', dashboard);
 admin.get('/similar/datasets', similarDatasets);
+admin.get('/datasets/without-date-dimension', datasetsWithoutDateDimension);
 admin.get('/user', listUsers);
 
 admin.get('/user/create', createUser);

@@ -505,9 +505,9 @@ export const similarDatasets = async (req: Request, res: Response, next: NextFun
   try {
     const now = format(new Date(), 'yyyy-MM-dd-HH-mm-ss');
     const fileName = `similar-${similarBy}-${now}.csv`;
+    const similarDatasetsFilestream = await req.pubapi.getSimilarDatasets(similarBy);
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
-    const similarDatasetsFilestream = await req.pubapi.getSimilarDatasets(similarBy);
     Readable.from(similarDatasetsFilestream).pipe(res);
     return;
   } catch (err: any) {
@@ -520,14 +520,33 @@ export const similarDatasets = async (req: Request, res: Response, next: NextFun
   }
 };
 
+export const datasetsWithoutDateDimension = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const now = format(new Date(), 'yyyy-MM-dd-HH-mm-ss');
+    const fileName = `datasets-without-date-dimension-${now}.csv`;
+    const datasetsFilestream = await req.pubapi.getDatasetsWithoutDateDimension();
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+    Readable.from(datasetsFilestream).pipe(res);
+    return;
+  } catch (err: any) {
+    logger.error(err, 'there was a problem fetching datasets without a date dimension');
+    if ([401, 403].includes(err.status)) {
+      next(err);
+      return;
+    }
+    next(new NotFoundException('errors.datasets_without_date_dimension_missing'));
+  }
+};
+
 export const downloadSearchLogs = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const start = req.query.start ? new Date(req.query.start as string) : subDays(new Date(), 30);
     const end = req.query.end ? new Date(req.query.end as string) : new Date();
     const fileName = `search-logs-${format(start, 'yyyy-MM-dd')}-${format(end, 'yyyy-MM-dd')}.csv`;
+    const searchLogsFilestream = await req.pubapi.downloadSearchLogs(start, end);
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
-    const searchLogsFilestream = await req.pubapi.downloadSearchLogs(start, end);
     Readable.from(searchLogsFilestream).pipe(res);
     return;
   } catch (err: any) {
