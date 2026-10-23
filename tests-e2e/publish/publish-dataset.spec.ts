@@ -146,9 +146,14 @@ test.describe('Publish dataset', () => {
       await expect(previewPage.locator('#data-rounding').getByText('Rounding applied')).toBeVisible();
       await expect(previewPage.locator('#data-rounding').getByText(metadata.rounding.description)).toBeVisible();
 
-      // download files
+      // download files - none of the download options default to a value any more, so they
+      // must be chosen explicitly before the first submission
       await previewPage.click('#tab_downloads');
       await previewPage.getByRole('button', { name: 'Download data' }).waitFor({ state: 'visible' });
+      await previewPage.click('#unfiltered', { force: true });
+      await previewPage.click('#csv', { force: true });
+      await previewPage.click('#formatted', { force: true });
+      await previewPage.click('#en-GB', { force: true });
       const csvDownload = await downloadFile(previewPage, previewPage.getByRole('button', { name: 'Download data' }));
       await checkFile(testInfo, csvDownload);
       await previewPage.click('#json', { force: true });
