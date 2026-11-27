@@ -403,7 +403,8 @@ export const downloadPublishedMetadata = async (req: Request, res: Response, nex
 
 export const search = async (req: Request, res: Response) => {
   const keywords = req.query.keywords as string;
-  const mode = SearchMode.FTSSimple;
+  // fts stems English searches, so "accidents" also finds "accident". The backend searches Welsh without stemming.
+  const mode = SearchMode.FTS;
   const page = parseInt(req.query.page_number as string, 10) || 1;
   const limit = 20;
 
